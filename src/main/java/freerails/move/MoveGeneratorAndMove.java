@@ -57,7 +57,7 @@ public class MoveGeneratorAndMove implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = (move != null ? move.hashCode() : 0);
+        result = move != null ? move.hashCode() : 0;
         result = 29 * result + (moveGenerator != null ? moveGenerator.hashCode() : 0);
         return result;
     }

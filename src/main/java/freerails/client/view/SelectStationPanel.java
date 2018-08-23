@@ -207,7 +207,7 @@ public class SelectStationPanel extends JPanel implements View {
         bottomRight = Vec2D.add(bottomRight, margin);
 
         visableMapTiles = new Rectangle(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
-        boolean heightConstraintBinds = (visableMapTiles.getHeight() / visableMapTiles.getWidth()) > (mapRect.getHeight() / mapRect.getWidth());
+        boolean heightConstraintBinds = visableMapTiles.getHeight() / visableMapTiles.getWidth() > mapRect.getHeight() / mapRect.getWidth();
         if (heightConstraintBinds) {
             scale = mapRect.getHeight() / visableMapTiles.getHeight();
         } else {

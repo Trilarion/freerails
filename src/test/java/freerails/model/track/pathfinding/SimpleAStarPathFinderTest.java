@@ -149,7 +149,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
 
         @Override
         public boolean hasNextEdge() {
-            return nodes[position].edges.length > (branch + 1);
+            return nodes[position].edges.length > branch + 1;
         }
 
         @Override

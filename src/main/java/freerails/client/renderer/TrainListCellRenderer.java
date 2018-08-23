@@ -26,7 +26,6 @@ import freerails.client.view.View;
 import freerails.client.ModelRoot;
 import freerails.model.train.Train;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.WorldListListener;
 import freerails.model.player.Player;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.TrainOrder;
@@ -40,7 +39,7 @@ import java.util.List;
 /**
  * Displays an engine and a number of wagons.
  */
-public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer, WorldListListener {
+public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer {
 
     private static final long serialVersionUID = 3546076964969591093L;
     private final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
@@ -217,38 +216,6 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         }
     }
 
-    /**
-     * @param index
-     * @param player
-     */
-    @Override
-    public void listUpdated(int index, Player player) {
-        if (showingOrder) {
-            // TODO since Schedule is part of train, this is not right anymore, fix it
-            //if (PlayerKey.TrainSchedules == key) {
-            //    display(trainNumber, scheduleOrderNumber);
-            //}
-        } else {
-            // TODO since we use AddTrainMove this is not done right anymore! fix it!
-            //if (PlayerKey.Trains == key && trainNumber == index) {
-            //    display(trainNumber);
-            //}
-        }
-    }
-
-    /**
-     * @param index
-     * @param player
-     */
-    @Override
-    public void itemAdded(int index, Player player) {
-    }
-
-    /**
-     * @param index
-     * @param player
-     */
-    @Override
-    public void itemRemoved(int index, Player player) {
-    }
+    // TODO since Schedule is part of train, this is not right anymore, fix it
+    // TODO since we use AddTrainMove this is not done right anymore (no updates)! fix it!
 }

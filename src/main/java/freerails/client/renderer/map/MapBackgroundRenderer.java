@@ -41,8 +41,6 @@ import java.awt.*;
  */
 public class MapBackgroundRenderer implements MapLayerRenderer {
 
-    private static final Logger logger = Logger.getLogger(MapBackgroundRenderer.class.getName());
-
     /**
      * The terrain layer.
      */
@@ -69,7 +67,6 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     public MapBackgroundRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trackLayer = new TrackLayerRenderer(world, rendererRoot);
         terrainLayer = new TerrainLayerRenderer(world, rendererRoot);
-        Vec2D mapSize = world.getMapSize();
         cityNames = new CityNamesRenderer(world);
         stationNames = new StationNamesRenderer(world, modelRoot);
     }
@@ -101,8 +98,8 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
 
         int x = clipRectangle.x / tileWidth;
         int y = clipRectangle.y / tileHeight;
-        int width = (clipRectangle.width / tileWidth) + 2;
-        int height = (clipRectangle.height) / tileHeight + 2;
+        int width = clipRectangle.width / tileWidth + 2;
+        int height = clipRectangle.height / tileHeight + 2;
 
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, new Vec2D(x, y), width, height);

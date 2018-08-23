@@ -46,7 +46,7 @@ import java.util.Enumeration;
 /**
  * Creates and wires up the GUI components.
  */
-public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapListener, WorldListListener {
+public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapListener {
 
     /**
      * Whether to show certain 'cheat' menus used for testing.
@@ -395,41 +395,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         return buildTrackController;
     }
 
-    /**
-     * @param index
-     * @param player
-     */
-    @Override
-    public void itemAdded(int index, Player player) {
-        boolean rightPlayer = player.equals(modelRoot.getPlayer());
-
-        // TODO when is this called? when a station is added?
-        if (rightPlayer) {
-            countStations();
-        }
-    }
-
-    /**
-     * @param index
-     * @param player
-     */
-    @Override
-    public void itemRemoved(int index, Player player) {
-    }
-
-    /**
-     * @param index
-     * @param player
-     */
-    @Override
-    public void listUpdated(int index, Player player) {
-        boolean rightPlayer = player.equals(modelRoot.getPlayer());
-
-        // TODO when is this called? when a station is added/removed?
-        if (rightPlayer) {
-            countStations();
-        }
-    }
+    // TODO when is this called? when a station is added? need to listen to world changes again (mostly call to countStations())
 
     /**
      * Called when a new game is started or a game is loaded.
@@ -453,7 +419,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         }
         this.world = world;
         modelRoot.addMapListener(this);
-        modelRoot.addListListener(this);
 
         // TODO this should be a test, all rendererroots should be compatible
         if (!rendererRoot.validate(this.world)) {
@@ -544,8 +509,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
             Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
             tilesChanged = tilesChanged.intersection(mapRect);
 
-            for (int tileX = tilesChanged.x; tileX < (tilesChanged.x + tilesChanged.width); tileX++) {
-                for (int tileY = tilesChanged.y; tileY < (tilesChanged.y + tilesChanged.height); tileY++) {
+            for (int tileX = tilesChanged.x; tileX < tilesChanged.x + tilesChanged.width; tileX++) {
+                for (int tileY = tilesChanged.y; tileY < tilesChanged.y + tilesChanged.height; tileY++) {
                     Vec2D p = new Vec2D(tileX, tileY);
                     mainMap.refreshTile(p);
                     overviewMap.refreshTile(p);

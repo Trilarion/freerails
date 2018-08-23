@@ -112,6 +112,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         train.addActivity(motion);
         AddTrainMove addTrain = new AddTrainMove(player, train);
 
+        // TODO add the transaction to the TrainMove and check there, do not use a composite move
         // Pay for the train.
         // Determine the price of the train.
         Money price = world.getEngine(engineId).getPrice();

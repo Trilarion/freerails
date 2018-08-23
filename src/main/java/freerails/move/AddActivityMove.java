@@ -42,13 +42,14 @@ public class AddActivityMove implements Move {
         this.activity = activity;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         world.addActivity(player, trainId, activity);
     }
 

@@ -76,11 +76,13 @@ public class TrackMoveTransactionsGenerator {
         this.player = player;
     }
 
+    // TODO we do not want to use transactions here, rather add them to the changetrackmoves
     /**
      * @param move
      * @return
      */
     public CompositeMove addTransactions(Move move) {
+        // TODO this only takes track into account, not stations
         int numberOfTrackTypes = world.getTrackTypes().size();
         trackAdded = new int[numberOfTrackTypes];
         trackRemoved = new int[numberOfTrackTypes];
@@ -108,7 +110,7 @@ public class TrackMoveTransactionsGenerator {
             if (0 != numberRemoved) {
                 Money price = world.getTrackType(i).getPurchasingPrice();
                 // TODO Money arithmetic
-                Money total = new Money((price.amount * numberRemoved) / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Money total = new Money(price.amount * numberRemoved / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
                 // You only get half the money back.
                 total = Money.divide(total, 2);
@@ -176,9 +178,9 @@ public class TrackMoveTransactionsGenerator {
 
                 if (ruleAfter == ruleBefore) {
                     if (oldLength < newLength) {
-                        trackAdded[ruleAfter] += (newLength - oldLength);
+                        trackAdded[ruleAfter] += newLength - oldLength;
                     } else if (oldLength > newLength) {
-                        trackRemoved[ruleAfter] += (oldLength - newLength);
+                        trackRemoved[ruleAfter] += oldLength - newLength;
                     }
 
                     return;

@@ -66,7 +66,7 @@ public class TrackType extends Identifiable {
         for (String trackTemplateString: validTrackConfigurations) {
             int trackTemplate = Integer.parseInt(trackTemplateString, 2);
             // Check for invalid parameters.
-            if ((trackTemplate > 511) || (trackTemplate < 0)) {
+            if (trackTemplate > 511 || trackTemplate < 0) {
                 throw new IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
             }
             int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer.getRotations(trackTemplate);
@@ -111,16 +111,8 @@ public class TrackType extends Identifiable {
         return properties.contains(property);
     }
 
-    public boolean validTerrainCategory(TerrainCategory terrainCategory) {
-        return validTerrainCategories.contains(terrainCategory);
-    }
-
     public Set<TrackConfiguration> getValidTrackConfigurations() {
         return allValidTrackConfigurations;
-    }
-
-    public boolean isValidTrackConfiguration(TrackConfiguration configuration) {
-        return allValidTrackConfigurations.contains(configuration);
     }
 
     public TrackCategory getCategory() {

@@ -48,7 +48,7 @@ public class TileTransition implements TrackConfigurations {
         int t = 1;
         for (int y = -1; y <= 1; y++) {
             for (int x = -1; x <= 1; x++) {
-                if ((0 != x) || (0 != y)) {
+                if (0 != x || 0 != y) {
                     vectors[x + 1][y + 1] = new TileTransition(x, y, t);
                 }
                 t = t << 1;
@@ -107,7 +107,7 @@ public class TileTransition implements TrackConfigurations {
         deltaX = x;
         deltaY = y;
         flatTrackTemplate = t;
-        length = (x * y) == 0 ? ModelConstants.TILE_SIZE : ModelConstants.TILE_DIAGONAL_SIZE;
+        length = x * y == 0 ? ModelConstants.TILE_SIZE : ModelConstants.TILE_DIAGONAL_SIZE;
     }
 
     /**
@@ -143,14 +143,14 @@ public class TileTransition implements TrackConfigurations {
     public static boolean checkValidity(Vec2D a, Vec2D b) {
         int dx = b.x - a.x;
         int dy = b.y - a.y;
-        return (((dx >= -1) && (dx <= 1)) && ((dy >= -1) && (dy <= 1))) && ((dx != 0) || (dy != 0));
+        return dx >= -1 && dx <= 1 && dy >= -1 && dy <= 1 && (dx != 0 || dy != 0);
     }
 
     /**
      * @return
      */
     public static TileTransition getInstance(Vec2D d) {
-        if ((((d.x < -1) || (d.x > 1)) || ((d.y < -1) || (d.y > 1))) || ((d.x == 0) && (d.y == 0))) {
+        if (d.x < -1 || d.x > 1 || d.y < -1 || d.y > 1 || d.x == 0 && d.y == 0) {
             throw new IllegalArgumentException(d.x + " and " + d.y + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
         }
         return vectors[d.x + 1][d.y + 1];

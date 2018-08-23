@@ -112,7 +112,7 @@ class TrackRenderer {
         float sleeperCount = (int) sleepers;
         float sleeperGap = (float) length / sleeperCount - sleeperWidth;
         float dash1[] = {sleeperWidth, sleeperGap};
-        float phase = sleeperWidth + (sleeperGap / 2);
+        float phase = sleeperWidth + sleeperGap / 2;
         return new BasicStroke((float) sleeperLength, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, phase);
     }
 
@@ -174,8 +174,8 @@ class TrackRenderer {
         float halfTile = tileWidth / 2;
         Point2D.Double start, end, one;
         start = new Point2D.Double();
-        start.x = tileWidth + (halfTile * a.deltaX);
-        start.y = tileWidth + (halfTile * a.deltaY);
+        start.x = tileWidth + halfTile * a.deltaX;
+        start.y = tileWidth + halfTile * a.deltaY;
         one = controlPoint(start);
         end = new Point2D.Double(tileWidth, tileWidth);
         CubicCurve2D.Double returnValue = new CubicCurve2D.Double();
@@ -187,12 +187,12 @@ class TrackRenderer {
         float halfTile = tileWidth / 2;
         Point2D.Double start, end, one, two;
         start = new Point2D.Double();
-        start.x = tileWidth + (halfTile * a.deltaX);
-        start.y = tileWidth + (halfTile * a.deltaY);
+        start.x = tileWidth + halfTile * a.deltaX;
+        start.y = tileWidth + halfTile * a.deltaY;
         one = controlPoint(start);
         end = new Point2D.Double();
-        end.x = tileWidth + (halfTile * b.deltaX);
-        end.y = tileWidth + (halfTile * b.deltaY);
+        end.x = tileWidth + halfTile * b.deltaX;
+        end.y = tileWidth + halfTile * b.deltaY;
         two = controlPoint(end);
         CubicCurve2D.Double returnValue = new CubicCurve2D.Double();
         returnValue.setCurve(start, one, two, end);

@@ -25,7 +25,6 @@ import freerails.move.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.network.*;
-import freerails.server.GameServer;
 import freerails.network.command.*;
 import freerails.move.receiver.MoveChainFork;
 import freerails.move.receiver.UntriedMoveReceiver;
@@ -92,7 +91,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * Connects this client to a local server.
      */
-    public final LogOnResponse connect(GameServer server, String username, String password) {
+    public final LogOnResponse connect(String username, String password) {
         try {
             Serializable request = new LogOnCredentials(username, password);
             connectionToServer = Connection.make(new InetSocketAddress(InetAddress.getLoopbackAddress(), 55000)); // TODO get selected port

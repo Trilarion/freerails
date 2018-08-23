@@ -550,7 +550,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
                             prepareToHostNetworkGame(msp.getServerPort());
                             client = new LauncherClient(cop.getPlayerName(), mode, cop.getDisplayMode());
-                            client.connect(server, cop.getPlayerName(), "password");
+                            client.connect(cop.getPlayerName(), "password");
                         }
                     } else {
 

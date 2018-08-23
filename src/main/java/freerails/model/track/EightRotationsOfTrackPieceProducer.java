@@ -62,7 +62,7 @@ class EightRotationsOfTrackPieceProducer {
 
             for (int y = 0; y < 3; y++) {
                 for (int x = 0; x < 3; x++) {
-                    if (((trackTemplate >> (3 * y + x)) & 1) == 1) {
+                    if ((trackTemplate >> 3 * y + x & 1) == 1) {
                         trackBooleanArray[x][y] = true;
                     }
                 }
@@ -97,7 +97,7 @@ class EightRotationsOfTrackPieceProducer {
             for (int y = 0; y < 3; y++) {
                 for (int x = 0; x < 3; x++) {
                     if (trackTemplateBooleanArray[x][y]) {
-                        trackGraphicNumber = trackGraphicNumber | (1 << (3 * y + x));
+                        trackGraphicNumber = trackGraphicNumber | 1 << 3 * y + x;
                     }
                 }
             }

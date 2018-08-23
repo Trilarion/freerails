@@ -187,7 +187,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
                 rectangleSurroundingCursor.setLocation((newPoint.x - 1) * tileSize.width, (newPoint.y - 1) * tileSize.height);
                 rectangleSurroundingCursor.setSize(tileSize.width * 3, tileSize.height * 3);
 
-                if (!(visibleRect.contains(rectangleSurroundingCursor))) {
+                if (!visibleRect.contains(rectangleSurroundingCursor)) {
                     int x = newPoint.x * tileSize.width - visibleRect.width / 2;
                     int y = newPoint.y * tileSize.height - visibleRect.height / 2;
                     scrollRectToVisible(new Rectangle(x, y, visibleRect.width, visibleRect.height));

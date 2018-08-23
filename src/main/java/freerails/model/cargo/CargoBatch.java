@@ -87,7 +87,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         result = 37 * result + cargoTypeId;
         result = 37 * result + sourceP.hashCode();
         result = 37 * result + originalStationId;
-        result = 37 * result + (int) (creationTime ^ (creationTime >>> 32));
+        result = 37 * result + (int) (creationTime ^ creationTime >>> 32);
 
         return result;
     }

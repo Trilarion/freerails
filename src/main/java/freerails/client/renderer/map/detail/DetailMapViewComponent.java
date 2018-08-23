@@ -73,15 +73,15 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     @Override
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         if (SwingConstants.VERTICAL == orientation) {
-            int best = (int) (((visibleRect.height / mapRenderer.getScale()) - 2) * mapRenderer.getScale());
+            int best = (int) ((visibleRect.height / mapRenderer.getScale() - 2) * mapRenderer.getScale());
 
             if (best > 0) {
                 return best;
             }
             return visibleRect.height;
         }
-        float f = ((visibleRect.width / mapRenderer.getScale()) - 2) * mapRenderer.getScale();
-        int best = (int) (f);
+        float f = (visibleRect.width / mapRenderer.getScale() - 2) * mapRenderer.getScale();
+        int best = (int) f;
 
         if (best > 0) {
             return best;
@@ -117,8 +117,8 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     public void centerOnTile(Vec2D tile) {
         float scale = mapRenderer.getScale();
         Rectangle visRect = new Rectangle(getVisibleRect());
-        visRect.x = (int) (tile.x * scale - (visRect.width / 2));
-        visRect.y = (int) (tile.y * scale - (visRect.height / 2));
+        visRect.x = (int) (tile.x * scale - visRect.width / 2);
+        visRect.y = (int) (tile.y * scale - visRect.height / 2);
         scrollRectToVisible(visRect);
     }
 

@@ -60,7 +60,7 @@ public class UpdateTrainMove implements Move {
     }
 
     @Override
-    public @NotNull void apply(@NotNull World world) {
+    public void apply(@NotNull World world) {
         Train train = world.getTrain(player, trainId);
         if (cargoBatchBundle != null) {
             train.setCargoBatchBundle(cargoBatchBundle);

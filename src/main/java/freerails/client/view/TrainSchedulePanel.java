@@ -45,7 +45,7 @@ import java.util.List;
  * Displays a train's schedule and provides controls that let you
  * edit it.
  */
-public class TrainSchedulePanel extends JPanel implements View, WorldListListener {
+public class TrainSchedulePanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3762248626113884214L;
     private static final Logger logger = Logger.getLogger(TrainSchedulePanel.class.getName());
@@ -573,20 +573,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         modelRoot.applyMove(move);
     }
 
-    @Override
-    public void listUpdated(int index, Player player) {
-        // TODO this is out of order with the removal of ChangeInListMoves, need to listen differently to changes
-        //if (PlayerKey.TrainSchedules == key) {
-        //    listModel.fireRefresh();
-        //    enableButtons();
-        //}
-    }
-
-    @Override
-    public void itemAdded(int index, Player player) {}
-
-    @Override
-    public void itemRemoved(int index, Player player) {}
+    // TODO updates are out of order with the removal of ChangeInListMoves, need to listen differently to changes
 
     /**
      * Show the popup that lets the user select a station, called when a new

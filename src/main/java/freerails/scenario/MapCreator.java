@@ -141,7 +141,7 @@ public class MapCreator {
         file = new File(url.toURI());
         Array2D map = GsonManager.loadArray2D(file);
 
-        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).setMapSize(map.getSize());
+        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).setMapSize(map.getSize()).setSentiments(sentiments);
         World world = builder.build();
 
         // TODO what is the purpose of the following section (randomization)
@@ -151,7 +151,7 @@ public class MapCreator {
         for (Terrain terrainType: world.getTerrains()) {
 
             if (terrainType.getCategory() == TerrainCategory.COUNTRY) {
-                if ((!terrainType.getName().equals("Clear"))) {
+                if (!terrainType.getName().equals("Clear")) {
                     countryTypes.add(terrainType.getId());
                 }
             }

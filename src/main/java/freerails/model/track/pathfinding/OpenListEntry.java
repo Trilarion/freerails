@@ -47,7 +47,7 @@ public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
         if (!(obj instanceof OpenListEntry)) return false;
         final OpenListEntry other = (OpenListEntry) obj;
 
-        return (f == other.f && node == other.node);
+        return f == other.f && node == other.node;
     }
 
     @Override

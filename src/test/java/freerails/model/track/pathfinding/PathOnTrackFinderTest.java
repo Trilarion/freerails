@@ -28,7 +28,7 @@ import freerails.model.MapFixtureFactory2;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.MoveExecutor;
 import freerails.move.SimpleMoveExecutor;
-import freerails.move.StationBuilder;
+import freerails.controller.StationBuilder;
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
@@ -54,8 +54,6 @@ public class PathOnTrackFinderTest extends TestCase {
         ModelRoot modelRoot = new ModelRootImpl();
         producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         pathFinder = new PathOnTrackFinder(world);
-        StationBuilder stationBuilder = new StationBuilder(moveExecutor);
-        BuildTrackStrategy bts = BuildTrackStrategy.getDefault(world);
     }
 
     /**

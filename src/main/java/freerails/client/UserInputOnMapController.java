@@ -253,7 +253,7 @@ public class UserInputOnMapController extends KeyAdapter {
     }
 
     private void cursorOneTileMove(Vec2D oldPosition, TileTransition vector) {
-        boolean b = (modelRoot.getProperty(ModelRootProperty.CURSOR_MODE) == ModelRootValue.BUILD_TRACK_CURSOR_MODE);
+        boolean b = modelRoot.getProperty(ModelRootProperty.CURSOR_MODE) == ModelRootValue.BUILD_TRACK_CURSOR_MODE;
 
         if (null != trackMoveProducer && b) {
             trackMoveProducer.setBuildTrackStrategy(getBts());
@@ -438,8 +438,8 @@ public class UserInputOnMapController extends KeyAdapter {
              * station.
              */
             // TODO pull these next bits out into method
-            boolean trackBuildingOn = (trackBuilderMode == BuildMode.BUILD_TRACK) || (trackBuilderMode == BuildMode.REMOVE_TRACK) || (trackBuilderMode == BuildMode.UPGRADE_TRACK);
-            trackBuildingOn = trackBuildingOn && (modelRoot.getProperty(ModelRootProperty.CURSOR_MODE) == ModelRootValue.BUILD_TRACK_CURSOR_MODE);
+            boolean trackBuildingOn = trackBuilderMode == BuildMode.BUILD_TRACK || trackBuilderMode == BuildMode.REMOVE_TRACK || trackBuilderMode == BuildMode.UPGRADE_TRACK;
+            trackBuildingOn = trackBuildingOn && modelRoot.getProperty(ModelRootProperty.CURSOR_MODE) == ModelRootValue.BUILD_TRACK_CURSOR_MODE;
 
             if (SwingUtilities.isLeftMouseButton(e) && pressedInside && trackBuildingOn && !ignoreDragging) {
 

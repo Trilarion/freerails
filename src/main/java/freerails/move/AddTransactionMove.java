@@ -48,27 +48,18 @@ public class AddTransactionMove implements Move {
      * @param transaction
      */
     public AddTransactionMove(@NotNull Player player, @NotNull Transaction transaction) {
-        this.player = player;
-        this.transaction = Utils.verifyNotNull(transaction);
-        cashConstrained = false;
+        this(player, transaction, false);
     }
 
     /**
-     * @param account
+     * @param player
      * @param transaction
      * @param constrain
      */
-    public AddTransactionMove(Player account, Transaction transaction, boolean constrain) {
-        player = account;
+    public AddTransactionMove(@NotNull Player player, @NotNull Transaction transaction, boolean constrain) {
+        this.player = player;
         this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = constrain;
-    }
-
-    /**
-     * @return
-     */
-    public Transaction getTransaction() {
-        return transaction;
     }
 
     @Override
@@ -81,8 +72,9 @@ public class AddTransactionMove implements Move {
         return result;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         // TODO should we check the time of the transaction here? actually it could have already been forwarded
         if (cashConstrained) {
             // TODO Money arithmetic
@@ -99,12 +91,13 @@ public class AddTransactionMove implements Move {
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         Status status = applicable(world);
-
-        if (status.isSuccess()) {
-            world.addTransaction(player, transaction);
+        if (!status.isSuccess()) {
+            throw new RuntimeException(status.getMessage());
         }
+
+        world.addTransaction(player, transaction);
     }
 
     @Override
@@ -115,12 +108,5 @@ public class AddTransactionMove implements Move {
             return test.player.equals(player) && test.transaction.equals(transaction);
         }
         return false;
-    }
-
-    /**
-     * @return
-     */
-    public Player getPlayer() {
-        return player;
     }
 }

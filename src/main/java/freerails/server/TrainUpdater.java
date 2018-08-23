@@ -108,8 +108,8 @@ public class TrainUpdater implements Serializable {
                         List<Integer> wagonTypes = trainTemplate.getWagonTypes();
                         buildTrain(engineId, wagonTypes, station.getLocation(), player, world);
                     }
-
-                    Move move = new ChangeProductionAtEngineShopMove(production, new ArrayList<>(), station.getId(), player);
+                    // removes from production list
+                    Move move = new ChangeProductionAtEngineShopMove(new ArrayList<>(), station.getId(), player);
                     moveReceiver.process(move);
                 }
             }
@@ -128,7 +128,7 @@ public class TrainUpdater implements Serializable {
             Collection<MoveTrainMoveGenerator> stoppedTrains = new ArrayList<>();
             for (Train train: world.getTrains(player)) {
                 MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(train.getId(), player, occupiedTracks);
-                if (moveTrain.isUpdateDue(world)) {
+                if (TrainUtils.isUpdateDue(world, player, train.getId())) {
                     if (train.isMoving(currentTime)) {
                         movingTrains.add(moveTrain);
                     } else {

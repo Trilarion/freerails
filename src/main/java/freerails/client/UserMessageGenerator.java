@@ -81,22 +81,23 @@ public class UserMessageGenerator implements MoveReceiver {
     /**
      * Generates a message giving details of any cargo delivered and plays a
      * cash register sound to indicate that revenue is coming in.
-     * @param moves
+     * @param mov
      */
     private void trainArrives(Move mov) {
+        /*
         CompositeMove moves = (CompositeMove) mov;
         // TODO does this work anymore, was a WorldDiffMove before
         List<CargoDeliveryTransaction> cargoDelivered = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {
             Move move = moves.getMoves().get(i);
             if (move instanceof AddTransactionMove) {
-                AddTransactionMove atm = (AddTransactionMove) move;
-                if (!atm.getPlayer().equals(modelRoot.getPlayer())) {
+                AddTransactionMove addTransactionMove = (AddTransactionMove) move;
+                if (!addTransactionMove.getPlayer().equals(modelRoot.getPlayer())) {
                     // We don't want to know about other players' income!
                     return;
                 }
 
-                Transaction transaction = atm.getTransaction();
+                Transaction transaction = addTransactionMove.getTransaction();
                 if (transaction instanceof CargoDeliveryTransaction) {
                     CargoDeliveryTransaction receipt = (CargoDeliveryTransaction) transaction;
                     cargoDelivered.add(receipt);
@@ -140,6 +141,7 @@ public class UserMessageGenerator implements MoveReceiver {
             int loops = (int) revenue.amount / 4000;
             soundManager.playSound(ClientConstants.SOUND_CASH, loops);
         }
+        */
     }
 
     /**

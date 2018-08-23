@@ -55,7 +55,7 @@ public class TrainOrdersListModel extends AbstractListModel {
         this.trainNumber = trainNumber;
         this.world = world;
         this.player = player;
-        assert (null != getSchedule());
+        assert null != getSchedule();
     }
 
     @Override

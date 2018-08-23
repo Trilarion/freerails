@@ -226,6 +226,10 @@ The more wagons a train is pulling, the slower it moves. The greater the amount 
 The gradient of the track also affects speed. When trains arrive at a station it stops for a few moments to load
 and unload cargo. Trains stop instantly (this is a simplification so we don't need to look ahead) but speed up slowly.
 
+Path finding is automatic. That means that trains take the slowest perceived route and priority trains having priority.
+(This may change at some point with the player being able to choose between several possible routes between two stations.
+It would be implemented using way points, maybe even changing routes depending on the traffic.)
+
 Stations
 ++++++++
 

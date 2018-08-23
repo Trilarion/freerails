@@ -57,7 +57,7 @@ public class BidirectionalIterator<E> {
      * @return
      */
     public boolean hasNext() {
-        return (currentIndex + 1) < list.size();
+        return currentIndex + 1 < list.size();
     }
 
     /**

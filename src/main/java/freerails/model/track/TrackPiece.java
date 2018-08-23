@@ -29,16 +29,16 @@ public class TrackPiece implements Serializable {
     private static final long serialVersionUID = 4049080423458027569L;
     private final TrackConfiguration trackConfiguration;
     private final TrackType trackType;
-    private final int ownerID;
+    private final int playerId;
 
     /**
      * @param trackConfiguration
-     * @param owner
+     * @param playerId
      */
-    public TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int owner) {
+    public TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int playerId) {
         this.trackConfiguration = trackConfiguration;
         this.trackType = trackType;
-        ownerID = owner;
+        this.playerId = playerId;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class TrackPiece implements Serializable {
 
         final TrackPiece other = (TrackPiece) obj;
 
-        if (ownerID != other.ownerID) return false;
+        if (playerId != other.playerId) return false;
         if (!trackConfiguration.equals(other.trackConfiguration)) return false;
         return trackType.equals(other.trackType);
     }
@@ -58,7 +58,7 @@ public class TrackPiece implements Serializable {
         int result;
         result = trackConfiguration.hashCode();
         result = 29 * result + trackType.hashCode();
-        result = 29 * result + ownerID;
+        result = 29 * result + playerId;
         return result;
     }
 
@@ -79,8 +79,8 @@ public class TrackPiece implements Serializable {
     /**
      * @return
      */
-    public int getOwnerID() {
-        return ownerID;
+    public int getPlayerId() {
+        return playerId;
     }
 
     public TrackType getTrackType() {

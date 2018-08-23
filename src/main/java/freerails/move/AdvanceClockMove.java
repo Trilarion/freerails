@@ -47,6 +47,7 @@ public class AdvanceClockMove implements Move {
         return 0;
     }
 
+    @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
         if (!player.equals(Player.AUTHORITATIVE)) {
@@ -56,7 +57,7 @@ public class AdvanceClockMove implements Move {
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         world.getClock().advanceTime();
     }
 }

@@ -135,9 +135,9 @@ public class GameLoop implements Runnable {
                 } else if (ClientConstants.LIMIT_FRAME_RATE) {
                     long deltatime = System.currentTimeMillis() - frameStartTime;
 
-                    while (deltatime < (1000 / ClientConstants.TARGET_FPS)) {
+                    while (deltatime < 1000 / ClientConstants.TARGET_FPS) {
                         try {
-                            long sleeptime = (1000 / ClientConstants.TARGET_FPS) - deltatime;
+                            long sleeptime = 1000 / ClientConstants.TARGET_FPS - deltatime;
                             Thread.sleep(sleeptime);
                         } catch (Exception ignored) {
                         }

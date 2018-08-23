@@ -74,7 +74,7 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
      */
     @Override
     public void drawTrackPieceIcon(Graphics g, int trackTemplate, Vec2D tileLocation, Vec2D tileSize) {
-        if ((trackTemplate > 511) || (trackTemplate < 0)) {
+        if (trackTemplate > 511 || trackTemplate < 0) {
             throw new java.lang.IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
         }
 
@@ -90,7 +90,7 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
      */
     @Override
     public Image getTrackPieceIcon(int trackTemplate) {
-        if ((trackTemplate > 511) || (trackTemplate < 0)) {
+        if (trackTemplate > 511 || trackTemplate < 0) {
             throw new java.lang.IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
         }
 

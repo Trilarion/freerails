@@ -135,7 +135,7 @@ public class TrackMoveProducer {
                  */
                 break;
         }
-        assert (getBuildMode() == BuildMode.BUILD_TRACK || getBuildMode() == BuildMode.UPGRADE_TRACK);
+        assert getBuildMode() == BuildMode.BUILD_TRACK || getBuildMode() == BuildMode.UPGRADE_TRACK;
 
         int[] ruleIDs = new int[2];
         TrackType[] types = new TrackType[2];

@@ -59,7 +59,7 @@ import java.util.List;
  * layer of the main JFrames LayerPlane. This allows dialogue boxes with
  * transparent regions to be used.
  */
-public class DialogueBoxController implements WorldListListener {
+public class DialogueBoxController {
 
     private static final Logger logger = Logger.getLogger(DialogueBoxController.class.getName());
     private final JButton closeButton = new JButton("Close");
@@ -113,12 +113,11 @@ public class DialogueBoxController implements WorldListListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             for (Station station: world.getStations(modelRoot.getPlayer())) {
-                List<TrainTemplate> before = station.getProduction();
                 int engineId = selectEngine.getSelectedEngineId();
                 List<Integer> wagonTypes = selectWagons.getWagons();
                 List<TrainTemplate> after = Arrays.asList(new TrainTemplate(engineId, wagonTypes));
 
-                Move move = new ChangeProductionAtEngineShopMove(before, after, station.getId(), modelRoot.getPlayer());
+                Move move = new ChangeProductionAtEngineShopMove(after, station.getId(), modelRoot.getPlayer());
                 modelRoot.applyMove(move);
             }
             closeContent();
@@ -173,8 +172,8 @@ public class DialogueBoxController implements WorldListListener {
     public void setup(ModelRootImpl mr, RendererRoot vl) {
         modelRoot = mr;
         this.vl = Utils.verifyNotNull(vl);
-        modelRoot.addListListener(this); // When a new train gets built, we
-        // show the train info etc
+        // TODO not notified of changes in the world anymore
+        // When a new train gets built, we show the train info etc
 
         world = modelRoot.getWorld();
         Utils.verifyNotNull(world);
@@ -186,8 +185,6 @@ public class DialogueBoxController implements WorldListListener {
 
         // setup the supply and demand at station dialogue.
         stationInfo.setup(modelRoot, vl, closeCurrentDialogue);
-        modelRoot.addListListener(stationInfo);
-
         // setup the 'show controls' dialogue
         showControls.setup(modelRoot, vl, closeCurrentDialogue);
         about.setup(modelRoot, vl, closeCurrentDialogue);
@@ -202,7 +199,6 @@ public class DialogueBoxController implements WorldListListener {
         selectWagons.setup(modelRoot, vl, selectWagonsAction);
 
         trainDialoguePanel.setup(modelRoot, vl, closeCurrentDialogue);
-        modelRoot.addListListener(trainDialoguePanel);
         trainDialoguePanel.setTrainDetailsButtonActionListener(trainDetailsButtonActionListener);
         trainDialoguePanel.setCancelButtonActionListener(closeCurrentDialogue);
     }
@@ -511,15 +507,6 @@ public class DialogueBoxController implements WorldListListener {
      * @param index
      * @param player
      */
-    @Override
-    public void listUpdated(int index, Player player) {
-    }
-
-    /**
-     * @param index
-     * @param player
-     */
-    @Override
     public void itemAdded(int index, Player player) {
         /*
          * Fix for: 910138 After building a train display train orders 910143
@@ -536,13 +523,5 @@ public class DialogueBoxController implements WorldListListener {
         if (rightPlayer) {
             showStationInfo(index);
         }
-    }
-
-    /**
-     * @param index
-     * @param player
-     */
-    @Override
-    public void itemRemoved(int index, Player player) {
     }
 }

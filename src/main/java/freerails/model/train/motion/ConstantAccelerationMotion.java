@@ -80,9 +80,9 @@ public strictfp class ConstantAccelerationMotion implements Serializable, Motion
      * @return
      */
     private static double calculateTime(double speed, double acceleration, double distance) {
-        assert(acceleration >= 0);
-        assert(speed >= 0);
-        assert(distance >= 0);
+        assert acceleration >= 0;
+        assert speed >= 0;
+        assert distance >= 0;
         // if distance > 0, either speed or acceleration must also be >0
 
         if (acceleration == 0) {
@@ -94,9 +94,9 @@ public strictfp class ConstantAccelerationMotion implements Serializable, Motion
     }
 
     private static double calculateDistance(double speed, double acceleration, double time) {
-        assert(speed >= 0);
-        assert(acceleration >= 0);
-        assert(time >= 0);
+        assert speed >= 0;
+        assert acceleration >= 0;
+        assert time >= 0;
 
         return speed * time + acceleration * time * time / 2;
     }

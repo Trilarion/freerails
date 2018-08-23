@@ -58,7 +58,7 @@ public class TerrainTile implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = (trackPiece != null ? trackPiece.hashCode() : 0);
+        result = trackPiece != null ? trackPiece.hashCode() : 0;
         result = 29 * result + terrainTypeId;
         return result;
     }

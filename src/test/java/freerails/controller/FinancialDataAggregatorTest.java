@@ -50,7 +50,8 @@ public class FinancialDataAggregatorTest extends TestCase {
         world = WorldGenerator.minimalWorld();
 
         player = new Player(0, "Player X");
-        Move move = AddPlayerMove.generateMove(world, player);
+        // add a new player
+        Move move = new AddPlayerMove(player);
         Status status = move.applicable(world);
         assertTrue(status.isSuccess());
         move.apply(world);
@@ -121,7 +122,8 @@ public class FinancialDataAggregatorTest extends TestCase {
         Player[] players = new Player[2];
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player(i, "Player " + i);
-            Move move = AddPlayerMove.generateMove(world, players[i]);
+            // add a new player
+            Move move = new AddPlayerMove(players[i]);
             Status status = move.applicable(world);
             assertTrue(status.isSuccess());
             move.apply(world);

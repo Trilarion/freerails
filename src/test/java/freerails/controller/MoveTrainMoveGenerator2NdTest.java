@@ -352,9 +352,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
         assertEquals(TrainState.WAITING_FOR_FULL_LOAD, trainMotion.getTrainState());
 
-        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         assertFalse("The train isn't full and there is no cargo to add, so we should be able to generate a move.",
-                preMove.isUpdateDue(world));
+                TrainUtils.isUpdateDue(world, player, 0));
     }
 
     /**
@@ -456,12 +455,12 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      */
     public void testCanGenerateMove() {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
-        assertTrue(preMove.isUpdateDue(world));
+        assertTrue(TrainUtils.isUpdateDue(world, player, 0));
         Move move = preMove.generate(world);
         Status status = move.applicable(world);
         assertTrue(status.getMessage(), status.isSuccess());
         move.apply(world);
-        assertFalse(preMove.isUpdateDue(world));
+        assertFalse(TrainUtils.isUpdateDue(world, player, 0));
     }
 
     /**

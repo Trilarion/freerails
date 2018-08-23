@@ -73,7 +73,7 @@ public class OverHeadTrainView implements Painter {
             for (Train train: world.getTrains(player)) {
                 TrainPositionOnMap pos = findPosition(time, newVisibleRectangle, world, player, train.getId());
                 if (pos == null) continue;
-                if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= ModelConstants.TRAIN_CRASH_FRAMES_COUNT)) {
+                if (TrainPositionOnMap.isCrashSite() && TrainPositionOnMap.getFrameCt() <= ModelConstants.TRAIN_CRASH_FRAMES_COUNT) {
                     // TODO reimplement trainPainter.paintTrainCrash(g, pos);
                     if (TrainPositionOnMap.getFrameCt() == 1) {
                         soundManager.playSound(ClientConstants.SOUND_TRAIN_CRASH, 1);

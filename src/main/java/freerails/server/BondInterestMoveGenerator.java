@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move.generator;
+package freerails.server;
 
 import freerails.model.finance.transaction.BondItemTransaction;
 import freerails.model.finance.transaction.Transaction;
@@ -35,6 +35,8 @@ import java.util.List;
 /**
  * Iterates over the entries in the bank account and counts the number
  * of outstanding bonds, then calculates the interest due.
+ *
+ * Done on the server side
  */
 public class BondInterestMoveGenerator {
 
@@ -55,10 +57,10 @@ public class BondInterestMoveGenerator {
                 }
             }
 
-            Transaction transaction = new Transaction(TransactionCategory.INTEREST_CHARGE, new Money(-interestDue), world.getClock().getCurrentTime());
-
-            Move move = new AddTransactionMove(player, transaction);
-            moves.add(move);
+            if (interestDue > 0) {
+                Transaction transaction = new Transaction(TransactionCategory.INTEREST_CHARGE, new Money(-interestDue), world.getClock().getCurrentTime());
+                moves.add(new AddTransactionMove(player, transaction));
+            }
         }
         return moves;
     }

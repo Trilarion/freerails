@@ -439,11 +439,4 @@ public class TrainPositionOnMap implements Serializable {
 
         return sb.toString();
     }
-
-    /**
-     * @return
-     */
-    public double getSpeed() {
-        return speed;
-    }
 }

@@ -23,11 +23,11 @@ import freerails.model.track.TrackType;
 import freerails.model.track.TrackUtils;
 import freerails.model.world.*;
 import freerails.move.Status;
-import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Objects;
@@ -63,7 +63,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
     @Override
     public int hashCode() {
         int result;
-        result = (trackPieceBefore != null ? trackPieceBefore.hashCode() : 0);
+        result = trackPieceBefore != null ? trackPieceBefore.hashCode() : 0;
         result = 29 * result + (trackPieceAfter != null ? trackPieceAfter.hashCode() : 0);
         result = 29 * result + location.hashCode();
 
@@ -84,8 +84,9 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return trackPieceAfter;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         // TODO put part of it in model
         // Check that location is on the map.
         if (!world.boundsContain(location)) {
@@ -97,8 +98,8 @@ public final class ChangeTrackPieceMove implements TrackMove {
         if (!rules.canConnectToOtherPlayersTracks()) {
             // TODO what about removing track of someone else
             if (trackPieceBefore != null && trackPieceAfter != null) {
-                int oldOwner = trackPieceBefore.getOwnerID();
-                int newOwner = trackPieceAfter.getOwnerID();
+                int oldOwner = trackPieceBefore.getPlayerId();
+                int newOwner = trackPieceAfter.getPlayerId();
 
                 if (oldOwner != newOwner) {
                     return Status.fail("Not allowed to connect to other RR");
@@ -127,12 +128,12 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
             // Check that oldTrackPiece is not the same as newTrackPiece
             // TODO equals instead of ==
-            if (trackPieceAfter != null && (trackPieceBefore.getTrackConfiguration() == trackPieceAfter.getTrackConfiguration()) && (trackPieceBefore.getTrackType().equals(trackPieceAfter.getTrackType()))) {
+            if (trackPieceAfter != null && trackPieceBefore.getTrackConfiguration() == trackPieceAfter.getTrackConfiguration() && trackPieceBefore.getTrackType().equals(trackPieceAfter.getTrackType())) {
                 return Status.fail("Already track here!");
             }
 
             // Check for illegal track configurations.
-            if (!(trackPieceBefore.getTrackType().trackPieceIsLegal(trackPieceBefore.getTrackConfiguration()))) {
+            if (!trackPieceBefore.getTrackType().trackPieceIsLegal(trackPieceBefore.getTrackConfiguration())) {
                 return Status.fail("Illegal track configuration.");
             }
 
@@ -148,7 +149,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
             Terrain terrain = world.getTerrain(terrainType);
 
             // Check for illegal track configurations.
-            if (!(trackPieceAfter.getTrackType().trackPieceIsLegal(trackPieceAfter.getTrackConfiguration()))) {
+            if (!trackPieceAfter.getTrackType().trackPieceIsLegal(trackPieceAfter.getTrackConfiguration())) {
                 return Status.fail("Illegal track configuration.");
             }
 
@@ -171,7 +172,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         Status status = applicable(world);
         if (!status.isSuccess()) {
             throw new RuntimeException(status.getMessage());

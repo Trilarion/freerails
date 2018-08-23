@@ -121,7 +121,7 @@ public class Clock implements Serializable {
 
     // TODO a better way of calculating this
     public boolean isLastTickOfMonth() {
-        return getCurrentMonth() == ((currentTime.getTicks()+1) % ticksPerYear) / (ticksPerYear / 12);
+        return getCurrentMonth() == (currentTime.getTicks()+1) % ticksPerYear / (ticksPerYear / 12);
     }
 
     /**
@@ -134,7 +134,7 @@ public class Clock implements Serializable {
     }
 
     public int getMonth(@NotNull Time time) {
-        return (time.getTicks() % ticksPerYear) / (ticksPerYear / 12);
+        return time.getTicks() % ticksPerYear / (ticksPerYear / 12);
     }
 
     private static String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};

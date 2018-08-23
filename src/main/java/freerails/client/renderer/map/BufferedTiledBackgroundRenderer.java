@@ -78,7 +78,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
              * If this is the first call to the paint method or the component
              * has just been resized, we need to create a new backgroundBuffer.
              */
-            if ((backgroundBuffer == null) || (visibleRect.height != bufferRect.height) || (visibleRect.width != bufferRect.width)) {
+            if (backgroundBuffer == null || visibleRect.height != bufferRect.height || visibleRect.width != bufferRect.width) {
                 setbackgroundBuffer(visibleRect.width, visibleRect.height);
             }
 
@@ -94,14 +94,14 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
             /*
              * Has the VisibleRectangle moved since the last paint?
              */
-            if ((bufferRect.x != visibleRect.x) || (bufferRect.y != visibleRect.y)) {
+            if (bufferRect.x != visibleRect.x || bufferRect.y != visibleRect.y) {
                 int dx = bufferRect.x - visibleRect.x;
                 int dy = bufferRect.y - visibleRect.y;
                 scrollbackgroundBuffer(dx, dy);
                 bufferRect.setBounds(visibleRect);
             }
 
-            if ((bufferRect.width != visibleRect.width) && (bufferRect.height != visibleRect.height)) {
+            if (bufferRect.width != visibleRect.width && bufferRect.height != visibleRect.height) {
                 paintBufferRectangle(visibleRect.x - bufferRect.x, visibleRect.y - bufferRect.y, visibleRect.width, visibleRect.height);
             }
 

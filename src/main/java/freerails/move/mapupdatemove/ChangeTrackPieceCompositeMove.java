@@ -29,13 +29,12 @@ import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.*;
 import freerails.move.*;
-import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.player.Player;
-import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -88,23 +87,22 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     // TODO put part of it in model
     // utility method.
     private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
+        if (!world.boundsContain(p)) {
+            throw new RuntimeException("Out of bounds");
+        }
+
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        int owner = player.getId();
+        int playerId = player.getId();
 
-        if (world.boundsContain(p)) {
-            oldTrackPiece = world.getTile(p).getTrackPiece();
+        oldTrackPiece = world.getTile(p).getTrackPiece();
 
-            if (oldTrackPiece != null) {
-                TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
-                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), owner);
-            } else {
-                newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackType, owner, trackType.getId());
-            }
+        if (oldTrackPiece != null) {
+            TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
+            newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), playerId);
         } else {
-            newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackType, owner, trackType.getId());
-            oldTrackPiece = null;
+            newTrackPiece = TrackUtils.getTrackPieceWhenOldTrackPieceIsNull(direction, trackType, playerId);
         }
 
         return new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
@@ -113,33 +111,34 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     // TODO put part of it in model
     // utility method.
     private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
+        if (!world.boundsContain(p)) {
+            throw new RuntimeException("Out of bounds");
+        }
+
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        if (world.boundsContain(p)) {
-            oldTrackPiece = world.getTile(p).getTrackPiece();
+        oldTrackPiece = world.getTile(p).getTrackPiece();
 
-            if (oldTrackPiece != null) {
-                TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
+        if (oldTrackPiece != null) {
+            TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
 
-                if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
-                    int owner = player.getId();
-                    newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), owner);
-                } else {
-                    newTrackPiece = null;
-                }
+            if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
+                int playerId = player.getId();
+                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), playerId);
             } else {
-                // There is no track to remove.
-                // Fix for bug [ 948670 ] Removing non-existent track
-                throw new Exception();
+                newTrackPiece = null;
             }
         } else {
-            newTrackPiece = null;
-            oldTrackPiece = null;
+            // There is no track to remove.
+            // Fix for bug [ 948670 ] Removing non-existent track
+            throw new Exception();
         }
+
 
         ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
 
+        // TODO maybe the removal of a station should be checked and induced somewhere else
         // If we are removing a station, we also need to remove the station from the station list.
         if (oldTrackPiece.getTrackType().isStation() && (newTrackPiece == null || !newTrackPiece.getTrackType().isStation())) {
             int stationIndex = -1;
@@ -156,7 +155,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                 throw new IllegalArgumentException("Could find a station at " + changeTrackPieceMove.getLocation());
             }
 
-            Station stationToRemove = world.getStation(player, stationIndex);
             ArrayList<Move> moves = new ArrayList<>();
             moves.add(changeTrackPieceMove);
             moves.add(new RemoveStationMove(player, stationIndex));
@@ -179,13 +177,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         } else {
             return changeTrackPieceMove;
         }
-    }
-
-    private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackType trackType, int owner, int ruleNumber) {
-        TrackConfiguration simplestConfig = TrackConfiguration.getFlatInstance("000010000");
-        TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig, direction);
-
-        return new TrackPiece(trackConfiguration, trackType, owner);
     }
 
     /**
@@ -222,7 +213,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         super.apply(world);
     }
 }

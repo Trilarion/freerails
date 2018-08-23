@@ -69,7 +69,7 @@ public class Statistics {
         int thisPlayerId = player.getId();
 
         // TODO use maps instead of arrays
-        StockPrice[] stockPrices = (new StockPriceCalculator(world)).calculate();
+        StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
         for (Player otherPlayer: world.getPlayers()) {
             aggregator.setCategory(TransactionCategory.TRANSFER_STOCK);
             aggregator.setType(thisPlayerId);

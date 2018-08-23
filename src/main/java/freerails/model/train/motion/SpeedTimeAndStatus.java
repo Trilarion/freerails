@@ -66,13 +66,13 @@ public class SpeedTimeAndStatus implements Serializable {
         int result;
         long temp;
         temp = dt != +0.0d ? Double.doubleToLongBits(dt) : 0L;
-        result = (int) (temp ^ (temp >>> 32));
+        result = (int) (temp ^ temp >>> 32);
         temp = speed != +0.0d ? Double.doubleToLongBits(speed) : 0L;
-        result = 29 * result + (int) (temp ^ (temp >>> 32));
+        result = 29 * result + (int) (temp ^ temp >>> 32);
         temp = acceleration != +0.0d ? Double.doubleToLongBits(acceleration) : 0L;
-        result = 29 * result + (int) (temp ^ (temp >>> 32));
+        result = 29 * result + (int) (temp ^ temp >>> 32);
         temp = s != +0.0d ? Double.doubleToLongBits(s) : 0L;
-        result = 29 * result + (int) (temp ^ (temp >>> 32));
+        result = 29 * result + (int) (temp ^ temp >>> 32);
         result = 29 * result + (activity != null ? activity.hashCode() : 0);
         return result;
     }

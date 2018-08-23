@@ -22,6 +22,11 @@ import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainTile;
+import freerails.model.terrain.TileTransition;
+import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.track.explorer.GraphExplorer;
+import freerails.model.track.pathfinding.PathNotFoundException;
+import freerails.model.track.pathfinding.PathOnTrackFinder;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.move.Status;
@@ -120,7 +125,7 @@ public final class TrackUtils {
         }
 
         trackTemplateBelow = 0;
-        if ((point.y + 1) < mapSize.y) {
+        if (point.y + 1 < mapSize.y) {
             TerrainTile ft = world.getTile(new Vec2D(point.x, point.y + 1));
             TrackPiece tp = ft.getTrackPiece();
             if (tp != null) {
@@ -179,5 +184,43 @@ public final class TrackUtils {
         }
 
         return proposedTrack;
+    }
+
+    public static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackType trackType, int playerId) {
+        TrackConfiguration simplestConfig = TrackConfiguration.getFlatInstance("000010000");
+        TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig, direction);
+        return new TrackPiece(trackConfiguration, trackType, playerId);
+    }
+
+    /**
+     * Uses static method to make testing easier.
+     *
+     * @throws NoTrackException if no track
+     */
+    public static TileTransition findNextStep(UnmodifiableWorld world, PositionOnTrack currentPosition, Vec2D target) {
+        HashMap<Integer, TileTransition> destPaths;
+        TileTransition nextTileTransition;
+        destPaths = new HashMap<>();
+        PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
+
+        try {
+            pathFinder.setupSearch(currentPosition.getLocation(), target);
+            pathFinder.search(-1);
+            TileTransition[] pathAsVectors = pathFinder.pathAsVectors();
+            List<Integer> pathAsInts = pathFinder.pathAsInts();
+            for (int i = 0; i < pathAsInts.size() - 1; i++) {
+                int calcPos = pathAsInts.get(i) & (PositionOnTrack.MAX_COORDINATE | PositionOnTrack.MAX_COORDINATE << PositionOnTrack.BITS_FOR_COORDINATE);
+                destPaths.put(calcPos, pathAsVectors[i + 1]);
+            }
+            nextTileTransition = pathAsVectors[0];
+            return nextTileTransition;
+        } catch (PathNotFoundException e) {
+            // The pathfinder couldn't find a path so we go in any legal direction.
+            GraphExplorer explorer = new FlatTrackExplorer(world, currentPosition);
+            explorer.nextEdge();
+            int next = explorer.getVertexConnectedByEdge();
+            PositionOnTrack nextPosition = new PositionOnTrack(next);
+            return nextPosition.getComingFrom();
+        }
     }
 }

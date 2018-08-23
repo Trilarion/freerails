@@ -53,7 +53,8 @@ public class BrokerScreenGeneratorTest extends TestCase {
         // Set the time..
         Player player = WorldGenerator.TEST_PLAYER;
 
-        AddPlayerMove move = AddPlayerMove.generateMove(world, player);
+        // add a new player
+        AddPlayerMove move = new AddPlayerMove(player);
         Status status = move.applicable(world);
         assertTrue(status.isSuccess());
         move.apply(world);

@@ -57,8 +57,9 @@ public class AddTrainMove implements Move {
         return Objects.hash(player, train);
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         if (Utils.containsId(train.getId(), world.getTrains(player))) {
             return Status.fail("Train with id already existing.");
         }
@@ -66,7 +67,7 @@ public class AddTrainMove implements Move {
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         world.addTrain(player, train);
     }
 }

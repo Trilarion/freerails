@@ -65,9 +65,9 @@ public class TestPathIterator implements PathIterator {
     @Override
     public boolean hasNext() {
         if (forwards) {
-            return (position + 1) < points.size();
+            return position + 1 < points.size();
         }
-        return (position - 1) >= 0;
+        return position - 1 >= 0;
     }
 
     @Override

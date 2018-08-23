@@ -28,29 +28,26 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainCategory;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
+// TODO what if there is now water on the tile, should this not destroy tracks, cities?
 /**
  * Move that changes a single tile.
  */
-// TODO what if there is now water on the tile, should this not destroy tracks, cities?
 public class ChangeTileMove implements MapUpdateMove {
 
     private static final long serialVersionUID = 3256726169272662320L;
     private final Vec2D location;
-    private final TerrainTile before;
     private final TerrainTile after;
 
     /**
-     * @param world
      * @param location
-     * @param terrainTypeAfter
      */
-    public ChangeTileMove(UnmodifiableWorld world, Vec2D location, int terrainTypeAfter) {
+    public ChangeTileMove(@NotNull TerrainTile after, @NotNull Vec2D location) {
         this.location = location;
-        before = world.getTile(this.location);
-        after = new TerrainTile(terrainTypeAfter, before.getTrackPiece());
+        this.after = after;
     }
 
     @Override
@@ -62,35 +59,31 @@ public class ChangeTileMove implements MapUpdateMove {
 
         if (!location.equals(changeTileMove.location)) return false;
         if (!after.equals(changeTileMove.after)) return false;
-        return before.equals(changeTileMove.before);
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result;
         result = location.hashCode();
-        result = 29 * result + before.hashCode();
         result = 29 * result + after.hashCode();
         return result;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         TerrainTile actual = world.getTile(location);
         Terrain type = world.getTerrain(actual.getTerrainTypeId());
 
         if (type.getCategory() != TerrainCategory.COUNTRY) {
             return Status.fail("Can only build on clear terrain.");
         }
-
-        if (actual.equals(before)) {
-            return Status.OK;
-        }
-        return Status.fail("Expected " + before + " but found " + actual);
+        return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         Status status = applicable(world);
         if (!status.isSuccess()) {
             throw new RuntimeException(status.getMessage());
@@ -103,7 +96,6 @@ public class ChangeTileMove implements MapUpdateMove {
      */
     @Override
     public Rectangle getUpdatedTiles() {
-
         return new Rectangle(location.x, location.y, 1, 1);
     }
 }

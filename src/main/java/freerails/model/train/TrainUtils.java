@@ -20,18 +20,23 @@ package freerails.model.train;
 
 import freerails.model.ModelConstants;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
+import freerails.model.station.StationUtils;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
 import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.train.activity.Activity;
 import freerails.model.train.motion.ConstantAccelerationMotion;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
+import freerails.util.BidirectionalIterator;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +46,9 @@ import java.util.List;
  *
  */
 public final class TrainUtils {
+
+    private static final Logger logger = Logger.getLogger(TrainUtils.class.getName());
+
 
     private TrainUtils() {
     }
@@ -195,5 +203,68 @@ public final class TrainUtils {
         }
         TrainOrder order = schedule.getOrder(orderToGoto);
         return !isTrainFull(world, player, trainId) && order.isWaitUntilFull();
+    }
+
+    /**
+     * Returns true if an updated is due.
+     */
+    public static boolean isUpdateDue(UnmodifiableWorld world, Player player, int trainId) {
+        Time currentTime = world.getClock().getCurrentTime();
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
+        bidirectionalIterator.gotoLast();
+
+        double finishTime = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration();
+
+        Train train = world.getTrain(player, trainId);
+        TrainMotion trainMotion = train.findCurrentMotion(finishTime);
+        TrainState trainState = trainMotion.getTrainState();
+
+        if (trainState == TrainState.WAITING_FOR_FULL_LOAD) {
+            // Check whether there is any cargo that can be added to the train.
+            // determine the space available on the train measured in cargo units.
+            List<Integer> spaceAvailable = spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
+            Integer stationId = StationUtils.getStationId(world, player, train.getLocation(currentTime));
+            if (stationId == null) throw new IllegalStateException();
+
+            Station station = world.getStation(player, stationId);
+            UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
+
+            for (int i = 0; i < spaceAvailable.size(); i++) {
+                int space = spaceAvailable.get(i);
+                int atStation = cargoBatchBundle.getAmountOfType(i);
+                if (space * atStation > 0) {
+                    logger.debug("There is cargo to transfer!");
+                    return true;
+                }
+            }
+            return !keepWaiting(world, player, trainId);
+        }
+
+        boolean hasFinishedLastActivity = Math.floor(finishTime) <= (double) currentTime.getTicks();
+        return hasFinishedLastActivity;
+    }
+
+    /**
+     * Returns true if all the following hold.
+     * <ol>
+     * <li>The train is waiting for a full load at some station X.</li>
+     * <li>The current train order tells the train to goto station X.</li>
+     * <li>The current train order tells the train to wait for a full load.</li>
+     * <li>The current train order specifies a consist that matches the train's current consist.</li>
+     * </ol>
+     */
+    public static boolean keepWaiting(UnmodifiableWorld world, Player player, int trainId) {
+        Time currentTime = world.getClock().getCurrentTime();
+        Train train = world.getTrain(player, trainId);
+        Integer stationId =  StationUtils.getStationId(world, player, train.getLocation(currentTime));
+        if (stationId == null) return false;
+        TrainMotion trainMotion = train.findCurrentMotion(currentTime.getTicks());
+        TrainState trainState = trainMotion.getTrainState();
+        if (trainState != TrainState.WAITING_FOR_FULL_LOAD) return false;
+        UnmodifiableSchedule schedule = train.getSchedule();
+        TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
+        if (order.getStationId() != stationId) return false;
+        if (!order.isWaitUntilFull()) return false;
+        return order.getConsist().equals(train.getConsist());
     }
 }

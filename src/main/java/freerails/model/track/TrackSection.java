@@ -51,8 +51,8 @@ public class TrackSection implements Serializable {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((tileTransition == null) ? 0 : tileTransition.hashCode());
-        result = PRIME * result + ((tile == null) ? 0 : tile.hashCode());
+        result = PRIME * result + (tileTransition == null ? 0 : tileTransition.hashCode());
+        result = PRIME * result + (tile == null ? 0 : tile.hashCode());
         return result;
     }
 

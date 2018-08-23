@@ -63,7 +63,7 @@ public class TerrainUtils {
              * Farms, Jungle and Desert etc vary. dunno how.
              */
             for (int i = 0; i < terrainTypes.size(); i++) {
-                if ((value > (i * divide)) && (value <= ((i + 1) * divide))) {
+                if (value > i * divide && value <= (i + 1) * divide) {
                     return terrainTypes.get(i);
                 }
             }

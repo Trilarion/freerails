@@ -66,7 +66,8 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
         world = WorldGenerator.minimalWorld();
         player = new Player(world.getPlayers().size(), "Player X");
-        Move move = AddPlayerMove.generateMove(world, player);
+        // add a new player
+        Move move = new AddPlayerMove(player);
         Status status = move.applicable(world);
         assertTrue(status.getMessage(), status.isSuccess());
         move.apply(world);

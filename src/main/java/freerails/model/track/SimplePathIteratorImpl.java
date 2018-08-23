@@ -54,6 +54,6 @@ public class SimplePathIteratorImpl implements PathIterator {
 
     @Override
     public boolean hasNext() {
-        return (position + 1) < points.size();
+        return position + 1 < points.size();
     }
 }

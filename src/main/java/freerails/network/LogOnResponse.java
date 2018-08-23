@@ -31,7 +31,7 @@ public class LogOnResponse implements Serializable {
     private final String message;
 
     public LogOnResponse(boolean success, int id) {
-        assert(success);
+        assert success;
         this.success = success;
         this.id = id;
         message = null;
@@ -39,7 +39,7 @@ public class LogOnResponse implements Serializable {
 
     // TODO the usage of success is strange, why here always false
     public LogOnResponse(boolean success, String s) {
-        assert(!success);
+        assert !success;
         this.success = success;
         id = -1;
         message = s;

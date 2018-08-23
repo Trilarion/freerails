@@ -102,12 +102,12 @@ public class StationNamesRenderer implements Painter {
 
                     int rectWidth = (int) (visibleAdvance * 1.2);
                     int rectHeight = (int) (fontSize * 1.5);
-                    int rectX = (positionX - (rectWidth / 2));
+                    int rectX = positionX - rectWidth / 2;
 
                     g.setColor(bgColor);
                     g.fillRect(rectX, positionY, rectWidth, rectHeight);
 
-                    float textX = (positionX - (visibleAdvance / 2));
+                    float textX = positionX - visibleAdvance / 2;
                     float textY = positionY + fontSize + 1;
 
                     g.setColor(textColor);

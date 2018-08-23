@@ -108,8 +108,8 @@ public final class StationUtils {
      */
     private static boolean isInRightDirection(TileTransition direction, Vec2D delta) {
         boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
-        boolean sameXDirection = (direction.deltaX * delta.x) > 0;
-        boolean sameYDirection = (direction.deltaY * delta.y > 0);
+        boolean sameXDirection = direction.deltaX * delta.x > 0;
+        boolean sameYDirection = direction.deltaY * delta.y > 0;
         boolean deltaXisLongerThanDeltaY = delta.x * delta.x < delta.y * delta.y;
 
         if (isDiagonal) {
@@ -219,8 +219,8 @@ public final class StationUtils {
 
         // Look at the terrain type of each tile and retrieve the cargo supplied.
         // The station radius determines how many tiles each side we look at.
-        for (int i1 = tiles2scan.x; i1 < (tiles2scan.x + tiles2scan.width); i1++) {
-            for (int j = tiles2scan.y; j < (tiles2scan.y + tiles2scan.height); j++) {
+        for (int i1 = tiles2scan.x; i1 < tiles2scan.x + tiles2scan.width; i1++) {
+            for (int j = tiles2scan.y; j < tiles2scan.y + tiles2scan.height; j++) {
                 // increment supply and demand
                 int tileTypeNumber = world.getTile(new Vec2D(i1, j)).getTerrainTypeId();
 
@@ -233,7 +233,6 @@ public final class StationUtils {
                 // the supply rates for the station
                 for (CargoProductionOrConsumption aProduction : production) {
                     int type = aProduction.getCargoId();
-                    double rate = aProduction.getRate();
 
                     // loop through supplies vector and increment the cargo values as
                     // required
@@ -327,7 +326,7 @@ public final class StationUtils {
 
         if (trackPiece != null) {
             TrackType trackType = trackPiece.getTrackType();
-            if (trackType.isStation() && trackPiece.getOwnerID() == player.getId()) {
+            if (trackType.isStation() && trackPiece.getPlayerId() == player.getId()) {
 
                 for (Station station: world.getStations(player)) {
                     if (location.equals(station.getLocation())) {

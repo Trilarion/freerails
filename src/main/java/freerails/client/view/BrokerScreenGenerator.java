@@ -64,7 +64,7 @@ class BrokerScreenGenerator {
         FinancialDataAggregator dataGatherer = new FinancialDataAggregator(world, player, times);
         String publicShares = DC.format(dataGatherer.sharesHeldByPublic());
         Money netWorth = dataGatherer.netWorth();
-        StockPrice[] stockPrices = (new StockPriceCalculator(world)).calculate();
+        StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
         Money pricePerShare = stockPrices[playerId].currentPrice;
         String treasuryStock = DC.format(dataGatherer.treasuryStock());
 

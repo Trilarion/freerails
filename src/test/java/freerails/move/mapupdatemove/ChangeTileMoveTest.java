@@ -39,7 +39,8 @@ public class ChangeTileMoveTest extends AbstractMoveTestCase {
         Vec2D p = new Vec2D(10, 10);
         TerrainTile tile = world.getTile(p);
         assertTrue(tile.getTerrainTypeId() != 5);
-        ChangeTileMove move = new ChangeTileMove(world, p, 5);
+
+        ChangeTileMove move = new ChangeTileMove(new TerrainTile(5, world.getTile(p).getTrackPiece()), p);
         Status status = move.applicable(world);
         assertTrue(status.getMessage(), status.isSuccess());
         move.apply(world);
@@ -52,7 +53,7 @@ public class ChangeTileMoveTest extends AbstractMoveTestCase {
      */
     public void testMove2() {
         Vec2D p = new Vec2D(10, 10);
-        ChangeTileMove move = new ChangeTileMove(world, p, 5);
+        ChangeTileMove move = new ChangeTileMove(new TerrainTile(5, world.getTile(p).getTrackPiece()), p);
         assertSurvivesSerialisation(move);
     }
 

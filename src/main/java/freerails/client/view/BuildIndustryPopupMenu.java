@@ -26,6 +26,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.terrain.Terrain;
+import freerails.model.terrain.TerrainTile;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.util.Vec2D;
@@ -46,13 +47,13 @@ import java.util.Arrays;
 public class BuildIndustryPopupMenu extends JPopupMenu implements View {
 
     private static final long serialVersionUID = 3689636912575165749L;
-    private Vec2D cursorLocation;
+    private Vec2D location;
 
     /**
      * @param p
      */
     public void setCursorLocation(Vec2D p) {
-        cursorLocation = p;
+        location = p;
     }
 
     /**
@@ -74,7 +75,8 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainId);
+
+                        Move move = new ChangeTileMove(new TerrainTile(terrainId, modelRoot.getWorld().getTile(location).getTrackPiece()), location);
                         Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, Money.opposite(price), modelRoot.getWorld().getClock().getCurrentTime(), 1, terrainId);
                         Move m2 = new AddTransactionMove(modelRoot.getPlayer(), transaction);
                         Move m3 = new CompostMove(Arrays.asList(move, m2));

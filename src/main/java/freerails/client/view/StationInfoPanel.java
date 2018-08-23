@@ -45,7 +45,7 @@ import java.util.Iterator;
 /**
  * Displays the supply and demand at a station.
  */
-public class StationInfoPanel extends JPanel implements View, WorldListListener {
+public class StationInfoPanel extends JPanel implements View {
 
     private static final Logger logger = Logger.getLogger(StationInfoPanel.class.getName());
     private static final long serialVersionUID = 4050759377680150585L;
@@ -156,7 +156,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.hasNext()) {
-            Vec2D p = (worldIterator.next()).getLocation();
+            Vec2D p = worldIterator.next().getLocation();
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
             display();
         } else {
@@ -302,21 +302,6 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
             }
         }
         */
-    }
-
-    @Override
-    public void listUpdated(int index, Player player) {
-        if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, false);
-    }
-
-    @Override
-    public void itemAdded(int index, Player player) {
-        if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, true);
-    }
-
-    @Override
-    public void itemRemoved(int index, Player player) {
-        if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, false);
     }
 
     void removeCloseButton() {

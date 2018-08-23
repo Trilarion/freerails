@@ -61,25 +61,18 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        List<TrainTemplate> before = new ArrayList<>();
-
         ChangeProductionAtEngineShopMove m;
 
-        // Should fail because current production at station 0 is null;
-        m = new ChangeProductionAtEngineShopMove(after, before, 0, WorldGenerator.TEST_PLAYER);
-        assertMoveNotApplicable(m);
-        assertMoveApplyFails(m);
-
         // Should fail because station 6 does not exist.
-        m = new ChangeProductionAtEngineShopMove(before, after, 6, WorldGenerator.TEST_PLAYER);
+        m = new ChangeProductionAtEngineShopMove(after, 6, WorldGenerator.TEST_PLAYER);
         assertMoveNotApplicable(m);
         assertMoveApplyFails(m);
 
         // Should go through
-        m = new ChangeProductionAtEngineShopMove(before, after, 0, WorldGenerator.TEST_PLAYER);
+        m = new ChangeProductionAtEngineShopMove(after, 0, WorldGenerator.TEST_PLAYER);
 
-        // It should not be repeatable.
-        assertOkButNotRepeatable(m);
+        // It should be repeatable.
+        assertOkAndRepeatable(m);
 
         assertSurvivesSerialisation(m);
     }

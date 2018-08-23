@@ -62,6 +62,6 @@ public interface Move extends Serializable {
      * @param world
      * @return
      */
-    @NotNull void apply(@NotNull World world);
+    void apply(@NotNull World world);
 
 }

@@ -64,7 +64,7 @@ public class TrainStopsHandler implements Serializable {
     public TrainStopsHandler(int id, Player player, UnmodifiableWorld unmodifiableWorld) {
         trainId = id;
         this.player = player;
-        world =  (World) Utils.cloneBySerialisation(unmodifiableWorld);
+        world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
         this.unmodifiableWorld = unmodifiableWorld;
     }
 
@@ -79,7 +79,27 @@ public class TrainStopsHandler implements Serializable {
              * Issues a ChangeTrainScheduleMove to set the train to move to the next
              * station.
              */
-            scheduledStop();
+
+            // scheduled stop
+            Train train = world.getTrain(player, trainId);
+            UnmodifiableSchedule schedule = train.getSchedule();
+
+            List<Integer> wagonsToAdd = schedule.getWagonsToAdd();
+
+            // Loading and unloading cargo takes time, so we make the train wait for a few ticks.
+            // makeTrainWait not implemented
+            // makeTrainWait(50);
+
+            boolean autoConsist = schedule.autoConsist();
+
+            if (null != wagonsToAdd) {
+                Move move = new UpdateTrainMove(player, trainId, null, wagonsToAdd, null);
+                moves.add(move);
+                move.apply(world);
+            }
+            updateSchedule();
+            int stationToGoto = schedule.getNextStationId();
+            loadAndUnloadCargo(stationToGoto, true, autoConsist);
         } else {
             // not a scheduled stop but still a city
             Integer stationId = StationUtils.getStationId(world, player, location);
@@ -97,10 +117,12 @@ public class TrainStopsHandler implements Serializable {
     public List<Move> getMoves() {
         List<Move> currentMoves = new ArrayList<>(moves);
         moves.clear();
+        // TODO this effectively undoes all the moves on the local world copy
         world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
         return currentMoves;
     }
 
+    // TODO this has to remain here until the code is simplified, because it works on the updated train
     /**
      * @return
      */
@@ -120,9 +142,6 @@ public class TrainStopsHandler implements Serializable {
             move.apply(world);
         }
     }
-
-    // TODO not yet implemented
-    public void makeTrainWait(int ticks) {}
 
     /**
      * @return
@@ -178,29 +197,6 @@ public class TrainStopsHandler implements Serializable {
         }
 
         return true;
-    }
-
-    private void scheduledStop() {
-
-        Train train = world.getTrain(player, trainId);
-        UnmodifiableSchedule schedule = train.getSchedule();
-
-        List<Integer> wagonsToAdd = schedule.getWagonsToAdd();
-
-        // Loading and unloading cargo takes time, so we make the train wait for a few ticks.
-        makeTrainWait(50);
-
-        boolean autoConsist = schedule.autoConsist();
-
-        if (null != wagonsToAdd) {
-            int engineType = train.getEngine();
-            Move move = new UpdateTrainMove(player, trainId, null, wagonsToAdd, null);
-            moves.add(move);
-            move.apply(world);
-        }
-        updateSchedule();
-        int stationToGoto = schedule.getNextStationId();
-        loadAndUnloadCargo(stationToGoto, true, autoConsist);
     }
 
     private void updateSchedule() {

@@ -56,24 +56,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
     // TODO give new connections an ID and use it as identification
     private final Map<LogOnCredentials, Connection> acceptedConnections = new HashMap<>();
-    /**
-     * The players who have confirmed that they have received the last copy of
-     * the world object sent.
-     */
-    private final HashSet<LogOnCredentials> confirmedPlayers = new HashSet<>();
     // Contains the user names of the players who are currently logged on.
     private final Collection<LogOnCredentials> currentlyLoggedOn = new HashSet<>();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final SaveGamesManager saveGamesManager;
     private final CountDownLatch status = new CountDownLatch(1);
-    /**
-     * ID of the last SetWorldCommandToClient sent out. Used to keep track of
-     * which clients have updated their world object to the current version.
-     */
-    private int confirmationID = Integer.MIN_VALUE; /*
-     * Don't default 0 to avoid
-     * mistaken confirmations.
-     */
     // TODO new players allowed used meaningfully
     private boolean newPlayersAllowed = true;
     private ArrayList<LogOnCredentials> players = new ArrayList<>();
@@ -203,7 +190,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         ServerGameModel serverGameModel = saveGamesManager.loadGame(saveGameName);
         String[] passwords = serverGameModel.getPasswords();
         World world = serverGameModel.getWorld();
-        assert(passwords.length == world.getPlayers().size());
+        assert passwords.length == world.getPlayers().size();
         ArrayList<LogOnCredentials> newPlayers = new ArrayList<>();
         for (int i = 0; i < passwords.length; i++) {
             Player player = world.getPlayer(i);
@@ -280,7 +267,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             String name = players.get(i).getUsername();
             Player player = new Player(i, name);
 
-            Move addPlayerMove = AddPlayerMove.generateMove(world, player);
+            // add a new player
+            Move addPlayerMove = new AddPlayerMove(player);
             addPlayerMove.apply(world);
             passwords[i] = players.get(i).getPassword();
         }
@@ -423,8 +411,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                             logger.debug(command.toString());
                             connection.sendObject(cStatus);
                         } else if (message instanceof Move || message instanceof MoveGenerator) {
-                            Player player = serverGameModel.getWorld().getPlayer(players.indexOf(credentials));
-
                             Move move;
                             boolean isMove = message instanceof Move;
 

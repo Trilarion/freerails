@@ -81,7 +81,7 @@ public class OverviewMapRenderer implements MapRenderer {
             throw new RuntimeException(e);
         }
 
-        double scalingFactor = ((double) imageSize.y) / mapSize.y;
+        double scalingFactor = (double) imageSize.y / mapSize.y;
         affineTransform = AffineTransform.getScaleInstance(scalingFactor, scalingFactor);
         refresh();
     }

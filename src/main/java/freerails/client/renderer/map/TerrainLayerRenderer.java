@@ -57,7 +57,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     public void paintTile(Graphics g, Vec2D tileLocation) {
         Vec2D screenLocation = Vec2D.multiply(ClientConstants.TILE_SIZE, tileLocation);
 
-        if ((tileLocation.x >= 0) && (tileLocation.x < mapSize.x) && (tileLocation.y >= 0) && (tileLocation.y < mapSize.y)) {
+        if (tileLocation.x >= 0 && tileLocation.x < mapSize.x && tileLocation.y >= 0 && tileLocation.y < mapSize.y) {
             TerrainTile terrainTile = world.getTile(tileLocation);
 
             int typeNumber = terrainTile.getTerrainTypeId();
@@ -78,8 +78,8 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
      * @param tilesToPaint The rectangle, measured in tiles, to paint.
      */
     private void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
-        for (int tileX = tilesToPaint.x; tileX < (tilesToPaint.x + tilesToPaint.width); tileX++) {
-            for (int tileY = tilesToPaint.y; tileY < (tilesToPaint.y + tilesToPaint.height); tileY++) {
+        for (int tileX = tilesToPaint.x; tileX < tilesToPaint.x + tilesToPaint.width; tileX++) {
+            for (int tileY = tilesToPaint.y; tileY < tilesToPaint.y + tilesToPaint.height; tileY++) {
                 paintTile(g, new Vec2D(tileX, tileY));
             }
         }

@@ -36,7 +36,7 @@ public class BinaryNumberFormatter {
      * @return
      */
     public static String format(int i, int bits) {
-        int maxValue = 1 << (bits);
+        int maxValue = 1 << bits;
 
         if (i < 0) {
             throw new IllegalArgumentException("i must be greater than 0.  It was " + i);

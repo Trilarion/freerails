@@ -27,7 +27,6 @@ import freerails.move.MoveExecutor;
 import freerails.move.Status;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
-import freerails.move.StationBuilder;
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;

@@ -282,8 +282,8 @@ public class BuildTrackController implements GameModel {
 
         Vec2D from = getCursorPosition();
 
-        assert (trackBuilder.getTrackBuilderMode() != BuildMode.IGNORE_TRACK);
-        assert (trackBuilder.getTrackBuilderMode() != BuildMode.BUILD_STATION);
+        assert trackBuilder.getTrackBuilderMode() != BuildMode.IGNORE_TRACK;
+        assert trackBuilder.getTrackBuilderMode() != BuildMode.BUILD_STATION;
         buildNewTrack = trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK;
 
         /*

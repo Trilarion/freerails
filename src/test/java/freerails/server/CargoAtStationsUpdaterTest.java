@@ -29,7 +29,7 @@ public class CargoAtStationsUpdaterTest extends TestCase {
     /**
      *
      */
-    public static void testCalculateAmountToAdd() {
+    public void testCalculateAmountToAdd() {
 
         int amount = FullServerGameModel.calculateAmountToAddPerMonth(12, 1);
         assertEquals(1, amount);

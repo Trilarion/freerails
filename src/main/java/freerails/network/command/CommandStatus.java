@@ -64,7 +64,7 @@ public class CommandStatus implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = (reason != null ? reason.hashCode() : 0);
+        result = reason != null ? reason.hashCode() : 0;
         result = 29 * result + (successful ? 1 : 0);
         return result;
     }

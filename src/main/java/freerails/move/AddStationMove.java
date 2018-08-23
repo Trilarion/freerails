@@ -40,14 +40,6 @@ public class AddStationMove implements Move {
         this.station = station;
     }
 
-    public Station getStation() {
-        return station;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,8 +56,9 @@ public class AddStationMove implements Move {
         return result;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         // need to check that there is not another station close by
 
         // check if station with id is already existing
@@ -76,7 +69,7 @@ public class AddStationMove implements Move {
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         if (Utils.containsId(station.getId(), world.getStations(player))) {
             throw new RuntimeException("Station with id already existing");
         }

@@ -61,9 +61,9 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
          * unnecessary painting, we set the clip to expose only the rectangle
          * of tilesToPaint.
          */
-        for (int tileX = tilesToPaint.x - 1; tileX < (tilesToPaint.x + tilesToPaint.width + 1); tileX++) {
-            for (int tileY = tilesToPaint.y - 1; tileY < (tilesToPaint.y + tilesToPaint.height + 1); tileY++) {
-                if ((tileX >= 0) && (tileX < mapSize.x) && (tileY >= 0) && (tileY < mapSize.y)) {
+        for (int tileX = tilesToPaint.x - 1; tileX < tilesToPaint.x + tilesToPaint.width + 1; tileX++) {
+            for (int tileY = tilesToPaint.y - 1; tileY < tilesToPaint.y + tilesToPaint.height + 1; tileY++) {
+                if (tileX >= 0 && tileX < mapSize.x && tileY >= 0 && tileY < mapSize.y) {
                     Vec2D tileLocation = new Vec2D(tileX, tileY);
                     TerrainTile terrainTile = world.getTile(tileLocation);
                     TrackPiece trackPiece = terrainTile.getTrackPiece();

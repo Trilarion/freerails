@@ -154,7 +154,7 @@ public class StationTypesPopup extends JPopupMenu {
 
         @Override
         public void stateChanged(ChangeEvent e) {
-            if (rbMenuItem.isArmed() && (rbMenuItem.isArmed() != armed)) {
+            if (rbMenuItem.isArmed() && rbMenuItem.isArmed() != armed) {
                 stationChooseActions[index].actionPerformed(new ActionEvent(rbMenuItem, ActionEvent.ACTION_PERFORMED, ""));
             }
 

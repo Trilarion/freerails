@@ -138,7 +138,7 @@ public class SelectWagonsPanel extends JPanel implements View {
         updateMaxWagonsText();
 
         URL url = SelectWagonsPanel.class.getResource("/freerails/data/station.gif");
-        Image tempImage = (new ImageIcon(url)).getImage();
+        Image tempImage = new ImageIcon(url).getImage();
 
         GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
         stationView = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
@@ -221,7 +221,7 @@ public class SelectWagonsPanel extends JPanel implements View {
         if (-1 != engineId) { // If an engine is selected.
             Image image = rendererRoot.getEngineImages(engineId).getSideOnImage();
 
-            int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);
+            int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
             x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
         }

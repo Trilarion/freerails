@@ -22,7 +22,7 @@ import freerails.client.model.ServerControlModel;
 import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.DialogueBoxController;
-import freerails.move.StationBuilder;
+import freerails.controller.StationBuilder;
 import freerails.controller.TrackMoveProducer;
 import freerails.model.world.UnmodifiableWorld;
 

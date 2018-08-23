@@ -21,6 +21,7 @@ package freerails.move;
 import freerails.model.game.Speed;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Changes the game speed item on the world object.
@@ -30,17 +31,18 @@ public class ChangeGameSpeedMove implements Move {
     private static final long serialVersionUID = 3545794368956086071L;
     private final Speed speed;
 
-    public ChangeGameSpeedMove(Speed speed) {
+    public ChangeGameSpeedMove(@NotNull Speed speed) {
         this.speed = speed;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         world.setSpeed(speed);
     }
 

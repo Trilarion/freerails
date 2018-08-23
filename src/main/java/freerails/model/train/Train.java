@@ -72,10 +72,6 @@ public class Train extends Identifiable {
         }
     }
 
-    public void removeLastActivity() {
-        activities.remove(activities.size() - 1);
-    }
-
     /**
      * Does not start before the last activity has ended.
      *

@@ -285,7 +285,7 @@ public strictfp class PathOnTiles implements Serializable {
     public Pair<PathIterator, Integer> subPath(double offset, double length) {
         if (offset < 0) throw new IllegalArgumentException();
         if (length <= 0) throw new IllegalArgumentException();
-        if ((offset + length) > getTotalDistance())
+        if (offset + length > getTotalDistance())
             throw new IllegalArgumentException(offset + " + " + length + " > " + getTotalDistance());
 
         final LinkedList<Vec2D> points = new LinkedList<>();
@@ -398,7 +398,7 @@ public strictfp class PathOnTiles implements Serializable {
 
         @Override
         public boolean hasNext() {
-            return (index + 1) < points.size();
+            return index + 1 < points.size();
         }
 
         @Override

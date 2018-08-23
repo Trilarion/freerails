@@ -109,7 +109,7 @@ public class TrackConfiguration implements TrackConfigurations {
      * @return the TrackConfiguration representing the track section c minus the track sections represented by v.
      */
     public static TrackConfiguration subtract(TrackConfigurations c, TrackConfigurations v) {
-        int newTemplate = c.get9bitTemplate() & (~v.get9bitTemplate());
+        int newTemplate = c.get9bitTemplate() & ~v.get9bitTemplate();
         return from9bitTemplate(newTemplate);
     }
 

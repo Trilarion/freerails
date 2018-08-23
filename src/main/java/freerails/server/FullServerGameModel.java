@@ -32,7 +32,6 @@ import freerails.model.station.StationUtils;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.*;
 import freerails.move.*;
-import freerails.move.generator.BondInterestMoveGenerator;
 import freerails.move.receiver.MoveReceiver;
 
 // TODO why does it have to be saved and not only the world during loading and saveing? Is there some internal state that should be part of the world?
@@ -71,7 +70,6 @@ public class FullServerGameModel implements ServerGameModel {
             for (Station station: world.getStations(player)) {
                 StationSupply supply = station.getSupply();
                 UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
-                CargoBatchBundle before = new CargoBatchBundle(cargoBatchBundle);
                 CargoBatchBundle after = new CargoBatchBundle(cargoBatchBundle);
                 int stationId = station.getId();
 
@@ -118,7 +116,7 @@ public class FullServerGameModel implements ServerGameModel {
      */
     public static int calculateAmountToAddPerMonth(int amountSuppliedPerYear, int month) {
         // This calculation actually delivers the requirement of rounding sometimes up and sometimes down.
-        return amountSuppliedPerYear * (month + 1) / 12 - amountSuppliedPerYear * (month) / 12;
+        return amountSuppliedPerYear * (month + 1) / 12 - amountSuppliedPerYear * month / 12;
     }
 
     /**
@@ -155,7 +153,7 @@ public class FullServerGameModel implements ServerGameModel {
                 }
 
                 // calculate "ideal world" time for next tick
-                nextModelUpdateDue = nextModelUpdateDue + (1000 / gameSpeed);
+                nextModelUpdateDue = nextModelUpdateDue + 1000 / gameSpeed;
 
             } else {
                 nextModelUpdateDue = System.currentTimeMillis();

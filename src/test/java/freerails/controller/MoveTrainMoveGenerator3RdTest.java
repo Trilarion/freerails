@@ -23,11 +23,10 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
+import freerails.model.track.TrackUtils;
 import freerails.move.MoveExecutor;
 import freerails.move.Status;
 import freerails.move.SimpleMoveExecutor;
-import freerails.move.StationBuilder;
-import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.Vec2D;
 import freerails.model.train.PositionOnTrack;
@@ -55,7 +54,6 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
-        Player player = moveExecutor.getPlayer();
         ModelRoot modelRoot = new ModelRootImpl();
         TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
         StationBuilder stationBuilder = new StationBuilder(moveExecutor);
@@ -87,7 +85,7 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
         PositionOnTrack positionOnTrack = new PositionOnTrack(new Vec2D(10, 10), TileTransition.EAST.getOpposite());
         for (int i = 0; i < expectedPath.length; i++) {
             TileTransition expected = expectedPath[i];
-            TileTransition actual = MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target1);
+            TileTransition actual = TrackUtils.findNextStep(world, positionOnTrack, target1);
             assertEquals(String.valueOf(i), expected, actual);
             positionOnTrack.move(expected);
         }

@@ -45,7 +45,7 @@ public class TrainOrder implements Serializable {
      */
     public TrainOrder(int station, List<Integer> newConsist, boolean wait, boolean auto) {
         // If there are no wagons, set wait = false.
-        wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
+        wait = null == newConsist || 0 == newConsist.size() ? false : wait;
 
         waitUntilFull = wait;
         consist = newConsist;
@@ -69,7 +69,7 @@ public class TrainOrder implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = (isWaitUntilFull() ? 1 : 0);
+        result = isWaitUntilFull() ? 1 : 0;
         result = 29 * result + (isAutoConsist() ? 1 : 0);
         result = 29 * result + (getConsist() != null ? getConsist().hashCode() : 0);
         result = 29 * result + getStationId();

@@ -21,7 +21,6 @@ package freerails.move.receiver;
 import freerails.move.*;
 import freerails.move.mapupdatemove.MapUpdateMove;
 import freerails.util.Utils;
-import freerails.model.world.WorldListListener;
 import freerails.model.world.WorldMapListener;
 
 import java.awt.*;
@@ -36,7 +35,6 @@ public class MoveChainFork implements MoveReceiver {
 
     private final Collection<MoveReceiver> moveReceivers = new ArrayList<>();
     private final Collection<MoveReceiver> splitMoveReceivers = new ArrayList<>();
-    private final Collection<WorldListListener> listListeners = new ArrayList<>();
     private final Collection<WorldMapListener> mapListeners = new ArrayList<>();
     private long lastTickTime = System.currentTimeMillis();
 
@@ -66,13 +64,6 @@ public class MoveChainFork implements MoveReceiver {
      */
     public void addMapListener(WorldMapListener listener) {
         mapListeners.add(Utils.verifyNotNull(listener));
-    }
-
-    /**
-     * @param listener
-     */
-    public void addListListener(WorldListListener listener) {
-        listListeners.add(Utils.verifyNotNull(listener));
     }
 
     /**

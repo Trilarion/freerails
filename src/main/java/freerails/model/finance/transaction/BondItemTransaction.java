@@ -33,12 +33,4 @@ public class BondItemTransaction extends ItemTransaction {
         super(TransactionCategory.BOND, amount, time, quantity, -1);
         this.rate = rate;
     }
-
-    /**
-     *
-     * @return
-     */
-    public double getRate() {
-        return rate;
-    }
 }

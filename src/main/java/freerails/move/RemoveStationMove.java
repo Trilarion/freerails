@@ -37,13 +37,14 @@ public class RemoveStationMove implements Move {
         this.stationId = stationId;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         world.removeStation(player, stationId);
     }
 }

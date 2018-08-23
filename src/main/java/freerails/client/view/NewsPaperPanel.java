@@ -81,7 +81,7 @@ public class NewsPaperPanel extends JPanel implements View {
         add(jPanel1);
         jPanel1.setBounds(230, 260, 190, 30);
 
-        Image tempImage = (new ImageIcon(getClass().getResource("/freerails/data/newspaper.png"))).getImage();
+        Image tempImage = new ImageIcon(getClass().getResource("/freerails/data/newspaper.png")).getImage();
 
         GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
         pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);

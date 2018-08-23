@@ -46,7 +46,6 @@ import java.util.Map;
  */
 public class RendererRootImpl implements RendererRoot {
 
-    private static final Logger logger = Logger.getLogger(RendererRootImpl.class.getName());
     private final TileRendererList tileRendererList;
     private final TrackPieceRendererList trackPieceViewList;
     private final ImageManager imageManager;

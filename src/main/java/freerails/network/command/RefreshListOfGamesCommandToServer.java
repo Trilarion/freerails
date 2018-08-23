@@ -55,7 +55,6 @@ public class RefreshListOfGamesCommandToServer implements CommandToServer {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        final RefreshListOfGamesCommandToServer other = (RefreshListOfGamesCommandToServer) obj;
         return true;
     }
 

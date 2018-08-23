@@ -38,7 +38,7 @@ public class Rules implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = (canConnectToOtherPlayersTracks ? 1 : 0);
+        result = canConnectToOtherPlayersTracks ? 1 : 0;
         result = 29 * result + (mustStayConnectedToExistingTrack ? 1 : 0);
 
         return result;

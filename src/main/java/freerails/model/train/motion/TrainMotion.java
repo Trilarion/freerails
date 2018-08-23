@@ -101,7 +101,7 @@ public strictfp class TrainMotion extends Activity<TrainPositionOnMap> {
             duration = 0.0d;
         } else {
             double tempDuration = speeds.calculateTimeAtDistance(distanceEngineWillTravel);
-            while ((speeds.calculateDistanceAtTime(tempDuration) - distanceEngineWillTravel) > 0) {
+            while (speeds.calculateDistanceAtTime(tempDuration) - distanceEngineWillTravel > 0) {
                 tempDuration -= Math.ulp(tempDuration);
             }
             duration = tempDuration;

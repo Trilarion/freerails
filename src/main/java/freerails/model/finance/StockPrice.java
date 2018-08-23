@@ -55,7 +55,7 @@ public class StockPrice {
      * @return
      */
     public static Money calculateStockPrice(Money netWorth, Money profitLastyear, int publicShares, int otherRRShares) {
-        if ((publicShares + otherRRShares) == 0) return new Money(Long.MAX_VALUE);
+        if (publicShares + otherRRShares == 0) return new Money(Long.MAX_VALUE);
         long price = 2 * (5 * profitLastyear.amount + netWorth.amount) / (2 * publicShares + otherRRShares);
         return new Money(price);
     }

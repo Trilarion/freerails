@@ -50,9 +50,10 @@ public class MapFixtureFactory2 {
             for (int i = 0; i < 4; i++) {
                 String name = "player" + i;
                 Player player = new Player(i, name);
-                AddPlayerMove move = AddPlayerMove.generateMove(world, player);
+                // add a new player
+                AddPlayerMove move = new AddPlayerMove(player);
                 Status status = move.applicable(world);
-                assert (status.isSuccess());
+                assert status.isSuccess();
                 move.apply(world);
             }
 

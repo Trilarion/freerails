@@ -130,7 +130,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         // determine how many full completed motions there are
         int idx = 0;
         Motion motion = motions.get(idx);
-        while ((distanceSoFar + motion.getTotalDistance()) < distance) {
+        while (distanceSoFar + motion.getTotalDistance() < distance) {
             distanceSoFar += motion.getTotalDistance();
             timeSoFar += motion.getTotalTime();
             idx++;
@@ -183,7 +183,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         for (int idx = 0; idx < motions.size(); idx++) {
             Motion motion = motions.get(idx);
 
-            if (time <= (timeSoFar + motion.getTotalTime())) {
+            if (time <= timeSoFar + motion.getTotalTime()) {
                 double offset = time - timeSoFar;
                 return new SubTime(idx, offset);
             }

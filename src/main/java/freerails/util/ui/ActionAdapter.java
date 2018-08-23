@@ -103,7 +103,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
     @Override
     public void setSelectedItem(Object anObject) {
         // only set the item if not already selected
-        if ((anObject != null) && anObject.equals(getSelectedItem())) {
+        if (anObject != null && anObject.equals(getSelectedItem())) {
             return;
         }
 

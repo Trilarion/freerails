@@ -76,7 +76,7 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
          * UserInputOnMapController
          */
         if (SwingUtilities.isRightMouseButton(e)) {
-            detailMapViewComponentConcrete.setCursor(Cursor.getPredefinedCursor((ClientConstants.MAP_SCROLL_SPEED > 0) ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR));
+            detailMapViewComponentConcrete.setCursor(Cursor.getPredefinedCursor(ClientConstants.MAP_SCROLL_SPEED > 0 ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR));
             lastMouseLocation.x = e.getX();
             lastMouseLocation.y = e.getY();
             screenLocation.x = e.getX();
@@ -104,10 +104,10 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
                 be independent of acceleration.
              */
             int GRANULARITY = 2 * ClientConstants.MAP_SCROLL_SPEED;
-            tiledelta.x = (sigmadelta.x * GRANULARITY) / tileSize;
-            tiledelta.y = (sigmadelta.y * GRANULARITY) / tileSize;
-            tiledelta.x = ((tiledelta.x * tileSize) / GRANULARITY) * ClientConstants.MAP_SCROLL_SPEED;
-            tiledelta.y = ((tiledelta.y * tileSize) / GRANULARITY) * ClientConstants.MAP_SCROLL_SPEED;
+            tiledelta.x = sigmadelta.x * GRANULARITY / tileSize;
+            tiledelta.y = sigmadelta.y * GRANULARITY / tileSize;
+            tiledelta.x = (tiledelta.x * tileSize / GRANULARITY) * ClientConstants.MAP_SCROLL_SPEED;
+            tiledelta.y = (tiledelta.y * tileSize / GRANULARITY) * ClientConstants.MAP_SCROLL_SPEED;
 
             Rectangle vr = detailMapViewComponentConcrete.getVisibleRect();
             Rectangle bounds = detailMapViewComponentConcrete.getBounds();
@@ -117,7 +117,7 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
             if ((temp = vr.x - tiledelta.x) < 0) {
                 sigmadelta.x += temp / ClientConstants.MAP_SCROLL_SPEED;
                 tiledelta.x += temp;
-            } else if ((temp = (bounds.width) - (vr.x + vr.width) + tiledelta.x) < 0) {
+            } else if ((temp = bounds.width - (vr.x + vr.width) + tiledelta.x) < 0) {
                 sigmadelta.x -= temp / ClientConstants.MAP_SCROLL_SPEED;
                 tiledelta.x -= temp;
             }
@@ -125,7 +125,7 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
             if ((temp = vr.y - tiledelta.y) < 0) {
                 sigmadelta.y += temp / ClientConstants.MAP_SCROLL_SPEED;
                 tiledelta.y += temp;
-            } else if ((temp = (bounds.height) - (vr.y + vr.height) + tiledelta.y) < 0) {
+            } else if ((temp = bounds.height - (vr.y + vr.height) + tiledelta.y) < 0) {
                 sigmadelta.y -= temp / ClientConstants.MAP_SCROLL_SPEED;
                 tiledelta.y -= temp;
             }

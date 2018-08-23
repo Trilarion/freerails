@@ -26,7 +26,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.track.TrackType;
-import freerails.move.StationBuilder;
+import freerails.controller.StationBuilder;
 import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;

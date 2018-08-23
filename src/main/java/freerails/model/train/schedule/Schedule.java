@@ -266,7 +266,7 @@ public class Schedule implements UnmodifiableSchedule {
      */
     public boolean canPullUp(int orderNumber) {
         boolean isAlreadyAtTop = 0 == orderNumber;
-        boolean isPriorityOrdersAbove = (orderNumber == 1 && hasPriorityOrders);
+        boolean isPriorityOrdersAbove = orderNumber == 1 && hasPriorityOrders;
 
         return !isAlreadyAtTop && !isPriorityOrdersAbove;
     }
@@ -276,7 +276,7 @@ public class Schedule implements UnmodifiableSchedule {
      * @return
      */
     public boolean canPushDown(int orderNumber) {
-        boolean isOrderPriorityOrders = (orderNumber == 0 && hasPriorityOrders);
+        boolean isOrderPriorityOrders = orderNumber == 0 && hasPriorityOrders;
         boolean isAlreadyAtBottom = orderNumber == orders.size() - 1;
 
         return !isOrderPriorityOrders && !isAlreadyAtBottom;

@@ -27,6 +27,8 @@ import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.train.TrainTemplate;
+import freerails.util.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -37,21 +39,18 @@ import java.util.List;
 public class ChangeProductionAtEngineShopMove implements Move {
 
     private static final long serialVersionUID = 3905519384997737520L;
-    private final List<TrainTemplate> before;
-    private final List<TrainTemplate> after;
-    private final int stationNumber;
+    private final List<TrainTemplate> production;
+    private final int stationId;
     private final Player player;
 
     /**
-     * @param b
-     * @param a
-     * @param station
+     * @param production
+     * @param stationId
      * @param player
      */
-    public ChangeProductionAtEngineShopMove(List<TrainTemplate> b, List<TrainTemplate> a, int station, Player player) {
-        before = b;
-        after = a;
-        stationNumber = station;
+    public ChangeProductionAtEngineShopMove(@NotNull List<TrainTemplate> production, int stationId, @NotNull Player player) {
+        this.production = production;
+        this.stationId = stationId;
         this.player = player;
     }
 
@@ -62,10 +61,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
         final ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove = (ChangeProductionAtEngineShopMove) obj;
 
-        if (stationNumber != changeProductionAtEngineShopMove.stationNumber) return false;
-        if (after != null ? !after.equals(changeProductionAtEngineShopMove.after) : changeProductionAtEngineShopMove.after != null)
-            return false;
-        if (before != null ? !before.equals(changeProductionAtEngineShopMove.before) : changeProductionAtEngineShopMove.before != null)
+        if (stationId != changeProductionAtEngineShopMove.stationId) return false;
+        if (production != null ? !production.equals(changeProductionAtEngineShopMove.production) : changeProductionAtEngineShopMove.production != null)
             return false;
         return player.equals(changeProductionAtEngineShopMove.player);
     }
@@ -73,52 +70,30 @@ public class ChangeProductionAtEngineShopMove implements Move {
     @Override
     public int hashCode() {
         int result;
-        result = (before != null ? before.hashCode() : 0);
-        result = 29 * result + (after != null ? after.hashCode() : 0);
-        result = 29 * result + stationNumber;
+        result = production != null ? production.hashCode() : 0;
+        result = 29 * result + stationId;
         result = 29 * result + player.hashCode();
         return result;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         // Check that the specified station exists.
-        // TODO check that station is existing, do we need a dedicated function for that
-        /*
-        if (!world.boundsContain(player, PlayerKey.Stations, stationNumber)) {
-            return MoveStatus.moveFailed(stationNumber + " " + player);
-        } */
-
-        Station station = null;
-        try {
-            station = world.getStation(player, stationNumber);
-        } catch (Exception e) {}
-
-        if (null == station) {
-            return Status.fail(stationNumber + " " + player + " is does null");
+        if (!Utils.containsId(stationId, world.getStations(player))) {
+            return Status.fail("Station not existing.");
         }
-
-        // Check that the station is building what we expect.
-        if (null == station.getProduction()) {
-            if (null == before) {
-                return Status.OK;
-            }
-            return Status.fail(stationNumber + " " + player);
-        }
-        if (station.getProduction().equals(before)) {
-            return Status.OK;
-        }
-        return Status.fail(stationNumber + " " + player);
+        return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         Status status = applicable(world);
         if (!status.isSuccess()) {
             throw new RuntimeException(status.getMessage());
         }
 
-        Station station = world.getStation(player, stationNumber);
-        station.setProduction(after);
+        Station station = world.getStation(player, stationId);
+        station.setProduction(production);
     }
 }

@@ -84,8 +84,8 @@ public class StationBoxRenderer implements Painter {
             Player player = modelRoot.getPlayer();
             for (Station station: world.getStations(player)) {
                 // position of station box (below station)
-                int positionX = (station.getLocation().x * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE / 2;
-                int positionY = (station.getLocation().y * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE * 2;
+                int positionX = station.getLocation().x * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2;
+                int positionY = station.getLocation().y * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE * 2;
                 Rectangle r = new Rectangle(positionX, positionY, ClientConstants.MAX_WIDTH, ClientConstants.MAX_HEIGHT);
                 if (newVisibleRectangle.intersects(r)) {
                     g.setColor(StationBoxRenderer.BACKGROUND_COLOR);
@@ -102,8 +102,8 @@ public class StationBoxRenderer implements Painter {
                         int xOffsetPerWagon = Math.min(wagonImageWidth, alternateWidth);
 
                         for (int car = 0; car < carsLoads.get(cargoCategory).size(); car++) {
-                            int x = positionX + (car * xOffsetPerWagon) + ClientConstants.SPACING;
-                            int y = positionY + (i * (ClientConstants.WAGON_IMAGE_HEIGHT + ClientConstants.SPACING));
+                            int x = positionX + car * xOffsetPerWagon + ClientConstants.SPACING;
+                            int y = positionY + i * (ClientConstants.WAGON_IMAGE_HEIGHT + ClientConstants.SPACING);
                             int cargoType = carsLoads.get(cargoCategory).get(car);
                             g.drawImage(cargoImages[cargoType], x, y, null);
                         }

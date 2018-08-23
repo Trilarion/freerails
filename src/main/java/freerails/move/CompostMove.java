@@ -44,6 +44,11 @@ public class CompostMove implements Move {
         if (moves.size() < 2) {
             throw new IllegalArgumentException("Must contain at least two moves.");
         }
+        for (Move move: moves) {
+            if (move instanceof CompostMove) {
+                throw new IllegalArgumentException("No nested composite moves.");
+            }
+        }
         // defensive copy
         this.moves = Collections.unmodifiableCollection(new ArrayList<>(moves));
     }
@@ -66,7 +71,7 @@ public class CompostMove implements Move {
     }
 
     @Override
-    public @NotNull void apply(@NotNull World world) {
+    public void apply(@NotNull World world) {
         for (Move move: moves) {
             move.apply(world);
         }

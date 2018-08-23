@@ -24,6 +24,7 @@ package freerails.move;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Utils;
 import freerails.model.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,15 +77,16 @@ public class CompositeMove implements Move {
         return moves;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         // TODO need to implement in a less general way
         // return Status.fail("currently not implemented");
         return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         Status status = compositeTest(world);
 
         if (!status.isSuccess()) {
@@ -104,19 +106,12 @@ public class CompositeMove implements Move {
         return Status.OK;
     }
 
-    /**
-     * @return
-     */
-    public int size() {
-        return moves.size();
-    }
-
     @Override
     public final String toString() {
         StringBuilder s = new StringBuilder();
 
         for (int i = 0; i < moves.size(); i++) {
-            s.append(moves.get(i).toString()).append((i > 0) ? ", " : "");
+            s.append(moves.get(i).toString()).append(i > 0 ? ", " : "");
         }
 
         return s.toString();

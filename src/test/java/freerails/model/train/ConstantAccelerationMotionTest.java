@@ -114,7 +114,7 @@ public class ConstantAccelerationMotionTest extends TestCase {
      * @param t
      */
     private static void checkCalcSCalcVandCalcA(Motion sat, double t) {
-        boolean exceptionExpected = (t < 0) || (t > sat.getTotalTime());
+        boolean exceptionExpected = t < 0 || t > sat.getTotalTime();
         try {
             double actualS = sat.calculateDistanceAtTime(t);
             assertTrue(actualS >= 0);
@@ -145,7 +145,7 @@ public class ConstantAccelerationMotionTest extends TestCase {
      * @param s
      */
     private static void checkCalcT(Motion sat, double s) {
-        boolean exceptionExpected = (s < 0) || (s > sat.getTotalDistance());
+        boolean exceptionExpected = s < 0 || s > sat.getTotalDistance();
         try {
             double actualT = sat.calculateTimeAtDistance(s);
             assertTrue(actualT >= 0);

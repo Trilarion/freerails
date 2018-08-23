@@ -54,7 +54,9 @@ public class PathWalkerImplTest extends TestCase {
 
         assertTrue(pathWalker.canStepForward());
         pathWalker.stepForward(500); // The path length is 200;
-        moveToNextLimit();
+        while (pathWalker.hasNext()) {
+            pathWalker.nextSegment();
+        }
         assertTrue(!pathWalker.canStepForward());
 
         setup();
@@ -75,13 +77,6 @@ public class PathWalkerImplTest extends TestCase {
         line = pathWalker.nextSegment();
         TestUtils.assertLineSegmentEquals(new Vec2D(100, 0), new Vec2D(100, 100), line);
         assertTrue(!pathWalker.canStepForward());
-    }
-
-    private void moveToNextLimit() {
-        Segment line = null;
-        while (pathWalker.hasNext()) {
-            line = pathWalker.nextSegment();
-        }
     }
 
     /**

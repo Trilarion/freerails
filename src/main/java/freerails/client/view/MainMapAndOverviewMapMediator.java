@@ -134,8 +134,8 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
             int overviewScale = overviewMapJPanel.getPreferredSize().width;
             int mainMapScale = mainMap.getWidth();
 
-            int scaledDeltaX = (deltaX * mainMapScale / overviewScale);
-            int scaledDeltaY = (deltaY * mainMapScale / overviewScale);
+            int scaledDeltaX = deltaX * mainMapScale / overviewScale;
+            int scaledDeltaY = deltaY * mainMapScale / overviewScale;
 
             Rectangle r = mainMap.getVisibleRect();
             r.x += scaledDeltaX;
@@ -158,8 +158,8 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         int overviewScale = overviewMapJPanel.getPreferredSize().width;
         int mainMapScale = mainMap.getWidth();
 
-        int x = (e.getX() * mainMapScale / overviewScale);
-        int y = (e.getY() * mainMapScale / overviewScale);
+        int x = e.getX() * mainMapScale / overviewScale;
+        int y = e.getY() * mainMapScale / overviewScale;
 
         Rectangle r = mainMap.getVisibleRect();
         r.x = x - r.width / 2;
@@ -192,12 +192,12 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         int overviewScale = overviewMapJPanel.getPreferredSize().width;
         int mainMapScale = mainMap.getWidth();
 
-        if (0 != (overviewScale * mainMapScale)) {
+        if (0 != overviewScale * mainMapScale) {
             // avoid division by zero.
-            currentVisRect.x = (r.x * overviewScale / mainMapScale);
-            currentVisRect.y = (r.y * overviewScale / mainMapScale);
-            currentVisRect.width = (r.width * overviewScale / mainMapScale);
-            currentVisRect.height = (r.height * overviewScale / mainMapScale);
+            currentVisRect.x = r.x * overviewScale / mainMapScale;
+            currentVisRect.y = r.y * overviewScale / mainMapScale;
+            currentVisRect.width = r.width * overviewScale / mainMapScale;
+            currentVisRect.height = r.height * overviewScale / mainMapScale;
             overviewMapJPanel.repaint();
         }
 

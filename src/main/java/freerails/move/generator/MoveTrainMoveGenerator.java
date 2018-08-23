@@ -21,32 +21,17 @@
  */
 package freerails.move.generator;
 
-import freerails.model.train.activity.Activity;
-import freerails.model.game.Time;
+import freerails.model.track.*;
 import freerails.model.station.StationUtils;
-import freerails.model.track.explorer.FlatTrackExplorer;
-import freerails.model.track.explorer.GraphExplorer;
-import freerails.model.track.pathfinding.PathNotFoundException;
-import freerails.model.track.pathfinding.PathOnTrackFinder;
-import freerails.model.track.OccupiedTracks;
 import freerails.model.train.motion.*;
-import freerails.model.train.schedule.TrainOrder;
-import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
 
 import freerails.util.Vec2D;
-import freerails.util.BidirectionalIterator;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.track.NoTrackException;
-import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackSection;
 import freerails.model.train.*;
-import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -56,7 +41,6 @@ import java.util.*;
 public class MoveTrainMoveGenerator implements MoveGenerator {
 
     private static final long serialVersionUID = 3545516188269491250L;
-    private static final Logger logger = Logger.getLogger(MoveTrainMoveGenerator.class.getName());
     private final Player player;
     private final int trainId;
     private final OccupiedTracks occupiedTracks;
@@ -70,111 +54,6 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         this.trainId = trainId;
         this.player = player;
         this.occupiedTracks = occupiedTracks;
-    }
-
-    /**
-     * Uses static method to make testing easier.
-     *
-     * @throws NoTrackException if no track
-     */
-    public static TileTransition findNextStep(UnmodifiableWorld world, PositionOnTrack currentPosition, Vec2D target) {
-        int startPos = toInt(currentPosition.getLocation());
-        int endPos = toInt(target);
-        HashMap<Integer, TileTransition> destPaths;
-        TileTransition nextTileTransition;
-        destPaths = new HashMap<>();
-        PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
-
-        try {
-            pathFinder.setupSearch(currentPosition.getLocation(), target);
-            pathFinder.search(-1);
-            TileTransition[] pathAsVectors = pathFinder.pathAsVectors();
-            List<Integer> pathAsInts = pathFinder.pathAsInts();
-            for (int i = 0; i < pathAsInts.size() - 1; i++) {
-                int calcPos = pathAsInts.get(i) & (PositionOnTrack.MAX_COORDINATE | (PositionOnTrack.MAX_COORDINATE << PositionOnTrack.BITS_FOR_COORDINATE));
-                destPaths.put(calcPos, pathAsVectors[i + 1]);
-            }
-            nextTileTransition = pathAsVectors[0];
-            return nextTileTransition;
-        } catch (PathNotFoundException e) {
-            // The pathfinder couldn't find a path so we go in any legal direction.
-            GraphExplorer explorer = new FlatTrackExplorer(world, currentPosition);
-            explorer.nextEdge();
-            int next = explorer.getVertexConnectedByEdge();
-            PositionOnTrack nextPosition = new PositionOnTrack(next);
-            return nextPosition.getComingFrom();
-        }
-    }
-
-    /**
-     * @param p
-     * @return
-     */
-    private static int toInt(Vec2D p) {
-        return p.x | (p.y << PositionOnTrack.BITS_FOR_COORDINATE);
-    }
-
-    /**
-     * Returns true if an updated is due.
-     */
-    public boolean isUpdateDue(UnmodifiableWorld world) {
-        Time currentTime = world.getClock().getCurrentTime();
-        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
-        bidirectionalIterator.gotoLast();
-
-        double finishTime = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration();
-
-        Train train = world.getTrain(player, trainId);
-        TrainMotion trainMotion = train.findCurrentMotion(finishTime);
-        TrainState trainState = trainMotion.getTrainState();
-
-        if (trainState == TrainState.WAITING_FOR_FULL_LOAD) {
-            // Check whether there is any cargo that can be added to the train.
-            // determine the space available on the train measured in cargo units.
-            List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
-            Integer stationId = StationUtils.getStationId(world, player, train.getLocation(currentTime));
-            if (stationId == null) throw new IllegalStateException();
-
-            Station station = world.getStation(player, stationId);
-            UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
-
-            for (int i = 0; i < spaceAvailable.size(); i++) {
-                int space = spaceAvailable.get(i);
-                int atStation = cargoBatchBundle.getAmountOfType(i);
-                if (space * atStation > 0) {
-                    logger.debug("There is cargo to transfer!");
-                    return true;
-                }
-            }
-            return !keepWaiting(world, player, trainId);
-        }
-
-        boolean hasFinishedLastActivity = Math.floor(finishTime) <= (double) currentTime.getTicks();
-        return hasFinishedLastActivity;
-    }
-
-    /**
-     * Returns true if all the following hold.
-     * <ol>
-     * <li>The train is waiting for a full load at some station X.</li>
-     * <li>The current train order tells the train to goto station X.</li>
-     * <li>The current train order tells the train to wait for a full load.</li>
-     * <li>The current train order specifies a consist that matches the train's current consist.</li>
-     * </ol>
-     */
-    public static boolean keepWaiting(UnmodifiableWorld world, Player player, int trainId) {
-        Time currentTime = world.getClock().getCurrentTime();
-        Train train = world.getTrain(player, trainId);
-        Integer stationId =  StationUtils.getStationId(world, player, train.getLocation(currentTime));
-        if (stationId == null) return false;
-        TrainMotion trainMotion = train.findCurrentMotion(currentTime.getTicks());
-        TrainState trainState = trainMotion.getTrainState();
-        if (trainState != TrainState.WAITING_FOR_FULL_LOAD) return false;
-        UnmodifiableSchedule schedule = train.getSchedule();
-        TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
-        if (order.getStationId() != stationId) return false;
-        if (!order.isWaitUntilFull()) return false;
-        return order.getConsist().equals(train.getConsist());
     }
 
     @Override
@@ -196,7 +75,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     public Move generate(UnmodifiableWorld world) {
 
         // Check that we can generate a move.
-        if (!isUpdateDue(world)) {
+        if (!TrainUtils.isUpdateDue(world, player, trainId)) {
             throw new IllegalStateException();
         }
 
@@ -260,7 +139,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                         return new CompositeMove(cargoMoves);
                     }
                 }
-                stopsHandler.makeTrainWait(30);
+                // TODO makeTrainWait not implemented
+                // stopsHandler.makeTrainWait(30);
                 return new CompositeMove(cargoMoves);
             }
             default:
@@ -314,18 +194,15 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
             }
         }
         // Create a new train motion object.
-        TrainMotion nextMotion = nextMotion(world, nextVector);
+        // next motion
+        TrainMotion motion1 = MotionUtils.lastMotion(world, player, trainId);
+
+        Motion speeds = nextSpeeds(world, nextVector);
+
+        PathOnTiles currentTiles = motion1.getTiles(motion1.getDuration());
+        PathOnTiles pathOnTiles = currentTiles.addStep(nextVector);
+        TrainMotion nextMotion = new TrainMotion(pathOnTiles, currentTiles.steps(), motion1.getTrainLength(), speeds);
         return new AddActivityMove(player, trainId, nextMotion);
-    }
-
-    private TrainMotion nextMotion(UnmodifiableWorld world, TileTransition tileTransition) {
-        TrainMotion motion = MotionUtils.lastMotion(world, player, trainId);
-
-        Motion speeds = nextSpeeds(world, tileTransition);
-
-        PathOnTiles currentTiles = motion.getTiles(motion.getDuration());
-        PathOnTiles pathOnTiles = currentTiles.addStep(tileTransition);
-        return new TrainMotion(pathOnTiles, currentTiles.steps(), motion.getTrainLength(), speeds);
     }
 
     public Motion nextSpeeds(UnmodifiableWorld world, TileTransition tileTransition) {
@@ -360,7 +237,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
         // Find targets
         Vec2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
-        return findNextStep(world, currentPosition, targetPoint);
+        return TrackUtils.findNextStep(world, currentPosition, targetPoint);
     }
 
 }

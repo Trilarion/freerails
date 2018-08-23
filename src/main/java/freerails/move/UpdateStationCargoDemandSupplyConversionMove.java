@@ -37,13 +37,14 @@ public class UpdateStationCargoDemandSupplyConversionMove implements Move {
         this.station = station;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         Station oldStation = world.getStation(player, station.getId());
         oldStation.setSupply(station.getSupply());
         oldStation.setCargoConversion(station.getCargoConversion());

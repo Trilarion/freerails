@@ -23,6 +23,7 @@ import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
+import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -40,13 +41,17 @@ public class ChangeCargoAtStationMove implements Move {
         this.cargoBatchBundle = cargoBatchBundle;
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
+        if (!Utils.containsId(stationId, world.getStations(player))) {
+            return Status.fail("Station not existing.");
+        }
         return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         Station station = world.getStation(player, stationId);
         station.setCargoBatchBundle(cargoBatchBundle);
     }

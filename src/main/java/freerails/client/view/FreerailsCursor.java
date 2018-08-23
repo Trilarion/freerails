@@ -105,7 +105,7 @@ public class FreerailsCursor {
 
         Boolean b = (Boolean) modelRoot.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);
         long time = System.currentTimeMillis() - timeArrived;
-        boolean show = ((time / 500) % 2) == 0;
+        boolean show = (time / 500) % 2 == 0;
         if (show && !b) {
             g.drawImage(cursor, x, y, null);
         }
@@ -121,7 +121,7 @@ public class FreerailsCursor {
 
             // We want the message to be centered below the cursor.
             float visibleAdvance = layout.getVisibleAdvance();
-            float textX = (x + (tileSize.width / 2) - (visibleAdvance / 2));
+            float textX = x + tileSize.width / 2 - visibleAdvance / 2;
             float textY = y + tileSize.height + fontSize + 5;
             g.setColor(java.awt.Color.white);
             layout.draw(g2, textX, textY);
@@ -133,7 +133,7 @@ public class FreerailsCursor {
             time = System.currentTimeMillis();
             int dotSize;
 
-            if ((time % 500) > 250) {
+            if (time % 500 > 250) {
                 dotSize = ClientConstants.BIG_DOT_WIDTH;
             } else {
                 dotSize = ClientConstants.SMALL_DOT_WIDTH;

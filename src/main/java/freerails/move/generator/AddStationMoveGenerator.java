@@ -120,6 +120,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
 
         CompositeMove move = new CompositeMove(Arrays.asList(upgradeTrackMove, addStationMove));
 
+        // TODO transaction for building the station is missing (include in AddStationMove)
         // add transactions
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
         move = transactionsGenerator.addTransactions(move);

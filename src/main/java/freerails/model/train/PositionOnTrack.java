@@ -124,12 +124,12 @@ public class PositionOnTrack {
     public void setValuesFromInt(int i) {
         int x = i & MAX_COORDINATE;
 
-        int shiftedY = i & (MAX_COORDINATE << BITS_FOR_COORDINATE);
+        int shiftedY = i & MAX_COORDINATE << BITS_FOR_COORDINATE;
         int y = shiftedY >> BITS_FOR_COORDINATE;
         location = new Vec2D(x, y);
 
-        int shiftedDirection = i & (MAX_DIRECTION << (2 * BITS_FOR_COORDINATE));
-        int directionAsInt = shiftedDirection >> (2 * BITS_FOR_COORDINATE);
+        int shiftedDirection = i & MAX_DIRECTION << 2 * BITS_FOR_COORDINATE;
+        int directionAsInt = shiftedDirection >> 2 * BITS_FOR_COORDINATE;
         comingFrom = TileTransition.getInstance(directionAsInt);
     }
 
@@ -145,10 +145,10 @@ public class PositionOnTrack {
      * @return an integer representing this PositionOnTrack object
      */
     public int toInt() {
-        int i = location.x | (location.y << BITS_FOR_COORDINATE);
+        int i = location.x | location.y << BITS_FOR_COORDINATE;
 
         int directionAsInt = comingFrom.getID();
-        int shiftedDirection = (directionAsInt << (2 * BITS_FOR_COORDINATE));
+        int shiftedDirection = directionAsInt << 2 * BITS_FOR_COORDINATE;
         i = i | shiftedDirection;
 
         return i;

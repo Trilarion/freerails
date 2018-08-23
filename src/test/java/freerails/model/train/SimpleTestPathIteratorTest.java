@@ -39,7 +39,7 @@ public class SimpleTestPathIteratorTest extends TestCase {
         Vec2D[] points = {Vec2D.ZERO, new Vec2D(100, 0)};
         PathIterator pathIterator = new SimplePathIteratorImpl(Arrays.asList(points));
         assertTrue(pathIterator.hasNext());
-        Segment line = pathIterator.nextSegment();
+        pathIterator.nextSegment();
         assertTrue(!pathIterator.hasNext());
     }
 

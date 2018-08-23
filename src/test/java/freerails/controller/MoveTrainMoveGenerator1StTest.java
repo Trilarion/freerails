@@ -24,6 +24,7 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.model.track.OccupiedTracks;
+import freerails.model.track.TrackUtils;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.TrainOrder;
@@ -278,18 +279,18 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         Vec2D target = new Vec2D();
         TileTransition expected = TileTransition.NORTH_EAST;
-        assertEquals(expected, MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target));
+        assertEquals(expected, TrackUtils.findNextStep(world, positionOnTrack, target));
         positionOnTrack.move(expected);
         expected = TileTransition.EAST;
-        assertEquals(expected, MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target));
+        assertEquals(expected, TrackUtils.findNextStep(world, positionOnTrack, target));
         positionOnTrack.move(expected);
 
         expected = TileTransition.SOUTH_EAST;
-        assertEquals(expected, MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target));
+        assertEquals(expected, TrackUtils.findNextStep(world, positionOnTrack, target));
         positionOnTrack.move(expected);
 
         expected = TileTransition.SOUTH;
-        assertEquals(expected, MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target));
+        assertEquals(expected, TrackUtils.findNextStep(world, positionOnTrack, target));
         positionOnTrack.move(expected);
     }
 

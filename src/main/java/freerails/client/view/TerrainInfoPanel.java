@@ -98,7 +98,7 @@ class TerrainInfoPanel extends JPanel {
         int cargosProduced = type.getProductions().size();
         int cargosConsumed = type.getConsumptions().size();
         int cargosConverted = type.getConversions().size();
-        if ((cargosProduced + cargosConsumed + cargosConverted) > 0) {
+        if (cargosProduced + cargosConsumed + cargosConverted > 0) {
             // if the terrain type produces, consumes, or converts anything.
             tableString = new StringBuilder("<table width=\"75%\" >");
             if (cargosProduced != 0) {

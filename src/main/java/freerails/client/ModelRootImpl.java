@@ -31,7 +31,6 @@ import freerails.move.receiver.UntriedMoveReceiver;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.WorldListListener;
 import freerails.model.world.WorldMapListener;
 import freerails.model.player.Player;
 import freerails.util.ui.SoundManager;
@@ -80,13 +79,6 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      */
     public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
         moveFork.addCompleteMoveReceiver(moveReceiver);
-    }
-
-    /**
-     * @param listener
-     */
-    public void addListListener(WorldListListener listener) {
-        moveFork.addListListener(listener);
     }
 
     /**

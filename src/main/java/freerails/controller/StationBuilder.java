@@ -16,9 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move;
+package freerails.controller;
 
 import freerails.model.track.TrackType;
+import freerails.move.Move;
+import freerails.move.MoveExecutor;
+import freerails.move.Status;
 import freerails.move.generator.AddStationMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;

@@ -117,7 +117,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check there is not another players track at nextTile.
         if (nextTile.hasTrack()) {
-            if (nextTile.getTrackPiece().getOwnerID() != player.getId()) {
+            if (nextTile.getTrackPiece().getPlayerId() != player.getId()) {
                 return false;
             }
         }
@@ -163,7 +163,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             int y2check = currentP.y + directionOfNextTile.deltaY;
 
             // We did a bounds check above.
-            assert (world.boundsContain(new Vec2D(currentP.x, y2check)));
+            assert world.boundsContain(new Vec2D(currentP.x, y2check));
 
             TerrainTile tileToCheck = world.getTile(new Vec2D(currentP.x, y2check));
             TrackPiece trackPiece = tileToCheck.getTrackPiece();
@@ -257,7 +257,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             if (trackPiece != null) {
                 TrackType currentRuleA = a.getTrackPiece().getTrackType();
                 if (!currentRuleA.equals(ruleA)) {
-                    assert (!currentRuleA.isStation()); // We shouldn't be upgrading a station.
+                    assert !currentRuleA.isStation(); // We shouldn't be upgrading a station.
                     // TODO was getFixedCost(), meaning?,
                     cost += ruleA.getYearlyMaintenance().amount * ModelConstants.TILE_SIZE;
                 }

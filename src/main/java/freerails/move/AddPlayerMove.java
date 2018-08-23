@@ -24,6 +24,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.world.WorldUtils;
+import org.jetbrains.annotations.NotNull;
 
 // TODO what about a remove of a player?
 /**
@@ -34,21 +35,8 @@ public class AddPlayerMove implements Move {
     private static final long serialVersionUID = 3977580277537322804L;
     private final Player player;
 
-    private AddPlayerMove(Player player) {
+    public AddPlayerMove(@NotNull Player player) {
         this.player = player;
-    }
-
-    /**
-     * @param world
-     * @param player
-     * @return
-     */
-    public static AddPlayerMove generateMove(UnmodifiableWorld world, Player player) {
-        // create a new player with a corresponding Player
-        // TODO why is there a player already, just take a name, preferably in the constructor
-        Player player2add = new Player(world.getPlayers().size(), player.getName());
-
-        return new AddPlayerMove(player2add);
     }
 
     @Override
@@ -66,8 +54,9 @@ public class AddPlayerMove implements Move {
         return player.hashCode();
     }
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         if (WorldUtils.isAlreadyASimilarPlayer(world, player))
             return Status.fail("There is already a player with the same name.");
 
@@ -75,16 +64,15 @@ public class AddPlayerMove implements Move {
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         Status status = applicable(world);
         if (!status.isSuccess()) throw new RuntimeException(status.getMessage());
         int playerId = world.addPlayer(player);
         // Sell the player 2 $500,000 bonds at 5% interest.
-        Player player2 = player;
-        world.addTransaction(player2, TransactionUtils.issueBond(5, world.getClock().getCurrentTime()));
+        world.addTransaction(player, TransactionUtils.issueBond(5, world.getClock().getCurrentTime()));
         // Issue stock
         Money initialStockPrice = new Money(5);
         Transaction transaction = TransactionUtils.issueStock(playerId, 100000, initialStockPrice, world.getClock().getCurrentTime());
-        world.addTransaction(player2, transaction);
+        world.addTransaction(player, transaction);
     }
 }

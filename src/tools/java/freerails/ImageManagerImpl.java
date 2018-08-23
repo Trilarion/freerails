@@ -142,7 +142,7 @@ public class ImageManagerImpl implements ImageManager {
             scaledImagesHashMap.put(hashKey, i);
             return i;
         }
-        int width = (i.getWidth(null) * height) / i.getHeight(null);
+        int width = i.getWidth(null) * height / i.getHeight(null);
         compatibleImage = newBlankImage(height, width);
         Graphics2D g = (Graphics2D) compatibleImage.getGraphics();
         g.setRenderingHints(renderingHints);

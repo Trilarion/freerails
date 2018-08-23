@@ -21,6 +21,7 @@ package freerails.move;
 import freerails.model.terrain.city.CityTilePositioner;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Grows the cities (at the end of the year). This move cannot be undone
@@ -28,13 +29,14 @@ import freerails.model.world.World;
  */
 public class GrowCitiesMove implements Move {
 
+    @NotNull
     @Override
-    public Status applicable(UnmodifiableWorld world) {
+    public Status applicable(@NotNull UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public void apply(World world) {
+    public void apply(@NotNull World world) {
         CityTilePositioner cityTilePositioner = new CityTilePositioner(world);
         cityTilePositioner.growCities();
     }
