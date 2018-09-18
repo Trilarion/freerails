@@ -111,6 +111,7 @@ public class CityTilePositioner {
         city.addTile(type);
     }
 
+    // TODO make that static and move somewhere else
     public void growCities() {
         /*
          * At some stage this will be refined to take into account how much

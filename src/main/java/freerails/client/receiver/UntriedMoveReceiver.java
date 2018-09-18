@@ -16,53 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *
- */
-package freerails.move.receiver;
+package freerails.client.receiver;
 
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
 import freerails.move.Status;
-import freerails.util.Utils;
-import freerails.model.world.World;
+import freerails.server.MoveReceiver;
 
+// TODO what is this good for? why is it named Untried?
 /**
- * An UntriedMoveReceiver that executes moves on the world object passed to its constructor.
+ * Lets the caller test moves.
  */
-public class TestMoveReceiver implements UntriedMoveReceiver {
-
-    private final World world;
-
-    /**
-     * @param world
-     */
-    public TestMoveReceiver(World world) {
-        this.world = Utils.verifyNotNull(world);
-    }
+public interface UntriedMoveReceiver extends MoveReceiver {
 
     /**
      * @param move
      * @return
      */
-    @Override
-    public Status applicable(Move move) {
-        return move.applicable(world);
-    }
+    Status applicable(Move move);
 
-    /**
-     * @param move
-     */
-    @Override
-    public void process(Move move) {
-        move.apply(world);
-    }
-
+    // TODO why is this method needed?
     /**
      * @param moveGenerator
      */
-    @Override
-    public void processMoveGenerator(MoveGenerator moveGenerator) {
-        process(moveGenerator.generate(world));
-    }
+    void processMoveGenerator(MoveGenerator moveGenerator);
 }

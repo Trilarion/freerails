@@ -16,27 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move.receiver;
+package freerails.server;
 
-import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
-import freerails.move.Status;
 
-// TODO what is this good for? why is it named Untried?
 /**
- * Lets the caller test moves.
+ * Accepts a Move without the caller knowing where its going.
  */
-public interface UntriedMoveReceiver extends MoveReceiver {
+public interface MoveReceiver {
 
     /**
      * @param move
-     * @return
      */
-    Status applicable(Move move);
-
-    // TODO why is this method needed?
-    /**
-     * @param moveGenerator
-     */
-    void processMoveGenerator(MoveGenerator moveGenerator);
+    void process(Move move);
 }

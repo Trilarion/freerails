@@ -18,24 +18,15 @@
 
 package freerails.client;
 
-import freerails.model.cargo.Cargo;
-import freerails.model.finance.transaction.Transaction;
 import freerails.move.*;
-import freerails.move.receiver.MoveReceiver;
+import freerails.server.MoveReceiver;
 import freerails.util.Utils;
-import freerails.model.finance.Money;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.cargo.CargoBatch;
-import freerails.model.finance.transaction.CargoDeliveryTransaction;
 
-import freerails.model.station.Station;
 import freerails.util.ui.SoundManager;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Inspects incoming moves and generates a user message if appropriate. It is also used to trigger sounds.

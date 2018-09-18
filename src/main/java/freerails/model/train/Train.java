@@ -199,11 +199,11 @@ public class Train extends Identifiable {
         int x = start.x;
         int y = start.y;
         for (int i = 0; i < path.steps(); i++) {
-            TileTransition s = path.getStep(i);
+            TileTransition transition = path.getStep(i);
             Vec2D tile = new Vec2D(x, y);
-            x += s.deltaX;
-            y += s.deltaY;
-            sections.add(new TrackSection(s, tile));
+            x += transition.deltaX;
+            y += transition.deltaY;
+            sections.add(new TrackSection(transition, tile));
         }
         return sections;
     }

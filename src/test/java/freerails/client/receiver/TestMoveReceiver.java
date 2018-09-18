@@ -19,38 +19,50 @@
 /*
  *
  */
-package freerails.server;
+package freerails.client.receiver;
 
+import freerails.move.generator.MoveGenerator;
+import freerails.move.Move;
+import freerails.move.Status;
+import freerails.util.Utils;
 import freerails.model.world.World;
 
-import java.io.Serializable;
-
-// TODO do not extend GameModel, just add an update method
 /**
- * Defines methods on a GameModel that let the server load and initiate, and
- * save it.
+ * An UntriedMoveReceiver that executes moves on the world object passed to its constructor.
  */
-public interface ServerGameModel extends GameModel, Serializable {
+public class TestMoveReceiver implements UntriedMoveReceiver {
+
+    private final World world;
 
     /**
      * @param world
-     * @param passwords
      */
-    void setWorld(World world, String[] passwords);
+    public TestMoveReceiver(World world) {
+        this.world = Utils.verifyNotNull(world);
+    }
 
     /**
+     * @param move
      * @return
      */
-    World getWorld();
+    @Override
+    public Status applicable(Move move) {
+        return move.applicable(world);
+    }
 
     /**
-     * @return
+     * @param move
      */
-    String[] getPasswords();
+    @Override
+    public void process(Move move) {
+        move.apply(world);
+    }
 
     /**
-     * @param moveReceiver
+     * @param moveGenerator
      */
-    void initialize(MoveReceiver moveReceiver);
-
+    @Override
+    public void processMoveGenerator(MoveGenerator moveGenerator) {
+        process(moveGenerator.generate(world));
+    }
 }

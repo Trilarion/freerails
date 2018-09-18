@@ -180,6 +180,7 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
         return new Vec2D(Math.min(a.x, b.x), Math.min(a.y, b.y));
     }
 
+    // TODO Vec2D is not comparable because there is no larger/smaller notion, only equals
     /**
      *
      * @param o

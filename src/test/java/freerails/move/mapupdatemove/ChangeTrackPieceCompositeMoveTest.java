@@ -23,6 +23,7 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.controller.TrackMoveProducer;
 import freerails.model.finance.TransactionUtils;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
@@ -173,14 +174,14 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     private void assertBuildTrackFails(Vec2D p, TileTransition v, TrackType type) {
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
         Status status = move.applicable(getWorld());
         assertFalse(status.isSuccess());
         move.apply(getWorld());
     }
 
     private void assertBuildTrackSucceeds(Vec2D p, TileTransition v, TrackType type) {
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
 
         Move move1 = transactionsGenerator.addTransactions(move);
         Status status = move1.applicable(getWorld());
@@ -190,7 +191,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
     private void assertRemoveTrackSucceeds(Vec2D p, TileTransition v) {
         try {
-            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
+            ChangeTrackPieceCompositeMove move = TrackMoveProducer
                     .generateRemoveTrackMove(p, v, getWorld(), WorldGenerator.TEST_PLAYER);
             Status status = move.applicable(getWorld());
             assertEquals(true, status.isSuccess());
@@ -207,7 +208,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         Vec2D pointA = Vec2D.ZERO;
         TrackType trackType = getWorld().getTrackType(0);
 
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackType, trackType, getWorld(), WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackType, trackType, getWorld(), WorldGenerator.TEST_PLAYER);
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);
     }

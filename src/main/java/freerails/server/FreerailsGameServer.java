@@ -27,7 +27,6 @@ import freerails.network.*;
 import freerails.network.command.*;
 import freerails.scenario.MapCreator;
 import freerails.scenario.SaveGamesManager;
-import freerails.move.receiver.MoveReceiver;
 
 import freerails.model.world.World;
 import freerails.model.player.Player;

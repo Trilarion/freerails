@@ -39,8 +39,7 @@ public class RemoveStationCompositeMove extends CompostMove implements TrackMove
 
     public RemoveStationCompositeMove(List<Move> moves) {
         super(moves);
-        MapUpdateMove mapUpdateMove = (MapUpdateMove) moves.get(0);
-        rectangle =  mapUpdateMove.getUpdatedTiles();
+        rectangle =  ((MapUpdateMove) moves.get(0)).getUpdatedTiles();
     }
 
     /**

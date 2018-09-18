@@ -76,7 +76,7 @@ public class FlatTrackExplorerTest extends TestCase {
         Vec2D[] points = {p, p, p};
 
         for (int i = 0; i < points.length; i++) {
-            ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
+            ChangeTrackPieceCompositeMove move = TrackMoveProducer
                     .generateBuildTrackMove(points[i], vectors[i], trackType, trackType, world, WorldGenerator.TEST_PLAYER);
             Status status = move.applicable(world);
             assertTrue(status.isSuccess());

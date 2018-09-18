@@ -22,14 +22,14 @@ import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.model.train.Train;
 import freerails.model.train.schedule.TrainOrder;
-import freerails.move.receiver.TestMoveReceiver;
+import freerails.client.receiver.TestMoveReceiver;
 import freerails.util.WorldGenerator;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
-import freerails.move.receiver.MoveChainFork;
-import freerails.move.receiver.UntriedMoveReceiver;
+import freerails.client.receiver.MoveChainFork;
+import freerails.client.receiver.UntriedMoveReceiver;
 
 import freerails.util.Vec2D;
 import freerails.model.cargo.CargoBatch;

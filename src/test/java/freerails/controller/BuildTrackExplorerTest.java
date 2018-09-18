@@ -203,7 +203,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackType trackType = world.getTrackType(0);
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, WorldGenerator.TEST_PLAYER);
         Status status = move.applicable(world);
         assertTrue(status.isSuccess());
         move.apply(world);

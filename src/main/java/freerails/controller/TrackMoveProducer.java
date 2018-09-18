@@ -21,13 +21,19 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.game.Time;
+import freerails.model.station.Station;
 import freerails.model.station.StationUtils;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
+import freerails.model.train.Train;
+import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
+import freerails.move.mapupdatemove.RemoveStationCompositeMove;
+import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -35,6 +41,7 @@ import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 
@@ -82,6 +89,130 @@ public class TrackMoveProducer {
 
     /**
      * @param from
+     * @param direction
+     * @param world
+     * @param player
+     * @return
+     */
+    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, Player player) {
+        ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, typeA, world, player);
+        ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), typeB, world, player);
+
+        return new ChangeTrackPieceCompositeMove(a, b, player);
+    }
+
+    /**
+     * @param from
+     * @param direction
+     * @param world
+     * @param player
+     * @return
+     * @throws Exception
+     */
+    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, UnmodifiableWorld world, Player player) throws Exception {
+        TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, player);
+        TrackMove b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, player);
+
+        return new ChangeTrackPieceCompositeMove(a, b, player);
+    }
+
+    // TODO put part of it in model
+    // utility method.
+    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
+        if (!world.boundsContain(p)) {
+            throw new RuntimeException("Out of bounds");
+        }
+
+        TrackPiece oldTrackPiece;
+        TrackPiece newTrackPiece;
+
+        int playerId = player.getId();
+
+        oldTrackPiece = world.getTile(p).getTrackPiece();
+
+        if (oldTrackPiece != null) {
+            TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
+            newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), playerId);
+        } else {
+            newTrackPiece = TrackUtils.getTrackPieceWhenOldTrackPieceIsNull(direction, trackType, playerId);
+        }
+
+        return new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
+    }
+
+    // TODO put part of it in model
+    // utility method.
+    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
+        if (!world.boundsContain(p)) {
+            throw new RuntimeException("Out of bounds");
+        }
+
+        TrackPiece oldTrackPiece;
+        TrackPiece newTrackPiece;
+
+        oldTrackPiece = world.getTile(p).getTrackPiece();
+
+        if (oldTrackPiece != null) {
+            TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
+
+            if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
+                int playerId = player.getId();
+                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), playerId);
+            } else {
+                newTrackPiece = null;
+            }
+        } else {
+            // There is no track to remove.
+            // Fix for bug [ 948670 ] Removing non-existent track
+            throw new Exception();
+        }
+
+
+        ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
+
+        // TODO maybe the removal of a station should be checked and induced somewhere else
+        // If we are removing a station, we also need to remove the station from the station list.
+        if (oldTrackPiece.getTrackType().isStation() && (newTrackPiece == null || !newTrackPiece.getTrackType().isStation())) {
+            int stationIndex = -1;
+
+            for (Station station: world.getStations(player)) {
+                if (station.getLocation().equals(changeTrackPieceMove.getLocation())) {
+                    // We have found the station!
+                    stationIndex = station.getId();
+                    break;
+                }
+            }
+
+            if (-1 == stationIndex) {
+                throw new IllegalArgumentException("Could find a station at " + changeTrackPieceMove.getLocation());
+            }
+
+            ArrayList<Move> moves = new ArrayList<>();
+            moves.add(changeTrackPieceMove);
+            moves.add(new RemoveStationMove(player, stationIndex));
+
+            // Now update any train schedules that include this station by iterating over all trains
+            for (Player player1: world.getPlayers()) {
+                for (Train train: world.getTrains(player1)) {
+                    UnmodifiableSchedule schedule = train.getSchedule();
+                    if (schedule.stopsAtStation(stationIndex)) {
+                        Schedule schedule1 = new Schedule(schedule);
+                        schedule1.removeAllStopsAtStation(stationIndex);
+                        train.setSchedule(schedule1);
+                        Move changeScheduleMove = new UpdateTrainMove(player, train.getId(), null, null, schedule1);
+                        moves.add(changeScheduleMove);
+                    }
+                }
+            }
+
+            return new RemoveStationCompositeMove(moves);
+        } else {
+            return changeTrackPieceMove;
+        }
+    }
+
+    /**
+     * @param from
      * @param path
      * @return
      */
@@ -116,7 +247,7 @@ public class TrackMoveProducer {
             }
             case REMOVE_TRACK: {
                 try {
-                    ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from, trackVector, world, player);
+                    ChangeTrackPieceCompositeMove move = generateRemoveTrackMove(from, trackVector, world, player);
 
                     Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
@@ -177,7 +308,7 @@ public class TrackMoveProducer {
                 return Status.OK;
             }
             case BUILD_TRACK: {
-                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, types[0], types[1], world, player);
+                ChangeTrackPieceCompositeMove move = generateBuildTrackMove(from, trackVector, types[0], types[1], world, player);
 
                 Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 

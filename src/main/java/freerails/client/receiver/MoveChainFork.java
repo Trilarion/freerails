@@ -16,10 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move.receiver;
+package freerails.client.receiver;
 
 import freerails.move.*;
 import freerails.move.mapupdatemove.MapUpdateMove;
+import freerails.server.MoveReceiver;
 import freerails.util.Utils;
 import freerails.model.world.WorldMapListener;
 
@@ -27,6 +28,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+// TODO put that back into the client
 /**
  * A central point at which a client may register to receive moves which have
  * been committed.

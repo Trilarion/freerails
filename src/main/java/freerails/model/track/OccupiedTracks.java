@@ -32,7 +32,7 @@ import java.util.*;
 public class OccupiedTracks {
 
     public final Map<TrackSection, Integer> occupiedTrackSections;
-    private final Map<Integer, List<TrackSection>> trainToTrackList;
+    private final Map<Integer, List<TrackSection>> trainsToTrack;
 
     /**
      * @param player
@@ -41,7 +41,7 @@ public class OccupiedTracks {
     public OccupiedTracks(Player player, UnmodifiableWorld world) {
 
         occupiedTrackSections = new HashMap<>();
-        trainToTrackList = new HashMap<>();
+        trainsToTrack = new HashMap<>();
 
         for (Train train: world.getTrains(player)) {
             Time currentTime = world.getClock().getCurrentTime();
@@ -50,7 +50,7 @@ public class OccupiedTracks {
 
                 HashSet<TrackSection> sections = train.occupiedTrackSection(currentTime);
                 List<TrackSection> trackList = new ArrayList<>(sections);
-                trainToTrackList.put(train.getId(), trackList);
+                trainsToTrack.put(train.getId(), trackList);
                 for (TrackSection section : sections) {
                     Integer count = occupiedTrackSections.get(section);
                     if (count == null) {
@@ -65,10 +65,10 @@ public class OccupiedTracks {
     }
 
     /**
-     * @param i
+     * @param trainId
      */
-    public void stopTrain(int i) {
-        List<TrackSection> trackList = trainToTrackList.remove(i);
+    public void stopTrain(int trainId) {
+        List<TrackSection> trackList = trainsToTrack.remove(trainId);
         if (trackList == null) {
             return; // already removed
         }

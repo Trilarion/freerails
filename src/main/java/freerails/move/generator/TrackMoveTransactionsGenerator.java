@@ -150,7 +150,7 @@ public class TrackMoveTransactionsGenerator {
                 int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
                 int newLength = newTrackPiece.getTrackConfiguration().getLength();
 
-                // TODO instead of comparing ids, use equal (which does the some)
+                // TODO instead of comparing ids, use equal (which does the same)
                 int ruleBefore = oldTrackPiece.getTrackType().getId();
                 int ruleAfter = newTrackPiece.getTrackType().getId();
 

@@ -234,7 +234,7 @@ public class BuildTrackController implements GameModel {
         int trackTypeBID = buildTrackStrategy.getRule(tileB.getTerrainTypeId());
         TrackType trackTypeB = unmodifiableWorld.getTrackType(trackTypeBID);
 
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, world, player);
+        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, world, player);
 
         // add to proposed track
         ChangeTrackPieceMove m = (ChangeTrackPieceMove) move.getMove(0);
@@ -415,7 +415,7 @@ public class BuildTrackController implements GameModel {
                             case REMOVE_TRACK:
 
                                 try {
-                                    move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(location, v, world, fp);
+                                    move = TrackMoveProducer.generateRemoveTrackMove(location, v, world, fp);
 
                                     // add to proposed track
                                     ChangeTrackPieceMove m = (ChangeTrackPieceMove) ((ChangeTrackPieceCompositeMove) move).getMove(0);

@@ -37,6 +37,8 @@ public class TrackSection implements Serializable {
      * @param tile
      */
     public TrackSection(final TileTransition tileTransition, final Vec2D tile) {
+
+        // TODO this is to make it unique, but there are other ways, for example storing the other tile too, then it would even have a direction
         Vec2D otherTile = TileTransition.move(tile, tileTransition);
         if (tile.compareTo(otherTile) > 0) {
             this.tileTransition = tileTransition.getOpposite();
