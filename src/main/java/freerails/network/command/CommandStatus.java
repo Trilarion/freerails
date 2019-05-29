@@ -19,6 +19,7 @@
 package freerails.network.command;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 // TODO reason is not read anywhere
 /**
@@ -58,7 +59,7 @@ public class CommandStatus implements Serializable {
 
         final CommandStatus commandStatus = (CommandStatus) obj;
         if (successful != commandStatus.successful) return false;
-        return reason != null ? reason.equals(commandStatus.reason) : commandStatus.reason == null;
+        return Objects.equals(reason, commandStatus.reason);
     }
 
     @Override

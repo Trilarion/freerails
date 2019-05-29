@@ -31,6 +31,7 @@ import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This Move changes what is being built at an engine shop - when a client wants
@@ -62,7 +63,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         final ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove = (ChangeProductionAtEngineShopMove) obj;
 
         if (stationId != changeProductionAtEngineShopMove.stationId) return false;
-        if (production != null ? !production.equals(changeProductionAtEngineShopMove.production) : changeProductionAtEngineShopMove.production != null)
+        if (!Objects.equals(production, changeProductionAtEngineShopMove.production))
             return false;
         return player.equals(changeProductionAtEngineShopMove.player);
     }

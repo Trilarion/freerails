@@ -19,6 +19,7 @@
 package freerails.network;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Stores the result of a request to log onto the server.
@@ -54,7 +55,7 @@ public class LogOnResponse implements Serializable {
 
         if (id != logOnResponse.id) return false;
         if (success != logOnResponse.success) return false;
-        return message != null ? message.equals(logOnResponse.message) : logOnResponse.message == null;
+        return Objects.equals(message, logOnResponse.message);
     }
 
     @Override

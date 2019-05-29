@@ -52,7 +52,7 @@ public class TerrainTile implements Serializable {
         final TerrainTile that = (TerrainTile) obj;
 
         if (terrainTypeId != that.terrainTypeId) return false;
-        return trackPiece != null ? trackPiece.equals(that.trackPiece) : that.trackPiece == null;
+        return Objects.equals(trackPiece, that.trackPiece);
     }
 
     @Override

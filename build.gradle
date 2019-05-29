@@ -1,15 +1,22 @@
 import java.text.SimpleDateFormat
 
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+}
+
 group 'org.freerails'
 version '0.4.1'
-
-apply plugin: 'java'
-apply plugin: 'application'
-
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls' ]
 }
 
 sourceSets {
@@ -17,12 +24,12 @@ sourceSets {
 }
 
 dependencies {
-    compile 'log4j:log4j:1.2.17'
-    compile 'com.google.code.gson:gson:2.8.3'
-    compile 'commons-io:commons-io:2.6'
-    compile 'org.jetbrains:annotations:16.0.1'
-    testCompile 'junit:junit:4.12'
-    toolsCompile sourceSets.main.output
+    implementation 'log4j:log4j:1.2.17'
+    implementation 'com.google.code.gson:gson:2.8.3'
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'org.jetbrains:annotations:16.0.1'
+    testImplementation 'junit:junit:4.12'
+    toolsImplementation sourceSets.main.output
 }
 
 mainClassName = 'freerails.client.launcher.LauncherFrame'

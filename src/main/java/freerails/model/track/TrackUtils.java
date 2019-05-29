@@ -104,7 +104,7 @@ public final class TrackUtils {
         int trackTemplateBelow;
         String templateString = "101000101";
         // Hack - so that result is as expected by earlier written code.
-        StringBuffer strb = new StringBuffer(templateString);
+        StringBuilder strb = new StringBuilder(templateString);
         strb.reverse();
         templateString = strb.toString();
 

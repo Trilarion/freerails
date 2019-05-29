@@ -21,6 +21,7 @@ package freerails.move;
 import freerails.move.generator.MoveGenerator;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 // TODO remove this, only used in MovePrecommitter
 /**
@@ -50,8 +51,8 @@ public class MoveGeneratorAndMove implements Serializable {
 
         final MoveGeneratorAndMove preMoveAndMove = (MoveGeneratorAndMove) obj;
 
-        if (move != null ? !move.equals(preMoveAndMove.move) : preMoveAndMove.move != null) return false;
-        return moveGenerator != null ? moveGenerator.equals(preMoveAndMove.moveGenerator) : preMoveAndMove.moveGenerator == null;
+        if (!Objects.equals(move, preMoveAndMove.move)) return false;
+        return Objects.equals(moveGenerator, preMoveAndMove.moveGenerator);
     }
 
     @Override
