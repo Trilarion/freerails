@@ -72,7 +72,7 @@ public class TerrainTile implements Serializable {
 
     @Override
     public String toString() {
-        return "trackPiece=" + Objects.toString(trackPiece) + " and terrainType is " + terrainTypeId;
+        return "trackPiece=" + trackPiece + " and terrainType is " + terrainTypeId;
     }
 
     /**

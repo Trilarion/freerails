@@ -111,7 +111,7 @@ class TrackRenderer {
         float sleepers = (float) length / (targetSleeperGap + sleeperWidth);
         float sleeperCount = (int) sleepers;
         float sleeperGap = (float) length / sleeperCount - sleeperWidth;
-        float dash1[] = {sleeperWidth, sleeperGap};
+        float[] dash1 = {sleeperWidth, sleeperGap};
         float phase = sleeperWidth + sleeperGap / 2;
         return new BasicStroke((float) sleeperLength, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, phase);
     }

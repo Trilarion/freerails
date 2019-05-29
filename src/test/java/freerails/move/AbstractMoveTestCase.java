@@ -91,7 +91,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
             assertEquals(m, o);
             assertEquals("The hashcodes should be the same!", m.hashCode(), o.hashCode());
         } catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
     }
 

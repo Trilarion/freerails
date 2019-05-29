@@ -26,7 +26,6 @@ import freerails.util.Utils;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,8 +92,8 @@ public class CompositeMove implements Move {
             throw new RuntimeException(status.getMessage());
         }
 
-        for (int i = 0; i < moves.size(); i++) {
-            moves.get(i).apply(world);
+        for (Move move : moves) {
+            move.apply(world);
         }
     }
 

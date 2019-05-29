@@ -23,21 +23,13 @@
 package freerails.move.mapupdatemove;
 
 import freerails.model.finance.TransactionUtils;
-import freerails.model.station.Station;
-import freerails.model.train.Train;
-import freerails.model.train.schedule.Schedule;
-import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.*;
 import freerails.move.*;
-import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.player.Player;
-import freerails.model.terrain.TileTransition;
-import freerails.model.track.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**

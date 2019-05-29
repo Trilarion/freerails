@@ -30,7 +30,6 @@ import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.renderer.track.TrackPieceRendererList;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainCategory;
-import org.apache.log4j.Logger;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;

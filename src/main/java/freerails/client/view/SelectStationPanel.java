@@ -180,7 +180,7 @@ public class SelectStationPanel extends JPanel implements View {
         selectedStationID = order.getStationID();
 
         // Set the text on the title JLabel.
-        label1.setText("Stop " + String.valueOf(selectedOrderNumber + 1));
+        label1.setText("Stop " + (selectedOrderNumber + 1));
 
         // Set the station info panel to show the current selected station.
         cargoWaitingAndDemandedPanel1.display(selectedStationID);
@@ -260,7 +260,7 @@ public class SelectStationPanel extends JPanel implements View {
                 int stationID = orderNumber == selectedOrderNumber ? selectedStationID : schedule.getOrder(orderNumber).getStationID();
                 if (station.getId() == stationID) {
                     if (stationIsOnSchedule) {
-                        stopNumbersString.append(", ").append(String.valueOf(orderNumber + 1));
+                        stopNumbersString.append(", ").append((orderNumber + 1));
                     } else {
                         stopNumbersString = new StringBuilder(String.valueOf(orderNumber + 1));
                     }

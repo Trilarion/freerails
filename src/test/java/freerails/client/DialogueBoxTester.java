@@ -251,7 +251,7 @@ class DialogueBoxTester extends JFrame {
         setSize(640, 480);
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         DialogueBoxTester test = new DialogueBoxTester();
         test.setVisible(true);
     }

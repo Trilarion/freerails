@@ -23,7 +23,6 @@ import freerails.client.renderer.RendererRoot;
 import freerails.model.station.StationUtils;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

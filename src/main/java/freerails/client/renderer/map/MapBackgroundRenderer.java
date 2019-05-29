@@ -30,7 +30,6 @@ import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
-import org.apache.log4j.Logger;
 
 import java.awt.*;
 

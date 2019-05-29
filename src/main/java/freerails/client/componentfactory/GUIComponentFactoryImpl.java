@@ -33,7 +33,6 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.util.Vec2D;
-import freerails.model.player.Player;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

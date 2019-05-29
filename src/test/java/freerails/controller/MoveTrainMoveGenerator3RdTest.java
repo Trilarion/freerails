@@ -32,7 +32,6 @@ import freerails.util.Vec2D;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
-import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import junit.framework.TestCase;
 

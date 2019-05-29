@@ -36,7 +36,6 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**

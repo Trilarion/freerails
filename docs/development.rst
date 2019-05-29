@@ -109,6 +109,48 @@ Move: void apply(World), Status applicable(Read-Only-World)
 
 In case of inconsistencies every player can always send a request to obtain the whole world).
 
+Track implementation
+--------------------
+
+The map consists of an rectangular grid consisting of square-sized tiles. Each tile (except those at the border) have
+exactly eight neighbors which can be uniquely identified by compass points (north, north-east, ...) given the current
+center tile or by grid positions (row, column).
+
+The total track on the map consists of many track pieces, where each piece connects two neighboring tiles (diagonal
+connections have ~1.41 (square-root of 2) times the length of horizontal or vertical connections).
+
+Path finding of the trains works on a graph where the tiles are nodes and the track pieces connecting neighboring tiles
+are the edges.
+
+Building and removing track works by adding and removing track pieces. In particular, the planning of a longer piece
+of newly built track is done by path finding again.
+
+The track itself is visualized by rendering each tile according to its track configuration. The track configuration is
+an 8 bit value indicating if there is a connecting to one of the 8 neighbors from the current tile. See the attached
+image for some examples.
+
+.. figure:: /images/design_track_configurations.png
+   :width: 14 cm
+   :align: center
+
+   Track configurations.
+
+The track configurations are not independent from each other. For every connection on a tile towards a neighboring tile,
+this neighboring tile must also have a connection to this tile. This invariant must be obeyed by not allowing to change
+track configurations directly, but only by allowing adding or removing of track pieces at a time.
+
+Track pieces have no direction, any train can go on them both ways. However, a train can change direction at every tile
+at most by 90 degree, effectively inducing some kind of directionality.
+
+Track pieces can be single tracked or double tracked. There can only be one running train on each track piece
+(and trains have a certain extent, also measured in track pieces). However, stopped trains do not count as obstacles.
+
+The track configuration of a tile is sufficient to draw it uniquely on the tile. Not all possible 8 bit values are valid.
+
+Bridges and stations are a special case. Stations have a orientation and only allow track parallel to their orientation.
+Bridges span a water tile (other track cannot be put on water) and consist of two track pieces resulting in a parallel
+configuration.
+
 Computer controlled (AI) players
 --------------------------------
 

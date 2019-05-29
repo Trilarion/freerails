@@ -51,6 +51,6 @@ public class Player extends Identifiable {
 
     @Override
     public String toString() {
-        return "Player: " + name + " " + String.valueOf(getId());
+        return "Player: " + name + " " + getId();
     }
 }

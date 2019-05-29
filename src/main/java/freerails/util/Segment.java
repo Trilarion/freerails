@@ -27,7 +27,7 @@ public class Segment implements Serializable {
 
     private static final long serialVersionUID = 3257853198755705393L;
     private static final int MAX_SQUAREROOTS = 64 * 256;
-    private static final double squareRoots[];
+    private static final double[] squareRoots;
 
     static {
         squareRoots = new double[MAX_SQUAREROOTS];

@@ -207,7 +207,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     /**
      * Starts the game.
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
         // TODO Let the user know if we are using a custom logging config.
 
