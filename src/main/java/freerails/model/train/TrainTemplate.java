@@ -43,7 +43,7 @@ public class TrainTemplate implements Serializable {
      */
     public TrainTemplate(int engineId, @NotNull List<Integer> wagonTypes) {
         this.engineId = engineId;
-        this.wagonTypes = Collections.unmodifiableList(new ArrayList<>(wagonTypes));
+        this.wagonTypes = List.copyOf(wagonTypes);
     }
 
     @Override

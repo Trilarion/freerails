@@ -70,7 +70,8 @@ public final class GsonManager {
     private static final Type trackTypeListType = new TypeToken<List<TrackType>>(){}.getType();
     private static final Type sentimentListType = new TypeToken<List<Sentiment>>(){}.getType();
 
-    private static final TypeToken<Array2D> typeTokenArray2D = new TypeToken<Array2D>() {};
+    private static final TypeToken<Array2D> typeTokenArray2D = new TypeToken<>() {
+    };
 
     private GsonManager() {}
 

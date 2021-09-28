@@ -3,20 +3,14 @@ import java.text.SimpleDateFormat
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
 group 'org.freerails'
 version '0.4.1'
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
 
 repositories {
     mavenCentral()
-}
-
-javafx {
-    version = "11.0.2"
-    modules = [ 'javafx.controls' ]
 }
 
 sourceSets {
