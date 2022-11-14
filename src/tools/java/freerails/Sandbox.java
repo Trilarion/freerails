@@ -28,7 +28,7 @@ public class Sandbox {
     /**
      * @param args
      */
-    public static void main(String[] args) throws URISyntaxException, IOException {
+    public static void main(String[] args) {
 
         System.out.println(Objects.hash(true));
     }

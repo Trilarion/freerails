@@ -282,7 +282,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     /**
      * Single player local games start here.
      */
-    private void startGame() {
+    private void startGame() throws IOException {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "4");
 
@@ -367,7 +367,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
                         prepareToHostNetworkGame(selectMapPanel.getServerPort());
                         setNextEnabled(true);
-                    } catch (NullPointerException | IOException e) {
+                    } catch (NullPointerException e) {
                         setInfoText(e.getMessage(), InfoMessageType.WARNING);
                         recover = true;
                     } finally {
@@ -511,17 +511,12 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     if (panel.getMode() == ClientConstants.MODE_SERVER_ONLY) {
                         if (msp.validateInput()) {
                             prevButton.setEnabled(false);
-                            try {
-                                if (!isNewGame()) {
-                                    initServer();
-                                    server.loadGame("freerails.sav");
-                                }
-                                prepareToHostNetworkGame(msp.getServerPort());
-                            } catch (BindException be) {
-                                // When the port is already in use.
-                                prevButton.setEnabled(true);
-                                setInfoText(be.getMessage(), InfoMessageType.WARNING);
+                            if (!isNewGame()) {
+                                initServer();
+                                server.loadGame("freerails.sav");
                             }
+                            prepareToHostNetworkGame(msp.getServerPort());
+
                         }
                     } else {
                         if (isNewGame()) {

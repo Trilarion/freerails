@@ -166,11 +166,7 @@ public class ClientOptionsPanel extends JPanel {
         }
 
         list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        if (!fullscreen) {
-            list1.setEnabled(false);
-        } else {
-            list1.setEnabled(true);
-        }
+        list1.setEnabled(fullscreen);
 
         list1.addListSelectionListener(this::list1ValueChanged);
 

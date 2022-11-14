@@ -76,7 +76,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     /**
-     * Returns an icon for the tile at x,y, which may also depend on the terrain types of of the surrounding tiles.
+     * Returns an icon for the tile at x,y, which may also depend on the terrain types of the surrounding tiles.
      *
      * In the standard implementation it doesn't though.
      */

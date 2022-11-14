@@ -151,7 +151,7 @@ public class BuildTrackController implements GameModel {
         Vec2D oldPosition = getCursorPosition();
 
         if (!TileTransition.checkValidity(oldPosition, track.get(0))) {
-            throw new IllegalStateException(oldPosition.toString() + " and " + track.get(0).toString());
+            throw new IllegalStateException(oldPosition + " and " + track.get(0).toString());
         }
 
         Status status = null;

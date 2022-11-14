@@ -213,7 +213,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
         int wagons = world.getTrain(player, trainId).getNumberOfWagons();
         double a0 = 0.5d / (wagons + 1);
-        double topSpeed = (double) (10 / (wagons + 1));
+        double topSpeed = 10 / (wagons + 1);
 
         Motion newSpeeds;
         if (u < topSpeed) {

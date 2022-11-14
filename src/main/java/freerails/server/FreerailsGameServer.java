@@ -279,7 +279,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         logger.debug("newGame");
     }
 
-    private void removeConnection(LogOnCredentials p) throws IOException {
+    private void removeConnection(LogOnCredentials p) {
         String[] before = getPlayerNames();
         Connection connection = acceptedConnections.get(p);
 
@@ -337,11 +337,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 } catch (Exception e) {
                     if (connection.isOpen()) {
 
-                        try {
-                            removeConnection(p);
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
+                        removeConnection(p);
                     }
                 }
             }

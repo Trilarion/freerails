@@ -160,11 +160,7 @@ public class TrainListPanel extends JPanel implements View {
 
     private void list1ValueChanged(ListSelectionEvent evt) {
         // if a train is selected, enable the 'show details' button.
-        if (list1.getSelectedIndex() != -1) {
-            showDetails.setEnabled(true);
-        } else {
-            showDetails.setEnabled(false);
-        }
+        showDetails.setEnabled(list1.getSelectedIndex() != -1);
     }
 
     private void showDetailsActionPerformed(ActionEvent evt) {

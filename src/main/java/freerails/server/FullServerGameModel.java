@@ -214,7 +214,7 @@ public class FullServerGameModel implements ServerGameModel {
             long maintenanceCost = trackType.getYearlyMaintenance().amount;
 
             // Is the track type the category we are interested in?
-            boolean rightType = TransactionCategory.TRACK_MAINTENANCE == category ? !trackType.isStation() : trackType.isStation();
+            boolean rightType = (TransactionCategory.TRACK_MAINTENANCE == category) != trackType.isStation();
 
             if (rightType) {
                 aggregator.setType(trackType.getId());

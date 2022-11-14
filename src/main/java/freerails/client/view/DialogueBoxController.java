@@ -115,7 +115,7 @@ public class DialogueBoxController {
             for (Station station: world.getStations(modelRoot.getPlayer())) {
                 int engineId = selectEngine.getSelectedEngineId();
                 List<Integer> wagonTypes = selectWagons.getWagons();
-                List<TrainTemplate> after = Arrays.asList(new TrainTemplate(engineId, wagonTypes));
+                List<TrainTemplate> after = List.of(new TrainTemplate(engineId, wagonTypes));
 
                 Move move = new ChangeProductionAtEngineShopMove(after, station.getId(), modelRoot.getPlayer());
                 modelRoot.applyMove(move);

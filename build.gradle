@@ -3,20 +3,17 @@ import java.text.SimpleDateFormat
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
 group 'org.freerails'
 version '0.4.1'
-sourceCompatibility = 1.8
+
+java {
+    sourceCompatibility JavaVersion.VERSION_11
+}
 
 repositories {
     mavenCentral()
-}
-
-javafx {
-    version = "11.0.2"
-    modules = [ 'javafx.controls' ]
 }
 
 sourceSets {
@@ -25,10 +22,10 @@ sourceSets {
 
 dependencies {
     implementation 'log4j:log4j:1.2.17'
-    implementation 'com.google.code.gson:gson:2.8.3'
-    implementation 'commons-io:commons-io:2.6'
-    implementation 'org.jetbrains:annotations:16.0.1'
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.jetbrains:annotations:23.0.0'
+    testImplementation 'junit:junit:4.13.2'
     toolsImplementation sourceSets.main.output
 }
 
@@ -53,7 +50,7 @@ jar {
 }
 
 task generateVersionInfo {
-    // gets the short SHA of the last commit and the information if there are uncommited changes (-M indicating that there is a modification)
+    // gets the short SHA of the last commit and the information if there are uncommitted changes (-M indicating that there is a modification)
     String git_revision = "git rev-parse --short HEAD".execute().text.trim() + ("git diff-index --quiet HEAD --".execute().waitFor() == 1 ? "-M" : "")
     // get current date and time in a fixed format
     SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")

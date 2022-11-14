@@ -333,7 +333,7 @@ public strictfp class PathOnTiles implements Serializable {
      */
     public Iterator<Vec2D> tilesIterator() {
         // TODO no anonymous class here
-        return new Iterator<Vec2D>() {
+        return new Iterator<>() {
             private int index = 0;
 
             private Vec2D next = start;

@@ -217,7 +217,7 @@ public class TrainPositionOnMap implements Serializable {
 
     private static TrainPositionOnMap addBtoHeadOfA(TrainPositionOnMap a, TrainPositionOnMap b) {
         if (!aHeadEqualsBTail(a, b)) {
-            throw new IllegalArgumentException("Tried to add " + b.toString() + " to the head of " + a.toString());
+            throw new IllegalArgumentException("Tried to add " + b + " to the head of " + a);
         }
         int newLength = a.getLength() + b.getLength() - 2;
 

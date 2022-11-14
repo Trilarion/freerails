@@ -92,11 +92,7 @@ public class SelectEnginePanel extends JPanel implements View {
     private void list1ValueChanged(ListSelectionEvent evt) {
         // We need to disable the OK button if no engine type is selected.
 
-        if (-1 == list1.getSelectedIndex()) {
-            okButton.setEnabled(false);
-        } else {
-            okButton.setEnabled(true);
-        }
+        okButton.setEnabled(-1 != list1.getSelectedIndex());
     }
 
 

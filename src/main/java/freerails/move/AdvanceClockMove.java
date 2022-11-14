@@ -38,8 +38,7 @@ public class AdvanceClockMove implements Move {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof AdvanceClockMove)) return false;
-        return true;
+        return obj instanceof AdvanceClockMove;
     }
 
     @Override

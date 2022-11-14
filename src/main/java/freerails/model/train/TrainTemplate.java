@@ -24,8 +24,6 @@ package freerails.model.train;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,7 +41,7 @@ public class TrainTemplate implements Serializable {
      */
     public TrainTemplate(int engineId, @NotNull List<Integer> wagonTypes) {
         this.engineId = engineId;
-        this.wagonTypes = Collections.unmodifiableList(new ArrayList<>(wagonTypes));
+        this.wagonTypes = List.copyOf(wagonTypes);
     }
 
     @Override
