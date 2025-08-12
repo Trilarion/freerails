@@ -4,7 +4,7 @@
  
 # FreeRails
 
-**[Blog](https://freerails.blogspot.com/) - [History](http://freerails.readthedocs.io/en/latest/history.html) - [Manual](http://freerails.readthedocs.io/en/latest/)**
+**[Blog](https://trilarion.blogspot.com/search/label/freerails) - [History](http://freerails.readthedocs.io/en/latest/history.html) - [Manual](http://freerails.readthedocs.io/en/latest/)**
 
 FreeRails is a real-time, multi player railway strategy & management game where players compete to build the most powerful
 railroad empire. It is based on the RailRoad Tycoon I and II games.
