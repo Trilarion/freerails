@@ -29,7 +29,9 @@ dependencies {
     toolsImplementation sourceSets.main.output
 }
 
-mainClassName = 'freerails.client.launcher.LauncherFrame'
+application {
+    mainClass = 'freerails.client.launcher.LauncherFrame'
+}
 
 test {
     testLogging {
@@ -38,18 +40,16 @@ test {
     }
 }
 
-configurations.implementation.setCanBeResolved(true)
-
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
         attributes(
-                 'Main-Class': mainClassName
+                 'Main-Class': 'freerails.client.launcher.LauncherFrame'
         )
     }
     from {
-        configurations.implementation.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
