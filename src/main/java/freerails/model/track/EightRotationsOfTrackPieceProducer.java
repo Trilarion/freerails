@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,12 +91,11 @@ class EightRotationsOfTrackPieceProducer {
                 }
             }
 
-            trackTemplateBooleanArray = output;
             int trackGraphicNumber = 0;
 
             for (int y = 0; y < 3; y++) {
                 for (int x = 0; x < 3; x++) {
-                    if (trackTemplateBooleanArray[x][y]) {
+                    if (output[x][y]) {
                         trackGraphicNumber = trackGraphicNumber | 1 << 3 * y + x;
                     }
                 }

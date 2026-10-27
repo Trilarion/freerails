@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,9 @@
  */
 
 /**
- * Provides classes that represent the cargo carried by trains.
+ * Provides classes that represent cargo, cargo loads, and cargo production or
+ * conversion.
+ *
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */
 package freerails.model.cargo;

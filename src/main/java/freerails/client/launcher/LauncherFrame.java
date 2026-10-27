@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -239,7 +239,8 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     public static void emergencyStop() {
         ScreenHandler.exitFullScreenMode();
         if (!EventQueue.isDispatchThread()) {
-            Thread.currentThread().stop();
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Emergency stop requested");
         }
     }
 

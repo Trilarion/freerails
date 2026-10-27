@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,10 @@
  */
 
 /**
- * Provides classes that may be used by the client or the server to operate on the
- * game world, for example, building trains and stations. The classes in this package
- * do not make changes to the game world directly, instead, changes are encapsulated
- * in objects referred to as <em>moves</em>. See the package <a
- * href="freerails/move/package-summary.html">freerails.move</a>
- * for more details.
+ * Provides classes that translate user interactions into game actions, for example,
+ * building track and stations. Changes are represented by {@link freerails.move.Move}
+ * objects rather than being made directly by these controllers.
+ *
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */
 package freerails.controller;

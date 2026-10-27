@@ -1,67 +1,49 @@
 # FreeRails
 
-**[Blog](https://trilarion.blogspot.com/search/label/freerails) - [History](http://freerails.readthedocs.io/en/latest/history.html) - [Manual](http://freerails.readthedocs.io/en/latest/)**
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE.txt)
 
-FreeRails is a real-time, multiplayer railway strategy & management game where players compete to build the most powerful
-railroad empire. It is based on the RailRoad Tycoon I and II games.
+FreeRails is an open-source railway strategy and management game inspired by *Railroad Tycoon* and *Railroad Tycoon II*.
+Players build railway networks, run trains, transport cargo, and grow a railroad empire. The game is written in Java and
+includes a desktop client and a game server; its current codebase is an ongoing work in progress.
 
-It is written in Java and the code is released under the open source [GPL-3.0 license](LICENSE.txt). The project is currently in an intermediate state. It has a long development [history](http://freerails.readthedocs.io/en/latest/history.html).
+The project continues a long-running series of FreeRails and Railz projects. Read [HISTORY.md](HISTORY.md) for the
+project's background and the [manual](https://freerails.readthedocs.io/en/latest/) for gameplay information.
 
-The goal is to finish the game with a modern 2D graphics style using JavaFx and a stable, efficient game engine with similar features to RailRoad I&II
-and worthy AI opponents, so it can be played single-player or multi-player.
+## Repository layout
 
+- `src/main/java/freerails/` — Java application code, organized into packages for the client UI, game model, controllers,
+  moves, networking, scenarios, server, and shared utilities.
+- `src/main/resources/` — game graphics, sounds, interface content, and scenario data.
+- `src/test/java/` and `src/test/resources/` — automated tests and their supporting data.
+- `docs/` — Sphinx documentation, including the player manual, development notes, and specifications.
+- `build.gradle`, `settings.gradle`, and `gradle/` — Gradle build configuration and the Gradle wrapper.
+- `HISTORY.md` — project history.
 
-## Download & Manual
+## Build and run
 
-The latest version is **0.4.1** released on January 2nd, 2018. It's a minor release.
+Install a JDK 21 or newer, then use the included Gradle wrapper from the repository root:
 
-Downloads can be found at the [GitHub Releases page](https://github.com/Trilarion/freerails/releases)
+```shell
+# Run the desktop application
+./gradlew run
 
-For information how to play FreeRails see the [FreeRails manual](http://freerails.readthedocs.io/en/latest/).
+# Run the test suite
+./gradlew check
+```
 
-## Bugs, Feature requests, Feedback
+On Windows, use `gradlew.bat` instead of `./gradlew`. The project sets Java source compatibility to Java 21.
 
-- Report a bug/feature request on the [GitHub issue tracker](https://github.com/Trilarion/freerails/issues)
+## Documentation
+
+- [Player manual](https://freerails.readthedocs.io/en/latest/)
+- [Project history](HISTORY.md)
+- [Release downloads](https://github.com/Trilarion/freerails/releases)
 
 ## Contributing
 
-- Report a bug/feature request (see above)
-- Fork this repository and create a [GitHub pull request](https://github.com/Trilarion/freerails/pulls)
+Bug reports and feature requests can be opened in the [issue tracker](https://github.com/Trilarion/freerails/issues).
+Contributions are welcome via [pull requests](https://github.com/Trilarion/freerails/pulls).
 
-### Getting started
+## License
 
-The source code uses [Gradle](https://gradle.org/guides/#getting-started) as build system which makes it independent of the choice of the IDE.
-Most IDEs can import Gradle based project easily, but you could also [install Gradle](https://docs.gradle.org/4.6/userguide/installation.html)
-and use it from the command line together with your favorite editor.
-
-#### Eclipse
-
-*Eclipse IDE for Java Developers*
-
-Select Menu File/Import, Select Gradle/Existing Gradle Project, Select Next, Set Project root directory to the FreeRails
-local working directory, Select Finish
-
-In the Gradle Tasks window execute task verification/check for running the tests and application/run for running the application.
-
-#### NetBeans
-
-*NetBeans IDE*
-
-Make sure the Gradle support plugin is installed (Menu Tools/Plugins)
-
-Select Menu File/Open Project and select the FreeRails local working directory (should show the Gradle logo) and select
-Open Project.
-
-Run the project with F6 and test with Alt+F6.
-
-#### IntelliJ IDEA
-
-*IntelliJ IDEA Community*
-
-Select Import Project, select file build.gradle from the FreeRails local working directory (should show the Gradle logo),
-if not set, select "Use default gradle wrapper" and select a suitable Gradle JVM.
-
-Select Menu View/Tool Windows/Gradle and execute task verification/check for running the tests and application/run for running the application.
-
-Use the custom dictionary with Menu File/Settings and Editor/Spelling/Dictionaries and add file /docs/dictionary/freerails.dic
-from the FreeRails local working directory.
+FreeRails is distributed under the [GNU General Public License, version 3 or later](LICENSE.txt).

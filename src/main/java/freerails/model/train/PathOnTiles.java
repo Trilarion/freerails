@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ import java.util.*;
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
  */
-public strictfp class PathOnTiles implements Serializable {
+public class PathOnTiles implements Serializable {
 
     private static final long serialVersionUID = 3544386994122536753L;
     private final Vec2D start;

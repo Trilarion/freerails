@@ -11,21 +11,95 @@ Development
 Brief overview of the architecture
 ----------------------------------
 
-The model and the view are separated. The classes that make up the model, referred to as the game world, are in
-the freerails.model.* packages. The view classes are in the freerails.view.* packages.
-The state of game world is stored by an instance of a class implementing the interface World.
-This class is mutable - one can think of it as a specialised hashmap. Changes to the game world involve adding, removing or
-changing their properties.
+The game domain and state are in the ``freerails.model`` packages, with the aggregate
+state API in ``freerails.model.world.World``. The desktop application, including its
+Swing views and renderers, is in ``freerails.client``. Game actions are represented
+by ``freerails.move.Move`` objects; the server checks and applies moves to the world.
 
-The client and server are separate. They communicate by sending objects to each other. This is done by sending serialized
-objects over a network connection.
+The client and server communicate using serializable command and game objects over a
+network connection.
 
-When a new game starts or a game is loaded, the server sends the client a copy of the World object.  All changes to
-the game world that occur after the game has started, referred to as moves, are done using the classes in the package
-freerails.move.*.
+When a game starts or is loaded, the client receives the game world. During play,
+changes are represented as moves and processed by the server.
+
+Package responsibilities and contracts
+---------------------------------------
+
+This section is the authoritative cross-package overview. The descriptions reflect
+the current source layout; package names and import relationships are not, by
+themselves, guarantees that a dependency is supported or enforced.
+
+Application and client:
+
+- ``freerails`` contains application options and generated version information.
+- ``freerails.client`` contains client coordination, client-side state, and
+  application-level user actions. ``freerails.client.model`` contains client-facing
+  Swing models; it is not the game-domain model.
+- ``freerails.client.launcher`` contains startup, launcher screens, and the game
+  loop. It currently references types in the parent client package.
+- ``freerails.client.componentfactory`` creates client UI components.
+- ``freerails.client.receiver`` handles moves received by the client.
+- ``freerails.client.view`` contains Swing views and presenters.
+- ``freerails.client.renderer`` and its subpackages provide train, map, tile, and
+  track rendering: ``.map`` contains map layers, ``.map.detail`` the detailed map
+  view and overlays, ``.map.overview`` the overview map, ``.tile`` tile renderers,
+  and ``.track`` track renderers. Rendering code is not uniformly independent of
+  Swing; some renderer packages include Swing components.
+
+Game domain and actions:
+
+- ``freerails.model`` contains shared domain identifiers and constants.
+  ``freerails.model.world`` defines ``World`` and its query-oriented
+  ``UnmodifiableWorld`` interface.
+- The other ``freerails.model`` packages hold domain types: ``.cargo`` (cargo and
+  loads), ``.finance`` (money and financial calculations), ``.finance.transaction``
+  and ``.finance.transaction.aggregator`` (transactions and their aggregation),
+  ``.game`` (rules, time, and game speed), ``.player`` (players), ``.station``
+  (stations and cargo supply/demand), ``.terrain`` and ``.terrain.city`` (map
+  terrain and cities), ``.track``, ``.track.explorer``, and ``.track.pathfinding``
+  (track representation, exploration, and path finding), and ``.train``,
+  ``.train.activity``, ``.train.motion``, and ``.train.schedule`` (trains and their
+  activity, motion, and orders).
+- ``freerails.move`` defines game actions. ``.move.generator`` creates moves from
+  world state, and ``.move.mapupdatemove`` contains map and track update moves.
+- ``freerails.controller`` translates user interactions into game actions.
+
+Persistence, communication, and infrastructure:
+
+- ``freerails.io`` configures JSON serialization and ``.io.adapter`` provides
+  custom Gson adapters. ``freerails.scenario`` loads and saves scenarios and games.
+- ``freerails.network`` contains connection-level login data;
+  ``.network.command`` contains client/server commands.
+- ``freerails.server`` contains server-side game processing.
+- ``freerails.util`` contains shared utilities; ``.util.network`` provides socket
+  connection helpers, and ``.util.ui`` provides reusable Swing utilities.
+
+``UnmodifiableWorld`` is the query-oriented state API and ``World`` provides
+broader mutation; despite its name, ``UnmodifiableWorld`` includes ``setSpeed`` and
+is not strictly read-only. A ``Move`` is serializable and represents a game action: its
+``applicable`` method checks validity without changing the world, and ``apply``
+performs the change. Move implementations are expected to be immutable, logically
+comparable, and to refer to world objects through stable identifiers or positions,
+as documented on ``Move``. These requirements apply to moves; they should not be
+assumed to be universal guarantees for every model class.
+
+Track configuration is stored on map tiles, while a connection spans neighboring
+tiles. Build and remove track through the paired track-update moves so both sides
+of a connection are updated together.
+
+The codebase does not currently enforce a complete acyclic package layering. For
+example, ``freerails.model.track`` uses move types and move implementations use
+track types; client and launcher packages also refer to one another. The dependency
+guidance below is a direction for new code, not a claim that the existing import
+graph already satisfies it. Prefer dependencies that point from UI and orchestration
+toward domain APIs, and avoid adding new cycles where a simpler boundary is possible.
 
 Server - client communication
 -----------------------------
+
+The following section is legacy design material, including proposals that may not
+match the current implementation. For current package responsibilities and
+contracts, use the overview above and the source-level API documentation.
 
 The server is the entirety of computational processes that are concerned with evaluating the game mechanics and
 distributing the game updates, which can be physically separated from the players.
@@ -160,9 +234,12 @@ Shutdown automatically if the game ends.
 Coding Guidelines
 -----------------
 
-- Follow package dependency rules (utils does only depend on java libraries, model only on utils, move only on model and utils, ..).
-- Avoid circular dependencies between packages. I.e. if any classes in package A import classes from package B, then
-  classes in package B should not import classes from package A.
+- Follow the package responsibilities and dependency guidance described in
+  `Package responsibilities and contracts`_ when adding code. The current source
+  has cross-package cycles, so do not treat a strict layered dependency rule as
+  already enforced.
+- Avoid introducing new circular dependencies between packages where a one-way
+  interface or existing boundary can be used instead.
 - Run all unit tests after making changes to see whether anything has broken. You can do this using the check gradle target.
 - Javadoc comments. Add a couple of sentences saying what the class does and the reason for its addition.
 - Use the Code Formatter with care. Avoid reformatting whole files with different formatting schemes when you have only changed a few lines.
@@ -176,6 +253,3 @@ Reading
 
 - Effective Java (http://java.sun.com/docs/books/effective/) (sample chapters online)
 - User Interface Design for Programmers (http://www.joelonsoftware.com/uibook/chapters/fog0000000057.html) (available online)
-
-
-

@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,6 +60,20 @@ public class CompostMove implements Move {
      * @return Either the first non-successful status or Status.OK
      */
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof CompostMove)) return false;
+
+        CompostMove that = (CompostMove) obj;
+        return new ArrayList<>(moves).equals(new ArrayList<>(that.moves));
+    }
+
+    @Override
+    public int hashCode() {
+        return new ArrayList<>(moves).hashCode();
+    }
+
+    @Override
     public @NotNull Status applicable(@NotNull UnmodifiableWorld world) {
         for (Move move: moves) {
             Status status = move.applicable(world);
@@ -72,9 +86,12 @@ public class CompostMove implements Move {
 
     @Override
     public void apply(@NotNull World world) {
+        if (!applicable(world).isSuccess()) {
+            return;
+        }
+
         for (Move move: moves) {
             move.apply(world);
         }
-
     }
 }

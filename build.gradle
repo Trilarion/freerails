@@ -5,11 +5,11 @@ plugins {
     id 'application'
 }
 
-group 'org.freerails'
-version '0.4.1'
+group = 'org.freerails'
+version = '0.4.1'
 
 java {
-    sourceCompatibility JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
@@ -21,10 +21,10 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'ch.qos.reload4j:reload4j:1.2.26' // replacement of log4j:log4j:1.2.17
-    implementation 'com.google.code.gson:gson:2.13.1'
-    implementation 'commons-io:commons-io:2.20.0'
-    implementation 'org.jetbrains:annotations:26.0.2'
+    implementation 'ch.qos.reload4j:reload4j:1.2.27' // replacement of log4j:log4j:1.2.17
+    implementation 'com.google.code.gson:gson:2.15.0'
+    implementation 'commons-io:commons-io:2.22.0'
+    implementation 'org.jetbrains:annotations:26.1.0'
     testImplementation 'junit:junit:4.13.2'
     toolsImplementation sourceSets.main.output
 }
@@ -36,7 +36,7 @@ application {
 test {
     testLogging {
         events "failed"
-        exceptionFormat "full"
+        exceptionFormat = "full"
     }
 }
 
@@ -53,30 +53,43 @@ jar {
     }
 }
 
-task generateVersionInfo {
-    // gets the short SHA of the last commit and the information if there are uncommitted changes (-M indicating that there is a modification)
-    String git_revision = "git rev-parse --short HEAD".execute().text.trim() + ("git diff-index --quiet HEAD --".execute().waitFor() == 1 ? "-M" : "")
-    // get current date and time in a fixed format
-    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    String date = sdfDate.format(new Date())
+def versionFile = layout.projectDirectory.file("src/main/java/freerails/Version.java").asFile
+def projectVersion = project.version
 
-    def outputDir = file("$buildDir/../src/main/java/freerails")
-    outputs.dir outputDir
-    doFirst {
-        outputDir.exists() || outputDir.mkdirs()
-        def srcFile = new File(outputDir, "Version.java")
-        srcFile.write(
+tasks.register('generateVersionInfo') {
+    outputs.file versionFile
+    outputs.upToDateWhen { false }
+
+    doLast {
+        String gitRevision = providers.exec {
+            commandLine("git", "rev-parse", "--short", "HEAD")
+        }.standardOutput.asText.get().trim()
+        def diffResult = providers.exec {
+            commandLine("git", "diff-index", "--quiet", "HEAD", "--")
+            ignoreExitValue = true
+        }.result.get()
+        if (diffResult.exitValue != 0 && diffResult.exitValue != 1) {
+            throw new GradleException("git diff-index failed with exit code ${diffResult.exitValue}")
+        }
+        if (diffResult.exitValue == 1) {
+            gitRevision += "-M"
+        }
+
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        String date = sdfDate.format(new Date())
+
+        versionFile.write(
                 """
 package freerails;
 
 public final class Version {
-    public static final String VERSION = "$project.version";
-    public static final String GIT_REVISION = "$git_revision";
+    public static final String VERSION = "$projectVersion";
+    public static final String GIT_REVISION = "$gitRevision";
     public static final String CREATION_DATE = "$date";
 }
 """)
     }
 }
 
-compileJava.dependsOn generateVersionInfo
-compileJava.source generateVersionInfo.outputs.files, sourceSets.main.java
+compileJava.dependsOn tasks.named('generateVersionInfo')
+compileJava.source tasks.named('generateVersionInfo').map { it.outputs.files }, sourceSets.main.java

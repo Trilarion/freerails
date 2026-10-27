@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,10 @@
  */
 
 /**
- * Provides the classes the make up the launcher. Classes in other freerails.* packages should not import classes from this
- * package.
+ * Provides the desktop launcher, startup screens, and game loop. The parent client
+ * package currently refers to types in this package, and launcher code uses parent
+ * client APIs.
+ *
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */
 package freerails.client.launcher;

@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,9 @@
  */
 
 /**
- * Provides classes that are used by both the client and the server that are not
- * freerails specific, that is, ones that could be used in another project.
+ * Provides shared utility types used across the application. This package is
+ * FreeRails-specific and currently includes dependencies on game-model types.
+ *
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */
 package freerails.util;

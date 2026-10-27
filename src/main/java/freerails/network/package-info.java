@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,10 @@
  */
 
 /**
- * Provides classes for sending moves and commands between the client and server.
- * Note, the classes in this package <strong>are</strong> now used by the game.
+ * Provides connection-level data exchanged by the client and server. Application
+ * commands are defined in {@link freerails.network.command}; game actions are
+ * represented by {@link freerails.move.Move}.
+ *
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */
 package freerails.network;

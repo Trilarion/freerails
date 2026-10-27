@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,10 @@
  */
 
 /**
- * Provides classes to record a players assets (for example, real estate, miles-of-track,
- * cash, and shares) and liabilities (for example, outstanding shares and bonds,
- * and any overdraft). Each player has a BankAccount that stores a growing list of
- * Transactions. Transactions are used represent bills and receipts for a player
- * as well as record changes in a players physical assets such as miles-of-track.
- * Totals can be calculated by adding up the relevant transaction in the players
- * account.
+ * Provides financial types and calculations for player assets and liabilities,
+ * including money, balances, transactions, and financial summaries. Transaction
+ * records and aggregators are defined in subpackages.
+ *
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */
 package freerails.model.finance;

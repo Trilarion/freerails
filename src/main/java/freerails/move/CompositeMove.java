@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,8 +65,7 @@ public class CompositeMove implements Move {
 
     @Override
     public int hashCode() {
-        // This will do for now.
-        return moves.size();
+        return moves.hashCode();
     }
 
     /**
@@ -79,17 +78,25 @@ public class CompositeMove implements Move {
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
-        // TODO need to implement in a less general way
-        // return Status.fail("currently not implemented");
+        for (Move move : moves) {
+            Status status = move.applicable(world);
+            if (!status.isSuccess()) {
+                return status;
+            }
+        }
+
+        if (world instanceof World) {
+            return compositeTest((World) world);
+        }
         return Status.OK;
     }
 
     @Override
     public void apply(@NotNull World world) {
-        Status status = compositeTest(world);
+        Status status = applicable(world);
 
         if (!status.isSuccess()) {
-            throw new RuntimeException(status.getMessage());
+            return;
         }
 
         for (Move move : moves) {

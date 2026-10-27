@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,16 +119,14 @@ public class TrackMoveProducer {
     // TODO put part of it in model
     // utility method.
     private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
-        if (!world.boundsContain(p)) {
-            throw new RuntimeException("Out of bounds");
-        }
-
-        TrackPiece oldTrackPiece;
+        TrackPiece oldTrackPiece = null;
         TrackPiece newTrackPiece;
 
         int playerId = player.getId();
 
-        oldTrackPiece = world.getTile(p).getTrackPiece();
+        if (world.boundsContain(p)) {
+            oldTrackPiece = world.getTile(p).getTrackPiece();
+        }
 
         if (oldTrackPiece != null) {
             TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
@@ -143,14 +141,12 @@ public class TrackMoveProducer {
     // TODO put part of it in model
     // utility method.
     private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
-        if (!world.boundsContain(p)) {
-            throw new RuntimeException("Out of bounds");
-        }
-
-        TrackPiece oldTrackPiece;
+        TrackPiece oldTrackPiece = null;
         TrackPiece newTrackPiece;
 
-        oldTrackPiece = world.getTile(p).getTrackPiece();
+        if (world.boundsContain(p)) {
+            oldTrackPiece = world.getTile(p).getTrackPiece();
+        }
 
         if (oldTrackPiece != null) {
             TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);

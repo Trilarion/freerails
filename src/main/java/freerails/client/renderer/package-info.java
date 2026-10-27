@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,10 @@
  */
 
 /**
- * Provides classes that render/paint/draw the games graphics. Classes in this package
- * should be independent of the windowing toolkit being used. For example, they should
- * not import any {@code javax.swing.*} classes or any classes in the {@code
- * java.awt.Component hierarchy}. They may however import {@code java.awt}
- * classes needed to do drawing, e.g. {@code java.awt.Graphics} and {@code java.awt.Image}.
+ * Provides train and other client renderers. Map, tile, and track renderers are
+ * organized in subpackages. This package hierarchy is not uniformly independent
+ * of the windowing toolkit: some renderer packages contain Swing components.
+ *
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */
 package freerails.client.renderer;

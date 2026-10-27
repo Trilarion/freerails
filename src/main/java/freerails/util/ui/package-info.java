@@ -1,6 +1,6 @@
 /*
  * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
+ * Copyright (C) 2000-2026 The FreeRails Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
  */
 
 /**
- * Provides classes that are used by the freerails client but are not freerails
- * specific, that is, ones that could be used in another project: classes in this
- * package should not import any classes from other {@code freerails * }
- * packages except {@code freerails util}.
+ * Provides reusable Swing and UI-support utilities, including image and sound
+ * managers. Keep this package focused on UI support rather than game-domain rules.
+ *
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */
 package freerails.util.ui;
