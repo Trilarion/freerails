@@ -50,7 +50,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
     private static final long serialVersionUID = 3760559784860071476L;
     private UnmodifiableWorld world;
     private Player player;
-    private JList demandsJList;
+    private JList<String> demandsJList;
     private JLabel stationName;
     private JTable waitingJTable;
 
@@ -66,7 +66,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         JLabel waiting = new JLabel();
         waitingJTable = new JTable();
         JLabel demands = new JLabel();
-        demandsJList = new JList();
+        demandsJList = new JList<>();
         JPanel spacer = new JPanel();
 
         setLayout(new GridBagLayout());
@@ -190,7 +190,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         waitingJTable.setModel(tableModel);
 
         // The list shows the cargo demanded by the station.
-        demandsJList.setListData(typeDemanded.toArray());
+        demandsJList.setListData(typeDemanded.toArray(new String[0]));
 
         invalidate();
     }

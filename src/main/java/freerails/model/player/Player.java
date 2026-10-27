@@ -18,7 +18,7 @@
 
 package freerails.model.player;
 
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 import freerails.util.Utils;
 
 // TODO on the client side, one should not create a player but a add new player move or so...

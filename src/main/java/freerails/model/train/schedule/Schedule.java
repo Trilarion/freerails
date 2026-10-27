@@ -36,7 +36,7 @@ public class Schedule implements UnmodifiableSchedule {
      * Vector of TrainOrder.
      */
     public static final UnmodifiableSchedule EMPTY = new Schedule();
-    private List<TrainOrder> orders = new ArrayList();
+    private List<TrainOrder> orders = new ArrayList<>();
     private int nextScheduledOrder = -1;
 
     /**

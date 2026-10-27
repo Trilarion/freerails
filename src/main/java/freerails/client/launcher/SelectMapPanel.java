@@ -49,8 +49,8 @@ class SelectMapPanel extends JPanel {
     private final LauncherInterface owner;
 
     private JPanel jPanel3;
-    private JList newmapsJList;
-    private JList savedmapsJList;
+    private JList<String> newmapsJList;
+    private JList<String> savedmapsJList;
     private JTextField serverPort;
 
     SelectMapPanel(LauncherInterface owner) {
@@ -60,10 +60,10 @@ class SelectMapPanel extends JPanel {
 
         JPanel jPanel1 = new JPanel();
         JScrollPane jScrollPane1 = new JScrollPane();
-        newmapsJList = new JList();
+        newmapsJList = new JList<>();
         JPanel jPanel4 = new JPanel();
         JScrollPane jScrollPane2 = new JScrollPane();
-        savedmapsJList = new JList();
+        savedmapsJList = new JList<>();
         jPanel3 = new JPanel();
         JLabel portLabel = new JLabel();
         serverPort = new JTextField();

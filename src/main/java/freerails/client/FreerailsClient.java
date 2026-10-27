@@ -52,6 +52,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     protected Connection connectionToServer;
     private World world;
     private MovePrecommitter movePrecommitter;
+    private boolean readerFailureReported;
 
     /**
      *
@@ -73,6 +74,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
         try {
             connectionToServer = Connection.make(new InetSocketAddress(address, port));
+            readerFailureReported = false;
         } catch (IOException e) {
             return new LogOnResponse(false, e.getMessage());
         }
@@ -95,6 +97,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         try {
             Serializable request = new LogOnCredentials(username, password);
             connectionToServer = Connection.make(new InetSocketAddress(InetAddress.getLoopbackAddress(), 55000)); // TODO get selected port
+            readerFailureReported = false;
             connectionToServer.sendObject(request);
 
             return (LogOnResponse) connectionToServer.receiveObject();
@@ -159,6 +162,12 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
             for (Serializable message : messages) {
                 processMessage(message);
+            }
+
+            IOException readerFailure = connectionToServer.getReaderFailure();
+            if (readerFailure != null && !readerFailureReported) {
+                readerFailureReported = true;
+                logger.warn("Connection to server closed after a reader failure.", readerFailure);
             }
 
             clientUpdates();

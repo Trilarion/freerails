@@ -122,7 +122,13 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             } else {
                 connection.close();
             }
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            logger.warn("Could not complete client login.", e);
+            connection.close();
+        } catch (IllegalStateException e) {
+            logger.debug("Client disconnected before completing login.", e);
+            connection.close();
+        }
     }
 
     /**
@@ -438,11 +444,16 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                         }
                     }
                 } else {
+                    IOException readerFailure = connection.getReaderFailure();
+                    if (readerFailure != null) {
+                        logger.warn("Client connection closed after a reader failure.", readerFailure);
+                    }
                     // Remove connection.
                     removeConnection(credentials);
                 }
             }
         } catch (IOException e) {
+            logger.warn("Could not process client connection.", e);
         }
     }
 

@@ -18,7 +18,7 @@
 
 package freerails.model.world;
 
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 import freerails.model.train.activity.Activity;
 import freerails.model.cargo.Cargo;
 import freerails.model.finance.transaction.Transaction;

@@ -47,7 +47,7 @@ public class LeaderBoardPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3258131375298066229L;
     private final List<PlayerDetails> values;
-    private JList playersList = null;
+    private JList<PlayerDetails> playersList = null;
     private ActionListener submitButtonCallBack = null;
 
     /**
@@ -93,13 +93,13 @@ public class LeaderBoardPanel extends JPanel implements View {
      */
     private JList getPlayersList() {
         if (playersList == null) {
-            playersList = new JList();
+            playersList = new JList<>();
             playersList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
             playersList.setRequestFocusEnabled(false);
             playersList.setEnabled(true);
 
             Collections.sort(values);
-            playersList.setListData(values.toArray());
+            playersList.setListData(values.toArray(new PlayerDetails[0]));
         }
         return playersList;
     }
@@ -125,7 +125,7 @@ public class LeaderBoardPanel extends JPanel implements View {
             values.add(details);
         }
         Collections.sort(values);
-        playersList.setListData(values.toArray());
+        playersList.setListData(values.toArray(new PlayerDetails[0]));
         setSize(getPreferredSize());
     }
 

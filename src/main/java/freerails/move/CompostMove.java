@@ -55,9 +55,10 @@ public class CompostMove implements Move {
 
 
     /**
+     * Compares this composite move with another object.
      *
-     * @param world
-     * @return Either the first non-successful status or Status.OK
+     * @param obj object to compare with
+     * @return {@code true} if the object is an equivalent composite move
      */
     @Override
     public boolean equals(Object obj) {

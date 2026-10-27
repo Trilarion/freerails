@@ -25,7 +25,10 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Provides a mapping from a set of ButtonModels or a ComboBoxModel to a set of
@@ -35,7 +38,7 @@ import java.util.List;
  * any events from UI components, although UI components may call setAction() in
  * order to receive property change updates and to set icons etc.
  */
-public class ActionAdapter extends DefaultComboBoxModel {
+public class ActionAdapter extends DefaultComboBoxModel<Object> {
 
     private static final long serialVersionUID = 3546920294666351415L;
 
@@ -57,12 +60,18 @@ public class ActionAdapter extends DefaultComboBoxModel {
      */
     public ActionAdapter(Action[] actions) {
         super();
-        this.actions = actions;
-        buttonModels = new ArrayList();
+        this.actions = Objects.requireNonNull(actions, "actions").clone();
+        buttonModels = new ArrayList<>();
+        Set<String> names = new HashSet<>();
 
-        for (Action action : actions) {
+        for (Action action : this.actions) {
+            Objects.requireNonNull(action, "actions must not contain null");
+            String name = actionName(action);
+            if (!names.add(name)) {
+                throw new IllegalArgumentException("Action names must be unique: " + name);
+            }
             buttonModels.add(new MappedButtonModel(action));
-            addElement(action.getValue(Action.NAME));
+            addElement(name);
         }
 
         initialised = true;
@@ -84,10 +93,10 @@ public class ActionAdapter extends DefaultComboBoxModel {
     }
 
     /**
-     * @return an enumeration of Action
+     * @return a defensive copy of the actions
      */
     public Action[] getActions() {
-        return actions;
+        return actions.clone();
     }
 
     /**
@@ -115,15 +124,16 @@ public class ActionAdapter extends DefaultComboBoxModel {
         }
 
         for (MappedButtonModel bm : buttonModels) {
-            if (bm.actionName.equals(anObject)) {
+            if (bm.actionName().equals(anObject)) {
                 bm.setSelected(true);
             }
         }
 
         if (performActionOnSetSelectedItem) {
             for (Action action : actions) {
-                if (action.getValue(Action.NAME).equals(anObject)) {
+                if (actionName(action).equals(anObject)) {
                     action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, (String) action.getValue(Action.ACTION_COMMAND_KEY)));
+                    break;
                 }
             }
         }
@@ -145,15 +155,19 @@ public class ActionAdapter extends DefaultComboBoxModel {
         /**
          * The NAME of the Action to which this ButtonModel is mapped.
          */
-        private final String actionName;
+        private final Action action;
 
         /**
          * @param action
          */
         private MappedButtonModel(Action action) {
-            actionName = (String) action.getValue(Action.NAME);
+            this.action = action;
             action.addPropertyChangeListener(this);
             setEnabled(action.isEnabled());
+        }
+
+        private String actionName() {
+            return ActionAdapter.actionName(action);
         }
 
         @Override
@@ -162,7 +176,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
                 super.setSelected(b);
 
                 if (b) {
-                    setSelectedItem(actionName);
+                    setSelectedItem(actionName());
                 }
             }
         }
@@ -170,6 +184,34 @@ public class ActionAdapter extends DefaultComboBoxModel {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             setEnabled(((Action) evt.getSource()).isEnabled());
+            if (Action.NAME.equals(evt.getPropertyName())) {
+                int index = buttonModels.indexOf(this);
+                String updatedName = actionName();
+                for (MappedButtonModel model : buttonModels) {
+                    if (model != this && model.actionName().equals(updatedName)) {
+                        throw new IllegalArgumentException("Action names must be unique: " + updatedName);
+                    }
+                }
+                Object selectedItem = getSelectedItem();
+                boolean oldValue = performActionOnSetSelectedItem;
+                performActionOnSetSelectedItem = false;
+                try {
+                    ActionAdapter.this.removeElementAt(index);
+                    ActionAdapter.this.insertElementAt(updatedName, index);
+                    setSelectedItem(Objects.equals(selectedItem, evt.getOldValue())
+                            ? updatedName : selectedItem);
+                } finally {
+                    performActionOnSetSelectedItem = oldValue;
+                }
+            }
         }
+    }
+
+    private static String actionName(Action action) {
+        Object name = action.getValue(Action.NAME);
+        if (!(name instanceof String stringName)) {
+            throw new IllegalArgumentException("Actions must have a non-null String name.");
+        }
+        return stringName;
     }
 }

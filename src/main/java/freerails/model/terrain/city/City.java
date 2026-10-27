@@ -18,7 +18,7 @@
 
 package freerails.model.terrain.city;
 
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 import freerails.util.Vec2D;
 
 // TODO Possible potential for expansion?? Initial size of city, growth rate etc.??? incorporate CityModel?

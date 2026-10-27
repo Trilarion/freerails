@@ -44,9 +44,9 @@ import java.util.Collection;
  * <ul>
  * <li>A list of players.</li>
  * <li>A 2D grid - the map.</li>
- * <li>A series of lists that are accessible using the keys defined in {@link SharedKey}</li>
- * <li>Another series of lists indexed by player and accessible using the keys defined in {@link PlayerKey}</li>
- * <li>A collection items accessible using the keys defined in {@link WorldItem}</li>
+ * <li>A series of lists accessible using shared keys.</li>
+ * <li>Another series of lists indexed by player and accessible using player-specific keys.</li>
+ * <li>A collection of items accessible using world-item keys.</li>
  * <li>A list of financial transaction for each of the players</li>
  * </ul>
  *

@@ -18,7 +18,7 @@
 
 package freerails.model.train;
 
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 import freerails.model.ModelConstants;
 import freerails.model.game.Time;
 import freerails.model.terrain.TileTransition;

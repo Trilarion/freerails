@@ -37,7 +37,6 @@ import freerails.model.world.World;
 
 
 import javax.swing.*;
-import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -56,7 +55,6 @@ public class LauncherClient extends FreerailsClient {
      * @param name
      * @param screenMode
      * @param displayMode
-     * @throws IOException
      */
     public LauncherClient(String name, int screenMode, Vec2D displayMode) {
         this.name = name;

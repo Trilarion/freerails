@@ -53,10 +53,10 @@ public class ClientOptionsPanel extends JPanel {
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
     private JRadioButton fullScreenButton;
-    private JList list1;
+    private JList<Vec2D> list1;
     private JPanel jPanel4;
     private JTextField playerName;
-    private JComboBox playerNames;
+    private JComboBox<String> playerNames;
     private JTextField remoteIP;
     private JTextField remotePort;
     private JRadioButton windowedButton;
@@ -70,7 +70,7 @@ public class ClientOptionsPanel extends JPanel {
         JPanel jPanel3 = new JPanel();
         JLabel label1 = new JLabel();
         playerName = new JTextField();
-        playerNames = new JComboBox();
+        playerNames = new JComboBox<>();
         jPanel4 = new JPanel();
         JLabel label2 = new JLabel();
         remoteIP = new JTextField();
@@ -79,7 +79,7 @@ public class ClientOptionsPanel extends JPanel {
         JPanel spacer = new JPanel();
         JPanel jPanel1 = new JPanel();
         JScrollPane jScrollPane1 = new JScrollPane();
-        list1 = new JList();
+        list1 = new JList<>();
         JPanel jPanel2 = new JPanel();
         windowedButton = new JRadioButton();
         fullScreenButton = new JRadioButton();
@@ -257,7 +257,7 @@ public class ClientOptionsPanel extends JPanel {
             } else {
                 playerName.setVisible(false);
                 playerNames.setVisible(true);
-                ComboBoxModel model = new DefaultComboBoxModel(names);
+                ComboBoxModel<String> model = new DefaultComboBoxModel<>(names);
                 playerNames.setModel(model);
             }
         }

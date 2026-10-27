@@ -16,16 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model;
+package freerails.util;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
 /**
- * All objects derived from Identifiable must not implement their own equals() or hashCode() functions. The idea is that
- * objects with the same id are equal. Objects of that type are typically used in some sort of set and can be identified
- * by their id from outside.
+ * Base class for objects whose identity and ordering are determined by an
+ * integer identifier.
+ *
+ * <p>Subclasses should not override {@link #equals(Object)} or
+ * {@link #hashCode()}, so objects with the same identifier retain the same
+ * equality and hashing behavior.
  */
 public class Identifiable implements Comparable<Identifiable>, Serializable {
 
@@ -39,25 +42,29 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
     }
 
     /**
+     * Creates an object with the given identifier.
      *
-     * @param id
+     * @param id identifier for this object
      */
     public Identifiable(int id) {
         this.id = id;
     }
 
     /**
+     * Returns this object's identifier.
      *
-     * @return
+     * @return the identifier
      */
     public int getId() {
         return id;
     }
 
     /**
+     * Tests whether another identifiable object has the same identifier.
      *
-     * @param obj
-     * @return
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} is an {@code Identifiable} with the
+     * same identifier
      */
     @Override
     public boolean equals(Object obj) {
@@ -72,8 +79,9 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
     }
 
     /**
+     * Returns the identifier as this object's hash code.
      *
-     * @return
+     * @return the identifier
      */
     @Override
     public final int hashCode() {
@@ -81,9 +89,12 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
     }
 
     /**
+     * Compares this object with another by identifier.
      *
-     * @param o
-     * @return
+     * @param o object to compare with
+     * @return a negative integer, zero, or a positive integer as this
+     * identifier is less than, equal to, or greater than {@code o}'s
+     * @throws NullPointerException if {@code o} is null
      */
     @Override
     public int compareTo(@NotNull Identifiable o) {
@@ -91,11 +102,12 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
     }
 
     /**
+     * Finds the first object with the specified identifier.
      *
-     * @param id
-     * @param list
-     * @param <T>
-     * @return
+     * @param id identifier to search for
+     * @param list objects to search
+     * @param <T> identifiable element type
+     * @return the first matching object, or {@code null} if none is found
      */
     public static <T extends Identifiable> T getById(int id, Iterable<T> list) {
         for (T t: list) {
@@ -106,4 +118,3 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
         return null;
     }
 }
-

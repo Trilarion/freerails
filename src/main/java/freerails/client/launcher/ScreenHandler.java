@@ -20,7 +20,6 @@ package freerails.client.launcher;
 
 import freerails.client.ClientConstants;
 import freerails.util.Vec2D;
-import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -147,13 +146,7 @@ public class ScreenHandler {
             }
 
             case ClientConstants.WINDOWED_MODE: {
-                // Some of the dialogue boxes do not get laid out properly if they
-                // are smaller than their
-                // minimum size. JFrameMinimumSizeEnforcer increases the size of the
-                // Jframe when its size falls
-                // below the specified size.
-                frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
-
+                frame.setMinimumSize(new Dimension(640, 480));
                 frame.setSize(640, 480);
                 frame.setVisible(true);
 

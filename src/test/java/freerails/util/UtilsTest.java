@@ -24,6 +24,9 @@ package freerails.util;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -44,6 +47,47 @@ public class UtilsTest extends TestCase {
         assertTrue(Utils.equalsBySerialization(b, b));
         assertTrue(Utils.equalsBySerialization(c, c));
         assertFalse(Utils.equalsBySerialization(a, c));
+    }
+
+    public void testRemoveLastRemovesLastElementRatherThanSizeValue() {
+        List<Integer> values = new ArrayList<>(Arrays.asList(4, 2, 3));
+
+        Utils.removeLast(values);
+
+        assertEquals(Arrays.asList(4, 2), values);
+    }
+
+    public void testRemoveLastRejectsEmptyCollection() {
+        try {
+            Utils.removeLast(new ArrayList<>());
+            fail("Expected IndexOutOfBoundsException");
+        } catch (IndexOutOfBoundsException expected) {
+            // expected
+        }
+    }
+
+    public void testRemoveLastOfListReturnsCopyWithoutLastElement() {
+        List<String> original = new ArrayList<>(Arrays.asList("a", "b", "c"));
+
+        List<String> result = Utils.removeLastOfList(original);
+
+        assertEquals(Arrays.asList("a", "b"), result);
+        assertEquals(Arrays.asList("a", "b", "c"), original);
+    }
+
+    public void testVerifyUnmodifiableReturnsDefensiveImmutableCopy() {
+        List<String> source = new ArrayList<>(Arrays.asList("one", "two"));
+
+        List<String> result = Utils.verifyUnmodifiable(source);
+        source.add("three");
+
+        assertEquals(Arrays.asList("one", "two"), result);
+        try {
+            result.add("four");
+            fail("Expected UnsupportedOperationException");
+        } catch (UnsupportedOperationException expected) {
+            // expected
+        }
     }
 
 }

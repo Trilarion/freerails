@@ -53,7 +53,7 @@ public class TrainSchedulePanel extends JPanel implements View {
     private JMenu addWagonJMenu;
     private JPopupMenu editOrderJPopupMenu;
     private JMenuItem gotoStationJMenuItem;
-    private JList orders;
+    private JList<TrainOrdersListModel.TrainOrdersListElement> orders;
     private JButton priorityOrdersJButton;
     private JMenuItem pullUpJMenuItem;
     private JMenuItem pushDownJMenuItem;
@@ -96,7 +96,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         addStationJButton = new JButton();
         priorityOrdersJButton = new JButton();
         JScrollPane jScrollPane1 = new JScrollPane();
-        orders = new JList();
+        orders = new JList<>();
 
         gotoStationJMenuItem.setText("Goto station");
         gotoStationJMenuItem.addActionListener(this::gotoStationJMenuItemActionPerformed);

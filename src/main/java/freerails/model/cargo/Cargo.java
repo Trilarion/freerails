@@ -18,7 +18,7 @@
 
 package freerails.model.cargo;
 
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 
 /**
  * Represents a certain type of cargo.

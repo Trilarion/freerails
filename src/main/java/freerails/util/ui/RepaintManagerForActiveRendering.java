@@ -23,8 +23,9 @@ package freerails.util.ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * This RepaintManager is intended to be used when we are using active rendering
@@ -42,10 +43,10 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
     /**
      * The JFrame(s) that are being actively rendered in the game loop(s).
      */
-    private static final Collection<JFrame> activelyRenderedComponents = new HashSet<>();
+    private static final Set<JFrame> activelyRenderedComponents = ConcurrentHashMap.newKeySet();
     private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
-    private static long numRepaintRequests = 0;
-    private static long numDirtyRequests;
+    private static final LongAdder numRepaintRequests = new LongAdder();
+    private static final LongAdder numDirtyRequests = new LongAdder();
 
     private RepaintManagerForActiveRendering() {
     }
@@ -60,8 +61,12 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
     /**
      * @param f
      */
-    public static synchronized void addJFrame(JFrame f) {
+    public static void addJFrame(JFrame f) {
         activelyRenderedComponents.add(f);
+    }
+
+    public static void removeJFrame(JFrame f) {
+        activelyRenderedComponents.remove(f);
     }
 
     private static boolean hasDifferentAncestor(JComponent aComponent) {
@@ -79,9 +84,9 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
     public synchronized void addDirtyRegion(JComponent c, int x, int y, int w, int h) {
         if (hasDifferentAncestor(c)) {
             super.addDirtyRegion(c, x, y, w, h);
-            numDirtyRequests++;
+            numDirtyRequests.increment();
         } else {
-            numRepaintRequests++;
+            numRepaintRequests.increment();
         }
     }
 
@@ -89,9 +94,9 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
     public synchronized void addInvalidComponent(JComponent invalidComponent) {
         if (hasDifferentAncestor(invalidComponent)) {
             super.addInvalidComponent(invalidComponent);
-            numDirtyRequests++;
+            numDirtyRequests.increment();
         } else {
-            numRepaintRequests++;
+            numRepaintRequests.increment();
         }
     }
 
@@ -99,9 +104,9 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
     public void markCompletelyClean(JComponent aComponent) {
         if (hasDifferentAncestor(aComponent)) {
             super.markCompletelyClean(aComponent);
-            numDirtyRequests++;
+            numDirtyRequests.increment();
         } else {
-            numRepaintRequests++;
+            numRepaintRequests.increment();
         }
     }
 
@@ -109,9 +114,9 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
     public void markCompletelyDirty(JComponent aComponent) {
         if (hasDifferentAncestor(aComponent)) {
             super.markCompletelyDirty(aComponent);
-            numDirtyRequests++;
+            numDirtyRequests.increment();
         } else {
-            numRepaintRequests++;
+            numRepaintRequests.increment();
         }
     }
 }

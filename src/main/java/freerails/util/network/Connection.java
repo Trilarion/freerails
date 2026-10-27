@@ -21,175 +21,263 @@ package freerails.util.network;
 import freerails.util.Utils;
 
 import java.io.*;
+import java.lang.reflect.Proxy;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 /**
- * Wrapper around a Socket and ObjectInput/OutputStreams so that Serializable objects
- * can be sent and read. The reading is done within a Thread that continually listens
- * for incoming objects.
+ * Sends serializable FreeRails protocol objects over a socket and queues
+ * objects received by a dedicated reader thread.
  */
-public class Connection {
+public class Connection implements AutoCloseable {
+
+    private static final long MAX_DEPTH = 100;
+    private static final long MAX_REFERENCES = 1_000_000;
+    private static final long MAX_STREAM_BYTES = 64L * 1024 * 1024;
+    private static final long MAX_ARRAY_LENGTH = 1_000_000;
+    private static final int MAX_QUEUED_MESSAGES = 32;
 
     private final Socket socket;
     private final ObjectOutputStream out;
     private final ObjectInputStream in;
-    private volatile boolean open = false;
-    // blocking queue with capacity of Integer.MAX_VALUE
-    private final BlockingQueue<Serializable> receivedObjects = new LinkedBlockingQueue<>();
-    private CountDownLatch signal;
+    private final BlockingQueue<Serializable> receivedObjects =
+            new LinkedBlockingQueue<>(MAX_QUEUED_MESSAGES);
+    private final Thread readerThread;
+    private volatile boolean open;
+    private volatile IOException readerFailure;
 
-    /**
-     *
-     * @param socket
-     * @throws IOException
-     */
     private Connection(Socket socket) throws IOException {
-
         Utils.verifyNotNull(socket);
         if (!socket.isConnected() || socket.isClosed()) {
             throw new IllegalArgumentException("Socket is not open or connected.");
         }
         this.socket = socket;
 
-        // connect streams output before input
-        OutputStream outputStream = socket.getOutputStream();
-        DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream(outputStream, true);
-        out = new ObjectOutputStream(deflaterOutputStream);
-        // otherwise the header is not sent and new ObjectInputStream blocks
-        out.flush();
+        try {
+            OutputStream outputStream = new DeflaterOutputStream(socket.getOutputStream(), true);
+            out = new ObjectOutputStream(outputStream);
+            out.flush();
 
-        InputStream inputStream = socket.getInputStream();
-        InflaterInputStream inflaterInputStream = new InflaterInputStream(inputStream);
-        // ObjectInputStream will block until the other side constructs the output stream
-        // https://docs.oracle.com/javase/9/docs/api/java/io/ObjectInputStream.html#ObjectInputStream--
-        in = new ObjectInputStream(inflaterInputStream);
+            InputStream inputStream = new InflaterInputStream(socket.getInputStream());
+            in = new ObjectInputStream(inputStream);
+            in.setObjectInputFilter(Connection::filterInput);
+        } catch (IOException e) {
+            try {
+                socket.close();
+            } catch (IOException closeException) {
+                e.addSuppressed(closeException);
+            }
+            throw e;
+        }
 
-        // thread that reads incoming objects and puts them in a blocking queue
-        Thread thread = new Thread(() -> {
-            open = true;
-            signal.countDown();
+        readerThread = new Thread(this::readMessages, "Connection Inbound Message Reader");
+        readerThread.setDaemon(true);
+        open = true;
+        readerThread.start();
+    }
+
+    private static ObjectInputFilter.Status filterInput(ObjectInputFilter.FilterInfo info) {
+        if (info.depth() > MAX_DEPTH || info.references() > MAX_REFERENCES
+                || info.streamBytes() > MAX_STREAM_BYTES
+                || info.arrayLength() > MAX_ARRAY_LENGTH) {
+            return ObjectInputFilter.Status.REJECTED;
+        }
+
+        Class<?> type = info.serialClass();
+        if (type == null) {
+            return ObjectInputFilter.Status.UNDECIDED;
+        }
+        return isAllowedProtocolClass(type)
+                ? ObjectInputFilter.Status.ALLOWED
+                : ObjectInputFilter.Status.REJECTED;
+    }
+
+    private static boolean isAllowedProtocolClass(Class<?> type) {
+        if (type.isArray()) {
+            Class<?> component = type.getComponentType();
+            return component == Object.class || component == Map.Entry.class || component.isPrimitive()
+                    || isAllowedProtocolClass(component);
+        }
+        if (Proxy.isProxyClass(type)) {
+            return false;
+        }
+        String name = type.getName();
+        if (name.startsWith("freerails.")) {
+            return true;
+        }
+        if (type.isEnum()) {
+            return name.startsWith("freerails.");
+        }
+        if (type == String.class || type == Boolean.class || type == Byte.class
+                || type == Short.class || type == Integer.class || type == Long.class
+                || type == Float.class || type == Double.class || type == Character.class
+                || type == Enum.class || type == Number.class || type == BigInteger.class
+                || type == BigDecimal.class) {
+            return true;
+        }
+        if (type == ArrayList.class || type == java.util.LinkedList.class
+                || type == java.util.HashMap.class || type == java.util.LinkedHashMap.class
+                || type == java.util.TreeMap.class || type == java.util.HashSet.class
+                || type == java.util.LinkedHashSet.class || type == java.util.TreeSet.class
+                || type == java.util.Vector.class || type == java.util.Hashtable.class
+                || name.equals("java.util.Arrays$ArrayList")) {
+            return true;
+        }
+        return name.startsWith("java.util.Collections$")
+                || name.startsWith("java.util.ImmutableCollections$")
+                || name.equals("java.util.CollSer")
+                || name.equals("java.util.HashMap$Node")
+                || name.equals("java.util.LinkedHashMap$Entry")
+                || name.equals("java.util.TreeMap$Entry");
+    }
+
+    private void readMessages() {
+        try {
             while (open) {
-                try {
-                    // read new object (blocks unless socket is closed)
-                    Serializable object = (Serializable) in.readObject();
-
-                    // add to queue (doesn't block)
-                    receivedObjects.add(object);
-                } catch (EOFException e) {
-                    // we cannot read anymore, the other side must have closed the connection
-                    close();
-                } catch (SocketException e ) {
-                    // close was called from outside
-                    assert !open;
-                } catch (IOException | ClassNotFoundException e) {
-                    // unexpected
-                    throw new RuntimeException(e);
+                Object object = in.readObject();
+                if (!(object instanceof Serializable serializable)) {
+                    throw new InvalidClassException("Received object is not serializable.");
+                }
+                if (!receivedObjects.offer(serializable)) {
+                    throw new IOException("Inbound message queue is full.");
                 }
             }
-            signal.countDown();
-        }, "Connection Inbound Message Reader");
-
-        // start the thread
-        signal = new CountDownLatch(1);
-        thread.start();
-
-        // wait until thread is running
-        try {
-            signal.await();
-        } catch (InterruptedException e) {
-            // unexpected
-            throw new RuntimeException(e);
+        } catch (EOFException e) {
+            // Socket closure does not finish the compressed stream.
+        } catch (SocketException e) {
+            if (open) {
+                readerFailure = e;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            if (open) {
+                readerFailure = e instanceof IOException ioException
+                        ? ioException : new IOException("Could not deserialize inbound message.", e);
+            }
+        } finally {
+            open = false;
+            try {
+                socket.close();
+            } catch (IOException e) {
+                if (readerFailure == null) {
+                    readerFailure = e;
+                }
+            }
         }
     }
 
-    public static Connection make(Socket socket) throws IOException{
+    public static Connection make(Socket socket) throws IOException {
         Utils.verifyNotNull(socket);
         return new Connection(socket);
     }
 
-    /**
-     *
-     * @param address
-     * @return
-     * @throws IOException
-     */
     public static Connection make(InetSocketAddress address) throws IOException {
         Utils.verifyNotNull(address);
-        Socket socket = new Socket(address.getAddress(), address.getPort());
-        return make(socket);
+        Socket socket = new Socket();
+        try {
+            socket.connect(address);
+            return make(socket);
+        } catch (IOException | RuntimeException e) {
+            try {
+                socket.close();
+            } catch (IOException closeException) {
+                e.addSuppressed(closeException);
+            }
+            throw e;
+        }
     }
 
     /**
-     *
-     * This does not block.
-     *
-     * @return
+     * Removes and returns all messages currently queued by the reader thread.
      */
     public List<Serializable> getReceivedObjects() {
-        List<Serializable> objects = new LinkedList<>();
-        for (Serializable object: receivedObjects) {
-            receivedObjects.remove(object);
-            objects.add(object);
-        }
+        List<Serializable> objects = new ArrayList<>();
+        receivedObjects.drainTo(objects);
         return objects;
     }
 
     /**
-     * This blocks.
+     * Waits for the next message.
      *
-     * @return
+     * @return the next message
+     * @throws IllegalStateException if the connection closes before another
+     *                                message arrives or reading fails
      */
     public Serializable receiveObject() {
-        try {
-            return receivedObjects.take();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (true) {
+            try {
+                Serializable object = receivedObjects.poll(100, TimeUnit.MILLISECONDS);
+                if (object != null) {
+                    return object;
+                }
+                if (!open) {
+                    if (readerFailure != null) {
+                        throw new IllegalStateException("Failed to read from connection.", readerFailure);
+                    }
+                    throw new IllegalStateException("Connection closed before a message arrived.");
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Interrupted while waiting for a message.", e);
+            }
         }
     }
 
-    /**
-     *
-     * @param object
-     * @throws IOException
-     */
     public synchronized void sendObject(Serializable object) throws IOException {
+        Utils.verifyNotNull(object, "object");
         if (!open) {
             throw new IllegalStateException("Connection is not open");
         }
         out.writeObject(object);
+        out.reset();
         out.flush();
     }
 
-    /**
-     *
-     * @return
-     */
     public boolean isOpen() {
         return open;
     }
 
     /**
-     *
+     * Returns an unexpected reader failure, or {@code null} if none occurred.
      */
+    public IOException getReaderFailure() {
+        return readerFailure;
+    }
+
+    @Override
     public void close() {
         open = false;
-        signal = new CountDownLatch(1);
+        IllegalStateException closeFailure = null;
         try {
             socket.close();
-            // wait until the thread has ended
-            signal.await();
-        } catch (IOException | InterruptedException e) {
-            // unexpected
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            closeFailure = new IllegalStateException("Could not close connection socket.", e);
+        }
+        if (Thread.currentThread() != readerThread) {
+            try {
+                readerThread.join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                IllegalStateException interrupted =
+                        new IllegalStateException("Interrupted while closing connection.", e);
+                if (closeFailure != null) {
+                    interrupted.addSuppressed(closeFailure);
+                }
+                throw interrupted;
+            }
+        }
+        if (closeFailure != null) {
+            throw closeFailure;
         }
     }
 }

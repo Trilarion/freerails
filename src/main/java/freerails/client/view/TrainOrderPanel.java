@@ -40,7 +40,7 @@ import java.util.Map;
 /**
  * ListCellRenderer that displays a train order.
  */
-public class TrainOrderPanel implements View, ListCellRenderer {
+public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListModel.TrainOrdersListElement> {
 
     private final Icon gotoNow = new ImageIcon(TrainOrderPanel.class.getResource(ClientConstants.GRAPHIC_ARROW_SELECTED));
     private final Icon gotoAfterPriorityOrders = new ImageIcon(TrainOrderPanel.class.getResource(ClientConstants.GRAPHIC_ARROW_DESELECTED));
@@ -78,8 +78,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement) value;
+    public Component getListCellRendererComponent(JList<? extends TrainOrdersListModel.TrainOrdersListElement> list, TrainOrdersListModel.TrainOrdersListElement trainOrders, int index, boolean isSelected, boolean cellHasFocus) {
 
         // Set station name
         int stationNumber = trainOrders.order.getStationId();

@@ -19,7 +19,7 @@
 package freerails.model.track;
 
 import freerails.io.Conceal;
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 import freerails.model.finance.Money;
 import freerails.model.terrain.TerrainCategory;
 import org.jetbrains.annotations.NotNull;

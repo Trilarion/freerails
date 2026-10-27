@@ -29,6 +29,7 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 
 import java.awt.*;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -58,14 +59,31 @@ public class BuildTrackRenderer implements Painter {
         if (modelRoot == null) {
             return;
         }
-        Map<Vec2D, TrackPiece> proposedTrack = (Map<Vec2D, TrackPiece>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
-
-        if (proposedTrack == null) {
+        Object proposedTrackProperty = modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+        if (proposedTrackProperty == null) {
             return;
         }
+        if (!(proposedTrackProperty instanceof Map<?, ?> proposedTrackValues)) {
+            throw new IllegalStateException("Proposed track property is not a map.");
+        }
+        Map<Vec2D, TrackPiece> proposedTrack = new LinkedHashMap<>();
 
-        for (Vec2D point : proposedTrack.keySet()) {
-            TrackPiece trackPiece = proposedTrack.get(point);
+        for (Map.Entry<?, ?> entry : proposedTrackValues.entrySet()) {
+            if (!(entry.getKey() instanceof Vec2D point)) {
+                throw new IllegalStateException("Proposed track map contains a non-position key.");
+            }
+            if (entry.getValue() == null) {
+                proposedTrack.put(point, null);
+            } else if (entry.getValue() instanceof TrackPiece trackPiece) {
+                proposedTrack.put(point, trackPiece);
+            } else {
+                throw new IllegalStateException("Proposed track map contains a non-track value.");
+            }
+        }
+
+        for (Map.Entry<Vec2D, TrackPiece> entry : proposedTrack.entrySet()) {
+            Vec2D point = entry.getKey();
+            TrackPiece trackPiece = entry.getValue();
             if (trackPiece != null) {
 
                 int graphicsNumber = trackPiece.getTrackGraphicID();

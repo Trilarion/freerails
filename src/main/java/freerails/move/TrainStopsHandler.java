@@ -69,7 +69,7 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     * @return
+     * @param location the location at which the train has arrived
      */
     public void arrivesAtPoint(Vec2D location) {
         Vec2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);

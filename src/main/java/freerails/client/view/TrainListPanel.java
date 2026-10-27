@@ -28,6 +28,7 @@ import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
+import freerails.model.train.Train;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -48,7 +49,7 @@ public class TrainListPanel extends JPanel implements View {
     // TODO empty showTrainDetails
     private ActionListener showTrainDetails = e -> {};
     private JButton closeJButton;
-    private JList list1;
+    private JList<Train> list1;
     private JScrollPane jScrollPane1;
     private JButton showDetails;
     private TrainSummaryPanel trainSummaryPanel1;
@@ -64,7 +65,7 @@ public class TrainListPanel extends JPanel implements View {
         closeJButton = new JButton();
         showDetails = new JButton();
         jScrollPane1 = new JScrollPane();
-        list1 = new JList();
+        list1 = new JList<>();
         JLabel trainNumLabel = new JLabel();
         JLabel trainHeadingLabel = new JLabel();
         JLabel maintenanceLabel = new JLabel();

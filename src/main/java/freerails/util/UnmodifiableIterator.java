@@ -21,21 +21,25 @@ package freerails.util;
 import java.util.Iterator;
 
 /**
- * Decorates an iterator such that it cannot be modified.
+ * A read-only view of another iterator.
  *
- * Attempts to modify it will result in an UnsupportedOperationException.
+ * <p>Traversal delegates to the wrapped iterator, but removal is not
+ * supported.
  *
  * Similar to org.apache.commons.collections4.Unmodifiable.
  *
- * @param <E>
+ * @param <E> element type
  */
 public final class UnmodifiableIterator<E> implements Iterator<E> {
 
-    /** The iterator being decorated */
+    /** The iterator being decorated. */
     private final Iterator<? extends E> iterator;
 
     /**
-     * @param iterator the iterator to decorate
+     * Creates a read-only wrapper around an iterator.
+     *
+     * @param iterator iterator to decorate
+     * @throws NullPointerException if {@code iterator} is null
      */
     private UnmodifiableIterator(final Iterator<? extends E> iterator) {
         super();
@@ -43,16 +47,43 @@ public final class UnmodifiableIterator<E> implements Iterator<E> {
         this.iterator = iterator;
     }
 
+    /**
+     * Creates a read-only wrapper around an iterator.
+     *
+     * @param iterator iterator to decorate
+     * @param <E> element type
+     * @return an iterator that delegates traversal and rejects removal
+     */
+    public static <E> UnmodifiableIterator<E> of(Iterator<? extends E> iterator) {
+        return new UnmodifiableIterator<>(iterator);
+    }
+
+    /**
+     * Indicates whether the wrapped iterator has another element.
+     *
+     * @return {@code true} if another element is available
+     */
     @Override
     public boolean hasNext() {
         return iterator.hasNext();
     }
 
+    /**
+     * Returns the next element from the wrapped iterator.
+     *
+     * @return the next element
+     * @throws java.util.NoSuchElementException if no element remains
+     */
     @Override
     public E next() {
         return iterator.next();
     }
 
+    /**
+     * Always throws because this iterator does not support removal.
+     *
+     * @throws UnsupportedOperationException always
+     */
     @Override
     public void remove() {
         throw new UnsupportedOperationException("Cannot remove() from an UnmodifiableIterator.");

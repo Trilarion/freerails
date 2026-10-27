@@ -18,7 +18,7 @@
 
 package freerails.model.station;
 
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 

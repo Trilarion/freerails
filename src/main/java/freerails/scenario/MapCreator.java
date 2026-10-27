@@ -145,8 +145,8 @@ public class MapCreator {
         World world = builder.build();
 
         // TODO what is the purpose of the following section (randomization)
-        final List<Integer> countryTypes = new ArrayList();
-        final List<Integer> non_countryTypes = new ArrayList();
+        final List<Integer> countryTypes = new ArrayList<>();
+        final List<Integer> non_countryTypes = new ArrayList<>();
 
         for (Terrain terrainType: world.getTerrains()) {
 
@@ -164,7 +164,7 @@ public class MapCreator {
         /*
          * create vector to keep track of terrain randomisation 'clumping'
          */
-        List<TerrainAtLocation> locations = new ArrayList();
+        List<TerrainAtLocation> locations = new ArrayList<>();
 
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {

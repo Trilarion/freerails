@@ -71,8 +71,10 @@ Persistence, communication, and infrastructure:
 - ``freerails.network`` contains connection-level login data;
   ``.network.command`` contains client/server commands.
 - ``freerails.server`` contains server-side game processing.
-- ``freerails.util`` contains shared utilities; ``.util.network`` provides socket
-  connection helpers, and ``.util.ui`` provides reusable Swing utilities.
+- ``freerails.util`` contains shared utilities and does not depend on other
+  ``freerails`` packages. This applies to the base package, not its subpackages:
+  ``.util.network`` provides socket connection helpers, and ``.util.ui`` provides
+  reusable Swing utilities.
 
 ``UnmodifiableWorld`` is the query-oriented state API and ``World`` provides
 broader mutation; despite its name, ``UnmodifiableWorld`` includes ``setSpeed`` and

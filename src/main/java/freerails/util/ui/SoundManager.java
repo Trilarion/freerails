@@ -21,10 +21,7 @@ package freerails.util.ui;
 import org.apache.log4j.Logger;
 
 import javax.sound.sampled.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Deque;
 import java.util.HashMap;
@@ -44,19 +41,22 @@ public class SoundManager implements LineListener {
     private final Deque<Clip> voices = new LinkedList<>();
     private int maxLines;
     private Mixer mixer;
-    private boolean playingSounds = true;
+    private volatile boolean playingSounds = true;
 
     private SoundManager() {
-        AudioFormat format2 = new AudioFormat(8000.0f, 16, 1, true, false);
-        DataLine.Info info2 = new DataLine.Info(null, format2, 0);
+        AudioFormat format = new AudioFormat(8000.0f, 16, 1, true, false);
+        DataLine.Info lineInfo = new DataLine.Info(Clip.class, format);
         for (Mixer.Info mo : AudioSystem.getMixerInfo()) {
-
-            mixer = AudioSystem.getMixer(mo);
-            maxLines = mixer.getMaxLines(info2);
-            if (maxLines >= 32) break; // Java Sound Audio Engine, version 1.0 satisfies this.
+            Mixer candidate = AudioSystem.getMixer(mo);
+            int candidateMaxLines = candidate.getMaxLines(lineInfo);
+            if (candidateMaxLines > 0) {
+                mixer = candidate;
+                maxLines = candidateMaxLines;
+                if (maxLines >= 32) {
+                    break;
+                }
+            }
         }
-        // TODO this crashes Travis because no Mixer is available there probably, fix
-        // logger.debug("Sound Mixer: " + mixer.getMixerInfo() + '(' + maxLines + " voices).");
     }
 
     /**
@@ -66,81 +66,76 @@ public class SoundManager implements LineListener {
         return INSTANCE;
     }
 
-    private static ByteArrayInputStream loadStream(InputStream inputstream) throws IOException {
-        ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-        byte[] data = new byte[1024];
-
-        for (int i = inputstream.read(data); i != -1; i = inputstream.read(data)) {
-            bytearrayoutputstream.write(data, 0, i);
-        }
-
-        inputstream.close();
-        bytearrayoutputstream.close();
-        data = bytearrayoutputstream.toByteArray();
-
-        return new ByteArrayInputStream(data);
-    }
-
     /**
      * @param s
      * @throws IOException
      * @throws UnsupportedAudioFileException
-     * @throws LineUnavailableException
      */
-    public void addClip(String s) throws IOException, UnsupportedAudioFileException {
+    public synchronized void addClip(String s) throws IOException, UnsupportedAudioFileException {
         if (samples.containsKey(s)) {
             return;
         }
 
         URL url = getClass().getResource(s);
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(loadStream(url.openStream()));
-
-        AudioSample audioSample = new AudioSample();
-
-        audioSample.format = audioInputStream.getFormat();
-        audioSample.size = (int) (audioSample.format.getFrameSize() * audioInputStream.getFrameLength());
-        audioSample.audio = new byte[audioSample.size];
-        audioSample.info = new DataLine.Info(Clip.class, audioSample.format, audioSample.size);
-        audioInputStream.read(audioSample.audio, 0, audioSample.size);
-        samples.put(s, audioSample);
+        if (url == null) {
+            throw new IOException("Sound resource not found: " + s);
+        }
+        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url)) {
+            AudioFormat format = audioInputStream.getFormat();
+            byte[] audio = audioInputStream.readAllBytes();
+            if (audio.length == 0) {
+                throw new IOException("Sound resource is empty: " + s);
+            }
+            samples.put(s, new AudioSample(format, audio,
+                    new DataLine.Info(Clip.class, format, audio.length)));
+        }
     }
 
     /**
      * @param s
      * @param loops
      */
-    public void playSound(String s, int loops) {
-        if (playingSounds) {
-            try {
-                if (!samples.containsKey(s)) {
-                    addClip(s);
-                }
-
-                AudioSample audioSample = samples.get(s);
-
-                Clip clip;
-                if (voices.size() < maxLines) {
-                    clip = (Clip) mixer.getLine(audioSample.info);
-                } else {
-                    clip = voices.removeFirst();
-                    clip.stop();
-                    clip.flush();
-                    clip.close();
-                }
-                clip.addLineListener(this);
-                clip.open(audioSample.format, audioSample.audio, 0, audioSample.size);
-                clip.loop(loops);
-                voices.add(clip);
-            } catch (LineUnavailableException e) {
-                logger.warn(e.getMessage());
-            } catch (Exception ignored) {
+    public synchronized void playSound(String s, int loops) {
+        if (!playingSounds) {
+            return;
+        }
+        if (mixer == null || maxLines == 0) {
+            logger.warn("No audio mixer is available; cannot play sound " + s);
+            return;
+        }
+        try {
+            addClip(s);
+            AudioSample sample = samples.get(s);
+            Clip clip;
+            if (voices.size() < maxLines) {
+                clip = (Clip) mixer.getLine(sample.info());
+            } else {
+                clip = voices.removeFirst();
+                clip.stop();
+                clip.flush();
+                clip.close();
             }
+            try {
+                clip.addLineListener(this);
+                clip.open(sample.format(), sample.audio(), 0, sample.audio().length);
+                voices.addLast(clip);
+                clip.loop(loops);
+            } catch (LineUnavailableException | IllegalArgumentException e) {
+                clip.close();
+                throw e;
+            }
+        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException
+                 | IllegalArgumentException e) {
+            logger.warn("Could not play sound " + s, e);
         }
     }
 
     @Override
-    public void update(LineEvent event) {
-        // TODO free up resources when we have finished playing a clip.
+    public synchronized void update(LineEvent event) {
+        if (event.getType() == LineEvent.Type.STOP && event.getSource() instanceof Clip clip
+                && voices.remove(clip)) {
+            clip.close();
+        }
     }
 
     public boolean isPlayingSounds() {
@@ -154,15 +149,7 @@ public class SoundManager implements LineListener {
     /**
      * Stores the audio data and properties of a sample.
      */
-    private static class AudioSample {
-
-        private byte[] audio;
-
-        private AudioFormat format;
-
-        private DataLine.Info info;
-
-        private int size;
+    private record AudioSample(AudioFormat format, byte[] audio, DataLine.Info info) {
     }
 
 }

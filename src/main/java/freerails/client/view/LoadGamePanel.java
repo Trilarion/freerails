@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class LoadGamePanel extends JPanel implements View {
     private ModelRoot modelRoot;
     private ActionListener close;
 
-    private JList list1;
+    private JList<String> list1;
     private JButton okButton;
     private List<String> lastFiles;
 
@@ -56,7 +57,7 @@ public class LoadGamePanel extends JPanel implements View {
         GridBagConstraints gridBagConstraints;
 
         JScrollPane jScrollPane1 = new JScrollPane();
-        list1 = new JList();
+        list1 = new JList<>();
         JLabel label1 = new JLabel();
         okButton = new JButton();
         JButton cancelButton = new JButton();
@@ -150,8 +151,8 @@ public class LoadGamePanel extends JPanel implements View {
     }
 
     private void updateListOfFiles() {
-        List<String> files = (List<String>) modelRoot.getProperty(ModelRootProperty.SAVED_GAMES_LIST);
-        Object[] saves = new Object[files.size()];
+        List<String> files = getSavedGames();
+        String[] saves = new String[files.size()];
         for (int i = 0; i < files.size(); i++) {
             saves[i] = files.get(i);
         }
@@ -162,11 +163,26 @@ public class LoadGamePanel extends JPanel implements View {
 
     @Override
     protected void paintComponent(Graphics g) {
-        List<String> files = (List<String>) modelRoot.getProperty(ModelRootProperty.SAVED_GAMES_LIST);
+        List<String> files = getSavedGames();
         if (!lastFiles.equals(files)) {
             updateListOfFiles();
         }
         super.paintComponent(g);
+    }
+
+    private List<String> getSavedGames() {
+        Object savedGames = modelRoot.getProperty(ModelRootProperty.SAVED_GAMES_LIST);
+        if (!(savedGames instanceof List<?> values)) {
+            throw new IllegalStateException("Saved games property is not a list.");
+        }
+        List<String> files = new ArrayList<>(values.size());
+        for (Object value : values) {
+            if (!(value instanceof String filename)) {
+                throw new IllegalStateException("Saved games list contains a non-string value.");
+            }
+            files.add(filename);
+        }
+        return files;
     }
 
 

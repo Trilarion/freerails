@@ -27,7 +27,13 @@ import java.util.NoSuchElementException;
 // TODO implement Iterator interface
 // TODO if not has previous and hasNext is used at the same time, what about Iterator on standard reversed list?
 /**
+ * Traverses a list forwards and backwards while exposing the current element.
  *
+ * <p>The iterator starts on the first element (or has no current element for
+ * an empty list). The list is retained rather than copied, so subsequent
+ * changes to it may affect traversal.
+ *
+ * @param <E> element type
  */
 public class BidirectionalIterator<E> {
 
@@ -37,6 +43,10 @@ public class BidirectionalIterator<E> {
 
     // TODO defensive copy of list?
     /**
+     * Creates an iterator over a list.
+     *
+     * @param list list to traverse
+     * @throws NullPointerException if {@code list} is null
      */
     public BidirectionalIterator(@NotNull List<E> list) {
         this.list = list;
@@ -47,21 +57,27 @@ public class BidirectionalIterator<E> {
     }
 
     /**
-     * @return
+     * Returns the current element.
+     *
+     * @return the current element, or {@code null} if the list is empty
      */
     public E get() {
         return current;
     }
 
     /**
-     * @return
+     * Indicates whether there is an element after the current one.
+     *
+     * @return {@code true} if advancing would move to another element
      */
     public boolean hasNext() {
         return currentIndex + 1 < list.size();
     }
 
     /**
+     * Advances to the next element.
      *
+     * @throws NoSuchElementException if there is no next element
      */
     public void next() {
         if (!hasNext()) {
@@ -72,7 +88,9 @@ public class BidirectionalIterator<E> {
     }
 
     /**
+     * Moves directly to the last element.
      *
+     * @throws IndexOutOfBoundsException if the list is empty
      */
     public void gotoLast() {
         currentIndex = list.size() - 1;
@@ -80,14 +98,18 @@ public class BidirectionalIterator<E> {
     }
 
     /**
-     * @return
+     * Indicates whether there is an element before the current one.
+     *
+     * @return {@code true} if moving backwards would reach another element
      */
     public boolean hasPrevious() {
         return currentIndex > 0;
     }
 
     /**
-     * @throws NoSuchElementException
+     * Moves to the previous element.
+     *
+     * @throws NoSuchElementException if there is no previous element
      */
     public void previous() throws NoSuchElementException {
         if (!hasPrevious()) {

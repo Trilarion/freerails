@@ -165,6 +165,8 @@ public class GameLoop implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
             LauncherFrame.emergencyStop();
+        } finally {
+            RepaintManagerForActiveRendering.removeJFrame(screenHandler.frame);
         }
     }
 }

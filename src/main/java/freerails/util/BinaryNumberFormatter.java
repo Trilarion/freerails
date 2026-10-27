@@ -23,38 +23,52 @@
 package freerails.util;
 
 /**
- * Used to generate file names for track and terrain images.
+ * Formats non-negative integers as fixed-width binary strings, including for
+ * use in track and terrain image file names.
  */
 public class BinaryNumberFormatter {
 
+    /**
+     * Prevents instantiation of this utility class.
+     */
     private BinaryNumberFormatter() {
     }
 
     /**
-     * @param i
-     * @param bits
-     * @return
+     * Formats an integer as a binary string padded with leading zeroes to the
+     * requested width.
+     *
+     * @param i non-negative integer to format
+     * @param bits number of binary digits
+     * @return the zero-padded binary representation of {@code i}
+     * @throws IllegalArgumentException if {@code bits} is outside 0 through
+     *                                  31, or {@code i} is negative or does
+     *                                  not fit in the requested number of bits
      */
     public static String format(int i, int bits) {
-        int maxValue = 1 << bits;
-
-        if (i < 0) {
-            throw new IllegalArgumentException("i must be greater than 0.  It was " + i);
+        if (bits < 0 || bits > Integer.SIZE - 1) {
+            throw new IllegalArgumentException("bits must be between 0 and 31: " + bits);
         }
-
-        if (i >= maxValue) {
-            throw new IllegalArgumentException("i must be less than " + maxValue + ".  It was " + i + " (" + Integer.toString(i, 2) + ')');
+        if (i < 0 || (bits == 0 ? i != 0 : (i >>> bits) != 0)) {
+            throw new IllegalArgumentException("Value " + i + " does not fit in " + bits + " bits.");
         }
-
-        String s = Integer.toString(i + maxValue, 2);
-
-        return s.substring(1);
+        if (bits == 0) {
+            return "";
+        }
+        String binary = Integer.toBinaryString(i);
+        return "0".repeat(bits - binary.length()) + binary;
     }
 
     /**
-     * @param i
-     * @param bits
-     * @return
+     * Formats an integer as a fixed-width binary string with the least
+     * significant bit at the left.
+     *
+     * @param i non-negative integer to format
+     * @param bits number of binary digits
+     * @return the zero-padded binary representation of {@code i}, reversed
+     * @throws IllegalArgumentException if {@code bits} is outside 0 through
+     *                                  31, or {@code i} is negative or does
+     *                                  not fit in the requested number of bits
      */
     public static String formatWithLowBitOnLeft(int i, int bits) {
         StringBuilder buff = new StringBuilder(format(i, bits));

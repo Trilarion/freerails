@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Displays an engine and a number of wagons.
  */
-public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer {
+public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer<Train> {
 
     private static final long serialVersionUID = 3546076964969591093L;
     private final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
@@ -170,7 +170,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int trainId, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Train> list, Train value, int trainId, boolean isSelected, boolean cellHasFocus) {
 
         // TODO this is probably supposed to be the index.th entry of a list
         display(trainId);

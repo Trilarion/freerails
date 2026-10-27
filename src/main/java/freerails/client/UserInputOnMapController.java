@@ -74,8 +74,6 @@ public class UserInputOnMapController extends KeyAdapter {
         actionRoot = ar;
     }
 
-    // Inner class was here...
-
     /**
      * @param mv
      * @param trackBuilder
@@ -84,7 +82,6 @@ public class UserInputOnMapController extends KeyAdapter {
      * @param dbc
      * @param buildTrackController
      */
-
     public void setup(DetailMapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot modelRoot, DialogueBoxController dbc, BuildTrackController buildTrackController) {
         dialogueBoxController = dbc;
         mapView = mv;
@@ -129,7 +126,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 break;
 
             case KeyEvent.VK_DOWN:
-                if (e.getModifiers() == 2) moveCursorOneTile(TileTransition.SOUTH);
+                if (e.isControlDown()) moveCursorOneTile(TileTransition.SOUTH);
                 break;
 
             case KeyEvent.VK_NUMPAD3:
@@ -141,7 +138,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 break;
 
             case KeyEvent.VK_LEFT:
-                if (e.getModifiers() == 2) moveCursorOneTile(TileTransition.WEST);
+                if (e.isControlDown()) moveCursorOneTile(TileTransition.WEST);
                 break;
 
             case KeyEvent.VK_NUMPAD6:
@@ -149,7 +146,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 break;
 
             case KeyEvent.VK_RIGHT:
-                if (e.getModifiers() == 2) moveCursorOneTile(TileTransition.EAST);
+                if (e.isControlDown()) moveCursorOneTile(TileTransition.EAST);
                 break;
 
             case KeyEvent.VK_NUMPAD7:
@@ -161,7 +158,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 break;
 
             case KeyEvent.VK_UP:
-                if (e.getModifiers() == 2) moveCursorOneTile(TileTransition.NORTH);
+                if (e.isControlDown()) moveCursorOneTile(TileTransition.NORTH);
                 break;
 
             case KeyEvent.VK_NUMPAD9:
@@ -219,7 +216,7 @@ public class UserInputOnMapController extends KeyAdapter {
             }
 
             case KeyEvent.VK_S: {
-                if (e.getModifiers() == 2) {
+                if (e.isControlDown()) {
 
                     ServerControlModel cont = actionRoot.getServerControls();
                     // String name = JOptionPane.showInputDialog(null, "Saved Game
@@ -232,7 +229,7 @@ public class UserInputOnMapController extends KeyAdapter {
             }
 
             case KeyEvent.VK_L: {
-                if (e.getModifiers() == 2) {
+                if (e.isControlDown()) {
                     ServerControlModel cont = actionRoot.getServerControls();
                     cont.getLoadGameAction().actionPerformed(null);
                 }

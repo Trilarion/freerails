@@ -91,5 +91,10 @@ public final class Version {
     }
 }
 
-compileJava.dependsOn tasks.named('generateVersionInfo')
-compileJava.source tasks.named('generateVersionInfo').map { it.outputs.files }, sourceSets.main.java
+tasks.named('jar') {
+    dependsOn tasks.named('generateVersionInfo')
+}
+
+tasks.named('compileJava') {
+    mustRunAfter tasks.named('generateVersionInfo')
+}

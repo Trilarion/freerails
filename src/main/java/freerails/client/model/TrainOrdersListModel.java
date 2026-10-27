@@ -35,7 +35,7 @@ import javax.swing.*;
  * AbstractListModel used by {@link TrainSchedulePanel} to display the orders
  * making up a train schedule.
  */
-public class TrainOrdersListModel extends AbstractListModel {
+public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel.TrainOrdersListElement> {
 
     public static final int DONT_GOTO = 0;
     public static final int GOTO_NOW = 1;
@@ -59,7 +59,7 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     @Override
-    public Object getElementAt(int index) {
+    public TrainOrdersListElement getElementAt(int index) {
         UnmodifiableSchedule schedule = getSchedule();
         int gotoStatus;
 

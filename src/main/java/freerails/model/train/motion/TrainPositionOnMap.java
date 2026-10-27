@@ -44,7 +44,7 @@ import java.util.List;
  * Train positions can be combined and divided as illustrated below (notice what
  * happens to the head and tail that are combined)
  *
- * <table width="100%" border="0">
+ * <table>
  * <caption>??</caption>
  * <tr>
  * <td>if</td>

@@ -50,8 +50,8 @@ public interface Move extends Serializable {
      * Tests whether this move can be applied on the specified world object.
      * The test must leave the world object unchanged.
      *
-     * @param world
-     * @return
+     * @param world world to test
+     * @return the status indicating whether this move can be applied
      */
     @NotNull Status applicable(@NotNull UnmodifiableWorld world);
 
@@ -59,8 +59,7 @@ public interface Move extends Serializable {
      * Applies the move on the specified world object.
      * It should not check if the move is applicable.
      *
-     * @param world
-     * @return
+     * @param world world to modify
      */
     void apply(@NotNull World world);
 

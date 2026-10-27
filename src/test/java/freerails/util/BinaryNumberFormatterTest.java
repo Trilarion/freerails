@@ -38,6 +38,11 @@ public class BinaryNumberFormatterTest extends TestCase {
         assertEquals("11", BinaryNumberFormatter.format(3, 2));
 
         assertEquals("1111", BinaryNumberFormatter.format(15, 4));
+        assertEquals("", BinaryNumberFormatter.format(0, 0));
+        assertEquals("1111111111111111111111111111111",
+                BinaryNumberFormatter.format(Integer.MAX_VALUE, 31));
+        assertEquals("1000000000000000000000000000000",
+                BinaryNumberFormatter.formatWithLowBitOnLeft(1, 31));
 
         try {
             BinaryNumberFormatter.format(-1, 2);
@@ -49,6 +54,22 @@ public class BinaryNumberFormatterTest extends TestCase {
             BinaryNumberFormatter.format(4, 2);
             assertTrue(false);
         } catch (IllegalArgumentException e) {
+        }
+
+        assertInvalidWidth(-1);
+        assertInvalidWidth(32);
+        try {
+            BinaryNumberFormatter.format(1, 0);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException expected) {
+        }
+    }
+
+    private void assertInvalidWidth(int bits) {
+        try {
+            BinaryNumberFormatter.format(0, bits);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException expected) {
         }
     }
 }

@@ -53,17 +53,25 @@ public class EchoServerTest extends TestCase {
 
         c.close();
         assertTrue(!c.isOpen());
-
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException ignored) {}
-
-        assertEquals(0, server.getNumberActiveConnections());
+        awaitActiveConnections(server, 0);
 
 
         server.stopRunning();
         assertTrue(!server.isRunning());
     }
 
+    private static void awaitActiveConnections(EchoServer server, int expected) {
+        long deadline = System.currentTimeMillis() + 2_000;
+        while (server.getNumberActiveConnections() != expected
+                && System.currentTimeMillis() < deadline) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new AssertionError(e);
+            }
+        }
+        assertEquals(expected, server.getNumberActiveConnections());
+    }
 
 }

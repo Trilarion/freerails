@@ -24,7 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import freerails.client.ARGBColor;
 import freerails.io.adapter.ColorAdapter;
 import freerails.io.adapter.MoneyAdapter;
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 import freerails.model.ModelConstants;
 import freerails.model.cargo.Cargo;
 import freerails.model.finance.Money;

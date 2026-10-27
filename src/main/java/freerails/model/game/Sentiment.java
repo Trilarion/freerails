@@ -21,7 +21,7 @@
  */
 package freerails.model.game;
 
-import freerails.model.Identifiable;
+import freerails.util.Identifiable;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -19,10 +19,11 @@
 package freerails.util;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
- * Generic immutable Pair<A, B> implementation to help when you really only need
- * a simple, immutable Pair, nothing else.
+ * Generic immutable pair for cases that need two values without additional
+ * domain-specific behavior.
  *
  * In all examples where semantics would help coding it might be better to use
  * a meaningful naming convention. However for the cases, where the use is simple
@@ -35,12 +36,11 @@ import java.io.Serializable;
  * @param <A> Type of first element.
  * @param <B> Type of second element.
  */
-public class Pair<A, B> implements Serializable{
+public class Pair<A, B> implements Serializable {
 
-    /**
-     * Two final elements of two different types.
-     */
+    /** First element. */
     private final A a;
+    /** Second element. */
     private final B b;
 
     /**
@@ -87,18 +87,22 @@ public class Pair<A, B> implements Serializable{
     }
 
     /**
-     * Implementation of an equals method.
+     * Compares this pair with another pair.
      *
-     * @param obj Another object.
-     * @return True if they are of the same class and not null and both elements
-     * are equal.
+     * <p>Both elements are compared with {@link Objects#equals(Object, Object)}.
+     *
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} is a pair of the same runtime class
+     * with equal elements
      */
-    // TODO use Objects.equals() to include null checks correctly
     @Override
     public boolean equals(Object obj) {
-        if (obj != null && getClass() == obj.getClass() && a != null && b != null) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj != null && getClass() == obj.getClass()) {
             @SuppressWarnings("unchecked") Pair<A, B> o = (Pair<A, B>) obj;
-            return a.equals(o.getA()) && b.equals(o.getB());
+            return Objects.equals(a, o.a) && Objects.equals(b, o.b);
         }
         return false;
     }

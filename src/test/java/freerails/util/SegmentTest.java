@@ -32,4 +32,19 @@ public class SegmentTest extends TestCase {
         Segment line = new Segment(Vec2D.ZERO, new Vec2D(100, 0));
         assertEquals(100, line.getLength(), 0.1);
     }
+
+    public void testLengthDoesNotOverflowForExtremeCoordinates() {
+        Segment line = new Segment(new Vec2D(Integer.MIN_VALUE, Integer.MIN_VALUE),
+                new Vec2D(Integer.MAX_VALUE, Integer.MAX_VALUE));
+
+        assertEquals(6_074_000_998.537885, line.getLength(), 0.001);
+    }
+
+    public void testEndpointsMustNotBeNull() {
+        try {
+            new Segment(null, Vec2D.ZERO);
+            fail("Expected NullPointerException");
+        } catch (NullPointerException expected) {
+        }
+    }
 }

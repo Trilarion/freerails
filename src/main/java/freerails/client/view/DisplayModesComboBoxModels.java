@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * ComboBoxModel that provides access to the screen resolutions available.
  */
-public class DisplayModesComboBoxModels implements ComboBoxModel {
+public class DisplayModesComboBoxModels implements ComboBoxModel<Vec2D> {
 
     private final List<Vec2D> modes = new ArrayList<>();
     private Vec2D selection;
@@ -75,7 +75,7 @@ public class DisplayModesComboBoxModels implements ComboBoxModel {
     }
 
     @Override
-    public Object getSelectedItem() {
+    public Vec2D getSelectedItem() {
         return selection;
     }
 

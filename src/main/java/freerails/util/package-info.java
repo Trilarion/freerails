@@ -17,8 +17,13 @@
  */
 
 /**
- * Provides shared utility types used across the application. This package is
- * FreeRails-specific and currently includes dependencies on game-model types.
+ * Provides general-purpose data structures and helper methods shared across
+ * the application. Utilities include collection and serialization helpers,
+ * identified values, pairs, integer geometry types such as {@link Vec2D} and
+ * {@link Segment}, and iterator support.
+ *
+ * <p>Code in this package should not depend on other FreeRails packages, so
+ * these utilities remain reusable throughout the application.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

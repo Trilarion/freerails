@@ -47,14 +47,45 @@ public class ServerSocketAcceptorTest extends TestCase {
         Socket s2 = new Socket(address.getAddress(), address.getPort());
 
         try {
-            Thread.sleep(20);
-        } catch (InterruptedException ignored) {}
+            long deadline = System.currentTimeMillis() + 2_000;
+            while (sockets.size() < 2 && System.currentTimeMillis() < deadline) {
+                Thread.sleep(10);
+            }
+            assertEquals(2, sockets.size());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new AssertionError(e);
+        } finally {
+            acceptor.close();
+            s1.close();
+            s2.close();
+            for (Socket accepted : sockets) {
+                accepted.close();
+            }
+        }
+        assertFalse(acceptor.isOpen());
+    }
 
-        // close acceptor
-        acceptor.close();
-        assertTrue(!acceptor.isOpen());
+    public void testFullQueueClosesExcessConnectionWithoutStoppingAcceptor() throws IOException {
+        BlockingQueue<Socket> sockets = new LinkedBlockingQueue<>(1);
+        InetSocketAddress address = new InetSocketAddress(InetAddress.getLoopbackAddress(), 0);
+        ServerSocketAcceptor acceptor = new ServerSocketAcceptor(address, sockets);
+        Socket firstClient = new Socket(InetAddress.getLoopbackAddress(), acceptor.getLocalPort());
+        Socket secondClient = new Socket(InetAddress.getLoopbackAddress(), acceptor.getLocalPort());
+        secondClient.setSoTimeout(2_000);
 
-        // check number of connected sockets
-        assertEquals(2, sockets.size());
+        try {
+            assertEquals("Excess accepted sockets should be closed.", -1,
+                    secondClient.getInputStream().read());
+            assertTrue("Queue saturation must not stop accepting.", acceptor.isOpen());
+            assertEquals(1, sockets.size());
+        } finally {
+            acceptor.close();
+            firstClient.close();
+            secondClient.close();
+            for (Socket accepted : sockets) {
+                accepted.close();
+            }
+        }
     }
 }

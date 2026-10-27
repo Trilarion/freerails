@@ -60,7 +60,7 @@ public class SelectWagonsPanel extends JPanel implements View {
 
         JPanel jPanel1 = new JPanel();
         JScrollPane jScrollPane1 = new JScrollPane();
-        wagonTypesJList = new JList();
+        wagonTypesJList = new JList<>();
         okButton = new JButton();
         JButton clearButton = new JButton();
         label1 = new JLabel();

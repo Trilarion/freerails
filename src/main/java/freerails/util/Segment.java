@@ -19,47 +19,56 @@
 package freerails.util;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
- * Defines a segment of a straightline by defining two points, the starting and the end point. Units are arbitrary.
+ * A directed straight-line segment between two two-dimensional integer
+ * points. Coordinate units are arbitrary.
  */
 public class Segment implements Serializable {
 
     private static final long serialVersionUID = 3257853198755705393L;
-    private static final int MAX_SQUAREROOTS = 64 * 256;
-    private static final double[] squareRoots;
-
-    static {
-        squareRoots = new double[MAX_SQUAREROOTS];
-        for (int i = 0; i < MAX_SQUAREROOTS; i++) {
-            squareRoots[i] = Math.sqrt(i);
-        }
-    }
-
     private final Vec2D a;
     private final Vec2D b;
 
+    /**
+     * Creates a segment from endpoint {@code a} to endpoint {@code b}.
+     *
+     * @param a starting endpoint
+     * @param b ending endpoint
+     * @throws NullPointerException if either endpoint is null
+     */
     public Segment(Vec2D a, Vec2D b) {
-        this.a = a;
-        this.b = b;
+        this.a = Objects.requireNonNull(a, "a");
+        this.b = Objects.requireNonNull(b, "b");
     }
 
+    /**
+     * Returns a hash code based on the ordered endpoints.
+     *
+     * @return this segment's hash code
+     */
     @Override
     public int hashCode() {
         return a.hashCode() * 29 + b.hashCode();
     }
 
     /**
-     * @return the length of the line
+     * Returns the Euclidean distance between the endpoints.
+     *
+     * @return the segment length
      */
     public double getLength() {
-        int sumOfSquares = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
-        if (sumOfSquares < MAX_SQUAREROOTS) {
-            return squareRoots[sumOfSquares];
-        }
-        return Math.sqrt(sumOfSquares);
+        return Math.hypot((double) a.x - b.x, (double) a.y - b.y);
     }
 
+    /**
+     * Tests whether another object is a segment with the same ordered
+     * endpoints.
+     *
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} is an equal segment
+     */
     @Override
     public boolean equals(Object obj) {
         if (null == obj) {
@@ -75,15 +84,30 @@ public class Segment implements Serializable {
         return false;
     }
 
+    /**
+     * Returns a string containing the two endpoints.
+     *
+     * @return this segment's textual representation
+     */
     @Override
     public String toString() {
         return "(" + a + ", " + b + ')';
     }
 
+    /**
+     * Returns the starting endpoint.
+     *
+     * @return endpoint {@code a}
+     */
     public Vec2D getA() {
         return a;
     }
 
+    /**
+     * Returns the ending endpoint.
+     *
+     * @return endpoint {@code b}
+     */
     public Vec2D getB() {
         return b;
     }

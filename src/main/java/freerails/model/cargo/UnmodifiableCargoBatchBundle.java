@@ -28,7 +28,7 @@ import java.util.Collection;
 /**
  * Holds a number of cargo batches with an amount for each cargo batch.
  *
- * <table width="75%" border="0">
+ * <table>
  * <caption>Example</caption>
  * <tr>
  * <td><strong>Cargo Batch</strong></td>

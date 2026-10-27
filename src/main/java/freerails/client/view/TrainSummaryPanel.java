@@ -31,6 +31,7 @@ import freerails.model.game.Clock;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finance.Money;
 import freerails.model.player.Player;
+import freerails.model.train.Train;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +39,7 @@ import java.awt.*;
 /**
  *
  */
-public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View {
+public class TrainSummaryPanel extends JPanel implements ListCellRenderer<Train>, View {
 
     private static final long serialVersionUID = 4121133628006020919L;
     private final TrainSummeryModel model;
@@ -131,7 +132,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Train> list, Train value, int index, boolean isSelected, boolean cellHasFocus) {
 
         // TODO find a different way of relating row number to train id
         // int trainID = NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, player, index);
