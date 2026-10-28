@@ -60,6 +60,11 @@ Game domain and actions:
   (track representation, exploration, and path finding), and ``.train``,
   ``.train.activity``, ``.train.motion``, and ``.train.schedule`` (trains and their
   activity, motion, and orders).
+- The ``freerails.model`` package tree is the game model. Its packages may depend
+  on one another and on ``freerails.util``, but must not depend on any other
+  project package such as ``freerails.move``, ``freerails.controller``,
+  ``freerails.client``, or ``freerails.server``. This keeps game state and rules
+  independent of application and interaction layers.
 - ``freerails.move`` defines game actions. ``.move.generator`` creates moves from
   world state, and ``.move.mapupdatemove`` contains map and track update moves.
 - ``freerails.controller`` translates user interactions into game actions.
@@ -76,6 +81,9 @@ Persistence, communication, and infrastructure:
   ``.util.network`` provides socket connection helpers, and ``.util.ui`` provides
   reusable Swing utilities.
 
+All project packages may use ``org.jetbrains.annotations`` and the
+``org.apache.log4j`` API (provided by reload4j).
+
 ``UnmodifiableWorld`` is the query-oriented state API and ``World`` provides
 broader mutation; despite its name, ``UnmodifiableWorld`` includes ``setSpeed`` and
 is not strictly read-only. A ``Move`` is serializable and represents a game action: its
@@ -89,12 +97,12 @@ Track configuration is stored on map tiles, while a connection spans neighboring
 tiles. Build and remove track through the paired track-update moves so both sides
 of a connection are updated together.
 
-The codebase does not currently enforce a complete acyclic package layering. For
-example, ``freerails.model.track`` uses move types and move implementations use
-track types; client and launcher packages also refer to one another. The dependency
-guidance below is a direction for new code, not a claim that the existing import
-graph already satisfies it. Prefer dependencies that point from UI and orchestration
-toward domain APIs, and avoid adding new cycles where a simpler boundary is possible.
+The codebase does not currently enforce all package dependency contracts. For
+example, ``freerails.model.track`` currently uses move types, contrary to the model
+boundary above; move implementations also use track types, and client and launcher
+packages refer to one another. Treat these as existing exceptions to be removed,
+not as precedent: new code must respect the model boundary and should avoid adding
+package cycles where a simpler boundary is possible.
 
 Server - client communication
 -----------------------------

@@ -20,6 +20,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
+import freerails.model.track.TrackOverlapResult;
 import freerails.model.track.TrackUtils;
 import freerails.model.world.*;
 import freerails.move.Status;
@@ -162,8 +163,10 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
             // Check for overlapping stations.
             if (trackPieceAfter.getTrackType().isStation()) {
-                Status status = TrackUtils.checkForOverlap(world, location, trackPieceAfter);
-                if (!status.isSuccess()) return status;
+                TrackOverlapResult overlapResult = TrackUtils.checkForOverlap(world, location, trackPieceAfter);
+                if (!overlapResult.isSuccess()) {
+                    return Status.fail(overlapResult.message());
+                }
             }
 
         }

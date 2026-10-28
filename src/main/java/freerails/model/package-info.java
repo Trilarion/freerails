@@ -23,7 +23,7 @@
  * {@link freerails.model.world.UnmodifiableWorld} providing its read-oriented API.
  * Not every model type has identical serialization, equality, or mutability
  * guarantees. Follow the contracts documented by the relevant type, and represent
- * in-game changes with {@link freerails.move.Move} objects.
+ * in-game changes through game-action objects.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

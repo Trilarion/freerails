@@ -14,4 +14,16 @@ public class PairTest extends TestCase {
         assertEquals(bothNull.hashCode(), sameValues.hashCode());
         assertFalse(bothNull.equals(new Pair<>("value", null)));
     }
+
+    public void testAccessorsStringRepresentationAndTypeSensitiveEquality() {
+        Pair<String, Integer> pair = new Pair<>("route", 12);
+
+        assertEquals("route", pair.getA());
+        assertEquals(Integer.valueOf(12), pair.getB());
+        assertEquals("Pair(route, 12)", pair.toString());
+        assertFalse(pair.equals(null));
+        assertFalse(pair.equals("Pair(route, 12)"));
+        assertFalse(pair.equals(new Pair<>("route", 13)));
+        assertFalse(pair.equals(new Pair<>("other", 12)));
+    }
 }

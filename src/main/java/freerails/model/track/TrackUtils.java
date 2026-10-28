@@ -29,7 +29,6 @@ import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.PathOnTrackFinder;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.move.Status;
 import freerails.util.Vec2D;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public final class TrackUtils {
      * is getting built, (2) when a station is getting upgraded, (3) when a
      * station is getting removed.
      */
-    public static Status checkForOverlap(UnmodifiableWorld world, Vec2D location, TrackPiece trackPiece) {
+    public static TrackOverlapResult checkForOverlap(UnmodifiableWorld world, Vec2D location, TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.
@@ -86,12 +85,12 @@ public final class TrackUtils {
                 if (xOverlap && yOverlap) {
                     String message = "Too close to " + station.getStationName();
 
-                    return Status.fail(message);
+                    return TrackOverlapResult.failure(message);
                 }
             }
         }
 
-        return Status.OK;
+        return TrackOverlapResult.success();
     }
 
     public static boolean noDiagonalTrackConflicts(Vec2D point, int trackTemplate, UnmodifiableWorld world) {

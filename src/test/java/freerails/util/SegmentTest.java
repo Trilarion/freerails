@@ -46,5 +46,27 @@ public class SegmentTest extends TestCase {
             fail("Expected NullPointerException");
         } catch (NullPointerException expected) {
         }
+        try {
+            new Segment(Vec2D.ZERO, null);
+            fail("Expected NullPointerException");
+        } catch (NullPointerException expected) {
+        }
+    }
+
+    public void testEqualityHashCodeAndEndpointAccessors() {
+        Vec2D start = new Vec2D(1, 2);
+        Vec2D end = new Vec2D(4, 6);
+        Segment segment = new Segment(start, end);
+        Segment equal = new Segment(new Vec2D(1, 2), new Vec2D(4, 6));
+
+        assertSame(start, segment.getA());
+        assertSame(end, segment.getB());
+        assertEquals(segment, segment);
+        assertEquals(segment, equal);
+        assertEquals(segment.hashCode(), equal.hashCode());
+        assertFalse(segment.equals(null));
+        assertFalse(segment.equals("segment"));
+        assertFalse(segment.equals(new Segment(end, start)));
+        assertEquals("((1, 2), (4, 6))", segment.toString());
     }
 }
