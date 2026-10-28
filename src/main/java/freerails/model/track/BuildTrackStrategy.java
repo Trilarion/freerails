@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A BuildTrackStrategy determines which track types to build (or upgrade to) on different terrains.
+ * Maps terrain IDs to the track type to use when constructing or upgrading track.
  */
 public class BuildTrackStrategy {
 
@@ -43,16 +43,20 @@ public class BuildTrackStrategy {
     private final Map<Integer, Integer> rules;
 
     /**
-     * Creates a new instance of BuildTrackStrategy
+     * Creates a strategy backed by the supplied terrain-to-track rules.
+     *
+     * @param rules mapping from terrain ID to track type ID
      */
     private BuildTrackStrategy(Map<Integer, Integer> rules) {
         this.rules = Utils.verifyNotNull(rules);
     }
 
     /**
-     * @param trackTypeID
-     * @param world
-     * @return
+     * Creates a strategy that selects the same track type on every terrain.
+     *
+     * @param trackTypeID track type ID to select
+     * @param world world supplying the available terrains
+     * @return a strategy with one rule for each terrain in {@code world}
      */
     public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, UnmodifiableWorld world) {
         Map<Integer, Integer> rules = new HashMap<>();
@@ -64,9 +68,12 @@ public class BuildTrackStrategy {
     }
 
     /**
-     * @param ruleIDs
-     * @param world
-     * @return
+     * Creates a strategy by applying the supplied ordered track-type rules to
+     * each terrain where a type is permitted.
+     *
+     * @param ruleIDs track type IDs to consider, in preference order
+     * @param world world supplying terrains and track types
+     * @return the generated terrain-to-track strategy
      */
     public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, UnmodifiableWorld world) {
         Map<Integer, Integer> rules = TrackUtils.generateRules(ruleIDs, world);
@@ -74,8 +81,11 @@ public class BuildTrackStrategy {
     }
 
     /**
-     * @param world
-     * @return
+     * Creates the default strategy using the cheapest track, bridge, and tunnel
+     * types available in the world.
+     *
+     * @param world world supplying terrains and track types
+     * @return a strategy using the default least-cost choices for each terrain
      */
     public static BuildTrackStrategy getDefault(UnmodifiableWorld world) {
         Collection<Integer> allowable = new ArrayList<>();
@@ -86,8 +96,10 @@ public class BuildTrackStrategy {
     }
 
     /**
-     * @param terrainId
-     * @return
+     * Returns the selected track type for a terrain.
+     *
+     * @param terrainId terrain ID whose rule is requested
+     * @return the selected track type ID, or {@code -1} when no rule exists
      */
     public int getRule(int terrainId) {
         return rules.getOrDefault(terrainId, -1);

@@ -24,34 +24,51 @@ package freerails.model.train.activity;
 import java.io.Serializable;
 
 /**
- * Mostly used for trains.
+ * A time-bounded entity activity whose serializable state can be queried as it
+ * progresses, such as a train's motion.
  *
- * An activity is something whose state
- * may be continually changing. An example is a train - it is an active entity
- * since while it is moving its position is continually changing.
- *
- * @param <E>
+ * @param <E> serializable state value exposed by this activity
  */
 public abstract class Activity<E extends Serializable> implements Serializable {
 
     private double startTime = Double.MIN_VALUE;
 
+    /**
+     * Creates an activity with its default start time.
+     */
+    public Activity() {
+    }
+
+    /**
+     * Returns the activity's start time.
+     *
+     * @return activity start time in game ticks
+     */
     public double getStartTime() {
         return startTime;
     }
 
+    /**
+     * Sets the activity's start time.
+     *
+     * @param startTime start time in game ticks
+     */
     public void setStartTime(double startTime) {
         this.startTime = startTime;
     }
 
     /**
-     * @return
+     * Returns the activity's duration in game ticks.
+     *
+     * @return activity duration
      */
     public abstract double getDuration();
 
     /**
-     * @param time
-     * @return
+     * Returns the activity state at the specified time relative to its start.
+     *
+     * @param time elapsed time in game ticks
+     * @return state at that time
      */
     public abstract E getStateAtTime(double time);
 

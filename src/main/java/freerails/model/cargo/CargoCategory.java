@@ -18,9 +18,7 @@
 
 package freerails.model.cargo;
 
-/**
- * Category of a Cargo
- */
+/** Groups cargo types by the service class used for hauling and reporting. */
 public enum CargoCategory {
 
     MAIL, PASSENGER, FAST_FREIGHT, SLOW_FREIGHT, BULK_FREIGHT

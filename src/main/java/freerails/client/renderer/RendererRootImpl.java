@@ -48,7 +48,7 @@ public class RendererRootImpl implements RendererRoot {
     private final TileRendererList tileRendererList;
     private final TrackPieceRendererList trackPieceViewList;
     private final ImageManager imageManager;
-    private final List<TrainImages> wagonImages = new ArrayList<>();
+    private final Map<Integer, TrainImages> wagonImages = new HashMap<>();
     private final Map<Integer, TrainImages> engineImages = new HashMap<>();
 
     /**
@@ -81,7 +81,7 @@ public class RendererRootImpl implements RendererRoot {
         for (Cargo cargo : world.getCargos()) {
             String name = cargo.getName();
             TrainImages ti = new TrainImages(imageManager, name);
-            wagonImages.add(ti);
+            wagonImages.put(cargo.getId(), ti);
         }
 
         // Load engine images
@@ -98,7 +98,7 @@ public class RendererRootImpl implements RendererRoot {
 
     // TODO this tile renderer list must have a certain length and structure otherwise the scenario start will hang, fix this behavior and simplify
     private TileRendererList loadNewTileViewList(UnmodifiableWorld world) throws IOException {
-        ArrayList<TileRenderer> tileRenderers = new ArrayList<>();
+        Map<Integer, TileRenderer> tileRenderers = new HashMap<>();
 
         // Setup progress monitor..
 
@@ -125,7 +125,7 @@ public class RendererRootImpl implements RendererRoot {
                 }
 
                 tileRenderer = new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
-                tileRenderers.add(tileRenderer);
+                tileRenderers.put(terrainType.getId(), tileRenderer);
 
                 continue;
             } catch (IOException ignored) {
@@ -133,7 +133,7 @@ public class RendererRootImpl implements RendererRoot {
 
             try {
                 tileRenderer = new ForestStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
-                tileRenderers.add(tileRenderer);
+                tileRenderers.put(terrainType.getId(), tileRenderer);
 
                 continue;
             } catch (IOException ignored) {
@@ -142,7 +142,7 @@ public class RendererRootImpl implements RendererRoot {
             // TODO this was the chequered tile renderer which was removed because it was not needed
             try {
                 tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
-                tileRenderers.add(tileRenderer);
+                tileRenderers.put(terrainType.getId(), tileRenderer);
 
                 continue;
             } catch (IOException ignored) {
@@ -150,7 +150,7 @@ public class RendererRootImpl implements RendererRoot {
 
             try {
                 tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
-                tileRenderers.add(tileRenderer);
+                tileRenderers.put(terrainType.getId(), tileRenderer);
             } catch (IOException ignored) {
             }
         }
@@ -168,7 +168,7 @@ public class RendererRootImpl implements RendererRoot {
         for (Terrain terrainType: world.getTerrains()) {
             if (terrainType.getName().equals("Harbour")) {
                 TileRenderer tr = new SpecialTileRenderer(imageManager, new ArrayList<>(), terrainType , oceanTileRenderer);
-                tileRenderers.set(terrainType.getId(), tr);
+                tileRenderers.put(terrainType.getId(), tr);
             }
         }
 
@@ -214,7 +214,11 @@ public class RendererRootImpl implements RendererRoot {
      */
     @Override
     public TrainImages getWagonImages(int cargoTypeId) {
-        return wagonImages.get(cargoTypeId);
+        TrainImages trainImages = wagonImages.get(cargoTypeId);
+        if (trainImages == null) {
+            throw new IllegalArgumentException("Unknown cargo type ID: " + cargoTypeId);
+        }
+        return trainImages;
     }
 
     /**

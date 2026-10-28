@@ -26,23 +26,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- */
+/** Utility methods for calculating and transferring cargo quantities. */
 public class CargoUtils {
 
+    /** Prevents instantiation of this utility class. */
     private CargoUtils() {
     }
 
     /**
-     * The length of the returned array is the number of complete carloads of
-     * the specified cargo category in the specified bundle. The values in the
-     * array are the type of the cargo. E.g. if the bundle contained 2 carloads
-     * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
+     * Groups the complete wagon-loads in a bundle by cargo category. Each
+     * returned list contains one cargo type identifier per complete carload;
+     * partial loads are omitted.
+     *
+     * @param world world providing cargo definitions
+     * @param cargoBatchBundle bundle whose loads are counted
+     * @return lists of cargo identifiers, grouped by category
      */
     public static Map<CargoCategory, List<Integer>> calculateCarLoads(UnmodifiableWorld world, UnmodifiableCargoBatchBundle cargoBatchBundle) {
         // TODO overly complicated, easier way possible?
-        int numCargoTypes = world.getCargos().size();
         Map<CargoCategory, Integer> numberOfCarLoads = new HashMap<>();
         for (CargoCategory cargoCategory: CargoCategory.values()) {
             numberOfCarLoads.put(cargoCategory, 0);
@@ -50,26 +51,26 @@ public class CargoUtils {
         Map<CargoCategory, Map<Integer, Integer>> cars = new HashMap<>();
         for (CargoCategory cargoCategory: CargoCategory.values()) {
             Map<Integer, Integer> map = new HashMap<>();
-            // TODO int i is not an ID, this will break if ids are not going from 0 to number of types - 1
-            for (int i = 0; i < numCargoTypes; i++) {
-                map.put(i, 0);
+            for (Cargo cargo : world.getCargos()) {
+                map.put(cargo.getId(), 0);
             }
             cars.put(cargoCategory, map);
         }
-        for (int i = 0; i < numCargoTypes; i++) {
-            Cargo ct = world.getCargo(i);
-            int carsOfThisCargo = cargoBatchBundle.getAmountOfType(i) / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
+        for (Cargo ct : world.getCargos()) {
+            int cargoId = ct.getId();
+            int carsOfThisCargo = cargoBatchBundle.getAmountOfType(cargoId) / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
             numberOfCarLoads.put(ct.getCategory(), numberOfCarLoads.get(ct.getCategory()) + carsOfThisCargo);
-            cars.get(ct.getCategory()).put(i, cars.get(ct.getCategory()).get(i) + carsOfThisCargo);
+            cars.get(ct.getCategory()).put(cargoId, cars.get(ct.getCategory()).get(cargoId) + carsOfThisCargo);
         }
 
         Map<CargoCategory, List<Integer>> returnMatrix = new HashMap<>();
         for (CargoCategory cargoCategory: CargoCategory.values()) {
             List<Integer> returnValue = new ArrayList<>();
 
-            for (int cargoType = 0; cargoType < numCargoTypes; cargoType++) {
-                for (int j = 0; j < cars.get(cargoCategory).get(cargoType); j++) {
-                    returnValue.add(cargoType);
+            for (Cargo cargo : world.getCargos()) {
+                int cargoId = cargo.getId();
+                for (int j = 0; j < cars.get(cargoCategory).get(cargoId); j++) {
+                    returnValue.add(cargoId);
                 }
             }
             returnMatrix.put(cargoCategory, returnValue);
@@ -78,7 +79,13 @@ public class CargoUtils {
     }
 
     /**
-     * Move the specified quantity of the specified cargo type from one bundle to another.
+     * Moves up to the requested amount of a cargo type between mutable bundles,
+     * preserving the source batches.
+     *
+     * @param cargoTypeToTransfer cargo type identifier to move
+     * @param amountToTransfer maximum quantity to move
+     * @param from source bundle to remove cargo from
+     * @param to destination bundle to receive cargo
      */
     public static void transferCargo(int cargoTypeToTransfer, int amountToTransfer, CargoBatchBundle from, CargoBatchBundle to) {
         if (0 == amountToTransfer) {

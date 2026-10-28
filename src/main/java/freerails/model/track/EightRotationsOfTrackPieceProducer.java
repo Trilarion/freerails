@@ -30,6 +30,9 @@ import java.awt.*;
  * 100 000 etc.
  */
 class EightRotationsOfTrackPieceProducer {
+    /**
+     * Prevents instantiation of this utility class.
+     */
     private EightRotationsOfTrackPieceProducer() {
     }
 

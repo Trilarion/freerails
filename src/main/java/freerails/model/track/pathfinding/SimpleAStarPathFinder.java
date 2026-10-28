@@ -25,8 +25,8 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * A simple A* pathfinder implementation. It uses int's to avoid the cost of
- * object creation and garbage collection.
+ * A* pathfinder over integer-encoded vertices, with optional time-limited
+ * incremental searches.
  */
 public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinder {
 
@@ -44,7 +44,9 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     private long searchStartTime = 0;
 
     /**
-     * @return
+     * Returns the current status of the search.
+     *
+     * @return current pathfinder status
      */
     @Override
     public PathFinderStatus getStatus() {
@@ -52,17 +54,22 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     }
 
     /**
-     * @return
+     * Returns the path produced by the most recent successful search.
+     *
+     * @return encoded path vertices in traversal order
      */
     public List<Integer> retrievePath() {
         return path;
     }
 
     /**
-     * @param currentPosition
-     * @param targets
-     * @param tempExplorer
-     * @return
+     * Finds the first step from a starting vertex toward any target.
+     *
+     * @param currentPosition starting encoded vertex
+     * @param targets target vertices
+     * @param tempExplorer graph explorer used to enumerate edges
+     * @return first encoded vertex on the path, or {@link PathFinderStatus#PATH_NOT_FOUND}
+     *         when no path can be found
      */
     public int findstep(int currentPosition, int[] targets, GraphExplorer tempExplorer) {
         try {
@@ -73,11 +80,13 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     }
 
     /**
-     * @param currentPosition
-     * @param targets
-     * @param e
-     * @return
-     * @throws PathNotFoundException
+     * Configures and completes an unbounded search, returning the resulting path.
+     *
+     * @param currentPosition one or more starting vertices
+     * @param targets destination vertices
+     * @param e graph explorer used to enumerate edges
+     * @return path vertices in traversal order
+     * @throws PathNotFoundException if the search cannot find a route
      */
     private List<Integer> findpath(int[] currentPosition, int[] targets, GraphExplorer e) throws PathNotFoundException {
         logger.debug(currentPosition.length + " starting points; " + targets.length + " targets.");
@@ -88,8 +97,12 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     }
 
     /**
-     * @param maxDuration
-     * @throws PathNotFoundException
+     * Continues the current search until it finishes or the positive time limit
+     * is exceeded. A timeout leaves the search available to resume.
+     *
+     * @param maxDuration maximum duration of this call in milliseconds, or a
+     *                    non-positive value for no time limit
+     * @throws PathNotFoundException if the search has no route yet or cannot find one
      */
     @Override
     public void search(long maxDuration) throws PathNotFoundException {
@@ -204,10 +217,12 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     }
 
     /**
-     * @param currentPosition
-     * @param targets
-     * @param e
-     * @throws PathNotFoundException
+     * Initializes a search from one or more vertices to any of the targets.
+     *
+     * @param currentPosition starting vertex IDs
+     * @param targets target vertex IDs
+     * @param e graph explorer used to enumerate neighbors
+     * @throws PathNotFoundException if a start is already a target
      */
     public void setupSearch(int[] currentPosition, int[] targets, GraphExplorer e) throws PathNotFoundException {
         abandonSearch();
@@ -232,7 +247,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     }
 
     /**
-     *
+     * Resets all search state and discards any partial or completed path.
      */
     @Override
     public void abandonSearch() {

@@ -24,7 +24,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
- *
+ * Shared model dimensions, economic values, and gameplay limits.
  */
 public final class ModelConstants {
 
@@ -55,7 +55,10 @@ public final class ModelConstants {
      * Determines how much the player gets for delivering cargo.
      */
     public static final int CARGO_DELIVERY_EARNINGS_FACTOR = 75;
+    public static final int MAX_MAP_DIMENSION = 10_000;
+    public static final long MAX_MAP_TILE_COUNT = 1_000_000L;
 
+    /** Prevents instantiation of this constants class. */
     private ModelConstants() {
     }
 }

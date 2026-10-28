@@ -36,7 +36,11 @@ public class StationCargoConversion implements Serializable {
 
     // TODO provide as map
     /**
-     * @param convertedTo
+     * Creates conversion settings indexed by cargo index. The sentinel value
+     * {@code Integer.MIN_VALUE} means that a cargo type is not converted.
+     *
+     * @param convertedTo product cargo identifier for each source cargo index,
+     *                    or the not-converted sentinel
      */
     public StationCargoConversion(Integer[] convertedTo) {
         this.convertedTo = new ArrayList<>(Arrays.asList(convertedTo));
@@ -44,8 +48,10 @@ public class StationCargoConversion implements Serializable {
 
     // TODO is this really needed
     /**
-     * @param numberOfCargoTypes
-     * @return
+     * Creates a conversion configuration in which no cargo type is converted.
+     *
+     * @param numberOfCargoTypes number of cargo types to configure
+     * @return empty conversion settings sized for the cargo collection
      */
     public static StationCargoConversion emptyInstance(int numberOfCargoTypes) {
         return new StationCargoConversion(emptyConversionArray(numberOfCargoTypes));
@@ -53,8 +59,10 @@ public class StationCargoConversion implements Serializable {
 
     // TODO eliminate this
     /**
-     * @param numberOfCargoTypes
-     * @return
+     * Creates an array initialized to the not-converted sentinel.
+     *
+     * @param numberOfCargoTypes number of cargo types to include
+     * @return conversion array with one entry per cargo type
      */
     public static Integer[] emptyConversionArray(int numberOfCargoTypes) {
         Integer[] convertedTo = new Integer[numberOfCargoTypes];
@@ -65,24 +73,37 @@ public class StationCargoConversion implements Serializable {
         return convertedTo;
     }
 
-    // TODO what is the cargoNumber and do we need it? Maybe a cargo type?
     /**
-     * @param cargoNumber
-     * @return
+     * Tests whether the cargo at an index has a configured conversion.
+     *
+     * @param cargoIndex zero-based position in the world's cargo collection
+     * @return {@code true} if a product cargo is configured
+     * @throws IndexOutOfBoundsException if the index is outside the configured
+     *         cargo range
      */
-    public boolean convertsCargo(int cargoNumber) {
-        return NOT_CONVERTED != convertedTo.get(cargoNumber);
+    public boolean convertsCargo(int cargoIndex) {
+        return NOT_CONVERTED != convertedTo.get(cargoIndex);
     }
 
-    // TODO what is the meaning of the return value?
     /**
-     * @param cargoNumber
-     * @return
+     * Returns the product cargo identifier configured for a source cargo.
+     *
+     * @param cargoIndex zero-based position of the source cargo in the world's
+     *                   cargo collection
+     * @return product cargo identifier, or {@code Integer.MIN_VALUE} when no
+     *         conversion is configured
+     * @throws IndexOutOfBoundsException if the index is outside the configured
+     *         cargo range
      */
-    public int getConversion(int cargoNumber) {
-        return convertedTo.get(cargoNumber);
+    public int getConversion(int cargoIndex) {
+        return convertedTo.get(cargoIndex);
     }
 
+    /**
+     * Returns a hash code derived from the configured conversion entries.
+     *
+     * @return hash code for these conversion settings
+     */
     @Override
     public int hashCode() {
         int result = 0;
@@ -93,6 +114,12 @@ public class StationCargoConversion implements Serializable {
         return result;
     }
 
+    /**
+     * Tests whether another conversion configuration has the same entries.
+     *
+     * @param obj object to compare
+     * @return {@code true} if both configurations are equal
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof StationCargoConversion) {

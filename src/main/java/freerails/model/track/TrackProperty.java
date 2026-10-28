@@ -19,7 +19,8 @@
 package freerails.model.track;
 
 /**
- *
+ * Binary property used to describe construction and geometry characteristics
+ * of a track type.
  */
 public enum TrackProperty {
 

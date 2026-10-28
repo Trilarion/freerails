@@ -25,18 +25,19 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 
 // TODO The code could maybe become static
-/**
- *
- */
+/** Computes asset, loan, and equity statistics over a supplied time interval. */
 public class Statistics {
 
     private final Money loans;
     private final Money equity;
 
     /**
-     * @param world
-     * @param player
-     * @param totalTimeInterval
+     * Aggregates the player's financial transactions and assets within the
+     * supplied interval boundaries.
+     *
+     * @param world world data used for transaction and asset values
+     * @param player player whose statistics are calculated
+     * @param totalTimeInterval ordered start and end times defining the interval
      */
     public Statistics(UnmodifiableWorld world, Player player, final Time[] totalTimeInterval) {
         Money track = TransactionUtils.calculateTrackTotal(world, player, totalTimeInterval[0]);
@@ -66,26 +67,38 @@ public class Statistics {
         // If we don't initialize this variable we get a NPE when we don't own any stock in others RRs
         Money otherRrStock = Money.ZERO;
 
-        int thisPlayerId = player.getId();
+        int thisPlayerIndex = world.getPlayerIndex(player.getId());
 
         // TODO use maps instead of arrays
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
+        int otherPlayerIndex = 0;
         for (Player otherPlayer: world.getPlayers()) {
             aggregator.setCategory(TransactionCategory.TRANSFER_STOCK);
-            aggregator.setType(thisPlayerId);
+            aggregator.setType(otherPlayer.getId());
             int quantity = aggregator.calculateQuantity();
-            if (otherPlayer.getId() == thisPlayerId) {
-                Money treasuryStock = Money.multiply(stockPrices[otherPlayer.getId()].currentPrice, quantity);
+            if (otherPlayerIndex == thisPlayerIndex) {
+                Money treasuryStock = Money.multiply(stockPrices[otherPlayerIndex].currentPrice, quantity);
             } else {
-                otherRrStock = Money.add(Money.multiply(stockPrices[otherPlayer.getId()].currentPrice, quantity), otherRrStock);
+                otherRrStock = Money.add(Money.multiply(stockPrices[otherPlayerIndex].currentPrice, quantity), otherRrStock);
             }
+            otherPlayerIndex++;
         }
     }
 
+    /**
+     * Returns the outstanding value of bonds in the interval.
+     *
+     * @return aggregated bond value
+     */
     public Money getLoans() {
         return loans;
     }
 
+    /**
+     * Returns the value of issued equity in the interval.
+     *
+     * @return aggregated equity value
+     */
     public Money getEquity() {
         return equity;
     }

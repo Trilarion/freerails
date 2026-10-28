@@ -20,11 +20,10 @@ package freerails.model.terrain;
 
 import java.util.List;
 
-/**
- *
- */
+/** Utility methods for selecting terrain types. */
 public class TerrainUtils {
 
+    /** Prevents instantiation of this utility class. */
     private TerrainUtils() {
     }
 
@@ -40,8 +39,11 @@ public class TerrainUtils {
      * 17) Landing (River) 18) Terminal (Special) 19) Jungle (Country) 20)
      * Hills (Hill) 21) Foothills (Hill) 22) Mountain (Hill)
      *
-     * @param type
-     * @return
+     * @param type current terrain type identifier
+     * @param terrainTypes candidate terrain identifiers to choose from
+     * @param non_terrainTypes identifiers that must not be overwritten
+     * @return the original type when protected; otherwise usually clear terrain
+     *         (identifier {@code 4}), or a randomly selected candidate
      */
     public static int randomizeTerrain(int type, List<Integer> terrainTypes, List<Integer> non_terrainTypes) {
         double value;

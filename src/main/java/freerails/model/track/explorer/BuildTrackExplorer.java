@@ -34,8 +34,8 @@ import freerails.model.train.PositionOnTrack;
 import java.util.NoSuchElementException;
 
 /**
- * GraphExplorer that explorers possible track placements, the int values it returns
- * are encoded PositionOnTrack objects.
+ * Explores legal adjacent track placements from an encoded position. Vertex
+ * values are encoded {@link PositionOnTrack} objects.
  */
 public class BuildTrackExplorer implements GraphExplorer {
 
@@ -50,17 +50,22 @@ public class BuildTrackExplorer implements GraphExplorer {
     private boolean usingExistingTrack = false;
 
     /**
-     * @param world
-     * @param player
+     * Creates an explorer starting from the default map position.
+     *
+     * @param world world defining terrain, track, and map bounds
+     * @param player player for whom track is being planned
      */
     public BuildTrackExplorer(UnmodifiableWorld world, Player player) {
         this(world, player, null);
     }
 
     /**
-     * @param world
-     * @param player
-     * @param start
+     * Creates an explorer starting at the supplied tile, or at the default
+     * position when {@code start} is {@code null}.
+     *
+     * @param world world defining terrain, track, and map bounds
+     * @param player player for whom track is being planned
+     * @param start starting tile coordinate, or {@code null} for the default
      */
     public BuildTrackExplorer(UnmodifiableWorld world, Player player, Vec2D start) {
         this.world = world;
@@ -200,9 +205,11 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
+     * Selects the track type for a tile from its existing piece or the
+     * configured terrain rule.
      *
-     * @param p
-     * @return
+     * @param p tile coordinate
+     * @return applicable track type, or {@code null} if none can be built there
      */
     private TrackType getAppropriateTrackType(Vec2D p) {
         final TerrainTile tile = world.getTile(p);
@@ -222,8 +229,12 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     * Calculates a cost figure incorporating the distance and the cost of any
-     * new track.
+     * {@inheritDoc}
+     *
+     * <p>The estimate includes edge distance and the purchase/upgrade cost of
+     * track that is not already present.
+     *
+     * @throws IllegalStateException if no edge has yet been selected
      */
     @Override
     public int getEdgeCost() {
@@ -266,13 +277,18 @@ public class BuildTrackExplorer implements GraphExplorer {
         return cost;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPosition() {
         return currentPosition.toInt();
     }
 
     /**
-     * @param vertex
+     * Sets the current encoded position and restarts its edge scan.
+     *
+     * @param vertex encoded position on track
      */
     @Override
     public void setPosition(int vertex) {
@@ -280,6 +296,11 @@ public class BuildTrackExplorer implements GraphExplorer {
         directionInt = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalStateException if no edge has yet been selected
+     */
     @Override
     public int getVertexConnectedByEdge() {
         if (beforeFirst) {
@@ -290,7 +311,10 @@ public class BuildTrackExplorer implements GraphExplorer {
 
     // TODO this is bad style because it changes the internal state, not expected for hasXXX functions
     /**
-     * @return
+     * Advances through directions until a legal build edge is found or all
+     * eight directions have been checked.
+     *
+     * @return {@code true} if a legal edge is available
      */
     @Override
     public boolean hasNextEdge() {
@@ -305,6 +329,11 @@ public class BuildTrackExplorer implements GraphExplorer {
         return false;
     }
 
+    /**
+     * Moves to the destination of the currently selected edge.
+     *
+     * @throws IllegalStateException if no edge has yet been selected
+     */
     @Override
     public void moveForward() {
         if (beforeFirst) {
@@ -313,6 +342,11 @@ public class BuildTrackExplorer implements GraphExplorer {
         setPosition(getVertexConnectedByEdge());
     }
 
+    /**
+     * Selects the next legal outgoing track placement.
+     *
+     * @throws NoSuchElementException if no legal edge remains
+     */
     @Override
     public void nextEdge() {
         if (!hasNextEdge()) {
@@ -329,7 +363,10 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     * @param buildTrackStrategy
+     * Sets the terrain-to-track selection rules used by this explorer.
+     *
+     * @param buildTrackStrategy strategy to use; must not be {@code null}
+     * @throws NullPointerException if {@code buildTrackStrategy} is null
      */
     public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
         this.buildTrackStrategy = Utils.verifyNotNull(buildTrackStrategy);

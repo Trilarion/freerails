@@ -170,14 +170,15 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         final List<Integer> quantityWaiting = new ArrayList<>();
         final Collection<String> typeDemanded = new ArrayList<>();
         for (Cargo cargo : world.getCargos()) {
-            int amountWaiting = cargoWaiting.getAmountOfType(cargo.getId());
+            int cargoId = cargo.getId();
+            int amountWaiting = cargoWaiting.getAmountOfType(cargoId);
 
             if (0 != amountWaiting) {
                 typeWaiting.add(cargo.getName());
                 int carloads = amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
                 quantityWaiting.add(carloads);
             }
-            if (station.getDemandForCargo().isCargoDemanded(cargo.getId())) {
+            if (station.getDemandForCargo().isCargoDemanded(world.getCargoIndex(cargoId))) {
                 typeDemanded.add(cargo.getName());
             }
         }

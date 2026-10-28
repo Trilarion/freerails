@@ -43,7 +43,7 @@ import java.util.Objects;
 // TODO naming of wagonTypes/consist clarify
 // TODO if all activities are TrainMotions, make it a list of Motions instead
 /**
- * Represents a train.
+ * Represents a train's consist, cargo, schedule, and planned activities.
  */
 public class Train extends Identifiable {
 
@@ -54,16 +54,28 @@ public class Train extends Identifiable {
     private List<Activity> activities = new ArrayList<>();
 
     // TODO we have to trust that the ids are valid, only the world can check this consistency
+    /**
+     * Creates a train with the specified identifier and engine type.
+     *
+     * @param id unique train identifier
+     * @param engineId engine type identifier
+     */
     public Train(int id, int engineId) {
         super(id);
         this.engineId = engineId;
     }
 
+    /** Returns an iterator over this train's activities. */
     public BidirectionalIterator<Activity> getActivities() {
         return new BidirectionalIterator<>(activities);
     }
 
     // TODO not sure if this is a good idea, would like to use addActivity probably
+    /**
+     * Replaces the activities with the remaining elements of the supplied iterator.
+     *
+     * @param iterator iterator positioned before the activities to copy
+     */
     public void setActivities(BidirectionalIterator<Activity> iterator) {
         activities.clear();
         while (iterator.hasNext()) {
@@ -75,7 +87,7 @@ public class Train extends Identifiable {
     /**
      * Does not start before the last activity has ended.
      *
-     * @param activity
+     * @param activity activity to append; it is delayed until the previous activity ends
      */
     public void addActivity(@NotNull Activity activity) {
         if (!activities.isEmpty()) {
@@ -86,42 +98,42 @@ public class Train extends Identifiable {
         activities.add(activity);
     }
 
-    /**
-     * @return
-     */
+    /** Returns the train length in map-distance units, including its engine. */
     public int getLength() {
         return (1 + wagonTypes.size()) * ModelConstants.WAGON_LENGTH; // Engine + wagons.
     }
 
-    /**
-     * @return
-     */
+    /** Returns the number of wagons in the consist. */
     public int getNumberOfWagons() {
         return wagonTypes.size();
     }
 
     /**
-     * @param position
-     * @return
+     * Returns the wagon type at the specified consist position.
+     *
+     * @param position zero-based wagon position
+     * @return wagon type identifier
+     * @throws IndexOutOfBoundsException if the position is outside the consist
      */
     public int getWagonType(int position) {
         return wagonTypes.get(position);
     }
 
-    /**
-     * @return
-     */
+    /** Returns the engine type identifier. */
     public int getEngine() {
         return engineId;
     }
 
+    /**
+     * Sets the train's engine type.
+     *
+     * @param engineId engine type identifier
+     */
     public void setEngine(int engineId) {
         this.engineId = engineId;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the train's cargo batches through the read-only bundle interface. */
     public UnmodifiableCargoBatchBundle getCargoBatchBundle() {
         return cargoBatchBundle;
     }
@@ -129,57 +141,67 @@ public class Train extends Identifiable {
     /**
      * Makes a copy.
      *
-     * @param cargoBatchBundle
+     * @param cargoBatchBundle cargo contents to copy
      */
     public void setCargoBatchBundle(@NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
         this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
     }
 
-    /**
-     * @return
-     */
+    /** Returns the train's schedule through the read-only schedule interface. */
     public UnmodifiableSchedule getSchedule() {
         return schedule;
     }
 
     /**
-     * Makes a copy of the schedule.
-     * @param schedule
+     * Replaces the schedule with a defensive copy.
+     *
+     * @param schedule schedule to copy
      */
     public void setSchedule(@NotNull UnmodifiableSchedule schedule) {
         this.schedule = new Schedule(schedule);
     }
 
-    /**
-     * @return
-     */
+    /** Returns an immutable snapshot of the wagon type identifiers. */
     public List<Integer> getConsist() {
-        return wagonTypes;
-    }
-
-    // TODO defensive copy?
-    public void setConsist(@NotNull List<Integer> wagonTypes) {
-        this.wagonTypes = wagonTypes;
+        return List.copyOf(wagonTypes);
     }
 
     /**
-     * @param time
-     * @return
+     * Replaces the wagon consist with a copy of the supplied wagon types.
+     *
+     * @param wagonTypes wagon type identifiers in consist order
+     */
+    public void setConsist(@NotNull List<Integer> wagonTypes) {
+        this.wagonTypes = new ArrayList<>(wagonTypes);
+    }
+
+    /**
+     * Finds the activity whose time interval contains or precedes the requested time.
+     *
+     * @param time game time in ticks
+     * @return current or most recently started train motion
+     * @throws IllegalStateException if the train has no activities
      */
     public TrainMotion findCurrentMotion(double time) {
-        Activity activity = activities.get(0);
-        boolean afterFinish = activity.getStartTime() + activity.getDuration() < time;
-        if (afterFinish) {
-            activity = activities.get(activities.size() - 1);
+        if (activities.isEmpty()) {
+            throw new IllegalStateException("Train has no activities.");
         }
-        return (TrainMotion) activity;
+
+        Activity previous = activities.get(0);
+        for (Activity activity : activities) {
+            if (time < activity.getStartTime()) {
+                break;
+            }
+            previous = activity;
+        }
+        return (TrainMotion) previous;
     }
 
     /**
      * Convenience function.
      *
      * @param time
-     * @return
+     * @return {@code true} if the train's current motion ends with nonzero speed
      */
     public boolean isMoving(@NotNull Time time) {
         TrainMotion trainMotion = findCurrentMotion(time.getTicks());
@@ -188,8 +210,10 @@ public class Train extends Identifiable {
     }
 
     /**
-     * @param time
-     * @return
+     * Returns the track sections traversed by the train's current motion path.
+     *
+     * @param time game time
+     * @return track sections occupied along the current motion path
      */
     public HashSet<TrackSection> occupiedTrackSection(@NotNull Time time) {
         TrainMotion trainMotion = findCurrentMotion(time.getTicks());
@@ -208,12 +232,19 @@ public class Train extends Identifiable {
         return sections;
     }
 
+    /**
+     * Returns the tile location at the end of the current motion's path.
+     *
+     * @param time game time
+     * @return train location in tile coordinates
+     */
     public @NotNull Vec2D getLocation(@NotNull Time time) {
         TrainMotion trainMotion = findCurrentMotion(time.getTicks());
         PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
         return positionOnTrack.getLocation();
     }
 
+    /** Compares train identity and its engine, consist, cargo, schedule, and activities. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

@@ -30,9 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- */
+/** A motion profile formed by executing component motions in sequence. */
 public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Motion {
 
     private static final long serialVersionUID = 3146586143114534610L;
@@ -40,7 +38,8 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
     private final double totalTime, totalDistance;
 
     /**
-     * @param motions
+     * @param motions component motions in execution order
+     * @throws NullPointerException if the array or any component motion is null
      */
     public CompositeMotion(Motion... motions) {
         this.motions = new ArrayList<>(Arrays.asList(motions));
@@ -54,6 +53,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         totalDistance = distance;
     }
 
+    /** Compares the ordered component motions and their aggregate totals. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -65,6 +65,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return motions.equals(other.motions);
     }
 
+    /** Returns a hash code based on the component motions and aggregate totals. */
     @Override
     public int hashCode() {
         int result = motions.hashCode();
@@ -73,17 +74,18 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return result;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the total motion duration as this activity's duration. */
     @Override
     public double getDuration() {
         return totalTime;
     }
 
     /**
-     * @param time
-     * @return
+     * {@inheritDoc}
+     *
+     * @param time elapsed time within this composite motion
+     * @return state sample at that time
+     * @throws IllegalArgumentException if time is outside the motion duration
      */
     @Override
     public SpeedTimeAndStatus getStateAtTime(final double time) {
@@ -101,6 +103,11 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return new SpeedTimeAndStatus(speed, acceleration, distance, time, TrainState.READY);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if time is outside the motion duration
+     */
     @Override
     public double calculateDistanceAtTime(double time) {
         checkTime(time);
@@ -118,6 +125,11 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return distance;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if distance is outside the motion distance
+     */
     @Override
     public double calculateTimeAtDistance(double distance) {
         if (distance == totalDistance) return totalTime;
@@ -146,6 +158,11 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return timeSoFar;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if time is outside the motion duration
+     */
     @Override
     public double calculateSpeedAtTime(double time) {
         checkTime(time);
@@ -154,6 +171,11 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return motion.calculateSpeedAtTime(subTime.time);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if time is outside the motion duration
+     */
     @Override
     public double calculateAccelerationAtTime(double time) {
         checkTime(time);
@@ -162,20 +184,24 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return motion.calculateAccelerationAtTime(subTime.time);
     }
 
+    /** Returns the sum of the component motion durations. */
     @Override
     public double getTotalTime() {
         return totalTime;
     }
 
+    /** Returns the sum of the component motion distances. */
     @Override
     public double getTotalDistance() {
         return totalDistance;
     }
 
     /**
+     * Locates the component motion and local time corresponding to the given time.
      *
-     * @param time
-     * @return
+     * @param time elapsed time within the composite motion
+     * @return component index and its local elapsed time
+     * @throws IllegalArgumentException if time is outside the motion duration
      */
     private SubTime getIndex(double time) {
         checkTime(time);
@@ -193,18 +219,28 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         throw new IllegalStateException(String.valueOf(time));
     }
 
+    /**
+     * Ensures a requested time lies within this motion's duration.
+     *
+     * @param time elapsed time to validate
+     * @throws IllegalArgumentException if time is outside the motion duration
+     */
     private void checkTime(double time) {
         if (time < 0.0d || time > totalTime) throw new IllegalArgumentException("t=" + time + ", but duration=" + totalTime);
     }
 
-    /**
-     * Used to enable 2 values to be returned from the method getIndex(double t)
-     */
+    /** Holds a component motion index and the corresponding local elapsed time. */
     private static class SubTime {
 
         private final double time;
         private final int idx;
 
+        /**
+         * Creates a component-motion time location.
+         *
+         * @param idx component motion index
+         * @param time elapsed time within that component
+         */
         private SubTime(int idx, double time) {
             this.idx = idx;
             this.time = time;

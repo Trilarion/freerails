@@ -46,8 +46,8 @@ class BrokerScreenGenerator {
      * Creates a new instance of BrokerScreenGenerator
      */
     public BrokerScreenGenerator(UnmodifiableWorld world, Player player) {
-        int playerId = player.getId();
-        String playername = world.getPlayer(playerId).getName();
+        int playerIndex = world.getPlayerIndex(player.getId());
+        String playername = player.getName();
 
         Clock clock = world.getClock();
         final int startyear = clock.getCurrentYear();
@@ -65,14 +65,14 @@ class BrokerScreenGenerator {
         String publicShares = DC.format(dataGatherer.sharesHeldByPublic());
         Money netWorth = dataGatherer.netWorth();
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
-        Money pricePerShare = stockPrices[playerId].currentPrice;
+        Money pricePerShare = stockPrices[playerIndex].currentPrice;
         String treasuryStock = DC.format(dataGatherer.treasuryStock());
 
         StringBuilder otherRRsStakes = new StringBuilder();
         int[] stockInThisRRs = dataGatherer.getStockInThisRRs();
 
         for (int i = 0; i < stockInThisRRs.length; i++) {
-            if (i != playerId && stockInThisRRs[i] > 0) {
+            if (i != playerIndex && stockInThisRRs[i] > 0) {
                 String otherRRName = world.getPlayer(i).getName();
                 String otherRRStake = DC.format(stockInThisRRs[i]);
                 otherRRsStakes.append("<tr> ");

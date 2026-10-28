@@ -37,108 +37,205 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * This interface defines a unified set of methods to access the elements that
- * make up the game world. The game world is composed of the following
- * specific-purpose collections into which one can put game world elements.
- *
- * <ul>
- * <li>A list of players.</li>
- * <li>A 2D grid - the map.</li>
- * <li>A series of lists accessible using shared keys.</li>
- * <li>Another series of lists indexed by player and accessible using player-specific keys.</li>
- * <li>A collection of items accessible using world-item keys.</li>
- * <li>A list of financial transaction for each of the players</li>
- * </ul>
- *
- * Example: the following code gets player1's train #5.
- *
- *
- * {@code TrainModel t = (TrainModel)world.get(KEY.Trains, 5, player1);}
- *
- *
- * The motivation for accessing lists using keys is that one does not need to
- * add a new class or change the interface of the World class when a new list is
- * added. Instead one can just add a new entry to the class KEY.
- *
- * Code that loops through lists should handle null values gracefully.
+ * Read-oriented access to a game world's map, definitions, players, player
+ * assets, finances, rules, and simulation clock. Returned collections expose
+ * the world's data without providing collection-level mutation operations.
  */
 public interface UnmodifiableWorld extends Serializable {
 
+    /** Returns all engine definitions in stable identifier order. */
     Collection<Engine> getEngines();
 
+    /**
+     * @param id engine identifier
+     * @return the matching engine
+     */
     Engine getEngine(int id);
 
+    /** Returns all cities in stable identifier order. */
     Collection<City> getCities();
 
+    /**
+     * @param id city identifier
+     * @return the matching city
+     */
     City getCity(int id);
 
+    /** Returns all cargo definitions in their index order. */
     Collection<Cargo> getCargos();
 
+    /**
+     * @param id cargo identifier
+     * @return the matching cargo definition
+     */
     Cargo getCargo(int id);
 
+    /**
+     * Returns the zero-based position of a cargo in {@link #getCargos()}.
+     *
+     * @param cargoId stable cargo identifier
+     * @return the cargo's zero-based position
+     */
+    int getCargoIndex(int cargoId);
+
+    /**
+     * Returns the cargo at its zero-based position in {@link #getCargos()}.
+     *
+     * @param index zero-based cargo position
+     * @return the cargo at that position
+     */
+    Cargo getCargoAtIndex(int index);
+
+    /** Returns all terrain definitions in stable identifier order. */
     Collection<Terrain> getTerrains();
 
+    /**
+     * @param id terrain identifier
+     * @return the matching terrain definition
+     */
     Terrain getTerrain(int id);
 
+    /** Returns all track type definitions in their index order. */
     Collection<TrackType> getTrackTypes();
 
+    /**
+     * @param id track type identifier
+     * @return the matching track type
+     */
     TrackType getTrackType(int id);
 
+    /**
+     * Returns the zero-based position of a track type in {@link #getTrackTypes()}.
+     *
+     * @param trackTypeId stable track type identifier
+     * @return the track type's zero-based position
+     */
+    int getTrackTypeIndex(int trackTypeId);
+
+    /**
+     * Returns the track type at its zero-based position in {@link #getTrackTypes()}.
+     *
+     * @param index zero-based track type position
+     * @return the track type at that position
+     */
+    TrackType getTrackTypeAtIndex(int index);
+
+    /**
+     * Returns the trains belonging to a player in train-list order.
+     *
+     * @param player owner whose trains are requested
+     * @return the player's trains
+     */
     Collection<Train> getTrains(Player player);
 
+    /**
+     * @param player owner of the train
+     * @param id train identifier
+     * @return the matching train
+     */
     Train getTrain(Player player, int id);
 
+    /**
+     * Returns the zero-based position of a train in the specified player's train collection.
+     *
+     * @param player owner of the train
+     * @param trainId stable train identifier
+     * @return the train's zero-based position
+     */
+    int getTrainIndex(Player player, int trainId);
+
+    /**
+     * Returns the stations belonging to a player in station order.
+     *
+     * @param player owner whose stations are requested
+     * @return the player's stations
+     */
     Collection<Station> getStations(Player player);
 
+    /**
+     * @param player owner of the station
+     * @param id station identifier
+     * @return the matching station
+     */
     Station getStation(Player player, int id);
 
+    /** Returns the sentiment currently selected by the world. */
     Sentiment getSentiment();
 
+    /** Returns the rules currently governing this world. */
     Rules getRules();
 
     /**
-     * @return
+     * Tests whether a map coordinate lies within the map boundaries.
+     *
+     * @param location tile coordinate to test
+     * @return {@code true} if the coordinate is within the map
      */
     boolean boundsContain(Vec2D location);
 
     /**
-     * @param player
-     * @return
+     * @param player player whose current balance is requested
+     * @return the player's current account balance
      */
     Money getCurrentBalance(Player player);
 
     /**
      * Returns the width and height of the map in tiles.
      *
-     * @return
+     * @return a vector whose x and y values are map width and height
      */
     Vec2D getMapSize();
 
     /**
-     * @param i
-     * @return
+     * @param i zero-based position in the player list
+     * @return the player at that position
      */
     Player getPlayer(int i);
 
+    /**
+     * Returns the zero-based position of the player with the specified stable ID.
+     *
+     * @param playerId stable player identifier
+     * @return the player's zero-based position
+     */
+    int getPlayerIndex(int playerId);
+
+    /** Returns the players in the order they were added. */
     Collection<Player> getPlayers();
 
     /**
      * Returns the tile at the specified position on the map.
+     *
+     * @param location map coordinate of the tile
+     * @return tile at that coordinate
      */
     TerrainTile getTile(Vec2D location);
 
     /**
-     * @param player
-     * @param i
-     * @return
+     * @param player owner of the transaction
+     * @param i zero-based transaction position
+     * @return the transaction at that position
      */
     Transaction getTransaction(Player player, int i);
 
+    /**
+     * Returns the transactions recorded for a player in insertion order.
+     *
+     * @param player account owner
+     * @return the player's transaction history
+     */
     Collection<Transaction> getTransactions(Player player);
 
+    /** Returns the simulation clock. */
     Clock getClock();
 
+    /** Returns the current simulation speed. */
     Speed getSpeed();
 
+    /**
+     * Sets the current simulation speed.
+     *
+     * @param speed speed to use
+     */
     void setSpeed(@NotNull Speed speed);
 }

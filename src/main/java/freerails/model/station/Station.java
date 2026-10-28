@@ -32,8 +32,8 @@ import java.util.List;
 
 // TODO doesn't know what type it is (depot, station, terminal)? why not? should know.
 /**
- * Represents a station. with a position, a name, a supply, a demand, a conversion (of cargo).
- * The content is effectively immutable.
+ * Represents a station with a location, name, cargo service data, and
+ * production queue. Its cargo bundle is copied on construction and replacement.
  */
 public class Station extends Identifiable {
 
@@ -48,10 +48,14 @@ public class Station extends Identifiable {
     private List<TrainTemplate> production;
 
     /**
-     * @param location
-     * @param stationName
-     * @param numberOfCargoTypes
-     * @param cargoBatchBundle
+     * Creates a station and initializes its cargo settings for the world's
+     * cargo types.
+     *
+     * @param id station identifier
+     * @param location map location of the station
+     * @param stationName display name
+     * @param numberOfCargoTypes number of cargo types in the world
+     * @param cargoBatchBundle initial waiting cargo, copied by this station
      */
     public Station(int id, Vec2D location, String stationName, int numberOfCargoTypes, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
         super(id);
@@ -69,77 +73,110 @@ public class Station extends Identifiable {
     }
 
     /**
-     * @return
+     * Returns the station's cargo conversion rules.
+     *
+     * @return cargo conversion settings
      */
     public StationCargoConversion getCargoConversion() {
         return cargoConversion;
     }
 
     /**
-     * @return
+     * Returns the station's display name.
+     *
+     * @return station name
      */
     public String getStationName() {
         return name;
     }
 
     /**
-     * @return
+     * Returns the station's map coordinates.
+     *
+     * @return station location
      */
     public Vec2D getLocation() {
         return location;
     }
 
     /**
-     * What this station is building.
-     */ /**
-     * @return
+     * Returns the train templates currently in the station's production queue.
+     *
+     * @return production queue
      */
     public List<TrainTemplate> getProduction() {
         return production;
     }
 
     /**
-     * @return
+     * Returns the station's cargo demand settings.
+     *
+     * @return cargo demand
      */
     public StationDemand getDemandForCargo() {
         return demandForCargo;
     }
 
     /**
-     * @return
+     * Returns the station's cargo supply rates.
+     *
+     * @return cargo supply
      */
     public StationSupply getSupply() {
         return supply;
     }
 
     /**
-     * @return
+     * Returns the cargo currently waiting at the station through the
+     * unmodifiable bundle interface.
+     *
+     * @return waiting cargo
      */
     public UnmodifiableCargoBatchBundle getCargoBatchBundle() {
         return cargoBatchBundle;
     }
 
     /**
-     * Makes a copy.
+     * Replaces the waiting cargo with a copy of the supplied bundle.
      *
-     * @param cargoBatchBundle
+     * @param cargoBatchBundle new waiting cargo to copy
      */
     public void setCargoBatchBundle(@NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
         this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
     }
 
+    /**
+     * Replaces the station's cargo conversion rules.
+     *
+     * @param cargoConversion conversion rules to install
+     */
     public void setCargoConversion(StationCargoConversion cargoConversion) {
         this.cargoConversion = cargoConversion;
     }
 
+    /**
+     * Replaces the station's cargo demand settings.
+     *
+     * @param demandForCargo demand settings to install
+     */
     public void setDemandForCargo(StationDemand demandForCargo) {
         this.demandForCargo = demandForCargo;
     }
 
+    /**
+     * Replaces the station's cargo supply rates.
+     *
+     * @param supply supply rates to install
+     */
     public void setSupply(StationSupply supply) {
         this.supply = supply;
     }
 
+    /**
+     * Replaces the train templates in the station's production queue.
+     *
+     * @param production ordered production queue
+     */
     public void setProduction(List<TrainTemplate> production) {
         this.production = production;
     }

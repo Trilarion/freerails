@@ -21,12 +21,14 @@ package freerails.model.track;
 import java.io.Serializable;
 
 /**
- * Defines methods that encode a track configuration as an int.
+ * Provides the 9-bit integer representation shared by track configurations.
  */
 public interface TrackConfigurations extends Serializable {
 
     /**
-     * @return the integer representing the vector(s) of this object.
+     * Returns the bit template representing the directions and tile center.
+     *
+     * @return the 9-bit track template
      */
     int get9bitTemplate();
 }

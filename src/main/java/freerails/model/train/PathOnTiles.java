@@ -30,7 +30,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * An immutable class that stores a path made up of OneTileMoveVectors.
+ * Immutable sequence of tile transitions beginning at a specified tile.
  */
 public class PathOnTiles implements Serializable {
 
@@ -39,9 +39,9 @@ public class PathOnTiles implements Serializable {
     private final List<TileTransition> vectors;
 
     /**
-     * @throws NullPointerException if null == start
-     * @throws NullPointerException if null == vectorsList
-     * @throws NullPointerException if null == vectorsList.get(i) for any i;
+     * @param start starting tile coordinates
+     * @param tileTransitions transitions from the start tile, in traversal order
+     * @throws NullPointerException if the start, transition list, or any transition is null
      */
     public PathOnTiles(Vec2D start, List<TileTransition> tileTransitions) {
         vectors = new ArrayList<>(tileTransitions);
@@ -49,18 +49,21 @@ public class PathOnTiles implements Serializable {
         this.start = Utils.verifyNotNull(start);
     }
 
-    /**
-     * @throws NullPointerException if null == start
-     * @throws NullPointerException if null == vectors
-     * @throws NullPointerException if null == vectors[i] for any i;
-     */
     // TODO remove this constructor only used from tests
+    /**
+     * Creates a path from a variable number of transitions.
+     *
+     * @param start starting tile coordinates
+     * @param tileTransitions transitions from the start tile, in traversal order
+     * @throws NullPointerException if the start, transition array, or any transition is null
+     */
     public PathOnTiles(Vec2D start, TileTransition... tileTransitions) {
         vectors = new ArrayList<>(Arrays.asList(tileTransitions));
         Utils.verifyNoneNull(vectors);
         this.start = Utils.verifyNotNull(start);
     }
 
+    /** Compares the starting tile and ordered transitions. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -79,8 +82,11 @@ public class PathOnTiles implements Serializable {
     }
 
     /**
-     * @param steps
-     * @return
+     * Returns the distance covered by the first {@code steps} transitions.
+     *
+     * @param steps number of transitions to measure
+     * @return cumulative transition length
+     * @throws IndexOutOfBoundsException if {@code steps} exceeds the number of transitions
      */
     public double getDistance(int steps) {
         double distanceSoFar = 0;
@@ -92,11 +98,14 @@ public class PathOnTiles implements Serializable {
     }
 
     /**
-     * Returns the coordinates of the point you would be standing at if you
-     * walked the specified distance along the path from the start point.
+     * Returns the display-coordinate point at the specified distance from the
+     * start of the path.
+     *
+     * @param distance distance along the path
+     * @return point at that distance
      *
      * @throws IllegalArgumentException if distance &lt; 0
-     * @throws IllegalArgumentException if distance &gt; getLength()
+     * @throws IllegalArgumentException if distance exceeds the path length
      */
     public Vec2D getPoint(double distance) {
         if (0 > distance) throw new IllegalArgumentException("distance:" + distance + " < 0");
@@ -122,11 +131,13 @@ public class PathOnTiles implements Serializable {
     }
 
     /**
-     * Returns the coordinates of the point you would be standing at if you
-     * walked the specified distance along the path from the start point.
+     * Returns the two display-coordinate points delimiting the specified path interval.
      *
-     * @throws IllegalArgumentException if distance &lt; 0
-     * @throws IllegalArgumentException if distance &gt; getLength()
+     * @param firstdistance interval start measured from the path start
+     * @param lastdistance interval end measured from the path start
+     * @return the points at the requested distances
+     * @throws IllegalArgumentException if either distance is negative, the start
+     *         exceeds the end, or the end lies beyond the path
      */
     public Pair<Vec2D, Vec2D> getPoint(double firstdistance, double lastdistance) {
         if (0 > firstdistance) {
@@ -200,23 +211,27 @@ public class PathOnTiles implements Serializable {
         return new Pair<>(firstPoint, secondPoint);
     }
 
-    /**
-     * @return
-     */
+    /** Returns the starting tile coordinates. */
     public Vec2D getStart() {
         return start;
     }
 
     /**
-     * @param i
-     * @return
+     * Returns the transition at the specified index.
+     *
+     * @param i zero-based transition index
+     * @return transition at {@code i}
+     * @throws IndexOutOfBoundsException if {@code i} is outside the path
      */
     public TileTransition getStep(int i) {
         return vectors.get(i);
     }
 
     /**
-     * @return
+     * Returns the position reached after traversing the final transition.
+     *
+     * @return final tile and direction of entry
+     * @throws IndexOutOfBoundsException if this path has no transitions
      */
     public PositionOnTrack getFinalPosition() {
         int x = start.x;
@@ -231,11 +246,12 @@ public class PathOnTiles implements Serializable {
     }
 
     /**
-     * Returns the index of the step that takes the distance travelled over the
-     * specified distance.
+     * Returns the index of the transition that reaches or passes the distance.
      *
+     * @param distance distance from the path start
+     * @return index of the transition crossing the distance
      * @throws IllegalArgumentException if distance &lt; 0
-     * @throws IllegalArgumentException if distance &gt; getLength()
+     * @throws IllegalArgumentException if distance exceeds the path length
      */
     public int getStepIndex(int distance) {
         if (0 > distance) throw new IllegalArgumentException("distance < 0");
@@ -248,21 +264,22 @@ public class PathOnTiles implements Serializable {
         throw new IllegalArgumentException("distance > getLength()");
     }
 
+    /** Returns a hash code based on the path's starting tile. */
     @Override
     public int hashCode() {
         return start.hashCode();
     }
 
-    /**
-     * @return
-     */
+    /** Returns the number of tile transitions in this path. */
     public int steps() {
         return vectors.size();
     }
 
     /**
-     * @param newTileTransition
-     * @return
+     * Returns a new path with the supplied transition appended.
+     *
+     * @param newTileTransition transition to append
+     * @return a path containing all current transitions followed by the new one
      */
     public PathOnTiles addStep(TileTransition newTileTransition) {
         int oldLength = vectors.size();
@@ -275,9 +292,11 @@ public class PathOnTiles implements Serializable {
     }
 
     /**
-     * Returns a PathIterator that exposes a sub section of the path
-     * this object represents.
+     * Returns an iterator over the portion of this path between the given distances.
      *
+     * @param offset distance from the path start to the subpath start
+     * @param length length of the subpath
+     * @return the subpath iterator and its number of points
      * @throws IllegalArgumentException if offset &lt; 0
      * @throws IllegalArgumentException if length &le; 0
      * @throws IllegalArgumentException if offset + length &gt; getLength()
@@ -329,7 +348,11 @@ public class PathOnTiles implements Serializable {
     }
 
     /**
-     * @return
+    /**
+     * Returns an iterator over the tile coordinates visited, including the start
+     * tile and the tile reached by each transition.
+     *
+     * @return iterator over visited tile coordinates
      */
     public Iterator<Vec2D> tilesIterator() {
         // TODO no anonymous class here
@@ -338,11 +361,18 @@ public class PathOnTiles implements Serializable {
 
             private Vec2D next = start;
 
+            /** Returns whether another visited tile remains. */
             @Override
             public boolean hasNext() {
                 return next != null;
             }
 
+            /**
+             * Returns the next visited tile.
+             *
+             * @return next tile coordinate
+             * @throws NoSuchElementException if all tiles have been returned
+             */
             @Override
             public Vec2D next() {
                 if (next == null) throw new NoSuchElementException();
@@ -363,6 +393,7 @@ public class PathOnTiles implements Serializable {
                 return returnValue;
             }
 
+            /** Removal is unsupported because this iterator does not modify the path. */
             @Override
             public void remove() {
                 throw new UnsupportedOperationException();
@@ -370,6 +401,7 @@ public class PathOnTiles implements Serializable {
         };
     }
 
+    /** Returns a textual representation of the start tile and transitions. */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(getClass().getName());
@@ -385,22 +417,31 @@ public class PathOnTiles implements Serializable {
         return sb.toString();
     }
 
+    /** Path iterator backed by an ordered list of points. */
     private static class MyPathIterator implements PathIterator {
 
         private static final long serialVersionUID = -4128415959622019625L;
         private final LinkedList<Vec2D> points;
         private int index;
 
+        /** Creates an iterator over the supplied points. */
         private MyPathIterator(LinkedList<Vec2D> points) {
             this.points = points;
             index = 0;
         }
 
+        /** Returns whether another segment can be formed from the remaining points. */
         @Override
         public boolean hasNext() {
             return index + 1 < points.size();
         }
 
+        /**
+         * Returns the segment between the next pair of points.
+         *
+         * @return next path segment
+         * @throws NoSuchElementException if fewer than two points remain
+         */
         @Override
         public Segment nextSegment() {
             if (!hasNext()) {

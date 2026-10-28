@@ -37,6 +37,7 @@ import java.io.IOException;
 public class TrackPieceRendererList {
 
     private static final Logger logger = Logger.getLogger(TrackPieceRendererList.class.getName());
+    private final UnmodifiableWorld world;
     private final TrackPieceRenderer[] trackPieceViewArray;
 
     /**
@@ -45,20 +46,22 @@ public class TrackPieceRendererList {
      * @throws IOException
      */
     public TrackPieceRendererList(UnmodifiableWorld world, ImageManager imageManager) throws IOException {
+        this.world = world;
         int numberOfTrackTypes = world.getTrackTypes().size();
         trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
 
-        for (int i = 0; i < numberOfTrackTypes; i++) {
-            trackPieceViewArray[i] = new TrackPieceRendererImpl(world, imageManager, i);
+        for (int trackTypeIndex = 0; trackTypeIndex < numberOfTrackTypes; trackTypeIndex++) {
+            int trackTypeId = world.getTrackTypeAtIndex(trackTypeIndex).getId();
+            trackPieceViewArray[trackTypeIndex] = new TrackPieceRendererImpl(world, imageManager, trackTypeId);
         }
     }
 
     /**
-     * @param i
+     * @param trackTypeId stable ID of the track type
      * @return
      */
-    public TrackPieceRenderer getTrackPieceView(int i) {
-        return trackPieceViewArray[i];
+    public TrackPieceRenderer getTrackPieceView(int trackTypeId) {
+        return trackPieceViewArray[world.getTrackTypeIndex(trackTypeId)];
     }
 
     // TODO this should be a test, in the application we would just fail (no difference anyway)

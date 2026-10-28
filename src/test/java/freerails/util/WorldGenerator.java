@@ -29,6 +29,7 @@ import freerails.model.game.Sentiment;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainCategory;
+import freerails.model.terrain.city.City;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackProperty;
 import freerails.model.track.TrackType;
@@ -54,6 +55,10 @@ public final class WorldGenerator {
      * @return
      */
     public static World minimalWorld() {
+        return minimalWorld(new Vec2D(20, 20));
+    }
+
+    public static World minimalWorld(Vec2D mapSize) {
         World.Builder builder = new World.Builder();
         try {
             builder.setRules(getUnrestrictedRules());
@@ -61,7 +66,7 @@ public final class WorldGenerator {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        builder.setMapSize(new Vec2D(20, 20));
+        builder.setMapSize(mapSize);
         return builder.build();
     }
 
@@ -90,6 +95,10 @@ public final class WorldGenerator {
      * @return
      */
     public static World testWorld(boolean useDefaultRules) {
+        return testWorld(useDefaultRules, new TreeSet<>());
+    }
+
+    public static World testWorld(boolean useDefaultRules, SortedSet<City> cities) {
         World.Builder builder = new World.Builder();
         try {
             if (useDefaultRules) {
@@ -103,6 +112,7 @@ public final class WorldGenerator {
         builder.setTrackTypes(testTrackTypes());
         builder.setTerrainTypes(testTerrainTypes());
         builder.setCargos(testCargos());
+        builder.setCities(cities);
         builder.setMapSize(new Vec2D(10, 10));
         return builder.build();
     }

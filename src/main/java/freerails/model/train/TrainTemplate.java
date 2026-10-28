@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Represents the blue print for what an engine shop is producing.
+ * Immutable blueprint specifying an engine type and wagon types for production.
  */
 public class TrainTemplate implements Serializable {
 
@@ -36,19 +36,21 @@ public class TrainTemplate implements Serializable {
     private final List<Integer> wagonTypes;
 
     /**
-     * @param engineId
-     * @param wagonTypes
+     * @param engineId engine type identifier
+     * @param wagonTypes wagon type identifiers to produce with the engine
      */
     public TrainTemplate(int engineId, @NotNull List<Integer> wagonTypes) {
         this.engineId = engineId;
         this.wagonTypes = List.copyOf(wagonTypes);
     }
 
+    /** Returns a hash code based on the engine type identifier. */
     @Override
     public int hashCode() {
         return engineId;
     }
 
+    /** Compares the engine type and ordered wagon types. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -60,20 +62,17 @@ public class TrainTemplate implements Serializable {
         return wagonTypes.equals(productionAtEngineShop.wagonTypes);
     }
 
-    /**
-     * @return
-     */
+    /** Returns the engine type identifier. */
     public int getEngineId() {
         return engineId;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the immutable ordered list of wagon type identifiers. */
     public List<Integer> getWagonTypes() {
         return wagonTypes;
     }
 
+    /** Returns a concise description of this production template. */
     @Override
     public String toString() {
         return "engine type: " + engineId + ", with " + wagonTypes.size() + " wagons";

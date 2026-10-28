@@ -18,10 +18,19 @@
 
 package freerails.model.train;
 
-/**
- *
- */
+/** Lifecycle and update states used to describe a train's current activity. */
 public enum TrainState {
 
-    STOPPED_AT_STATION, READY, WAITING_FOR_FULL_LOAD, STOPPED_AT_SIGNAL, CRASHED, NEEDS_UPDATING
+    /** Train is stopped at a station. */
+    STOPPED_AT_STATION,
+    /** Train is ready to move or is moving. */
+    READY,
+    /** Train is stopped while waiting for enough cargo to fill its consist. */
+    WAITING_FOR_FULL_LOAD,
+    /** Train is stopped at a signal. */
+    STOPPED_AT_SIGNAL,
+    /** Train has been involved in a crash. */
+    CRASHED,
+    /** Train requires its next server-side update. */
+    NEEDS_UPDATING
 }

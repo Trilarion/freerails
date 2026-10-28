@@ -36,7 +36,10 @@ public class StationSupply implements Serializable {
     // TODO what is the meaning of cargoWaiting and do we need it?
 
     /**
-     * @param cargoWaiting
+     * Creates supply rates indexed by the world's cargo ordering.
+     *
+     * @param cargoWaiting number of carloads supplied per year for each cargo
+     *                     type
      */
     public StationSupply(Integer[] cargoWaiting) {
         supply = new ArrayList<>(Arrays.asList(cargoWaiting));
@@ -45,13 +48,23 @@ public class StationSupply implements Serializable {
     // TODO why is cargType an int, not the class from world.cargo
 
     /**
-     * Returns the number of car loads of the specified cargo that the station
-     * supplies per year.
+     * Returns the carloads supplied per year for a cargo type.
+     *
+     * @param cargoIndex zero-based position in the world's cargo collection
+     * @return annual number of carloads supplied
+     * @throws IndexOutOfBoundsException if the index is outside the configured
+     *         cargo range
      */
-    public int getSupply(int cargoType) {
-        return supply.get(cargoType);
+    public int getSupply(int cargoIndex) {
+        return supply.get(cargoIndex);
     }
 
+    /**
+     * Tests whether another supply object has the same rates.
+     *
+     * @param obj object to compare
+     * @return {@code true} if both supply lists match
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -62,6 +75,11 @@ public class StationSupply implements Serializable {
         return supply.equals(stationSupply.supply);
     }
 
+    /**
+     * Returns a hash code derived from the cargo supply rates.
+     *
+     * @return hash code for these supply settings
+     */
     @Override
     public int hashCode() {
         return supply.hashCode();

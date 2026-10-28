@@ -45,19 +45,24 @@ public class StockPriceCalculator {
     private final UnmodifiableWorld world;
 
     /**
-     * @param world
+     * Creates a calculator for the companies in the supplied world.
+     *
+     * @param world world state providing players and financial transactions
      */
     public StockPriceCalculator(UnmodifiableWorld world) {
         this.world = world;
     }
 
     /**
-     * @return
+     * Calculates one set of prices for each player, in world player order.
+     *
+     * @return calculated prices indexed by player index
      */
     public StockPrice[] calculate() {
         // TODO use maps instead of arrays
         StockPrice[] stockPrices = new StockPrice[world.getPlayers().size()];
-        for (int playerId = 0; playerId < stockPrices.length; playerId++) {
+        for (int playerIndex = 0; playerIndex < stockPrices.length; playerIndex++) {
+            int playerId = world.getPlayer(playerIndex).getId();
             Money profitLastYear;
             if (isFirstYear(playerId)) {
                 // TODO is this a good choice (maybe scenario dependent)
@@ -68,17 +73,20 @@ public class StockPriceCalculator {
             Money netWorth = netWorth(playerId);
             int publicShares = sharesOwnedByPublic(playerId);
             int otherRRShares = sharesOwnedByOtherPlayers(playerId);
-            stockPrices[playerId] = new StockPrice(netWorth, profitLastYear, publicShares, otherRRShares);
+            stockPrices[playerIndex] = new StockPrice(netWorth, profitLastYear, publicShares, otherRRShares);
         }
         return stockPrices;
     }
 
     /**
-     * Returns true if the current time in the same year as the first
-     * transaction for the specified player.
+     * Tests whether the player's first recorded transaction occurred in the
+     * current game year.
+     *
+     * @param playerId identifier of the player to examine
+     * @return {@code true} when the first transaction is in the current year
      */
     boolean isFirstYear(int playerId) {
-        Player player = world.getPlayer(playerId);
+        Player player = world.getPlayer(world.getPlayerIndex(playerId));
         Time firstTransactionTime = world.getTransaction(player, 0).getTime();
         Clock clock = world.getClock();
         int year = clock.getYear(firstTransactionTime);
@@ -87,28 +95,45 @@ public class StockPriceCalculator {
     }
 
     /**
-     * Returns the players net worth at the start of this year.
+     * Calculates the player's net worth as of the start of the current year.
+     *
+     * @param playerId identifier of the player to examine
+     * @return net worth at the current year's start
      */
     public Money netWorth(int playerId) {
         // Set the interval to beginning of time to start of this year.
         Clock clock = world.getClock();
         Time[] times = {Time.ZERO, new Time(clock.getTimeAtStartOfCurrentYear(),1)};
 
-        Player player = world.getPlayer(playerId);
+        Player player = world.getPlayer(world.getPlayerIndex(playerId));
         NetWorthAggregator netWorthAggregator = new NetWorthAggregator(world, player, times);
         netWorthAggregator.aggregate();
         return netWorthAggregator.getValues()[0];
     }
 
     // TODO make this a static function of FinanceUtils
+    /**
+     * Sums the player's non-item transaction amounts during the previous game
+     * year.
+     *
+     * @param playerId identifier of the player to examine
+     * @return net transaction amount for the previous year
+     */
     public Money profitsLastYear(int playerId) {
-        Player player = world.getPlayer(playerId);
+        Player player = world.getPlayer(world.getPlayerIndex(playerId));
 
         Clock clock = world.getClock();
         Time[] interval = {clock.getTimeAtStartOfYear(clock.getCurrentYear() - 1), clock.getTimeAtStartOfCurrentYear()};
 
         // TODO is this anonymous class necessary?
         TransactionAggregator aggregator = new TransactionAggregator(world, player, interval) {
+            /**
+             * Excludes item transactions because their value is represented by
+             * asset changes rather than profit or loss.
+             *
+             * @param transaction transaction to test
+             * @return {@code true} for monetary transactions
+             */
             @Override
             protected boolean acceptable(@NotNull Transaction transaction) {
                 return !(transaction instanceof ItemTransaction);
@@ -118,19 +143,33 @@ public class StockPriceCalculator {
         return aggregator.getValues()[0];
     }
 
+    /**
+     * Counts shares held by the public, excluding shares held by other
+     * railroads and the company's own treasury.
+     *
+     * @param playerId company identifier
+     * @return number of publicly held shares
+     */
     private int sharesOwnedByPublic(int playerId) {
-        Player pr = world.getPlayer(playerId);
+        Player pr = world.getPlayer(world.getPlayerIndex(playerId));
         FinancialDataAggregator gatherer = new FinancialDataAggregator(world, pr);
         return gatherer.sharesHeldByPublic();
     }
 
+    /**
+     * Counts shares in the company held by all other player companies.
+     *
+     * @param playerId company identifier
+     * @return number of shares held by other players
+     */
     private int sharesOwnedByOtherPlayers(int playerId) {
-        Player player = world.getPlayer(playerId);
+        Player player = world.getPlayer(world.getPlayerIndex(playerId));
         FinancialDataAggregator gatherer = new FinancialDataAggregator(world, player);
         int[] stakes = gatherer.getStockInThisRRs();
+        int playerIndex = world.getPlayerIndex(playerId);
         int total = 0;
         for (int i = 0; i < stakes.length; i++) {
-            if (i != playerId) {
+            if (i != playerIndex) {
                 total += stakes[i];
             }
         }

@@ -30,36 +30,78 @@ public class PlayerDetails implements Comparable<PlayerDetails> {
     private Money networth = Money.ZERO;
     private int stations = 0;
 
+    /** Returns this entry as a concise leaderboard description. */
+    /**
+     * Returns this entry as a concise leaderboard description.
+     *
+     * @return formatted leaderboard entry
+     */
     @Override
     public String toString() {
         return name + ", " + networth.toString() + " net worth, " + stations + "  stations.";
     }
 
+    /**
+     * Orders leaderboard entries by net worth in ascending order.
+     *
+     * @param o entry to compare with
+     * @return comparison of the two net worth values
+     */
     @Override
     public int compareTo(@NotNull PlayerDetails o) {
         return networth.compareTo(o.networth);
     }
 
+    /**
+     * Returns the displayed player's name.
+     *
+     * @return player name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the displayed player's name.
+     *
+     * @param name player name to display
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Returns the player's recorded net worth.
+     *
+     * @return recorded net worth
+     */
     public Money getNetworth() {
         return networth;
     }
 
+    /**
+     * Sets the player's recorded net worth.
+     *
+     * @param networth net worth to record
+     */
     public void setNetworth(Money networth) {
         this.networth = networth;
     }
 
+    /**
+     * Returns the number of stations attributed to the player.
+     *
+     * @return station count
+     */
     public int getStations() {
         return stations;
     }
 
+    /**
+     * Sets the number of stations attributed to the player.
+     *
+     * @param stations station count to record
+     */
     public void setStations(int stations) {
         this.stations = stations;
     }

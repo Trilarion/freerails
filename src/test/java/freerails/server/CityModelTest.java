@@ -27,6 +27,7 @@ import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.util.TreeSet;
 
 /**
  * Test for CityModel
@@ -37,7 +38,10 @@ public class CityModelTest extends TestCase {
      * Tests generating populated CityModel from cities on the map.
      */
     public void testLoadFromMap() throws IOException {
-        World world = WorldGenerator.testWorld(true);
+        City city = new City(1,"New York", new Vec2D(5, 5));
+        TreeSet<City> cities = new TreeSet<>();
+        cities.add(city);
+        World world = WorldGenerator.testWorld(true, cities);
         Vec2D mapSize = world.getMapSize();
 
         TerrainTile tile = new TerrainTile(0);
@@ -46,10 +50,6 @@ public class CityModelTest extends TestCase {
                 world.setTile(new Vec2D(x, y), tile);
             }
         }
-
-        // TODO this is not supposed to work, but still works
-        City city = new City(1,"New York", new Vec2D(5, 5));
-        world.getCities().add(city);
 
         CityModel cityModel = new CityModel();
         cityModel.loadFromMap(world, 1);

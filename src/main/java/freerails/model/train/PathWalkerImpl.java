@@ -25,7 +25,8 @@ import freerails.util.Vec2D;
 import java.util.NoSuchElementException;
 
 /**
- * PathWalker that walks the path exposed by a PathIterator.
+ * Walks the segments exposed by a {@link PathIterator} and emits portions of
+ * them according to requested distance increments.
  */
 public class PathWalkerImpl implements PathWalker {
 
@@ -43,16 +44,15 @@ public class PathWalkerImpl implements PathWalker {
     private int lastY;
 
     /**
-     * @param i
+     * Creates a walker over the supplied path.
+     *
+     * @param i path segments to traverse
      */
     public PathWalkerImpl(PathIterator i) {
         it = i;
     }
 
-    /**
-     * @return true if we still have more of the current segment, or more
-     * segments left.
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean canStepForward() {
         if (currentSegment.getLength() > distanceAlongCurrentSegment) {
@@ -60,18 +60,13 @@ public class PathWalkerImpl implements PathWalker {
         } else return it.hasNext();
     }
 
-    /**
-     * Specify the distance this PathWalker is to progress along the current
-     * step.
-     */
+    /** {@inheritDoc} */
     @Override
     public void stepForward(double distance) {
         distanceOfThisStepRemaining += distance;
     }
 
-    /**
-     * @return true if there is still some distance to go along this path
-     */
+    /** Returns whether the current requested advance still has a segment to emit. */
     @Override
     public boolean hasNext() {
         if (0 == distanceOfThisStepRemaining) {
@@ -81,6 +76,13 @@ public class PathWalkerImpl implements PathWalker {
         } else return it.hasNext();
     }
 
+    /**
+     * Returns the next segment portion for the pending advance.
+     *
+     * @return the next traveled segment
+     * @throws NoSuchElementException if no portion remains for the current advance
+     * @throws IllegalStateException if consecutive emitted segments do not connect
+     */
     @Override
     public Segment nextSegment() {
         if (!hasNext()) {
@@ -125,6 +127,7 @@ public class PathWalkerImpl implements PathWalker {
         return new Segment(start, stop);
     }
 
+    /** Computes the endpoint when the pending advance ends within the current segment. */
     private Vec2D endInMiddleOfSegment() {
         distanceAlongCurrentSegment += distanceOfThisStepRemaining;
         distanceOfThisStepRemaining = 0;
@@ -133,6 +136,7 @@ public class PathWalkerImpl implements PathWalker {
         return new Vec2D(x, y);
     }
 
+    /** Returns the current segment endpoint and carries excess distance to the next segment. */
     private Vec2D endAtSegmentEnd(double remainingDistanceAlongCurrentSegment) {
         Vec2D stop = currentSegment.getB();
         distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
@@ -140,18 +144,28 @@ public class PathWalkerImpl implements PathWalker {
         return stop;
     }
 
+    /** Computes the start point at the current offset within the active segment. */
     private Vec2D startInMiddleOfSegment() {
         int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().x, currentSegment.getB().x);
         int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().y, currentSegment.getB().y);
         return new Vec2D(x, y);
     }
 
+    /** Loads the next path segment and returns its starting point. */
     private Vec2D startNewSegment() {
         currentSegment = it.nextSegment();
         distanceAlongCurrentSegment = 0;
         return currentSegment.getA();
     }
 
+    /**
+     * Interpolates one coordinate along the active segment at the given distance.
+     *
+     * @param distanceAlongSegment distance from the segment start
+     * @param coordinate1 coordinate at the segment start
+     * @param coordinate2 coordinate at the segment end
+     * @return the interpolated coordinate, truncated to an integer
+     */
     private int getCoordinateOnSegment(double distanceAlongSegment, int coordinate1, int coordinate2) {
         double segmentLength = currentSegment.getLength();
         double delta = 0;

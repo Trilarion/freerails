@@ -24,10 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An instance of this class represents one of the possible track configurations
- * in a map square - the combinations of directions in which track can be laid.
- * Instances of this class cannot be created and must be obtained via the static
- * methods herein.
+ * Represents a 9-bit set of track directions and center occupancy on one map
+ * tile. Instances are canonical and obtained through the factory methods.
  */
 public class TrackConfiguration implements TrackConfigurations {
 
@@ -47,6 +45,11 @@ public class TrackConfiguration implements TrackConfigurations {
     private final int length;
     private final int configuration;
 
+    /**
+     * Creates a configuration and calculates its total track length.
+     *
+     * @param configuration 9-bit template represented by this instance
+     */
     private TrackConfiguration(int configuration) {
         this.configuration = configuration;
 
@@ -63,7 +66,11 @@ public class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * @return the superposition of two track templates
+     * Combines two configurations by taking the union of their template bits.
+     *
+     * @param c first configuration
+     * @param v second configuration
+     * @return canonical configuration containing bits from both inputs
      */
     public static TrackConfiguration add(TrackConfigurations c, TrackConfigurations v) {
         int newTemplate = c.get9bitTemplate() | v.get9bitTemplate();
@@ -72,24 +79,34 @@ public class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * @param i
-     * @return
+     * Returns the canonical configuration represented by a 9-bit template.
+     *
+     * @param i 9-bit track template in the range 0 through 511
+     * @return the canonical configuration for the template
+     * @throws IndexOutOfBoundsException if {@code i} is outside the supported range
      */
     public static TrackConfiguration from9bitTemplate(int i) {
         return flatTrackConfigurations.get(i);
     }
 
     /**
-     * @param v
-     * @return
+     * Converts a track-configuration value to its canonical instance.
+     *
+     * @param v configuration whose template is used
+     * @return the canonical configuration for {@code v}'s template
      */
     public static TrackConfiguration getFlatInstance(TrackConfigurations v) {
         return from9bitTemplate(v.get9bitTemplate());
     }
 
     /**
-     * @param trackTemplate
-     * @return
+     * Parses a binary string as a track template and returns its canonical
+     * configuration. The string is reversed to preserve the legacy bit order.
+     *
+     * @param trackTemplate binary representation of a 9-bit track template
+     * @return the canonical configuration represented by the string
+     * @throws NumberFormatException if the string is not a valid binary integer
+     * @throws IndexOutOfBoundsException if the parsed value is outside 0 through 511
      */
     public static TrackConfiguration getFlatInstance(String trackTemplate) {
         String templateString = trackTemplate;
@@ -106,7 +123,11 @@ public class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * @return the TrackConfiguration representing the track section c minus the track sections represented by v.
+     * Removes the bits in one configuration from another.
+     *
+     * @param c configuration to subtract from
+     * @param v configuration bits to remove
+     * @return canonical configuration representing {@code c} minus {@code v}
      */
     public static TrackConfiguration subtract(TrackConfigurations c, TrackConfigurations v) {
         int newTemplate = c.get9bitTemplate() & ~v.get9bitTemplate();
@@ -114,10 +135,11 @@ public class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * @param ftt the TrackConfigurations which may be a subset of this
-     *            TrackConfigurations.
-     * @return true if the vectors represented by this TrackConfigurations are a
-     * superset of the vectors of the specified TrackConfigurations
+     * Tests whether this configuration includes every direction and bit set in
+     * another configuration.
+     *
+     * @param ftt configuration that may be a subset of this one
+     * @return {@code true} if this configuration contains all bits in {@code ftt}
      */
     public boolean contains(TrackConfigurations ftt) {
         int trackTemplate = ftt.get9bitTemplate();
@@ -126,8 +148,10 @@ public class TrackConfiguration implements TrackConfigurations {
 
 
     /**
-     * @param trackTemplate
-     * @return
+     * Tests whether this configuration contains every bit in a template.
+     *
+     * @param trackTemplate template to test
+     * @return {@code true} if all bits in {@code trackTemplate} are set here
      */
     public boolean contains(int trackTemplate) {
         return (trackTemplate | configuration) == configuration;
@@ -135,7 +159,10 @@ public class TrackConfiguration implements TrackConfigurations {
 
     // TODO just shave the 9th bit of
     /**
-     * @return
+     * Returns the 8-bit encoding of the directional track transitions,
+     * excluding the center bit.
+     *
+     * @return the 8-bit directional template
      */
     public int get8bitTemplate() {
         int newTemplate = 0;
@@ -152,7 +179,9 @@ public class TrackConfiguration implements TrackConfigurations {
 
     // TODO why is a 9th bit needed anyway?
     /**
-     * @return an int representing this track configuration.
+     * {@inheritDoc}
+     *
+     * @return this configuration's 9-bit template
      */
     @Override
     public int get9bitTemplate() {
@@ -160,20 +189,29 @@ public class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * Returns the length of track used in this configuration. Used to calculate
-     * the cost of building track.
+     * Returns the total length of track represented by this configuration.
+     *
+     * @return summed length of its included transitions
      */
     public int getLength() {
         return length;
     }
 
     /**
-     * @return
+     * Returns the 9-bit configuration value.
+     *
+     * @return the encoded configuration
      */
     public int getConfiguration() {
         return configuration;
     }
 
+    /**
+     * Compares configurations by their encoded template.
+     *
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} is an equal configuration
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -184,18 +222,29 @@ public class TrackConfiguration implements TrackConfigurations {
         return configuration == that.configuration;
     }
 
+    /**
+     * Returns a hash code derived from the encoded template.
+     *
+     * @return the configuration's hash code
+     */
     @Override
     public int hashCode() {
         return configuration;
     }
 
+    /**
+     * Replaces the deserialized object with its canonical instance.
+     *
+     * @return the canonical configuration
+     */
     private Object readResolve() {
         return TrackConfiguration.from9bitTemplate(configuration);
     }
 
     /**
-     * Returns a String representing this configuration, for example "north,
-     * south".
+     * Returns a readable description of the center bit and included directions.
+     *
+     * @return a textual description of this configuration
      */
     @Override
     public String toString() {

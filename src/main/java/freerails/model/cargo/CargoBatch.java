@@ -38,10 +38,13 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     private final long creationTime;
 
     /**
-     * @param cargoTypeId
-     * @param p
-     * @param time
-     * @param origin
+     * Creates a batch identity for cargo produced at a particular place and
+     * time.
+     *
+     * @param cargoTypeId identifier of the cargo type
+     * @param p source tile coordinates
+     * @param time batch creation time
+     * @param origin identifier of the originating station
      */
     public CargoBatch(int cargoTypeId, Vec2D p, long time, int origin) {
         this.cargoTypeId = cargoTypeId;
@@ -51,26 +54,38 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     }
 
     /**
-     * @return
+     * Returns the identifier of the station where this batch originated.
+     *
+     * @return originating station identifier
      */
     public int getOriginalStationId() {
         return originalStationId;
     }
 
     /**
-     * @return
+     * Returns the identifier of the cargo type in this batch.
+     *
+     * @return cargo type identifier
      */
     public int getCargoTypeId() {
         return cargoTypeId;
     }
 
     /**
-     * @return
+     * Returns the source tile coordinates for this batch.
+     *
+     * @return source tile position
      */
     public Vec2D getSourceP() {
         return sourceP;
     }
 
+    /**
+     * Tests equality across cargo type, source, creation time, and origin.
+     *
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} describes the same batch
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof CargoBatch) {
@@ -81,6 +96,11 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         return false;
     }
 
+    /**
+     * Returns a hash derived from the fields used for batch equality.
+     *
+     * @return hash code for this batch
+     */
     @Override
     public int hashCode() {
         int result = 17;
@@ -92,6 +112,13 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         return result;
     }
 
+    /**
+     * Orders batches by creation time, cargo type, origin station, then source
+     * coordinates.
+     *
+     * @param o batch to compare with
+     * @return ordering result for the batch fields
+     */
     @Override
     public int compareTo(@NotNull CargoBatch o) {
         if (creationTime != o.creationTime) return (int) (creationTime - o.creationTime);

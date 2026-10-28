@@ -34,13 +34,25 @@ import org.jetbrains.annotations.NotNull;
 public class NetWorthAggregator extends TransactionAggregator {
 
     /**
-     * @param world
-     * @param player
+     * Creates an aggregator that calculates a player's net worth across the
+     * specified intervals.
+     *
+     * @param world world supplying the player's transactions
+     * @param player player whose net worth is calculated
+     * @param times ordered interval boundaries
      */
     public NetWorthAggregator(UnmodifiableWorld world, Player player, Time[] times) {
         super(world, player, times);
     }
 
+    /**
+     * Includes monetary transactions and stock-issue transactions, while
+     * excluding other item purchases because they exchange one asset for
+     * another.
+     *
+     * @param transaction transaction to test
+     * @return {@code true} if its amount contributes to net worth
+     */
     @Override
     protected boolean acceptable(@NotNull Transaction transaction) {
         if (transaction instanceof ItemTransaction) {

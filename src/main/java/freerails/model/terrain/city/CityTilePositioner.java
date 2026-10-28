@@ -26,12 +26,12 @@ import java.util.List;
 import java.util.Random;
 
 // TODO does two things, initial position of tiles and growing of cities
-/**
- * Initialises cities and controls their growth. It makes changes to
- * directly to the world object, so if the game has already started, use
- * WorldDifferences and MapDiffMove to pass changes to the clients.
- */
 // TODO what is random used for? Seed of random generator?, convert to static code maybe?
+/**
+ * Initializes city layouts and grows cities by changing the supplied world
+ * directly. Changes made after play begins must be propagated to clients by
+ * the caller.
+ */
 public class CityTilePositioner {
 
     private final Random random = new Random();
@@ -41,7 +41,7 @@ public class CityTilePositioner {
     private final World world;
 
     /**
-     * @param world
+     * @param world world whose city tiles will be initialized and grown
      */
     public CityTilePositioner(World world) {
         this.world = world;
@@ -62,6 +62,7 @@ public class CityTilePositioner {
         }
     }
 
+    /** Randomly populates each city's surrounding area with initial tiles. */
     public void initCities() {
         for (City city: world.getCities()) {
             CityModel cityModel = new CityModel();
@@ -89,12 +90,22 @@ public class CityTilePositioner {
         }
     }
 
+    /**
+     * Adds one randomly selected resource terrain type to an available city tile.
+     *
+     * @param city city model to update
+     */
     private void addResourceTile(CityModel city) {
         int tileTypeNo = random.nextInt(resourceTerrainTypes.size());
         Terrain type = resourceTerrainTypes.get(tileTypeNo);
         city.addTile(type);
     }
 
+    /**
+     * Adds a not-yet-present industry type when one is available.
+     *
+     * @param city city model to update
+     */
     private void addIndustryTile(CityModel city) {
         int size = city.getIndustriesNotAtCity().size();
 
@@ -105,6 +116,11 @@ public class CityTilePositioner {
         }
     }
 
+    /**
+     * Adds one randomly selected urban terrain type to an available city tile.
+     *
+     * @param city city model to update
+     */
     private void addUrbanTile(CityModel city) {
         int tileTypeNo = random.nextInt(urbanTerrainTypes.size());
         Terrain type = urbanTerrainTypes.get(tileTypeNo);
@@ -112,6 +128,10 @@ public class CityTilePositioner {
     }
 
     // TODO make that static and move somewhere else
+    /**
+     * Grows cities that have at least one station and fewer than 16 developed
+     * tiles, using the configured random growth chances.
+     */
     public void growCities() {
         /*
          * At some stage this will be refined to take into account how much

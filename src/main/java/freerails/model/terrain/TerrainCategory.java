@@ -19,7 +19,8 @@
 package freerails.model.terrain;
 
 /**
- * Category of a terrain.
+ * Broad classification used to determine how a terrain type is treated by
+ * map, city, and construction logic.
  */
 public enum TerrainCategory {
 

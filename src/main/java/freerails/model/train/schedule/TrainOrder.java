@@ -38,21 +38,22 @@ public class TrainOrder implements Serializable {
     private final int stationId;
 
     /**
-     * @param station
-     * @param newConsist
-     * @param wait
-     * @param auto
+     * @param station destination station identifier
+     * @param newConsist wagon type identifiers to use, or {@code null} to leave the consist unchanged
+     * @param wait whether to wait at the station until the train is full
+     * @param auto whether to automatically choose the consist
      */
     public TrainOrder(int station, List<Integer> newConsist, boolean wait, boolean auto) {
         // If there are no wagons, set wait = false.
         wait = null == newConsist || 0 == newConsist.size() ? false : wait;
 
         waitUntilFull = wait;
-        consist = newConsist;
+        consist = newConsist == null ? null : List.copyOf(newConsist);
         stationId = station;
         autoConsist = auto;
     }
 
+    /** Compares all order settings. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -66,6 +67,7 @@ public class TrainOrder implements Serializable {
         return getConsist() != null ? getConsist().equals(trainOrder.getConsist()) : trainOrder.getConsist() == null;
     }
 
+    /** Returns a hash code based on the order settings. */
     @Override
     public int hashCode() {
         int result;
@@ -77,57 +79,45 @@ public class TrainOrder implements Serializable {
     }
 
     /**
-     * The wagon types to add; if null, then no change.
-     */ /**
-     * @return either (1) an array of cargo type ids or (2) null to represent
-     * 'no change'.
+     * Returns the wagon types to use at this stop.
+     *
+     * @return wagon type identifiers, or {@code null} to leave the consist unchanged
      */
     public List<Integer> getConsist() {
         return consist;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the destination station identifier (legacy capitalized alias). */
     public int getStationID() {
         return getStationId();
     }
 
-    /**
-     * @return
-     */
+    /** Returns whether the order requests waiting until the train is full. */
     public boolean getWaitUntilFull() {
         return isWaitUntilFull();
     }
 
-    /**
-     * @return
-     */
+    /** Returns whether this order explicitly specifies one or more wagons. */
     public boolean orderHasWagons() {
         return null != getConsist() && 0 != getConsist().size();
     }
 
-    /**
-     * @return
-     */
+    /** Returns whether the consist has fewer than the supported maximum number of wagons. */
     public boolean hasLessThanMaximumNumberOfWagons() {
         return null == getConsist() || getConsist().size() < MAXIMUM_NUMBER_OF_WAGONS;
     }
 
-    /**
-     * @return
-     */
+    /** Returns whether the order uses automatic consist selection. */
     public boolean isAutoConsist() {
         return autoConsist;
     }
 
+    /** Returns whether the train should wait until full at this stop. */
     public boolean isWaitUntilFull() {
         return waitUntilFull;
     }
 
-    /**
-     * The number of the station to goto.
-     */
+    /** Returns the identifier of the station to visit. */
     public int getStationId() {
         return stationId;
     }

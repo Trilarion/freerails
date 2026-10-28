@@ -26,6 +26,7 @@ import freerails.model.game.Time;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A Transaction is a change in a player's bank balance and/or assets.
@@ -41,8 +42,11 @@ public class Transaction implements Serializable {
 
     // TODO some safety mechanisms that gives times are not completely off
     /**
-     * @param category
-     * @param amount
+     * Creates a transaction with its category, amount, and game time.
+     *
+     * @param category kind of transaction
+     * @param amount monetary debit or credit
+     * @param time game time when the transaction occurs
      */
     public Transaction(@NotNull TransactionCategory category, @NotNull Money amount, @NotNull Time time) {
         this.category = category;
@@ -51,37 +55,50 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * Positive means credit.
+     * Returns the transaction amount; positive amounts represent credits.
+     *
+     * @return transaction amount
      */
     public Money getAmount() {
         return amount;
     }
 
+    /**
+     * Returns the game time at which this transaction occurred.
+     *
+     * @return transaction time
+     */
     public Time getTime() {
         return time;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Transaction) {
-            Transaction other = (Transaction) obj;
-            return other.amount.equals(amount) && category == other.category;
+        if (this == obj) {
+            return true;
         }
-        return false;
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Transaction other = (Transaction) obj;
+        return category == other.category
+                && amount.equals(other.amount)
+                && time.equals(other.time);
     }
 
     /**
-     * @return
+     * Returns the category describing this transaction.
+     *
+     * @return transaction category
      */
     public TransactionCategory getCategory() {
         return category;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        int result;
-        result = amount.hashCode();
-        result = 29 * result + category.hashCode();
-        return result;
+        return Objects.hash(category, amount, time);
     }
 }

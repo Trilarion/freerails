@@ -18,10 +18,9 @@
 
 package freerails.model.finance;
 
-/**
- *
- */
+/** Utility namespace for finance-related operations. */
 public final class FinanceUtils {
 
+    /** Prevents instantiation of this utility class. */
     private FinanceUtils() {}
 }

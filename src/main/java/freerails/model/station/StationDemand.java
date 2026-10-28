@@ -33,12 +33,20 @@ public class StationDemand implements Serializable {
     private final List<Integer> demand;
 
     /**
-     * @param demandArray
+     * Creates demand settings from a boolean flag for each cargo type.
+     *
+     * @param demandArray demand flags indexed by the world's cargo ordering
      */
     public StationDemand(boolean[] demandArray) {
         demand = Utils.integerListFromBoolean(demandArray);
     }
 
+    /**
+     * Tests whether another demand object has the same cargo flags.
+     *
+     * @param obj object to compare
+     * @return {@code true} if both demand lists match
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -49,6 +57,11 @@ public class StationDemand implements Serializable {
         return demand.equals(demandAtStation.demand);
     }
 
+    /**
+     * Returns a hash code derived from the cargo demand flags.
+     *
+     * @return hash code for these demand settings
+     */
     @Override
     public int hashCode() {
         int result = 0;
@@ -61,11 +74,15 @@ public class StationDemand implements Serializable {
     }
 
     /**
-     * @param cargoNumber
-     * @return
+     * Tests whether a cargo type is demanded at this station.
+     *
+     * @param cargoIndex zero-based position in the world's cargo collection
+     * @return {@code true} if the station demands that cargo type
+     * @throws IndexOutOfBoundsException if the index is outside the configured
+     *         cargo range
      */
-    public boolean isCargoDemanded(int cargoNumber) {
-        return demand.get(cargoNumber) == 1;
+    public boolean isCargoDemanded(int cargoIndex) {
+        return demand.get(cargoIndex) == 1;
     }
 
 }

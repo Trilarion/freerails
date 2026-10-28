@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 
 /**
- *
+ * An immutable non-negative count of elapsed simulation ticks.
  */
 public class Time implements Comparable<Time>, Serializable {
 
@@ -32,6 +32,12 @@ public class Time implements Comparable<Time>, Serializable {
 
     private final int ticks;
 
+    /**
+     * Creates a time from an absolute tick count.
+     *
+     * @param ticks elapsed ticks; must be non-negative
+     * @throws IllegalArgumentException if {@code ticks} is negative
+     */
     public Time(int ticks) {
         if (ticks < 0) {
             throw new IllegalArgumentException();
@@ -39,6 +45,13 @@ public class Time implements Comparable<Time>, Serializable {
         this.ticks = ticks;
     }
 
+    /**
+     * Creates a time by adding a tick offset to another time.
+     *
+     * @param time base time
+     * @param deltaTicks signed number of ticks to add
+     * @throws IllegalArgumentException if the resulting time is negative
+     */
     public Time(@NotNull Time time, int deltaTicks) {
         int ticks = time.getTicks() + deltaTicks;
         if (ticks < 0) {
@@ -47,34 +60,44 @@ public class Time implements Comparable<Time>, Serializable {
         this.ticks = ticks;
     }
 
+    /** Returns the elapsed tick count. */
     public int getTicks() {
         return ticks;
     }
 
     /**
-     * Convenience function.
+     * Returns a new time one tick after this time.
      *
-     * @return
+     * @return the next simulation time
      */
     public Time advance() {
         return new Time(this, 1);
     }
 
     /**
+     * Compares elapsed tick counts.
      *
-     * @param o
-     * @return  less than 0 if this time is earlier, 0 if this time is equal and larger than 0 if this time is later than o
+     * @param o time to compare with
+     * @return a negative value, zero, or a positive value as this time is
+     *         earlier than, equal to, or later than {@code o}
      */
     @Override
     public int compareTo(@NotNull Time o) {
         return Integer.compare(ticks, o.ticks);
     }
 
+    /** Returns a hash code based on the elapsed tick count. */
     @Override
     public int hashCode() {
         return ticks;
     }
 
+    /**
+     * Compares this time with another object by elapsed tick count.
+     *
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} is an equal {@code Time}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -87,6 +110,7 @@ public class Time implements Comparable<Time>, Serializable {
         return compareTo(o) == 0;
     }
 
+    /** Returns the elapsed tick count as a decimal string. */
     @Override
     public String toString() {
         return String.valueOf(ticks);

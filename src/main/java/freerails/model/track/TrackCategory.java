@@ -19,7 +19,8 @@
 package freerails.model.track;
 
 /**
- * Category of a track
+ * Broad construction category of a track type, such as ordinary track,
+ * bridges, tunnels, or stations.
  */
 public enum TrackCategory {
 

@@ -21,16 +21,23 @@
  */
 package freerails.model.world;
 
+import freerails.model.cargo.Cargo;
+import freerails.model.cargo.CargoCategory;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.finance.transaction.TransactionCategory;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.finance.*;
 import freerails.model.player.Player;
+import freerails.model.track.TrackCategory;
+import freerails.model.track.TrackType;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.Collections;
 
 /**
  * Test for World.
@@ -147,6 +154,80 @@ public class WorldTest extends TestCase {
         Transaction t3 = world.removeLastTransaction(player);
         assertEquals(transaction, t3);
         assertEquals(new Money(0), world.getCurrentBalance(player));
+    }
+
+    public void testSparsePlayerIdsMapToStableCollectionIndices() {
+        World world = WorldGenerator.minimalWorld();
+        Player first = new Player(40, "First");
+        Player second = new Player(7, "Second");
+
+        assertEquals(0, world.addPlayer(first));
+        assertEquals(1, world.addPlayer(second));
+        assertEquals(0, world.getPlayerIndex(40));
+        assertEquals(1, world.getPlayerIndex(7));
+
+        world.addTransaction(first,
+                new Transaction(TransactionCategory.MISC_INCOME, new Money(25), world.getClock().getCurrentTime()));
+        assertEquals(new Money(25), world.getCurrentBalance(first));
+
+        World copy = (World) Utils.cloneBySerialisation(world);
+        assertEquals(0, copy.getPlayerIndex(40));
+        assertEquals(new Money(25), copy.getCurrentBalance(first));
+    }
+
+    public void testSparseCargoIdsMapToCollectionIndicesAndBuilderCopiesInput() {
+        World base = WorldGenerator.minimalWorld();
+        SortedSet<Cargo> cargos = new TreeSet<>();
+        cargos.add(new Cargo(7, "Mail", CargoCategory.MAIL, 1));
+        World.Builder builder = new World.Builder()
+                .setRules(base.getRules())
+                .setMapSize(new Vec2D(2, 2))
+                .setCargos(cargos);
+        World world = builder.build();
+
+        cargos.add(new Cargo(90, "Coal", CargoCategory.BULK_FREIGHT, 2));
+        assertEquals(1, world.getCargos().size());
+        assertEquals(0, world.getCargoIndex(7));
+        assertEquals(7, world.getCargoAtIndex(0).getId());
+
+        try {
+            world.getCargos().clear();
+            fail("World cargo collection must be read-only.");
+        } catch (UnsupportedOperationException expected) {
+            // Expected.
+        }
+    }
+
+    public void testSparseTrackTypeIdsMapToCollectionIndices() {
+        World base = WorldGenerator.minimalWorld();
+        SortedSet<TrackType> trackTypes = new TreeSet<>();
+        trackTypes.add(new TrackType(12, "first", TrackCategory.TRACK, Collections.emptySet(),
+                Money.ZERO, Money.ZERO, Collections.emptySet(), Collections.emptySet()));
+        trackTypes.add(new TrackType(88, "second", TrackCategory.TRACK, Collections.emptySet(),
+                Money.ZERO, Money.ZERO, Collections.emptySet(), Collections.emptySet()));
+        World world = new World.Builder()
+                .setRules(base.getRules())
+                .setMapSize(new Vec2D(2, 2))
+                .setTrackTypes(trackTypes)
+                .build();
+
+        assertEquals(0, world.getTrackTypeIndex(12));
+        assertEquals(1, world.getTrackTypeIndex(88));
+        assertEquals(88, world.getTrackTypeAtIndex(1).getId());
+    }
+
+    public void testMapDimensionAndTileCountLimits() {
+        assertInvalidMapSize(new Vec2D(10_001, 1));
+        assertInvalidMapSize(new Vec2D(1_000, 1_001));
+    }
+
+    private static void assertInvalidMapSize(Vec2D size) {
+        try {
+            WorldGenerator.minimalWorld(size);
+            fail("Expected invalid map size to be rejected: " + size);
+        } catch (IllegalArgumentException expected) {
+            // Expected.
+        }
     }
 
 }

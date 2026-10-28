@@ -25,8 +25,8 @@ import freerails.model.world.UnmodifiableWorld;
 
 // TODO make code static instead
 /**
- * Generates the balance sheet - note, its fields are read using reflection so
- * don't change their names.
+ * Calculates lifetime and year-to-date balance-sheet statistics for a player.
+ * The public field names are consumed reflectively and must remain stable.
  */
 public class BalanceSheetGenerator {
 
@@ -34,8 +34,10 @@ public class BalanceSheetGenerator {
     public final Statistics ytd;
 
     /**
-     * @param world
-     * @param player
+     * Builds statistics through the current game time for the specified player.
+     *
+     * @param world world state supplying the clock and transactions
+     * @param player player whose balance sheet is calculated
      */
     public BalanceSheetGenerator(UnmodifiableWorld world, Player player) {
         // Calculate totals

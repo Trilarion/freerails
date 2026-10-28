@@ -28,7 +28,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- *
+ * Describes a terrain type, including its category, construction costs, and
+ * cargo production, conversion, and consumption behavior.
  */
 public class Terrain extends Identifiable {
 
@@ -40,6 +41,18 @@ public class Terrain extends Identifiable {
     private final List<CargoConversion> conversions;
     private final List<CargoProductionOrConsumption> consumptions;
 
+    /**
+     * Creates a terrain definition with the supplied cargo rules.
+     *
+     * @param id stable terrain identifier
+     * @param name display name
+     * @param category category used by map and city logic
+     * @param rightOfWayCost cost of acquiring a right of way over this terrain
+     * @param buildCost optional cost of building on this terrain
+     * @param productions cargo production rules
+     * @param conversions cargo conversion rules
+     * @param consumptions cargo consumption rules
+     */
     public Terrain(int id, String name, TerrainCategory category, Money rightOfWayCost, @Nullable Money buildCost, List<CargoProductionOrConsumption> productions, List<CargoConversion> conversions, List<CargoProductionOrConsumption> consumptions) {
         super(id);
         this.name = Utils.verifyNotNull(name);
@@ -51,30 +64,40 @@ public class Terrain extends Identifiable {
         this.consumptions = Utils.verifyUnmodifiable(consumptions);
     }
 
+    /** Returns the display name of this terrain type. */
     public String getName() {
         return name;
     }
 
+    /** Returns the category that classifies this terrain type. */
     public TerrainCategory getCategory() {
         return category;
     }
 
+    /** Returns the cost of obtaining a right of way across this terrain. */
     public Money getRightOfWayCost() {
         return rightOfWayCost;
     }
 
+    /**
+     * Returns the cost of building on this terrain, or {@code null} if no
+     * separate build cost is defined.
+     */
     public Money getBuildCost() {
         return buildCost;
     }
 
+    /** Returns the immutable cargo production rules for this terrain. */
     public List<CargoProductionOrConsumption> getProductions() {
         return productions;
     }
 
+    /** Returns the immutable cargo conversion rules for this terrain. */
     public List<CargoConversion> getConversions() {
         return conversions;
     }
 
+    /** Returns the immutable cargo consumption rules for this terrain. */
     public List<CargoProductionOrConsumption> getConsumptions() {
         return consumptions;
     }

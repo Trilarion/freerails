@@ -30,20 +30,42 @@ public class WagonLoad implements Comparable<WagonLoad> {
     private final int quantity;
     private final int cargoType;
 
+    /**
+     * Creates a description of a wagon's cargo quantity and cargo type.
+     *
+     * @param quantity amount of cargo loaded in the wagon
+     * @param cargoType cargo type identifier
+     */
     public WagonLoad(int quantity, int cargoType) {
         this.quantity = quantity;
         this.cargoType = cargoType;
     }
 
+    /**
+     * Orders loads by quantity.
+     *
+     * @param o load to compare with
+     * @return signed difference between the quantities
+     */
     @Override
     public int compareTo(@NotNull WagonLoad o) {
         return quantity - o.quantity;
     }
 
+    /**
+     * Returns the cargo quantity represented by this load.
+     *
+     * @return cargo quantity
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     * Returns the identifier of the loaded cargo type.
+     *
+     * @return cargo type identifier
+     */
     public int getCargoType() {
         return cargoType;
     }

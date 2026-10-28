@@ -21,16 +21,37 @@ package freerails.model.finance.transaction;
 import freerails.model.finance.Money;
 import freerails.model.game.Time;
 
-/**
- * A Transaction that adds or removes a Bond.
- */
+import java.util.Objects;
+
+/** A transaction that adds or removes one or more bonds from a player's assets. */
 public class BondItemTransaction extends ItemTransaction {
 
     private static final long serialVersionUID = 3257562923491473465L;
     private final double rate;
 
+    /**
+     * Creates a bond transaction with its amount, time, quantity, and interest
+     * rate.
+     *
+     * @param amount monetary value recorded by the transaction
+     * @param time game time when the transaction occurs
+     * @param quantity positive to issue bonds, negative to repay them
+     * @param rate annual interest rate associated with the bonds
+     */
     public BondItemTransaction(Money amount, Time time, int quantity, double rate) {
         super(TransactionCategory.BOND, amount, time, quantity, -1);
         this.rate = rate;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj) && Double.compare(rate, ((BondItemTransaction) obj).rate) == 0;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), rate);
     }
 }

@@ -20,82 +20,93 @@ package freerails.model.finance;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-
-// TODO sum of two money objects and multiplication with integer, double
-/**
- * Represents an immutable amount of Money.
- */
+/** Represents an immutable amount of money in the game's unit of account. */
 public final class Money implements Serializable, Comparable<Money> {
 
     private static final long serialVersionUID = 3258697615163338805L;
     public static final Money ZERO = new Money(0);
-    private static final DecimalFormat format = new DecimalFormat("#,###");
     public final long amount;
 
-    /**
-     * @param amount
-     */
+    /** Creates an amount in the game's smallest accounting unit. */
     public Money(long amount) {
         this.amount = amount;
     }
 
+    /**
+     * Returns whether this amount is zero or positive.
+     *
+     * @return {@code true} when the amount is nonnegative
+     */
     public boolean isNonNegative() {
         return amount >= 0;
     }
 
     /**
-     * @param moneyA
-     * @param moneyB
-     * @return
+     * Adds two amounts, checking for arithmetic overflow.
+     *
+     * @param moneyA first amount
+     * @param moneyB second amount
+     * @return their sum
+     * @throws ArithmeticException if the sum overflows
      */
     public static Money add(Money moneyA, Money moneyB) {
-        return new Money(moneyA.amount + moneyB.amount);
+        return new Money(Math.addExact(moneyA.amount, moneyB.amount));
     }
 
     /**
-     * @param moneyA
-     * @param moneyB
-     * @return
+     * Subtracts the second amount from the first, checking for overflow.
+     *
+     * @param moneyA amount to subtract from
+     * @param moneyB amount to subtract
+     * @return the difference
+     * @throws ArithmeticException if the difference overflows
      */
     public static Money subtract(Money moneyA, Money moneyB) {
-        return new Money(moneyA.amount - moneyB.amount);
+        return new Money(Math.subtractExact(moneyA.amount, moneyB.amount));
     }
 
     /**
-     * @param money
-     * @param factor
-     * @return
+     * Multiplies an amount by an integer factor, checking for overflow.
+     *
+     * @param money amount to multiply
+     * @param factor multiplier
+     * @return the product
+     * @throws ArithmeticException if the product overflows
      */
     public static Money multiply(Money money, long factor) {
-        return new Money(factor * money.amount);
+        return new Money(Math.multiplyExact(factor, money.amount));
     }
 
     /**
      * Note: An integer division (rounding towards zero) is performed.
      *
-     * @param money
-     * @param factor
-     * @return
+     * @param money amount to divide
+     * @param factor divisor
+     * @return the quotient, truncated toward zero
+     * @throws ArithmeticException if {@code factor} is zero
      */
     public static Money divide(Money money, long factor) {
-        return new Money(factor / money.amount);
+        return new Money(money.amount / factor);
     }
 
     /**
      * Convenience function.
      *
-     * @param money
-     * @return
+     * @param money amount to negate
+     * @return the amount with its sign reversed
+     * @throws ArithmeticException if negation overflows
      */
     public static Money opposite(Money money) {
         return Money.multiply(money, -1);
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         return Long.hashCode(amount);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -105,14 +116,23 @@ public final class Money implements Serializable, Comparable<Money> {
     }
 
     // TODO add currency here (not in the client)
+    /**
+     * Returns this amount formatted with grouping separators and no currency
+     * symbol.
+     *
+     * @return formatted amount
+     */
     @Override
     public String toString() {
-        return format.format(amount);
+        return new DecimalFormat("#,###").format(amount);
     }
 
     /**
-     * @param o
-     * @return
+     * Compares amounts by their numeric value.
+     *
+     * @param o amount to compare with
+     * @return a negative value, zero, or a positive value as this amount is
+     *         smaller than, equal to, or greater than {@code o}
      */
     @Override
     public int compareTo(Money o) {

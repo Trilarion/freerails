@@ -19,47 +19,59 @@
 package freerails.model.track.explorer;
 
 /**
- * This interface lets the caller explore a graph while hiding the way the
- * graph is stored. Vertices are packed into single int values to avoid the cost of
- * object creation and garbage collection.
+ * Lets callers explore a graph without exposing its storage representation.
+ * Vertices are packed into integers to avoid creating vertex objects.
  */
 public interface GraphExplorer {
 
     /**
-     * Return the current edge.
+     * Returns the encoded vertex currently being explored.
+     *
+     * @return current vertex
      */
     int getPosition();
 
     /**
-     * @param vertex
+     * Sets the current vertex and resets edge iteration as defined by the
+     * implementation.
+     *
+     * @param vertex encoded vertex to explore
      */
     void setPosition(int vertex);
 
     /**
-     * Sets the current edge to the current vertex's next edge. Throws a
-     * NoSuchElementException if the vertex does not have another edge.
+     * Selects the next edge leaving the current vertex.
+     *
+     * @throws java.util.NoSuchElementException if no edge remains
      */
     void nextEdge();
 
     /**
-     * Returns the vertex that is connected to the current vertex by the current
-     * edge.
+     * Returns the vertex at the far end of the currently selected edge.
+     *
+     * @return encoded destination vertex
      */
     int getVertexConnectedByEdge();
 
     /**
-     * Returns the cost of the current edge.
+     * Returns the cost of the currently selected edge.
+     *
+     * @return current edge cost
      */
     int getEdgeCost();
 
     /**
-     * @return
+     * Tests whether an edge remains to be selected at the current vertex.
+     *
+     * @return {@code true} if another edge is available
      */
     boolean hasNextEdge();
 
     /**
      * Moves this GraphExplorer from the current vertex to the vertex that is
      * connected to the current vertex by the current edge.
+     *
+     * @throws IllegalStateException if no edge has yet been selected
      */
     void moveForward();
 

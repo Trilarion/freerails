@@ -103,12 +103,12 @@ public class FullServerGameModel implements ServerGameModel {
                     }
                 }
 
-                // TODO i is not an CargoTypeId
                 for (int i = 0; i < world.getCargos().size(); i++) {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {
-                        CargoBatch cargoBatch = new CargoBatch(i, station.getLocation(), 0, stationId);
+                        int cargoId = world.getCargoAtIndex(i).getId();
+                        CargoBatch cargoBatch = new CargoBatch(cargoId, station.getLocation(), 0, stationId);
                         int amountAlready = after.getAmount(cargoBatch);
 
                         // Obtain the month

@@ -97,7 +97,14 @@ public class TrainPositionOnMap implements Serializable {
     private final double speed, acceleration;
     private final TrainState activity;
 
-    // TODO use Vec2D instead of xs, ys
+    /**
+     * Creates an immutable train position and its motion state.
+     *
+     * @param points ordered points from train head to tail
+     * @param speed speed at this position
+     * @param acceleration acceleration at this position
+     * @param activity train lifecycle state
+     */
     private TrainPositionOnMap(List<Vec2D> points, double speed, double acceleration, TrainState activity) {
         this.points = points;
         this.acceleration = acceleration;
@@ -106,16 +113,21 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param points
-     * @return
+     * Creates a stationary position from ordered head-to-tail points.
+     *
+     * @param points train points in head-to-tail order
+     * @return position with zero speed and acceleration and state {@link TrainState#READY}
      */
     public static TrainPositionOnMap createInstance(List<Vec2D> points) {
         return new TrainPositionOnMap(points, 0.0d, 0.0d, TrainState.READY);
     }
 
     /**
-     * @param path
-     * @return
+     * Creates a stationary train position following the path's direction.
+     *
+     * @param path path iterator containing at least one segment
+     * @return position assembled from the path's points
+     * @throws IllegalStateException if more than 10,000 points are encountered
      */
     public static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path) {
         List<Vec2D> points = new ArrayList<>();
@@ -138,11 +150,13 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param path
-     * @param speed
-     * @param acceleration
-     * @param activity
-     * @return
+     * @param path path iterator and expected number of points
+     * @param speed speed at the represented position
+     * @param acceleration acceleration at the represented position
+     * @param activity train lifecycle state
+     * @return position with the path points in the opposite order to the iterator traversal
+     * @throws IllegalStateException if the point count exceeds 10,000 or the iterator
+     *         yields fewer segments than the supplied count
      */
     public static TrainPositionOnMap createInSameDirectionAsPathReversed(Pair<PathIterator, Integer> path, double speed, double acceleration, TrainState activity) {
 
@@ -169,9 +183,9 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param a
-     * @param b
-     * @return
+     * @param a first train position
+     * @param b second train position
+     * @return {@code true} if their first (head) points are equal
      */
     private static boolean headsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
         Vec2D aHead = a.getP(0);
@@ -180,9 +194,9 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param a
-     * @param b
-     * @return
+     * @param a first train position
+     * @param b second train position
+     * @return {@code true} if their last (tail) points are equal
      */
     private static boolean tailsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
         Vec2D aTail = a.getP(a.getLength() - 1);
@@ -191,9 +205,9 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param a
-     * @param b
-     * @return
+     * @param a first train position
+     * @param b second train position
+     * @return {@code true} if the head of {@code a} meets the tail of {@code b}
      */
     private static boolean aHeadEqualsBTail(TrainPositionOnMap a, TrainPositionOnMap b) {
         Vec2D aHead = a.getP(0);
@@ -201,20 +215,24 @@ public class TrainPositionOnMap implements Serializable {
         return aHead.equals(bTail);
     }
 
-    /**
-     * @return
-     */
+    /** Returns whether the current location is a crash site; this implementation always returns {@code false}. */
     public static boolean isCrashSite() {
         return false;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the number of animation frames associated with a position; currently always {@code 1}. */
     public static int getFrameCt() {
         return 1;
     }
 
+    /**
+     * Joins {@code b} to the head of {@code a}, removing the shared endpoint.
+     *
+     * @param a position receiving points at its head
+     * @param b position joined to its head
+     * @return the combined position, carrying motion state from {@code b}
+     * @throws IllegalArgumentException if the head of {@code a} does not meet the tail of {@code b}
+     */
     private static TrainPositionOnMap addBtoHeadOfA(TrainPositionOnMap a, TrainPositionOnMap b) {
         if (!aHeadEqualsBTail(a, b)) {
             throw new IllegalArgumentException("Tried to add " + b + " to the head of " + a);
@@ -239,11 +257,13 @@ public class TrainPositionOnMap implements Serializable {
         return new TrainPositionOnMap(Arrays.asList(newPoints), b.acceleration, b.speed, b.activity);
     }
 
+    /** Returns a hash code based on this position's ordered points. */
     @Override
     public int hashCode() {
         return points.hashCode();
     }
 
+    /** Compares the ordered path points; speed, acceleration, and state are not part of equality. */
     @Override
     public boolean equals(Object obj) {
         if (null == obj) {
@@ -284,36 +304,35 @@ public class TrainPositionOnMap implements Serializable {
         return false;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the number of points from the head through the tail. */
     public int getLength() {
         return points.size();
     }
 
+    /**
+     * Returns the point at the specified head-to-tail index.
+     *
+     * @param position zero-based point index
+     * @return point at that index
+     * @throws IndexOutOfBoundsException if the index is outside the points
+     */
     public Vec2D getP(int position) {
         return points.get(position);
     }
 
-    /**
-     * @return
-     */
+    /** Returns an iterator over segments from the head toward the tail. */
     public PathIterator path() {
         return new SimplePathIteratorImpl(points);
     }
 
-    /**
-     * @return
-     */
+    /** Returns an iterator over segments from the tail toward the head. */
     public PathIterator reversePath() {
         List<Vec2D> list = new ArrayList<>(points); // clone() not available for lists
         Collections.reverse(list); // reverse the list in place
         return new SimplePathIteratorImpl(list);
     }
 
-    /**
-     * @return
-     */
+    /** Returns a new position with its point order reversed. */
     public TrainPositionOnMap reverse() {
         List<Vec2D> list = new ArrayList<>(points); // clone() not available for lists
         Collections.reverse(list); // reverse the list in place
@@ -321,40 +340,52 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param b
-     * @return
+     * Joins another position to this position's head.
+     *
+     * @param b position whose tail must meet this position's head
+     * @return combined position
+     * @throws IllegalArgumentException if the positions do not meet at the required endpoints
      */
     public TrainPositionOnMap addToHead(TrainPositionOnMap b) {
         return addBtoHeadOfA(this, b);
     }
 
     /**
-     * @param b
-     * @return
+     * Tests whether another position can be joined to this position's head.
+     *
+     * @param b candidate position to join
+     * @return {@code true} if its tail equals this position's head
      */
     public boolean canAddToHead(TrainPositionOnMap b) {
         return aHeadEqualsBTail(this, b);
     }
 
     /**
-     * @param a
-     * @return
+     * Joins this position to another position's tail.
+     *
+     * @param a position whose head must meet this position's tail
+     * @return combined position
+     * @throws IllegalArgumentException if the positions do not meet at the required endpoints
      */
     public TrainPositionOnMap addToTail(TrainPositionOnMap a) {
         return addBtoHeadOfA(a, this);
     }
 
     /**
-     * @param b
-     * @return
+     * Tests whether this position can be joined to another position's tail.
+     *
+     * @param b candidate position to join
+     * @return {@code true} if this position's head equals the candidate's tail
      */
     public boolean canAddToTail(TrainPositionOnMap b) {
         return aHeadEqualsBTail(b, this);
     }
 
     /**
-     * @param b
-     * @return
+     * Tests whether the specified position matches this position's head section.
+     *
+     * @param b position to remove from the head
+     * @return {@code true} if the shared head and path points match
      */
     public boolean canRemoveFromHead(TrainPositionOnMap b) {
         if (headsAreEqual(this, b)) {
@@ -378,8 +409,11 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param b
-     * @return
+     * Removes the specified tail section and returns the remaining position.
+     *
+     * @param b tail section to remove
+     * @return position ending at the start of {@code b}
+     * @throws IllegalArgumentException if the tails do not coincide
      */
     public TrainPositionOnMap removeFromTail(TrainPositionOnMap b) {
         if (tailsAreEqual(this, b)) {
@@ -401,8 +435,10 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param b
-     * @return
+     * Tests whether the specified position matches this position's tail section.
+     *
+     * @param b position to remove from the tail
+     * @return {@code true} if the shared tail and path points match
      */
     public boolean canRemoveFromTail(TrainPositionOnMap b) {
         if (tailsAreEqual(this, b)) {
@@ -424,6 +460,7 @@ public class TrainPositionOnMap implements Serializable {
         return false;
     }
 
+    /** Returns a textual representation of the ordered train points. */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

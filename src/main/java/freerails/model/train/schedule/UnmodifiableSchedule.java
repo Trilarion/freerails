@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Defines methods to access a train's schedule.
+ * Read-only access to the orders and current destination of a train schedule.
  */
 public interface UnmodifiableSchedule extends Serializable {
 
@@ -34,8 +34,11 @@ public interface UnmodifiableSchedule extends Serializable {
     int MAXIMUM_NUMBER_OF_ORDER = 6;
 
     /**
-     * @param index
-     * @return
+     * Returns the order at the specified schedule index.
+     *
+     * @param index zero-based order index
+     * @return order at {@code index}
+     * @throws IndexOutOfBoundsException if the index is outside the schedule
      */
     TrainOrder getOrder(int index);
 
@@ -73,15 +76,14 @@ public interface UnmodifiableSchedule extends Serializable {
      */
     int getNumberOfOrders();
 
-    /**
-     * @return
-     */
+    /** Returns the index of the next scheduled (non-priority) order. */
     int getNextScheduledOrder();
 
     /**
+     * Returns whether any order in the schedule visits the specified station.
      *
-     * @param stationId
-     * @return
+     * @param stationId station identifier
+     * @return {@code true} if an order targets that station
      */
     boolean stopsAtStation(int stationId);
 }

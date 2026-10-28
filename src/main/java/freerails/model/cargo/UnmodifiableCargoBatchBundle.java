@@ -57,25 +57,30 @@ import java.util.Collection;
 public interface UnmodifiableCargoBatchBundle extends Serializable {
 
     /**
-     * Presents a copy of the cargo batches present when the function was called.
-     * @return
+     * Returns a collection snapshot of the batches present at call time.
+     *
+     * @return batches currently in the bundle
      */
     Collection<CargoBatch> getCargoBatches();
 
     /**
-     * @return True if this cargo batch is contained.
+     * Tests whether the specified batch is present.
+     *
+     * @param cargoBatch batch to test
+     * @return {@code true} if the bundle contains the batch
      */
     boolean contains(CargoBatch cargoBatch);
 
     /**
-     * @param cargoBatch A cargo batch.
-     * @return The amount of this cargo batch or 0 if the cargo batch is not contained.
+     * Returns the amount associated with a batch.
+     *
+     * @param cargoBatch batch to look up
+     * @return its amount, or zero if absent
      */
     int getAmount(CargoBatch cargoBatch);
 
     /**
-     * Convenience. Iterates over all contained cargo batches and returns the total amount
-     * of a specific cargo type.
+     * Sums the amounts of all batches belonging to the specified cargo type.
      *
      * @param cargoType A cargo type.
      * @return The cumulative amount of all contained batches of this type.
@@ -83,7 +88,9 @@ public interface UnmodifiableCargoBatchBundle extends Serializable {
     int getAmountOfType(int cargoType);
 
     /**
-     * @return Number of contained cargo batches.
+     * Returns the number of batches present in the bundle.
+     *
+     * @return number of contained batches
      */
     int size();
 

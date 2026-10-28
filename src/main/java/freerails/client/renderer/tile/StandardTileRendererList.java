@@ -25,34 +25,38 @@ package freerails.client.renderer.tile;
 
 import freerails.model.world.UnmodifiableWorld;
 
-import java.util.List;
+import java.util.Map;
 
 /**
- * A list of TileRenderer stored in an array and created from an ArrayList.
+ * Tile renderers keyed by their stable terrain IDs.
  */
 public class StandardTileRendererList implements TileRendererList {
 
-    private final List<TileRenderer> tileRenderer;
+    private final Map<Integer, TileRenderer> tileRenderer;
 
     /**
      * @param tileRenderer
      */
-    public StandardTileRendererList(List<TileRenderer> tileRenderer) {
+    public StandardTileRendererList(Map<Integer, TileRenderer> tileRenderer) {
         this.tileRenderer = tileRenderer;
     }
 
     /**
-     * @param index
+     * @param terrainId stable ID of the terrain type
      * @return
      */
     @Override
-    public TileRenderer getTileRendererByIndex(int index) {
-        return tileRenderer.get(index);
+    public TileRenderer getTileRendererByIndex(int terrainId) {
+        TileRenderer renderer = tileRenderer.get(terrainId);
+        if (renderer == null) {
+            throw new IllegalArgumentException("Unknown terrain ID: " + terrainId);
+        }
+        return renderer;
     }
 
     @Override
     public boolean validate(UnmodifiableWorld world) {
-        // There should a TileRenderer for each terrain type.
-        return world.getTerrains().size() == tileRenderer.size();
+        return world.getTerrains().size() == tileRenderer.size()
+                && world.getTerrains().stream().allMatch(terrain -> tileRenderer.containsKey(terrain.getId()));
     }
 }

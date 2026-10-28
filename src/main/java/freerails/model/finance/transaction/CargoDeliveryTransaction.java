@@ -22,6 +22,8 @@ import freerails.model.cargo.CargoBatch;
 import freerails.model.finance.Money;
 import freerails.model.game.Time;
 
+import java.util.Objects;
+
 // TODO Is this an Item transaction or a money transaction or something more complex?
 /**
  * A credit for delivering cargo.
@@ -35,11 +37,15 @@ public class CargoDeliveryTransaction extends Transaction {
     private final int trainId;
 
     /**
-     * @param amount
-     * @param quantity
-     * @param stationId
-     * @param trainId
-     * @param cargoBatch
+     * Records payment for a cargo delivery, including its batch and route
+     * endpoints.
+     *
+     * @param amount payment credited for the delivery
+     * @param time game time when delivery is recorded
+     * @param quantity number of cargo units delivered
+     * @param stationId destination station identifier
+     * @param trainId delivering train identifier
+     * @param cargoBatch batch from which the delivered cargo came
      */
     public CargoDeliveryTransaction(Money amount, Time time, int quantity, int stationId, int trainId, CargoBatch cargoBatch) {
         super(TransactionCategory.CARGO_DELIVERY, amount, time);
@@ -50,30 +56,57 @@ public class CargoDeliveryTransaction extends Transaction {
     }
 
     /**
-     * @return
+     * Returns the identifier of the train that made the delivery.
+     *
+     * @return delivering train identifier
      */
     public int getTrainId() {
         return trainId;
     }
 
     /**
-     * @return
+     * Returns the cargo batch from which the delivery was taken.
+     *
+     * @return delivered cargo batch
      */
     public CargoBatch getCargoBatch() {
         return cargoBatch;
     }
 
     /**
-     * @return
+     * Returns the number of cargo units delivered.
+     *
+     * @return delivered quantity
      */
     public int getQuantity() {
         return quantity;
     }
 
     /**
-     * @return
+     * Returns the identifier of the station that received the delivery.
+     *
+     * @return receiving station identifier
      */
     public int getStationId() {
         return stationId;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        CargoDeliveryTransaction other = (CargoDeliveryTransaction) obj;
+        return quantity == other.quantity
+                && stationId == other.stationId
+                && trainId == other.trainId
+                && Objects.equals(cargoBatch, other.cargoBatch);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), cargoBatch, quantity, stationId, trainId);
     }
 }

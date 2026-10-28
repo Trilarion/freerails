@@ -29,6 +29,14 @@ import java.util.Objects;
  */
 public record TrackOverlapResult(boolean isSuccess, String message) {
 
+    /**
+     * Validates the consistency between the success flag and failure message.
+     *
+     * @param isSuccess whether the overlap check succeeded
+     * @param message failure explanation, or {@code null} on success
+     * @throws IllegalArgumentException if a successful result has a message
+     * @throws NullPointerException if a failed result has a {@code null} message
+     */
     public TrackOverlapResult {
         if (isSuccess && message != null) {
             throw new IllegalArgumentException("A successful result cannot have a failure message.");

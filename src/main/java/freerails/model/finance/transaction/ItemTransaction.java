@@ -18,9 +18,10 @@
 
 package freerails.model.finance.transaction;
 
-// TODO implement hashcode and equals correctly (with calls to super)
 import freerails.model.finance.Money;
 import freerails.model.game.Time;
+
+import java.util.Objects;
 
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
@@ -39,10 +40,13 @@ public class ItemTransaction extends Transaction {
     private final int id;
 
     /**
-     * @param category
-     * @param amount
-     * @param quantity
-     * @param id
+     * Creates a transaction for a change in the quantity of a categorized item.
+     *
+     * @param category category identifying the item transaction
+     * @param amount monetary debit or credit
+     * @param time game time when the transaction occurs
+     * @param quantity signed quantity change
+     * @param id item type or associated player identifier
      */
     public ItemTransaction(TransactionCategory category, Money amount, Time time, int quantity, int id) {
         super(category, amount, time);
@@ -50,38 +54,45 @@ public class ItemTransaction extends Transaction {
         this.id = id;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ItemTransaction) {
-            ItemTransaction test = (ItemTransaction) obj;
-
-            return id == test.id && quantity == test.quantity;
+        if (!super.equals(obj)) {
+            return false;
         }
-        return false;
+        ItemTransaction test = (ItemTransaction) obj;
+        return id == test.id && quantity == test.quantity;
     }
 
     /**
-     * @return
+     * Returns the signed number of items added or removed.
+     *
+     * @return quantity change
      */
     public int getQuantity() {
         return quantity;
     }
 
     /**
-     * @return
+     * Returns the type or player identifier associated with this item.
+     *
+     * @return item type or player identifier
      */
     public int getId() {
         return id;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 29 * result + id;
-        result = 29 * result + quantity;
-        return result;
+        return Objects.hash(super.hashCode(), id, quantity);
     }
 
+    /**
+     * Returns a diagnostic string containing this transaction's item details.
+     *
+     * @return formatted transaction details
+     */
     @Override
     public String toString() {
         return "ItemTransaction " + getQuantity() + ", type " + id + ", quantity " + quantity + ", money " + getAmount();

@@ -26,7 +26,9 @@ public class NoTrackException extends RuntimeException {
     private static final long serialVersionUID = -4345207670990590768L;
 
     /**
-     * @param message message
+     * Creates an exception describing the missing track.
+     *
+     * @param message detail describing where track was expected
      */
     public NoTrackException(String message) {
         super(message);

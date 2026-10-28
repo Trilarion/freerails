@@ -32,7 +32,8 @@ import java.util.function.BiConsumer;
 
 // TODO only used from CityTilePositioner
 /**
- * Lets the server analyse and alter cities.
+ * Collects the terrain tiles and station count in a city area and writes
+ * changes to those tiles back to the world.
  */
 public class CityModel {
 
@@ -43,6 +44,13 @@ public class CityModel {
     private final List<Vec2D> clearTiles = new ArrayList<>();
     private int stations = 0;
 
+    /**
+     * Replaces a randomly selected available clear tile with the specified
+     * urban, industry, or resource terrain type.
+     *
+     * @param terrainType terrain definition to place
+     * @throws IllegalArgumentException if the terrain is a country type
+     */
     public void addTile(Terrain terrainType) {
         Random rand = new Random();
 
@@ -68,6 +76,13 @@ public class CityModel {
         }
     }
 
+    /**
+     * Rebuilds the model's tile collections from the clipped 7-by-7 area around
+     * a city and counts stations there.
+     *
+     * @param world world supplying map, city, and terrain data
+     * @param cityID identifier of the city whose area is analyzed
+     */
     public void loadFromMap(UnmodifiableWorld world, int cityID) {
         // Reset lists of tiles.
         getUrbanCityTiles().clear();
@@ -127,6 +142,12 @@ public class CityModel {
         }
     }
 
+    /**
+     * Writes the urban, industry, and resource assignments to the world while
+     * preserving each affected tile's track piece.
+     *
+     * @param world mutable world to update
+     */
     public void writeToMap(World world) {
         BiConsumer<Vec2D, Integer> f = (location, terrainTypeId) -> {
             TerrainTile terrainTile = world.getTile(location);
@@ -138,25 +159,27 @@ public class CityModel {
         getResourceCityTiles().forEach(f);
     }
 
-    /**
-     * Map location -> terrainTypeId
-     */
+    /** Returns the mutable map of urban tile locations to terrain identifiers. */
     public Map<Vec2D, Integer> getUrbanCityTiles() {
         return urbanCityTiles;
     }
 
+    /** Returns the mutable map of industry tile locations to terrain identifiers. */
     public Map<Vec2D, Integer> getIndustryCityTiles() {
         return industryCityTiles;
     }
 
+    /** Returns the mutable list of industry types not currently placed here. */
     public List<Terrain> getIndustriesNotAtCity() {
         return industriesNotAtCity;
     }
 
+    /** Returns the mutable map of resource tile locations to terrain identifiers. */
     public Map<Vec2D, Integer> getResourceCityTiles() {
         return resourceCityTiles;
     }
 
+    /** Returns the mutable list of clear locations available for city growth. */
     public List<Vec2D> getClearTiles() {
         return clearTiles;
     }

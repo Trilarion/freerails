@@ -21,20 +21,18 @@ package freerails.model.train;
 import freerails.model.track.PathIterator;
 
 /**
- * This interface lets the caller retrieve a path broken into a series of steps,
- * whose length the caller specifies. E.g. it could be used to get the sub
- * section of a path that a train travels during an given time interval.
+ * Walks a path in caller-selected distance increments, exposing each traveled
+ * portion as a sequence of segments.
  */
 public interface PathWalker extends PathIterator {
-    /**
-     * Returns true if we have not reached the end of the path.
-     */
+    /** Returns whether the underlying path has distance remaining to traverse. */
     boolean canStepForward();
 
     /**
-     * Moves this path walker forward by the specified distance along the path
-     * and returns a path iterator to retrieve the section of the path travelled
-     * during this move.
+     * Adds the requested distance to the amount to be traversed by subsequent
+     * calls to {@link #nextSegment()}.
+     *
+     * @param distance distance to advance along the path
      */
     void stepForward(double distance);
 }

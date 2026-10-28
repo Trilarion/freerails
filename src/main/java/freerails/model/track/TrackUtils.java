@@ -37,17 +37,26 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Utility operations for track construction, connectivity, and routing.
  */
 public final class TrackUtils {
 
+    /**
+     * Prevents instantiation of this utility class.
+     */
     private TrackUtils() {
     }
 
     /**
      * This method may be called under 3 possible conditions: (1) when a station
      * is getting built, (2) when a station is getting upgraded, (3) when a
-     * station is getting removed.
+     * station is getting removed. Stations at the same coordinate are ignored,
+     * as that represents an upgrade rather than a separate placement.
+     *
+     * @param world world whose stations are checked
+     * @param location proposed station coordinate
+     * @param trackPiece proposed station track piece
+     * @return success if the proposed station does not overlap another station
      */
     public static TrackOverlapResult checkForOverlap(UnmodifiableWorld world, Vec2D location, TrackPiece trackPiece) {
         /*
@@ -93,6 +102,15 @@ public final class TrackUtils {
         return TrackOverlapResult.success();
     }
 
+    /**
+     * Tests whether a flat-track template conflicts diagonally with track on
+     * the tiles directly above or below the supplied tile.
+     *
+     * @param point tile coordinate being checked
+     * @param trackTemplate 9-bit track template to test
+     * @param world world containing neighboring track
+     * @return {@code true} if no diagonal conflict is detected
+     */
     public static boolean noDiagonalTrackConflicts(Vec2D point, int trackTemplate, UnmodifiableWorld world) {
         /*
          * This method is needs replacing. It only deals with flat track pieces, and is rather hard to make sense of. LL
@@ -140,6 +158,13 @@ public final class TrackUtils {
         // Things are success.
     }
 
+    /**
+     * Finds the ID of the least expensive track type in a category.
+     *
+     * @param category category to search
+     * @param world world supplying track types
+     * @return ID of the cheapest matching type, or {@code null} if none exists
+     */
     static Integer getCheapest(TrackCategory category, UnmodifiableWorld world) {
         TrackType cheapest = null;
         Integer cheapestID = null;
@@ -154,6 +179,13 @@ public final class TrackUtils {
         return cheapestID;
     }
 
+    /**
+     * Selects the first buildable candidate type for each terrain.
+     *
+     * @param allowable candidate type IDs in preference order
+     * @param world world supplying terrains and track types
+     * @return map from terrain ID to selected track type ID
+     */
     static Map<Integer, Integer> generateRules(Iterable<Integer> allowable, UnmodifiableWorld world) {
 
         Map<Integer, Integer> newRules = new HashMap<>();
@@ -171,6 +203,12 @@ public final class TrackUtils {
         return newRules;
     }
 
+    /**
+     * Converts encoded positions on track to their tile coordinates.
+     *
+     * @param path encoded path positions
+     * @return tile coordinates in path order
+     */
     public static List<Vec2D> convertPathToPoints(List<Integer> path) {
         PositionOnTrack positionOnTrack = new PositionOnTrack();
         List<Vec2D> proposedTrack = new ArrayList<>();
@@ -185,6 +223,15 @@ public final class TrackUtils {
         return proposedTrack;
     }
 
+    /**
+     * Creates a new track piece containing the tile-center bit and the supplied
+     * outgoing direction.
+     *
+     * @param direction track direction to add
+     * @param trackType type of track to create
+     * @param playerId owning player's ID
+     * @return a track piece with the combined configuration
+     */
     public static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackType trackType, int playerId) {
         TrackConfiguration simplestConfig = TrackConfiguration.getFlatInstance("000010000");
         TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig, direction);
@@ -192,9 +239,14 @@ public final class TrackUtils {
     }
 
     /**
-     * Uses static method to make testing easier.
+     * Finds the first direction of a path from the current position to a
+     * target. If no path exists, it selects an available adjacent track edge.
      *
-     * @throws NoTrackException if no track
+     * @param world world containing track
+     * @param currentPosition current encoded position on track
+     * @param target destination tile
+     * @return transition to follow from the current position
+     * @throws NoTrackException if the current position has no usable track
      */
     public static TileTransition findNextStep(UnmodifiableWorld world, PositionOnTrack currentPosition, Vec2D target) {
         HashMap<Integer, TileTransition> destPaths;

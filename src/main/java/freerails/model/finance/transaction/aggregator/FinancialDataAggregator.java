@@ -41,17 +41,22 @@ public class FinancialDataAggregator extends TransactionAggregator {
     private int[] stockInThisRRs;
 
     /**
-     * Convenience method.
-     * @param world
-     * @param player
+     * Creates an aggregator covering the player's transactions from the start
+     * of the game through the current time.
+     *
+     * @param world world supplying players, clock, and transactions
+     * @param player player whose financial data is gathered
      */
     public FinancialDataAggregator(UnmodifiableWorld world, Player player) {
         this(world, player, new Time[]{Time.ZERO, world.getClock().getCurrentTime().advance()});
     }
 
     /**
-     * @param world
-     * @param player
+     * Creates an aggregator for the specified player and time intervals.
+     *
+     * @param world world supplying the data
+     * @param player player whose financial data is gathered
+     * @param times ordered interval boundaries
      */
     public FinancialDataAggregator(UnmodifiableWorld world, Player player, Time[] times) {
         super(world, player, times);
@@ -59,7 +64,11 @@ public class FinancialDataAggregator extends TransactionAggregator {
     }
 
     /**
-     * @param transaction
+     * Adds the transaction to inherited monetary totals and updates share and
+     * bond counts when applicable.
+     *
+     * @param intervalIndex interval receiving the transaction
+     * @param transaction transaction to aggregate
      */
     @Override
     protected void aggregateTransaction(int intervalIndex, Transaction transaction) {
@@ -71,13 +80,15 @@ public class FinancialDataAggregator extends TransactionAggregator {
                 // If it is a change in the total number of shares issued.
                 totalShares += itemTransaction.getQuantity();
             } else if (itemTransaction.getCategory() == TransactionCategory.TRANSFER_STOCK) {
-                stockInRRs[itemTransaction.getId()] += itemTransaction.getQuantity();
+                int playerIndex = world.getPlayerIndex(itemTransaction.getId());
+                stockInRRs[playerIndex] += itemTransaction.getQuantity();
             } else if (transaction instanceof BondItemTransaction) {
                 bonds += itemTransaction.getQuantity();
             }
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void clearState() {
         super.clearState();
@@ -85,14 +96,18 @@ public class FinancialDataAggregator extends TransactionAggregator {
     }
 
     /**
-     * @return
+     * Returns whether the current bond balance permits issuing another bond.
+     *
+     * @return {@code true} when the next bond's rate is no more than 7
      */
     public boolean canIssueBond() {
         return nextBondInterestRate() <= 7;
     }
 
     /**
-     * @return
+     * Returns the interest rate for the next bond based on current sentiment.
+     *
+     * @return next bond interest rate
      */
     public double nextBondInterestRate() {
         Sentiment sentiment = world.getSentiment();
@@ -100,21 +115,27 @@ public class FinancialDataAggregator extends TransactionAggregator {
     }
 
     /**
-     * Returns the number of stock in the Treasury
+     * Returns the number of this railroad's shares held in its own treasury.
+     *
+     * @return treasury-held share count
      */
     public int treasuryStock() {
-        return stockInRRs[player.getId()];
+        return stockInRRs[world.getPlayerIndex(player.getId())];
     }
 
     /**
-     * Returns The number of open Shares
+     * Returns the total number of shares issued by this railroad.
+     *
+     * @return total issued share count
      */
     public int totalShares() {
         return totalShares;
     }
 
     /**
-     * @return
+     * Returns issued shares not held by any railroad.
+     *
+     * @return publicly held share count
      */
     public int sharesHeldByPublic() {
         int[] stock = getStockInThisRRs();
@@ -126,7 +147,10 @@ public class FinancialDataAggregator extends TransactionAggregator {
     }
 
     /**
-     * @return
+     * Calculates the player's net worth from transactions before the current
+     * time.
+     *
+     * @return current net worth
      */
     public Money netWorth() {
         Time[] times = {Time.ZERO, world.getClock().getCurrentTime()};
@@ -135,6 +159,13 @@ public class FinancialDataAggregator extends TransactionAggregator {
         return netWorthAggregator.getValues()[0];
     }
 
+    /**
+     * Accepts all transactions because this aggregator also tracks item
+     * quantities and bond/share state.
+     *
+     * @param transaction transaction being considered
+     * @return always {@code true}
+     */
     @Override
     protected boolean acceptable(@NotNull Transaction transaction) {
         // We'll do the work when incrementRunningTotal gets called.
@@ -143,7 +174,10 @@ public class FinancialDataAggregator extends TransactionAggregator {
 
     // TODO make this static, compute stockInThisRRs outside
     /**
-     * @return
+     * Returns the number of shares in this railroad held by each player,
+     * indexed in world player order.
+     *
+     * @return a copy of the per-player share counts
      */
     public int[] getStockInThisRRs() {
         if (null == stockInThisRRs) {
@@ -152,21 +186,26 @@ public class FinancialDataAggregator extends TransactionAggregator {
                 Player player = world.getPlayer(i);
                 FinancialDataAggregator temp = new FinancialDataAggregator(world, player);
                 temp.aggregate();
-                stockInThisRRs[i] = temp.stockInRRs[player.getId()];
+                stockInThisRRs[i] = temp.stockInRRs[world.getPlayerIndex(player.getId())];
             }
         }
-        return stockInThisRRs;
+        return stockInThisRRs.clone();
     }
 
     /**
-     * @return
+     * Returns the number of shares this railroad holds in each railroad,
+     * indexed in world player order.
+     *
+     * @return a copy of the per-railroad share counts
      */
     public int[] getStockInRRs() {
-        return stockInRRs;
+        return stockInRRs.clone();
     }
 
     /**
-     * @return
+     * Returns the number of bonds currently recorded for this player.
+     *
+     * @return outstanding bond quantity
      */
     public int getBonds() {
         return bonds;

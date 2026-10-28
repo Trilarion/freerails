@@ -21,8 +21,7 @@ package freerails.model.track;
 import java.io.Serializable;
 
 /**
- * Defines methods to access the properties of the track on a tile.
- * Represents the track on a tile.
+ * Immutable description of the track configuration, type, and owner on a tile.
  */
 public class TrackPiece implements Serializable {
 
@@ -32,8 +31,9 @@ public class TrackPiece implements Serializable {
     private final int playerId;
 
     /**
-     * @param trackConfiguration
-     * @param playerId
+     * @param trackConfiguration geometric configuration of the track
+     * @param trackType type and properties of the track
+     * @param playerId ID of the owning player
      */
     public TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int playerId) {
         this.trackConfiguration = trackConfiguration;
@@ -41,6 +41,12 @@ public class TrackPiece implements Serializable {
         this.playerId = playerId;
     }
 
+    /**
+     * Tests equality across the configuration, type, and owner.
+     *
+     * @param obj object to compare
+     * @return {@code true} when all track-piece properties match
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -53,6 +59,11 @@ public class TrackPiece implements Serializable {
         return trackType.equals(other.trackType);
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     *
+     * @return this track piece's hash code
+     */
     @Override
     public int hashCode() {
         int result;
@@ -63,26 +74,37 @@ public class TrackPiece implements Serializable {
     }
 
     /**
-     * @return
+     * Returns the encoded track configuration used by track graphics.
+     *
+     * @return track graphic/configuration ID
      */
     public int getTrackGraphicID() {
         return trackConfiguration.getConfiguration();
     }
 
     /**
-     * @return
+     * Returns the directional configuration of this piece.
+     *
+     * @return track configuration
      */
     public TrackConfiguration getTrackConfiguration() {
         return trackConfiguration;
     }
 
     /**
-     * @return
+     * Returns the ID of the player who owns this piece.
+     *
+     * @return owner player ID
      */
     public int getPlayerId() {
         return playerId;
     }
 
+    /**
+     * Returns the type of this track piece.
+     *
+     * @return track type
+     */
     public TrackType getTrackType() {
         return trackType;
     }

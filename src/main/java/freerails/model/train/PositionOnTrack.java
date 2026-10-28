@@ -41,18 +41,25 @@ public class PositionOnTrack {
     private TileTransition comingFrom = TileTransition.NORTH;
     private Vec2D location = Vec2D.ZERO;
 
-    /**
-     *
-     */
+    /** Creates a position at the origin facing north. */
     public PositionOnTrack() {}
 
     /**
-     * @param i
+     * Decodes a position previously encoded by {@link #toInt()}.
+     *
+     * @param i packed location and direction
      */
     public PositionOnTrack(int i) {
         setValuesFromInt(i);
     }
 
+    /**
+     * Creates a position at a tile with the direction from which it was entered.
+     *
+     * @param location tile coordinates
+     * @param comingFrom direction of entry
+     * @throws IllegalArgumentException if either coordinate is outside the encodable range
+     */
     public PositionOnTrack(Vec2D location, TileTransition comingFrom) {
         if (location.x > MAX_COORDINATE || location.x < 0) {
             throw new IllegalArgumentException("x=" + location.x);
@@ -73,6 +80,7 @@ public class PositionOnTrack {
         return comingFrom;
     }
 
+    /** Compares the location and entry direction with another position. */
     @Override
     public boolean equals(Object obj) {
         if (null == obj) {
@@ -94,14 +102,17 @@ public class PositionOnTrack {
         return comingFrom.getOpposite();
     }
 
+    /** Replaces the tile location. */
     public void setLocation(Vec2D location) {
         this.location = location;
     }
 
+    /** Returns the tile location. */
     public Vec2D getLocation() {
         return location;
     }
 
+    /** Returns a hash code consistent with {@link #equals(Object)}. */
     @Override
     public int hashCode() {
         int result;
@@ -111,15 +122,15 @@ public class PositionOnTrack {
         return result;
     }
 
-    /**
-     * @param v
-     */
+    /** Sets the direction from which this position was entered. */
     public void setComingFrom(TileTransition v) {
         comingFrom = v;
     }
 
     /**
-     * @param i
+     * Decodes tile coordinates and entry direction from a packed integer.
+     *
+     * @param i packed position value
      */
     public void setValuesFromInt(int i) {
         int x = i & MAX_COORDINATE;
@@ -134,7 +145,9 @@ public class PositionOnTrack {
     }
 
     /**
-     * @param tileTransition
+     * Moves to the neighboring tile in the given direction.
+     *
+     * @param tileTransition direction of travel
      */
     public void move(TileTransition tileTransition) {
         location = new Vec2D(location.x + tileTransition.deltaX, location.y + tileTransition.deltaY);
@@ -154,6 +167,7 @@ public class PositionOnTrack {
         return i;
     }
 
+    /** Returns a readable representation of the tile and facing direction. */
     @Override
     public String toString() {
         return "PositionOnTrack: " + location + " facing " + comingFrom.getOpposite().toString();

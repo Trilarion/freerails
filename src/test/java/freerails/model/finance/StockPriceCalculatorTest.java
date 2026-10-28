@@ -23,10 +23,14 @@ package freerails.model.finance;
 
 import freerails.model.MapFixtureFactory2;
 import freerails.model.finance.transaction.CargoDeliveryTransaction;
+import freerails.model.finance.transaction.ItemTransaction;
 import freerails.model.finance.transaction.Transaction;
+import freerails.model.finance.transaction.TransactionCategory;
+import freerails.model.finance.transaction.aggregator.FinancialDataAggregator;
 import freerails.model.game.Clock;
 import freerails.model.game.Time;
 import freerails.util.Vec2D;
+import freerails.util.WorldGenerator;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.player.Player;
@@ -155,5 +159,21 @@ public class StockPriceCalculatorTest extends TestCase {
         calculator.calculate();
         stockPrice = calculator.calculate()[0].currentPrice;
         assertEquals(new Money(11), stockPrice);
+    }
+
+    public void testSparsePlayerIdsInStockTransactions() {
+        World sparseWorld = WorldGenerator.minimalWorld();
+        Player holder = new Player(40, "Holder");
+        Player company = new Player(7, "Company");
+        sparseWorld.addPlayer(holder);
+        sparseWorld.addPlayer(company);
+        sparseWorld.addTransaction(holder, new ItemTransaction(
+                TransactionCategory.TRANSFER_STOCK, Money.ZERO,
+                sparseWorld.getClock().getCurrentTime(), 500, company.getId()));
+
+        FinancialDataAggregator aggregator = new FinancialDataAggregator(sparseWorld, holder);
+        aggregator.aggregate();
+
+        assertEquals(500, aggregator.getStockInRRs()[sparseWorld.getPlayerIndex(company.getId())]);
     }
 }

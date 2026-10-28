@@ -34,6 +34,16 @@ public class Engine extends Identifiable {
     private final int maximumSpeed;
     private final int maximumThrust;
 
+    /**
+     * Creates an engine type with its purchase cost, upkeep, and performance limits.
+     *
+     * @param id unique engine type identifier
+     * @param name display name
+     * @param price purchase price
+     * @param upkeep upkeep cost
+     * @param maximumSpeed maximum speed
+     * @param maximumThrust maximum tractive force
+     */
     public Engine(int id, String name, Money price, Money upkeep, int maximumSpeed, int maximumThrust) {
         super(id);
         this.name = name;
@@ -43,26 +53,32 @@ public class Engine extends Identifiable {
         this.maximumThrust = maximumThrust;
     }
 
+    /** Returns the engine's display name. */
     public String getName() {
         return name;
     }
 
+    /** Returns the purchase price of this engine type. */
     public Money getPrice() {
         return price;
     }
 
+    /** Returns the upkeep cost of this engine type. */
     public Money getUpkeep() {
         return upkeep;
     }
 
+    /** Returns the maximum speed of this engine type. */
     public int getMaximumSpeed() {
         return maximumSpeed;
     }
 
+    /** Returns the maximum tractive force of this engine type. */
     public int getMaximumThrust() {
         return maximumThrust;
     }
 
+    /** Returns the engine name and purchase price for display. */
     @Override
     public String toString() {
         return String.format("%s (%s)", name, price);

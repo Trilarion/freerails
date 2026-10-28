@@ -23,27 +23,44 @@ import freerails.model.track.TrackPiece;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * A tile on the map.
- *
- */
 // TODO find better name for what it really is
+/**
+ * A map tile containing a terrain type and, optionally, a track piece.
+ */
 public class TerrainTile implements Serializable {
 
     private static final long serialVersionUID = 3617574907538847544L;
     private final TrackPiece trackPiece;
     private final int terrainTypeId;
 
+    /**
+     * Creates a tile with the specified terrain and no track.
+     *
+     * @param terrainTypeId identifier of the terrain on the tile
+     */
     public TerrainTile(int terrainTypeId) {
         this.terrainTypeId = terrainTypeId;
         trackPiece = null;
     }
 
+    /**
+     * Creates a tile with the specified terrain and track piece.
+     *
+     * @param terrainTypeId identifier of the terrain on the tile
+     * @param trackPiece track piece present on the tile
+     */
     public TerrainTile(int terrainTypeId, TrackPiece trackPiece) {
         this.terrainTypeId = terrainTypeId;
         this.trackPiece = trackPiece;
     }
 
+    /**
+     * Compares this tile's terrain identifier and track piece with another
+     * object.
+     *
+     * @param obj object to compare
+     * @return {@code true} when {@code obj} is an equal terrain tile
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -55,6 +72,7 @@ public class TerrainTile implements Serializable {
         return Objects.equals(trackPiece, that.trackPiece);
     }
 
+    /** Returns a hash code consistent with {@link #equals(Object)}. */
     @Override
     public int hashCode() {
         int result;
@@ -64,26 +82,27 @@ public class TerrainTile implements Serializable {
     }
 
     /**
-     * @return
+     * @return the terrain type identifier
      */
     public int getTerrainTypeId() {
         return terrainTypeId;
     }
 
+    /** Returns a readable representation of the track and terrain identifier. */
     @Override
     public String toString() {
         return "trackPiece=" + trackPiece + " and terrainType is " + terrainTypeId;
     }
 
     /**
-     * @return
+     * @return the track piece, or {@code null} if the tile has no track
      */
     public TrackPiece getTrackPiece() {
         return trackPiece;
     }
 
     /**
-     * @return
+     * @return {@code true} if a track piece is present
      */
     public boolean hasTrack() {
         return trackPiece != null;

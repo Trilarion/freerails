@@ -31,8 +31,8 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 /**
- * GraphExplorer that explorers track, the ints it returns are encoded
- * PositionOnTrack objects.
+ * Explores the connections of existing track. Vertex values are encoded
+ * {@link PositionOnTrack} objects.
  */
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
@@ -43,9 +43,11 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     private boolean beforeFirst = true;
 
     /**
-     * @param world
-     * @param positionOnTrack
-     * @throws NoTrackException
+     * Creates an explorer at a position on an existing track piece.
+     *
+     * @param world world containing the track
+     * @param positionOnTrack initial position and incoming direction
+     * @throws NoTrackException if the position's tile has no track piece
      */
     public FlatTrackExplorer(UnmodifiableWorld world, PositionOnTrack positionOnTrack) throws NoTrackException {
         this.world = world;
@@ -58,7 +60,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
-     * @param location location of track to consider.
+     * @param world world containing the track
+     * @param location location of track to consider
      * @return an array of PositionOnTrack objects describing the set of
      * possible orientations at this position (heading towards the
      * center of the tile)
@@ -89,13 +92,18 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return possiblePositions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPosition() {
         return currentPosition.toInt();
     }
 
     /**
-     * @param vertex
+     * Sets the current encoded position and restarts edge iteration.
+     *
+     * @param vertex encoded position on track
      */
     @Override
     public void setPosition(int vertex) {
@@ -103,6 +111,11 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         currentPosition.setValuesFromInt(vertex);
     }
 
+    /**
+     * Moves to the destination of the currently selected edge.
+     *
+     * @throws IllegalStateException if no edge has yet been selected
+     */
     @Override
     public void moveForward() {
         if (beforeFirst) {
@@ -111,6 +124,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         setPosition(getVertexConnectedByEdge());
     }
 
+    /**
+     * Selects the next existing track connection.
+     *
+     * @throws NoSuchElementException if no edge remains
+     * @throws IllegalStateException if the track configuration has no usable transition
+     */
     @Override
     public void nextEdge() {
         if (!hasNextEdge()) {
@@ -145,18 +164,27 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         beforeFirst = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getVertexConnectedByEdge() {
         return currentBranch.toInt();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getEdgeCost() {
         return (int) Math.round(currentBranch.getComingFrom().getLength());
     }
 
     /**
-     * @return
+     * Tests whether an edge remains. Before the first edge is selected, the
+     * incoming connection is available as the first edge.
+     *
+     * @return {@code true} if another edge can be selected
      */
     @Override
     public boolean hasNextEdge() {
@@ -175,6 +203,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return oppositeToCurrentDirection.getID() != currentBranchDirection.getID();
     }
 
+    /**
+     * Returns the direction from which edge scanning should begin, rotating
+     * clockwise from the direction of arrival or the current branch.
+     *
+     * @return first transition direction to test
+     */
     public TileTransition getFirstVectorToTry() {
         if (beforeFirst) {
             // Return the vector that is 45 degrees clockwise from the opposite

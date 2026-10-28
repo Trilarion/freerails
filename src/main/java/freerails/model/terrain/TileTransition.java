@@ -27,8 +27,7 @@ import freerails.model.ModelConstants;
 import freerails.model.track.TrackConfigurations;
 
 /**
- * Represents a movement from a tile to any one of the surrounding
- * eight tiles.
+ * Represents one of the eight unit transitions between adjacent map tiles.
  */
 public class TileTransition implements TrackConfigurations {
 
@@ -94,14 +93,12 @@ public class TileTransition implements TrackConfigurations {
     private final double length;
 
     /**
-     * Create a new OneTileMoveVector. N.B Private constructor to enforce enum
-     * property, use getInstance(x,y) instead. Pass values for delta X and Y:
-     * they must be in the range -1 to 1 and cannot both be equal to 0.
+     * Creates a transition. The private constructor ensures instances are
+     * canonical; use {@link #getInstance(Vec2D)} to retrieve one.
      *
-     * @param x CityTile coordinate.
-     * @param y CityTile coordinate
-     * @param t an integer representing the track template this vector
-     *          corresponds to.
+     * @param x horizontal displacement, either -1, 0, or 1
+     * @param y vertical displacement, either -1, 0, or 1
+     * @param t bit template identifying the corresponding track direction
      */
     private TileTransition(int x, int y, int t) {
         deltaX = x;
@@ -111,9 +108,9 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * @param p
-     * @param path
-     * @return
+     * @param p starting map coordinate
+     * @param path transitions to apply in order
+     * @return the coordinate reached after applying all transitions
      */
     public static Vec2D move(Vec2D p, TileTransition... path) {
         int x = p.x;
@@ -126,19 +123,20 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * @param number
-     * @return
+     * @param number compass direction index, from 0 (north) through 7
+     * @return the canonical transition at that index
      */
     public static TileTransition getInstance(int number) {
         return list[number];
     }
 
     /**
-     * Returns true if the values passed could be used to create a valid vector.
+     * Tests whether two coordinates are distinct neighbors.
      *
-     * @param a
-     * @param b
-     * @return
+     * @param a starting coordinate
+     * @param b destination coordinate
+     * @return {@code true} if the coordinates differ by at most one in each
+     *         axis and are not equal
      */
     public static boolean checkValidity(Vec2D a, Vec2D b) {
         int dx = b.x - a.x;
@@ -147,7 +145,8 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * @return
+     * @return the canonical transition represented by the displacement
+     * @throws IllegalArgumentException if the displacement is zero or exceeds one tile
      */
     public static TileTransition getInstance(Vec2D d) {
         if (d.x < -1 || d.x > 1 || d.y < -1 || d.y > 1 || d.x == 0 && d.y == 0) {
@@ -157,16 +156,18 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * @return a copy of the list of 8 OneTileMoveVectors going clockwise from
-     * North.
+     * @return a defensive copy of the eight transitions, clockwise from north
      */
     public static TileTransition[] getTransitions() {
         return list.clone(); // defensive copy.
     }
 
     /**
-     * @return the OneTileMoveVector nearest in orientation to the specified dx,
-     * dy
+     * Selects the compass transition closest in direction to a displacement.
+     *
+     * @param dx horizontal displacement
+     * @param dy vertical displacement
+     * @return the nearest of the eight compass transitions
      */
     public static TileTransition getNearestVector(int dx, int dy) {
         if (0 == dx * dy) {
@@ -217,22 +218,26 @@ public class TileTransition implements TrackConfigurations {
         }
     }
 
+    /**
+     * Returns this transition's displacement as a vector.
+     *
+     * @return a new vector containing the horizontal and vertical displacement
+     */
     public Vec2D getD() { return new Vec2D(deltaX, deltaY); }
 
     /**
-     * Returns a new oneTileMoveVector whose direction is opposite to that the
-     * current one.
+     * Returns the canonical transition pointing in the opposite direction.
      *
-     * @return A oneTileMoveVector.
+     * @return the reverse transition
      */
     public TileTransition getOpposite() {
         return getInstance(new Vec2D(-deltaX , -deltaY ));
     }
 
     /**
-     * Returns the name of the vector. E.g. "north-east"
+     * Returns the direction name, such as {@code "north east"}.
      *
-     * @return the name.
+     * @return this transition's compass direction name
      */
     @Override
     public String toString() {
@@ -274,7 +279,7 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * @return
+     * @return this transition's compact compass abbreviation, such as {@code "ne"}
      */
     public String toAbrvString() {
         String name;
@@ -315,31 +320,42 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * @param from
-     * @return
+     * @param from coordinate to move
+     * @return the translated coordinate
      */
     public Vec2D createRelocatedPoint(Vec2D from) {
         return new Vec2D(from.x + deltaX, from.y + deltaY);
     }
 
+    /**
+     * Checks whether a track configuration consists of exactly this direction.
+     *
+     * @param ftt track configuration to inspect
+     * @return {@code true} if its nine-bit template matches this transition
+     */
     public boolean contains(TrackConfigurations ftt) {
         return ftt.get9bitTemplate() == flatTrackTemplate;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int get9bitTemplate() {
         return flatTrackTemplate;
     }
 
     /**
-     * @return the length of this vector. Each tile is 100 units x 100 units.
+     * Returns the geometric length of this transition using the model's tile
+     * dimensions.
+     *
+     * @return tile-size distance for orthogonal transitions, diagonal distance
+     *         for diagonal transitions
      */
     public double getLength() {
         return length;
     }
 
     /**
-     * @return
+     * @return angle in radians, increasing clockwise from north
      */
     public double getDirection() {
         int i = 0;
@@ -352,8 +368,7 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * @return a number representing the compass point this vector indicates,
-     * with 0 representing North, 1 NorthEast, 2 East and so on.
+     * @return 0 for north, 1 for north-east, through 7 for north-west
      */
     public int getID() {
         int i = 0;
@@ -365,19 +380,24 @@ public class TileTransition implements TrackConfigurations {
         return i;
     }
 
+    /**
+     * Resolves deserialized instances to their canonical singleton.
+     *
+     * @return the canonical instance for this displacement
+     */
     private Object readResolve() {
         return TileTransition.getInstance(new Vec2D(deltaX, deltaY));
     }
 
     /**
-     * @return
+     * @return {@code true} if this transition changes both coordinates
      */
     public boolean isDiagonal() {
         return 0 != deltaX * deltaY;
     }
 
     /**
-     * @return
+     * @return a one-hot eight-bit template for this compass direction
      */
     public int get8bitTemplate() {
         return 1 << getID();

@@ -19,7 +19,7 @@
 package freerails.model.track.pathfinding;
 
 /**
- *
+ * Lifecycle status of an incremental path search.
  */
 public enum PathFinderStatus {
 
@@ -27,6 +27,11 @@ public enum PathFinderStatus {
 
     public final int id;
 
+    /**
+     * Associates the status with its integer sentinel.
+     *
+     * @param id integer value used to represent this status
+     */
     PathFinderStatus(int id) {
         this.id = id;
     }

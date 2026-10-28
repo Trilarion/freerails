@@ -24,11 +24,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.NoSuchElementException;
 
-/**
- *
- */
+/** Utility methods for city-related lookups. */
 public final class CityUtils {
 
+    /** Prevents instantiation of this utility class. */
     private CityUtils() {
     }
 
@@ -36,7 +35,10 @@ public final class CityUtils {
      * Finds the nearest city and returns that name, so that a station can be
      * named appropriately.
      *
-     * @return
+     * @param world world containing candidate cities
+     * @param location coordinate from which distance is measured
+     * @return the name of the closest city
+     * @throws NoSuchElementException if the world contains no cities
      */
     public static String findNearestCity(@NotNull UnmodifiableWorld world, @NotNull Vec2D location) {
         double closestDistance = Double.MAX_VALUE;

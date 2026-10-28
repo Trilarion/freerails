@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Exposes a path stored as an array of x points and an array of y points.
+ * Iterates over the line segments between consecutive points in a path.
  */
 public class SimplePathIteratorImpl implements PathIterator {
 
@@ -35,12 +35,19 @@ public class SimplePathIteratorImpl implements PathIterator {
     private int position = 0;
 
     /**
-     * @param points
+     * @param points ordered path points; each consecutive pair defines a segment
      */
     public SimplePathIteratorImpl(List<Vec2D> points) {
         this.points = points;
     }
 
+    /**
+     * Returns the segment between the current point and its successor, then
+     * advances by one point.
+     *
+     * @return the next path segment
+     * @throws NoSuchElementException if fewer than two unconsumed points remain
+     */
     @Override
     public Segment nextSegment() {
         if (!hasNext()) {
@@ -52,6 +59,9 @@ public class SimplePathIteratorImpl implements PathIterator {
         return line;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasNext() {
         return position + 1 < points.size();

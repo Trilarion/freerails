@@ -55,19 +55,21 @@ public class StationBoxRenderer implements Painter {
         this.modelRoot = modelRoot;
 
         // How wide will the wagon images be if we scale them so their height is WAGON_IMAGE_HEIGHT?
-        Image wagonImage = rendererRoot.getWagonImages(0).getSideOnImage();
+        int firstCargoId = world.getCargoAtIndex(0).getId();
+        Image wagonImage = rendererRoot.getWagonImages(firstCargoId).getSideOnImage();
         wagonImageWidth = wagonImage.getWidth(null) * ClientConstants.WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
 
         int nrOfCargoTypes = world.getCargos().size();
         cargoImages = new Image[nrOfCargoTypes];
-        for (int i = 0; i < nrOfCargoTypes; i++) {
-            String wagonFilename = rendererRoot.getWagonImages(i).sideOnFileName;
+        for (int cargoIndex = 0; cargoIndex < nrOfCargoTypes; cargoIndex++) {
+            int cargoId = world.getCargoAtIndex(cargoIndex).getId();
+            String wagonFilename = rendererRoot.getWagonImages(cargoId).sideOnFileName;
             try {
                 wagonImage = rendererRoot.getScaledImage(wagonFilename, ClientConstants.WAGON_IMAGE_HEIGHT);
             } catch (IOException e) {
                 throw new IllegalArgumentException(wagonFilename);
             }
-            cargoImages[i] = wagonImage;
+            cargoImages[cargoIndex] = wagonImage;
         }
     }
 
@@ -105,7 +107,7 @@ public class StationBoxRenderer implements Painter {
                             int x = positionX + car * xOffsetPerWagon + ClientConstants.SPACING;
                             int y = positionY + i * (ClientConstants.WAGON_IMAGE_HEIGHT + ClientConstants.SPACING);
                             int cargoType = carsLoads.get(cargoCategory).get(car);
-                            g.drawImage(cargoImages[cargoType], x, y, null);
+                            g.drawImage(cargoImages[world.getCargoIndex(cargoType)], x, y, null);
                         }
                         i++;
                     }

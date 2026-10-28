@@ -45,15 +45,19 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     private Vec2D startPoint;
 
     /**
-     * @param world
+     * Creates a finder over the supplied world's existing track.
+     *
+     * @param world world to search
      */
     public PathOnTrackFinder(UnmodifiableWorld world) {
         this.world = world;
     }
 
     /**
-     * @param pos
-     * @return
+     * Encodes a set of positions on track as integer vertex IDs.
+     *
+     * @param pos positions to encode
+     * @return encoded positions in the same order
      */
     private static int[] toInts(PositionOnTrack[] pos) {
         int[] returnValue = new int[pos.length];
@@ -64,7 +68,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void abandonSearch() {
@@ -72,7 +76,9 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @return
+     * {@inheritDoc}
+     *
+     * @return status of the underlying A* search
      */
     @Override
     public PathFinderStatus getStatus() {
@@ -80,7 +86,10 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @return
+     * Returns the completed path as tile-to-tile transitions, including the
+     * initial movement from the start tile.
+     *
+     * @return path transitions in traversal order
      */
     public TileTransition[] pathAsVectors() {
         List<Integer> path = pathFinder.retrievePath();
@@ -95,15 +104,21 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @return
+     * Returns the completed path as encoded positions on track.
+     *
+     * @return encoded path positions in traversal order
      */
     public List<Integer> pathAsInts() {
         return pathFinder.retrievePath();
     }
 
     /**
-     * @param maxDuration
-     * @throws PathNotFoundException
+     * {@inheritDoc}
+     *
+     * @param maxDuration maximum duration of this search call in milliseconds,
+     *                    or a non-positive value for no time limit
+     * @throws PathNotFoundException if the search has no path or a limited
+     *                               search call has paused
      */
     @Override
     public void search(long maxDuration) throws PathNotFoundException {
@@ -111,9 +126,11 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @param from
-     * @param target
-     * @throws PathNotFoundException
+     * Configures a search between two tiles, requiring track at both endpoints.
+     *
+     * @param from starting tile coordinate
+     * @param target destination tile coordinate
+     * @throws PathNotFoundException if either endpoint has no track or no route exists
      */
     public void setupSearch(Vec2D from, Vec2D target) throws PathNotFoundException {
         startPoint = from;

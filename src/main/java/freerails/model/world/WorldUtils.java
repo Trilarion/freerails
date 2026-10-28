@@ -20,14 +20,21 @@ package freerails.model.world;
 
 import freerails.model.player.Player;
 
-/**
- *
- */
+/** Utility methods for inspecting world player data. */
 public final class WorldUtils {
 
+    /** Prevents instantiation of this utility class. */
     private WorldUtils() {
     }
 
+    /**
+     * Checks whether a player with a case-insensitively matching name is
+     * already present in the world.
+     *
+     * @param world world to search
+     * @param playerToAdd player whose name is checked
+     * @return {@code true} if a player with the same name exists
+     */
     public static boolean isAlreadyASimilarPlayer(UnmodifiableWorld world, Player playerToAdd) {
         for (Player player: world.getPlayers()) {
             if (player.getName().equalsIgnoreCase(playerToAdd.getName())) {

@@ -23,14 +23,21 @@ import freerails.util.BidirectionalIterator;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
-/**
- *
- */
+/** Utility methods for inspecting train motion histories. */
 public final class MotionUtils {
 
+    /** Prevents construction of this utility class. */
     private MotionUtils() {
     }
 
+    /**
+     * Returns the last activity recorded for the specified train as a motion.
+     *
+     * @param world world containing the train
+     * @param player train owner
+     * @param trainId train identifier
+     * @return the train's final recorded motion
+     */
     public static TrainMotion lastMotion(UnmodifiableWorld world, Player player, int trainId) {
         BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
         bidirectionalIterator.gotoLast();

@@ -20,9 +20,7 @@ package freerails.model.cargo;
 
 import freerails.util.Identifiable;
 
-/**
- * Represents a certain type of cargo.
- */
+/** Describes a cargo type, including its category and per-unit weight. */
 public class Cargo extends Identifiable {
 
     private final String name;
@@ -30,11 +28,12 @@ public class Cargo extends Identifiable {
     private final int unitWeight;
 
     /**
+     * Creates a cargo type definition.
      *
-     * @param id
-     * @param name
-     * @param category
-     * @param unitWeight
+     * @param id unique cargo identifier
+     * @param name display name
+     * @param category accounting and service category
+     * @param unitWeight weight of one cargo unit
      */
     public Cargo(int id, String name, CargoCategory category, int unitWeight) {
         super(id);
@@ -44,32 +43,36 @@ public class Cargo extends Identifiable {
     }
 
     /**
+     * Returns the display name of this cargo type.
      *
-     * @return
+     * @return cargo name
      */
     public String getName() {
         return name;
     }
 
     /**
+     * Returns the category assigned to this cargo type.
      *
-     * @return
+     * @return cargo category
      */
     public CargoCategory getCategory() {
         return category;
     }
 
     /**
+     * Returns the weight of one cargo unit.
      *
-     * @return
+     * @return unit weight
      */
     public int getUnitWeight() {
         return unitWeight;
     }
 
     /**
+     * Returns the cargo name followed by its category.
      *
-     * @return
+     * @return formatted cargo description
      */
     @Override
     public String toString() {

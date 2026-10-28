@@ -26,9 +26,7 @@ import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Adds up the number of assets.
- */
+/** Aggregates signed quantities of item transactions by category and type. */
 public class ItemsTransactionAggregator extends TransactionAggregator {
 
     private static final int ANY_VALUE = Integer.MIN_VALUE;
@@ -37,8 +35,11 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     private int[] quantities;
 
     /**
-     * @param world
-     * @param player
+     * Creates an item aggregator over the specified time intervals.
+     *
+     * @param world world supplying transactions
+     * @param player player whose item transactions are aggregated
+     * @param times ordered interval boundaries
      */
     public ItemsTransactionAggregator(UnmodifiableWorld world, Player player, Time[] times) {
         super(world, player, times);
@@ -46,8 +47,11 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     * Returns true if the transaction with the specified ID has an acceptable
-     * type and category.
+     * Accepts item transactions matching the configured category and type,
+     * with either filter allowed to be unrestricted.
+     *
+     * @param transaction transaction to test
+     * @return {@code true} when it matches the configured filters
      */
     @Override
     protected boolean acceptable(@NotNull Transaction transaction) {
@@ -63,13 +67,16 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     * @return
+     * Aggregates transactions and returns the quantity in the first interval.
+     *
+     * @return quantity total for the first interval
      */
     public int calculateQuantity() {
         super.aggregate();
         return quantities[0];
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void clearState() {
         super.clearState();
@@ -79,6 +86,12 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         }
     }
 
+    /**
+     * Adds an accepted item transaction's quantity to its interval total.
+     *
+     * @param intervalIndex interval receiving the transaction
+     * @param transaction accepted item transaction
+     */
     @Override
     protected void aggregateTransaction(int intervalIndex, Transaction transaction) {
         super.aggregateTransaction(intervalIndex, transaction);
@@ -87,14 +100,20 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     * @param category
+     * Restricts aggregation to the supplied category; {@code null} accepts
+     * every category.
+     *
+     * @param category category to include, or {@code null} for all categories
      */
     public void setCategory(TransactionCategory category) {
         this.category = category;
     }
 
     /**
-     * @param type
+     * Restricts aggregation to the supplied item identifier; the sentinel
+     * {@code Integer.MIN_VALUE} accepts every identifier.
+     *
+     * @param type item or player identifier to include
      */
     public void setType(int type) {
         this.type = type;

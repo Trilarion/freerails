@@ -66,18 +66,17 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     private final TrainState trainState;
 
     /**
-     * Creates a new TrainMotion instance.
+     * Creates a moving train activity along a tile path.
      *
      * @param path        the path the train will take.
-     * @param engineStep  the position measured in tiles that trains engine is along the
-     *                    path
-     * @param trainLength the length of the train, as returned by
-     *                    {@code TrainModel.getLength()}.
-     * @throws IllegalArgumentException if trainLength is out the range
-     *                                  {@code trainLength > TrainModel.WAGON_LENGTH || trainLength < TrainModel.MAX_TRAIN_LENGTH}
-     * @throws IllegalArgumentException if {@code path.getDistance(engineStep) < trainLength}.
-     * @throws IllegalArgumentException if
-     *                                  {@code (path.getLength() - initialPosition) > speeds.getTotalDistance()}.
+     * @param path complete route available to the train
+     * @param engineStep number of transitions from the path start to the engine
+     * @param trainLength train length in map-distance units
+     * @param speeds motion profile for the engine along the route
+     * @throws IllegalArgumentException if the train length is outside the supported
+     *         range, its initial route position is too short, or the motion profile
+     *         does not cover the remaining route
+     * @throws ArrayIndexOutOfBoundsException if {@code engineStep} exceeds the path's step count
      */
 
     public TrainMotion(PathOnTiles path, int engineStep, int trainLength, Motion speeds) {
@@ -112,10 +111,12 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     }
 
     /**
-     * @param path
-     * @param trainLength
-     * @param duration
-     * @param act
+     * Creates a stationary train activity with the supplied status and duration.
+     *
+     * @param path path containing the train
+     * @param trainLength train length in map-distance units
+     * @param duration activity duration
+     * @param act train state during the activity
      */
     public TrainMotion(PathOnTiles path, int trainLength, double duration, TrainState act) {
         this.path = path;
@@ -132,6 +133,11 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
      * at the time stored in the field duration, the engine must not have gone
      * off the end of the path.
      */
+    /**
+     * Verifies that the train remains on the path at the activity's end.
+     *
+     * @throws IllegalStateException if the train extends beyond the available path
+     */
     private void sanityCheck() {
         double offset = calcOffSet(duration);
         double totalLength = path.getTotalDistance();
@@ -140,22 +146,33 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
             throw new IllegalStateException(offset + " + " + trainLengthDouble + " > " + totalLength);
     }
 
+    /**
+     * Calculates the distance from the path start to the rear of the train at time {@code t}.
+     *
+     * @param t elapsed time in this activity
+     * @return path distance at the train's rear
+     */
     private double calcOffSet(double t) {
         return getDistance(t) + initialPosition - trainLength;
     }
 
+    /**
+     * Validates that a time lies within this activity.
+     *
+     * @param t elapsed time
+     * @throws IllegalArgumentException if time is outside the activity interval
+     */
     private void checkT(double t) {
         if (t < 0.0d || t > duration) throw new IllegalArgumentException("t=" + t + ", but duration=" + duration);
     }
 
-    /**
-     * @return
-     */
+    /** Returns the duration of this train activity. */
     @Override
     public double getDuration() {
         return duration;
     }
 
+    /** Compares the train length, path, and motion profile. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -169,12 +186,11 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     }
 
     /**
-     * Returns the train's distance along the track from the point the train was
-     * at at time {@code getStart()} at the specified time.
+     * Returns the engine's distance along the track since this motion began.
      *
-     * @param t the time.
-     * @return the distance
-     * @throws IllegalArgumentException if t is outside the interval
+     * @param t elapsed time in this activity
+     * @return engine distance traveled since the start of this motion
+     * @throws IllegalArgumentException if {@code t} is outside the activity interval
      */
     public double getDistance(double t) {
         checkT(t);
@@ -182,27 +198,23 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         return speeds.calculateDistanceAtTime(t);
     }
 
-    /**
-     * @return
-     */
+    /** Returns the final track position encoded by the route. */
     public PositionOnTrack getFinalPosition() {
         return path.getFinalPosition();
     }
 
-    /**
-     * @return
-     */
+    /** Returns the speed at the end of the underlying motion profile. */
     public double getSpeedAtEnd() {
         double finalT = speeds.getTotalTime();
         return speeds.calculateSpeedAtTime(finalT);
     }
 
     /**
-     * Returns the train's position at the specified time.
+     * Returns the train's position at the specified elapsed time.
      *
-     * @param time the time.
-     * @return the train's position.
-     * @throws IllegalArgumentException if t is outside the interval
+     * @param time elapsed time in this activity
+     * @return the train's head-to-tail map position with its speed and state
+     * @throws IllegalArgumentException if the underlying motion rejects the time
      */
     @Override
     public TrainPositionOnMap getStateAtTime(double time) {
@@ -215,12 +227,11 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     }
 
     /**
-     * Returns a PathOnTiles object that identifies the tiles the train is on at
-     * the specified time.
+     * Returns the portion of the route occupied by the train at the specified time.
      *
-     * @param t the time.
-     * @return an array of the tiles the train is on
-     * @throws IllegalArgumentException if t is outside the interval
+     * @param t elapsed time in this activity
+     * @return path transitions spanning the train's occupied route
+     * @throws IllegalArgumentException if {@code t} is outside the activity interval
      */
     public PathOnTiles getTiles(double t) {
         checkT(t);
@@ -261,13 +272,12 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         return new PathOnTiles(startPoint, tileTransitions);
     }
 
-    /**
-     * @return
-     */
+    /** Returns the train length in map-distance units. */
     public int getTrainLength() {
         return trainLength;
     }
 
+    /** Returns a hash code based on the path, motion profile, and train length. */
     @Override
     public int hashCode() {
         int result;
@@ -277,23 +287,17 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         return result;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the route path used by this activity. */
     public PathOnTiles getPath() {
         return path;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the train state during this activity. */
     public TrainState getTrainState() {
         return trainState;
     }
 
-    /**
-     * @return
-     */
+    /** Returns the engine's initial distance along the route. */
     public double getInitialPosition() {
         return initialPosition;
     }

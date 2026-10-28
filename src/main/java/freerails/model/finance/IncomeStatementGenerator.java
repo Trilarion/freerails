@@ -25,8 +25,8 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 
 /**
- * Generates the income statement- note, its fields are read using reflection so
- * don't change their names.
+ * Calculates income-statement totals for a player. Public result field names
+ * are consumed reflectively and must remain stable.
  */
 public class IncomeStatementGenerator {
 
@@ -36,15 +36,20 @@ public class IncomeStatementGenerator {
 
     public Money mailTotal;
 
+    /**
+     * Creates a generator using the current game year as the year-to-date
+     * boundary.
+     *
+     * @param world world state containing the clock, trains, and transactions
+     * @param player player whose income is summarized
+     */
     public IncomeStatementGenerator(UnmodifiableWorld world, Player player) {
         this.world = world;
         this.player = player;
         startyear = world.getClock().getCurrentYear();
     }
 
-    /**
-     * calculates all public values
-     */
+    /** Calculates the income and maintenance totals from the player's transactions. */
     public void calculateAll() {
         long mailTotal = 0;
         long passengersTotal = 0;
@@ -154,25 +159,30 @@ public class IncomeStatementGenerator {
     }
 
     /**
-     * returns the revenue for all trains with id from 1 to money.length-1
+     * Fills an array with each train's cargo-delivery revenue for the current
+     * year; extra array slots are set to {@link Money#ZERO}.
+     *
+     * @param money destination array, with at least one slot per train
+     * @throws IllegalArgumentException if the array has fewer slots than trains
      */
     public void calTrainRevenue(Money[] money) {
-        // TODO use Money arithmetic
-        long[] amount = new long[money.length];
+        int trainCount = world.getTrains(player).size();
+        if (money.length < trainCount) {
+            throw new IllegalArgumentException("Revenue array must have one slot per train.");
+        }
+        long[] amount = new long[trainCount];
 
         for (Transaction transaction: world.getTransactions(player)) {
             int transactionYear = world.getClock().getYear(transaction.getTime());
             if (transaction instanceof CargoDeliveryTransaction && transactionYear >= startyear) {
                 CargoDeliveryTransaction cargoDeliveryTransaction = (CargoDeliveryTransaction) transaction;
                 int trainId = cargoDeliveryTransaction.getTrainId();
-                if (trainId < money.length) {
-                    amount[trainId] += cargoDeliveryTransaction.getAmount().amount;
-                }
+                int trainIndex = world.getTrainIndex(player, trainId);
+                amount[trainIndex] += cargoDeliveryTransaction.getAmount().amount;
             }
         }
-        int i = 0;
-        for (long a : amount) {
-            money[i++] = new Money(a);
+        for (int i = 0; i < money.length; i++) {
+            money[i] = i < trainCount ? new Money(amount[i]) : Money.ZERO;
         }
     }
 }

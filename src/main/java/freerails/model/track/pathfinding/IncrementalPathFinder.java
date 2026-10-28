@@ -22,24 +22,31 @@
 package freerails.model.track.pathfinding;
 
 /**
- * Defines part of the contract for a pathfinder whose search can be completed
- * in several steps.
+ * Contract for a pathfinder whose search can be run in time-limited steps.
  */
 public interface IncrementalPathFinder {
 
     /**
-     * @return
+     * Returns the current state of the most recently configured search.
+     *
+     * @return current pathfinding status
      */
     PathFinderStatus getStatus();
 
     /**
-     * @param maxDuration
-     * @throws PathNotFoundException
+     * Continues the search for at most the requested duration when the limit is
+     * positive; a non-positive value allows the search to run to completion.
+     *
+     * @param maxDuration maximum duration of this search call in milliseconds,
+     *                    or a non-positive value for no time limit
+     * @throws PathNotFoundException if the search has no path; implementations
+     *                               may also use it to report that a limited
+     *                               search call has paused
      */
     void search(long maxDuration) throws PathNotFoundException;
 
     /**
-     *
+     * Clears the current search state and discards any partial or completed path.
      */
     void abandonSearch();
 }

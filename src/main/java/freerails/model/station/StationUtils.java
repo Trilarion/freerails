@@ -37,12 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Provides methods that find the nearest station in a given direction, used by
- * the select station popup window.
- *
- * Class to verify that the chosen name for a station hasn't already been taken
- * by another station. If the name has been used, a minor alteration in the name
- * is required, by adding perhaps "Junction" or "Siding" to the name.
+ * Provides station lookup, naming, and nearby-terrain cargo configuration
+ * operations.
  */
 public final class StationUtils {
 
@@ -50,12 +46,19 @@ public final class StationUtils {
     public static final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
     public static final List<String> stationAlternatives = Arrays.asList("Junction", "Siding", "North", "East", "South", "West");
 
+    /** Prevents instantiation of this utility class. */
     private StationUtils() {
     }
 
     /**
-     * @param location
-     * @return
+     * Finds the closest station owned by the player at a squared distance
+     * strictly below the configured selection threshold.
+     *
+     * @param world world containing the stations
+     * @param player owner whose stations are searched
+     * @param location map location from which distance is measured
+     * @return nearest station identifier, or {@link #NOT_FOUND} if none is in
+     *         range
      */
     public static int findNearestStation(@NotNull UnmodifiableWorld world, @NotNull Player player, @NotNull Vec2D location) {
         // Find nearest station.
@@ -77,9 +80,14 @@ public final class StationUtils {
     }
 
     /**
-     * @param startStation
-     * @param direction
-     * @return
+     * Finds the nearest other station owned by the player in the specified
+     * direction from a starting station.
+     *
+     * @param world world containing the stations
+     * @param player owner whose stations are searched
+     * @param startStation identifier of the origin station
+     * @param direction direction in which to search
+     * @return nearest matching station identifier, or {@link #NOT_FOUND}
      */
     public static int findNearestStationInDirection(@NotNull UnmodifiableWorld world, @NotNull Player player, int startStation, TileTransition direction) {
         int distanceToClosestSquared = Integer.MAX_VALUE;
@@ -104,7 +112,14 @@ public final class StationUtils {
     }
 
     /**
-     * Returns true if the angle between direction and the vector (deltaX, deltaY) is less than 45 degrees.
+     * Tests whether a displacement is aligned with a direction: diagonal
+     * directions require matching signs on both axes, while cardinal
+     * directions require the displacement to be longer on the corresponding
+     * axis.
+     *
+     * @param direction direction to test against
+     * @param delta displacement from the starting station
+     * @return {@code true} when the displacement is in the direction's sector
      */
     private static boolean isInRightDirection(TileTransition direction, Vec2D delta) {
         boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
@@ -121,6 +136,13 @@ public final class StationUtils {
         return !deltaXisLongerThanDeltaY && sameXDirection;
     }
 
+    /**
+     * Checks every player's stations for an exact name match.
+     *
+     * @param world world containing station names
+     * @param name name to search for
+     * @return {@code true} if any station already uses the name
+     */
     public static boolean existsStationName(@NotNull UnmodifiableWorld world, @NotNull String name) {
         // for all players
         for (Player player: world.getPlayers()) {
@@ -137,7 +159,12 @@ public final class StationUtils {
     }
 
     /**
-     * @return
+     * Returns the requested name if unused, or appends a standard alternative
+     * or numbered suffix to make it unique.
+     *
+     * @param world world containing station names
+     * @param name preferred base name
+     * @return a name not currently used by a station
      */
     public static String createStationName(@NotNull UnmodifiableWorld world, @NotNull String name) {
         boolean found;
@@ -171,37 +198,23 @@ public final class StationUtils {
     }
 
     /**
-     *  Probes the tiles adjacent to a station for what cargo they supply,
-     *  demand, and convert and then returns a vector of these rates.
+     * Scans terrain within the station radius, updates its supply, demand, and
+     * conversion settings, and returns the same station.
      *
-     * @param world
-     * @param trackRuleId
-     * @param station
-     * @return
+     * @param world world providing map and cargo definitions
+     * @param trackRuleId track type identifier used to determine station radius
+     * @param station station whose cargo settings are recalculated
+     * @return the updated station
      */
     public static Station calculateCargoSupplyRateAtStation(UnmodifiableWorld world, int trackRuleId, Station station) {
         TrackType trackType = world.getTrackType(trackRuleId);
         int stationRadius = trackType.getStationRadius();
         Vec2D location = station.getLocation();
 
-        List<CargoProductionOrConsumption> supplies = new ArrayList<>();
-        // populate supplies vector
-        // fill supplies vector with 0 values for all cargo types
-        // get the correct list of cargoes from the world object
-        CargoProductionOrConsumption tempCargoElement;
-
-        for (int i = 0; i < world.getCargos().size(); i++) {
-            // cT = (CargoType) world.get(SKEY.CARGO_TYPES, i);
-            tempCargoElement = new CargoProductionOrConsumption(0, i);
-            supplies.add(tempCargoElement);
-        }
-
-        // TODO demand and converts should be a MAP instead
         int numCargoTypes = world.getCargos().size();
+        double[] supplies = new double[numCargoTypes];
         int[] demand = new int[numCargoTypes];
         Integer[] converts = StationCargoConversion.emptyConversionArray(numCargoTypes);
-
-        Integer[] cargoSupplied = new Integer[world.getCargos().size()];
 
         // scan adjacent tiles and compute List<CargoProductionOrConsumption>
         int stationDiameter = stationRadius * 2 + 1;
@@ -232,22 +245,8 @@ public final class StationUtils {
                 // loop through the production array and increment
                 // the supply rates for the station
                 for (CargoProductionOrConsumption aProduction : production) {
-                    int type = aProduction.getCargoId();
-
-                    // loop through supplies vector and increment the cargo values as
-                    // required
-                    // loop through supplies vector and increment the cargo values as
-                    // required
-                    for (CargoProductionOrConsumption tempElement : supplies) {
-                        if (tempElement.getCargoId() == type) {
-                            // cargo types are the same, so increment the rate in supply
-                            // with the rate.
-                            // TODO that doesn't work that easily because CargoSupplyOrDemand is immutable
-                            // tempElement.setRate(tempElement.getRate() + rate);
-
-                            break; // no need to go through the rest if we've found a match
-                        }
-                    }
+                    int cargoIndex = world.getCargoIndex(aProduction.getCargoId());
+                    supplies[cargoIndex] += aProduction.getRate();
                 }
 
                 // Now calculate demand.
@@ -255,28 +254,25 @@ public final class StationUtils {
 
                 // TODO take into account pre-requisite for station demand (minimum number of tiles of certain type...)
                 for (CargoProductionOrConsumption aConsumption : consumption) {
-                    int type = aConsumption.getCargoId();
-
-                    demand[type] += 1;
+                    int cargoIndex = world.getCargoIndex(aConsumption.getCargoId());
+                    demand[cargoIndex] += 1;
                 }
 
                 List<CargoConversion> conversion = terrainType.getConversions();
 
                 for (CargoConversion aConversion : conversion) {
-                    int type = aConversion.getSourceCargoId();
+                    int cargoIndex = world.getCargoIndex(aConversion.getSourceCargoId());
 
                     // TODO Only one tile that converts the cargo type is needed for the station to demand the cargo type.
-                    demand[type] += 1;
-                    converts[type] = aConversion.getProductCargoId();
+                    demand[cargoIndex] += 1;
+                    converts[cargoIndex] = aConversion.getProductCargoId();
                 }
             }
         }
 
-        // return the supplied cargo rates
-        // grab the supply rates from the vector
-        for (int i = 0; i < supplies.size(); i++) {
-            // TODO where should the rounding take place? here?
-            cargoSupplied[i] = (int) supplies.get(i).getRate();
+        Integer[] cargoSupplied = new Integer[numCargoTypes];
+        for (int i = 0; i < numCargoTypes; i++) {
+            cargoSupplied[i] = (int) supplies[i];
         }
 
         // set the supply rates for the current station
@@ -299,13 +295,25 @@ public final class StationUtils {
         return station;
     }
 
+    /**
+     * Tests whether the map tile is occupied by a station track type.
+     *
+     * @param world world providing the map tile
+     * @param location tile coordinates to inspect
+     * @return {@code true} if the tile's track type is a station type
+     */
     public static boolean isStationHere(UnmodifiableWorld world, Vec2D location) {
         TerrainTile tile = world.getTile(location);
         return tile.getTrackPiece().getTrackType().isStation();
     }
 
     /**
-     * @return the id of the station at the location or null if there is none
+     * Finds a station owned by the player at the exact map location.
+     *
+     * @param world world containing stations
+     * @param player owner whose stations are searched
+     * @param location map coordinates to match
+     * @return station identifier, or {@code null} if none is present
      */
     public static Integer getStationId(@NotNull UnmodifiableWorld world, @NotNull Player player, @NotNull Vec2D location) {
         // loop through all stations of a player to check if there is a station at the location
@@ -318,7 +326,13 @@ public final class StationUtils {
     }
 
     /**
-     * Return Station number if station exists at location or -1
+     * Finds the player's station at a location, provided the tile contains
+     * track of a station type owned by that player.
+     *
+     * @param world world providing map and station data
+     * @param player player whose station is sought
+     * @param location map coordinates to inspect
+     * @return station identifier, or {@code -1} if no matching station exists
      */
     public static int getStationIdAtLocation(UnmodifiableWorld world, Player player, Vec2D location) {
         TerrainTile tile = world.getTile(location);

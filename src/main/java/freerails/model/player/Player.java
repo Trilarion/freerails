@@ -23,7 +23,7 @@ import freerails.util.Utils;
 
 // TODO on the client side, one should not create a player but a add new player move or so...
 /**
- * This interface identifies a player.
+ * Identifies a player.
  *
  * A player represents an entity which can view or alter the game world. A
  * player usually corresponds to a user's identity, but may also represent
@@ -38,17 +38,20 @@ public class Player extends Identifiable {
     private final String name;
 
     /**
-     * @param id
+     * @param id stable player identifier
+     * @param name display name
      */
     public Player(int id, String name) {
         super(id);
         this.name = Utils.verifyNotNull(name);
     }
 
+    /** Returns the player's display name. */
     public String getName() {
         return name;
     }
 
+    /** Returns a label containing this player's name and identifier. */
     @Override
     public String toString() {
         return "Player: " + name + " " + getId();

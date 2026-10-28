@@ -24,7 +24,7 @@ import freerails.model.terrain.TileTransition;
 import java.io.Serializable;
 
 /**
- * Represents the track connecting two adjacent tiles.
+ * Represents the undirected track connection between two adjacent tiles.
  */
 public class TrackSection implements Serializable {
 
@@ -33,8 +33,12 @@ public class TrackSection implements Serializable {
     private final Vec2D tile;
 
     /**
-     * @param tileTransition
-     * @param tile
+     * Creates a section from a tile and its outgoing transition. The stored
+     * endpoint/direction is normalized so either traversal identifies the same
+     * section.
+     *
+     * @param tileTransition transition from {@code tile} to the adjacent tile
+     * @param tile origin tile coordinate
      */
     public TrackSection(final TileTransition tileTransition, final Vec2D tile) {
 
@@ -49,6 +53,11 @@ public class TrackSection implements Serializable {
         }
     }
 
+    /**
+     * Returns a hash code based on the normalized endpoints.
+     *
+     * @return this section's hash code
+     */
     @Override
     public int hashCode() {
         final int PRIME = 31;
@@ -58,6 +67,12 @@ public class TrackSection implements Serializable {
         return result;
     }
 
+    /**
+     * Tests equality of the normalized track sections.
+     *
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} represents the same section
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -72,20 +87,29 @@ public class TrackSection implements Serializable {
         } else return tile.equals(other.tile);
     }
 
+    /**
+     * Returns a textual representation of the normalized tile and transition.
+     *
+     * @return section description
+     */
     @Override
     public String toString() {
         return tile.toString() + ' ' + tileTransition.toString();
     }
 
     /**
-     * @return
+     * Returns the coordinate of the normalized first endpoint.
+     *
+     * @return first tile coordinate
      */
     public Vec2D tileA() {
         return tile;
     }
 
     /**
-     * @return
+     * Returns the coordinate of the other endpoint.
+     *
+     * @return second tile coordinate
      */
     public Vec2D tileB() {
         return TileTransition.move(tile, tileTransition);

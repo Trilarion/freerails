@@ -37,16 +37,18 @@ public class PathNotFoundException extends Exception {
     }
 
     /**
-     * 
-     * @param cause
+     * Creates an exception wrapping the underlying failure.
+     *
+     * @param cause underlying cause
      */
     public PathNotFoundException(Throwable cause) {
         super(cause);
     }
 
     /**
+     * Creates an exception with a detail message.
      *
-     * @param message
+     * @param message explanation of why the path could not be found
      */
     public PathNotFoundException(String message) {
         super(message);

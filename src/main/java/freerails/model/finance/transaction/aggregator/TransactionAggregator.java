@@ -40,8 +40,14 @@ public abstract class TransactionAggregator {
     protected final Time[] times;
 
     /**
-     * @param world
-     * @param player
+     * Creates an aggregator whose intervals are defined by the supplied
+     * nondecreasing boundary times.
+     *
+     * @param world world supplying transactions
+     * @param player player whose transactions are aggregated
+     * @param times ordered boundaries defining one or more intervals
+     * @throws IllegalArgumentException if fewer than two boundaries are given
+     *         or if the boundaries decrease
      */
     public TransactionAggregator(UnmodifiableWorld world, Player player, Time[] times) {
         this.world = world;
@@ -67,8 +73,9 @@ public abstract class TransactionAggregator {
 
     // TODO this exploits/assumes that the transactions are ordered in time
     /**
-     * Returns the sum of the appropriate transactions within the given time points, where the i.th interval contains
-     * all transactions with times greater or equal to times(i) and smaller than times(i+1).
+     * Clears prior totals and sums accepted transactions into the interval
+     * containing each transaction time. Intervals include their lower bound
+     * and exclude their upper bound.
      */
     public final void aggregate() {
         // clear state before aggregating
@@ -105,6 +112,7 @@ public abstract class TransactionAggregator {
         }
     }
 
+    /** Resets all interval totals to zero before an aggregation pass. */
     protected void clearState() {
         // initialize output
         for (int i = 0; i < times.length - 1; i++) {
@@ -112,16 +120,30 @@ public abstract class TransactionAggregator {
         }
     }
 
+    /**
+     * Returns the monetary total for each interval.
+     *
+     * @return a copy of the interval totals
+     */
     public Money[] getValues() {
         return values.clone();
     }
 
+    /**
+     * Adds a transaction's amount to the specified interval.
+     *
+     * @param intervalIndex index of the interval receiving the transaction
+     * @param transaction transaction whose amount is added
+     */
     protected void aggregateTransaction(int intervalIndex, Transaction transaction) {
         values[intervalIndex] = Money.add(values[intervalIndex], transaction.getAmount());
     }
 
     /**
-     * Returns true if we should count the specified transaction.
+     * Determines whether a transaction should contribute to the aggregation.
+     *
+     * @param transaction transaction to test
+     * @return {@code true} if it should be included
      */
     protected abstract boolean acceptable(@NotNull Transaction transaction);
 }

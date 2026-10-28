@@ -30,11 +30,20 @@ public class Rules implements Serializable {
     private final boolean canConnectToOtherPlayersTracks;
     private final boolean mustStayConnectedToExistingTrack;
 
+    /**
+     * Creates a rule set for track connections and network continuity.
+     *
+     * @param canConnectToOtherPlayersTracks whether track may connect to
+     *        another player's track
+     * @param mustStayConnectedToExistingTrack whether newly built track must
+     *        remain connected to existing track
+     */
     public Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConnectedToExistingTrack) {
         this.canConnectToOtherPlayersTracks = canConnectToOtherPlayersTracks;
         this.mustStayConnectedToExistingTrack = mustStayConnectedToExistingTrack;
     }
 
+    /** Returns a hash code derived from the two rule flags. */
     @Override
     public int hashCode() {
         int result;
@@ -45,19 +54,25 @@ public class Rules implements Serializable {
     }
 
     /**
-     * @return
+     * @return {@code true} if connecting to another player's track is allowed
      */
     public boolean canConnectToOtherPlayersTracks() {
         return canConnectToOtherPlayersTracks;
     }
 
     /**
-     * @return
+     * @return {@code true} if track must remain connected to existing track
      */
     public boolean mustStayConnectedToExistingTrack() {
         return mustStayConnectedToExistingTrack;
     }
 
+    /**
+     * Compares both rule flags with those of another rule set.
+     *
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} is a rule set with identical flags
+     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Rules)) {

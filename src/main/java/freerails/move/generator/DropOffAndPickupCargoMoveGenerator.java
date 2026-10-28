@@ -85,18 +85,19 @@ public class DropOffAndPickupCargoMoveGenerator {
         // Unload the cargo that the station demands
         for (CargoBatch cargoBatch : trainAfter.getCargoBatches()) {
             int cargoTypeId = cargoBatch.getCargoTypeId();
+            int cargoIndex = world.getCargoIndex(cargoTypeId);
             // if the cargo is demanded and its not from this station originally...
             StationDemand stationDemand = station.getDemandForCargo();
 
-            if (stationDemand.isCargoDemanded(cargoTypeId) && stationId != cargoBatch.getOriginalStationId()) {
+            if (stationDemand.isCargoDemanded(cargoIndex) && stationId != cargoBatch.getOriginalStationId()) {
                 int amount = trainAfter.getAmount(cargoBatch);
                 cargoDroppedOff.addCargo(cargoBatch, amount);
 
                 // Now perform any conversions..
                 StationCargoConversion converted = station.getCargoConversion();
 
-                if (converted.convertsCargo(cargoTypeId)) {
-                    int newCargoType = converted.getConversion(cargoTypeId);
+                if (converted.convertsCargo(cargoIndex)) {
+                    int newCargoType = converted.getConversion(cargoIndex);
                     CargoBatch newCargoBatch = new CargoBatch(newCargoType, station.getLocation(), 0, stationId);
                     stationAfter.addCargo(newCargoBatch, amount);
                 }
@@ -126,7 +127,8 @@ public class DropOffAndPickupCargoMoveGenerator {
             int quantity1 = spaceAvailable1.get(cargoType1);
             if (quantity1 < 0) {
                 int amountToTransfer1 = -quantity1;
-                CargoUtils.transferCargo(cargoType1, amountToTransfer1, trainAfter, stationAfter);
+                int cargoId = world.getCargoAtIndex(cargoType1).getId();
+                CargoUtils.transferCargo(cargoId, amountToTransfer1, trainAfter, stationAfter);
             }
         }
 
@@ -141,11 +143,11 @@ public class DropOffAndPickupCargoMoveGenerator {
             Station otherStation = world.getStation(player, nextStationId);
             StationDemand demand = otherStation.getDemandForCargo();
 
-            // TODO i is not an id
             for (int i = 0; i < world.getCargos().size(); i++) {
+                int cargoId = world.getCargoAtIndex(i).getId();
                 // If this cargo is demanded at the next scheduled station.
                 if (demand.isCargoDemanded(i)) {
-                    int amount = stationAfter.getAmountOfType(i);
+                    int amount = stationAfter.getAmountOfType(cargoId);
 
                     while (amount > 0) {
                         int amount2remove = Math.min(amount, ModelConstants.UNITS_OF_CARGO_PER_WAGON);
@@ -153,7 +155,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
                         // Don't bother with less than half a wagon load.
                         if (amount2remove * 2 > ModelConstants.UNITS_OF_CARGO_PER_WAGON) {
-                            wagonsAvailable.add(new WagonLoad(amount2remove, i));
+                            wagonsAvailable.add(new WagonLoad(amount2remove, cargoId));
                         }
                     }
                 }
@@ -179,8 +181,9 @@ public class DropOffAndPickupCargoMoveGenerator {
         List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, trainAfter, consist);
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
-            int amountToTransfer = Math.min(quantity, stationAfter.getAmountOfType(cargoType));
-            CargoUtils.transferCargo(cargoType, amountToTransfer, stationAfter, trainAfter);
+            int cargoId = world.getCargoAtIndex(cargoType).getId();
+            int amountToTransfer = Math.min(quantity, stationAfter.getAmountOfType(cargoId));
+            CargoUtils.transferCargo(cargoId, amountToTransfer, stationAfter, trainAfter);
         }
     }
 

@@ -20,14 +20,18 @@ package freerails.model.game;
 
 import java.io.Serializable;
 
-/**
- *
- */
+/** Supported simulation speeds and their tick rates. */
 public enum Speed implements Serializable {
     PAUSE(0), SLOW(10), MODERATE(20), FAST(30);
 
     private final int ticksPerSecond;
 
+    /**
+     * Creates a speed value with the specified simulation tick rate.
+     *
+     * @param ticksPerSecond number of simulation ticks per second
+     * @throws IllegalArgumentException if the rate is negative
+     */
     Speed(int ticksPerSecond) {
         if (ticksPerSecond < 0) {
             throw new IllegalArgumentException();
@@ -35,6 +39,7 @@ public enum Speed implements Serializable {
         this.ticksPerSecond = ticksPerSecond;
     }
 
+    /** Returns the number of simulation ticks per second at this speed. */
     public int getTicksPerSecond() {
         return ticksPerSecond;
     }

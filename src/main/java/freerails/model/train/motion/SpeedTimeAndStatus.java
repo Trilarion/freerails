@@ -27,7 +27,7 @@ import freerails.model.train.TrainState;
 import java.io.Serializable;
 
 /**
- * Stores the speed and success of a train immediately after an instant of time.
+ * Stores a train's speed, acceleration, traveled distance, elapsed time, and state.
  */
 // TODO only used once, do we really need it
 public class SpeedTimeAndStatus implements Serializable {
@@ -39,6 +39,17 @@ public class SpeedTimeAndStatus implements Serializable {
     private final double s;
     private final TrainState activity;
 
+    /**
+     * Creates a state sample for a train motion.
+     *
+     * @param speed speed at the sample time
+     * @param acceleration acceleration at the sample time
+     * @param distance distance traveled by the sample time
+     * @param time elapsed time represented by the sample
+     * @param activity train state at the sample
+     * @throws IllegalArgumentException if time is negative
+     * @throws NullPointerException if activity is null
+     */
     public SpeedTimeAndStatus(double speed, double acceleration, double distance, double time, TrainState activity) {
         if (time < 0) throw new IllegalArgumentException(String.valueOf(time));
         this.acceleration = acceleration;
@@ -48,6 +59,7 @@ public class SpeedTimeAndStatus implements Serializable {
         this.activity = Utils.verifyNotNull(activity);
     }
 
+    /** Compares the sampled values and train state. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -61,6 +73,7 @@ public class SpeedTimeAndStatus implements Serializable {
         return activity != null ? activity == other.activity : other.activity == null;
     }
 
+    /** Returns a hash code consistent with {@link #equals(Object)}. */
     @Override
     public int hashCode() {
         int result;

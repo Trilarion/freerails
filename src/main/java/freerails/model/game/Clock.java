@@ -25,7 +25,8 @@ import java.util.Objects;
 
 // TODO store speed separately in World
 /**
- *
+ * Tracks elapsed simulation time and converts ticks to calendar years and
+ * months.
  */
 public class Clock implements Serializable {
 
@@ -33,6 +34,14 @@ public class Clock implements Serializable {
     private final int ticksPerYear;
     private Time currentTime;
 
+    /**
+     * Creates a clock with the supplied calendar origin and current time.
+     *
+     * @param startYear calendar year at tick zero
+     * @param ticksPerYear number of simulation ticks in a year; must be positive
+     * @param currentTime initial elapsed simulation time
+     * @throws IllegalArgumentException if {@code ticksPerYear} is not positive
+     */
     public Clock(int startYear, int ticksPerYear, @NotNull Time currentTime) {
         if (ticksPerYear <= 0) {
             throw new IllegalArgumentException();
@@ -42,22 +51,26 @@ public class Clock implements Serializable {
         this.currentTime = currentTime;
     }
 
+    /** Returns the calendar year assigned to tick zero. */
     public int getStartYear() {
         return startYear;
     }
 
+    /** Returns the current elapsed simulation time. */
     public Time getCurrentTime() {
         return currentTime;
     }
 
+    /** Advances the clock by one simulation tick. */
     public void advanceTime() {
         currentTime = currentTime.advance();
     }
 
     /**
-     * Convenience function
+     * Advances the clock until it reaches the specified time.
      *
-     * @param time
+     * @param time target time, which must not precede the current time
+     * @throws IllegalArgumentException if the target is earlier than the current time
      */
     public void advanceTimeTo(@NotNull Time time) {
         if (currentTime.compareTo(time) > 0) {
@@ -70,19 +83,19 @@ public class Clock implements Serializable {
     }
 
     /**
-     * Calculates the actual year.
+     * Returns the calendar year containing the current time.
      *
-     * @return
+     * @return the current calendar year
      */
     public int getCurrentYear() {
         return getYear(currentTime);
     }
 
     /**
-     * Calculates the year of an arbitrary currentTime.
+     * Calculates the calendar year containing an arbitrary elapsed time.
      *
-     * @param time
-     * @return
+     * @param time elapsed time to convert
+     * @return the corresponding calendar year
      */
     public int getYear(@NotNull Time time) {
         return startYear + time.getTicks() / ticksPerYear;
@@ -90,10 +103,11 @@ public class Clock implements Serializable {
 
 
     /**
-     * Calculates the currentTime at the beginning of a given year.
+     * Calculates the elapsed time at the beginning of a calendar year.
      *
-     * @param year
-     * @return
+     * @param year calendar year, not earlier than the clock's start year
+     * @return elapsed time at the beginning of {@code year}
+     * @throws IllegalArgumentException if {@code year} precedes the start year
      */
     public Time getTimeAtStartOfYear(int year) {
         if (year < startYear) {
@@ -103,23 +117,27 @@ public class Clock implements Serializable {
     }
 
     /**
-     * Convenience function.
+     * Returns the elapsed time at the beginning of the current calendar year.
      *
-     * @return
+     * @return start-of-year time for the current year
      */
     public Time getTimeAtStartOfCurrentYear() {
         return getTimeAtStartOfYear(getCurrentYear());
     }
 
-    /**
-     *
-     * @return
-     */
+    /** @return {@code true} if the current tick is the final tick of its year */
     public boolean isLastTickOfYear() {
         return currentTime.getTicks() % ticksPerYear == ticksPerYear - 1;
     }
 
     // TODO a better way of calculating this
+    /**
+     * Checks whether this tick and the following tick have the same computed
+     * month index.
+     *
+     * @return {@code true} when the month index for the next tick matches the
+     *         current month index
+     */
     public boolean isLastTickOfMonth() {
         return getCurrentMonth() == (currentTime.getTicks()+1) % ticksPerYear / (ticksPerYear / 12);
     }
@@ -127,12 +145,18 @@ public class Clock implements Serializable {
     /**
      * Calculates the month (starting with 0 to 11) that we are in.
      *
-     * @return
+     * @return the current month as a zero-based value from 0 through 11
      */
     public int getCurrentMonth() {
         return getMonth(currentTime);
     }
 
+    /**
+     * Calculates the zero-based month containing the specified elapsed time.
+     *
+     * @param time elapsed time to convert
+     * @return month index from 0 (January) through 11 (December)
+     */
     public int getMonth(@NotNull Time time) {
         return time.getTicks() % ticksPerYear / (ticksPerYear / 12);
     }
@@ -141,22 +165,35 @@ public class Clock implements Serializable {
 
     // TODO is there a library for it similar to datetime in Python?
     /**
-     * Converts the current date to a string of format "MM YYYY".
+     * Converts the current date to the abbreviated format {@code "MMM YYYY"}.
      *
-     * @return
+     * @return current month and year, for example {@code "Jan 1840"}
      */
     public String getCurrentDateAsString() {
         return String.format("%s %s", MONTHS[getCurrentMonth()], getCurrentYear());
     }
 
+    /**
+     * Formats an arbitrary elapsed time as an abbreviated month and year.
+     *
+     * @param time elapsed time to format
+     * @return date in {@code "MMM YYYY"} format
+     */
     public  String getDateAsString(@NotNull Time time) {
         return String.format("%s %s", MONTHS[getMonth(time)], getYear(time));
     }
 
+    /** Returns the number of simulation ticks per calendar year. */
     public int getTicksPerYear() {
         return ticksPerYear;
     }
 
+    /**
+     * Compares calendar origin, tick rate, and current time.
+     *
+     * @param obj object to compare
+     * @return {@code true} if the other object is an equivalent clock
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -169,6 +206,7 @@ public class Clock implements Serializable {
         return Objects.equals(startYear, o.startYear) && Objects.equals(ticksPerYear, o.ticksPerYear) && Objects.equals(currentTime, o.currentTime);
     }
 
+    /** Returns a hash code consistent with {@link #equals(Object)}. */
     @Override
     public int hashCode() {
         int result = startYear;

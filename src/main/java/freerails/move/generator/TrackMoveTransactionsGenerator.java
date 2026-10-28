@@ -98,24 +98,28 @@ public class TrackMoveTransactionsGenerator {
             int numberAdded = trackAdded[i];
 
             if (0 != numberAdded) {
-                Money price = world.getTrackType(i).getPurchasingPrice();
+                TrackType trackType = world.getTrackTypeAtIndex(i);
+                Money price = trackType.getPurchasingPrice();
                 // TODO Money arithmetic
                 Money total = new Money(-price.amount * numberAdded / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
-                Transaction transaction1 = new ItemTransaction(TransactionCategory.TRACK, total, time, numberAdded, i);
+                Transaction transaction1 = new ItemTransaction(
+                        TransactionCategory.TRACK, total, time, numberAdded, trackType.getId());
                 transactions.add(transaction1);
             }
 
             int numberRemoved = trackRemoved[i];
 
             if (0 != numberRemoved) {
-                Money price = world.getTrackType(i).getPurchasingPrice();
+                TrackType trackType = world.getTrackTypeAtIndex(i);
+                Money price = trackType.getPurchasingPrice();
                 // TODO Money arithmetic
                 Money total = new Money(price.amount * numberRemoved / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
                 // You only get half the money back.
                 total = Money.divide(total, 2);
 
-                Transaction transaction1 = new ItemTransaction(TransactionCategory.TRACK, total, time, -numberRemoved, i);
+                Transaction transaction1 = new ItemTransaction(
+                        TransactionCategory.TRACK, total, time, -numberRemoved, trackType.getId());
                 transactions.add(transaction1);
             }
         }
@@ -151,8 +155,8 @@ public class TrackMoveTransactionsGenerator {
                 int newLength = newTrackPiece.getTrackConfiguration().getLength();
 
                 // TODO instead of comparing ids, use equal (which does the same)
-                int ruleBefore = oldTrackPiece.getTrackType().getId();
-                int ruleAfter = newTrackPiece.getTrackType().getId();
+                int ruleBefore = world.getTrackTypeIndex(oldTrackPiece.getTrackType().getId());
+                int ruleAfter = world.getTrackTypeIndex(newTrackPiece.getTrackType().getId());
 
                 TrackType newTrackRule = newTrackPiece.getTrackType();
 
@@ -188,14 +192,14 @@ public class TrackMoveTransactionsGenerator {
             }
 
             if (oldTrackPiece == null) {
-                int ruleAfter = newTrackPiece.getTrackType().getId();
+                int ruleAfter = world.getTrackTypeIndex(newTrackPiece.getTrackType().getId());
                 int newLength = newTrackPiece.getTrackConfiguration().getLength();
                 // TODO trackAdded should be a Map
                 trackAdded[ruleAfter] += newLength;
             }
 
             if (newTrackPiece == null) {
-                int ruleBefore = oldTrackPiece.getTrackType().getId();
+                int ruleBefore = world.getTrackTypeIndex(oldTrackPiece.getTrackType().getId());
                 int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
                 // TODO trackRemoved should be a Map (id, int)
                 trackRemoved[ruleBefore] += oldLength;

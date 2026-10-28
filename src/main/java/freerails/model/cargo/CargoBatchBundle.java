@@ -33,12 +33,15 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
     public static final UnmodifiableCargoBatchBundle EMPTY = new CargoBatchBundle();
     private final SortedMap<CargoBatch, Integer> cargoMap;
 
+    /** Creates an empty mutable cargo bundle. */
     public CargoBatchBundle() {
         cargoMap = new TreeMap<>();
     }
 
     /**
-     * @param cargoBatchBundle
+     * Creates a mutable copy of the contents of another bundle.
+     *
+     * @param cargoBatchBundle bundle whose contents are copied
      */
     public CargoBatchBundle(UnmodifiableCargoBatchBundle cargoBatchBundle) {
         this();
@@ -49,16 +52,19 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
     }
 
     /**
-     * Adds a cargo batch with a certain amount.
+     * Adds the supplied amount to the existing quantity of the batch.
+     *
+     * @param cargoBatch batch whose quantity is increased
+     * @param amount quantity to add
      */
     public void addCargo(CargoBatch cargoBatch, int amount) {
         setAmount(cargoBatch, amount + getAmount(cargoBatch));
     }
 
     /**
-     * Makes a copy.
+     * Returns an unmodifiable snapshot of the batches currently in the bundle.
      *
-     * @return
+     * @return unmodifiable collection of present batches
      */
     @Override
     public Collection<CargoBatch> getCargoBatches() {
@@ -66,14 +72,22 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
     }
 
     /**
-     * @param cargoBatch
-     * @return
+     * Tests whether the bundle contains an entry for the batch.
+     *
+     * @param cargoBatch batch to look up
+     * @return {@code true} if the batch has a nonzero stored quantity
      */
     @Override
     public boolean contains(CargoBatch cargoBatch) {
         return cargoMap.containsKey(cargoBatch);
     }
 
+    /**
+     * Tests whether another mutable bundle has the same batch quantities.
+     *
+     * @param other object to compare
+     * @return {@code true} if both bundles contain equal mappings
+     */
     @Override
     public boolean equals(Object other) {
         if (this == other) {
@@ -92,8 +106,10 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
 
 
     /**
-     * @param cargoType
-     * @return
+     * Sums the quantities of all batches with the specified cargo type.
+     *
+     * @param cargoType cargo type identifier
+     * @return total quantity for that type
      */
     @Override
     public int getAmountOfType(int cargoType) {
@@ -106,11 +122,22 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
         return amount;
     }
 
+    /**
+     * Returns a hash code based on the number of distinct stored batches.
+     *
+     * @return hash code for this bundle
+     */
     @Override
     public int hashCode() {
         return cargoMap.size();
     }
 
+    /**
+     * Returns the quantity of a batch, or zero when it is absent.
+     *
+     * @param cargoBatch batch to look up
+     * @return stored quantity, or zero if absent
+     */
     @Override
     public int getAmount(CargoBatch cargoBatch) {
         if (contains(cargoBatch)) {
@@ -120,8 +147,10 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
     }
 
     /**
-     * @param cargoBatch
-     * @param amount
+     * Sets a batch's quantity, removing its entry when the quantity is zero.
+     *
+     * @param cargoBatch batch to update
+     * @param amount new quantity
      */
     public void setAmount(CargoBatch cargoBatch, int amount) {
         if (0 == amount) {
@@ -131,11 +160,21 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
         }
     }
 
+    /**
+     * Returns the number of batches with nonzero quantities.
+     *
+     * @return number of stored batches
+     */
     @Override
     public int size() {
         return cargoMap.size();
     }
 
+    /**
+     * Returns a multi-line representation of this bundle's batch quantities.
+     *
+     * @return formatted bundle contents
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

@@ -25,9 +25,8 @@ import freerails.model.player.Player;
 
 import java.util.*;
 
-// TODO convert to static code
 /**
- *
+ * Counts the track sections currently occupied by a player's moving trains.
  */
 public class OccupiedTracks {
 
@@ -35,8 +34,10 @@ public class OccupiedTracks {
     private final Map<Integer, List<TrackSection>> trainsToTrack;
 
     /**
-     * @param player
-     * @param world
+     * Builds occupancy counts from the player's trains at the world's current time.
+     *
+     * @param player player whose trains are checked
+     * @param world world providing train positions and current time
      */
     public OccupiedTracks(Player player, UnmodifiableWorld world) {
 
@@ -65,7 +66,9 @@ public class OccupiedTracks {
     }
 
     /**
-     * @param trainId
+     * Removes one train's occupied sections from the counts.
+     *
+     * @param trainId ID of the train to stop; unknown or already removed IDs are ignored
      */
     public void stopTrain(int trainId) {
         List<TrackSection> trackList = trainsToTrack.remove(trainId);

@@ -27,7 +27,7 @@ import freerails.model.world.UnmodifiableWorld;
 public interface TileRendererList {
 
     /**
-     * @param index
+     * @param terrainId stable terrain type ID
      * @return
      */
     TileRenderer getTileRendererByIndex(int index);

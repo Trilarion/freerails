@@ -24,17 +24,18 @@ package freerails.model.train.motion;
 import java.io.Serializable;
 
 /**
- *
+ * Serializable motion profile relating elapsed time to distance, speed, and
+ * acceleration.
  */
 public interface Motion extends Serializable {
 
     /**
-     * @return The time taken to travel the distance given by getDistance().
+     * @return total duration of this motion
      */
     double getTotalTime();
 
     /**
-     * @return The distance traveled during at time given by getCurrentTime().
+     * @return total distance traveled
      */
     double getTotalDistance();
 
@@ -48,7 +49,8 @@ public interface Motion extends Serializable {
      * <li>s = getDistance() if t = getCurrentTime()</li>
      * </ol>
      *
-     * @return distance
+     * @param time elapsed time within this motion
+     * @return distance traveled by that time
      * @throws IllegalArgumentException if t &lt; 0 or t &gt; getCurrentTime()
      */
     double calculateDistanceAtTime(double time);
@@ -63,18 +65,27 @@ public interface Motion extends Serializable {
      * <li>t = getCurrentTime() if s = getDistance()</li>
      * </ol>
      *
-     * @return time
+     * @param distance distance from the beginning of this motion
+     * @return elapsed time at which that distance is reached
      * @throws IllegalArgumentException if s &lt; 0 or s &gt; getDistance()
      */
     double calculateTimeAtDistance(double distance);
 
     /**
-     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getCurrentTime()
+     * Returns the instantaneous speed at the specified time.
+     *
+     * @param time elapsed time within this motion
+     * @return speed at that time
+     * @throws IllegalArgumentException if time is outside this motion's duration
      */
     double calculateSpeedAtTime(double time);
 
     /**
-     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getCurrentTime()
+     * Returns the instantaneous acceleration at the specified time.
+     *
+     * @param time elapsed time within this motion
+     * @return acceleration at that time
+     * @throws IllegalArgumentException if time is outside this motion's duration
      */
     double calculateAccelerationAtTime(double time);
 }

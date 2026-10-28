@@ -20,9 +20,7 @@ package freerails.model.finance;
 
 import freerails.model.ModelConstants;
 
-/**
- *
- */
+/** Holds the calculated market and treasury prices for a company's shares. */
 public class StockPrice {
 
     public final Money currentPrice;
@@ -32,10 +30,13 @@ public class StockPrice {
     public final Money treasurySellPrice;
 
     /**
-     * @param netWorth
-     * @param profitLastYear
-     * @param publicShares
-     * @param otherRRShares
+     * Calculates current, public-trade, and treasury-trade prices for a share
+     * bundle using the same valuation inputs.
+     *
+     * @param netWorth company net worth
+     * @param profitLastYear profit during the previous year
+     * @param publicShares shares held by the public
+     * @param otherRRShares shares held by other railroads
      */
     StockPrice(Money netWorth, Money profitLastYear, int publicShares, int otherRRShares) {
         currentPrice = calculateStockPrice(netWorth, profitLastYear, publicShares, otherRRShares);
@@ -47,12 +48,15 @@ public class StockPrice {
 
     // TODO document this (in the design document)
     /**
+     * Calculates a share price from company net worth, prior-year profit, and
+     * the supplied share counts. A zero denominator yields the maximum
+     * representable amount.
      *
-     * @param netWorth
-     * @param profitLastyear
-     * @param publicShares
-     * @param otherRRShares
-     * @return
+     * @param netWorth company net worth
+     * @param profitLastyear company profit in the previous year
+     * @param publicShares shares held by the public
+     * @param otherRRShares shares held by other railroads
+     * @return calculated price per share unit
      */
     public static Money calculateStockPrice(Money netWorth, Money profitLastyear, int publicShares, int otherRRShares) {
         if (publicShares + otherRRShares == 0) return new Money(Long.MAX_VALUE);

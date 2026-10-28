@@ -22,17 +22,32 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+/**
+ * A frontier node and its A* score, ordered first by score and then by node ID.
+ */
 public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
 
     private static final long serialVersionUID = -4873508719707382681L;
     final int f;
     final int node;
 
+    /**
+     * Creates a frontier entry.
+     *
+     * @param f A* score
+     * @param node encoded node ID
+     */
     OpenListEntry(int f, int node) {
         this.f = f;
         this.node = node;
     }
 
+    /**
+     * Compares entries by score and then by node ID.
+     *
+     * @param o entry to compare
+     * @return negative, zero, or positive according to the ordering
+     */
     @Override
     public int compareTo(@NotNull OpenListEntry o) {
         if (f == o.f) {
@@ -41,6 +56,12 @@ public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
         return f - o.f;
     }
 
+    /**
+     * Tests equality of both the score and node ID.
+     *
+     * @param obj object to compare
+     * @return {@code true} if both entry values match
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -50,6 +71,11 @@ public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
         return f == other.f && node == other.node;
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     *
+     * @return entry hash code
+     */
     @Override
     public int hashCode() {
         int result = f;
@@ -57,6 +83,11 @@ public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
         return result;
     }
 
+    /**
+     * Returns a concise description of the node and score.
+     *
+     * @return textual entry representation
+     */
     @Override
     public String toString() {
         return "OpenListEntry{node=" + node + ", f=" + f + '}';

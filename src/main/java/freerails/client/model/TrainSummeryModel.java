@@ -39,7 +39,6 @@ public class TrainSummeryModel {
     private UnmodifiableWorld world = null;
     private int lastNrOfTransactions = 0;
     private Player player = null;
-    private int maxTrainNum = 0;
     private long lastUpdate;
     private long lastStationUpdate;
 
@@ -84,13 +83,17 @@ public class TrainSummeryModel {
             lastUpdate = currentTime;
         }
         IncomeStatementGenerator income = new IncomeStatementGenerator(world, player);
-        maxTrainNum = Math.max(maxTrainNum, trainNum);
-        Money[] m = new Money[maxTrainNum + 1];
+        int trainIndex = world.getTrainIndex(player, trainNum);
+        Money[] m = new Money[world.getTrains(player).size()];
         income.calTrainRevenue(m);
-        for (int i = 0; i < maxTrainNum; i++) {
-            lastTrainIncome.put(i, m[i]);
+        int index = 0;
+        for (var train : world.getTrains(player)) {
+            if (train != null) {
+                lastTrainIncome.put(train.getId(), m[index]);
+            }
+            index++;
         }
-        return m[trainNum];
+        return m[trainIndex];
     }
 
     /**

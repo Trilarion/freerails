@@ -46,8 +46,10 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private Vec2D startPoint;
 
     /**
-     * @param world
-     * @param player
+     * Creates a finder for planning track construction in a world.
+     *
+     * @param world world whose terrain and existing track are used
+     * @param player player for whom the route is planned
      */
     public TrackPathFinder(UnmodifiableWorld world, Player player) {
         this.world = world;
@@ -55,13 +57,19 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void abandonSearch() {
         pathFinder.abandonSearch();
     }
 
+    /**
+     * Builds all legal arrival vertices at a target tile.
+     *
+     * @param targetPoint destination tile
+     * @return encoded target positions, restricted by existing track if present
+     */
     private int[] findTargets(Vec2D targetPoint) {
         TerrainTile tile = world.getTile(targetPoint);
         TrackPiece trackPiece = tile.getTrackPiece();
@@ -110,11 +118,14 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @param start
-     * @param targetPoint
-     * @param buildTrackStrategy
-     * @return
-     * @throws PathNotFoundException
+     * Finds and returns a route between two tiles using the specified build
+     * rules.
+     *
+     * @param start starting tile coordinate
+     * @param targetPoint destination tile coordinate
+     * @param buildTrackStrategy rules selecting track types by terrain
+     * @return route as tile coordinates in traversal order
+     * @throws PathNotFoundException if no route can be found
      */
     public List generatePath(Vec2D start, Vec2D targetPoint, BuildTrackStrategy buildTrackStrategy) throws PathNotFoundException {
         setupSearch(start, targetPoint, buildTrackStrategy);
@@ -126,7 +137,9 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @return
+     * Returns the current status of the underlying search.
+     *
+     * @return pathfinder status
      */
     @Override
     public PathFinderStatus getStatus() {
@@ -134,7 +147,9 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @return
+     * Returns the route found by the most recent search as tile coordinates.
+     *
+     * @return route coordinates in traversal order
      */
     public List<Vec2D> pathAsPoints() {
         List<Integer> path = pathFinder.retrievePath();
@@ -143,7 +158,9 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @return
+     * Returns the route found by the most recent search as transitions.
+     *
+     * @return route transitions in traversal order
      */
     public TileTransition[] pathAsVectors() {
         List<Integer> path = pathFinder.retrievePath();
@@ -161,8 +178,12 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @param maxDuration
-     * @throws PathNotFoundException
+     * {@inheritDoc}
+     *
+     * @param maxDuration maximum duration of this search call in milliseconds,
+     *                    or a non-positive value for no time limit
+     * @throws PathNotFoundException if the search has no path or a limited
+     *                               search call has paused
      */
     @Override
     public void search(long maxDuration) throws PathNotFoundException {
@@ -170,10 +191,14 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     * @param startPoint
-     * @param targetPoint
-     * @param buildTrackStrategy
-     * @throws PathNotFoundException
+     * Configures a route search between two points using the supplied build
+     * strategy.
+     *
+     * @param startPoint starting tile coordinate
+     * @param targetPoint destination tile coordinate
+     * @param buildTrackStrategy rules selecting track types by terrain
+     * @throws PathNotFoundException if no route can be found or a start is
+     *                               already a target
      */
     public void setupSearch(Vec2D startPoint, Vec2D targetPoint, BuildTrackStrategy buildTrackStrategy) throws PathNotFoundException {
         logger.debug("Find track path from " + startPoint + " to " + targetPoint);

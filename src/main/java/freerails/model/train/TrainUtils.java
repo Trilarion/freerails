@@ -34,7 +34,6 @@ import freerails.model.train.schedule.TrainOrder;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.BidirectionalIterator;
-import freerails.util.Utils;
 import freerails.util.Vec2D;
 import org.apache.log4j.Logger;
 
@@ -42,22 +41,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- */
+/** Utility operations for train capacity, placement, routing, and updates. */
 public final class TrainUtils {
 
     private static final Logger logger = Logger.getLogger(TrainUtils.class.getName());
 
 
+    /** Prevents construction of this utility class. */
     private TrainUtils() {
     }
 
     /**
-     * @param world
-     * @param cargoBatchBundle
-     * @param consist
-     * @return
+     * @param world world providing cargo definitions and wagon capacities
+     * @param cargoBatchBundle cargo already carried
+     * @param consist wagon type identifiers
+     * @return available capacity for each cargo type, indexed by world cargo index
      */
     public static List<Integer> spaceAvailable2(UnmodifiableWorld world, UnmodifiableCargoBatchBundle cargoBatchBundle, List<Integer> consist) {
         // This array will store the amount of space available on the train for each cargo type.
@@ -67,23 +65,24 @@ public final class TrainUtils {
 
         // First calculate the train's total capacity.
         for (Integer aConsist : consist) {
-            int cargoType = aConsist;
-            spaceAvailable[cargoType] += ModelConstants.UNITS_OF_CARGO_PER_WAGON;
+            int cargoIndex = world.getCargoIndex(aConsist);
+            spaceAvailable[cargoIndex] += ModelConstants.UNITS_OF_CARGO_PER_WAGON;
         }
 
-        for (int cargoType = 0; cargoType < NUM_CARGO_TYPES; cargoType++) {
-            spaceAvailable[cargoType] = spaceAvailable[cargoType] - cargoBatchBundle.getAmountOfType(cargoType);
+        for (int cargoIndex = 0; cargoIndex < NUM_CARGO_TYPES; cargoIndex++) {
+            int cargoId = world.getCargoAtIndex(cargoIndex).getId();
+            spaceAvailable[cargoIndex] -= cargoBatchBundle.getAmountOfType(cargoId);
         }
-        // TODO what to do in case of negative numbers? throw an exception?
         return new ArrayList<>(Arrays.asList(spaceAvailable));
     }
 
     /**
      * @return the location of the station the train is currently heading
      * towards.
-     * @param world
-     * @param player
-     * @param trainId
+     * @param world world containing the train and stations
+     * @param player owner of the train
+     * @param trainId train identifier
+     * @return the target station location, or {@link Vec2D#ZERO} if no station is scheduled
      */
     public static Vec2D getTargetLocation(UnmodifiableWorld world, Player player, int trainId) {
         Train train = world.getTrain(player, trainId);
@@ -99,6 +98,13 @@ public final class TrainUtils {
         return station.getLocation();
     }
 
+    /**
+     * Calculates the length of an engine and its wagons.
+     *
+     * @param engineId engine type identifier
+     * @param wagons wagon type identifiers
+     * @return train length in map-distance units
+     */
     public static int calculateTrainLength(int engineId, List<Integer> wagons) {
         // TODO is this a good idea, how often is this called, instead extract getLength() method
         Train train = new Train(0, engineId);
@@ -109,11 +115,12 @@ public final class TrainUtils {
     /**
      * After creation.
      *
-     * @param world
-     * @param point
-     * @param engineId
-     * @param wagons
-     * @return
+     * @param world world used to inspect track
+     * @param point initial tile coordinates
+     * @param engineId engine type identifier
+     * @param wagons wagon type identifiers
+     * @return path long enough to place the complete train
+     * @throws IllegalArgumentException if no track is available at the selected position
      */
     public static PathOnTiles initPositionTrainGetPath(UnmodifiableWorld world, Vec2D point, int engineId, List<Integer> wagons) {
         PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(world, point);
@@ -139,12 +146,26 @@ public final class TrainUtils {
         return new PathOnTiles(point, tileTransitions);
     }
 
+    /**
+     * Creates a stopped motion representing the train at its initial placement.
+     *
+     * @param path path containing the train
+     * @param engineId engine type identifier
+     * @param wagons wagon type identifiers
+     * @return initial stopped train motion
+     */
     public static TrainMotion initPositionTrainGetMotion(PathOnTiles path, int engineId, List<Integer> wagons) {
         return new TrainMotion(path, path.steps(), calculateTrainLength(engineId, wagons), ConstantAccelerationMotion.STOPPED);
     }
 
     /**
-     * If wagons are added to a train, we need to increase its length.
+     * Extends the rear of a train path until it covers the requested train length.
+     *
+     * @param world world used to follow connected track
+     * @param path current path
+     * @param currentTrainLength required length in map-distance units
+     * @return path extended at its start to provide the required length
+     * @throws IllegalArgumentException if no connected track is available to extend the path
      */
     public static PathOnTiles lengthenPath(UnmodifiableWorld world, PathOnTiles path, int currentTrainLength) {
         double pathDistance = path.getTotalDistance();
@@ -181,18 +202,27 @@ public final class TrainUtils {
     }
 
     /**
-     * @return
+     * Returns whether all wagon capacity is occupied.
+     *
+     * @param world world containing cargo and train data
+     * @param player train owner
+     * @param trainId train identifier
+     * @return {@code true} if no cargo type has remaining capacity
      */
     public static boolean isTrainFull(UnmodifiableWorld world, Player player, int trainId) {
         // determine the space available on the train measured in cargo units.
         Train train = world.getTrain(player, trainId);
         List<Integer> spaceAvailable = spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
-        // TODO this is not fully correct, because there could also be negative numbers returned from spaceAvailable and they could sum up to zero
-        return Utils.sumOfIntegerList(spaceAvailable) == 0;
+        return spaceAvailable.stream().noneMatch(space -> space > 0);
     }
 
     /**
-     * @return
+     * Returns whether the train is not full and its current order requests waiting for a full load.
+     *
+     * @param world world containing the train
+     * @param player train owner
+     * @param trainId train identifier
+     * @return {@code true} when the train is waiting for full loading
      */
     public static boolean isWaitingForFullLoad(UnmodifiableWorld world, Player player, int trainId) {
         Train train = world.getTrain(player, trainId);
@@ -206,7 +236,13 @@ public final class TrainUtils {
     }
 
     /**
-     * Returns true if an updated is due.
+     * Determines whether the train should receive another activity update.
+     *
+     * @param world current world state
+     * @param player train owner
+     * @param trainId train identifier
+     * @return {@code true} if cargo availability or activity completion calls for an update
+     * @throws IllegalStateException if a train waiting for cargo is not at a station
      */
     public static boolean isUpdateDue(UnmodifiableWorld world, Player player, int trainId) {
         Time currentTime = world.getClock().getCurrentTime();
@@ -229,9 +265,10 @@ public final class TrainUtils {
             Station station = world.getStation(player, stationId);
             UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
 
-            for (int i = 0; i < spaceAvailable.size(); i++) {
-                int space = spaceAvailable.get(i);
-                int atStation = cargoBatchBundle.getAmountOfType(i);
+            for (int cargoIndex = 0; cargoIndex < spaceAvailable.size(); cargoIndex++) {
+                int space = spaceAvailable.get(cargoIndex);
+                int cargoId = world.getCargoAtIndex(cargoIndex).getId();
+                int atStation = cargoBatchBundle.getAmountOfType(cargoId);
                 if (space * atStation > 0) {
                     logger.debug("There is cargo to transfer!");
                     return true;
@@ -252,6 +289,11 @@ public final class TrainUtils {
      * <li>The current train order tells the train to wait for a full load.</li>
      * <li>The current train order specifies a consist that matches the train's current consist.</li>
      * </ol>
+     *
+     * @param world current world state
+     * @param player train owner
+     * @param trainId train identifier
+     * @return {@code true} while the current full-load order remains applicable
      */
     public static boolean keepWaiting(UnmodifiableWorld world, Player player, int trainId) {
         Time currentTime = world.getClock().getCurrentTime();

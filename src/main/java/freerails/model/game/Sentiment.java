@@ -33,18 +33,26 @@ public class Sentiment extends Identifiable {
     private final String name;
     private final double rate;
 
+    /**
+     * Creates an economic sentiment with its stable identifier and rate.
+     *
+     * @param id stable sentiment identifier
+     * @param name display name
+     * @param rate sentiment rate used by the game economy
+     */
     public Sentiment(int id, @NotNull String name, double rate) {
         super(id);
         this.name = name;
         this.rate = rate;
     }
 
+    /** Returns the display name of this sentiment. */
     public String getName() {
         return name;
     }
 
     /**
-     * @return
+     * @return the sentiment's rate
      */
     public double getRate() {
         return rate;

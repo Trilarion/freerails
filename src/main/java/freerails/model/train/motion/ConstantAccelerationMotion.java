@@ -24,24 +24,23 @@ package freerails.model.train.motion;
 import java.io.Serializable;
 
 /**
- *
+ * Motion profile with constant nonnegative initial speed and acceleration over
+ * a fixed time or distance interval.
  */
 public class ConstantAccelerationMotion implements Serializable, Motion {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -2180666310811530761L;
+    /** Zero-distance motion for a stationary train. */
     public static final ConstantAccelerationMotion STOPPED = new ConstantAccelerationMotion(0, 0, 0, 0);
     private final double initialSpeed, acceleration, totalDistance, totalTime;
 
     /**
      * No checks necessary, because this is a private constructor.
      *
-     * @param initialSpeed
-     * @param acceleration
-     * @param totalDistance
-     * @param totalTime
+     * @param initialSpeed speed at the start
+     * @param acceleration constant acceleration
+     * @param totalDistance distance covered
+     * @param totalTime duration
      */
     private ConstantAccelerationMotion(double initialSpeed, double acceleration, double totalDistance, double totalTime) {
         this.initialSpeed = initialSpeed;
@@ -51,10 +50,12 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
     }
 
     /**
-     * @param speed
-     * @param acceleration
-     * @param distance
-     * @return
+     * Creates a motion with a specified distance and derives its duration.
+     *
+     * @param speed initial speed
+     * @param acceleration constant acceleration
+     * @param distance distance covered
+     * @return motion ending after the time required to cover the distance
      */
     public static ConstantAccelerationMotion fromSpeedAccelerationDistance(double speed, double acceleration, double distance) {
         double time = calculateTime(speed, acceleration, distance);
@@ -62,10 +63,12 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
     }
 
     /**
-     * @param speed
-     * @param acceleration
-     * @param time
-     * @return
+     * Creates a motion with a specified duration and derives its distance.
+     *
+     * @param speed initial speed
+     * @param acceleration constant acceleration
+     * @param time duration
+     * @return motion covering the distance traveled during that duration
      */
     public static ConstantAccelerationMotion fromSpeedAccelerationTime(double speed, double acceleration, double time) {
         double distance = calculateDistance(speed, acceleration, time);
@@ -73,11 +76,12 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
     }
 
     /**
+     * Solves the constant-acceleration distance equation for elapsed time.
      *
-     * @param speed
-     * @param acceleration
-     * @param distance
-     * @return
+     * @param speed initial speed
+     * @param acceleration constant acceleration
+     * @param distance traveled distance
+     * @return elapsed time required to travel the distance
      */
     private static double calculateTime(double speed, double acceleration, double distance) {
         assert acceleration >= 0;
@@ -93,6 +97,14 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
         return (StrictMath.sqrt(speed * speed + 2 * acceleration * distance) - speed) / acceleration;
     }
 
+    /**
+     * Computes the distance traveled under constant acceleration.
+     *
+     * @param speed initial speed
+     * @param acceleration constant acceleration
+     * @param time elapsed time
+     * @return distance traveled
+     */
     private static double calculateDistance(double speed, double acceleration, double time) {
         assert speed >= 0;
         assert acceleration >= 0;
@@ -101,6 +113,11 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
         return speed * time + acceleration * time * time / 2;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if time is outside this motion's duration
+     */
     @Override
     public double calculateDistanceAtTime(double time) {
         checkValidTime(time);
@@ -113,6 +130,11 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
         return Math.min(totalDistance, distance);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if distance is outside this motion's distance
+     */
     @Override
     public double calculateTimeAtDistance(double distance) {
         checkValidDistance(distance);
@@ -125,12 +147,18 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
         return Math.min(totalTime, time);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if time is outside this motion's duration
+     */
     @Override
     public double calculateSpeedAtTime(double time) {
         checkValidTime(time);
         return initialSpeed + acceleration * time;
     }
 
+    /** Compares the initial speed, acceleration, total distance, and duration. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -139,22 +167,30 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
         return initialSpeed == other.initialSpeed && acceleration == other.acceleration && totalDistance == other.totalDistance && totalTime == other.totalTime;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if time is outside this motion's duration
+     */
     @Override
     public double calculateAccelerationAtTime(double time) {
         checkValidTime(time);
         return acceleration;
     }
 
+    /** Returns the duration of this motion. */
     @Override
     public double getTotalTime() {
         return totalTime;
     }
 
+    /** Returns the distance covered by this motion. */
     @Override
     public double getTotalDistance() {
         return totalDistance;
     }
 
+    /** Returns a hash code consistent with {@link #equals(Object)}. */
     @Override
     public int hashCode() {
         int result = Double.hashCode(initialSpeed);
@@ -164,18 +200,31 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
         return result;
     }
 
+    /**
+     * Validates a distance queried against this motion.
+     *
+     * @param distance distance to validate
+     * @throws IllegalArgumentException if distance is negative or exceeds the total distance
+     */
     private void checkValidDistance(double distance) {
         if (distance < 0 || distance > totalDistance) {
             throw new IllegalArgumentException(distance + " < 0 || " + distance + " > " + totalDistance);
         }
     }
 
+    /**
+     * Validates a time queried against this motion.
+     *
+     * @param time elapsed time to validate
+     * @throws IllegalArgumentException if time is negative or exceeds the total duration
+     */
     private void checkValidTime(double time) {
         if (time < 0 || time > totalTime) {
             throw new IllegalArgumentException("(" + time + " < 0 || " + time + " > " + totalTime + ')');
         }
     }
 
+    /** Returns a textual summary of this constant-acceleration profile. */
     @Override
     public String toString() {
         return "ConstantAccelerationMotion [a=" + acceleration + ", u=" + initialSpeed + ", dt=" + totalTime + ']';
