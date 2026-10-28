@@ -22,6 +22,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -40,6 +41,7 @@ import java.util.Set;
  */
 public class ActionAdapter extends DefaultComboBoxModel<Object> {
 
+    @Serial
     private static final long serialVersionUID = 3546920294666351415L;
 
     /**
@@ -150,6 +152,7 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
      *
      */
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel implements PropertyChangeListener {
+        @Serial
         private static final long serialVersionUID = 3834589889856353845L;
 
         /**

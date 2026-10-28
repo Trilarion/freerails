@@ -30,12 +30,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serial;
 
 /**
  * Shows the players currently logged in to the server.
  */
 public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
 
+    @Serial
     private static final long serialVersionUID = 4049080453489111344L;
     FreerailsGameServer server = null;
     private JList<String> list1;

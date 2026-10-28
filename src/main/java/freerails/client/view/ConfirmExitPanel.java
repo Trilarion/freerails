@@ -28,6 +28,7 @@ import freerails.client.ModelRoot;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * Displays confirmation of exiting, used when the exit menu item is
@@ -35,6 +36,7 @@ import java.awt.*;
  */
 public class ConfirmExitPanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3256728398394110517L;
     private JButton closeJButton;
 

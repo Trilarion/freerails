@@ -72,7 +72,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      */
     private int[] findTargets(Vec2D targetPoint) {
         TerrainTile tile = world.getTile(targetPoint);
-        TrackPiece trackPiece = tile.getTrackPiece();
+        TrackPiece trackPiece = tile.trackPiece();
         int[] targetInts;
 
         if (trackPiece != null) {
@@ -80,7 +80,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
              * If there is already track here, we need to check what directions
              * we can build in without creating an illegal track config.
              */
-            int ruleNumber = trackPiece.getTrackType().getId();
+            int ruleNumber = trackPiece.trackType().getId();
             TrackType trackType = world.getTrackType(ruleNumber);
 
             // Count number of possible directions.
@@ -88,7 +88,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
             for (int i = 0; i < 8; i++) {
                 TileTransition direction = TileTransition.getInstance(i);
-                TrackConfiguration config = trackPiece.getTrackConfiguration();
+                TrackConfiguration config = trackPiece.trackConfiguration();
                 TrackConfiguration testConfig = TrackConfiguration.add(config, direction);
 
                 if (trackType.trackPieceIsLegal(testConfig)) {

@@ -19,11 +19,15 @@
 package freerails.network.command;
 
 // TODO the id for all the commands is not really used, do we really need it
+
+import java.io.Serial;
+
 /**
  * Request to start a game on a new map.
  */
 public class NewGameCommandToServer implements CommandToServer {
 
+    @Serial
     private static final long serialVersionUID = 3256723961743422513L;
     private final String mapName;
 
@@ -52,9 +56,7 @@ public class NewGameCommandToServer implements CommandToServer {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof NewGameCommandToServer)) return false;
-
-        final NewGameCommandToServer newGameMessageToServer = (NewGameCommandToServer) obj;
+        if (!(obj instanceof NewGameCommandToServer newGameMessageToServer)) return false;
 
         return mapName.equals(newGameMessageToServer.mapName);
     }

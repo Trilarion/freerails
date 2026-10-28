@@ -38,6 +38,7 @@ import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import org.apache.log4j.Logger;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ import java.util.List;
 public class TrainStopsHandler implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TrainStopsHandler.class.getName());
+    @Serial
     private static final long serialVersionUID = 3257567287094882872L;
     private final Player player;
     private final int trainId;

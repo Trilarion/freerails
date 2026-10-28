@@ -23,22 +23,16 @@ import java.io.Serializable;
 /**
  * Immutable description of the track configuration, type, and owner on a tile.
  */
-public class TrackPiece implements Serializable {
+public record TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int playerId) implements Serializable {
 
     private static final long serialVersionUID = 4049080423458027569L;
-    private final TrackConfiguration trackConfiguration;
-    private final TrackType trackType;
-    private final int playerId;
 
     /**
      * @param trackConfiguration geometric configuration of the track
-     * @param trackType type and properties of the track
-     * @param playerId ID of the owning player
+     * @param trackType          type and properties of the track
+     * @param playerId           ID of the owning player
      */
-    public TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int playerId) {
-        this.trackConfiguration = trackConfiguration;
-        this.trackType = trackType;
-        this.playerId = playerId;
+    public TrackPiece {
     }
 
     /**
@@ -60,20 +54,6 @@ public class TrackPiece implements Serializable {
     }
 
     /**
-     * Returns a hash code consistent with {@link #equals(Object)}.
-     *
-     * @return this track piece's hash code
-     */
-    @Override
-    public int hashCode() {
-        int result;
-        result = trackConfiguration.hashCode();
-        result = 29 * result + trackType.hashCode();
-        result = 29 * result + playerId;
-        return result;
-    }
-
-    /**
      * Returns the encoded track configuration used by track graphics.
      *
      * @return track graphic/configuration ID
@@ -87,7 +67,8 @@ public class TrackPiece implements Serializable {
      *
      * @return track configuration
      */
-    public TrackConfiguration getTrackConfiguration() {
+    @Override
+    public TrackConfiguration trackConfiguration() {
         return trackConfiguration;
     }
 
@@ -96,7 +77,8 @@ public class TrackPiece implements Serializable {
      *
      * @return owner player ID
      */
-    public int getPlayerId() {
+    @Override
+    public int playerId() {
         return playerId;
     }
 
@@ -105,7 +87,8 @@ public class TrackPiece implements Serializable {
      *
      * @return track type
      */
-    public TrackType getTrackType() {
+    @Override
+    public TrackType trackType() {
         return trackType;
     }
 }

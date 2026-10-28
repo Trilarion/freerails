@@ -81,7 +81,7 @@ public class OverviewMapRenderer implements MapRenderer {
             throw new RuntimeException(e);
         }
 
-        double scalingFactor = (double) imageSize.y / mapSize.y;
+        double scalingFactor = (double) imageSize.y() / mapSize.y();
         affineTransform = AffineTransform.getScaleInstance(scalingFactor, scalingFactor);
         refresh();
     }
@@ -94,8 +94,8 @@ public class OverviewMapRenderer implements MapRenderer {
     public static MapRenderer getInstance(UnmodifiableWorld world, Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
         Vec2D mapSize = world.getMapSize();
-        double worldWidth = mapSize.x;
-        double worldHeight = mapSize.y;
+        double worldWidth = mapSize.x();
+        double worldHeight = mapSize.y();
         double scale;
 
         if (worldWidth / worldHeight > maxSize.getWidth() / maxSize.getHeight()) {
@@ -114,8 +114,8 @@ public class OverviewMapRenderer implements MapRenderer {
      * @return
      */
     @Override
-    public float getScale() {
-        return (float) imageSize.y / (float) mapSize.y;
+    public float scale() {
+        return (float) imageSize.y() / (float) mapSize.y();
     }
 
     /**
@@ -135,8 +135,8 @@ public class OverviewMapRenderer implements MapRenderer {
 
             mapGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-            mapGraphics.setClip(0, 0, imageSize.x, imageSize.y);
-            mapGraphics.clearRect(0, 0, imageSize.x, imageSize.y);
+            mapGraphics.setClip(0, 0, imageSize.x(), imageSize.y());
+            mapGraphics.clearRect(0, 0, imageSize.x(), imageSize.y());
             mapGraphics.drawImage(oneToOneImage, affineTransform, null);
             isDirty = false;
         }
@@ -146,12 +146,12 @@ public class OverviewMapRenderer implements MapRenderer {
     public void refreshTile(Vec2D tileLocation) {
         TerrainTile terrainTile = world.getTile(tileLocation);
 
-        if (terrainTile.getTrackPiece() == null) {
-            int terrainTypeId = terrainTile.getTerrainTypeId();
-            oneToOneImage.setRGB(tileLocation.x, tileLocation.y, terrainColors.get(terrainTypeId).getARGB());
+        if (terrainTile.trackPiece() == null) {
+            int terrainTypeId = terrainTile.terrainTypeId();
+            oneToOneImage.setRGB(tileLocation.x(), tileLocation.y(), terrainColors.get(terrainTypeId).getARGB());
         } else {
             // black with alpha of 1
-            oneToOneImage.setRGB(tileLocation.x, tileLocation.y, 0xff000000);
+            oneToOneImage.setRGB(tileLocation.x(), tileLocation.y(), 0xff000000);
         }
 
         isDirty = true;
@@ -173,20 +173,20 @@ public class OverviewMapRenderer implements MapRenderer {
         }
 
         // generate a 1:1 map of the terrain layer
-        oneToOneImage = defaultConfiguration.createCompatibleImage(mapSize.x, mapSize.y, Transparency.TRANSLUCENT);
-        mapImage = defaultConfiguration.createCompatibleImage(imageSize.x, imageSize.y, Transparency.OPAQUE);
+        oneToOneImage = defaultConfiguration.createCompatibleImage(mapSize.x(), mapSize.y(), Transparency.TRANSLUCENT);
+        mapImage = defaultConfiguration.createCompatibleImage(imageSize.x(), imageSize.y(), Transparency.OPAQUE);
 
 
-        for (int tileX = mapLocation.x; tileX < mapSize.x + mapLocation.x; tileX++) {
-            for (int tileY = mapLocation.y; tileY < mapSize.y + mapLocation.y; tileY++) {
+        for (int tileX = mapLocation.x(); tileX < mapSize.x() + mapLocation.x(); tileX++) {
+            for (int tileY = mapLocation.y(); tileY < mapSize.y() + mapLocation.y(); tileY++) {
                 TerrainTile terrainTile = world.getTile(new Vec2D(tileX, tileY));
 
-                if (terrainTile.getTrackPiece() == null) {
-                    int terrainTypeId = terrainTile.getTerrainTypeId();
-                    oneToOneImage.setRGB(tileX - mapLocation.x, tileY - mapLocation.y, terrainColors.get(terrainTypeId).getARGB());
+                if (terrainTile.trackPiece() == null) {
+                    int terrainTypeId = terrainTile.terrainTypeId();
+                    oneToOneImage.setRGB(tileX - mapLocation.x(), tileY - mapLocation.y(), terrainColors.get(terrainTypeId).getARGB());
                 } else {
                     // black with alpha of 1
-                    oneToOneImage.setRGB(tileX - mapLocation.x, tileY - mapLocation.y, 0xff000000);
+                    oneToOneImage.setRGB(tileX - mapLocation.x(), tileY - mapLocation.y(), 0xff000000);
                 }
             }
         }

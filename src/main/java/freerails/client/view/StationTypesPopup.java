@@ -32,6 +32,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.Serial;
 
 /**
  * This JPopupMenu displays the list of station types that are available and
@@ -39,6 +40,7 @@ import java.awt.event.ActionEvent;
  */
 public class StationTypesPopup extends JPopupMenu {
 
+    @Serial
     private static final long serialVersionUID = 3258415040658093364L;
     private Vec2D tileToBuildStationOn;
     private StationRadiusRenderer stationRadiusRenderer;
@@ -86,7 +88,7 @@ public class StationTypesPopup extends JPopupMenu {
 
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                stationRadiusRenderer.setPosition(tileToBuildStationOn.x, tileToBuildStationOn.y);
+                stationRadiusRenderer.setPosition(tileToBuildStationOn.x(), tileToBuildStationOn.y());
                 stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, tileToBuildStationOn);
             }
         };
@@ -163,6 +165,7 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     private static class StationBuildMenuItem extends JMenuItem {
+        @Serial
         private static final long serialVersionUID = 3256721792751120946L;
 
         @Override

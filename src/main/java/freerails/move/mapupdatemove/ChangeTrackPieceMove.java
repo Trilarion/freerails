@@ -36,39 +36,24 @@ import java.util.Objects;
 /**
  * This Move adds, removes, or upgrades the track on a single tile.
  */
-public final class ChangeTrackPieceMove implements TrackMove {
+public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece trackPieceAfter, Vec2D location) implements TrackMove {
 
     private static final long serialVersionUID = 4120849958418591801L;
-    public final TrackPiece trackPieceBefore;
-    public final TrackPiece trackPieceAfter;
-    public final Vec2D location;
 
     /**
-     * @param before
-     * @param after
-     * @param p
+     * @param trackPieceBefore
+     * @param trackPieceAfter
+     * @param location
      */
-    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Vec2D p) {
-        trackPieceBefore = before;
-        trackPieceAfter = after;
-        location = p;
+    public ChangeTrackPieceMove {
     }
 
     /**
      * @return
      */
-    public Vec2D getLocation() {
-        return location;
-    }
-
     @Override
-    public int hashCode() {
-        int result;
-        result = trackPieceBefore != null ? trackPieceBefore.hashCode() : 0;
-        result = 29 * result + (trackPieceAfter != null ? trackPieceAfter.hashCode() : 0);
-        result = 29 * result + location.hashCode();
-
-        return result;
+    public Vec2D location() {
+        return location;
     }
 
     /**
@@ -99,8 +84,8 @@ public final class ChangeTrackPieceMove implements TrackMove {
         if (!rules.canConnectToOtherPlayersTracks()) {
             // TODO what about removing track of someone else
             if (trackPieceBefore != null && trackPieceAfter != null) {
-                int oldOwner = trackPieceBefore.getPlayerId();
-                int newOwner = trackPieceAfter.getPlayerId();
+                int oldOwner = trackPieceBefore.playerId();
+                int newOwner = trackPieceAfter.playerId();
 
                 if (oldOwner != newOwner) {
                     return Status.fail("Not allowed to connect to other RR");
@@ -109,10 +94,10 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         // Check that the current track piece at this.location is the same as this.oldTrackPiece.
-        TrackPiece currentTrackPieceAtLocation = world.getTile(location).getTrackPiece();
+        TrackPiece currentTrackPieceAtLocation = world.getTile(location).trackPiece();
 
         if (!Objects.equals(currentTrackPieceAtLocation, trackPieceBefore)) {
-            return Status.fail("Unexpected track piece found at location: " + location.x + " ," + location.y);
+            return Status.fail("Unexpected track piece found at location: " + location.x() + " ," + location.y());
         }
 
         if (Objects.equals(trackPieceBefore, trackPieceAfter)) {
@@ -120,21 +105,21 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         if (trackPieceBefore != null) {
-            TrackType expectedTrackRule = trackPieceBefore.getTrackType();
-            TrackType actualTrackRule = currentTrackPieceAtLocation.getTrackType();
+            TrackType expectedTrackRule = trackPieceBefore.trackType();
+            TrackType actualTrackRule = currentTrackPieceAtLocation.trackType();
 
             if (!expectedTrackRule.equals(actualTrackRule)) {
-                return Status.fail("Expected '" + expectedTrackRule.getName() + "' but found '" + actualTrackRule.getName() + "' at " + location.x + " ," + location.y);
+                return Status.fail("Expected '" + expectedTrackRule.getName() + "' but found '" + actualTrackRule.getName() + "' at " + location.x() + " ," + location.y());
             }
 
             // Check that oldTrackPiece is not the same as newTrackPiece
             // TODO equals instead of ==
-            if (trackPieceAfter != null && trackPieceBefore.getTrackConfiguration() == trackPieceAfter.getTrackConfiguration() && trackPieceBefore.getTrackType().equals(trackPieceAfter.getTrackType())) {
+            if (trackPieceAfter != null && trackPieceBefore.trackConfiguration() == trackPieceAfter.trackConfiguration() && trackPieceBefore.trackType().equals(trackPieceAfter.trackType())) {
                 return Status.fail("Already track here!");
             }
 
             // Check for illegal track configurations.
-            if (!trackPieceBefore.getTrackType().trackPieceIsLegal(trackPieceBefore.getTrackConfiguration())) {
+            if (!trackPieceBefore.trackType().trackPieceIsLegal(trackPieceBefore.trackConfiguration())) {
                 return Status.fail("Illegal track configuration.");
             }
 
@@ -146,23 +131,23 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
         if (trackPieceAfter != null) {
 
-            int terrainType = world.getTile(location).getTerrainTypeId();
+            int terrainType = world.getTile(location).terrainTypeId();
             Terrain terrain = world.getTerrain(terrainType);
 
             // Check for illegal track configurations.
-            if (!trackPieceAfter.getTrackType().trackPieceIsLegal(trackPieceAfter.getTrackConfiguration())) {
+            if (!trackPieceAfter.trackType().trackPieceIsLegal(trackPieceAfter.trackConfiguration())) {
                 return Status.fail("Illegal track configuration.");
             }
 
-            if (!trackPieceAfter.getTrackType().canBuildOnThisTerrainType(terrain.getCategory())) {
-                String thisTrackType = trackPieceAfter.getTrackType().getName();
+            if (!trackPieceAfter.trackType().canBuildOnThisTerrainType(terrain.getCategory())) {
+                String thisTrackType = trackPieceAfter.trackType().getName();
                 String terrainCategory = terrain.getCategory().toString().toLowerCase();
 
                 return Status.fail("Can't build " + thisTrackType + " on " + terrainCategory);
             }
 
             // Check for overlapping stations.
-            if (trackPieceAfter.getTrackType().isStation()) {
+            if (trackPieceAfter.trackType().isStation()) {
                 TrackOverlapResult overlapResult = TrackUtils.checkForOverlap(world, location, trackPieceAfter);
                 if (!overlapResult.isSuccess()) {
                     return Status.fail(overlapResult.message());
@@ -182,7 +167,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
         // TODO why is oldTrackPiece not used???
         TerrainTile oldTile = world.getTile(location);
-        int terrain = oldTile.getTerrainTypeId();
+        int terrain = oldTile.terrainTypeId();
         TerrainTile newTile = new TerrainTile(terrain, trackPieceAfter);
         world.setTile(location, newTile);
     }
@@ -196,7 +181,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         int radius = 1;
 
         if (trackPieceAfter != null) {
-            TrackType trackRuleAfter = trackPieceAfter.getTrackType();
+            TrackType trackRuleAfter = trackPieceAfter.trackType();
 
             if (trackRuleAfter.isStation()) {
                 radius = Math.max(radius, trackRuleAfter.getStationRadius());
@@ -204,7 +189,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         if (trackPieceBefore != null) {
-            TrackType trackRuleBefore = trackPieceBefore.getTrackType();
+            TrackType trackRuleBefore = trackPieceBefore.trackType();
             if (trackRuleBefore.isStation()) {
                 radius = Math.max(radius, trackRuleBefore.getStationRadius());
             }
@@ -218,8 +203,8 @@ public final class ChangeTrackPieceMove implements TrackMove {
         int width;
         int height;
 
-        x = location.x - radius;
-        y = location.y - radius;
+        x = location.x() - radius;
+        y = location.y() - radius;
         width = radius * 2 + 1;
         height = radius * 2 + 1;
 
@@ -228,8 +213,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ChangeTrackPieceMove) {
-            ChangeTrackPieceMove changeTrackPieceMove = (ChangeTrackPieceMove) obj;
+        if (obj instanceof ChangeTrackPieceMove changeTrackPieceMove) {
             boolean fieldPointEqual = location.equals(changeTrackPieceMove.location);
             boolean fieldoldTrackPieceEqual = Objects.equals(trackPieceBefore, changeTrackPieceMove.trackPieceBefore);
             boolean fieldnewTrackPieceEqual = trackPieceAfter.equals(changeTrackPieceMove.trackPieceAfter);

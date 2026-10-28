@@ -23,11 +23,14 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+
 /**
  * Advances the time within the world object.
  */
 public class AdvanceClockMove implements Move {
 
+    @Serial
     private static final long serialVersionUID = 3257290240212153393L;
     private final Player player;
 

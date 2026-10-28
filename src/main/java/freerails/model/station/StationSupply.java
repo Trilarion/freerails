@@ -20,6 +20,7 @@ package freerails.model.station;
 
 
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import java.util.List;
  */
 public class StationSupply implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 4049918272826847286L;
     private final List<Integer> supply;
 
@@ -68,9 +70,7 @@ public class StationSupply implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof StationSupply)) return false;
-
-        final StationSupply stationSupply = (StationSupply) obj;
+        if (!(obj instanceof StationSupply stationSupply)) return false;
 
         return supply.equals(stationSupply.supply);
     }

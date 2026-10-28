@@ -187,7 +187,7 @@ public final class TrainUtils {
             flatTrackExplorer.nextEdge();
             nextPositionOnTrack.setValuesFromInt(flatTrackExplorer.getVertexConnectedByEdge());
             TileTransition cameFrom = nextPositionOnTrack.getFacingTo();
-            tileTransitions.add(0, cameFrom);
+            tileTransitions.addFirst(cameFrom);
             extraDistanceNeeded -= cameFrom.getLength();
         }
 
@@ -277,7 +277,7 @@ public final class TrainUtils {
             return !keepWaiting(world, player, trainId);
         }
 
-        boolean hasFinishedLastActivity = Math.floor(finishTime) <= (double) currentTime.getTicks();
+        boolean hasFinishedLastActivity = Math.floor(finishTime) <= (double) currentTime.ticks();
         return hasFinishedLastActivity;
     }
 
@@ -300,7 +300,7 @@ public final class TrainUtils {
         Train train = world.getTrain(player, trainId);
         Integer stationId =  StationUtils.getStationId(world, player, train.getLocation(currentTime));
         if (stationId == null) return false;
-        TrainMotion trainMotion = train.findCurrentMotion(currentTime.getTicks());
+        TrainMotion trainMotion = train.findCurrentMotion(currentTime.ticks());
         TrainState trainState = trainMotion.getTrainState();
         if (trainState != TrainState.WAITING_FOR_FULL_LOAD) return false;
         UnmodifiableSchedule schedule = train.getSchedule();

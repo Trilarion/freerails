@@ -24,12 +24,14 @@ package freerails.util.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * A transparent JPanel that catches key presses and mouse clicks.
  */
 public class MyGlassPanel extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 3976735856986239795L;
 
     /**

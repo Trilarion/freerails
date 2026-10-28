@@ -20,16 +20,19 @@ package freerails.model.finance;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-/** Represents an immutable amount of money in the game's unit of account. */
-public final class Money implements Serializable, Comparable<Money> {
+
+/**
+ * Represents an immutable amount of money in the game's unit of account.
+ */
+public record Money(long amount) implements Serializable, Comparable<Money> {
 
     private static final long serialVersionUID = 3258697615163338805L;
     public static final Money ZERO = new Money(0);
-    public final long amount;
 
-    /** Creates an amount in the game's smallest accounting unit. */
-    public Money(long amount) {
-        this.amount = amount;
+    /**
+     * Creates an amount in the game's smallest accounting unit.
+     */
+    public Money {
     }
 
     /**
@@ -68,7 +71,7 @@ public final class Money implements Serializable, Comparable<Money> {
     /**
      * Multiplies an amount by an integer factor, checking for overflow.
      *
-     * @param money amount to multiply
+     * @param money  amount to multiply
      * @param factor multiplier
      * @return the product
      * @throws ArithmeticException if the product overflows
@@ -80,7 +83,7 @@ public final class Money implements Serializable, Comparable<Money> {
     /**
      * Note: An integer division (rounding towards zero) is performed.
      *
-     * @param money amount to divide
+     * @param money  amount to divide
      * @param factor divisor
      * @return the quotient, truncated toward zero
      * @throws ArithmeticException if {@code factor} is zero
@@ -100,22 +103,26 @@ public final class Money implements Serializable, Comparable<Money> {
         return Money.multiply(money, -1);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Long.hashCode(amount);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Money)) return false;
-        final Money other = (Money) obj;
+        if (!(obj instanceof Money other)) return false;
         return compareTo(other) == 0;
     }
 
     // TODO add currency here (not in the client)
+
     /**
      * Returns this amount formatted with grouping separators and no currency
      * symbol.
@@ -132,7 +139,7 @@ public final class Money implements Serializable, Comparable<Money> {
      *
      * @param o amount to compare with
      * @return a negative value, zero, or a positive value as this amount is
-     *         smaller than, equal to, or greater than {@code o}
+     * smaller than, equal to, or greater than {@code o}
      */
     @Override
     public int compareTo(Money o) {

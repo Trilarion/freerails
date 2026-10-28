@@ -85,7 +85,7 @@ public class LauncherClient extends FreerailsClient {
         if (world2 != null) {
             Speed speed = world2.getSpeed();
             Time currentGameTime = world2.getClock().getCurrentTime();
-            double ticks = currentGameTime.getTicks();
+            double ticks = currentGameTime.ticks();
             if (speed.getTicksPerSecond()>0) {
                 double subTicks = Math.min(dt, 1.0d);
                 ticks += subTicks;

@@ -24,11 +24,14 @@ package freerails.model.game;
 import freerails.util.Identifiable;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+
 /**
  * Represents the state of the economy.
  */
 public class Sentiment extends Identifiable {
 
+    @Serial
     private static final long serialVersionUID = 3834025840475321136L;
     private final String name;
     private final double rate;

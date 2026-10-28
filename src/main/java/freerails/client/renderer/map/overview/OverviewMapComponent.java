@@ -24,6 +24,7 @@ import freerails.util.Vec2D;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
 * Displays the overview map and a rectangle showing the region of
@@ -31,6 +32,7 @@ import java.awt.*;
  */
 public class OverviewMapComponent extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 3258697585148376888L;
     private final Rectangle mainMapVisRect;
     private MapRenderer mapRenderer = new BlankMapRenderer(0.4F);

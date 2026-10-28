@@ -173,8 +173,8 @@ public class MapCreator {
 
                 tile = new TerrainTile(TerrainUtils.randomizeTerrain(type, countryTypes, non_countryTypes));
                 Vec2D location = new Vec2D(x, y);
-                if (countryTypes.contains(tile.getTerrainTypeId())) {
-                    locations.add(new TerrainAtLocation(location, tile.getTerrainTypeId()));
+                if (countryTypes.contains(tile.terrainTypeId())) {
+                    locations.add(new TerrainAtLocation(location, tile.terrainTypeId()));
                 }
 
                 world.setTile(location, tile);
@@ -183,20 +183,20 @@ public class MapCreator {
 
         // TODO another probability, should this also be part of TerrainUtils.randomizeTerrain?
         for (TerrainAtLocation terrainAtLocation : locations) {
-            TerrainTile tile = new TerrainTile(terrainAtLocation.getTerrainType());
+            TerrainTile tile = new TerrainTile(terrainAtLocation.terrainType());
 
-            Vec2D location = terrainAtLocation.getLocation();
+            Vec2D location = terrainAtLocation.location();
             int val = 3;
             Vec2D v = new Vec2D(val, val);
 
             double prob = 0.75;
 
             if (world.boundsContain(Vec2D.subtract(location, v)) && world.boundsContain(Vec2D.add(location, v))) {
-                for (int m = location.x - val; m < location.x + val; m++) {
-                    for (int n = location.y - val; n < location.y + val; n++) {
+                for (int m = location.x() - val; m < location.x() + val; m++) {
+                    for (int n = location.y() - val; n < location.y() + val; n++) {
                         if (Math.random() > prob) {
                             Vec2D p = new Vec2D(m, n);
-                            if (!non_countryTypes.contains(world.getTile(p).getTerrainTypeId())) {
+                            if (!non_countryTypes.contains(world.getTile(p).terrainTypeId())) {
                                 world.setTile(p, tile);
                             }
                         }

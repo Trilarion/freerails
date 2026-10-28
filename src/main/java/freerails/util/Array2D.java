@@ -133,8 +133,7 @@ public class Array2D {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof Array2D) {
-            Array2D other = (Array2D) obj;
+        if (obj instanceof Array2D other) {
             return width == other.width && height == other.height && Arrays.equals(values, other.values);
         }
         return false;

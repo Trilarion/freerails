@@ -61,12 +61,12 @@ public class PositionOnTrack {
      * @throws IllegalArgumentException if either coordinate is outside the encodable range
      */
     public PositionOnTrack(Vec2D location, TileTransition comingFrom) {
-        if (location.x > MAX_COORDINATE || location.x < 0) {
-            throw new IllegalArgumentException("x=" + location.x);
+        if (location.x() > MAX_COORDINATE || location.x() < 0) {
+            throw new IllegalArgumentException("x=" + location.x());
         }
 
-        if (location.y > MAX_COORDINATE || location.y < 0) {
-            throw new IllegalArgumentException("y=" + location.y);
+        if (location.y() > MAX_COORDINATE || location.y() < 0) {
+            throw new IllegalArgumentException("y=" + location.y());
         }
 
         this.location = location;
@@ -87,8 +87,7 @@ public class PositionOnTrack {
             return false;
         }
 
-        if (obj instanceof PositionOnTrack) {
-            PositionOnTrack other = (PositionOnTrack) obj;
+        if (obj instanceof PositionOnTrack other) {
 
             return other.getComingFrom() == getComingFrom() && location.equals(other.location);
         }
@@ -150,7 +149,7 @@ public class PositionOnTrack {
      * @param tileTransition direction of travel
      */
     public void move(TileTransition tileTransition) {
-        location = new Vec2D(location.x + tileTransition.deltaX, location.y + tileTransition.deltaY);
+        location = new Vec2D(location.x() + tileTransition.deltaX, location.y() + tileTransition.deltaY);
         comingFrom = tileTransition.getOpposite();
     }
 
@@ -158,7 +157,7 @@ public class PositionOnTrack {
      * @return an integer representing this PositionOnTrack object
      */
     public int toInt() {
-        int i = location.x | location.y << BITS_FOR_COORDINATE;
+        int i = location.x() | location.y() << BITS_FOR_COORDINATE;
 
         int directionAsInt = comingFrom.getID();
         int shiftedDirection = directionAsInt << 2 * BITS_FOR_COORDINATE;

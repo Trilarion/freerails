@@ -91,7 +91,7 @@ public class Train extends Identifiable {
      */
     public void addActivity(@NotNull Activity activity) {
         if (!activities.isEmpty()) {
-            Activity last = activities.get(activities.size() - 1);
+            Activity last = activities.getLast();
             double lastFinishTime = last.getStartTime() + last.getDuration();
             activity.setStartTime(Math.max(activity.getStartTime(), lastFinishTime));
         }
@@ -187,7 +187,7 @@ public class Train extends Identifiable {
             throw new IllegalStateException("Train has no activities.");
         }
 
-        Activity previous = activities.get(0);
+        Activity previous = activities.getFirst();
         for (Activity activity : activities) {
             if (time < activity.getStartTime()) {
                 break;
@@ -204,7 +204,7 @@ public class Train extends Identifiable {
      * @return {@code true} if the train's current motion ends with nonzero speed
      */
     public boolean isMoving(@NotNull Time time) {
-        TrainMotion trainMotion = findCurrentMotion(time.getTicks());
+        TrainMotion trainMotion = findCurrentMotion(time.ticks());
         double speed = trainMotion.getSpeedAtEnd();
         return speed != 0;
     }
@@ -216,12 +216,12 @@ public class Train extends Identifiable {
      * @return track sections occupied along the current motion path
      */
     public HashSet<TrackSection> occupiedTrackSection(@NotNull Time time) {
-        TrainMotion trainMotion = findCurrentMotion(time.getTicks());
+        TrainMotion trainMotion = findCurrentMotion(time.ticks());
         PathOnTiles path = trainMotion.getPath();
         HashSet<TrackSection> sections = new HashSet<>();
         Vec2D start = path.getStart();
-        int x = start.x;
-        int y = start.y;
+        int x = start.x();
+        int y = start.y();
         for (int i = 0; i < path.steps(); i++) {
             TileTransition transition = path.getStep(i);
             Vec2D tile = new Vec2D(x, y);
@@ -239,7 +239,7 @@ public class Train extends Identifiable {
      * @return train location in tile coordinates
      */
     public @NotNull Vec2D getLocation(@NotNull Time time) {
-        TrainMotion trainMotion = findCurrentMotion(time.getTicks());
+        TrainMotion trainMotion = findCurrentMotion(time.ticks());
         PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
         return positionOnTrack.getLocation();
     }
@@ -250,11 +250,10 @@ public class Train extends Identifiable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Train)) {
+        if (!(obj instanceof Train o)) {
             return false;
         }
         // TODO there is a problem with the equality test on the sorted sets, only the id is tested (see https://docs.oracle.com/javase/7/docs/api/java/util/Set.html#equals(java.lang.Object))
-        Train o = (Train) obj;
         boolean equal = getId() == o.getId() && engineId == o.getEngine() && Objects.equals(wagonTypes, o.wagonTypes);
         equal = equal && Objects.equals(cargoBatchBundle, o.cargoBatchBundle) && Objects.equals(schedule, o.schedule);
         equal = equal && Objects.equals(activities, o.activities);

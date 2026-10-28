@@ -55,11 +55,10 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      */
     @Override
     protected boolean acceptable(@NotNull Transaction transaction) {
-        if (!(transaction instanceof ItemTransaction)) {
+        if (!(transaction instanceof ItemTransaction itemTransaction)) {
             return false;
         }
 
-        ItemTransaction itemTransaction = (ItemTransaction) transaction;
         boolean isTypeAcceptable = type == ANY_VALUE || type == itemTransaction.getId();
         boolean isCategoryAcceptable = category == null || category == itemTransaction.getCategory();
 

@@ -25,6 +25,7 @@ import freerails.model.track.PathIterator;
 import freerails.model.track.SimplePathIteratorImpl;
 import freerails.util.Vec2D;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,10 +38,10 @@ import java.util.List;
  * of points. There must be at least two points. The first point is the position
  * of the front of the train; the last point is the position of the end of the
  * train. Any intermediate points are positions of 'kinks' in the track.
- *
+ * <p>
  * Coordinates are expressed in display coordinates relative to the map origin
  * (as opposed to map squares).
- *
+ * <p>
  * Train positions can be combined and divided as illustrated below (notice what
  * happens to the head and tail that are combined)
  *
@@ -92,6 +93,7 @@ import java.util.List;
  */
 public class TrainPositionOnMap implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3979269144611010865L;
     private final List<Vec2D> points;
     private final double speed, acceleration;
@@ -136,7 +138,7 @@ public class TrainPositionOnMap implements Serializable {
 
         while (path.hasNext()) {
             line = path.nextSegment();
-            points.add(i, line.getA());
+            points.add(i, line.a());
             i++;
 
             if (i > 10000) {
@@ -144,7 +146,7 @@ public class TrainPositionOnMap implements Serializable {
             }
         }
 
-        points.add(i, line.getB());
+        points.add(i, line.b());
 
         return new TrainPositionOnMap(points, 0.0d, 0.0d, TrainState.READY);
     }
@@ -161,8 +163,8 @@ public class TrainPositionOnMap implements Serializable {
     public static TrainPositionOnMap createInSameDirectionAsPathReversed(Pair<PathIterator, Integer> path, double speed, double acceleration, TrainState activity) {
 
         Segment line = null;
-        PathIterator pathIt = path.getA();
-        int pathSize = path.getB();
+        PathIterator pathIt = path.a();
+        int pathSize = path.b();
 
         if (pathSize > 10000) {
             throw new IllegalStateException("The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
@@ -174,10 +176,10 @@ public class TrainPositionOnMap implements Serializable {
                 throw new IllegalStateException("Programming error at:" + i + " from:" + pathSize);
             }
             line = pathIt.nextSegment();
-            points[i] = line.getA();
+            points[i] = line.a();
         }
 
-        points[0] = line.getB();
+        points[0] = line.b();
 
         return new TrainPositionOnMap(Arrays.asList(points), speed, acceleration, activity);
     }
@@ -274,8 +276,7 @@ public class TrainPositionOnMap implements Serializable {
             return true;
         }
 
-        if (obj instanceof TrainPositionOnMap) {
-            TrainPositionOnMap other = (TrainPositionOnMap) obj;
+        if (obj instanceof TrainPositionOnMap other) {
             int thisLength = getLength();
             int otherLength = other.getLength();
 
@@ -396,7 +397,7 @@ public class TrainPositionOnMap implements Serializable {
             while (path.hasNext()) {
                 line = path.nextSegment();
 
-                if (!getP(i).equals(line.getA())) {
+                if (!getP(i).equals(line.a())) {
                     return false;
                 }
 
@@ -448,7 +449,7 @@ public class TrainPositionOnMap implements Serializable {
             while (path.hasNext()) {
                 Segment line = path.nextSegment();
 
-                if (!getP(i).equals(line.getA())) {
+                if (!getP(i).equals(line.a())) {
                     return false;
                 }
 

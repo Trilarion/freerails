@@ -62,8 +62,8 @@ public class DisplayModesComboBoxModels implements ComboBoxModel<Vec2D> {
         Iterator<Vec2D> it = modes.iterator();
         while (it.hasNext()) {
             Vec2D mode = it.next();
-            final boolean tooNarrow = mode.x < width;
-            final boolean tooShort = mode.y < height;
+            final boolean tooNarrow = mode.x() < width;
+            final boolean tooShort = mode.y() < height;
             /*
              * Note, displayMode.getBitDepth() may return
              * DisplayModeWithName.BIT_DEPTH_MULTI, which is -1.

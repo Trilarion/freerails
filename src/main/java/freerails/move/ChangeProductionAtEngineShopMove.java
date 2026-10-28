@@ -30,6 +30,7 @@ import freerails.model.train.TrainTemplate;
 import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +40,7 @@ import java.util.Objects;
  */
 public class ChangeProductionAtEngineShopMove implements Move {
 
+    @Serial
     private static final long serialVersionUID = 3905519384997737520L;
     private final List<TrainTemplate> production;
     private final int stationId;
@@ -58,9 +60,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof ChangeProductionAtEngineShopMove)) return false;
-
-        final ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove = (ChangeProductionAtEngineShopMove) obj;
+        if (!(obj instanceof ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove)) return false;
 
         if (stationId != changeProductionAtEngineShopMove.stationId) return false;
         if (!Objects.equals(production, changeProductionAtEngineShopMove.production))

@@ -88,7 +88,7 @@ public class BuildTrackRenderer implements Painter {
 
                 int graphicsNumber = trackPiece.getTrackGraphicID();
 
-                int ruleNumber = trackPiece.getTrackType().getId();
+                int ruleNumber = trackPiece.trackType().getId();
                 TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
                 trackPieceView.drawTrackPieceIcon(g, graphicsNumber, point, ClientConstants.TILE_SIZE);
             }
@@ -103,18 +103,18 @@ public class BuildTrackRenderer implements Painter {
         for (Vec2D p : proposedTrack.keySet()) {
             Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConstants.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConstants.TILE_SIZE, ClientConstants.SMALL_DOT_WIDTH), 2));
             TerrainTile before = world.getTile(p);
-            TrackPiece trackPieceBefore = before.getTrackPiece();
+            TrackPiece trackPieceBefore = before.trackPiece();
             TrackPiece trackPiece = proposedTrack.get(p);
 
             boolean trackAdded = true;
             if (trackPiece == null) {
                 trackAdded = false;
             } else if(trackPieceBefore != null) {
-                trackAdded = trackPiece.getTrackConfiguration().contains(trackPieceBefore.getTrackConfiguration());
+                trackAdded = trackPiece.trackConfiguration().contains(trackPieceBefore.trackConfiguration());
             }
             Color dotColor = trackAdded ? Color.WHITE : Color.RED;
             g.setColor(dotColor);
-            g.fillOval(location.x, location.y, ClientConstants.SMALL_DOT_WIDTH, ClientConstants.SMALL_DOT_WIDTH);
+            g.fillOval(location.x(), location.y(), ClientConstants.SMALL_DOT_WIDTH, ClientConstants.SMALL_DOT_WIDTH);
         }
     }
 

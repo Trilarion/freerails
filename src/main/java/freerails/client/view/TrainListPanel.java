@@ -34,6 +34,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serial;
 
 /**
 * Displays a list of trains, used for the train list window and the
@@ -41,6 +42,7 @@ import java.awt.event.*;
 */
 public class TrainListPanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3832905463863064626L;
     private UnmodifiableWorld world;
     private Player player;

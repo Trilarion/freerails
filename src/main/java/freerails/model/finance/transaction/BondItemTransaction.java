@@ -21,11 +21,13 @@ package freerails.model.finance.transaction;
 import freerails.model.finance.Money;
 import freerails.model.game.Time;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /** A transaction that adds or removes one or more bonds from a player's assets. */
 public class BondItemTransaction extends ItemTransaction {
 
+    @Serial
     private static final long serialVersionUID = 3257562923491473465L;
     private final double rate;
 

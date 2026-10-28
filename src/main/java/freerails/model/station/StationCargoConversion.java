@@ -18,6 +18,7 @@
 
 package freerails.model.station;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ import java.util.List;
  */
 public class StationCargoConversion implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3690754012076978231L;
     // TODO what about Null as standard value
     private static final int NOT_CONVERTED = Integer.MIN_VALUE;
@@ -122,8 +124,7 @@ public class StationCargoConversion implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof StationCargoConversion) {
-            StationCargoConversion test = (StationCargoConversion) obj;
+        if (obj instanceof StationCargoConversion test) {
             return convertedTo.equals(test.convertedTo);
         }
         return false;

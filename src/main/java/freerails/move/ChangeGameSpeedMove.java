@@ -26,10 +26,9 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Changes the game speed item on the world object.
  */
-public class ChangeGameSpeedMove implements Move {
+public record ChangeGameSpeedMove(Speed speed) implements Move {
 
     private static final long serialVersionUID = 3545794368956086071L;
-    private final Speed speed;
 
     public ChangeGameSpeedMove(@NotNull Speed speed) {
         this.speed = speed;
@@ -49,22 +48,16 @@ public class ChangeGameSpeedMove implements Move {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof ChangeGameSpeedMove)) return false;
-
-        final ChangeGameSpeedMove other = (ChangeGameSpeedMove) obj;
+        if (!(obj instanceof ChangeGameSpeedMove other)) return false;
 
         return speed.equals(other.speed);
-    }
-
-    @Override
-    public int hashCode() {
-        return speed.hashCode();
     }
 
     /**
      * @return
      */
-    public Speed getSpeed() {
+    @Override
+    public Speed speed() {
         return speed;
     }
 

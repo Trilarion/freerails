@@ -20,6 +20,7 @@ package freerails.model.track.pathfinding;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -27,6 +28,7 @@ import java.io.Serializable;
  */
 public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
 
+    @Serial
     private static final long serialVersionUID = -4873508719707382681L;
     final int f;
     final int node;
@@ -65,8 +67,7 @@ public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof OpenListEntry)) return false;
-        final OpenListEntry other = (OpenListEntry) obj;
+        if (!(obj instanceof OpenListEntry other)) return false;
 
         return f == other.f && node == other.node;
     }

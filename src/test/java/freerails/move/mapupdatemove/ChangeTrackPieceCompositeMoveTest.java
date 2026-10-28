@@ -76,10 +76,10 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         // Remove only track piece built.
         assertRemoveTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST);
-        TrackPiece trackPiece = getWorld().getTile(new Vec2D(0, 5)).getTrackPiece();
+        TrackPiece trackPiece = getWorld().getTile(new Vec2D(0, 5)).trackPiece();
         assertEquals(null, trackPiece);
 
-        trackPiece = getWorld().getTile(new Vec2D(1, 5)).getTrackPiece();
+        trackPiece = getWorld().getTile(new Vec2D(1, 5)).trackPiece();
         assertEquals(null, trackPiece);
     }
 
@@ -123,9 +123,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         // Now change the owner of the track piece at (1, 6);
         int anotherPlayer = 999;
         TerrainTile oldTile = world.getTile(new Vec2D(1, 6));
-        TrackPiece tp = oldTile.getTrackPiece();
-        TrackPiece newTrackPiece = new TrackPiece(tp.getTrackConfiguration(), tp.getTrackType(), anotherPlayer);
-        TerrainTile newTile = new TerrainTile(oldTile.getTerrainTypeId(), newTrackPiece);
+        TrackPiece tp = oldTile.trackPiece();
+        TrackPiece newTrackPiece = new TrackPiece(tp.trackConfiguration(), tp.trackType(), anotherPlayer);
+        TerrainTile newTile = new TerrainTile(oldTile.terrainTypeId(), newTrackPiece);
         world.setTile(new Vec2D(1, 6), newTile);
         assertBuildTrackFails(new Vec2D(1, 6), TileTransition.EAST, trackType);
         world.setTile(new Vec2D(1, 6), oldTile);

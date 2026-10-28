@@ -219,8 +219,8 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     protected void assertTrackHere(PathOnTiles path) {
         Vec2D start = path.getStart();
-        int x = start.x;
-        int y = start.y;
+        int x = start.x();
+        int y = start.y();
         for (int i = 0; i < path.steps(); i++) {
             assertTrackHere(x, y);
             TileTransition tileTransition = path.getStep(i);

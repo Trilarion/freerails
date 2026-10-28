@@ -25,6 +25,7 @@ import freerails.move.CompostMove;
 import freerails.move.Move;
 
 import java.awt.*;
+import java.io.Serial;
 import java.util.List;
 
 // TODO are these really orthogonal moves?, I think not, make it a single piece
@@ -33,13 +34,14 @@ import java.util.List;
  */
 public class RemoveStationCompositeMove extends CompostMove implements TrackMove {
 
+    @Serial
     private static final long serialVersionUID = 3760847865429702969L;
 
     private final Rectangle rectangle;
 
     public RemoveStationCompositeMove(List<Move> moves) {
         super(moves);
-        rectangle =  ((MapUpdateMove) moves.get(0)).getUpdatedTiles();
+        rectangle =  ((MapUpdateMove) moves.getFirst()).getUpdatedTiles();
     }
 
     /**

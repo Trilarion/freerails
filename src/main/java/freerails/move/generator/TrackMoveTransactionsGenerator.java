@@ -101,7 +101,7 @@ public class TrackMoveTransactionsGenerator {
                 TrackType trackType = world.getTrackTypeAtIndex(i);
                 Money price = trackType.getPurchasingPrice();
                 // TODO Money arithmetic
-                Money total = new Money(-price.amount * numberAdded / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Money total = new Money(-price.amount() * numberAdded / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
                 Transaction transaction1 = new ItemTransaction(
                         TransactionCategory.TRACK, total, time, numberAdded, trackType.getId());
                 transactions.add(transaction1);
@@ -113,7 +113,7 @@ public class TrackMoveTransactionsGenerator {
                 TrackType trackType = world.getTrackTypeAtIndex(i);
                 Money price = trackType.getPurchasingPrice();
                 // TODO Money arithmetic
-                Money total = new Money(price.amount * numberRemoved / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Money total = new Money(price.amount() * numberRemoved / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
                 // You only get half the money back.
                 total = Money.divide(total, 2);
@@ -144,21 +144,20 @@ public class TrackMoveTransactionsGenerator {
     }
 
     private void unpackMove(Move move) {
-        if (move instanceof ChangeTrackPieceMove) {
-            ChangeTrackPieceMove tm = (ChangeTrackPieceMove) move;
+        if (move instanceof ChangeTrackPieceMove tm) {
             // process move
             TrackPiece newTrackPiece = tm.getNewTrackPiece();
             TrackPiece oldTrackPiece = tm.getOldTrackPiece();
 
             if (oldTrackPiece != null && newTrackPiece != null) {
-                int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
-                int newLength = newTrackPiece.getTrackConfiguration().getLength();
+                int oldLength = oldTrackPiece.trackConfiguration().getLength();
+                int newLength = newTrackPiece.trackConfiguration().getLength();
 
                 // TODO instead of comparing ids, use equal (which does the same)
-                int ruleBefore = world.getTrackTypeIndex(oldTrackPiece.getTrackType().getId());
-                int ruleAfter = world.getTrackTypeIndex(newTrackPiece.getTrackType().getId());
+                int ruleBefore = world.getTrackTypeIndex(oldTrackPiece.trackType().getId());
+                int ruleAfter = world.getTrackTypeIndex(newTrackPiece.trackType().getId());
 
-                TrackType newTrackRule = newTrackPiece.getTrackType();
+                TrackType newTrackRule = newTrackPiece.trackType();
 
                 if (ruleAfter != ruleBefore) {
                     TrackCategory category = newTrackRule.getCategory();
@@ -166,13 +165,13 @@ public class TrackMoveTransactionsGenerator {
                         case STATION: {
                             // TODO Money arithmetic
                             // TODO was getFixedCost(), now not anymore, was is meaning of fixed cost?
-                            fixedCostsStations -= newTrackRule.getYearlyMaintenance().amount;
+                            fixedCostsStations -= newTrackRule.getYearlyMaintenance().amount();
                             break;
                         }
                         case BRIDGE: {
                             // TODO Money arithmetic
                             // TODO was getFixedCost(), now not anymore, was is meaning of fixed cost?
-                            fixedCostsBridges -= newTrackRule.getYearlyMaintenance().amount;
+                            fixedCostsBridges -= newTrackRule.getYearlyMaintenance().amount();
                             break;
                         }
                         default: {
@@ -192,21 +191,20 @@ public class TrackMoveTransactionsGenerator {
             }
 
             if (oldTrackPiece == null) {
-                int ruleAfter = world.getTrackTypeIndex(newTrackPiece.getTrackType().getId());
-                int newLength = newTrackPiece.getTrackConfiguration().getLength();
+                int ruleAfter = world.getTrackTypeIndex(newTrackPiece.trackType().getId());
+                int newLength = newTrackPiece.trackConfiguration().getLength();
                 // TODO trackAdded should be a Map
                 trackAdded[ruleAfter] += newLength;
             }
 
             if (newTrackPiece == null) {
-                int ruleBefore = world.getTrackTypeIndex(oldTrackPiece.getTrackType().getId());
-                int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
+                int ruleBefore = world.getTrackTypeIndex(oldTrackPiece.trackType().getId());
+                int oldLength = oldTrackPiece.trackConfiguration().getLength();
                 // TODO trackRemoved should be a Map (id, int)
                 trackRemoved[ruleBefore] += oldLength;
             }
-        } else if (move instanceof CompositeMove) {
+        } else if (move instanceof CompositeMove cm) {
             // TODO does this ever happen?
-            CompositeMove cm = (CompositeMove) move;
             List<Move> moves = cm.getMoves();
 
             for (Move move1 : moves) {

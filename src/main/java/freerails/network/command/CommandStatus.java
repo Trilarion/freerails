@@ -18,6 +18,7 @@
 
 package freerails.network.command;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ import java.util.Objects;
  */
 public class CommandStatus implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3257285842216103987L;
     private final String reason;
     private final boolean successful;
@@ -55,9 +57,8 @@ public class CommandStatus implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CommandStatus)) return false;
+        if (!(obj instanceof CommandStatus commandStatus)) return false;
 
-        final CommandStatus commandStatus = (CommandStatus) obj;
         if (successful != commandStatus.successful) return false;
         return Objects.equals(reason, commandStatus.reason);
     }

@@ -28,6 +28,7 @@ import freerails.util.Vec2D;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 // TODO What is the abstraction here?
 /**
@@ -35,6 +36,7 @@ import java.awt.*;
  */
 public abstract class DetailMapViewComponent extends JPanel implements Scrollable, MapRenderer {
 
+    @Serial
     private static final long serialVersionUID = 3588200012170257744L;
     private MapRenderer mapRenderer;
 
@@ -49,8 +51,8 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
      * @return
      */
     @Override
-    public float getScale() {
-        return mapRenderer.getScale();
+    public float scale() {
+        return mapRenderer.scale();
     }
 
     @Override
@@ -62,7 +64,7 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
 
     @Override
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return (int) mapRenderer.getScale();
+        return (int) mapRenderer.scale();
     }
 
     @Override
@@ -73,14 +75,14 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     @Override
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         if (SwingConstants.VERTICAL == orientation) {
-            int best = (int) ((visibleRect.height / mapRenderer.getScale() - 2) * mapRenderer.getScale());
+            int best = (int) ((visibleRect.height / mapRenderer.scale() - 2) * mapRenderer.scale());
 
             if (best > 0) {
                 return best;
             }
             return visibleRect.height;
         }
-        float f = (visibleRect.width / mapRenderer.getScale() - 2) * mapRenderer.getScale();
+        float f = (visibleRect.width / mapRenderer.scale() - 2) * mapRenderer.scale();
         int best = (int) f;
 
         if (best > 0) {
@@ -115,10 +117,10 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
      * @param tile
      */
     public void centerOnTile(Vec2D tile) {
-        float scale = mapRenderer.getScale();
+        float scale = mapRenderer.scale();
         Rectangle visRect = new Rectangle(getVisibleRect());
-        visRect.x = (int) (tile.x * scale - visRect.width / 2);
-        visRect.y = (int) (tile.y * scale - visRect.height / 2);
+        visRect.x = (int) (tile.x() * scale - visRect.width / 2);
+        visRect.y = (int) (tile.y() * scale - visRect.height / 2);
         scrollRectToVisible(visRect);
     }
 

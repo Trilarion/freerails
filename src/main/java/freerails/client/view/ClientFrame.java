@@ -29,12 +29,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serial;
 
 /**
  * The JFrame that you see while you are playing the game.
  */
 public class ClientFrame extends JFrame {
 
+    @Serial
     private static final long serialVersionUID = 3834868100742265142L;
 
     /**

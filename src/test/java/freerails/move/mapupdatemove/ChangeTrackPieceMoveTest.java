@@ -81,7 +81,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = getWorld().getTile(Vec2D.ZERO).getTrackPiece();
+        oldTrackPiece = getWorld().getTile(Vec2D.ZERO).trackPiece();
 
         final int trackRuleID = 0;
         TrackType trackType = getWorld().getTrackType(trackRuleID);
@@ -130,7 +130,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = getWorld().getTile(Vec2D.ZERO).getTrackPiece();
+        oldTrackPiece = getWorld().getTile(Vec2D.ZERO).trackPiece();
 
         TrackType trackType = getWorld().getTrackType(0);
         newTrackPiece = new TrackPiece(newConfig, trackType, 0);
@@ -151,15 +151,15 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         assertEquals(true, status.isSuccess());
         move.apply(getWorld());
         TrackConfiguration actual = getWorld().getTile(Vec2D.ZERO)
-                .getTrackPiece().getTrackConfiguration();
-        assertEquals(newTrackPiece.getTrackConfiguration(), actual);
+                .trackPiece().trackConfiguration();
+        assertEquals(newTrackPiece.trackConfiguration(), actual);
     }
 
     /**
      *
      */
     public void testMove() {
-        TrackPiece oldTrackPiece = getWorld().getTile(Vec2D.ZERO).getTrackPiece();
+        TrackPiece oldTrackPiece = getWorld().getTile(Vec2D.ZERO).trackPiece();
 
         TrackConfiguration newConfig = TrackConfiguration.getFlatInstance("000010000");
         TrackType trackType = getWorld().getTrackType(0);

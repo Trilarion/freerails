@@ -31,6 +31,7 @@ import freerails.model.train.activity.Activity;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
 
+import java.io.Serial;
 import java.util.ArrayList;
 
 /**
@@ -57,6 +58,7 @@ import java.util.ArrayList;
  */
 public class TrainMotion extends Activity<TrainPositionOnMap> {
 
+    @Serial
     private static final long serialVersionUID = 3618423722025891641L;
     private final double duration, distanceEngineWillTravel;
     private final double initialPosition;
@@ -176,9 +178,7 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof TrainMotion)) return false;
-
-        final TrainMotion trainMotion = (TrainMotion) obj;
+        if (!(obj instanceof TrainMotion trainMotion)) return false;
 
         if (trainLength != trainMotion.trainLength) return false;
         if (!path.equals(trainMotion.path)) return false;
@@ -259,8 +259,8 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         }
 
         Vec2D p = path.getStart();
-        int x = p.x;
-        int y = p.y;
+        int x = p.x();
+        int y = p.y();
         for (int i = 0; i < stepsBeforeStart; i++) {
             TileTransition tileTransition = path.getStep(i);
             x += tileTransition.deltaX;

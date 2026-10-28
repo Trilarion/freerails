@@ -78,16 +78,16 @@ public class TrainRenderer {
             line = pathWalker.nextSegment();
 
             if (firstIteration) {
-                p = line.getA();
+                p = line.a();
                 firstIteration = false;
             }
         }
 
-        Segment wagon = new Segment(p, line.getB());
+        Segment wagon = new Segment(p, line.b());
 
-        Vec2D diff = Vec2D.subtract(wagon.getB(), wagon.getA());
-        TileTransition v = TileTransition.getNearestVector(diff.x, diff.y);
-        Vec2D center = Vec2D.divide(Vec2D.add(wagon.getA(), wagon.getB()), 2);
+        Vec2D diff = Vec2D.subtract(wagon.b(), wagon.a());
+        TileTransition v = TileTransition.getNearestVector(diff.x(), diff.y());
+        Vec2D center = Vec2D.divide(Vec2D.add(wagon.a(), wagon.b()), 2);
         Image image;
 
         if (engine) {
@@ -96,7 +96,7 @@ public class TrainRenderer {
             image = rendererRoot.getWagonImages(type).getOverheadImage(v.getID());
         }
 
-        g.drawImage(image, center.x - 15, center.y - 15, null);
+        g.drawImage(image, center.x() - 15, center.y() - 15, null);
 
         // The gap between wagons
         pathWalker.stepForward(8);

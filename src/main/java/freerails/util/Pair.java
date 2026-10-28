@@ -24,24 +24,21 @@ import java.util.Objects;
 /**
  * Generic immutable pair for cases that need two values without additional
  * domain-specific behavior.
- *
+ * <p>
  * In all examples where semantics would help coding it might be better to use
  * a meaningful naming convention. However for the cases, where the use is simple
  * and limited, Pair might be a good option.
- *
+ * <p>
  * Should be HashMap/Comparable/Iterable save.
- *
+ * <p>
  * Inspired by https://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-c-pairl-r-in-java
  *
  * @param <A> Type of first element.
  * @param <B> Type of second element.
+ * @param a   First element.
+ * @param b   Second element.
  */
-public class Pair<A, B> implements Serializable {
-
-    /** First element. */
-    private final A a;
-    /** Second element. */
-    private final B b;
+public record Pair<A, B>(A a, B b) implements Serializable {
 
     /**
      * Constructor setting the values for both elements.
@@ -49,41 +46,23 @@ public class Pair<A, B> implements Serializable {
      * @param a First element.
      * @param b Second element.
      */
-    public Pair(A a, B b) {
-        this.a = a;
-        this.b = b;
+    public Pair {
     }
 
     /**
      * @return First element.
      */
-    public A getA() {
+    @Override
+    public A a() {
         return a;
     }
 
     /**
      * @return Second element.
      */
-    public B getB() {
-        return b;
-    }
-
-    /**
-     * Calculates a combined hash code.
-     *
-     * @return The hash code.
-     */
     @Override
-    public int hashCode() {
-        int hashA = 0;
-        if (a != null) {
-            hashA = a.hashCode();
-        }
-        int hashB = 0;
-        if (b != null) {
-            hashB = b.hashCode();
-        }
-        return hashA * 31 + hashB;
+    public B b() {
+        return b;
     }
 
     /**

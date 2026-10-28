@@ -130,8 +130,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         PositionOnTrack positionOnTrack = tm.getFinalPosition();
         assertNotNull(positionOnTrack);
         assertEquals(TileTransition.EAST, positionOnTrack.getFacingTo());
-        assertEquals(13, positionOnTrack.getLocation().x);
-        assertEquals(10, positionOnTrack.getLocation().y);
+        assertEquals(13, positionOnTrack.getLocation().x());
+        assertEquals(10, positionOnTrack.getLocation().y());
     }
 
     /**

@@ -21,10 +21,12 @@ package freerails.model.player;
 import freerails.util.Identifiable;
 import freerails.util.Utils;
 
+import java.io.Serial;
+
 // TODO on the client side, one should not create a player but a add new player move or so...
 /**
  * Identifies a player.
- *
+ * <p>
  * A player represents an entity which can view or alter the game world. A
  * player usually corresponds to a user's identity, but may also represent
  * an authoritative server, or a another game entity such as a corporation.
@@ -33,6 +35,7 @@ import freerails.util.Utils;
  */
 public class Player extends Identifiable {
 
+    @Serial
     private static final long serialVersionUID = 4673561105333981501L;
     public static final Player AUTHORITATIVE = new Player(-1, "Authoritative player");
     private final String name;

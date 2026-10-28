@@ -112,7 +112,7 @@ public class OverHeadTrainView implements Painter {
 
         Vec2D start = trainMotion.getPath().getStart();
         int trainLength = trainMotion.getTrainLength();
-        Rectangle trainBox = new Rectangle(start.x * ModelConstants.TILE_SIZE - trainLength * 2, start.y * ModelConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
+        Rectangle trainBox = new Rectangle(start.x() * ModelConstants.TILE_SIZE - trainLength * 2, start.y() * ModelConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
         if (!view.intersects(trainBox)) {
             return null; // TODO doesn't work
         }

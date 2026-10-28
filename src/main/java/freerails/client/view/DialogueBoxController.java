@@ -47,6 +47,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.*;
 import java.util.List;
 
@@ -86,6 +87,7 @@ public class DialogueBoxController {
      */
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
 
+        @Serial
         private static final long serialVersionUID = 673348332616193928L;
 
         @Override
@@ -96,6 +98,7 @@ public class DialogueBoxController {
 
     private final Action selectEngineAction = new AbstractAction() {
 
+        @Serial
         private static final long serialVersionUID = -5932587740749235632L;
 
         @Override
@@ -108,6 +111,7 @@ public class DialogueBoxController {
 
     private final Action selectWagonsAction = new AbstractAction("Next") {
 
+        @Serial
         private static final long serialVersionUID = -1672545312581874156L;
 
         @Override
@@ -164,7 +168,7 @@ public class DialogueBoxController {
 
     /**
      * Called when a new game is started or a game is loaded.
-     *
+     * <p>
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
@@ -333,7 +337,7 @@ public class DialogueBoxController {
      */
     private void showTerrainInfo(Vec2D p) {
         TerrainTile tile = world.getTile(p);
-        int terrainType = tile.getTerrainTypeId();
+        int terrainType = tile.terrainTypeId();
         showTerrainInfo(terrainType);
     }
 

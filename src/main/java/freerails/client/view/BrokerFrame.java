@@ -24,10 +24,7 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.HashMap;
@@ -39,6 +36,7 @@ import java.util.StringTokenizer;
  */
 class BrokerFrame extends JInternalFrame {
 
+    @Serial
     private static final long serialVersionUID = 4121409622587815475L;
     private static final Logger logger = Logger.getLogger(BrokerFrame.class.getName());
     private JButton done;

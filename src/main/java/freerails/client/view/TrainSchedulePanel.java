@@ -38,6 +38,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serial;
 import java.util.*;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import java.util.List;
  */
 public class TrainSchedulePanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3762248626113884214L;
     private static final Logger logger = Logger.getLogger(TrainSchedulePanel.class.getName());
     private JButton addStationJButton;
@@ -403,6 +405,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         // station is selected.
         Action action = new AbstractAction() {
 
+            @Serial
             private static final long serialVersionUID = -2096909872676721636L;
 
             @Override
@@ -560,7 +563,7 @@ public class TrainSchedulePanel extends JPanel implements View {
             return;
         }
         // TODO unmodifiable list? needs to copy then
-        oldConsist.remove(oldConsist.size() - 1);
+        oldConsist.removeLast();
         // List<Integer> newConsist = Utils.removeLastOfList(oldConsist);
 
         newOrders = new TrainOrder(oldOrders.getStationID(), oldConsist, oldOrders.isWaitUntilFull(), false);

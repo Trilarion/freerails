@@ -402,8 +402,7 @@ public class Schedule implements UnmodifiableSchedule {
     /** Compares the orders, current destination index, and priority-order state. */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Schedule) {
-            Schedule test = (Schedule) obj;
+        if (obj instanceof Schedule test) {
 
             return hasPriorityOrders == test.hasPriorityOrders && nextScheduledOrder == test.nextScheduledOrder && orders.equals(test.orders);
         }

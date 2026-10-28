@@ -18,6 +18,7 @@
 
 package freerails.move;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 // TODO not much difference to MoveStatus, maybe merge the two
@@ -27,6 +28,7 @@ import java.io.Serializable;
 public class TryMoveStatus implements Serializable {
 
     public static final TryMoveStatus TRY_MOVE_OK = new TryMoveStatus(Status.OK);
+    @Serial
     private static final long serialVersionUID = 3978145456646009140L;
     public final Status status;
 
@@ -56,9 +58,7 @@ public class TryMoveStatus implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof TryMoveStatus)) return false;
-
-        final TryMoveStatus tryMoveStatus = (TryMoveStatus) obj;
+        if (!(obj instanceof TryMoveStatus tryMoveStatus)) return false;
 
         return status.equals(tryMoveStatus.status);
     }
@@ -71,6 +71,7 @@ public class TryMoveStatus implements Serializable {
     /**
      * Avoid creating a duplicate when deserializing.
      */
+    @Serial
     private Object readResolve() {
         if (status.isSuccess()) {
             return TRY_MOVE_OK;

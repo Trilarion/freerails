@@ -149,9 +149,7 @@ public class Connection implements AutoCloseable {
                 if (!(object instanceof Serializable serializable)) {
                     throw new InvalidClassException("Received object is not serializable.");
                 }
-                if (!receivedObjects.offer(serializable)) {
-                    throw new IOException("Inbound message queue is full.");
-                }
+                queueMessage(serializable);
             }
         } catch (EOFException e) {
             // Socket closure does not finish the compressed stream.
@@ -172,6 +170,19 @@ public class Connection implements AutoCloseable {
                 if (readerFailure == null) {
                     readerFailure = e;
                 }
+            }
+        }
+    }
+
+    private void queueMessage(Serializable message) throws IOException {
+        while (open) {
+            try {
+                if (receivedObjects.offer(message, 100, TimeUnit.MILLISECONDS)) {
+                    return;
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IOException("Interrupted while queueing an inbound message.", e);
             }
         }
     }

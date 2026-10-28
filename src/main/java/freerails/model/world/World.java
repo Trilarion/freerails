@@ -19,7 +19,6 @@
 package freerails.model.world;
 
 import freerails.model.ModelConstants;
-import freerails.util.Identifiable;
 import freerails.model.train.activity.Activity;
 import freerails.model.cargo.Cargo;
 import freerails.model.finance.transaction.Transaction;
@@ -38,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.util.*;
 
 // TODO for deserializing we might want to use playerId instead of Player as index in Maps
@@ -48,6 +48,7 @@ import java.util.*;
  */
 public class World implements UnmodifiableWorld {
 
+    @Serial
     private static final long serialVersionUID = 3544393612684505393L;
     private Map<Player, List<Transaction>> transactions = new HashMap<>();
     private List<Money> currentBalance = new ArrayList<>();
@@ -233,7 +234,7 @@ public class World implements UnmodifiableWorld {
 
         // setup map
         mapSize = new Vec2D(builder.mapSize);
-        map = new TerrainTile[Math.toIntExact((long) mapSize.x * mapSize.y)];
+        map = new TerrainTile[Math.toIntExact((long) mapSize.x() * mapSize.y())];
 
         // TODO what is a good default initializer here or should we stay with null?
         // TODO terrainTypeId 0 must also exist as terrain, how to make sure
@@ -251,13 +252,13 @@ public class World implements UnmodifiableWorld {
      * @throws IllegalArgumentException if any dimension or the tile count is invalid
      */
     private static void validateMapSize(Vec2D mapSize) {
-        if (mapSize.x <= 0 || mapSize.y <= 0
-                || mapSize.x > ModelConstants.MAX_MAP_DIMENSION
-                || mapSize.y > ModelConstants.MAX_MAP_DIMENSION) {
+        if (mapSize.x() <= 0 || mapSize.y() <= 0
+                || mapSize.x() > ModelConstants.MAX_MAP_DIMENSION
+                || mapSize.y() > ModelConstants.MAX_MAP_DIMENSION) {
             throw new IllegalArgumentException("Map dimensions must be between 1 and "
                     + ModelConstants.MAX_MAP_DIMENSION + " tiles.");
         }
-        long tileCount = (long) mapSize.x * mapSize.y;
+        long tileCount = (long) mapSize.x() * mapSize.y();
         if (tileCount > ModelConstants.MAX_MAP_TILE_COUNT) {
             throw new IllegalArgumentException("Map cannot contain more than "
                     + ModelConstants.MAX_MAP_TILE_COUNT + " tiles.");
@@ -316,6 +317,7 @@ public class World implements UnmodifiableWorld {
      * @throws IOException if reading the serialized object fails
      * @throws ClassNotFoundException if a serialized class cannot be resolved
      */
+    @Serial
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
         input.defaultReadObject();
         initializeIndexes();
@@ -543,7 +545,7 @@ public class World implements UnmodifiableWorld {
      */
     public void addActivity(Player player, int trainId, Activity activity) {
         Train train = getTrain(player, trainId);
-        activity.setStartTime(clock.getCurrentTime().getTicks());
+        activity.setStartTime(clock.getCurrentTime().ticks());
         train.addActivity(activity);
     }
 
@@ -611,7 +613,7 @@ public class World implements UnmodifiableWorld {
     public boolean boundsContain(Vec2D location) {
         // TODO use compareTo instead
         Vec2D mapSize = getMapSize();
-        return location.x >= 0 && location.x < mapSize.x && location.y >= 0 && location.y < mapSize.y;
+        return location.x() >= 0 && location.x() < mapSize.x() && location.y() >= 0 && location.y() < mapSize.y();
     }
 
     /** {@inheritDoc} */
@@ -643,10 +645,9 @@ public class World implements UnmodifiableWorld {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof World)) {
+        if (!(obj instanceof World o)) {
             return false;
         }
-        World o = (World) obj;
 
         return Objects.equals(players, o.players)
                 && Objects.equals(clock, o.clock)
@@ -709,10 +710,10 @@ public class World implements UnmodifiableWorld {
      * @throws IndexOutOfBoundsException if the coordinate is outside the map
      */
     private int getMapIndex(Vec2D location) {
-        if (location.x < 0 || location.x >= mapSize.x || location.y < 0 || location.y >= mapSize.y) {
+        if (location.x() < 0 || location.x() >= mapSize.x() || location.y() < 0 || location.y() >= mapSize.y()) {
             throw new IndexOutOfBoundsException();
         }
-        return location.x * mapSize.y + location.y;
+        return location.x() * mapSize.y() + location.y();
     }
 
     /** {@inheritDoc} */
@@ -791,7 +792,7 @@ public class World implements UnmodifiableWorld {
         if (transactions == null || transactions.isEmpty()) {
             throw new IllegalStateException("Player has no transactions to remove.");
         }
-        Transaction transactionRecord = transactions.remove(transactions.size()-1);
+        Transaction transactionRecord = transactions.removeLast();
 
         Money oldBalance = currentBalance.get(playerIndex);
         Money newBalance = Money.subtract(oldBalance, transactionRecord.getAmount());

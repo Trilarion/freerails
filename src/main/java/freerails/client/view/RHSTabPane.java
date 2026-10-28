@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.net.URL;
 
 /**
@@ -35,6 +36,7 @@ import java.net.URL;
  */
 public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
+    @Serial
     private static final long serialVersionUID = 3906926798502965297L;
     private static final Logger logger = Logger.getLogger(RHSTabPane.class.getName());
     private final TerrainInfoPanel terrainInfoPanel;
@@ -153,7 +155,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
                 setSelectedIndex(stationInfoIndex);
             } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
-                terrainInfoPanel.setTerrainType(world.getTile(location).getTerrainTypeId());
+                terrainInfoPanel.setTerrainType(world.getTile(location).terrainTypeId());
                 setSelectedIndex(terrainInfoIndex);
             }
         }

@@ -45,10 +45,9 @@ public class AddTrainMove implements Move {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof AddTrainMove)) {
+        if (!(obj instanceof AddTrainMove o)) {
             return false;
         }
-        final AddTrainMove o = (AddTrainMove) obj;
         return Objects.equals(player, o.player) && Objects.equals(train, o.train);
     }
 

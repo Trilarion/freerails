@@ -71,10 +71,9 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Identifiable)) {
+        if (!(obj instanceof Identifiable o)) {
             return false;
         }
-        Identifiable o = (Identifiable) obj;
         return compareTo(o) == 0;
     }
 

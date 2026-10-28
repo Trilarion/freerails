@@ -58,10 +58,9 @@ public class AddActivityMove implements Move {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof AddActivityMove)) {
+        if (!(obj instanceof AddActivityMove o)) {
             return false;
         }
-        AddActivityMove o = (AddActivityMove) obj;
         return Objects.equals(player, o.player) && trainId == o.trainId && Objects.equals(activity, o.activity);
     }
 

@@ -29,7 +29,7 @@ public interface MapRenderer extends MapLayerRenderer {
     /**
      * @return
      */
-    float getScale();
+    float scale();
 
     /**
      * @return

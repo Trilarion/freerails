@@ -227,7 +227,7 @@ public final class Utils {
      * @return an unmodifiable copy containing the same elements
      */
     public static <T> List<T> verifyUnmodifiable(List<T> list) {
-        return Collections.unmodifiableList(new ArrayList<>(list));
+        return List.copyOf(list);
     }
 
     /**
@@ -270,6 +270,9 @@ public final class Utils {
      */
     public static <T> List<T> removeLastOfList(List<T> list) {
         List<T> values = new ArrayList<>(list);
+        if (values.isEmpty()) {
+            throw new IndexOutOfBoundsException("List is empty");
+        }
         values.remove(values.size() - 1);
         return values;
     }
@@ -298,6 +301,9 @@ public final class Utils {
      * @throws UnsupportedOperationException if the list does not support removal
      */
     public static <T> void removeLast(List<T> list) {
+        if (list.isEmpty()) {
+            throw new IndexOutOfBoundsException("List is empty");
+        }
         list.remove(list.size() - 1);
     }
 

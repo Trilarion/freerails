@@ -25,7 +25,7 @@ import java.util.Iterator;
  *
  * <p>Traversal delegates to the wrapped iterator, but removal is not
  * supported.
- *
+ * <p>
  * Similar to org.apache.commons.collections4.Unmodifiable.
  *
  * @param <E> element type

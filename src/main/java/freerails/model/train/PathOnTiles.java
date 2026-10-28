@@ -26,6 +26,7 @@ import freerails.model.ModelConstants;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -34,6 +35,7 @@ import java.util.*;
  */
 public class PathOnTiles implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3544386994122536753L;
     private final Vec2D start;
     private final List<TileTransition> vectors;
@@ -67,8 +69,7 @@ public class PathOnTiles implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof PathOnTiles)) return false;
-        final PathOnTiles other = (PathOnTiles) obj;
+        if (!(obj instanceof PathOnTiles other)) return false;
         if (!start.equals(other.start)) return false;
         return vectors.equals(other.vectors);
     }
@@ -110,8 +111,8 @@ public class PathOnTiles implements Serializable {
     public Vec2D getPoint(double distance) {
         if (0 > distance) throw new IllegalArgumentException("distance:" + distance + " < 0");
 
-        int x = start.x;
-        int y = start.y;
+        int x = start.x();
+        int y = start.y();
         double distanceSoFar = 0;
         for (TileTransition v : vectors) {
             distanceSoFar += v.getLength();
@@ -149,8 +150,8 @@ public class PathOnTiles implements Serializable {
         if (firstdistance > lastdistance) {
             throw new IllegalArgumentException("firstdistance:" + firstdistance + " > lastdistance:" + lastdistance);
         }
-        int x = start.x;
-        int y = start.y;
+        int x = start.x();
+        int y = start.y();
         double distanceSoFar = 0;
         Vec2D firstPoint = null;
         int i;
@@ -234,8 +235,8 @@ public class PathOnTiles implements Serializable {
      * @throws IndexOutOfBoundsException if this path has no transitions
      */
     public PositionOnTrack getFinalPosition() {
-        int x = start.x;
-        int y = start.y;
+        int x = start.x();
+        int y = start.y();
         for (TileTransition v : vectors) {
             x += v.deltaX;
             y += v.deltaY;
@@ -309,8 +310,8 @@ public class PathOnTiles implements Serializable {
 
         final LinkedList<Vec2D> points = new LinkedList<>();
         Vec2D tile = start;
-        int tileX = tile.x;
-        int tileY = tile.y;
+        int tileX = tile.x();
+        int tileY = tile.y();
         int distanceSoFar = 0;
         for (TileTransition vector : vectors) {
 
@@ -330,7 +331,7 @@ public class PathOnTiles implements Serializable {
 
         Pair<Vec2D, Vec2D> point = getPoint(offset, offset + length);
 
-        Vec2D first = point.getA();
+        Vec2D first = point.a();
 
         if (points.isEmpty()) {
             points.addFirst(first);
@@ -338,7 +339,7 @@ public class PathOnTiles implements Serializable {
             points.addFirst(first);
         }
 
-        Vec2D last = point.getB();
+        Vec2D last = point.b();
 
         if (!points.getLast().equals(last)) {
             points.addLast(last);
@@ -378,8 +379,8 @@ public class PathOnTiles implements Serializable {
                 if (next == null) throw new NoSuchElementException();
 
                 Vec2D returnValue = next;
-                int x = next.x;
-                int y = next.y;
+                int x = next.x();
+                int y = next.y();
                 if (index < vectors.size()) {
                     TileTransition s = vectors.get(index);
                     x += s.deltaX;
@@ -406,9 +407,9 @@ public class PathOnTiles implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder(getClass().getName());
         sb.append('{');
-        sb.append(start.x);
+        sb.append(start.x());
         sb.append(", ");
-        sb.append(start.y);
+        sb.append(start.y());
         for (TileTransition vector : vectors) {
             sb.append(", ");
             sb.append(vector);

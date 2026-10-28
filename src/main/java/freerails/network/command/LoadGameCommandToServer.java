@@ -18,11 +18,14 @@
 
 package freerails.network.command;
 
+import java.io.Serial;
+
 /**
  * Request to load a game.
  */
 public class LoadGameCommandToServer implements CommandToServer {
 
+    @Serial
     private static final long serialVersionUID = 3256726186552930869L;
     private final String filename;
 
@@ -36,9 +39,7 @@ public class LoadGameCommandToServer implements CommandToServer {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof LoadGameCommandToServer)) return false;
-
-        final LoadGameCommandToServer loadGameMessageToServer = (LoadGameCommandToServer) obj;
+        if (!(obj instanceof LoadGameCommandToServer loadGameMessageToServer)) return false;
 
         return filename.equals(loadGameMessageToServer.filename);
     }

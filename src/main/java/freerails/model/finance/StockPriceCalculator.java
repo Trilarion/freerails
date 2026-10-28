@@ -35,9 +35,9 @@ import org.jetbrains.annotations.NotNull;
 // TODO StockPrice seems to contain its own calculation model
 /**
  * Calculates the stock price for each of the players.
- *
+ * <p>
  * Stock price = [Net worth + 5 * profit last year] / [ shares owned by public + 0.5 shares owned by other players]
- *
+ * <p>
  * Let profit last year = 100,000 in the first year.
  */
 public class StockPriceCalculator {

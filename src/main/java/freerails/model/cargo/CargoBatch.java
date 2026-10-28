@@ -21,6 +21,7 @@ package freerails.model.cargo;
 import freerails.util.Vec2D;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -30,6 +31,7 @@ import java.io.Serializable;
 public class CargoBatch implements Serializable, Comparable<CargoBatch> {
 
     // TODO Why is cargoType an int here and not Cargo directly?? Because we have a list in the world for that?
+    @Serial
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoTypeId;
     private final Vec2D sourceP;
@@ -88,8 +90,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof CargoBatch) {
-            CargoBatch test = (CargoBatch) obj;
+        if (obj instanceof CargoBatch test) {
 
             return test.cargoTypeId == cargoTypeId && sourceP.equals(test.sourceP) && test.creationTime == creationTime && test.originalStationId == originalStationId;
         }
@@ -107,7 +108,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         result = 37 * result + cargoTypeId;
         result = 37 * result + sourceP.hashCode();
         result = 37 * result + originalStationId;
-        result = 37 * result + (int) (creationTime ^ creationTime >>> 32);
+        result = 37 * result + Long.hashCode(creationTime);
 
         return result;
     }

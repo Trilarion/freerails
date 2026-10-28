@@ -1,14 +1,12 @@
-IntelliJ IDEA (2017.3)
-----------------------
+IntelliJ IDEA
+-------------
 
-File/Settings/Spelling/Dictionaries -> Add folders to load dictionaries: add this folder
+File/Settings/Editor/Natural Languages/Spelling/Dictionaries -> Add folders to load dictionaries: add this folder
 
 Words are case insensitive.
 
-
-NetBeans 8.2
+NetBeans 8.2s
 ------------
-
 Copy
  freerails.dic
 to

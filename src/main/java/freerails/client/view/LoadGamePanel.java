@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import java.util.List;
  */
 public class LoadGamePanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = -6810248272441137826L;
     private ModelRoot modelRoot;
     private ActionListener close;
@@ -127,7 +129,7 @@ public class LoadGamePanel extends JPanel implements View {
     }
 
     private void okButtonActionPerformed(ActionEvent evt) {
-        String filename = (String) list1.getSelectedValue();
+        String filename = list1.getSelectedValue();
         CommandToServer message2 = new LoadGameCommandToServer(filename);
         modelRoot.sendCommand(message2);
 

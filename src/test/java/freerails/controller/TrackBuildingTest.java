@@ -74,7 +74,7 @@ public class TrackBuildingTest extends TestCase {
         try {
             // Check there is no track before we build it.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece trackPiece = world.getTile(new Vec2D(x, 5)).getTrackPiece();
+                TrackPiece trackPiece = world.getTile(new Vec2D(x, 5)).trackPiece();
                 assertEquals(null, trackPiece);
             }
             pathFinder.setupSearch(from, to, bts);
@@ -89,8 +89,8 @@ public class TrackBuildingTest extends TestCase {
             assertTrue(status.getMessage(), status.isSuccess());
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = world.getTile(new Vec2D(x, 5)).getTrackPiece();
-                assertEquals(0, tp.getTrackType().getId());
+                TrackPiece tp = world.getTile(new Vec2D(x, 5)).trackPiece();
+                assertEquals(0, tp.trackType().getId());
             }
         } catch (PathNotFoundException e) {
             fail();
@@ -107,10 +107,10 @@ public class TrackBuildingTest extends TestCase {
         try {
             // Check there is no track before we build it.
 
-            TrackPiece tp1 = world.getTile(new Vec2D(5, 5)).getTrackPiece();
+            TrackPiece tp1 = world.getTile(new Vec2D(5, 5)).trackPiece();
             assertEquals(null, tp1);
 
-            TrackPiece tp2 = world.getTile(new Vec2D(6, 5)).getTrackPiece();
+            TrackPiece tp2 = world.getTile(new Vec2D(6, 5)).trackPiece();
             assertEquals(null, tp2);
 
             pathFinder.setupSearch(from, to, bts);
@@ -124,11 +124,11 @@ public class TrackBuildingTest extends TestCase {
             Status status = producer.buildTrack(from, path);
             assertTrue(status.getMessage(), status.isSuccess());
             // Check track has been built.
-            tp1 = world.getTile(new Vec2D(5, 5)).getTrackPiece();
-            assertEquals(0, tp1.getTrackType().getId());
+            tp1 = world.getTile(new Vec2D(5, 5)).trackPiece();
+            assertEquals(0, tp1.trackType().getId());
 
-            tp2 = world.getTile(new Vec2D(6, 5)).getTrackPiece();
-            assertEquals(0, tp2.getTrackType().getId());
+            tp2 = world.getTile(new Vec2D(6, 5)).trackPiece();
+            assertEquals(0, tp2.trackType().getId());
         } catch (PathNotFoundException e) {
             fail();
         }
@@ -184,8 +184,8 @@ public class TrackBuildingTest extends TestCase {
             Status status = producer.buildTrack(a, path);
             assertTrue(status.isSuccess());
 
-            TrackPiece tp = world.getTile(b).getTrackPiece();
-            assertEquals("We just build double track here.", trackTypeID, tp.getTrackType().getId());
+            TrackPiece tp = world.getTile(b).trackPiece();
+            assertEquals("We just build double track here.", trackTypeID, tp.trackType().getId());
 
             pathFinder.setupSearch(b, c, bts);
             pathFinder.search(-1);

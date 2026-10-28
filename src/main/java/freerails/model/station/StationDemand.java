@@ -21,6 +21,7 @@ package freerails.model.station;
 
 import freerails.util.Utils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import java.util.List;
  */
 public class StationDemand implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3257565088071038009L;
     private final List<Integer> demand;
 
@@ -50,9 +52,7 @@ public class StationDemand implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof StationDemand)) return false;
-
-        final StationDemand demandAtStation = (StationDemand) obj;
+        if (!(obj instanceof StationDemand demandAtStation)) return false;
 
         return demand.equals(demandAtStation.demand);
     }

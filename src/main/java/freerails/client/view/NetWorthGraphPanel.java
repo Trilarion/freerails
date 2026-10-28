@@ -38,6 +38,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.ArrayList;
 
 /**
@@ -46,6 +47,7 @@ import java.util.ArrayList;
  */
 public class NetWorthGraphPanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3618703010813980982L;
 
     private static final Logger logger = Logger.getLogger(NetWorthGraphPanel.class.getName());
@@ -230,18 +232,18 @@ public class NetWorthGraphPanel extends JPanel implements View {
 
     /**
      * Sets the value of scaleMax subject to the following constraints.
-     *
+     * <p>
      * (1) scaleMax >= max, where max is the max net worth value.
-     *
+     * <p>
      *
      * (2) (scaleMax % 4) == 0
-     *
+     * <p>
      *
      * (3) if max >= 1,000, then (scaleMax % 4,000) == 0
-     *
+     * <p>
      *
      * (4) if max >= 1,000,000, then (scaleMax % 4,000,000) == 0
-     *
+     * <p>
      *
      * (5) if max >= 1,000,000,000, then (scaleMax % 4,000,000,000) == 0
      */
@@ -334,7 +336,7 @@ public class NetWorthGraphPanel extends JPanel implements View {
             Money[] values = aggregator.getValues();
             int stopYear = currentYear - startYear + 1;
             for (int year = 0; year < stopYear; year++) {
-                companyDetails.value[year] = values[year].amount;
+                companyDetails.value[year] = values[year].amount();
             }
             companies.add(companyDetails);
         }

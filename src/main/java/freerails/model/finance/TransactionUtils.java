@@ -121,7 +121,7 @@ public class TransactionUtils {
 
         for (TrackType trackType: world.getTrackTypes()) {
             // TODO Money arithmetic
-            long trackValue = trackType.getPurchasingPrice().amount;
+            long trackValue = trackType.getPurchasingPrice().amount();
             aggregator.setType(trackType.getId());
             int quantity = aggregator.calculateQuantity();
             amount += trackValue * quantity / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;

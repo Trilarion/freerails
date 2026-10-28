@@ -33,6 +33,7 @@ import freerails.model.cargo.Cargo;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serial;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ import java.util.List;
 
 public class SelectWagonsPanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3905239009449095220L;
     private final Image stationView;
     private final List<Integer> wagons = new ArrayList<>();

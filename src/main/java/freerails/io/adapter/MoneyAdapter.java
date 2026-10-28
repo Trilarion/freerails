@@ -37,7 +37,7 @@ public class MoneyAdapter extends TypeAdapter<Money> {
         if (value == null) {
             out.nullValue();
         } else {
-            out.value(value.amount);
+            out.value(value.amount());
         }
     }
 

@@ -26,6 +26,7 @@ import freerails.util.Utils;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ import java.util.List;
  */
 public class CompositeMove implements Move {
 
+    @Serial
     private static final long serialVersionUID = 3257289149391517489L;
     private final List<Move> moves;
 
@@ -49,9 +51,7 @@ public class CompositeMove implements Move {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CompositeMove)) return false;
-
-        final CompositeMove compositeMove = (CompositeMove) obj;
+        if (!(obj instanceof CompositeMove compositeMove)) return false;
 
         return moves.equals(compositeMove.moves);
     }

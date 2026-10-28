@@ -34,6 +34,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -41,6 +42,7 @@ import java.util.List;
  */
 public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer<Train> {
 
+    @Serial
     private static final long serialVersionUID = 3546076964969591093L;
     private final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
     private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");

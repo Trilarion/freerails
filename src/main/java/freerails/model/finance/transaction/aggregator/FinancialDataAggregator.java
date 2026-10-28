@@ -73,8 +73,7 @@ public class FinancialDataAggregator extends TransactionAggregator {
     @Override
     protected void aggregateTransaction(int intervalIndex, Transaction transaction) {
         super.aggregateTransaction(intervalIndex, transaction);
-        if (transaction instanceof ItemTransaction) {
-            ItemTransaction itemTransaction = (ItemTransaction) transaction;
+        if (transaction instanceof ItemTransaction itemTransaction) {
 
             if (itemTransaction.getCategory() == TransactionCategory.ISSUE_STOCK && itemTransaction.getId() == -1) {
                 // If it is a change in the total number of shares issued.

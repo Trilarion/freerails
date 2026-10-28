@@ -24,6 +24,7 @@ package freerails.model.train.motion;
 import freerails.util.Utils;
 import freerails.model.train.TrainState;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -32,6 +33,7 @@ import java.io.Serializable;
 // TODO only used once, do we really need it
 public class SpeedTimeAndStatus implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1769385261436134444L;
     private final double dt;
     private final double speed;
@@ -63,8 +65,7 @@ public class SpeedTimeAndStatus implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof SpeedTimeAndStatus)) return false;
-        final SpeedTimeAndStatus other = (SpeedTimeAndStatus) obj;
+        if (!(obj instanceof SpeedTimeAndStatus other)) return false;
 
         if (acceleration != other.acceleration) return false;
         if (dt != other.dt) return false;
@@ -79,13 +80,13 @@ public class SpeedTimeAndStatus implements Serializable {
         int result;
         long temp;
         temp = dt != +0.0d ? Double.doubleToLongBits(dt) : 0L;
-        result = (int) (temp ^ temp >>> 32);
+        result = Long.hashCode(temp);
         temp = speed != +0.0d ? Double.doubleToLongBits(speed) : 0L;
-        result = 29 * result + (int) (temp ^ temp >>> 32);
+        result = 29 * result + Long.hashCode(temp);
         temp = acceleration != +0.0d ? Double.doubleToLongBits(acceleration) : 0L;
-        result = 29 * result + (int) (temp ^ temp >>> 32);
+        result = 29 * result + Long.hashCode(temp);
         temp = s != +0.0d ? Double.doubleToLongBits(s) : 0L;
-        result = 29 * result + (int) (temp ^ temp >>> 32);
+        result = 29 * result + Long.hashCode(temp);
         result = 29 * result + (activity != null ? activity.hashCode() : 0);
         return result;
     }

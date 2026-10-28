@@ -21,11 +21,13 @@ package freerails.client;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.Serial;
 
 /**
  *
  */
 class BuildTrainDialogAction extends AbstractAction {
+    @Serial
     private static final long serialVersionUID = 3257853173002416948L;
     private ActionRoot actionRoot;
 

@@ -27,6 +27,7 @@ import freerails.model.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 import java.net.URL;
 
 /**
@@ -34,6 +35,7 @@ import java.net.URL;
  */
 public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3257846588885120057L;
     private final String template;
     private ModelRoot modelRoot;

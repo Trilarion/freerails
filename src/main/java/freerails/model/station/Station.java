@@ -26,6 +26,7 @@ import freerails.model.train.TrainTemplate;
 import freerails.util.Vec2D;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +38,7 @@ import java.util.List;
  */
 public class Station extends Identifiable {
 
+    @Serial
     private static final long serialVersionUID = 3256442503979874355L;
     private final Vec2D location;
     private final String name;

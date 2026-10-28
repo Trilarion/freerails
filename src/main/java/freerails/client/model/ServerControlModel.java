@@ -34,6 +34,7 @@ import freerails.model.world.UnmodifiableWorld;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.Serial;
 
 /**
  * Exposes the ServerControlInterface to client UI implementations.
@@ -183,6 +184,7 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     private class LoadGameAction extends AbstractAction {
+        @Serial
         private static final long serialVersionUID = 3616451215278682931L;
 
         private LoadGameAction() {
@@ -197,6 +199,7 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     private class NewGameAction extends AbstractAction {
+        @Serial
         private static final long serialVersionUID = 3690758388631745337L;
 
         private NewGameAction(String s) {
@@ -221,6 +224,7 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     private class SaveGameAction extends AbstractAction {
+        @Serial
         private static final long serialVersionUID = 3905808578064562480L;
 
         private SaveGameAction() {
@@ -250,6 +254,7 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     private class SetTargetTicksPerSecondAction extends AbstractAction {
+        @Serial
         private static final long serialVersionUID = 3256437014978048052L;
 
         private final int speed;

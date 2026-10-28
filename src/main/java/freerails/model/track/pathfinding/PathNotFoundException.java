@@ -21,11 +21,14 @@
  */
 package freerails.model.track.pathfinding;
 
+import java.io.Serial;
+
 /**
  * Thrown when a path cannot be found.
  */
 public class PathNotFoundException extends Exception {
 
+    @Serial
     private static final long serialVersionUID = -3078115780884810261L;
 
     /**

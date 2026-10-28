@@ -188,28 +188,24 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * Processes a message received from the server. Called by update().
      */
     public final void processMessage(Serializable message) throws IOException {
-        if (message instanceof CommandToClient) {
-            CommandToClient request = (CommandToClient) message;
-            CommandStatus status = request.execute(this);
-            logger.debug(request.toString());
+        switch (message) {
+            case CommandToClient request -> {
+                CommandStatus status = request.execute(this);
+                logger.debug(request.toString());
 
-            connectionToServer.sendObject(status);
-        } else if (message instanceof Move) {
-            Move move = (Move) message;
-            movePrecommitter.fromServer(move);
-            moveChainFork.process(move);
-        } else if (message instanceof Status) {
-            Status status = (Status) message;
-            movePrecommitter.fromServer(status);
-        } else if (message instanceof MoveGenerator) {
-            MoveGenerator moveGenerator = (MoveGenerator) message;
-            Move move = movePrecommitter.fromServer(moveGenerator);
-            moveChainFork.process(move);
-        } else if (message instanceof TryMoveStatus) {
-            TryMoveStatus tryMoveStatus = (TryMoveStatus) message;
-            movePrecommitter.fromServer(tryMoveStatus);
-        } else {
-            logger.debug(message.toString());
+                connectionToServer.sendObject(status);
+            }
+            case Move move -> {
+                movePrecommitter.fromServer(move);
+                moveChainFork.process(move);
+            }
+            case Status status -> movePrecommitter.fromServer(status);
+            case MoveGenerator moveGenerator -> {
+                Move move = movePrecommitter.fromServer(moveGenerator);
+                moveChainFork.process(move);
+            }
+            case TryMoveStatus tryMoveStatus -> movePrecommitter.fromServer(tryMoveStatus);
+            default -> logger.debug(message.toString());
         }
     }
 

@@ -25,20 +25,15 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Stores the type and quantity of cargo in a wagon.
  */
-public class WagonLoad implements Comparable<WagonLoad> {
-
-    private final int quantity;
-    private final int cargoType;
+public record WagonLoad(int quantity, int cargoType) implements Comparable<WagonLoad> {
 
     /**
      * Creates a description of a wagon's cargo quantity and cargo type.
      *
-     * @param quantity amount of cargo loaded in the wagon
+     * @param quantity  amount of cargo loaded in the wagon
      * @param cargoType cargo type identifier
      */
-    public WagonLoad(int quantity, int cargoType) {
-        this.quantity = quantity;
-        this.cargoType = cargoType;
+    public WagonLoad {
     }
 
     /**
@@ -57,7 +52,8 @@ public class WagonLoad implements Comparable<WagonLoad> {
      *
      * @return cargo quantity
      */
-    public int getQuantity() {
+    @Override
+    public int quantity() {
         return quantity;
     }
 
@@ -66,7 +62,8 @@ public class WagonLoad implements Comparable<WagonLoad> {
      *
      * @return cargo type identifier
      */
-    public int getCargoType() {
+    @Override
+    public int cargoType() {
         return cargoType;
     }
 }

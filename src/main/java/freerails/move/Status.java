@@ -56,9 +56,7 @@ public class Status implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Status)) return false;
-
-        final Status other = (Status) obj;
+        if (!(obj instanceof Status other)) return false;
 
         if (success != other.success) return false;
         return Objects.equals(message, other.message);

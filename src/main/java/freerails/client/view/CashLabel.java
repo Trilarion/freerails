@@ -29,12 +29,14 @@ import freerails.model.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * This JLabel shows the amount of cash available.
  */
 public class CashLabel extends JLabel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3257853181542412341L;
     private UnmodifiableWorld world;
     private Player player;

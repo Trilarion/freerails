@@ -32,7 +32,6 @@ import freerails.util.Vec2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,7 +67,7 @@ public final class StationUtils {
 
         for (Station station: world.getStations(player)) {
             Vec2D delta = Vec2D.subtract(location, station.getLocation());
-            int distanceSquared = delta.x * delta.x + delta.y * delta.y;
+            int distanceSquared = delta.x() * delta.x() + delta.y() * delta.y();
 
             if (distanceSquared < distanceToClosestSquared && StationUtils.MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
                 distanceToClosestSquared = distanceSquared;
@@ -97,7 +96,7 @@ public final class StationUtils {
 
         for (Station station: world.getStations(player)) {
             Vec2D delta = Vec2D.subtract(station.getLocation(), currentStation.getLocation());
-            int distanceSquared = delta.x * delta.x + delta.y * delta.y;
+            int distanceSquared = delta.x() * delta.x() + delta.y() * delta.y();
             boolean closer = distanceSquared < distanceToClosestSquared;
             boolean notTheSameStation = startStation != station.getId();
             boolean inRightDirection = isInRightDirection(direction, delta);
@@ -123,9 +122,9 @@ public final class StationUtils {
      */
     private static boolean isInRightDirection(TileTransition direction, Vec2D delta) {
         boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
-        boolean sameXDirection = direction.deltaX * delta.x > 0;
-        boolean sameYDirection = direction.deltaY * delta.y > 0;
-        boolean deltaXisLongerThanDeltaY = delta.x * delta.x < delta.y * delta.y;
+        boolean sameXDirection = direction.deltaX * delta.x() > 0;
+        boolean sameYDirection = direction.deltaY * delta.y() > 0;
+        boolean deltaXisLongerThanDeltaY = delta.x() * delta.x() < delta.y() * delta.y();
 
         if (isDiagonal) {
             return sameXDirection && sameYDirection;
@@ -219,9 +218,9 @@ public final class StationUtils {
         // scan adjacent tiles and compute List<CargoProductionOrConsumption>
         int stationDiameter = stationRadius * 2 + 1;
 
-        Rectangle stationRadiusRect = new Rectangle(location.x - stationRadius, location.y - stationRadius, stationDiameter, stationDiameter);
+        Rectangle stationRadiusRect = new Rectangle(location.x() - stationRadius, location.y() - stationRadius, stationDiameter, stationDiameter);
         Vec2D mapSize = world.getMapSize();
-        Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
+        Rectangle mapRect = new Rectangle(0, 0, mapSize.x(), mapSize.y());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
 
         /*
@@ -235,7 +234,7 @@ public final class StationUtils {
         for (int i1 = tiles2scan.x; i1 < tiles2scan.x + tiles2scan.width; i1++) {
             for (int j = tiles2scan.y; j < tiles2scan.y + tiles2scan.height; j++) {
                 // increment supply and demand
-                int tileTypeNumber = world.getTile(new Vec2D(i1, j)).getTerrainTypeId();
+                int tileTypeNumber = world.getTile(new Vec2D(i1, j)).terrainTypeId();
 
                 Terrain terrainType = world.getTerrain(tileTypeNumber);
 
@@ -245,8 +244,8 @@ public final class StationUtils {
                 // loop through the production array and increment
                 // the supply rates for the station
                 for (CargoProductionOrConsumption aProduction : production) {
-                    int cargoIndex = world.getCargoIndex(aProduction.getCargoId());
-                    supplies[cargoIndex] += aProduction.getRate();
+                    int cargoIndex = world.getCargoIndex(aProduction.cargoId());
+                    supplies[cargoIndex] += aProduction.rate();
                 }
 
                 // Now calculate demand.
@@ -254,18 +253,18 @@ public final class StationUtils {
 
                 // TODO take into account pre-requisite for station demand (minimum number of tiles of certain type...)
                 for (CargoProductionOrConsumption aConsumption : consumption) {
-                    int cargoIndex = world.getCargoIndex(aConsumption.getCargoId());
+                    int cargoIndex = world.getCargoIndex(aConsumption.cargoId());
                     demand[cargoIndex] += 1;
                 }
 
                 List<CargoConversion> conversion = terrainType.getConversions();
 
                 for (CargoConversion aConversion : conversion) {
-                    int cargoIndex = world.getCargoIndex(aConversion.getSourceCargoId());
+                    int cargoIndex = world.getCargoIndex(aConversion.sourceCargoId());
 
                     // TODO Only one tile that converts the cargo type is needed for the station to demand the cargo type.
                     demand[cargoIndex] += 1;
-                    converts[cargoIndex] = aConversion.getProductCargoId();
+                    converts[cargoIndex] = aConversion.productCargoId();
                 }
             }
         }
@@ -304,7 +303,7 @@ public final class StationUtils {
      */
     public static boolean isStationHere(UnmodifiableWorld world, Vec2D location) {
         TerrainTile tile = world.getTile(location);
-        return tile.getTrackPiece().getTrackType().isStation();
+        return tile.trackPiece().trackType().isStation();
     }
 
     /**
@@ -336,11 +335,11 @@ public final class StationUtils {
      */
     public static int getStationIdAtLocation(UnmodifiableWorld world, Player player, Vec2D location) {
         TerrainTile tile = world.getTile(location);
-        TrackPiece trackPiece = tile.getTrackPiece();
+        TrackPiece trackPiece = tile.trackPiece();
 
         if (trackPiece != null) {
-            TrackType trackType = trackPiece.getTrackType();
-            if (trackType.isStation() && trackPiece.getPlayerId() == player.getId()) {
+            TrackType trackType = trackPiece.trackType();
+            if (trackType.isStation() && trackPiece.playerId() == player.getId()) {
 
                 for (Station station: world.getStations(player)) {
                     if (location.equals(station.getLocation())) {

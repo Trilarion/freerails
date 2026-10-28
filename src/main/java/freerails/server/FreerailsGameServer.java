@@ -83,12 +83,12 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
         try {
             LogOnCredentials request = (LogOnCredentials) connection.receiveObject();
-            logger.debug("Trying to login player: " + request.getUsername());
+            logger.debug("Trying to login player: " + request.username());
 
             LogOnResponse response = logon(request);
             connection.sendObject(response);
-            LogOnCredentials p = new LogOnCredentials(request.getUsername(), request.getPassword());
-            if (response.isSuccess()) {
+            LogOnCredentials p = new LogOnCredentials(request.username(), request.password());
+            if (response.success()) {
                 logger.debug("Login successful");
 
                 synchronized (acceptedConnections) {
@@ -163,7 +163,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         String[] playerNames = new String[players.size()];
 
         for (int i = 0; i < players.size(); i++) {
-            playerNames[i] = players.get(i).getUsername();
+            playerNames[i] = players.get(i).username();
         }
 
         return playerNames;
@@ -178,7 +178,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
     private boolean isPlayer(String username) {
         for (LogOnCredentials p : players) {
-            if (p.getUsername().equals(username)) return true;
+            if (p.username().equals(username)) return true;
         }
         return false;
     }
@@ -229,7 +229,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * @return
      */
     public LogOnResponse logon(LogOnCredentials credentials) {
-        boolean isReturningPlayer = isPlayer(credentials.getUsername());
+        boolean isReturningPlayer = isPlayer(credentials.username());
 
         if (!newPlayersAllowed && !isReturningPlayer) {
             return new LogOnResponse(false, "New logins not allowed.");
@@ -269,13 +269,13 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
         // Add players to world.
         for (int i = 0; i < players.size(); i++) {
-            String name = players.get(i).getUsername();
+            String name = players.get(i).username();
             Player player = new Player(i, name);
 
             // add a new player
             Move addPlayerMove = new AddPlayerMove(player);
             addPlayerMove.apply(world);
-            passwords[i] = players.get(i).getPassword();
+            passwords[i] = players.get(i).password();
         }
 
         serverGameModel.setWorld(world, passwords);
@@ -406,8 +406,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                     List<Serializable> messages = connection.getReceivedObjects();
 
                     for (Serializable message : messages) {
-                        if (message instanceof CommandToServer) {
-                            CommandToServer command = (CommandToServer) message;
+                        if (message instanceof CommandToServer command) {
                             CommandStatus cStatus = command.execute(this);
                             logger.debug(command.toString());
                             connection.sendObject(cStatus);

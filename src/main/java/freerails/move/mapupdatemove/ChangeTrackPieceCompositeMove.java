@@ -30,6 +30,7 @@ import freerails.model.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.Serial;
 import java.util.Arrays;
 
 /**
@@ -37,6 +38,7 @@ import java.util.Arrays;
  */
 public final class ChangeTrackPieceCompositeMove extends CompositeMove implements TrackMove {
 
+    @Serial
     private static final long serialVersionUID = 3616443518780978743L;
     private final Rectangle rectangle;
     private final Player player;
@@ -66,7 +68,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);
                     ChangeTrackPieceMove b = (ChangeTrackPieceMove) super.getMove(1);
 
-                    if (a.trackPieceBefore == null && b.trackPieceBefore == null) {
+                    if (a.trackPieceBefore() == null && b.trackPieceBefore() == null) {
                         return Status.fail("Must connect to existing track");
                     }
                 } catch (ClassCastException e) {

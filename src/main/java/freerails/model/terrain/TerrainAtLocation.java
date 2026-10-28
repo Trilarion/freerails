@@ -23,31 +23,28 @@ import freerails.util.Vec2D;
 /**
  * Associates a map location with the identifier of its terrain type.
  */
-public class TerrainAtLocation {
-
-    private final Vec2D location;
-    private final int terrainType;
+public record TerrainAtLocation(Vec2D location, int terrainType) {
 
     /**
-     * @param location map coordinate
+     * @param location    map coordinate
      * @param terrainType terrain type identifier
      */
-    public TerrainAtLocation(Vec2D location, int terrainType) {
-        this.location = location;
-        this.terrainType = terrainType;
+    public TerrainAtLocation {
     }
 
     /**
      * @return the associated map coordinate
      */
-    public Vec2D getLocation() {
+    @Override
+    public Vec2D location() {
         return location;
     }
 
     /**
      * @return the terrain type identifier
      */
-    public int getTerrainType() {
+    @Override
+    public int terrainType() {
         return terrainType;
     }
 }

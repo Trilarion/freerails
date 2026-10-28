@@ -27,12 +27,14 @@ import freerails.model.world.UnmodifiableWorld;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * This JLabel shows the current date.
  */
 public class DateLabel extends JLabel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3689348840578757942L;
     private UnmodifiableWorld world;
 

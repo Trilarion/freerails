@@ -63,7 +63,7 @@ public final class TrackUtils {
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.
          */
-        TrackType thisStationType = trackPiece.getTrackType();
+        TrackType thisStationType = trackPiece.trackType();
         assert thisStationType.isStation();
 
         // for all player
@@ -80,7 +80,7 @@ public final class TrackUtils {
                 }
 
                 TerrainTile tile = world.getTile(station.getLocation());
-                TrackType otherStationType = tile.getTrackPiece().getTrackType();
+                TrackType otherStationType = tile.trackPiece().trackType();
                 assert otherStationType.isStation();
 
                 int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
@@ -88,8 +88,8 @@ public final class TrackUtils {
                 Vec2D delta = Vec2D.subtract(station.getLocation(), location);
 
                 // Do radii overlap?
-                boolean xOverlap = sumOfRadiiSquared >= delta.x * delta.x;
-                boolean yOverlap = sumOfRadiiSquared >= delta.y * delta.y;
+                boolean xOverlap = sumOfRadiiSquared >= delta.x() * delta.x();
+                boolean yOverlap = sumOfRadiiSquared >= delta.y() * delta.y();
 
                 if (xOverlap && yOverlap) {
                     String message = "Too close to " + station.getStationName();
@@ -133,18 +133,18 @@ public final class TrackUtils {
 
         // Avoid array-out-of-bounds exceptions.
         trackTemplateAbove = 0;
-        if (point.y > 0) {
-            TerrainTile ft = world.getTile(new Vec2D(point.x, point.y - 1));
-            TrackPiece tp = ft.getTrackPiece();
+        if (point.y() > 0) {
+            TerrainTile ft = world.getTile(new Vec2D(point.x(), point.y() - 1));
+            TrackPiece tp = ft.trackPiece();
             if (tp != null) {
                 trackTemplateAbove = tp.getTrackGraphicID();
             }
         }
 
         trackTemplateBelow = 0;
-        if (point.y + 1 < mapSize.y) {
-            TerrainTile ft = world.getTile(new Vec2D(point.x, point.y + 1));
-            TrackPiece tp = ft.getTrackPiece();
+        if (point.y() + 1 < mapSize.y()) {
+            TerrainTile ft = world.getTile(new Vec2D(point.x(), point.y() + 1));
+            TrackPiece tp = ft.trackPiece();
             if (tp != null) {
                 trackTemplateBelow = tp.getTrackGraphicID();
             }

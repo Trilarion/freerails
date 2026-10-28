@@ -35,6 +35,7 @@ import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -43,6 +44,7 @@ import java.util.NoSuchElementException;
  */
 public class AddStationMoveGenerator implements MoveGenerator {
 
+    @Serial
     private static final long serialVersionUID = 3258131349411148085L;
     private final Vec2D location;
     private final int ruleNumber;
@@ -57,9 +59,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof AddStationMoveGenerator)) return false;
-
-        final AddStationMoveGenerator addStationPreMove = (AddStationMoveGenerator) obj;
+        if (!(obj instanceof AddStationMoveGenerator addStationPreMove)) return false;
 
         if (ruleNumber != addStationPreMove.ruleNumber) return false;
         if (!location.equals(addStationPreMove.location)) return false;
@@ -83,13 +83,13 @@ public class AddStationMoveGenerator implements MoveGenerator {
     @Override
     public Move generate(UnmodifiableWorld world) {
         TerrainTile oldTile = world.getTile(location);
-        TrackPiece oldTrackPiece = oldTile.getTrackPiece();
-        if (oldTile.getTrackPiece() != null && oldTile.getTrackPiece().getTrackType().isStation()) {
+        TrackPiece oldTrackPiece = oldTile.trackPiece();
+        if (oldTile.trackPiece() != null && oldTile.trackPiece().trackType().isStation()) {
             throw new RuntimeException("Station already at location");
         }
         TrackType trackType = world.getTrackType(ruleNumber);
 
-        TrackPiece newTrackPiece = new TrackPiece(oldTrackPiece == null ? TrackConfiguration.from9bitTemplate(0) : oldTrackPiece.getTrackConfiguration(), trackType, player.getId());
+        TrackPiece newTrackPiece = new TrackPiece(oldTrackPiece == null ? TrackConfiguration.from9bitTemplate(0) : oldTrackPiece.trackConfiguration(), trackType, player.getId());
         Move upgradeTrackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, location);
 
         // There isn't already a station here, we need to pick a name and add an entry to the station list.

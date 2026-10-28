@@ -22,6 +22,7 @@ import freerails.model.cargo.CargoBatch;
 import freerails.model.finance.Money;
 import freerails.model.game.Time;
 
+import java.io.Serial;
 import java.util.Objects;
 
 // TODO Is this an Item transaction or a money transaction or something more complex?
@@ -30,6 +31,7 @@ import java.util.Objects;
  */
 public class CargoDeliveryTransaction extends Transaction {
 
+    @Serial
     private static final long serialVersionUID = 3257009851963160372L;
     private final CargoBatch cargoBatch;
     private final int quantity;

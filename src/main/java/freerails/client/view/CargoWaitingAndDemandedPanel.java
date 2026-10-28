@@ -37,6 +37,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +48,7 @@ import java.util.List;
  */
 public class CargoWaitingAndDemandedPanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3760559784860071476L;
     private UnmodifiableWorld world;
     private Player player;
@@ -199,6 +201,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
 
     private static class MyAbstractTableModel extends AbstractTableModel {
 
+        @Serial
         private static final long serialVersionUID = 3760559784860071476L;
         private final List<String> typeWaiting;
         private final List<Integer> quantityWaiting;

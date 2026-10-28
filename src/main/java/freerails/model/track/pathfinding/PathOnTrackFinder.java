@@ -140,10 +140,10 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         TerrainTile tileA = world.getTile(from);
         TerrainTile tileB = world.getTile(target);
         if (!tileA.hasTrack()) {
-            throw new PathNotFoundException("No track at " + from.x + ", " + from.y + '.');
+            throw new PathNotFoundException("No track at " + from.x() + ", " + from.y() + '.');
         }
         if (!tileB.hasTrack()) {
-            throw new PathNotFoundException("No track at " + target.x + ", " + target.y + '.');
+            throw new PathNotFoundException("No track at " + target.x() + ", " + target.y() + '.');
         }
 
         PositionOnTrack[] startPoints = FlatTrackExplorer.getPossiblePositions(world, from);

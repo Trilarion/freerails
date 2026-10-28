@@ -36,6 +36,35 @@ public class ConnectionTest extends TestCase {
         }
     }
 
+    public void testInboundQueueBackpressuresWhenMessagesAreNotConsumed() throws Exception {
+        try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future<Connection> serverConnectionFuture = executor.submit(() ->
+                    Connection.make(listener.accept()));
+            Connection client = Connection.make(new InetSocketAddress(
+                    InetAddress.getLoopbackAddress(), listener.getLocalPort()));
+            Connection serverConnection = serverConnectionFuture.get(2, TimeUnit.SECONDS);
+
+            try {
+                int messageCount = 100;
+                for (int i = 0; i < messageCount; i++) {
+                    client.sendObject(i);
+                }
+
+                for (int i = 0; i < messageCount; i++) {
+                    assertEquals(i, serverConnection.receiveObject());
+                }
+
+                assertTrue(serverConnection.isOpen());
+                assertNull(serverConnection.getReaderFailure());
+            } finally {
+                client.close();
+                serverConnection.close();
+                executor.shutdownNow();
+            }
+        }
+    }
+
     public void testClosesWhenPeerSendsDisallowedClass() throws Exception {
         try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
             ExecutorService executor = Executors.newSingleThreadExecutor();

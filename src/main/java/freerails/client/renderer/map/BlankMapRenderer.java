@@ -25,22 +25,19 @@ import java.awt.*;
 /**
  * Used for testing the Map view components without setting up any map data. Also used in the overview map.
  */
-public class BlankMapRenderer implements MapRenderer {
-
-    private final float scale;
+public record BlankMapRenderer(float scale) implements MapRenderer {
 
     /**
-     * @param s
+     * @param scale
      */
-    public BlankMapRenderer(float s) {
-        scale = s;
+    public BlankMapRenderer {
     }
 
     /**
      * @return
      */
     @Override
-    public float getScale() {
+    public float scale() {
         return scale;
     }
 
@@ -68,7 +65,8 @@ public class BlankMapRenderer implements MapRenderer {
      * @param tileLocation
      */
     @Override
-    public void refreshTile(Vec2D tileLocation) {}
+    public void refreshTile(Vec2D tileLocation) {
+    }
 
     /**
      * @param g
@@ -92,5 +90,6 @@ public class BlankMapRenderer implements MapRenderer {
      *
      */
     @Override
-    public void refreshAll() {}
+    public void refreshAll() {
+    }
 }

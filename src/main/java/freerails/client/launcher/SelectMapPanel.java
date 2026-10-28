@@ -36,6 +36,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * The Launcher panel that lets you load a game or start a new game with a
@@ -43,6 +44,7 @@ import java.awt.*;
  */
 class SelectMapPanel extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 3763096353857024568L;
     private static final String SELECT_A_MAP = "Select a map.";
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
@@ -190,14 +192,14 @@ class SelectMapPanel extends JPanel {
      * @return
      */
     public String getNewMapName() {
-        return (String) newmapsJList.getSelectedValue();
+        return newmapsJList.getSelectedValue();
     }
 
     /**
      * @return
      */
     public String getSaveGameName() {
-        return (String) savedmapsJList.getSelectedValue();
+        return savedmapsJList.getSelectedValue();
     }
 
     int getServerPort() {

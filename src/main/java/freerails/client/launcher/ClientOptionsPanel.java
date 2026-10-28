@@ -40,6 +40,7 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.Serial;
 import java.net.InetSocketAddress;
 
 /**
@@ -48,6 +49,7 @@ import java.net.InetSocketAddress;
  */
 public class ClientOptionsPanel extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 3256721779883325748L;
     private static final Logger logger = Logger.getLogger(ClientOptionsPanel.class.getName());
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";

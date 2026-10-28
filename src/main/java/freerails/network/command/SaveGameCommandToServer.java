@@ -18,11 +18,14 @@
 
 package freerails.network.command;
 
+import java.io.Serial;
+
 /**
  * A request to save the game.
  */
 public class SaveGameCommandToServer implements CommandToServer {
 
+    @Serial
     private static final long serialVersionUID = 3257281452725777209L;
     private final String filename;
 
@@ -36,9 +39,7 @@ public class SaveGameCommandToServer implements CommandToServer {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof SaveGameCommandToServer)) return false;
-
-        final SaveGameCommandToServer saveGameMessageToServer = (SaveGameCommandToServer) obj;
+        if (!(obj instanceof SaveGameCommandToServer saveGameMessageToServer)) return false;
 
         return filename.equals(saveGameMessageToServer.filename);
     }

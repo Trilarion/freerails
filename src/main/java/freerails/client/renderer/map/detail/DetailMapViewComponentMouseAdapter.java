@@ -28,7 +28,7 @@ import java.awt.event.MouseEvent;
 /**
  * Implements a MouseListener for FreerailsCursor-movement (left mouse
  * button) and a MouseMotionListener for map-scrolling (right mouse button).
- *
+ * <p>
  * Possible enhancements: setCursor(blankCursor),
  * g.draw(cursorimage,lastMouseLocation.x,lastMouseLocation.y,null)
  */
@@ -98,7 +98,7 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
             sigmadelta.x += e.getX() - lastMouseLocation.x;
             sigmadelta.y += e.getY() - lastMouseLocation.y;
 
-            int tileSize = (int) detailMapViewComponentConcrete.getScale();
+            int tileSize = (int) detailMapViewComponentConcrete.scale();
             /*  Affects the granularity of the map scrolling (the map is scrolled in
                 tileSize/GRANULARITY intervals). Multiply this value with LINEAR_ACCEL to
                 be independent of acceleration.

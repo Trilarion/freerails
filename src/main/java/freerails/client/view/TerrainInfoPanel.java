@@ -33,12 +33,14 @@ import freerails.model.world.UnmodifiableWorld;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * Shows information on a terrain type.
  */
 class TerrainInfoPanel extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 3258131375164045363L;
     private RendererRoot rendererRoot;
     private UnmodifiableWorld world;
@@ -105,8 +107,8 @@ class TerrainInfoPanel extends JPanel {
                 tableString.append("<tr> <td><strong>Supplies</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosProduced; i++) {
                     CargoProductionOrConsumption p = type.getProductions().get(i);
-                    Cargo c = world.getCargo(p.getCargoId());
-                    String supply = String.valueOf(p.getRate() / ModelConstants.UNITS_OF_CARGO_PER_WAGON);
+                    Cargo c = world.getCargo(p.cargoId());
+                    String supply = String.valueOf(p.rate() / ModelConstants.UNITS_OF_CARGO_PER_WAGON);
                     tableString.append("<tr> <td>").append(c.getName()).append(" </td><td>").append(supply).append("</td></tr>");
                 }
             }
@@ -114,7 +116,7 @@ class TerrainInfoPanel extends JPanel {
                 tableString.append("<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConsumed; i++) {
                     CargoProductionOrConsumption consumption = type.getConsumptions().get(i);
-                    Cargo cargo = world.getCargo(consumption.getCargoId());
+                    Cargo cargo = world.getCargo(consumption.cargoId());
                     tableString.append("<tr> <td>").append(cargo.getName()).append(" </td><td>&nbsp;</td></tr>");
                 }
             }
@@ -122,8 +124,8 @@ class TerrainInfoPanel extends JPanel {
                 tableString.append("<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConverted; i++) {
                     CargoConversion p = type.getConversions().get(i);
-                    Cargo input = world.getCargo(p.getSourceCargoId());
-                    Cargo output = world.getCargo(p.getProductCargoId());
+                    Cargo input = world.getCargo(p.sourceCargoId());
+                    Cargo output = world.getCargo(p.productCargoId());
                     tableString.append("<tr> <td colspan=\"2\">").append(input.getName()).append(" to ").append(output.getName()).append("</td></tr>");
                 }
             }

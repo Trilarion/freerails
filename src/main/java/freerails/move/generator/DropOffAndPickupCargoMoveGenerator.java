@@ -168,7 +168,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             Integer[] temp = new Integer[numWagonsToadd];
             for (int i = 0; i < numWagonsToadd; i++) {
                 WagonLoad wagonload = wagonsAvailable.get(i);
-                temp[i] = wagonload.getCargoType();
+                temp[i] = wagonload.cargoType();
             }
             consist = new ArrayList<>(Arrays.asList(temp));
         }

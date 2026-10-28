@@ -74,8 +74,7 @@ public class ScreenHandler {
 
         // Since we are using a buffer strategy we don't want Swing
         // to double buffer any JComponents.
-        if (c instanceof JComponent) {
-            JComponent jComponent = (JComponent) c;
+        if (c instanceof JComponent jComponent) {
             jComponent.setDoubleBuffered(false);
         }
 
@@ -137,7 +136,7 @@ public class ScreenHandler {
                     }
 
                     logger.info("Setting display mode to:  " + displayMode1.toString());
-                    device.setDisplayMode(new DisplayMode(displayMode1.x, displayMode.y, DisplayMode.BIT_DEPTH_MULTI, DisplayMode.REFRESH_RATE_UNKNOWN));
+                    device.setDisplayMode(new DisplayMode(displayMode1.x(), displayMode.y(), DisplayMode.BIT_DEPTH_MULTI, DisplayMode.REFRESH_RATE_UNKNOWN));
                 }
 
                 frame.validate();

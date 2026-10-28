@@ -143,9 +143,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         PathOnTiles expected = new PathOnTiles(new Vec2D(5, 5), TileTransition.SOUTH_WEST);
         assertEquals(expected, trainMotion.getPath());
         PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
-        int x = positionOnTrack.getLocation().x;
+        int x = positionOnTrack.getLocation().x();
         assertEquals(4, x);
-        int y = positionOnTrack.getLocation().y;
+        int y = positionOnTrack.getLocation().y();
         assertEquals(6, y);
         assertEquals(TileTransition.SOUTH_WEST, positionOnTrack.getFacingTo());
 

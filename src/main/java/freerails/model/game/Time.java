@@ -25,12 +25,10 @@ import java.io.Serializable;
 /**
  * An immutable non-negative count of elapsed simulation ticks.
  */
-public class Time implements Comparable<Time>, Serializable {
+public record Time(int ticks) implements Comparable<Time>, Serializable {
 
     public static final Time ZERO = new Time(0);
     public static final Time INFINITY = new Time(Integer.MAX_VALUE);
-
-    private final int ticks;
 
     /**
      * Creates a time from an absolute tick count.
@@ -38,30 +36,28 @@ public class Time implements Comparable<Time>, Serializable {
      * @param ticks elapsed ticks; must be non-negative
      * @throws IllegalArgumentException if {@code ticks} is negative
      */
-    public Time(int ticks) {
+    public Time {
         if (ticks < 0) {
             throw new IllegalArgumentException();
         }
-        this.ticks = ticks;
     }
 
     /**
      * Creates a time by adding a tick offset to another time.
      *
-     * @param time base time
+     * @param time       base time
      * @param deltaTicks signed number of ticks to add
      * @throws IllegalArgumentException if the resulting time is negative
      */
     public Time(@NotNull Time time, int deltaTicks) {
-        int ticks = time.getTicks() + deltaTicks;
-        if (ticks < 0) {
-            throw new IllegalArgumentException();
-        }
-        this.ticks = ticks;
+        this(time.ticks() + deltaTicks);
     }
 
-    /** Returns the elapsed tick count. */
-    public int getTicks() {
+    /**
+     * Returns the elapsed tick count.
+     */
+    @Override
+    public int ticks() {
         return ticks;
     }
 
@@ -79,17 +75,11 @@ public class Time implements Comparable<Time>, Serializable {
      *
      * @param o time to compare with
      * @return a negative value, zero, or a positive value as this time is
-     *         earlier than, equal to, or later than {@code o}
+     * earlier than, equal to, or later than {@code o}
      */
     @Override
     public int compareTo(@NotNull Time o) {
         return Integer.compare(ticks, o.ticks);
-    }
-
-    /** Returns a hash code based on the elapsed tick count. */
-    @Override
-    public int hashCode() {
-        return ticks;
     }
 
     /**
@@ -103,14 +93,15 @@ public class Time implements Comparable<Time>, Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Time)) {
+        if (!(obj instanceof Time o)) {
             return false;
         }
-        Time o = (Time) obj;
         return compareTo(o) == 0;
     }
 
-    /** Returns the elapsed tick count as a decimal string. */
+    /**
+     * Returns the elapsed tick count as a decimal string.
+     */
     @Override
     public String toString() {
         return String.valueOf(ticks);

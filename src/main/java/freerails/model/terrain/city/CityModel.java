@@ -103,10 +103,10 @@ public class CityModel {
 
         // Identify city's bounds.
         Vec2D mapSize = world.getMapSize();
-        Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
+        Rectangle mapRect = new Rectangle(0, 0, mapSize.x(), mapSize.y());
         City city = world.getCity(cityID);
         Vec2D topleft = Vec2D.subtract(city.getLocation(), new Vec2D(3, 3));
-        Rectangle cityArea = new Rectangle(topleft.x, topleft.y, 7, 7);
+        Rectangle cityArea = new Rectangle(topleft.x(), topleft.y(), 7, 7);
         cityArea = cityArea.intersection(mapRect);
 
         // Count tile types.
@@ -115,11 +115,11 @@ public class CityModel {
                 TerrainTile tile = world.getTile(new Vec2D(x, y));
 
                 // Count the number of stations at the city.
-                if (tile.getTrackPiece() != null && tile.getTrackPiece().getTrackType().isStation()) {
+                if (tile.trackPiece() != null && tile.trackPiece().trackType().isStation()) {
                     stations++;
                 }
 
-                int terrainTypeId = tile.getTerrainTypeId();
+                int terrainTypeId = tile.terrainTypeId();
                 Terrain type = world.getTerrain(terrainTypeId);
 
                 Vec2D location = new Vec2D(x, y);
@@ -151,7 +151,7 @@ public class CityModel {
     public void writeToMap(World world) {
         BiConsumer<Vec2D, Integer> f = (location, terrainTypeId) -> {
             TerrainTile terrainTile = world.getTile(location);
-            terrainTile = new TerrainTile(terrainTypeId, terrainTile.getTrackPiece());
+            terrainTile = new TerrainTile(terrainTypeId, terrainTile.trackPiece());
             world.setTile(location, terrainTile);
         };
         getUrbanCityTiles().forEach(f);

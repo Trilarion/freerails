@@ -28,12 +28,15 @@ import freerails.model.world.World;
 import freerails.model.player.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+
 /**
  * This {@link Move} adds a {@link Transaction} to a players bank account on the
  * {@link World} object.
  */
 public class AddTransactionMove implements Move {
 
+    @Serial
     private static final long serialVersionUID = 3976738055925019701L;
     private final Transaction transaction;
     private final Player player;
@@ -78,8 +81,8 @@ public class AddTransactionMove implements Move {
         // TODO should we check the time of the transaction here? actually it could have already been forwarded
         if (cashConstrained) {
             // TODO Money arithmetic
-            long bankBalance = world.getCurrentBalance(player).amount;
-            long transactionAmount = transaction.getAmount().amount;
+            long bankBalance = world.getCurrentBalance(player).amount();
+            long transactionAmount = transaction.getAmount().amount();
             long balanceAfter = bankBalance + transactionAmount;
 
             if (transactionAmount < 0 && balanceAfter < 0) {
@@ -102,8 +105,7 @@ public class AddTransactionMove implements Move {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof AddTransactionMove) {
-            AddTransactionMove test = (AddTransactionMove) obj;
+        if (obj instanceof AddTransactionMove test) {
 
             return test.player.equals(player) && test.transaction.equals(transaction);
         }

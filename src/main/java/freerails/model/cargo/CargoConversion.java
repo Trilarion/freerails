@@ -21,17 +21,16 @@ package freerails.model.cargo;
 import java.io.Serializable;
 
 // TODO equals, hashcode
-/** Describes the conversion of one cargo type into another at a stated rate. */
-public class CargoConversion implements Serializable {
 
-    private final int sourceCargoId;
-    private final int productCargoId;
-    private final double conversionRate;
+/**
+ * Describes the conversion of one cargo type into another at a stated rate.
+ */
+public record CargoConversion(int sourceCargoId, int productCargoId, double conversionRate) implements Serializable {
 
     /**
      * Creates a cargo conversion rule.
      *
-     * @param sourceCargoId identifier of the cargo consumed
+     * @param sourceCargoId  identifier of the cargo consumed
      * @param productCargoId identifier of the cargo produced
      * @param conversionRate amount of product per source unit
      * @throws IllegalArgumentException if the rate is negative or non-finite
@@ -50,7 +49,8 @@ public class CargoConversion implements Serializable {
      *
      * @return source cargo identifier
      */
-    public int getSourceCargoId() {
+    @Override
+    public int sourceCargoId() {
         return sourceCargoId;
     }
 
@@ -59,7 +59,8 @@ public class CargoConversion implements Serializable {
      *
      * @return product cargo identifier
      */
-    public int getProductCargoId() {
+    @Override
+    public int productCargoId() {
         return productCargoId;
     }
 
@@ -68,7 +69,8 @@ public class CargoConversion implements Serializable {
      *
      * @return conversion rate
      */
-    public double getConversionRate() {
+    @Override
+    public double conversionRate() {
         return conversionRate;
     }
 
@@ -83,8 +85,7 @@ public class CargoConversion implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof CargoConversion) {
-            CargoConversion other = (CargoConversion) obj;
+        if (obj instanceof CargoConversion other) {
             return sourceCargoId == other.sourceCargoId && productCargoId == other.productCargoId && conversionRate == other.conversionRate;
         }
         return false;

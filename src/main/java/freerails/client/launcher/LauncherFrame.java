@@ -40,7 +40,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.net.BindException;
+import java.io.Serial;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -54,6 +54,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class LauncherFrame extends JFrame implements LauncherInterface {
 
     private static final Logger logger = Logger.getLogger(LauncherFrame.class.getName());
+    @Serial
     private static final long serialVersionUID = -8224003315973977661L;
     private final Component[] wizardPages = new Component[4];
     private final Icon errorIcon = new ImageIcon(getClass().getResource(ClientConstants.ICON_ERROR));
@@ -339,12 +340,12 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     int port = serverInetAddress.getPort();
                     setInfoText("Connecting to server...", InfoMessageType.INFO);
                     LogOnResponse logOnResponse = client.connect(hostname, port, playerName, "password");
-                    if (logOnResponse.isSuccess()) {
+                    if (logOnResponse.success()) {
                         setInfoText("Logged on and waiting for game to start.", InfoMessageType.INFO);
                         startThread(client);
                     } else {
                         recover = true;
-                        setInfoText(logOnResponse.getMessage(), InfoMessageType.WARNING);
+                        setInfoText(logOnResponse.message(), InfoMessageType.WARNING);
                     }
                 } catch (NullPointerException e) {
                     setInfoText(e.getMessage(), InfoMessageType.WARNING);
@@ -414,7 +415,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     /**
      * Starts a thread listening for new connections.
      */
-    private void prepareToHostNetworkGame(int port) throws IOException {
+    private void prepareToHostNetworkGame(int port) {
         if (isNewGame()) {
             initServer();
         }

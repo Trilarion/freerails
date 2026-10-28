@@ -105,14 +105,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         // TODO only split move receiver so far
         this.modelRoot.addSplitMoveReceiver(move -> {
-            if (move instanceof ChangeGameSpeedMove) {
-                ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
+            if (move instanceof ChangeGameSpeedMove speedMove) {
 
                 // TODO this loop does not loop!
                 for (Action action: speedActions.getActions()) {
                     String actionName = (String) action.getValue(Action.NAME);
 
-                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speedMove.getSpeed().getTicksPerSecond()))) {
+                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speedMove.speed().getTicksPerSecond()))) {
                         speedActions.setSelectedItem(actionName);
                     }
 
@@ -398,7 +397,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
     /**
      * Called when a new game is started or a game is loaded.
-     *
+     * <p>
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games).</b>
@@ -487,7 +486,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     // TODO change too often, ~10% of time
     /**
      * Part of the WorldMapListener interface, invoked by MoveChainFork upon a MapUpdateMove
-     *
+     * <p>
      * Listens for changes on the map, for instance when track is built, and
      * refreshes the map views.
      */
@@ -505,7 +504,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
             // TODO this bug still exists, but why? (coordinates outside, what effect has this)
             // Fix for bug 967673 (Crash when building track close to edge of map).
             Vec2D mapSize = world.getMapSize();
-            Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
+            Rectangle mapRect = new Rectangle(0, 0, mapSize.x(), mapSize.y());
             tilesChanged = tilesChanged.intersection(mapRect);
 
             for (int tileX = tilesChanged.x; tileX < tilesChanged.x + tilesChanged.width; tileX++) {

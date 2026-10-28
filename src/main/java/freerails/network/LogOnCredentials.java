@@ -28,12 +28,9 @@ import java.io.Serializable;
 /**
  * Used by the server to store a player's username and password.
  */
-public class LogOnCredentials implements Serializable {
-    
-    private static final long serialVersionUID = 3258409551740155956L;
+public record LogOnCredentials(String username, String password) implements Serializable {
 
-    private final String password;
-    private final String username;
+    private static final long serialVersionUID = 3258409551740155956L;
 
     /**
      * @param username
@@ -52,23 +49,7 @@ public class LogOnCredentials implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int result = 17;
-        result = result * 37 + password.hashCode();
-        result = result * 37 + username.hashCode();
-        return result;
-    }
-
-    @Override
     public String toString() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
         return username;
     }
 }

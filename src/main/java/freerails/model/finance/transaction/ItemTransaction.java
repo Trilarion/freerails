@@ -21,20 +21,22 @@ package freerails.model.finance.transaction;
 import freerails.model.finance.Money;
 import freerails.model.game.Time;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
- *
+ * <p>
  * Characterized by a category, a type, a quantity and an amount of money of course.
- *
+ * <p>
  * Example: Buy 4 tiles of standard track
- *
+ * <p>
  * Stock transaction: A transaction that occurs when a new company is founded or when a company
  * issues additional shares. Additionally to the values necessary for an item transaction also a player id is needed.
  */
 public class ItemTransaction extends Transaction {
 
+    @Serial
     private static final long serialVersionUID = 3690471411852326457L;
     private final int quantity;
     private final int id;

@@ -27,6 +27,7 @@ import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.model.train.PositionOnTrack;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
@@ -36,6 +37,7 @@ import java.util.NoSuchElementException;
  */
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3834311713465185081L;
     public final PositionOnTrack currentBranch = new PositionOnTrack(Vec2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;
@@ -52,7 +54,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     public FlatTrackExplorer(UnmodifiableWorld world, PositionOnTrack positionOnTrack) throws NoTrackException {
         this.world = world;
         TerrainTile tile = world.getTile(positionOnTrack.getLocation());
-        if (tile.getTrackPiece() == null) {
+        if (tile.trackPiece() == null) {
             throw new NoTrackException(positionOnTrack.toString());
         }
 
@@ -67,8 +69,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * center of the tile)
      */
     public static PositionOnTrack[] getPossiblePositions(UnmodifiableWorld world, Vec2D location) {
-        TrackPiece trackPiece = world.getTile(location).getTrackPiece();
-        TrackConfiguration conf = trackPiece.getTrackConfiguration();
+        TrackPiece trackPiece = world.getTile(location).trackPiece();
+        TrackConfiguration conf = trackPiece.trackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();
 
         // Count the number of possible positions.
@@ -137,8 +139,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         }
         TileTransition v = getFirstVectorToTry();
         TerrainTile ft = world.getTile(currentPosition.getLocation());
-        TrackPiece tp = ft.getTrackPiece();
-        TrackConfiguration conf = tp.getTrackConfiguration();
+        TrackPiece tp = ft.trackPiece();
+        TrackConfiguration conf = tp.trackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();
 
         int i = v.getID();

@@ -59,8 +59,8 @@ public class SegmentTest extends TestCase {
         Segment segment = new Segment(start, end);
         Segment equal = new Segment(new Vec2D(1, 2), new Vec2D(4, 6));
 
-        assertSame(start, segment.getA());
-        assertSame(end, segment.getB());
+        assertSame(start, segment.a());
+        assertSame(end, segment.b());
         assertEquals(segment, segment);
         assertEquals(segment, equal);
         assertEquals(segment.hashCode(), equal.hashCode());

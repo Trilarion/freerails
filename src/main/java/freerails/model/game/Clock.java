@@ -98,7 +98,7 @@ public class Clock implements Serializable {
      * @return the corresponding calendar year
      */
     public int getYear(@NotNull Time time) {
-        return startYear + time.getTicks() / ticksPerYear;
+        return startYear + time.ticks() / ticksPerYear;
     }
 
 
@@ -127,7 +127,7 @@ public class Clock implements Serializable {
 
     /** @return {@code true} if the current tick is the final tick of its year */
     public boolean isLastTickOfYear() {
-        return currentTime.getTicks() % ticksPerYear == ticksPerYear - 1;
+        return currentTime.ticks() % ticksPerYear == ticksPerYear - 1;
     }
 
     // TODO a better way of calculating this
@@ -139,7 +139,7 @@ public class Clock implements Serializable {
      *         current month index
      */
     public boolean isLastTickOfMonth() {
-        return getCurrentMonth() == (currentTime.getTicks()+1) % ticksPerYear / (ticksPerYear / 12);
+        return getCurrentMonth() == (currentTime.ticks()+1) % ticksPerYear / (ticksPerYear / 12);
     }
 
     /**
@@ -158,7 +158,7 @@ public class Clock implements Serializable {
      * @return month index from 0 (January) through 11 (December)
      */
     public int getMonth(@NotNull Time time) {
-        return time.getTicks() % ticksPerYear / (ticksPerYear / 12);
+        return time.ticks() % ticksPerYear / (ticksPerYear / 12);
     }
 
     private static String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -199,10 +199,9 @@ public class Clock implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Clock)) {
+        if (!(obj instanceof Clock o)) {
             return false;
         }
-        Clock o = (Clock) obj;
         return Objects.equals(startYear, o.startYear) && Objects.equals(ticksPerYear, o.ticksPerYear) && Objects.equals(currentTime, o.currentTime);
     }
 

@@ -71,7 +71,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
         Image icon = getIcon(mapLocation, world);
 
         if (null != icon) {
-            g.drawImage(icon, renderLocation.x, renderLocation.y, null);
+            g.drawImage(icon, renderLocation.x(), renderLocation.y(), null);
         } else {
             logger.warn("special tileView icon==null");
         }

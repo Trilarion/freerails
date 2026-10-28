@@ -66,8 +66,8 @@ public class MapFixtureFactory2 {
             }
             TerrainTile tile = new TerrainTile(clearTypeID);
             Vec2D mapSize = world.getMapSize();
-            for (int x = 0; x < mapSize.x; x++) {
-                for (int y = 0; y < mapSize.y; y++) {
+            for (int x = 0; x < mapSize.x(); x++) {
+                for (int y = 0; y < mapSize.y(); y++) {
                     world.setTile(new Vec2D(x, y), tile);
                 }
             }

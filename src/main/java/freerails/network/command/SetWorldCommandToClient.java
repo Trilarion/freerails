@@ -21,12 +21,15 @@ package freerails.network.command;
 import freerails.model.world.World;
 import freerails.util.Utils;
 
+import java.io.Serial;
+
 /**
  * Sent from the server to the client when (i) a new game is started, (ii) a
  * game is loaded, or (iii) the client connects to a game in progress.
  */
 public class SetWorldCommandToClient implements CommandToClient {
 
+    @Serial
     private static final long serialVersionUID = 3257570619972269362L;
     private final World world;
 
@@ -57,9 +60,7 @@ public class SetWorldCommandToClient implements CommandToClient {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof SetWorldCommandToClient)) return false;
-
-        final SetWorldCommandToClient setWorldMessageToClient = (SetWorldCommandToClient) obj;
+        if (!(obj instanceof SetWorldCommandToClient setWorldMessageToClient)) return false;
 
         return world.equals(setWorldMessageToClient.world);
     }

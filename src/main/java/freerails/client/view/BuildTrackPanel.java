@@ -46,6 +46,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -58,6 +59,7 @@ import java.util.HashMap;
  */
 public class BuildTrackPanel extends JPanel implements ActiveView {
 
+    @Serial
     private static final long serialVersionUID = 3618701915647850036L;
     private final ImageManager imageManager = new ImageManagerImpl(ClientConstants.GRAPHICS_PATH);
     private HashMap<TrackCategory, Integer> selectionSet;
@@ -466,7 +468,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
     }
 
     private void cancelStationPlacement() {
-        // Cancel build station mode..
+        // Cancel build station mode
         stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
     }
 

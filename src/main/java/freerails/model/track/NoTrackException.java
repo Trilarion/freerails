@@ -18,11 +18,14 @@
 
 package freerails.model.track;
 
+import java.io.Serial;
+
 /**
  * Throw this exception if a track was expected, but none was laid on a terrain tile.
  */
 public class NoTrackException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = -4345207670990590768L;
 
     /**

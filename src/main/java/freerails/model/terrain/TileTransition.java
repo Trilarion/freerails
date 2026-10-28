@@ -26,6 +26,8 @@ import freerails.util.Vec2D;
 import freerails.model.ModelConstants;
 import freerails.model.track.TrackConfigurations;
 
+import java.io.Serial;
+
 /**
  * Represents one of the eight unit transitions between adjacent map tiles.
  */
@@ -33,6 +35,7 @@ public class TileTransition implements TrackConfigurations {
 
     // TODO TileDirection could become an enum and TileTransition vectors some composite
 
+    @Serial
     private static final long serialVersionUID = 3256444698640921912L;
 
     /**
@@ -113,8 +116,8 @@ public class TileTransition implements TrackConfigurations {
      * @return the coordinate reached after applying all transitions
      */
     public static Vec2D move(Vec2D p, TileTransition... path) {
-        int x = p.x;
-        int y = p.y;
+        int x = p.x();
+        int y = p.y();
         for (TileTransition v : path) {
             x += v.deltaX;
             y += v.deltaY;
@@ -139,8 +142,8 @@ public class TileTransition implements TrackConfigurations {
      *         axis and are not equal
      */
     public static boolean checkValidity(Vec2D a, Vec2D b) {
-        int dx = b.x - a.x;
-        int dy = b.y - a.y;
+        int dx = b.x() - a.x();
+        int dy = b.y() - a.y();
         return dx >= -1 && dx <= 1 && dy >= -1 && dy <= 1 && (dx != 0 || dy != 0);
     }
 
@@ -149,10 +152,10 @@ public class TileTransition implements TrackConfigurations {
      * @throws IllegalArgumentException if the displacement is zero or exceeds one tile
      */
     public static TileTransition getInstance(Vec2D d) {
-        if (d.x < -1 || d.x > 1 || d.y < -1 || d.y > 1 || d.x == 0 && d.y == 0) {
-            throw new IllegalArgumentException(d.x + " and " + d.y + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
+        if (d.x() < -1 || d.x() > 1 || d.y() < -1 || d.y() > 1 || d.x() == 0 && d.y() == 0) {
+            throw new IllegalArgumentException(d.x() + " and " + d.y() + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
         }
-        return vectors[d.x + 1][d.y + 1];
+        return vectors[d.x() + 1][d.y() + 1];
     }
 
     /**
@@ -241,24 +244,11 @@ public class TileTransition implements TrackConfigurations {
      */
     @Override
     public String toString() {
-        String name;
-
-        switch (deltaY) {
-            case 1:
-                name = " south";
-
-                break;
-
-            case -1:
-                name = " north";
-
-                break;
-
-            default:
-                name = "";
-
-                break;
-        }
+        String name = switch (deltaY) {
+            case 1 -> " south";
+            case -1 -> " north";
+            default -> "";
+        };
 
         switch (deltaX) {
             case 1:
@@ -282,24 +272,11 @@ public class TileTransition implements TrackConfigurations {
      * @return this transition's compact compass abbreviation, such as {@code "ne"}
      */
     public String toAbrvString() {
-        String name;
-
-        switch (deltaY) {
-            case 1:
-                name = "s";
-
-                break;
-
-            case -1:
-                name = "n";
-
-                break;
-
-            default:
-                name = "";
-
-                break;
-        }
+        String name = switch (deltaY) {
+            case 1 -> "s";
+            case -1 -> "n";
+            default -> "";
+        };
 
         switch (deltaX) {
             case 1:
@@ -324,7 +301,7 @@ public class TileTransition implements TrackConfigurations {
      * @return the translated coordinate
      */
     public Vec2D createRelocatedPoint(Vec2D from) {
-        return new Vec2D(from.x + deltaX, from.y + deltaY);
+        return new Vec2D(from.x() + deltaX, from.y() + deltaY);
     }
 
     /**
@@ -385,6 +362,7 @@ public class TileTransition implements TrackConfigurations {
      *
      * @return the canonical instance for this displacement
      */
+    @Serial
     private Object readResolve() {
         return TileTransition.getInstance(new Vec2D(deltaX, deltaY));
     }

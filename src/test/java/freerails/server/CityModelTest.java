@@ -45,8 +45,8 @@ public class CityModelTest extends TestCase {
         Vec2D mapSize = world.getMapSize();
 
         TerrainTile tile = new TerrainTile(0);
-        for (int x = 0; x < mapSize.x; x++) {
-            for (int y = 0; y < mapSize.y; y++) {
+        for (int x = 0; x < mapSize.x(); x++) {
+            for (int y = 0; y < mapSize.y(); y++) {
                 world.setTile(new Vec2D(x, y), tile);
             }
         }

@@ -43,7 +43,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
     public void testCalExpense() {
         balanceSheetGenerator.calculateAll();
         Money money = balanceSheetGenerator.mailTotal;
-        assertEquals(0, money.amount);
+        assertEquals(0, money.amount());
 
         Cargo cargo = world.getCargo(0);
         assertEquals(CargoCategory.MAIL, cargo.getCategory());

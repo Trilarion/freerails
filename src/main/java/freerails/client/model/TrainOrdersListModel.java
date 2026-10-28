@@ -30,6 +30,7 @@ import freerails.model.player.Player;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 
 import javax.swing.*;
+import java.io.Serial;
 
 /**
  * AbstractListModel used by {@link TrainSchedulePanel} to display the orders
@@ -41,6 +42,7 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
     public static final int GOTO_NOW = 1;
     public static final int GOTO_AFTER_PRIORITY_ORDERS = 2;
 
+    @Serial
     private static final long serialVersionUID = 3762537827703009847L;
     private final int trainNumber;
     private final UnmodifiableWorld world;

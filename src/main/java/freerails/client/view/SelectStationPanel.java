@@ -40,6 +40,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serial;
 import java.util.NoSuchElementException;
 
 /**
@@ -48,6 +49,7 @@ import java.util.NoSuchElementException;
  */
 public class SelectStationPanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3258411750662877488L;
     private UnmodifiableWorld world;
     private ActionListener submitButtonCallBack;
@@ -206,7 +208,7 @@ public class SelectStationPanel extends JPanel implements View {
         topLeft = Vec2D.subtract(topLeft, margin);
         bottomRight = Vec2D.add(bottomRight, margin);
 
-        visableMapTiles = new Rectangle(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+        visableMapTiles = new Rectangle(topLeft.x(), topLeft.y(), bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y());
         boolean heightConstraintBinds = visableMapTiles.getHeight() / visableMapTiles.getWidth() > mapRect.getHeight() / mapRect.getWidth();
         if (heightConstraintBinds) {
             scale = mapRect.getHeight() / visableMapTiles.getHeight();
@@ -229,10 +231,10 @@ public class SelectStationPanel extends JPanel implements View {
         // Draw track
         g2.setColor(Color.BLACK);
         Vec2D mapSize = world.getMapSize();
-        for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, mapSize.x); x++) {
-            for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, mapSize.y); y++) {
+        for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, mapSize.x()); x++) {
+            for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, mapSize.y()); y++) {
                 TerrainTile terrainTile = world.getTile(new Vec2D(x, y));
-                if (terrainTile.getTrackPiece() != null) {
+                if (terrainTile.trackPiece() != null) {
                     double xDouble = x - visableMapTiles.x;
                     xDouble = xDouble * scale;
                     double yDouble = y - visableMapTiles.y;
@@ -269,9 +271,9 @@ public class SelectStationPanel extends JPanel implements View {
             }
 
             // TODO Vector arithmetic
-            double x = station.getLocation().x - visableMapTiles.x;
+            double x = station.getLocation().x() - visableMapTiles.x;
             x = x * scale;
-            double y = station.getLocation().y - visableMapTiles.y;
+            double y = station.getLocation().y() - visableMapTiles.y;
             y = y * scale;
             int xInt = (int) x;
             int yInt = (int) y;

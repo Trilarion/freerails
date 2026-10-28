@@ -29,12 +29,14 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * The first launcher panel, lets you choose 'single player', 'start network game' etc.
  */
 public class LauncherPanel extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 3257850965422913590L;
     private final ButtonModel[] buttonModels = new ButtonModel[3];
     private final ButtonGroup buttonGroup1;

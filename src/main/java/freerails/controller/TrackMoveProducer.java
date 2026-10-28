@@ -125,12 +125,12 @@ public class TrackMoveProducer {
         int playerId = player.getId();
 
         if (world.boundsContain(p)) {
-            oldTrackPiece = world.getTile(p).getTrackPiece();
+            oldTrackPiece = world.getTile(p).trackPiece();
         }
 
         if (oldTrackPiece != null) {
-            TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
-            newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), playerId);
+            TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.trackConfiguration(), direction);
+            newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.trackType(), playerId);
         } else {
             newTrackPiece = TrackUtils.getTrackPieceWhenOldTrackPieceIsNull(direction, trackType, playerId);
         }
@@ -145,15 +145,15 @@ public class TrackMoveProducer {
         TrackPiece newTrackPiece;
 
         if (world.boundsContain(p)) {
-            oldTrackPiece = world.getTile(p).getTrackPiece();
+            oldTrackPiece = world.getTile(p).trackPiece();
         }
 
         if (oldTrackPiece != null) {
-            TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
+            TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.trackConfiguration(), direction);
 
             if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
                 int playerId = player.getId();
-                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), playerId);
+                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.trackType(), playerId);
             } else {
                 newTrackPiece = null;
             }
@@ -168,11 +168,11 @@ public class TrackMoveProducer {
 
         // TODO maybe the removal of a station should be checked and induced somewhere else
         // If we are removing a station, we also need to remove the station from the station list.
-        if (oldTrackPiece.getTrackType().isStation() && (newTrackPiece == null || !newTrackPiece.getTrackType().isStation())) {
+        if (oldTrackPiece.trackType().isStation() && (newTrackPiece == null || !newTrackPiece.trackType().isStation())) {
             int stationIndex = -1;
 
             for (Station station: world.getStations(player)) {
-                if (station.getLocation().equals(changeTrackPieceMove.getLocation())) {
+                if (station.getLocation().equals(changeTrackPieceMove.location())) {
                     // We have found the station!
                     stationIndex = station.getId();
                     break;
@@ -180,7 +180,7 @@ public class TrackMoveProducer {
             }
 
             if (-1 == stationIndex) {
-                throw new IllegalArgumentException("Could find a station at " + changeTrackPieceMove.getLocation());
+                throw new IllegalArgumentException("Could find a station at " + changeTrackPieceMove.location());
             }
 
             ArrayList<Move> moves = new ArrayList<>();
@@ -214,8 +214,8 @@ public class TrackMoveProducer {
      */
     public Status buildTrack(Vec2D from, TileTransition[] path) {
         Status returnValue = Status.OK;
-        int x = from.x;
-        int y = from.y;
+        int x = from.x();
+        int y = from.y();
         for (TileTransition aPath : path) {
 
             returnValue = buildTrack(new Vec2D(x, y), aPath);
@@ -266,13 +266,13 @@ public class TrackMoveProducer {
 
         int[] ruleIDs = new int[2];
         TrackType[] types = new TrackType[2];
-        int[] xs = {from.x, from.x + trackVector.deltaX};
-        int[] ys = {from.y, from.y + trackVector.deltaY};
+        int[] xs = {from.x(), from.x() + trackVector.deltaX};
+        int[] ys = {from.y(), from.y() + trackVector.deltaY};
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
             TerrainTile tile = world.getTile(new Vec2D(x, y));
-            int terrainTypeId = tile.getTerrainTypeId();
+            int terrainTypeId = tile.terrainTypeId();
             ruleIDs[i] = getBuildTrackStrategy().getRule(terrainTypeId);
 
             if (ruleIDs[i] == -1) {
@@ -287,7 +287,7 @@ public class TrackMoveProducer {
             case UPGRADE_TRACK: {
                 // upgrade the from tile if necessary.
                 TerrainTile tileA = world.getTile(from);
-                if (tileA.getTrackPiece().getTrackType().getId() != ruleIDs[0] && !StationUtils.isStationHere(executor.getWorld(), from)) {
+                if (tileA.trackPiece().trackType().getId() != ruleIDs[0] && !StationUtils.isStationHere(executor.getWorld(), from)) {
                     Status status = upgradeTrack(from, ruleIDs[0]);
                     if (!status.isSuccess()) {
                         return status;
@@ -295,7 +295,7 @@ public class TrackMoveProducer {
                 }
                 Vec2D point = Vec2D.add(from, trackVector.getD());
                 TerrainTile tileB = world.getTile(point);
-                if (tileB.getTrackPiece().getTrackType().getId() != ruleIDs[1] && !StationUtils.isStationHere(executor.getWorld(), point)) {
+                if (tileB.trackPiece().trackType().getId() != ruleIDs[1] && !StationUtils.isStationHere(executor.getWorld(), point)) {
                     Status status = upgradeTrack(point, ruleIDs[1]);
                     if (!status.isSuccess()) {
                         return status;
@@ -317,7 +317,7 @@ public class TrackMoveProducer {
 
     private Status upgradeTrack(Vec2D point, int trackRuleID) {
         UnmodifiableWorld world = executor.getWorld();
-        TrackPiece before = world.getTile(point).getTrackPiece();
+        TrackPiece before = world.getTile(point).trackPiece();
         // Check whether there is track here.
         if (before == null) {
             return Status.fail("No track to upgrade.");
@@ -326,10 +326,10 @@ public class TrackMoveProducer {
         Player player = executor.getPlayer();
         int owner = player.getId();
         TrackType trackType = world.getTrackType(trackRuleID);
-        TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackType, owner);
+        TrackPiece after = new TrackPiece(before.trackConfiguration(), trackType, owner);
 
         // We don't want to 'upgrade' a station to track. See bug 874416.
-        if (before.getTrackType().isStation()) {
+        if (before.trackType().isStation()) {
             return Status.fail("No need to upgrade track at station.");
         }
 

@@ -26,18 +26,18 @@ import java.io.Serializable;
 
 /**
  * All moves should implement this interface and obey the contract described below.
- *
+ * <p>
  * (1) They should be immutable.
- *
+ * <p>
  * (2) They should override {@code Object.equals()} to test for logical
  * equality.
- *
+ * <p>
  * (4) The changes they encapsulate should be stored in an address space
  * independent way, so that a move generated on a client can be serialised, sent
  * over a network, and then deserialized and executed on a server. To achieve
  * this, they should refer to items in the game world via either their
  * coordinates, e.g. tile 10,50, or their position in a list, e.g. train #4.
- *
+ * <p>
  * (6) The applicable method should test whether the move is
  * valid but leave the game world unchanged.
  *

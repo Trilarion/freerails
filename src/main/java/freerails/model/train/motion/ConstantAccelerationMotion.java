@@ -21,6 +21,7 @@
  */
 package freerails.model.train.motion;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -29,6 +30,7 @@ import java.io.Serializable;
  */
 public class ConstantAccelerationMotion implements Serializable, Motion {
 
+    @Serial
     private static final long serialVersionUID = -2180666310811530761L;
     /** Zero-distance motion for a stationary train. */
     public static final ConstantAccelerationMotion STOPPED = new ConstantAccelerationMotion(0, 0, 0, 0);
@@ -162,8 +164,7 @@ public class ConstantAccelerationMotion implements Serializable, Motion {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof ConstantAccelerationMotion)) return false;
-        ConstantAccelerationMotion other = (ConstantAccelerationMotion) obj;
+        if (!(obj instanceof ConstantAccelerationMotion other)) return false;
         return initialSpeed == other.initialSpeed && acceleration == other.acceleration && totalDistance == other.totalDistance && totalTime == other.totalTime;
     }
 

@@ -111,17 +111,17 @@ public class PathWalkerImpl implements PathWalker {
          *
          */
         if (!beforeFirst) {
-            if (start.x != lastX) {
+            if (start.x() != lastX) {
                 throw new IllegalStateException();
             }
 
-            if (start.y != lastY) {
+            if (start.y() != lastY) {
                 throw new IllegalStateException();
             }
         }
 
-        lastX = stop.x;
-        lastY = stop.y;
+        lastX = stop.x();
+        lastY = stop.y();
         beforeFirst = false;
 
         return new Segment(start, stop);
@@ -131,14 +131,14 @@ public class PathWalkerImpl implements PathWalker {
     private Vec2D endInMiddleOfSegment() {
         distanceAlongCurrentSegment += distanceOfThisStepRemaining;
         distanceOfThisStepRemaining = 0;
-        int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().x, currentSegment.getB().x);
-        int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().y, currentSegment.getB().y);
+        int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.a().x(), currentSegment.b().x());
+        int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.a().y(), currentSegment.b().y());
         return new Vec2D(x, y);
     }
 
     /** Returns the current segment endpoint and carries excess distance to the next segment. */
     private Vec2D endAtSegmentEnd(double remainingDistanceAlongCurrentSegment) {
-        Vec2D stop = currentSegment.getB();
+        Vec2D stop = currentSegment.b();
         distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
         distanceAlongCurrentSegment = currentSegment.getLength();
         return stop;
@@ -146,8 +146,8 @@ public class PathWalkerImpl implements PathWalker {
 
     /** Computes the start point at the current offset within the active segment. */
     private Vec2D startInMiddleOfSegment() {
-        int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().x, currentSegment.getB().x);
-        int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().y, currentSegment.getB().y);
+        int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.a().x(), currentSegment.b().x());
+        int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.a().y(), currentSegment.b().y());
         return new Vec2D(x, y);
     }
 
@@ -155,7 +155,7 @@ public class PathWalkerImpl implements PathWalker {
     private Vec2D startNewSegment() {
         currentSegment = it.nextSegment();
         distanceAlongCurrentSegment = 0;
-        return currentSegment.getA();
+        return currentSegment.a();
     }
 
     /**

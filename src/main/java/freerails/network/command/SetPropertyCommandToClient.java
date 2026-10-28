@@ -20,6 +20,7 @@ package freerails.network.command;
 
 import freerails.util.Utils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -28,6 +29,7 @@ import java.io.Serializable;
  */
 public class SetPropertyCommandToClient implements CommandToClient {
 
+    @Serial
     private static final long serialVersionUID = 3544392521746034740L;
     private final ClientProperty key;
     private final Serializable value;
@@ -44,9 +46,7 @@ public class SetPropertyCommandToClient implements CommandToClient {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof SetPropertyCommandToClient)) return false;
-
-        final SetPropertyCommandToClient setPropertyMessageToClient = (SetPropertyCommandToClient) obj;
+        if (!(obj instanceof SetPropertyCommandToClient setPropertyMessageToClient)) return false;
 
         if (key != setPropertyMessageToClient.key) return false;
         return value.equals(setPropertyMessageToClient.value);

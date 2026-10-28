@@ -120,16 +120,16 @@ public class BuildTrackControllerTest extends TestCase {
         buildTrackController.updateWorld(trackBuilder);
 
         TerrainTile tile = world.getTile(new Vec2D(10, 10));
-        assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackType().getId());
+        assertEquals(singleTrackRuleID, tile.trackPiece().trackType().getId());
 
         tile = world.getTile(new Vec2D(15, 10));
-        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackType().getId());
+        assertEquals(doubleTrackRuleID, tile.trackPiece().trackType().getId());
 
         tile = world.getTile(new Vec2D(17, 10));
-        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackType().getId());
+        assertEquals(doubleTrackRuleID, tile.trackPiece().trackType().getId());
 
         tile = world.getTile(new Vec2D(20, 10));
-        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackType().getId());
+        assertEquals(doubleTrackRuleID, tile.trackPiece().trackType().getId());
     }
 
     /**

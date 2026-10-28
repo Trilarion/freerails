@@ -51,6 +51,7 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -63,6 +64,7 @@ import java.util.List;
  */
 public class FullServerGameModel implements ServerGameModel {
 
+    @Serial
     private static final long serialVersionUID = 3978144352788820021L;
     private World world;
     private String[] passwords;
@@ -80,7 +82,7 @@ public class FullServerGameModel implements ServerGameModel {
     // TODO this should be part of the model, at least the update part
     /**
      * Call this method once a month.
-     *
+     * <p>
      * Loops over the list of stations and adds cargo depending on what
      * the surrounding tiles supply.
      */
@@ -132,7 +134,7 @@ public class FullServerGameModel implements ServerGameModel {
      * If, say, 14 units get added each year, some month we should add 1 and
      * others we should add 2 such that over the year exactly 14 units get
      * added.
-     *
+     * <p>
      * Note: January is 0
      */
     public static int calculateAmountToAddPerMonth(int amountSuppliedPerYear, int month) {
@@ -143,7 +145,7 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * Iterates over the entries in the bank account and counts the number
      * of outstanding bonds, then calculates the interest due.
-     *
+     * <p>
      * Done on the server side
      * @param world
      */
@@ -155,10 +157,9 @@ public class FullServerGameModel implements ServerGameModel {
             long interestDue = 0;
 
             for (Transaction transaction: world.getTransactions(player)) {
-                if (transaction instanceof BondItemTransaction) {
-                    BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
+                if (transaction instanceof BondItemTransaction bondItemTransaction) {
                     int interestRate = bondItemTransaction.getId();
-                    interestDue += (interestRate * ModelConstants.BOND_VALUE_ISSUE.amount / 100) * bondItemTransaction.getQuantity();
+                    interestDue += (interestRate * ModelConstants.BOND_VALUE_ISSUE.amount() / 100) * bondItemTransaction.getQuantity();
                 }
             }
 
@@ -211,7 +212,7 @@ public class FullServerGameModel implements ServerGameModel {
 
         for (TrackType trackType: world.getTrackTypes()) {
             // TODO Money arithmetic
-            long maintenanceCost = trackType.getYearlyMaintenance().amount;
+            long maintenanceCost = trackType.getYearlyMaintenance().amount();
 
             // Is the track type the category we are interested in?
             boolean rightType = (TransactionCategory.TRACK_MAINTENANCE == category) != trackType.isStation();
@@ -254,8 +255,8 @@ public class FullServerGameModel implements ServerGameModel {
 
                     for (TrainTemplate trainTemplate : production) {
                         // build train
-                        int engineId = trainTemplate.getEngineId();
-                        List<Integer> wagonTypes = trainTemplate.getWagonTypes();
+                        int engineId = trainTemplate.engineId();
+                        List<Integer> wagonTypes = trainTemplate.wagonTypes();
 
                         // If there are no wagons, setup an automatic schedule.
                         boolean autoSchedule = 0 == wagonTypes.size();
@@ -436,7 +437,7 @@ public class FullServerGameModel implements ServerGameModel {
         for (Player player: world.getPlayers()) {
             for (Station station: world.getStations(player)) {
                 TerrainTile tile = world.getTile(station.getLocation());
-                int trackRuleId = tile.getTrackPiece().getTrackType().getId();
+                int trackRuleId = tile.trackPiece().trackType().getId();
                 Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, trackRuleId, station);
 
                 if (!stationAfter.equals(station)) {

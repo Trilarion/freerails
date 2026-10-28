@@ -26,12 +26,15 @@ import freerails.model.player.Player;
 import freerails.model.world.WorldUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+
 // TODO what about a remove of a player?
 /**
  * Adds a player to the world.
  */
 public class AddPlayerMove implements Move {
 
+    @Serial
     private static final long serialVersionUID = 3977580277537322804L;
     private final Player player;
 
@@ -42,9 +45,7 @@ public class AddPlayerMove implements Move {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AddPlayerMove)) return false;
-
-        final AddPlayerMove addPlayerMove = (AddPlayerMove) o;
+        if (!(o instanceof AddPlayerMove addPlayerMove)) return false;
 
         return player.equals(addPlayerMove.player);
     }

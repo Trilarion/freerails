@@ -81,27 +81,16 @@ public class FreerailsCursor {
             timeArrived = System.currentTimeMillis();
         }
 
-        int x = cursorMapPosition.x * tileSize.width;
-        int y = cursorMapPosition.y * tileSize.height;
+        int x = cursorMapPosition.x() * tileSize.width;
+        int y = cursorMapPosition.y() * tileSize.height;
 
-        Image cursor = null;
-        switch (buildMode) {
-            case BUILD_TRACK:
-                cursor = buildTrack;
-                break;
-            case REMOVE_TRACK:
-                cursor = removeTrack;
-                break;
-            case UPGRADE_TRACK:
-                cursor = upgradeTrack;
-                break;
-            case IGNORE_TRACK:
-                cursor = infoMode;
-                break;
-            case BUILD_STATION:
-                cursor = buildTrack;
-                break;
-        }
+        Image cursor = switch (buildMode) {
+            case BUILD_TRACK -> buildTrack;
+            case REMOVE_TRACK -> removeTrack;
+            case UPGRADE_TRACK -> upgradeTrack;
+            case IGNORE_TRACK -> infoMode;
+            case BUILD_STATION -> buildTrack;
+        };
 
         Boolean b = (Boolean) modelRoot.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);
         long time = System.currentTimeMillis() - timeArrived;
@@ -141,8 +130,8 @@ public class FreerailsCursor {
 
             g.setColor(Color.WHITE);
 
-            x = targetPoint.x * tileSize.width + (tileSize.width - dotSize) / 2;
-            y = targetPoint.y * tileSize.width + (tileSize.height - dotSize) / 2;
+            x = targetPoint.x() * tileSize.width + (tileSize.width - dotSize) / 2;
+            y = targetPoint.y() * tileSize.width + (tileSize.height - dotSize) / 2;
             g.fillOval(x, y, dotSize, dotSize);
         }
     }

@@ -56,7 +56,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
      * Used to draw on the back buffer. It is translated so that to its users, it
      * appears they are drawing on the actual map, not a buffered region of the
      * map.
-     *
+     * <p>
      * translatedBg equals bg.translate(-bufferRect.x , -bufferRect.y);
      */
     private Graphics translatedBg;

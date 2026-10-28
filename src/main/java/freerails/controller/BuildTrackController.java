@@ -150,8 +150,8 @@ public class BuildTrackController implements GameModel {
     private Status moveCursorMoreTiles(List<Vec2D> track, TrackMoveProducer trackBuilder) {
         Vec2D oldPosition = getCursorPosition();
 
-        if (!TileTransition.checkValidity(oldPosition, track.get(0))) {
-            throw new IllegalStateException(oldPosition + " and " + track.get(0).toString());
+        if (!TileTransition.checkValidity(oldPosition, track.getFirst())) {
+            throw new IllegalStateException(oldPosition + " and " + track.getFirst().toString());
         }
 
         Status status = null;
@@ -175,8 +175,8 @@ public class BuildTrackController implements GameModel {
 
             // If there is already track between the two tiles, do nothing
             TerrainTile tile = unmodifiableWorld.getTile(oldPosition);
-            TrackPiece trackPiece = tile.getTrackPiece();
-            if (trackPiece != null && trackPiece.getTrackConfiguration().contains(vector)) {
+            TrackPiece trackPiece = tile.trackPiece();
+            if (trackPiece != null && trackPiece.trackConfiguration().contains(vector)) {
                 oldPosition = point;
                 continue;
             }
@@ -227,20 +227,20 @@ public class BuildTrackController implements GameModel {
     private Status planBuildingTrack(Vec2D point, TileTransition tileTransition) {
         TerrainTile tileA = world.getTile(point);
         BuildTrackStrategy buildTrackStrategy = getBuildTrackStrategy();
-        int trackTypeAID = buildTrackStrategy.getRule(tileA.getTerrainTypeId());
+        int trackTypeAID = buildTrackStrategy.getRule(tileA.terrainTypeId());
         TrackType trackTypeA = unmodifiableWorld.getTrackType(trackTypeAID);
 
         TerrainTile tileB = world.getTile(Vec2D.add(point, tileTransition.getD()));
-        int trackTypeBID = buildTrackStrategy.getRule(tileB.getTerrainTypeId());
+        int trackTypeBID = buildTrackStrategy.getRule(tileB.terrainTypeId());
         TrackType trackTypeB = unmodifiableWorld.getTrackType(trackTypeBID);
 
         ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, world, player);
 
         // add to proposed track
         ChangeTrackPieceMove m = (ChangeTrackPieceMove) move.getMove(0);
-        proposedTrack.put(m.location, m.trackPieceAfter);
+        proposedTrack.put(m.location(), m.trackPieceAfter());
         m = (ChangeTrackPieceMove) move.getMove(1);
-        proposedTrack.put(m.location, m.trackPieceAfter);
+        proposedTrack.put(m.location(), m.trackPieceAfter());
 
         Status status = move.applicable(world);
         if (status.isSuccess()) {
@@ -419,7 +419,7 @@ public class BuildTrackController implements GameModel {
 
                                     // add to proposed track
                                     ChangeTrackPieceMove m = (ChangeTrackPieceMove) ((ChangeTrackPieceCompositeMove) move).getMove(0);
-                                    proposedTrack.put(m.location, m.trackPieceAfter);
+                                    proposedTrack.put(m.location(), m.trackPieceAfter());
 
                                     break;
                                 } catch (Exception e1) {
@@ -430,35 +430,35 @@ public class BuildTrackController implements GameModel {
                             case UPGRADE_TRACK:
 
                                 TerrainTile tile = world.getTile(location);
-                                int tt = tile.getTerrainTypeId();
+                                int tt = tile.terrainTypeId();
                                 int trackRuleID = getBuildTrackStrategy().getRule(tt);
 
                                 /*
                                  * Skip tiles that already have the right track
                                  * type.
                                  */
-                                if (trackRuleID == tile.getTrackPiece().getTrackType().getId()) {
+                                if (trackRuleID == tile.trackPiece().trackType().getId()) {
                                     break attemptMove;
                                 }
 
                                 int owner = fp.getId();
                                 TrackType trackType = unmodifiableWorld.getTrackType(trackRuleID);
-                                TrackPiece after = new TrackPiece(tile.getTrackPiece().getTrackConfiguration(), trackType, owner);
+                                TrackPiece after = new TrackPiece(tile.trackPiece().trackConfiguration(), trackType, owner);
 
                                 /*
                                  * We don't want to 'upgrade' a station to track.
                                  * See bug 874416.
                                  */
-                                if (tile.getTrackPiece().getTrackType().isStation()) {
+                                if (tile.trackPiece().trackType().isStation()) {
                                     break attemptMove;
                                 }
 
-                                move = new ChangeTrackPieceMove(tile.getTrackPiece(), after, location);
+                                move = new ChangeTrackPieceMove(tile.trackPiece(), after, location);
                                 // move = SpecialTrackCompositeMove.generateUpgradeTrackCompositeMove(tile.getTrackPiece(), after, location);
 
                                 // add to proposed track
                                 ChangeTrackPieceMove m = (ChangeTrackPieceMove) move;
-                                proposedTrack.put(m.location, m.trackPieceAfter);
+                                proposedTrack.put(m.location(), m.trackPieceAfter());
 
                                 break;
 
@@ -500,7 +500,7 @@ public class BuildTrackController implements GameModel {
 
                 // Note, reset() will have been called if moveStatus.success == false
                 if (status.isSuccess()) {
-                    actPoint = builtTrack.get(builtTrack.size() - 1);
+                    actPoint = builtTrack.getLast();
                     builtTrack = new ArrayList<>();
                 }
             }

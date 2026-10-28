@@ -176,62 +176,45 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
     // TODO model still not correct ...
 
     /**
-     * contains all data which is displayed for one station (order). This is
-     * used to find prebuilt Panels
-     */
-    private static class TrainOrderModel {
-        private final String stationName;
-        private final String waitUntilFull;
-        private final Selection selected;
-        private final int gotoStatus;
-        private final String orderText;
-
+         * contains all data which is displayed for one station (order). This is
+         * used to find prebuilt Panels
+         */
+        private record TrainOrderModel(String stationName, String waitUntilFull, Selection selected, int gotoStatus, String orderText) {
         /**
          * @param stationName
          * @param waitUntilFull
          * @param selected
          * @param gotoStatus
          */
-        private TrainOrderModel(String stationName, String waitUntilFull, Selection selected, int gotoStatus, String orderText) {
-            super();
-            this.stationName = stationName;
-            this.waitUntilFull = waitUntilFull;
-            this.selected = selected;
-            this.gotoStatus = gotoStatus;
-            this.orderText = orderText;
+        private TrainOrderModel {
         }
 
-        @Override
-        public boolean equals(Object obj) {
-            if (!(obj instanceof TrainOrderModel)) {
-                return false;
+            @Override
+            public boolean equals(Object obj) {
+                if (!(obj instanceof TrainOrderModel cmp)) {
+                    return false;
+                }
+                if (cmp.gotoStatus != gotoStatus) {
+                    return false;
+                }
+                if (cmp.selected != selected) {
+                    return false;
+                }
+                if (stationName != null && cmp.stationName == null) {
+                    return false;
+                }
+                if (stationName != null && !stationName.equals(cmp.stationName)) {
+                    return false;
+                }
+                if (waitUntilFull != null && cmp.waitUntilFull == null) {
+                    return false;
+                }
+                if (waitUntilFull != null && !waitUntilFull.equals(cmp.waitUntilFull)) {
+                    return false;
+                }
+                return orderText == null || orderText.equals(cmp.orderText);
             }
-            TrainOrderModel cmp = (TrainOrderModel) obj;
-            if (cmp.gotoStatus != gotoStatus) {
-                return false;
-            }
-            if (cmp.selected != selected) {
-                return false;
-            }
-            if (stationName != null && cmp.stationName == null) {
-                return false;
-            }
-            if (stationName != null && !stationName.equals(cmp.stationName)) {
-                return false;
-            }
-            if (waitUntilFull != null && cmp.waitUntilFull == null) {
-                return false;
-            }
-            if (waitUntilFull != null && !waitUntilFull.equals(cmp.waitUntilFull)) {
-                return false;
-            }
-            return orderText == null || orderText.equals(cmp.orderText);
-        }
 
-        @Override
-        public int hashCode() {
-            return waitUntilFull.hashCode() + stationName.hashCode() + selected.hashCode() + gotoStatus + orderText.hashCode();
-        }
     }
 
 }

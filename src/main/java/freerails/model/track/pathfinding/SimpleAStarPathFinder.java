@@ -21,6 +21,7 @@ package freerails.model.track.pathfinding;
 import freerails.model.track.explorer.GraphExplorer;
 import org.apache.log4j.Logger;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -30,6 +31,7 @@ import java.util.*;
  */
 public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinder {
 
+    @Serial
     private static final long serialVersionUID = 3257565105200576310L;
     private static final Logger logger = Logger.getLogger(SimpleAStarPathFinder.class.getName());
     private final OpenList openList = new OpenList();
@@ -73,7 +75,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
      */
     public int findstep(int currentPosition, int[] targets, GraphExplorer tempExplorer) {
         try {
-            return findpath(new int[]{currentPosition}, targets, tempExplorer).get(0);
+            return findpath(new int[]{currentPosition}, targets, tempExplorer).getFirst();
         } catch (PathNotFoundException e) {
             return PathFinderStatus.PATH_NOT_FOUND.id;
         }

@@ -57,8 +57,8 @@ public class CityNamesRenderer implements Painter {
         // draw city names onto map
         for (City city: world.getCities()) {
             Vec2D location = city.getLocation();
-            final int xpos = location.x * ModelConstants.TILE_SIZE;
-            final int ypos = location.y * ModelConstants.TILE_SIZE + 10;
+            final int xpos = location.x() * ModelConstants.TILE_SIZE;
+            final int ypos = location.y() * ModelConstants.TILE_SIZE + 10;
             Rectangle cityNameBox = new Rectangle(xpos, ypos, ModelConstants.TILE_SIZE * 8, 20);
             if (newVisibleRectangle != null && !newVisibleRectangle.intersects(cityNameBox)) {
                 continue;

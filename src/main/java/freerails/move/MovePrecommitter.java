@@ -133,8 +133,7 @@ public class MovePrecommitter {
         while (!uncomitted.isEmpty() && !blocked) {
             Object first = uncomitted.getFirst();
 
-            if (first instanceof Move) {
-                Move move = (Move) first;
+            if (first instanceof Move move) {
                 Status status = move.applicable(world);
                 move.apply(world);
 
@@ -144,8 +143,7 @@ public class MovePrecommitter {
                 } else {
                     blocked = true;
                 }
-            } else if (first instanceof MoveGenerator) {
-                MoveGenerator moveGenerator = (MoveGenerator) first;
+            } else if (first instanceof MoveGenerator moveGenerator) {
                 Move move = moveGenerator.generate(world);
                 Status status = move.applicable(world);
                 move.apply(world);
@@ -176,7 +174,7 @@ public class MovePrecommitter {
         }
         MoveGeneratorAndMove pmam = (MoveGeneratorAndMove) precomitted.getLast();
 
-        return pmam.move;
+        return pmam.move();
     }
 
 }

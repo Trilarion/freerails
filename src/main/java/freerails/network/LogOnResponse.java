@@ -24,34 +24,25 @@ import java.util.Objects;
 /**
  * Stores the result of a request to log onto the server.
  */
-public class LogOnResponse implements Serializable {
+public record LogOnResponse(boolean success, int id, String message) implements Serializable {
 
     private static final long serialVersionUID = 3690479099844311344L;
-    private final boolean success;
-    private final int id;
-    private final String message;
 
     public LogOnResponse(boolean success, int id) {
+        this(success, id, null);
         assert success;
-        this.success = success;
-        this.id = id;
-        message = null;
     }
 
     // TODO the usage of success is strange, why here always false
     public LogOnResponse(boolean success, String s) {
+        this(success, -1, s);
         assert !success;
-        this.success = success;
-        id = -1;
-        message = s;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof LogOnResponse)) return false;
-
-        final LogOnResponse logOnResponse = (LogOnResponse) obj;
+        if (!(obj instanceof LogOnResponse logOnResponse)) return false;
 
         if (id != logOnResponse.id) return false;
         if (success != logOnResponse.success) return false;
@@ -70,21 +61,24 @@ public class LogOnResponse implements Serializable {
     /**
      * @return
      */
-    public int getId() {
+    @Override
+    public int id() {
         return id;
     }
 
     /**
      * @return
      */
-    public String getMessage() {
+    @Override
+    public String message() {
         return message;
     }
 
     /**
      * @return
      */
-    public boolean isSuccess() {
+    @Override
+    public boolean success() {
         return success;
     }
 }

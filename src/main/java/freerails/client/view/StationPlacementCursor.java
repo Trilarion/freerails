@@ -91,7 +91,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
     };
 
     private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer stationRadiusRenderer, DetailMapViewComponent mapView) {
-        scale = mapView.getScale();
+        scale = mapView.scale();
         this.mapView = mapView;
         stationBuildModel = actionRoot.getStationBuildModel();
         this.stationRadiusRenderer = stationRadiusRenderer;

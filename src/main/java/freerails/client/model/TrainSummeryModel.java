@@ -113,7 +113,7 @@ public class TrainSummeryModel {
         TrainOrdersListModel ordersList = new TrainOrdersListModel(world, trainNum, player);
         int size = ordersList.getSize();
         for (int i = 0; i < size; ++i) {
-            TrainOrdersListElement element = (TrainOrdersListElement) ordersList.getElementAt(i);
+            TrainOrdersListElement element = ordersList.getElementAt(i);
             if (element.gotoStatus == TrainOrdersListModel.GOTO_NOW) {
                 orders = element.order;
                 break;

@@ -20,6 +20,7 @@ package freerails.model.track;
 
 import freerails.model.terrain.TileTransition;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import java.util.List;
  */
 public class TrackConfiguration implements TrackConfigurations {
 
+    @Serial
     private static final long serialVersionUID = 3618695301330974512L;
     private static final List<TrackConfiguration> flatTrackConfigurations;
 
@@ -237,6 +239,7 @@ public class TrackConfiguration implements TrackConfigurations {
      *
      * @return the canonical configuration
      */
+    @Serial
     private Object readResolve() {
         return TrackConfiguration.from9bitTemplate(configuration);
     }

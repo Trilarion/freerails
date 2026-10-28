@@ -33,6 +33,7 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.*;
 
+import java.io.Serial;
 import java.util.*;
 
 /**
@@ -40,6 +41,7 @@ import java.util.*;
  */
 public class MoveTrainMoveGenerator implements MoveGenerator {
 
+    @Serial
     private static final long serialVersionUID = 3545516188269491250L;
     private final Player player;
     private final int trainId;
@@ -59,9 +61,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof MoveTrainMoveGenerator)) return false;
-
-        final MoveTrainMoveGenerator moveTrainPreMove = (MoveTrainMoveGenerator) obj;
+        if (!(obj instanceof MoveTrainMoveGenerator moveTrainPreMove)) return false;
 
         if (trainId != moveTrainPreMove.trainId) return false;
         return player.equals(moveTrainPreMove.player);
@@ -170,10 +170,10 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         Vec2D tileB = desiredTrackSection.tileB();
         TerrainTile fta = world.getTile(tileA);
         TerrainTile ftb = world.getTile(tileB);
-        TrackPiece tpa = fta.getTrackPiece();
-        TrackPiece tpb = ftb.getTrackPiece();
+        TrackPiece tpa = fta.trackPiece();
+        TrackPiece tpb = ftb.trackPiece();
         int tracks = 1;
-        if (tpa.getTrackType().isDouble() && tpb.getTrackType().isDouble()) {
+        if (tpa.trackType().isDouble() && tpb.trackType().isDouble()) {
             tracks = 2;
         }
         Integer trains = occupiedTracks.occupiedTrackSections.get(desiredTrackSection);

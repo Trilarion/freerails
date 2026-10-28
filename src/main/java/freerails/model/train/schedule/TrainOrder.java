@@ -22,6 +22,7 @@
  */
 package freerails.model.train.schedule;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -30,6 +31,7 @@ import java.util.List;
  */
 public class TrainOrder implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3616453397155559472L;
     private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
     private final boolean waitUntilFull;
@@ -57,9 +59,7 @@ public class TrainOrder implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof TrainOrder)) return false;
-
-        final TrainOrder trainOrder = (TrainOrder) obj;
+        if (!(obj instanceof TrainOrder trainOrder)) return false;
 
         if (isAutoConsist() != trainOrder.isAutoConsist()) return false;
         if (getStationId() != trainOrder.getStationId()) return false;

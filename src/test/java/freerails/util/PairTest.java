@@ -18,8 +18,8 @@ public class PairTest extends TestCase {
     public void testAccessorsStringRepresentationAndTypeSensitiveEquality() {
         Pair<String, Integer> pair = new Pair<>("route", 12);
 
-        assertEquals("route", pair.getA());
-        assertEquals(Integer.valueOf(12), pair.getB());
+        assertEquals("route", pair.a());
+        assertEquals(Integer.valueOf(12), pair.b());
         assertEquals("Pair(route, 12)", pair.toString());
         assertFalse(pair.equals(null));
         assertFalse(pair.equals("Pair(route, 12)"));

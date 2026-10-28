@@ -73,66 +73,65 @@ public class IncomeStatementGenerator {
         for (Transaction transaction: world.getTransactions(player)) {
             int transactionYear = world.getClock().getYear(transaction.getTime());
             // TODO shortcut out if transactionYear < startYear?
-            if (transaction instanceof CargoDeliveryTransaction) {
-                CargoDeliveryTransaction cargoDeliveryTransaction = (CargoDeliveryTransaction) transaction;
+            if (transaction instanceof CargoDeliveryTransaction cargoDeliveryTransaction) {
                 int cargoTypeId = cargoDeliveryTransaction.getCargoBatch().getCargoTypeId();
                 Cargo cargo = world.getCargo(cargoTypeId);
                 switch (cargo.getCategory()) {
                     case BULK_FREIGHT:
-                        bulkFreightTotal += cargoDeliveryTransaction.getAmount().amount;
+                        bulkFreightTotal += cargoDeliveryTransaction.getAmount().amount();
                         if (transactionYear >= startyear) {
-                            bulkFreightYtd += cargoDeliveryTransaction.getAmount().amount;
+                            bulkFreightYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                     case FAST_FREIGHT:
-                        fastFreightTotal += cargoDeliveryTransaction.getAmount().amount;
+                        fastFreightTotal += cargoDeliveryTransaction.getAmount().amount();
                         if (transactionYear >= startyear) {
-                            fastFreightYtd += cargoDeliveryTransaction.getAmount().amount;
+                            fastFreightYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                     case MAIL:
-                        mailTotal += cargoDeliveryTransaction.getAmount().amount;
+                        mailTotal += cargoDeliveryTransaction.getAmount().amount();
                         if (transactionYear >= startyear) {
-                            mailYtd += cargoDeliveryTransaction.getAmount().amount;
+                            mailYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                     case PASSENGER:
-                        passengersTotal += cargoDeliveryTransaction.getAmount().amount;
+                        passengersTotal += cargoDeliveryTransaction.getAmount().amount();
                         if (transactionYear >= startyear) {
-                            passengersYtd += cargoDeliveryTransaction.getAmount().amount;
+                            passengersYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                     case SLOW_FREIGHT:
-                        slowFreightTotal += cargoDeliveryTransaction.getAmount().amount;
+                        slowFreightTotal += cargoDeliveryTransaction.getAmount().amount();
                         if (transactionYear >= startyear) {
-                            slowFreightYtd += cargoDeliveryTransaction.getAmount().amount;
+                            slowFreightYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                 }
             }
             switch (transaction.getCategory()) {
                 case INTEREST_CHARGE:
-                    interestTotal += transaction.getAmount().amount;
+                    interestTotal += transaction.getAmount().amount();
                     if (transactionYear >= startyear) {
-                        interestYtd += transaction.getAmount().amount;
+                        interestYtd += transaction.getAmount().amount();
                     }
                     break;
                 case TRAIN_MAINTENANCE:
-                    trainMaintenanceTotal += transaction.getAmount().amount;
+                    trainMaintenanceTotal += transaction.getAmount().amount();
                     if (transactionYear >= startyear) {
-                        trainMaintenanceYtd += transaction.getAmount().amount;
+                        trainMaintenanceYtd += transaction.getAmount().amount();
                     }
                     break;
                 case TRACK_MAINTENANCE:
-                    trackMaintenanceTotal += transaction.getAmount().amount;
+                    trackMaintenanceTotal += transaction.getAmount().amount();
                     if (transactionYear >= startyear) {
-                        trackMaintenanceYtd += transaction.getAmount().amount;
+                        trackMaintenanceYtd += transaction.getAmount().amount();
                     }
                     break;
                 case STATION_MAINTENANCE:
-                    stationMaintenanceTotal += transaction.getAmount().amount;
+                    stationMaintenanceTotal += transaction.getAmount().amount();
                     if (transactionYear >= startyear) {
-                        stationMaintenanceYtd += transaction.getAmount().amount;
+                        stationMaintenanceYtd += transaction.getAmount().amount();
                     }
                     break;
             }
@@ -174,11 +173,10 @@ public class IncomeStatementGenerator {
 
         for (Transaction transaction: world.getTransactions(player)) {
             int transactionYear = world.getClock().getYear(transaction.getTime());
-            if (transaction instanceof CargoDeliveryTransaction && transactionYear >= startyear) {
-                CargoDeliveryTransaction cargoDeliveryTransaction = (CargoDeliveryTransaction) transaction;
+            if (transaction instanceof CargoDeliveryTransaction cargoDeliveryTransaction && transactionYear >= startyear) {
                 int trainId = cargoDeliveryTransaction.getTrainId();
                 int trainIndex = world.getTrainIndex(player, trainId);
-                amount[trainIndex] += cargoDeliveryTransaction.getAmount().amount;
+                amount[trainIndex] += cargoDeliveryTransaction.getAmount().amount();
             }
         }
         for (int i = 0; i < money.length; i++) {

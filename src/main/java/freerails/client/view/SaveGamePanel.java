@@ -33,12 +33,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 
 /**
  * 
  */
 public class SaveGamePanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 4031907071040752589L;
     private ModelRoot modelRoot;
     private ActionListener close;

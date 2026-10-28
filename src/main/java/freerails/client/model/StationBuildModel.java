@@ -36,6 +36,7 @@ import freerails.model.track.TrackConfiguration;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -156,6 +157,7 @@ public class StationBuildModel {
     }
 
     private class StationChooseAction extends AbstractAction {
+        @Serial
         private static final long serialVersionUID = 3257290240279458098L;
 
         private final int actionId;
@@ -177,6 +179,7 @@ public class StationBuildModel {
     }
 
     private class StationCancelAction extends AbstractAction {
+        @Serial
         private static final long serialVersionUID = 3256441421581203252L;
 
         @Override
@@ -200,6 +203,7 @@ public class StationBuildModel {
          * station as an Integer value. Don't bother writing to it!
          */
         public static final String STATION_RADIUS_KEY = "STATION_RADIUS_KEY";
+        @Serial
         private static final long serialVersionUID = 3905236827739926833L;
 
         private StationBuildAction() {

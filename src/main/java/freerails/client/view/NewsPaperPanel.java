@@ -30,12 +30,14 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 
 /**
  * Displays a newspaper headline.
  */
 public class NewsPaperPanel extends JPanel implements View {
     
+    @Serial
     private static final long serialVersionUID = 3258410638366946868L;
     private final Image pieceOfNewspaper;
     private ActionListener callBack;

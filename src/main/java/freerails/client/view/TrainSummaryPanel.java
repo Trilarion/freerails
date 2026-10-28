@@ -35,12 +35,14 @@ import freerails.model.train.Train;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  *
  */
 public class TrainSummaryPanel extends JPanel implements ListCellRenderer<Train>, View {
 
+    @Serial
     private static final long serialVersionUID = 4121133628006020919L;
     private final TrainSummeryModel model;
     private final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");

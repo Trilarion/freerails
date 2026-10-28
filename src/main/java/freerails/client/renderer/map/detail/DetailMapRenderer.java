@@ -72,7 +72,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @return
      */
     @Override
-    public float getScale() {
+    public float scale() {
         return ModelConstants.TILE_SIZE;
     }
 

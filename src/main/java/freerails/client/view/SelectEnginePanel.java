@@ -33,12 +33,14 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 
 /**
  * Lets the user select an engine from a list.
  */
 public class SelectEnginePanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 4122537730158179638L;
     private JButton cancelButton;
     private JList<Engine> list1;

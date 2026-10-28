@@ -21,12 +21,15 @@
  */
 package freerails.network.command;
 
+import java.io.Serial;
+
 /**
  * Tells the server to check the filesystem for changes to the available new
  * maps and saved games.
  */
 public class RefreshListOfGamesCommandToServer implements CommandToServer {
 
+    @Serial
     private static final long serialVersionUID = -8745171955732354168L;
 
     /**

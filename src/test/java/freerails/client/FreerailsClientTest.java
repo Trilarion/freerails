@@ -42,7 +42,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
             FreerailsClient client = new FreerailsClient();
             LogOnResponse response = client.connect(getIpAddress(), getPort(),"name", "password");
-            assertTrue(response.isSuccess());
+            assertTrue(response.success());
             assertEquals(1, server.getNumberOpenConnections());
 
             assertMapsAndSaveGamesReceived(client);
@@ -51,13 +51,13 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             // Test 2 : a client that has already logged on.
             FreerailsClient client2 = new FreerailsClient();
             response = client2.connect(getIpAddress(), getPort(), "name","password");
-            assertFalse("The player is already logged on.", response.isSuccess());
+            assertFalse("The player is already logged on.", response.success());
             assertEquals(1, server.getNumberOpenConnections());
 
             // Test 3 : connecting a client.
             FreerailsClient client3 = new FreerailsClient();
             response = client3.connect(getIpAddress(), getPort(), "name3","password");
-            assertTrue(response.isSuccess());
+            assertTrue(response.success());
             assertEquals(2, server.getNumberOpenConnections());
 
             // read list of connected clients.

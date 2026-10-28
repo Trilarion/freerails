@@ -63,13 +63,13 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
          */
         for (int tileX = tilesToPaint.x - 1; tileX < tilesToPaint.x + tilesToPaint.width + 1; tileX++) {
             for (int tileY = tilesToPaint.y - 1; tileY < tilesToPaint.y + tilesToPaint.height + 1; tileY++) {
-                if (tileX >= 0 && tileX < mapSize.x && tileY >= 0 && tileY < mapSize.y) {
+                if (tileX >= 0 && tileX < mapSize.x() && tileY >= 0 && tileY < mapSize.y()) {
                     Vec2D tileLocation = new Vec2D(tileX, tileY);
                     TerrainTile terrainTile = world.getTile(tileLocation);
-                    TrackPiece trackPiece = terrainTile.getTrackPiece();
+                    TrackPiece trackPiece = terrainTile.trackPiece();
                     if (trackPiece != null) {
                         int graphicsNumber = trackPiece.getTrackGraphicID();
-                        int ruleNumber = trackPiece.getTrackType().getId();
+                        int ruleNumber = trackPiece.trackType().getId();
                         TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
                         trackPieceView.drawTrackPieceIcon(g, graphicsNumber, tileLocation, ClientConstants.TILE_SIZE);
                     }
@@ -89,11 +89,11 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
          * temporary Graphics object that only lets us draw on the selected
          * tile.
          */
-        paintRectangleOfTiles(g, new Rectangle(tileLocation.x, tileLocation.y, 1, 1));
+        paintRectangleOfTiles(g, new Rectangle(tileLocation.x(), tileLocation.y(), 1, 1));
     }
 
     public void paintRectangleOfTiles(Graphics g, Vec2D p, int width, int height) {
-        paintRectangleOfTiles(g, new Rectangle(p.x, p.y, width, height));
+        paintRectangleOfTiles(g, new Rectangle(p.x(), p.y(), width, height));
     }
 
     /**

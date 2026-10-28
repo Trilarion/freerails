@@ -57,10 +57,6 @@ public class ServerSocketAcceptor implements AutoCloseable {
                     socket.close();
                 }
             }
-        } catch (SocketException e) {
-            if (open) {
-                failure = e;
-            }
         } catch (IOException e) {
             if (open) {
                 failure = e;

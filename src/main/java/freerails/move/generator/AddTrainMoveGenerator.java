@@ -35,6 +35,7 @@ import freerails.model.finance.transaction.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.train.*;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import java.util.List;
  */
 public class AddTrainMoveGenerator implements MoveGenerator {
 
+    @Serial
     private static final long serialVersionUID = 4050201951105069624L;
     private final int engineId;
     private final List<Integer> wagons;
@@ -67,9 +69,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof AddTrainMoveGenerator)) return false;
-
-        final AddTrainMoveGenerator addTrainPreMove = (AddTrainMoveGenerator) obj;
+        if (!(obj instanceof AddTrainMoveGenerator addTrainPreMove)) return false;
 
         if (engineId != addTrainPreMove.engineId) return false;
         if (!point.equals(addTrainPreMove.point)) return false;

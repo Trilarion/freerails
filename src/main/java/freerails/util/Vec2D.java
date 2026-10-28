@@ -22,22 +22,23 @@ import java.awt.*;
 import java.io.Serializable;
 
 // TODO double version of it?
+
 /**
  * Immutable vector with two integer coordinates and arithmetic convenience
  * functions.
  *
  * <p>It is used for both locations and differences between locations.
+ *
+ * @param x The horizontal coordinate.
+ * @param y The vertical coordinate.
  */
-public final class Vec2D implements Serializable, Comparable<Vec2D> {
+public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
 
     private static final long serialVersionUID = -3053020239886388576L;
-    /** Static zero vector. */
+    /**
+     * Static zero vector.
+     */
     public static final Vec2D ZERO = new Vec2D(0, 0);
-    /** The horizontal coordinate. */
-    public final int x;
-    /** The vertical coordinate. */
-    public final int y;
-
 
     /**
      * Creates a vector with the given coordinates.
@@ -45,16 +46,14 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
      * @param x horizontal coordinate
      * @param y vertical coordinate
      */
-    public Vec2D(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Vec2D {
     }
 
     /**
      * Creates the zero vector.
      */
     public Vec2D() {
-        this(0,0);
+        this(0, 0);
     }
 
     /**
@@ -77,21 +76,9 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Vec2D)) return false;
-
-        final Vec2D other = (Vec2D) obj;
+        if (!(obj instanceof Vec2D other)) return false;
 
         return x == other.x && y == other.y;
-    }
-
-    /**
-     * Returns a hash code based on the coordinates.
-     *
-     * @return this vector's hash code
-     */
-    @Override
-    public int hashCode() {
-        return x * 29 + y;
     }
 
     /**

@@ -18,6 +18,7 @@
 
 package freerails.model.track.pathfinding;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,7 @@ import java.util.PriorityQueue;
  */
 public class OpenList implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3257282539419611442L;
     private final Map<Integer, OpenListEntry> map = new HashMap<>();
     private final PriorityQueue<OpenListEntry> queue = new PriorityQueue<>();

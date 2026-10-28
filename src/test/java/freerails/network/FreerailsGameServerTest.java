@@ -47,35 +47,35 @@ public class FreerailsGameServerTest extends TestCase {
         // Test 1
         LogOnCredentials request1 = new LogOnCredentials("Name", "password");
         response = server.logon(request1);
-        assertTrue("Simple case, should go through.", response.isSuccess());
-        assertEquals("1st logon is player 0", 0, response.getId());
+        assertTrue("Simple case, should go through.", response.success());
+        assertEquals("1st logon is player 0", 0, response.id());
 
         // Test 2
         LogOnCredentials request2 = new LogOnCredentials("Name2", "password2");
         response = server.logon(request2);
-        assertTrue("Simple case, should go through.", response.isSuccess());
-        assertEquals("2nd logon is player 1", 1, response.getId());
+        assertTrue("Simple case, should go through.", response.success());
+        assertEquals("2nd logon is player 1", 1, response.id());
 
         // Test 3: When player is already logged on.
         LogOnCredentials request3 = new LogOnCredentials("Name", "password");
         response = server.logon(request3);
-        assertFalse("Player is already logged on.", response.isSuccess());
+        assertFalse("Player is already logged on.", response.success());
 
         // Test 4: When new log-ons are not allowed.
         server.setNewPlayersAllowed(false);
 
         LogOnCredentials request4 = new LogOnCredentials("Name4", "password4");
         response = server.logon(request4);
-        assertFalse("New logons are not allowed.", response.isSuccess());
+        assertFalse("New logons are not allowed.", response.success());
 
         // Test 5: When the player has logged off, then tries to log on.
         server.logoff(0);
 
         response = server.logon(request1);
         assertTrue("Player 0 has logged off, so should succeed.", response
-                .isSuccess());
+                .success());
         assertEquals("Should keep the same player id", 0, response
-                .getId());
+                .id());
 
         /*
          * Test 6: When the player has logged off, then tries to log on with
@@ -85,6 +85,6 @@ public class FreerailsGameServerTest extends TestCase {
 
         LogOnCredentials request6 = new LogOnCredentials("Name", "batman");
         response = server.logon(request6);
-        assertFalse("Player 0 has logged off, but the password is wrong.", response.isSuccess());
+        assertFalse("Player 0 has logged off, but the password is wrong.", response.success());
     }
 }

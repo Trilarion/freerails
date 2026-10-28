@@ -26,6 +26,7 @@ import freerails.model.train.activity.Activity;
 import freerails.model.train.TrainState;
 import freerails.util.Utils;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.List;
 /** A motion profile formed by executing component motions in sequence. */
 public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Motion {
 
+    @Serial
     private static final long serialVersionUID = 3146586143114534610L;
     private final List<Motion> motions;
     private final double totalTime, totalDistance;
@@ -57,8 +59,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CompositeMotion)) return false;
-        final CompositeMotion other = (CompositeMotion) obj;
+        if (!(obj instanceof CompositeMotion other)) return false;
 
         if (totalTime != other.totalTime) return false;
         if (totalDistance != other.totalDistance) return false;

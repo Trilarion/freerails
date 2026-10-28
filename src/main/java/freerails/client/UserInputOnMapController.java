@@ -168,10 +168,10 @@ public class UserInputOnMapController extends KeyAdapter {
             case KeyEvent.VK_F8: {
                 // Check whether we can built a station here before proceeding.
                 if (stationTypesPopup.canBuiltStationHere(cursorPosition)) {
-                    float scale = mapView.getScale();
+                    float scale = mapView.scale();
                     Dimension tileSize = new Dimension((int) scale, (int) scale);
-                    int x = cursorPosition.x * tileSize.width;
-                    int y = cursorPosition.y * tileSize.height;
+                    int x = cursorPosition.x() * tileSize.width;
+                    int y = cursorPosition.y() * tileSize.height;
                     stationTypesPopup.showMenu(mapView, x, y, cursorPosition);
                 } else {
                     modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Can't build station here!");
@@ -194,10 +194,10 @@ public class UserInputOnMapController extends KeyAdapter {
             }
 
             case KeyEvent.VK_B: {
-                float scale = mapView.getScale();
+                float scale = mapView.scale();
                 Dimension tileSize = new Dimension((int) scale, (int) scale);
-                int x = cursorPosition.x * tileSize.width;
-                int y = cursorPosition.y * tileSize.height;
+                int x = cursorPosition.x() * tileSize.width;
+                int y = cursorPosition.y() * tileSize.height;
                 buildIndustryPopupMenu.setCursorLocation(cursorPosition);
                 buildIndustryPopupMenu.show(mapView, x, y);
 
@@ -327,7 +327,7 @@ public class UserInputOnMapController extends KeyAdapter {
     private boolean legalRectangleContains(Vec2D tryThisPoint) {
         UnmodifiableWorld world = modelRoot.getWorld();
         Vec2D mapSize = world.getMapSize();
-        Rectangle legalRectangle = new Rectangle(0, 0, mapSize.x, mapSize.y);
+        Rectangle legalRectangle = new Rectangle(0, 0, mapSize.x(), mapSize.y());
         return legalRectangle.contains(Vec2D.toPoint(tryThisPoint));
     }
 
@@ -366,7 +366,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
                 ignoreDragging = false;
 
-                Dimension tileSize = new Dimension((int) mapView.getScale(), (int) mapView.getScale());
+                Dimension tileSize = new Dimension((int) mapView.scale(), (int) mapView.scale());
 
                 // only jump - no track building
                 moveCursorJump(new Vec2D(e.getX() / tileSize.width, e.getY() / tileSize.height));
@@ -405,12 +405,12 @@ public class UserInputOnMapController extends KeyAdapter {
 
                     // Fix for bug [ 997088 ]
                     // Is current position different from original position?
-                    float scale = mapView.getScale();
+                    float scale = mapView.scale();
                     Dimension tileSize = new Dimension((int) scale, (int) scale);
                     int tileX = e.getX() / tileSize.width;
                     int tileY = e.getY() / tileSize.height;
 
-                    if (getCursorPosition().x != tileX || getCursorPosition().y != tileY) {
+                    if (getCursorPosition().x() != tileX || getCursorPosition().y() != tileY) {
                         // copy WorldDifferences from buildTrack to World
                         Vec2D newPosition = buildTrackController.updateWorld(trackMoveProducer);
                         setCursorPosition(newPosition);
@@ -445,7 +445,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 int x = e.getX();
                 int y = e.getY();
 
-                float scale = mapView.getScale();
+                float scale = mapView.scale();
                 Dimension tileSize = new Dimension((int) scale, (int) scale);
                 int tileX = x / tileSize.width;
                 int tileY = y / tileSize.height;

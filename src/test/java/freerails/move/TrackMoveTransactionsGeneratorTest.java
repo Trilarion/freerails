@@ -62,7 +62,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = world.getTile(Vec2D.ZERO).getTrackPiece();
+        oldTrackPiece = world.getTile(Vec2D.ZERO).trackPiece();
 
         TrackType trackType = world.getTrackType(0);
         int owner = WorldGenerator.TEST_PLAYER.getId();

@@ -80,7 +80,7 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
         if (trackPieceIcons[trackTemplate] != null) {
             Vec2D drawLocation = Vec2D.subtract(Vec2D.multiply(tileLocation, tileSize), Vec2D.divide(tileSize, 2));
-            g.drawImage(trackPieceIcons[trackTemplate], drawLocation.x, drawLocation.y, null);
+            g.drawImage(trackPieceIcons[trackTemplate], drawLocation.x(), drawLocation.y(), null);
         }
     }
 

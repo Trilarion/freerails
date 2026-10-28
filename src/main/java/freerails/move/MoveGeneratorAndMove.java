@@ -24,14 +24,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 // TODO remove this, only used in MovePrecommitter
+
 /**
  *
  */
-public class MoveGeneratorAndMove implements Serializable {
+public record MoveGeneratorAndMove(Move move, MoveGenerator moveGenerator) implements Serializable {
 
     private static final long serialVersionUID = 3256443607635342897L;
-    public final Move move;
-    public final MoveGenerator moveGenerator;
 
     /**
      * Both parameters could be null.
@@ -40,26 +39,16 @@ public class MoveGeneratorAndMove implements Serializable {
      * @param move
      */
     public MoveGeneratorAndMove(MoveGenerator moveGenerator, Move move) {
-        this.move = move;
-        this.moveGenerator = moveGenerator;
+        this(move, moveGenerator);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof MoveGeneratorAndMove)) return false;
-
-        final MoveGeneratorAndMove preMoveAndMove = (MoveGeneratorAndMove) obj;
+        if (!(obj instanceof MoveGeneratorAndMove preMoveAndMove)) return false;
 
         if (!Objects.equals(move, preMoveAndMove.move)) return false;
         return Objects.equals(moveGenerator, preMoveAndMove.moveGenerator);
     }
 
-    @Override
-    public int hashCode() {
-        int result;
-        result = move != null ? move.hashCode() : 0;
-        result = 29 * result + (moveGenerator != null ? moveGenerator.hashCode() : 0);
-        return result;
-    }
 }

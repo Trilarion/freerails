@@ -21,6 +21,7 @@ package freerails.model.track;
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -28,6 +29,7 @@ import java.io.Serializable;
  */
 public class TrackSection implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -3776624056097990938L;
     private final TileTransition tileTransition;
     private final Vec2D tile;

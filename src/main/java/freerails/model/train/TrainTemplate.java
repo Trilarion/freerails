@@ -29,14 +29,12 @@ import java.util.List;
 /**
  * Immutable blueprint specifying an engine type and wagon types for production.
  */
-public class TrainTemplate implements Serializable {
+public record TrainTemplate(int engineId, List<Integer> wagonTypes) implements Serializable {
 
     private static final long serialVersionUID = 3545515106038592057L;
-    private final int engineId;
-    private final List<Integer> wagonTypes;
 
     /**
-     * @param engineId engine type identifier
+     * @param engineId   engine type identifier
      * @param wagonTypes wagon type identifiers to produce with the engine
      */
     public TrainTemplate(int engineId, @NotNull List<Integer> wagonTypes) {
@@ -44,35 +42,45 @@ public class TrainTemplate implements Serializable {
         this.wagonTypes = List.copyOf(wagonTypes);
     }
 
-    /** Returns a hash code based on the engine type identifier. */
+    /**
+     * Returns a hash code based on the engine type identifier.
+     */
     @Override
     public int hashCode() {
         return engineId;
     }
 
-    /** Compares the engine type and ordered wagon types. */
+    /**
+     * Compares the engine type and ordered wagon types.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof TrainTemplate)) return false;
-
-        final TrainTemplate productionAtEngineShop = (TrainTemplate) obj;
+        if (!(obj instanceof TrainTemplate productionAtEngineShop)) return false;
 
         if (engineId != productionAtEngineShop.engineId) return false;
         return wagonTypes.equals(productionAtEngineShop.wagonTypes);
     }
 
-    /** Returns the engine type identifier. */
-    public int getEngineId() {
+    /**
+     * Returns the engine type identifier.
+     */
+    @Override
+    public int engineId() {
         return engineId;
     }
 
-    /** Returns the immutable ordered list of wagon type identifiers. */
-    public List<Integer> getWagonTypes() {
+    /**
+     * Returns the immutable ordered list of wagon type identifiers.
+     */
+    @Override
+    public List<Integer> wagonTypes() {
         return wagonTypes;
     }
 
-    /** Returns a concise description of this production template. */
+    /**
+     * Returns a concise description of this production template.
+     */
     @Override
     public String toString() {
         return "engine type: " + engineId + ", with " + wagonTypes.size() + " wagons";

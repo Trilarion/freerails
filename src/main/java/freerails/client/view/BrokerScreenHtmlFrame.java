@@ -38,6 +38,7 @@ import freerails.model.player.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.Serial;
 import java.net.URL;
 
 // TODO simplify this code, creates too many FinancialDataAggregator instances
@@ -45,12 +46,14 @@ import java.net.URL;
  */
 public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
+    @Serial
     private static final long serialVersionUID = 3257003246252800050L;
     private final String template;
     private ModelRoot modelRoot;
 
     private final Action repayBondAction = new AbstractAction("Repay bond") {
 
+        @Serial
         private static final long serialVersionUID = 440368637080877578L;
 
         @Override
@@ -62,6 +65,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     private FinancialDataAggregator financialDataAggregator;
     private final Action issueBondAction = new AbstractAction("Issue bond") {
 
+        @Serial
         private static final long serialVersionUID = -8074364543650188583L;
 
         @Override
@@ -123,6 +127,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
             buyStock[playerIndex] = new AbstractAction(buyLabel) {
 
+                @Serial
                 private static final long serialVersionUID = -6360550478693971570L;
 
                 @Override
@@ -138,6 +143,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
             sellStock[playerIndex] = new AbstractAction(sellLabel) {
 
+                @Serial
                 private static final long serialVersionUID = 3993755349229011031L;
 
                 @Override
@@ -164,7 +170,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
         // TODO use Money arithmetic
-        long highestAffordablePrice = world.getCurrentBalance(player).amount / ModelConstants.STOCK_BUNDLE_SIZE;
+        long highestAffordablePrice = world.getCurrentBalance(player).amount() / ModelConstants.STOCK_BUNDLE_SIZE;
         // Enable and disable stock actions.
         for (Player otherPlayer: world.getPlayers()) {
             FinancialDataAggregator otherDataGatherer = new FinancialDataAggregator(world, otherPlayer);
@@ -189,7 +195,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
             // Don't let the player buy stock if they cannot afford it.
             // TODO use Money arithmetic
-            if (stockPrices[playerIndex].currentPrice.amount > highestAffordablePrice) {
+            if (stockPrices[playerIndex].currentPrice.amount() > highestAffordablePrice) {
                 buyStock[playerIndex].setEnabled(false);
             }
         }

@@ -19,12 +19,14 @@
 package freerails.util.ui;
 
 import javax.swing.*;
+import java.io.Serial;
 
 /**
  *
  */
 public class MyAbstractListModel extends AbstractListModel<String> {
 
+    @Serial
     private static final long serialVersionUID = -7077093078891444168L;
     private final String[] strings = {"No players are logged on!"};
 

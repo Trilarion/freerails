@@ -25,16 +25,18 @@ import freerails.model.finance.Money;
 import freerails.model.game.Time;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A Transaction is a change in a player's bank balance and/or assets.
- *
+ * <p>
  * For example, the cost of buying a train.
  */
 public class Transaction implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3258416144497782835L;
     private final TransactionCategory category;
     private final Money amount;

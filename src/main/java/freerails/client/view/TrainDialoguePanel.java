@@ -33,6 +33,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 
 /**
 * Displays info on a train; it is composed of a
@@ -40,6 +41,7 @@ import java.awt.event.ActionListener;
  */
 public class TrainDialoguePanel extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3257005466801157938L;
     private static final Logger logger = Logger.getLogger(TrainDialoguePanel.class.getName());
     private JButton closeJButton;

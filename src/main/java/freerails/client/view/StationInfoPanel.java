@@ -38,6 +38,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Iterator;
 
@@ -48,6 +49,7 @@ import java.util.Iterator;
 public class StationInfoPanel extends JPanel implements View {
 
     private static final Logger logger = Logger.getLogger(StationInfoPanel.class.getName());
+    @Serial
     private static final long serialVersionUID = 4050759377680150585L;
     private UnmodifiableWorld world;
     private ModelRoot modelRoot;

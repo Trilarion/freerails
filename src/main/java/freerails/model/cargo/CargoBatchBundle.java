@@ -96,10 +96,9 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
         if (null == other) {
             return false;
         }
-        if (!(other instanceof CargoBatchBundle)) {
+        if (!(other instanceof CargoBatchBundle o)) {
             return false;
         }
-        CargoBatchBundle o = (CargoBatchBundle) other;
         return cargoMap.equals(o.cargoMap);
     }
 

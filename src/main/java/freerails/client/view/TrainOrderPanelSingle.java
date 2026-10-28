@@ -25,12 +25,14 @@ import freerails.client.ModelRoot;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  *
  */
 public class TrainOrderPanelSingle extends JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3516604388665786813L;
     private TrainOrderPanel trainOrderPanel;
     public JPanel consistChangeJPanel;

@@ -35,6 +35,7 @@ import freerails.model.player.Player;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -43,6 +44,7 @@ import java.io.Serializable;
  */
 public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
 
+    @Serial
     private static final long serialVersionUID = 3977018444325664049L;
     private UnmodifiableWorld world;
     private Player player;

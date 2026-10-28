@@ -182,16 +182,12 @@ public class TrackType extends Identifiable {
      * @throws RuntimeException if this type is not a recognized station type
      */
     public int getStationRadius() {
-        switch (name) {
-            case "depot":
-                return 1;
-            case "station":
-                return 2;
-            case "terminal":
-                return 3;
-            default:
-                throw new RuntimeException("Not a station");
-        }
+        return switch (name) {
+            case "depot" -> 1;
+            case "station" -> 2;
+            case "terminal" -> 3;
+            default -> throw new RuntimeException("Not a station");
+        };
     }
 
     /**

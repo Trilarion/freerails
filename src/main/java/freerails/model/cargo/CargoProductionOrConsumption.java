@@ -21,17 +21,17 @@ package freerails.model.cargo;
 import java.io.Serializable;
 
 // TODO equals, hashcode
-/** Describes a cargo type and its nonnegative production or consumption rate. */
-public final class CargoProductionOrConsumption implements Serializable {
 
-    private final int cargoId;
-    private final double rate;
+/**
+ * Describes a cargo type and its nonnegative production or consumption rate.
+ */
+public record CargoProductionOrConsumption(int cargoId, double rate) implements Serializable {
 
     /**
      * Creates a production or consumption rate for a cargo type.
      *
      * @param cargoId identifier of the affected cargo type
-     * @param rate quantity produced or consumed per applicable time unit
+     * @param rate    quantity produced or consumed per applicable time unit
      * @throws IllegalArgumentException if the rate is negative or non-finite
      */
     public CargoProductionOrConsumption(int cargoId, double rate) {
@@ -47,7 +47,8 @@ public final class CargoProductionOrConsumption implements Serializable {
      *
      * @return cargo identifier
      */
-    public int getCargoId() {
+    @Override
+    public int cargoId() {
         return cargoId;
     }
 
@@ -56,7 +57,8 @@ public final class CargoProductionOrConsumption implements Serializable {
      *
      * @return configured rate
      */
-    public double getRate() {
+    @Override
+    public double rate() {
         return rate;
     }
 
@@ -71,8 +73,7 @@ public final class CargoProductionOrConsumption implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof CargoProductionOrConsumption) {
-            CargoProductionOrConsumption other = (CargoProductionOrConsumption) obj;
+        if (obj instanceof CargoProductionOrConsumption other) {
             return cargoId == other.cargoId && rate == other.rate;
         }
         return false;

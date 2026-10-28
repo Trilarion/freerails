@@ -31,9 +31,9 @@ import java.util.Collections;
  * Combines a number of orthogonal moves. Orthogonal moves are moves that can be applied in any order (are not
  * dependent on each other). The validity of the composite move is determined by combining the validities of
  * each move.
- *
+ * <p>
  * Must contain at least two moves.
- *
+ * <p>
  * Please note that this class should not be used for dependent moves like building a long list of tracks.
  */
 public class CompostMove implements Move {
@@ -63,9 +63,8 @@ public class CompostMove implements Move {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CompostMove)) return false;
+        if (!(obj instanceof CompostMove that)) return false;
 
-        CompostMove that = (CompostMove) obj;
         return new ArrayList<>(moves).equals(new ArrayList<>(that.moves));
     }
 

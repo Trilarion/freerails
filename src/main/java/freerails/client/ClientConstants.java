@@ -189,9 +189,9 @@ public final class ClientConstants {
     /**
      * Affects scroll direction and scroll speed relative to the cursor.
      * Examples:
-     *
+     * <p>
      * 1 := grab map, move 1:1
-     *
+     * <p>
      * -2 := invert mouse, scroll twice as fast
      */
     public static final int MAP_SCROLL_SPEED = 2;

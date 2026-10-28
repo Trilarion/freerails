@@ -85,7 +85,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
     /**
      * Tests whether we can build track in the direction specified by m_direction.
-     *
+     * <p>
      * If we enter a tile from a given direction, the tiles we can build track
      * to depend on the following. (1) The terrain type of the surrounding tiles -
      * track can only be built on certain terrain types. (2) The direction we
@@ -122,7 +122,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check there is not another players track at nextTile.
         if (nextTile.hasTrack()) {
-            if (nextTile.getTrackPiece().getPlayerId() != player.getId()) {
+            if (nextTile.trackPiece().playerId() != player.getId()) {
                 return false;
             }
         }
@@ -142,15 +142,15 @@ public class BuildTrackExplorer implements GraphExplorer {
         TerrainTile currentTile = world.getTile(currentP);
 
         // Check for illegal track configurations.
-        TrackPiece currentTileTrackPiece = currentTile.getTrackPiece();
-        TrackPiece nextTileTrackPiece = nextTile.getTrackPiece();
+        TrackPiece currentTileTrackPiece = currentTile.trackPiece();
+        TrackPiece nextTileTrackPiece = nextTile.trackPiece();
 
         if (currentTileTrackPiece == null || nextTileTrackPiece == null) {
             return true;
         }
 
-        final TrackConfiguration trackAlreadyPresent1 = currentTileTrackPiece.getTrackConfiguration();
-        final TrackConfiguration trackAlreadyPresent2 = nextTileTrackPiece.getTrackConfiguration();
+        final TrackConfiguration trackAlreadyPresent1 = currentTileTrackPiece.trackConfiguration();
+        final TrackConfiguration trackAlreadyPresent2 = nextTileTrackPiece.trackConfiguration();
         TrackConfiguration fromConfig = trackAlreadyPresent1;
 
         fromConfig = TrackConfiguration.add(fromConfig, opposite2current);
@@ -165,15 +165,15 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check for diagonal conflicts.
         if (directionOfNextTile.isDiagonal()) {
-            int y2check = currentP.y + directionOfNextTile.deltaY;
+            int y2check = currentP.y() + directionOfNextTile.deltaY;
 
             // We did a bounds check above.
-            assert world.boundsContain(new Vec2D(currentP.x, y2check));
+            assert world.boundsContain(new Vec2D(currentP.x(), y2check));
 
-            TerrainTile tileToCheck = world.getTile(new Vec2D(currentP.x, y2check));
-            TrackPiece trackPiece = tileToCheck.getTrackPiece();
+            TerrainTile tileToCheck = world.getTile(new Vec2D(currentP.x(), y2check));
+            TrackPiece trackPiece = tileToCheck.trackPiece();
             if (trackPiece != null) {
-                TrackConfiguration configToCheck = tileToCheck.getTrackPiece().getTrackConfiguration();
+                TrackConfiguration configToCheck = tileToCheck.trackPiece().trackConfiguration();
                 TileTransition vectorToCheck = TileTransition.getInstance(new Vec2D(directionOfNextTile.deltaX, -directionOfNextTile.deltaY));
 
                 if (configToCheck.contains(vectorToCheck)) {
@@ -215,7 +215,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         final TerrainTile tile = world.getTile(p);
         TrackType type;
         if (!tile.hasTrack()) {
-            int terrainTypeID = tile.getTerrainTypeId();
+            int terrainTypeID = tile.terrainTypeId();
             int trackRuleID = buildTrackStrategy.getRule(terrainTypeID);
             if (trackRuleID == -1) {
                 return null; // Can't build on this terrain!
@@ -223,7 +223,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             // rule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
             type = world.getTrackType(trackRuleID);
         } else {
-            type = tile.getTrackPiece().getTrackType();
+            type = tile.trackPiece().trackType();
         }
         return type;
     }
@@ -249,8 +249,8 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         if (!usingExistingTrack) {
             Vec2D p = currentPosition.getLocation();
-            int[] x = {p.x, p.x + edgeDirection.deltaX};
-            int[] y = {p.y, p.y + edgeDirection.deltaY};
+            int[] x = {p.x(), p.x() + edgeDirection.deltaX};
+            int[] y = {p.y(), p.y() + edgeDirection.deltaY};
             TrackType ruleA = getAppropriateTrackType(new Vec2D(x[0], y[0]));
             TrackType ruleB = getAppropriateTrackType(new Vec2D(x[1], y[1]));
             /*
@@ -259,18 +259,18 @@ public class BuildTrackExplorer implements GraphExplorer {
              * Otherwise, add the cost of building the track.
              */
             // TODO use Money arithmetic
-            long priceA = ruleA.getPurchasingPrice().amount;
-            long priceB = ruleB.getPurchasingPrice().amount;
+            long priceA = ruleA.getPurchasingPrice().amount();
+            long priceB = ruleB.getPurchasingPrice().amount();
             cost += length * (priceA + priceB);
             // Add fixed cost if tile b does not have the desired track type.
             TerrainTile a = world.getTile(new Vec2D(x[0], y[0]));
-            TrackPiece trackPiece = a.getTrackPiece();
+            TrackPiece trackPiece = a.trackPiece();
             if (trackPiece != null) {
-                TrackType currentRuleA = a.getTrackPiece().getTrackType();
+                TrackType currentRuleA = a.trackPiece().trackType();
                 if (!currentRuleA.equals(ruleA)) {
                     assert !currentRuleA.isStation(); // We shouldn't be upgrading a station.
                     // TODO was getFixedCost(), meaning?,
-                    cost += ruleA.getYearlyMaintenance().amount * ModelConstants.TILE_SIZE;
+                    cost += ruleA.getYearlyMaintenance().amount() * ModelConstants.TILE_SIZE;
                 }
             }
         }

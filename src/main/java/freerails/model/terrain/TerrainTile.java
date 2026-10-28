@@ -24,14 +24,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 // TODO find better name for what it really is
+
 /**
  * A map tile containing a terrain type and, optionally, a track piece.
  */
-public class TerrainTile implements Serializable {
+public record TerrainTile(TrackPiece trackPiece, int terrainTypeId) implements Serializable {
 
     private static final long serialVersionUID = 3617574907538847544L;
-    private final TrackPiece trackPiece;
-    private final int terrainTypeId;
 
     /**
      * Creates a tile with the specified terrain and no track.
@@ -39,19 +38,17 @@ public class TerrainTile implements Serializable {
      * @param terrainTypeId identifier of the terrain on the tile
      */
     public TerrainTile(int terrainTypeId) {
-        this.terrainTypeId = terrainTypeId;
-        trackPiece = null;
+        this(null, terrainTypeId);
     }
 
     /**
      * Creates a tile with the specified terrain and track piece.
      *
      * @param terrainTypeId identifier of the terrain on the tile
-     * @param trackPiece track piece present on the tile
+     * @param trackPiece    track piece present on the tile
      */
     public TerrainTile(int terrainTypeId, TrackPiece trackPiece) {
-        this.terrainTypeId = terrainTypeId;
-        this.trackPiece = trackPiece;
+        this(trackPiece, terrainTypeId);
     }
 
     /**
@@ -72,23 +69,17 @@ public class TerrainTile implements Serializable {
         return Objects.equals(trackPiece, that.trackPiece);
     }
 
-    /** Returns a hash code consistent with {@link #equals(Object)}. */
-    @Override
-    public int hashCode() {
-        int result;
-        result = trackPiece != null ? trackPiece.hashCode() : 0;
-        result = 29 * result + terrainTypeId;
-        return result;
-    }
-
     /**
      * @return the terrain type identifier
      */
-    public int getTerrainTypeId() {
+    @Override
+    public int terrainTypeId() {
         return terrainTypeId;
     }
 
-    /** Returns a readable representation of the track and terrain identifier. */
+    /**
+     * Returns a readable representation of the track and terrain identifier.
+     */
     @Override
     public String toString() {
         return "trackPiece=" + trackPiece + " and terrainType is " + terrainTypeId;
@@ -97,7 +88,8 @@ public class TerrainTile implements Serializable {
     /**
      * @return the track piece, or {@code null} if the tile has no track
      */
-    public TrackPiece getTrackPiece() {
+    @Override
+    public TrackPiece trackPiece() {
         return trackPiece;
     }
 

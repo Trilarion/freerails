@@ -42,8 +42,7 @@ public class AddStationMove implements Move {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AddStationMove)) return false;
-        final AddStationMove other = (AddStationMove) o;
+        if (!(o instanceof AddStationMove other)) return false;
 
         return player.equals(other.player) && station.equals(other.station);
     }

@@ -59,7 +59,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         Image icon = getIcon(mapLocation, world);
 
         if (null != icon) {
-            g.drawImage(icon, renderLocation.x, renderLocation.y, null);
+            g.drawImage(icon, renderLocation.x(), renderLocation.y(), null);
         }
     }
 
@@ -77,7 +77,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     /**
      * Returns an icon for the tile at x,y, which may also depend on the terrain types of the surrounding tiles.
-     *
+     * <p>
      * In the standard implementation it doesn't though.
      */
     public Image getIcon(Vec2D mapLocation, UnmodifiableWorld world) {
@@ -105,7 +105,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
             for (int typeNumber : typesTreatedAsSame) {
                 TerrainTile terrainTile = world.getTile(location);
 
-                if (terrainTile.getTerrainTypeId() == typeNumber) {
+                if (terrainTile.terrainTypeId() == typeNumber) {
                     match = 1;
                     // A match
                 }

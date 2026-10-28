@@ -31,6 +31,7 @@ import freerails.model.terrain.TerrainCategory;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.Serial;
 
 // TODO what if there is now water on the tile, should this not destroy tracks, cities?
 /**
@@ -38,6 +39,7 @@ import java.awt.*;
  */
 public class ChangeTileMove implements MapUpdateMove {
 
+    @Serial
     private static final long serialVersionUID = 3256726169272662320L;
     private final Vec2D location;
     private final TerrainTile after;
@@ -53,9 +55,7 @@ public class ChangeTileMove implements MapUpdateMove {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof ChangeTileMove)) return false;
-
-        final ChangeTileMove changeTileMove = (ChangeTileMove) obj;
+        if (!(obj instanceof ChangeTileMove changeTileMove)) return false;
 
         if (!location.equals(changeTileMove.location)) return false;
         if (!after.equals(changeTileMove.after)) return false;
@@ -74,7 +74,7 @@ public class ChangeTileMove implements MapUpdateMove {
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
         TerrainTile actual = world.getTile(location);
-        Terrain type = world.getTerrain(actual.getTerrainTypeId());
+        Terrain type = world.getTerrain(actual.terrainTypeId());
 
         if (type.getCategory() != TerrainCategory.COUNTRY) {
             return Status.fail("Can only build on clear terrain.");
@@ -96,6 +96,6 @@ public class ChangeTileMove implements MapUpdateMove {
      */
     @Override
     public Rectangle getUpdatedTiles() {
-        return new Rectangle(location.x, location.y, 1, 1);
+        return new Rectangle(location.x(), location.y(), 1, 1);
     }
 }

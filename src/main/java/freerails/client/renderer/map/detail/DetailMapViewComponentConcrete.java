@@ -34,6 +34,7 @@ import freerails.model.ModelConstants;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.StringTokenizer;
 
 /**
@@ -42,6 +43,7 @@ import java.util.StringTokenizer;
  */
 public class DetailMapViewComponentConcrete extends DetailMapViewComponent implements ModelRootListener {
 
+    @Serial
     private static final long serialVersionUID = 3834868087706236208L;
     /**
      * The length of the array is the number of lines. This is necessary since
@@ -155,13 +157,13 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     /**
      * Checks what triggered the specified PropertyChangeEvent and reacts as
      * follows.
-     *
+     * <p>
      * (1) If it was ModelRoot.CURSOR_POSITION, scrolls the map if necessary.
-     *
+     * <p>
      *
      * (2) If it was ModelRoot.QUICK_MESSAGE, display or hide the message as
      * appropriate.
-     *
+     * <p>
      *
      * (3) If it was ModelRoot.PERMANENT_MESSAGE, display or hide the message as
      * appropriate.
@@ -179,23 +181,23 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
                 }
 
                 // react to cursor move
-                float scale = getMapRenderer().getScale();
+                float scale = getMapRenderer().scale();
                 Dimension tileSize = new Dimension((int) scale, (int) scale);
                 Rectangle visibleRect = getVisibleRect();
                 Rectangle rectangleSurroundingCursor = new Rectangle(0, 0, 1, 1);
 
-                rectangleSurroundingCursor.setLocation((newPoint.x - 1) * tileSize.width, (newPoint.y - 1) * tileSize.height);
+                rectangleSurroundingCursor.setLocation((newPoint.x() - 1) * tileSize.width, (newPoint.y() - 1) * tileSize.height);
                 rectangleSurroundingCursor.setSize(tileSize.width * 3, tileSize.height * 3);
 
                 if (!visibleRect.contains(rectangleSurroundingCursor)) {
-                    int x = newPoint.x * tileSize.width - visibleRect.width / 2;
-                    int y = newPoint.y * tileSize.height - visibleRect.height / 2;
+                    int x = newPoint.x() * tileSize.width - visibleRect.width / 2;
+                    int y = newPoint.y() * tileSize.height - visibleRect.height / 2;
                     scrollRectToVisible(new Rectangle(x, y, visibleRect.width, visibleRect.height));
                 }
 
                 // why 3x3 tiles are newly painted
-                repaint((newPoint.x - 1) * tileSize.width, (newPoint.y - 1) * tileSize.height, tileSize.width * 3, tileSize.height * 3);
-                repaint((oldPoint.x - 1) * tileSize.width, (oldPoint.y - 1) * tileSize.height, tileSize.width * 3, tileSize.height * 3);
+                repaint((newPoint.x() - 1) * tileSize.width, (newPoint.y() - 1) * tileSize.height, tileSize.width * 3, tileSize.height * 3);
+                repaint((oldPoint.x() - 1) * tileSize.width, (oldPoint.y() - 1) * tileSize.height, tileSize.width * 3, tileSize.height * 3);
                 break;
             case QUICK_MESSAGE:
                 String newMessage = (String) newValue;
