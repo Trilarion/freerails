@@ -21,7 +21,7 @@ package freerails.io.adapter;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import freerails.client.ARGBColor;
+import freerails.io.ARGBColor;
 
 import java.io.IOException;
 

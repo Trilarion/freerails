@@ -51,9 +51,9 @@ public class CompositeMove implements Move {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CompositeMove compositeMove)) return false;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
-        return moves.equals(compositeMove.moves);
+        return moves.equals(((CompositeMove) obj).moves);
     }
 
     /**

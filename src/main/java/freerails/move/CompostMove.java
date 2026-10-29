@@ -63,9 +63,9 @@ public class CompostMove implements Move {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CompostMove that)) return false;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
-        return new ArrayList<>(moves).equals(new ArrayList<>(that.moves));
+        return new ArrayList<>(moves).equals(new ArrayList<>(((CompostMove) obj).moves));
     }
 
     @Override

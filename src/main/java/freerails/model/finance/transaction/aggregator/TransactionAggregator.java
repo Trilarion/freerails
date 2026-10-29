@@ -71,20 +71,16 @@ public abstract class TransactionAggregator {
         values = new Money[times.length - 1];
     }
 
-    // TODO this exploits/assumes that the transactions are ordered in time
     /**
      * Clears prior totals and sums accepted transactions into the interval
-     * containing each transaction time. Intervals include their lower bound
-     * and exclude their upper bound.
+     * containing each transaction time, regardless of insertion order.
+     * Intervals include their lower bound and exclude their upper bound.
      */
     public final void aggregate() {
         // clear state before aggregating
         clearState();
 
-        // start with the first interval
-        int intervalIndex = 0;
-
-        // loop over all transactions (they are ordered in time)
+        // Transactions remain in insertion order, which need not be chronological.
         for (Transaction transaction: world.getTransactions(player)) {
 
             // filter out not acceptable transactions
@@ -92,6 +88,7 @@ public abstract class TransactionAggregator {
                 continue;
             }
 
+            int intervalIndex = 0;
             // check if transaction time is earlier than left interval border, ignore transaction (too early)
             if (transaction.getTime().compareTo(times[intervalIndex]) < 0) {
                 continue;
@@ -102,9 +99,9 @@ public abstract class TransactionAggregator {
                 intervalIndex++;
             }
 
-            // if we are at the end of the intervals, there is no transaction coming any more
+            // Transactions later than the final interval are ignored.
             if (intervalIndex + 1 == times.length) {
-                return;
+                continue;
             }
 
             // aggregate transaction values

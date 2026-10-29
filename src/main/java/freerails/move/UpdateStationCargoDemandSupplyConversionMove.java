@@ -24,6 +24,8 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  *
  */
@@ -35,6 +37,27 @@ public class UpdateStationCargoDemandSupplyConversionMove implements Move {
     public UpdateStationCargoDemandSupplyConversionMove(@NotNull Player player, @NotNull Station station) {
         this.player = player;
         this.station = station;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof UpdateStationCargoDemandSupplyConversionMove other)) {
+            return false;
+        }
+        return Objects.equals(player, other.player)
+                && station.getId() == other.station.getId()
+                && Objects.equals(station.getSupply(), other.station.getSupply())
+                && Objects.equals(station.getCargoConversion(), other.station.getCargoConversion())
+                && Objects.equals(station.getDemandForCargo(), other.station.getDemandForCargo());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player, station.getId(), station.getSupply(),
+                station.getCargoConversion(), station.getDemandForCargo());
     }
 
     @NotNull

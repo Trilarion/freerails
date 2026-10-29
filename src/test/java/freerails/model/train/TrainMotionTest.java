@@ -77,4 +77,30 @@ public class TrainMotionTest extends TestCase {
         // This method used to throw an exception
         motion.getStateAtTime(actualDuration);
     }
+
+    public void testStateAtTimeIncludesStartAndEndButRejectsOutsideInterval() {
+        PathOnTiles path = new PathOnTiles(Vec2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
+        Motion speeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(10.0, 0.0, 6.0);
+        TrainMotion motion = new TrainMotion(path, 1, 24, speeds);
+        double duration = motion.getDuration();
+
+        assertEquals(0.0, motion.getDistance(0.0), 0.0);
+        assertTrue(motion.getStateAtTime(0.0).getLength() > 0);
+        assertEquals(59.99, motion.getDistance(duration - 0.001), 0.000001);
+        assertTrue(motion.getStateAtTime(duration - 0.001).getLength() > 0);
+        assertEquals(path.getFinalPosition(), motion.getFinalPosition());
+        assertEquals(60.0, motion.getDistance(duration), 0.0);
+        assertTrue(motion.getStateAtTime(duration).getLength() > 0);
+        assertThrowsIllegalArgument(() -> motion.getStateAtTime(-0.001));
+        assertThrowsIllegalArgument(() -> motion.getStateAtTime(duration + 0.001));
+    }
+
+    private static void assertThrowsIllegalArgument(Runnable action) {
+        try {
+            action.run();
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException expected) {
+            // The queried time lies outside the motion interval.
+        }
+    }
 }

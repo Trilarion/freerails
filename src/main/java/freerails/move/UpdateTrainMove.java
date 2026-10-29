@@ -28,6 +28,7 @@ import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -52,9 +53,29 @@ public class UpdateTrainMove implements Move {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof UpdateTrainMove other)) {
+            return false;
+        }
+        return trainId == other.trainId
+                && Objects.equals(player, other.player)
+                && Objects.equals(cargoBatchBundle, other.cargoBatchBundle)
+                && Objects.equals(consist, other.consist)
+                && Objects.equals(schedule, other.schedule);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player, trainId, cargoBatchBundle, consist, schedule);
+    }
+
+    @Override
     public @NotNull Status applicable(@NotNull UnmodifiableWorld world) {
         if (!Utils.containsId(trainId, world.getTrains(player))) {
-            Status.fail("Unknown train");
+            return Status.fail("Unknown train");
         }
         return Status.OK;
     }

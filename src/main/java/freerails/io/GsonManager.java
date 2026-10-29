@@ -21,7 +21,6 @@ package freerails.io;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import freerails.client.ARGBColor;
 import freerails.io.adapter.ColorAdapter;
 import freerails.io.adapter.MoneyAdapter;
 import freerails.util.Identifiable;

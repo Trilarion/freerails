@@ -213,13 +213,19 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ChangeTrackPieceMove changeTrackPieceMove) {
-            boolean fieldPointEqual = location.equals(changeTrackPieceMove.location);
-            boolean fieldoldTrackPieceEqual = Objects.equals(trackPieceBefore, changeTrackPieceMove.trackPieceBefore);
-            boolean fieldnewTrackPieceEqual = trackPieceAfter.equals(changeTrackPieceMove.trackPieceAfter);
-
-            return fieldPointEqual && fieldoldTrackPieceEqual && fieldnewTrackPieceEqual;
+        if (this == obj) {
+            return true;
         }
-        return false;
+        if (!(obj instanceof ChangeTrackPieceMove other)) {
+            return false;
+        }
+        return Objects.equals(trackPieceBefore, other.trackPieceBefore)
+                && Objects.equals(trackPieceAfter, other.trackPieceAfter)
+                && Objects.equals(location, other.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(trackPieceBefore, trackPieceAfter, location);
     }
 }

@@ -218,6 +218,7 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
      */
     @Override
     public TrainPositionOnMap getStateAtTime(double time) {
+        checkT(time);
         time = Math.min(time, speeds.getTotalTime());
         double offset = calcOffSet(time);
         Pair<PathIterator, Integer> pathIt = path.subPath(offset, trainLength);

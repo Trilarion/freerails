@@ -25,7 +25,9 @@ import freerails.model.world.World;
 import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
-// TODO hashcode, equals, try, undo ...
+import java.util.Objects;
+
+// TODO try, undo ...
 /**
  *
  */
@@ -44,14 +46,22 @@ public class AddStationMove implements Move {
         if (this == o) return true;
         if (!(o instanceof AddStationMove other)) return false;
 
-        return player.equals(other.player) && station.equals(other.station);
+        return player.equals(other.player)
+                && station.getId() == other.station.getId()
+                && Objects.equals(station.getLocation(), other.station.getLocation())
+                && Objects.equals(station.getStationName(), other.station.getStationName())
+                && Objects.equals(station.getSupply(), other.station.getSupply())
+                && Objects.equals(station.getDemandForCargo(), other.station.getDemandForCargo())
+                && Objects.equals(station.getCargoConversion(), other.station.getCargoConversion())
+                && Objects.equals(station.getCargoBatchBundle(), other.station.getCargoBatchBundle())
+                && Objects.equals(station.getProduction(), other.station.getProduction());
     }
 
     @Override
     public int hashCode() {
-        int result = player.hashCode();
-        result = 29 * result + station.hashCode();
-        return result;
+        return Objects.hash(player, station.getId(), station.getLocation(), station.getStationName(),
+                station.getSupply(), station.getDemandForCargo(), station.getCargoConversion(),
+                station.getCargoBatchBundle(), station.getProduction());
     }
 
     @NotNull

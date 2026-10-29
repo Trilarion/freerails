@@ -107,7 +107,9 @@ public class AddTransactionMove implements Move {
     public boolean equals(Object obj) {
         if (obj instanceof AddTransactionMove test) {
 
-            return test.player.equals(player) && test.transaction.equals(transaction);
+            return test.player.equals(player)
+                    && test.transaction.equals(transaction)
+                    && test.cashConstrained == cashConstrained;
         }
         return false;
     }

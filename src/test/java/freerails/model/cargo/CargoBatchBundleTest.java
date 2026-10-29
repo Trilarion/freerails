@@ -65,6 +65,83 @@ public class CargoBatchBundleTest extends TestCase {
         assertBundlesEqual(bundle1, bundle2);
     }
 
+    public void testZeroAndNegativeQuantitiesHaveDefinedBehavior() {
+        CargoBatch batch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
+        CargoBatchBundle bundle = new CargoBatchBundle();
+
+        assertEquals(0, bundle.getAmount(batch));
+        assertFalse(bundle.contains(batch));
+
+        bundle.addCargo(batch, 12);
+        bundle.addCargo(batch, -5);
+        assertEquals(7, bundle.getAmount(batch));
+
+        bundle.addCargo(batch, -7);
+        assertEquals(0, bundle.getAmount(batch));
+        assertFalse(bundle.contains(batch));
+        assertEquals(0, bundle.size());
+
+        bundle.setAmount(batch, -3);
+        assertTrue("Negative quantities are retained as signed corrections.", bundle.contains(batch));
+        assertEquals(-3, bundle.getAmount(batch));
+        bundle.setAmount(batch, 0);
+        assertFalse(bundle.contains(batch));
+    }
+
+    public void testCopyAndEqualityPreserveBatchIdentityAndHashContract() {
+        CargoBatch firstBatch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
+        CargoBatch secondBatch = new CargoBatch(1, new Vec2D(7, 8), 9, 10);
+        CargoBatch otherType = new CargoBatch(2, new Vec2D(2, 3), 4, 5);
+
+        CargoBatchBundle source = new CargoBatchBundle();
+        source.setAmount(firstBatch, 12);
+        source.setAmount(secondBatch, 30);
+        source.setAmount(otherType, 4);
+        CargoBatchBundle copy = new CargoBatchBundle(source);
+
+        CargoBatchBundle reverseInsertionOrder = new CargoBatchBundle();
+        reverseInsertionOrder.setAmount(otherType, 4);
+        reverseInsertionOrder.setAmount(secondBatch, 30);
+        reverseInsertionOrder.setAmount(firstBatch, 12);
+        assertEquals(source, reverseInsertionOrder);
+        assertEquals(source.hashCode(), reverseInsertionOrder.hashCode());
+
+        CargoBatchBundle differentBatchIdentity = new CargoBatchBundle();
+        differentBatchIdentity.setAmount(new CargoBatch(1, new Vec2D(3, 4), 4, 5), 12);
+        differentBatchIdentity.setAmount(secondBatch, 30);
+        differentBatchIdentity.setAmount(otherType, 4);
+        assertFalse(source.equals(differentBatchIdentity));
+
+        source.setAmount(firstBatch, 0);
+        source.addCargo(secondBatch, 1);
+        assertEquals(12, copy.getAmount(firstBatch));
+        assertEquals(30, copy.getAmount(secondBatch));
+        assertEquals(4, copy.getAmount(otherType));
+        assertEquals(3, copy.size());
+        assertTrue(copy.getCargoBatches().contains(firstBatch));
+        assertTrue(copy.getCargoBatches().contains(secondBatch));
+        assertTrue(copy.getCargoBatches().contains(otherType));
+        assertNotSame(source, copy);
+        assertFalse(source.equals(copy));
+    }
+
+    public void testAmountOfTypeSumsDistinctProductionBatches() {
+        CargoBatchBundle bundle = new CargoBatchBundle();
+        CargoBatch firstBatch = new CargoBatch(1, new Vec2D(1, 2), 3, 4);
+        CargoBatch secondBatch = new CargoBatch(1, new Vec2D(5, 6), 7, 8);
+        CargoBatch thirdBatch = new CargoBatch(2, new Vec2D(1, 2), 3, 4);
+        bundle.setAmount(firstBatch, 11);
+        bundle.setAmount(secondBatch, 17);
+        bundle.setAmount(thirdBatch, 23);
+
+        assertEquals(28, bundle.getAmountOfType(1));
+        assertEquals(23, bundle.getAmountOfType(2));
+        assertEquals(0, bundle.getAmountOfType(3));
+        assertEquals(3, bundle.size());
+        assertTrue(bundle.contains(firstBatch));
+        assertTrue(bundle.contains(secondBatch));
+    }
+
     private void assertBundlesEqual(CargoBatchBundle bundle1, CargoBatchBundle bundle2) {
 
         // equals with itself

@@ -579,10 +579,11 @@ public class World implements UnmodifiableWorld {
         return index;
     }
 
-    // TODO check that transaction time is not in the future and not older than last stored transaction
+    // TODO check that transaction time is not in the future
     /**
      * Adds a transaction to the player's history and updates the current
-     * balance by its amount.
+     * balance by its amount. History preserves append order and does not
+     * require transaction timestamps to be chronological.
      *
      * @param player account owner
      * @param transaction transaction to record

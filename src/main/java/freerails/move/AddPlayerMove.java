@@ -27,6 +27,7 @@ import freerails.model.world.WorldUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
+import java.util.Objects;
 
 // TODO what about a remove of a player?
 /**
@@ -47,12 +48,13 @@ public class AddPlayerMove implements Move {
         if (this == o) return true;
         if (!(o instanceof AddPlayerMove addPlayerMove)) return false;
 
-        return player.equals(addPlayerMove.player);
+        return player.equals(addPlayerMove.player)
+                && Objects.equals(player.getName(), addPlayerMove.player.getName());
     }
 
     @Override
     public int hashCode() {
-        return player.hashCode();
+        return Objects.hash(player, player.getName());
     }
 
     @NotNull

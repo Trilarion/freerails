@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client;
+package freerails.io;
 
 /**
  * ARGB value in an int. Needs its own class, so gson can convert to/from hex value in json de/serialization.

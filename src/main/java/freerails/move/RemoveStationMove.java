@@ -23,7 +23,9 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
-// TODO hashcode, equals, unto, trydo...
+import java.util.Objects;
+
+// TODO undo, try-do...
 /**
  *
  */
@@ -35,6 +37,22 @@ public class RemoveStationMove implements Move {
     public RemoveStationMove(@NotNull Player player, int stationId) {
         this.player = player;
         this.stationId = stationId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof RemoveStationMove other)) {
+            return false;
+        }
+        return stationId == other.stationId && Objects.equals(player, other.player);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player, stationId);
     }
 
     @NotNull

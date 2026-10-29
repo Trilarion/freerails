@@ -84,7 +84,9 @@ public class Schedule implements UnmodifiableSchedule {
             // Insert priority orders at position 0;
             hasPriorityOrders = true;
             orders.add(PRIORITY_ORDERS, order);
-            nextScheduledOrder++;
+            if (nextScheduledOrder >= 0) {
+                nextScheduledOrder++;
+            }
         }
     }
 
@@ -129,13 +131,22 @@ public class Schedule implements UnmodifiableSchedule {
     }
 
     /**
-     * Inserts an order at the specified position. Note you must call
+     * Inserts an ordinary order at the specified position. Note you must call
      * {@link #setPriorityOrders(TrainOrder)} to set a priority order.
      *
      * @param orderNumber index at which to insert the order
      * @param order order to insert
+     * @throws IllegalArgumentException if the index is outside the ordinary-order range
+     * @throws IllegalStateException if the schedule already contains the maximum number of orders
      */
-    private void addOrder(int orderNumber, TrainOrder order) {
+    public void addOrder(int orderNumber, TrainOrder order) {
+        if (orderNumber < firstScheduleStop() || orderNumber > orders.size()) {
+            throw new IllegalArgumentException(String.valueOf(orderNumber));
+        }
+        if (!canAddOrder()) {
+            throw new IllegalStateException();
+        }
+
         orders.add(orderNumber, order);
 
         if (nextScheduledOrder >= orderNumber) {
@@ -197,7 +208,7 @@ public class Schedule implements UnmodifiableSchedule {
      * @throws IllegalArgumentException if the index is outside the schedule
      */
     public void setOrderToGoto(int i) {
-        if (i < 0 || i >= orders.size()) {
+        if (!canSetGotoStation(i)) {
             throw new IllegalArgumentException(String.valueOf(i));
         }
 
@@ -220,11 +231,12 @@ public class Schedule implements UnmodifiableSchedule {
 
     /**
      * Returns the consist setting for the current order.
+     *
+     * @throws IllegalStateException if the schedule has no current order
      */
     @Override
     public List<Integer> getWagonsToAdd() {
-        TrainOrder order = orders.get(getCurrentOrderIndex());
-        return order.getConsist();
+        return getCurrentOrder().getConsist();
     }
 
     /**
@@ -233,17 +245,18 @@ public class Schedule implements UnmodifiableSchedule {
      */
     public void gotoNextStation() {
         if (hasPriorityOrders) {
-            if (nextScheduledOrder != PRIORITY_ORDERS) {
-                removeOrder(PRIORITY_ORDERS);
+            removeOrder(PRIORITY_ORDERS);
+            return;
+        }
 
-                return;
-            }
+        if (numberOfScheduledStops() == 0) {
+            return;
         }
 
         nextScheduledOrder++;
 
         if (orders.size() <= nextScheduledOrder) {
-            nextScheduledOrder = 0;
+            nextScheduledOrder = firstScheduleStop();
         }
     }
 
@@ -342,10 +355,11 @@ public class Schedule implements UnmodifiableSchedule {
      * Returns whether the specified order can be selected as the next stop.
      *
      * @param orderNumber index of the candidate order
-     * @return {@code false} for the priority order, which is selected automatically
+     * @return {@code false} if the index is outside the ordinary orders
      */
     public boolean canSetGotoStation(int orderNumber) {
-        return !(orderNumber == 0 && hasPriorityOrders);
+        return orderNumber >= firstScheduleStop()
+                && orderNumber < orders.size();
     }
 
     /** Returns the index of the next ordinary scheduled order. */
@@ -392,11 +406,22 @@ public class Schedule implements UnmodifiableSchedule {
         }
     }
 
-    /** Returns whether the current order requests automatic consist selection. */
+    /**
+     * Returns whether the current order requests automatic consist selection.
+     *
+     * @throws IllegalStateException if the schedule has no current order
+     */
     @Override
     public boolean autoConsist() {
-        TrainOrder order = orders.get(getCurrentOrderIndex());
-        return order.isAutoConsist();
+        return getCurrentOrder().isAutoConsist();
+    }
+
+    private TrainOrder getCurrentOrder() {
+        int currentOrderIndex = getCurrentOrderIndex();
+        if (currentOrderIndex == -1) {
+            throw new IllegalStateException("Schedule has no current order");
+        }
+        return orders.get(currentOrderIndex);
     }
 
     /** Compares the orders, current destination index, and priority-order state. */

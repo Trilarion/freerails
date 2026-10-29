@@ -7,7 +7,7 @@ and II games.
 ```{toctree}
 :maxdepth: 2
 
-introduction manual specification development history changelog
+introduction manual specification development model-improvements test-improvements history changelog
 ```
 
 * {ref}`genindex`

@@ -81,6 +81,37 @@ public class TrackConfigurationTest extends TestCase {
         assertEquals(TrackConfiguration.getFlatInstance("000010000"), trackConfiguration2);
     }
 
+    public void testRotationsPreserveDirectionalConnectionsAndReturnAfterFullCycle() {
+        int[] pieces = {
+                0x10 | TileTransition.NORTH.get9bitTemplate(),
+                0x10 | TileTransition.NORTH.get9bitTemplate() | TileTransition.SOUTH.get9bitTemplate(),
+                0x10 | TileTransition.NORTH.get9bitTemplate() | TileTransition.EAST.get9bitTemplate()
+        };
+
+        for (int piece : pieces) {
+            int[] rotations = EightRotationsOfTrackPieceProducer.getRotations(piece);
+            int expected = piece;
+            for (int orientation = 0; orientation < rotations.length; orientation++) {
+                assertEquals("Unexpected connections at orientation " + orientation,
+                        expected, rotations[orientation]);
+                expected = rotateClockwise(expected);
+            }
+            assertEquals("A full rotation cycle must restore the original piece.",
+                    piece, expected);
+        }
+    }
+
+    private static int rotateClockwise(int configuration) {
+        int rotated = configuration & 0x10;
+        for (TileTransition direction : TileTransition.getTransitions()) {
+            if ((configuration & direction.get9bitTemplate()) != 0) {
+                TileTransition clockwise = TileTransition.getInstance((direction.getID() + 1) % 8);
+                rotated |= clockwise.get9bitTemplate();
+            }
+        }
+        return rotated;
+    }
+
     /**
      *
      */

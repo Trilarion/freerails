@@ -22,6 +22,8 @@
 package freerails.controller;
 
 import freerails.model.train.Train;
+import freerails.model.finance.transaction.CargoDeliveryTransaction;
+import freerails.model.finance.transaction.Transaction;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
 import freerails.move.Status;
@@ -255,6 +257,38 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         assertEquals(expectedAtStation, getCargoAtStation());
         assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
+    }
+
+    public void testDeliveryRemovesCargoAndRecordsPaymentOnlyOnce() {
+        Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
+        station.setDemandForCargo(new StationDemand(new boolean[]{true, false, false, false}));
+        setCargoOnTrain(cargoType0FromStation2, 50);
+
+        Move delivery = new DropOffAndPickupCargoMoveGenerator(
+                0, 0, world, WorldGenerator.TEST_PLAYER, false, false).generate();
+        assertNotNull(delivery);
+        assertEquals(Status.OK, delivery.applicable(world));
+        delivery.apply(world);
+
+        assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
+        assertEquals(CargoBatchBundle.EMPTY, getCargoAtStation());
+        assertEquals(1, world.getTransactions(WorldGenerator.TEST_PLAYER).size());
+        Transaction transaction = world.getTransaction(WorldGenerator.TEST_PLAYER, 0);
+        assertTrue(transaction instanceof CargoDeliveryTransaction);
+        CargoDeliveryTransaction cargoDelivery = (CargoDeliveryTransaction) transaction;
+        assertEquals(50, cargoDelivery.getQuantity());
+        assertEquals(0, cargoDelivery.getStationId());
+        assertEquals(0, cargoDelivery.getTrainId());
+        assertEquals(cargoType0FromStation2, cargoDelivery.getCargoBatch());
+        assertEquals(cargoDelivery.getAmount(), world.getCurrentBalance(WorldGenerator.TEST_PLAYER));
+
+        Move repeatedDelivery = new DropOffAndPickupCargoMoveGenerator(
+                0, 0, world, WorldGenerator.TEST_PLAYER, false, false).generate();
+        assertNotNull(repeatedDelivery);
+        assertEquals(Status.OK, repeatedDelivery.applicable(world));
+        repeatedDelivery.apply(world);
+        assertEquals(1, world.getTransactions(WorldGenerator.TEST_PLAYER).size());
+        assertEquals(cargoDelivery.getAmount(), world.getCurrentBalance(WorldGenerator.TEST_PLAYER));
     }
 
     /**

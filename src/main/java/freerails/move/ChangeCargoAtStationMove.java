@@ -26,6 +26,8 @@ import freerails.model.world.World;
 import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  *
  */
@@ -39,6 +41,24 @@ public class ChangeCargoAtStationMove implements Move {
         this.player = player;
         this.stationId = stationId;
         this.cargoBatchBundle = cargoBatchBundle;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ChangeCargoAtStationMove other)) {
+            return false;
+        }
+        return stationId == other.stationId
+                && Objects.equals(player, other.player)
+                && Objects.equals(cargoBatchBundle, other.cargoBatchBundle);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player, stationId, cargoBatchBundle);
     }
 
     @NotNull

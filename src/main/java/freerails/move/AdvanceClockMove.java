@@ -41,12 +41,12 @@ public class AdvanceClockMove implements Move {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        return obj instanceof AdvanceClockMove;
+        return obj instanceof AdvanceClockMove other && player.equals(other.player);
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        return player.hashCode();
     }
 
     @NotNull

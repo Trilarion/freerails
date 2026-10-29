@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.io.Serial;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This Move changes adds, removes, or upgrades the track between two tiles.
@@ -55,6 +56,22 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     @Override
     public Rectangle getUpdatedTiles() {
         return rectangle;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ChangeTrackPieceCompositeMove other)) {
+            return false;
+        }
+        return getMoves().equals(other.getMoves()) && Objects.equals(player, other.player);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMoves(), player);
     }
 
     @Override

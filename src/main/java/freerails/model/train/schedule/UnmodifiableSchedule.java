@@ -43,24 +43,29 @@ public interface UnmodifiableSchedule extends Serializable {
     TrainOrder getOrder(int index);
 
     /**
-     * Returns the number of the order the train is currently carry out.
+     * Returns the index of the order the train is currently carrying out, or {@code -1}
+     * when the schedule is empty.
      */
     int getCurrentOrderIndex();
 
     /**
      * Returns the station number of the next station the train is scheduled to
-     * stop at.
+     * stop at, or {@code -1} when the schedule is empty.
      */
     int getNextStationId();
 
     /**
      * Returns the wagons to add at the next scheduled stop.
+     *
+     * @throws IllegalStateException if the schedule has no current order
      */
 
     List<Integer> getWagonsToAdd();
 
     /**
      * Returns the value for the auto consist flag at the next scheduled stop.
+     *
+     * @throws IllegalStateException if the schedule has no current order
      */
     boolean autoConsist();
 

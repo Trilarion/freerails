@@ -33,8 +33,8 @@
  */
 package freerails.client.renderer.map.overview;
 
-import freerails.client.ARGBColor;
 import freerails.client.renderer.map.MapRenderer;
+import freerails.io.ARGBColor;
 import freerails.io.GsonManager;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;

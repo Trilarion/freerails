@@ -29,6 +29,16 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GrowCitiesMove implements Move {
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && getClass() == obj.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
