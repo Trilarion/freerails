@@ -1,21 +1,19 @@
-************************
-Changelog
-************************
+# Changelog
 
-.. note::
-   The change logs for the years 2000 to 2006 are more like commit messages and are kept here for historical reasons.
-   From 2017 on this change log describes the publication date and changes of every released version.
+:::{note}
+The change logs for the years 2000 to 2006 are more like commit messages and are kept here
+for historical reasons. From 2017 on this change log describes the publication date and
+changes of every released version.
+:::
 
-FreeRails continuation (2017-)
-------------------------------
+## FreeRails continuation (2017-)
 
 Jan 2, 2018, FreeRails 0.4.1
 
 - No changes in functionality, artwork or user interface
 - Code of version 0.4.0 made runnable on Java 8 and with a slight round of code cleanup
 
-FreeRails3 (2016)
------------------
+## FreeRails3 (2016)
 
 Dec 25, 2016, lukeyj
 
@@ -24,8 +22,7 @@ Dec 25, 2016, lukeyj
 - Modernised build through maven
 - Pulled out file paths into constants
 
-FreeRails (2000-2005)
----------------------
+## FreeRails (2000-2005)
 
 Sep 3, 2006, Luke
 
@@ -955,12 +952,12 @@ Jun 28, 2003 Luke
 Jun 27, 2003 Luke
 
 - Added 'station of origin' field to CargoBatch and updated- the classes that use CargoBatch as appropriate. It lets us
-  check whether a train has brought cargo back to the station- that it came from.
+check whether a train has brought cargo back to the station- that it came from.
 
 Jun 27, 2003 Luke
 
 - Added 'no change' option to train orders - it indicates that a train should keep whatever wagons it has when it stops
-  at a station.
+at a station.
 - Made 'no change' the default order for new trains.
 
 Jun 15, 2003 Luke
@@ -1025,12 +1022,12 @@ May 31, 2003 Luke
 May 31, 2003 Luke
 
 - Cargo gets added to stations based on what they supply, currently this is triggered by the 'Add cargo to stations' item
-  on the game menu.
+on the game menu.
 
 May 19, 2003 Scott
 
 - Fixed the problem and deviation from the design ;-) of the station cargo calculations, there's now a temporary
-  menu item on the display menu. Use this to manually update the cargo supply rates.
+menu item on the display menu. Use this to manually update the cargo supply rates.
 
 May 18, 2003 Luke
 
@@ -1078,7 +1075,7 @@ May 03, 2003 Luke
 May 02, 2003 Luke
 
 - The terrain graphics now get loaded correctly although there is a bug in the code that picks the right image
-  for rivers and other types that are drawn in the same way.
+for rivers and other types that are drawn in the same way.
 
 May 01, 2003 Luke
 
@@ -1131,7 +1128,7 @@ Mar 10, 2003 Luke
 Mar 10, 2003 Luke
 
 - Added the MapViewJComponentMouseAdapter in MapViewJComponentConcrete.java contributed by Karl-Heinz Pennemann -
-  it scrolls the main map while pressing the second mouse button.
+it scrolls the main map while pressing the second mouse button.
 
 Mar 10, 2003 Luke
 
@@ -1149,9 +1146,10 @@ Jan 12, 2003 Luke
 
 - Major refactoring
 - added ant target, checkdep, to check that the dependencies between packages are in order. What it does is copy the
-  java files from a package together with the java files from all the packages that it is allowed to depend on to a
-  temporary directory. It then compiles the java files from the package in question in the temporary director.
-  If the build succeeds, then the package dependencies are ok.
+java files from a package together with the java files from all the packages that it is
+allowed to depend on to a temporary directory. It then compiles the java files from the
+package in question in the temporary director. If the build succeeds, then the package
+dependencies are ok.
 
 Jan 11, 2003 Luke
 
@@ -1169,7 +1167,7 @@ Dec 22, 2002 Luke Lindsay
 Dec 04, 2002 Luke Lindsay
 
 - The classes from the fastUtils library that are needed by freerails have been added to the freerails source tree, so
-  you no longer need fastUtils.jar on the classpath to compile and run freerails.
+you no longer need fastUtils.jar on the classpath to compile and run freerails.
 
 Dec 01, 2002 Luke Lindsay
 
@@ -1190,7 +1188,7 @@ Nov 30, 2002 Luke Lindsay
 Nov 27, 2002 Luke Lindsay
 
 - Wrote SimpleAStarPathFinder and a unit test for it. It seems to work. The next step is use it together with
-  NewFlatTrackExplorer to control train movement.
+NewFlatTrackExplorer to control train movement.
 
 Nov 26, 2002 Luke Lindsay
 
@@ -1211,8 +1209,8 @@ Nov 24, 2002 Luke Lindsay
 Nov 09, 2002 Luke Lindsay
 
 - Changes to how the mainmap's buffer gets refreshed.vInstead of the refresh being driven by the cursor moving,
-  it is now driven by moves being received. This means that it it will refresh even if the moves are generate by another
-  player.
+it is now driven by moves being received. This means that it it will refresh even if the
+moves are generate by another player.
 
 Nov 08, 2002 Luke Lindsay
 
@@ -1226,7 +1224,8 @@ Nov 06, 2002 Luke Lindsay
 Nov 05, 2002 Luke Lindsay
 
 - Moving trains: the class ServerGameEngine has a list of TrainMover objects, which control the movement of individual trains.
-  Movement is triggered by calls to ServerGameEngine.update() in the GameLoop's run() method.
+Movement is triggered by calls to ServerGameEngine.update() in the GameLoop's run()
+method.
 
 Nov 03, 2002 Luke Lindsay
 
@@ -1253,7 +1252,8 @@ Oct 16, 2002 Luke Lindsay
 Oct 16, 2002 Luke Lindsay
 
 - Refactored the freerails.world.* packages so that (1) freerails.world.* do not depend on any other freerails packages.
-  (2) there are no cyclic dependencies between any of the freerails.world.* packages. This should make it easier to maintain.
+(2) there are no cyclic dependencies between any of the freerails.world.* packages. This
+should make it easier to maintain.
 
 Oct 13, 2002 Luke Lindsay
 
@@ -1278,7 +1278,7 @@ Sep 24, 2002 Luke Lindsay:
 Sep 23, 2002 Luke Lindsay:
 
 - Wrote a simple demo, TrainDemo, to try out using FreerailsPathIterator and PathWalker to move trains along a track.
-  To see it in action, run: experimental.RunTrainDemo
+To see it in action, run: experimental.RunTrainDemo
 
 Sep 22, 2002 Luke Lindsay:
 

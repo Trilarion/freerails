@@ -2,41 +2,26 @@
 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE.txt)
 
-FreeRails is an open-source railway strategy and management game inspired by *Railroad Tycoon* and *Railroad Tycoon II*.
-Players build railway networks, run trains, transport cargo, and grow a railroad empire. The game is written in Java and
-includes a desktop client and a game server; its current codebase is an ongoing work in progress.
+FreeRails is an open-source railway strategy and management game inspired by the famous Sid Meier's strategy games
+*Railroad Tycoon* and *Railroad Tycoon II* from the 1990s. Turning a growing rail network into a business: choose
+where to build, which services to run, and how to invest as the world and economy change. FreeRails takes that strategic
+foundation as inspiration for an independent open-source railway management game in the spirit of its successors.
 
-The project continues a long-running series of FreeRails and Railz projects. Read [HISTORY.md](HISTORY.md) for the
-project's background and the [manual](https://freerails.readthedocs.io/en/latest/) for gameplay information.
+Building and operating a railroad is at the heart of play, with connected choices around terrain, stations, cargo,
+train services, company finances, and competition. We aims for engaging strategic decisions rather than realistic
+simulation, and for rules and presentation that make the state of the railroad easy to understand.
 
-## Repository layout
+The project is written in Java and includes a desktop client and game server; development is ongoing.
 
-- `src/main/java/freerails/` — Java application code, organized into packages for the client UI, game model, controllers,
-  moves, networking, scenarios, server, and shared utilities.
-- `src/main/resources/` — game graphics, sounds, interface content, and scenario data.
-- `src/test/java/` and `src/test/resources/` — automated tests and their supporting data.
-- `docs/` — Sphinx documentation, including the player manual, development notes, and specifications.
-- `build.gradle`, `settings.gradle`, and `gradle/` — Gradle build configuration and the Gradle wrapper.
-- `HISTORY.md` — project history.
-
-## Build and run
-
-Install a JDK 21 or newer, then use the included Gradle wrapper from the repository root:
-
-```shell
-# Run the desktop application
-./gradlew run
-
-# Run the test suite
-./gradlew check
-```
-
-On Windows, use `gradlew.bat` instead of `./gradlew`. The project sets Java source compatibility to Java 21.
+The project continues a long-running series of FreeRails and Railz projects. Read the [project history](docs/history.md)
+for background.
 
 ## Documentation
 
 - [Player manual](https://freerails.readthedocs.io/en/latest/)
-- [Project history](HISTORY.md)
+- [Game Design specification](docs/specification.md)
+- [Development guide](docs/development.md)
+- [Project history](docs/history.md)
 - [Release downloads](https://github.com/Trilarion/freerails/releases)
 
 ## Contributing

@@ -1,11 +1,16 @@
-ReadTheDocs documentation
-*************************
+FreeRails documentation
+=======================
 
-Contains *.rst, conf.py, make.bat, Makefile and folders _static, _templates
+The documentation pages are written in Markdown and built with Sphinx using
+MyST. Keep Markdown source wrapped to roughly 80-100 characters so it remains
+easy to read in editors and diff views.
 
-Is compiled with Sphinx
+Install the documentation dependencies with:
 
-The custom dictionary for the project
-*************************************
+    python -m pip install -r requirements.txt
 
-See folder dictionary and README there
+Build the HTML documentation from this directory with:
+
+    python -m sphinx -M html . _build
+
+The project dictionary is in the dictionary folder; see its README there.

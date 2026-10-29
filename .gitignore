@@ -11,6 +11,9 @@
 /*.iml
 /out
 
+# copilot
+/.github
+
 # netbeans
 /.nb-gradle
 

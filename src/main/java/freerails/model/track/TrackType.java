@@ -18,7 +18,7 @@
 
 package freerails.model.track;
 
-import freerails.io.Conceal;
+import com.google.gson.annotations.Expose;
 import freerails.util.Identifiable;
 import freerails.model.finance.Money;
 import freerails.model.terrain.TerrainCategory;
@@ -41,7 +41,8 @@ public class TrackType extends Identifiable {
     private final Money purchasingPrice;
     private final Set<TerrainCategory> validTerrainCategories;
     private final Set<String> validTrackConfigurations;
-    @Conceal private Set<TrackConfiguration> allValidTrackConfigurations;
+    @Expose(serialize = false, deserialize = false)
+    private Set<TrackConfiguration> allValidTrackConfigurations;
 
     /**
      * Creates a track type from its persistent definition.

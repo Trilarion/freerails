@@ -19,14 +19,16 @@
 package freerails.io;
 
 import com.google.gson.FieldAttributes;
+import com.google.gson.annotations.Expose;
 
 /**
- *
+ * Excludes fields explicitly marked as non-persistent from Gson operations.
  */
 public class ExclusionStrategy implements com.google.gson.ExclusionStrategy {
     @Override
-    public boolean shouldSkipField(FieldAttributes f) {
-        return f.getAnnotation(Conceal.class) != null;
+    public boolean shouldSkipField(FieldAttributes field) {
+        Expose expose = field.getAnnotation(Expose.class);
+        return expose != null && (!expose.serialize() || !expose.deserialize());
     }
 
     @Override
