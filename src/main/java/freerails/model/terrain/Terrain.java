@@ -31,7 +31,7 @@ import java.util.List;
  * Describes a terrain type, including its category, construction costs, and
  * cargo production, conversion, and consumption behavior.
  */
-public class Terrain extends Identifiable {
+public final class Terrain extends Identifiable {
 
     private final String name;
     private final TerrainCategory category;

@@ -53,6 +53,8 @@ import java.util.Collection;
  * </table>
  *
  * Cargo bundles are used to represent the cargo carried by trains and the cargo waiting at stations).
+ * This interface restricts available operations but does not guarantee that an implementation is immutable.
+ * Use {@link ImmutableCargoBatchBundle} when a defensive immutable snapshot is required.
  */
 public interface UnmodifiableCargoBatchBundle extends Serializable {
 

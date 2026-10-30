@@ -268,10 +268,10 @@ public class FullServerGameModel implements ServerGameModel {
                         Iterator<Station> wi = world.getStations(player).iterator();
                         while (wi.hasNext() && schedule.getNumberOfOrders() < 5) {
                             TrainOrder orders = new TrainOrder(wi.next().getId(), null, false, autoSchedule);
-                            schedule.addOrder(orders);
+                            schedule = schedule.addOrder(orders);
                         }
 
-                        schedule.setOrderToGoto(0);
+                        schedule = schedule.setOrderToGoto(0);
 
                         MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagonTypes, station.getLocation(), player, schedule);
 

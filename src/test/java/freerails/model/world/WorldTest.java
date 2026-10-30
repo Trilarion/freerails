@@ -430,9 +430,9 @@ public class WorldTest extends TestCase {
                 .setRules(base.getRules())
                 .setMapSize(new Vec2D(2, 2))
                 .setCargos(cargos);
+        cargos.add(new Cargo(90, "Coal", CargoCategory.BULK_FREIGHT, 2));
         World world = builder.build();
 
-        cargos.add(new Cargo(90, "Coal", CargoCategory.BULK_FREIGHT, 2));
         assertEquals(1, world.getCargos().size());
         assertEquals(0, world.getCargoIndex(7));
         assertEquals(7, world.getCargoAtIndex(0).getId());

@@ -18,9 +18,13 @@
 
 package freerails.move;
 
+import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.train.Train;
+import freerails.model.train.TrainConfiguration;
+import freerails.model.train.TrainRuntimeState;
+import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
@@ -47,9 +51,9 @@ public class UpdateTrainMove implements Move {
         }
         this.player = player;
         this.trainId = trainId;
-        this.cargoBatchBundle = cargoBatchBundle;
-        this.consist = consist;
-        this.schedule = schedule;
+        this.cargoBatchBundle = cargoBatchBundle == null ? null : new ImmutableCargoBatchBundle(cargoBatchBundle);
+        this.consist = consist == null ? null : List.copyOf(consist);
+        this.schedule = schedule == null ? null : new Schedule(schedule);
     }
 
     @Override
@@ -83,14 +87,15 @@ public class UpdateTrainMove implements Move {
     @Override
     public void apply(@NotNull World world) {
         Train train = world.getTrain(player, trainId);
+        TrainRuntimeState runtimeState = train.getRuntimeState();
         if (cargoBatchBundle != null) {
-            train.setCargoBatchBundle(cargoBatchBundle);
+            runtimeState.setCargoBatchBundle(cargoBatchBundle);
         }
         if (consist != null) {
-            train.setConsist(consist);
+            train.setConfiguration(new TrainConfiguration(train.getEngine(), consist));
         }
         if (schedule != null) {
-            train.setSchedule(schedule);
+            runtimeState.setSchedule(schedule);
         }
     }
 }

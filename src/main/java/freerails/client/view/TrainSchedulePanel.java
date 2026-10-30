@@ -326,7 +326,7 @@ public class TrainSchedulePanel extends JPanel implements View {
     private void priorityOrdersJButtonActionPerformed(ActionEvent evt) {
         Schedule schedule = getSchedule();
         try {
-            schedule.setPriorityOrders(new TrainOrder(getFirstStationID(), null, false, false));
+            schedule = schedule.setPriorityOrders(new TrainOrder(getFirstStationID(), null, false, false));
             showSelectStation(schedule, UnmodifiableSchedule.PRIORITY_ORDERS);
         } catch (NoSuchElementException e) {
             logger.warn("No stations exist so can't add station to schedule!");
@@ -336,7 +336,8 @@ public class TrainSchedulePanel extends JPanel implements View {
     private void addStationJButtonActionPerformed(ActionEvent evt) {
         Schedule schedule = getSchedule();
         try {
-            int newOrderNumber = schedule.addOrder(new TrainOrder(getFirstStationID(), null, false, false));
+            int newOrderNumber = schedule.getNumberOfOrders();
+            schedule = schedule.addOrder(new TrainOrder(getFirstStationID(), null, false, false));
             showSelectStation(schedule, newOrderNumber);
         } catch (NoSuchElementException e) {
             logger.warn("No stations exist so can't add station to schedule!");
@@ -346,21 +347,21 @@ public class TrainSchedulePanel extends JPanel implements View {
     private void removeStationJMenuItemActionPerformed(ActionEvent evt) {
         Schedule schedule = getSchedule();
         int i = orders.getSelectedIndex();
-        schedule.removeOrder(i);
+        schedule = schedule.removeOrder(i);
         sendUpdateMove(schedule);
     }
 
     private void gotoStationJMenuItemActionPerformed(ActionEvent evt) {
         Schedule schedule = getSchedule();
         int i = orders.getSelectedIndex();
-        schedule.setOrderToGoto(i);
+        schedule = schedule.setOrderToGoto(i);
         sendUpdateMove(schedule);
     }
 
     private void pushDownJMenuItemActionPerformed(ActionEvent evt) {
         Schedule schedule = getSchedule();
         int i = orders.getSelectedIndex();
-        schedule.pushDown(i);
+        schedule = schedule.pushDown(i);
         sendUpdateMove(schedule);
         orders.setSelectedIndex(i + 1);
     }
@@ -390,7 +391,7 @@ public class TrainSchedulePanel extends JPanel implements View {
     private void pullUpJMenuItemActionPerformed(ActionEvent evt) {
         Schedule schedule = getSchedule();
         int i = orders.getSelectedIndex();
-        schedule.pullUp(i);
+        schedule = schedule.pullUp(i);
         sendUpdateMove(schedule);
         orders.setSelectedIndex(i - 1);
     }
@@ -484,7 +485,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
         newOrders = new TrainOrder(oldOrders.getStationID(), null, false, false);
-        schedule.setOrder(orderNumber, newOrders);
+        schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
 
@@ -499,7 +500,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         if (oldOrders.getConsist() == null) return;
         boolean autoConsist = false;
         newOrders = new TrainOrder(oldOrders.getStationID(), oldOrders.getConsist(), b, autoConsist);
-        schedule.setOrder(orderNumber, newOrders);
+        schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
 
@@ -509,7 +510,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
         newOrders = new TrainOrder(oldOrders.getStationID(), null, false, true);
-        schedule.setOrder(orderNumber, newOrders);
+        schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
 
@@ -533,7 +534,7 @@ public class TrainSchedulePanel extends JPanel implements View {
             newConsist = new Integer[]{wagonTypeNumber};
         }
         newOrders = new TrainOrder(oldOrders.getStationID(), Arrays.asList(newConsist), oldOrders.getWaitUntilFull(), false);
-        schedule.setOrder(orderNumber, newOrders);
+        schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
 
@@ -543,7 +544,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
         newOrders = new TrainOrder(oldOrders.getStationID(), new ArrayList<>(), false, false);
-        schedule.setOrder(orderNumber, newOrders);
+        schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
 
@@ -562,12 +563,11 @@ public class TrainSchedulePanel extends JPanel implements View {
             // No wagons to remove!
             return;
         }
-        // TODO unmodifiable list? needs to copy then
-        oldConsist.removeLast();
-        // List<Integer> newConsist = Utils.removeLastOfList(oldConsist);
+        List<Integer> newConsist = new ArrayList<>(oldOrders.getConsist());
+        newConsist.removeLast();
 
-        newOrders = new TrainOrder(oldOrders.getStationID(), oldConsist, oldOrders.isWaitUntilFull(), false);
-        schedule.setOrder(orderNumber, newOrders);
+        newOrders = new TrainOrder(oldOrders.getStationID(), newConsist, oldOrders.isWaitUntilFull(), false);
+        schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
 

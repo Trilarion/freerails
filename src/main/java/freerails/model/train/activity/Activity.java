@@ -21,22 +21,36 @@
  */
 package freerails.model.train.activity;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * A time-bounded entity activity whose serializable state can be queried as it
- * progresses, such as a train's motion.
+ * A time-bounded entity activity with an immutable start time whose
+ * serializable state can be queried as it progresses, such as a train's motion.
  *
  * @param <E> serializable state value exposed by this activity
  */
 public abstract class Activity<E extends Serializable> implements Serializable {
 
-    private double startTime = Double.MIN_VALUE;
+    @Serial
+    private static final long serialVersionUID = 3650239413835993072L;
+
+    private final double startTime;
 
     /**
      * Creates an activity with its default start time.
      */
     public Activity() {
+        this(Double.MIN_VALUE);
+    }
+
+    /**
+     * Creates an activity with the specified start time.
+     *
+     * @param startTime start time in game ticks
+     */
+    protected Activity(double startTime) {
+        this.startTime = startTime;
     }
 
     /**
@@ -49,13 +63,12 @@ public abstract class Activity<E extends Serializable> implements Serializable {
     }
 
     /**
-     * Sets the activity's start time.
+     * Returns a copy of this activity with the specified start time.
      *
      * @param startTime start time in game ticks
+     * @return a copy with the requested start time
      */
-    public void setStartTime(double startTime) {
-        this.startTime = startTime;
-    }
+    public abstract Activity<E> withStartTime(double startTime);
 
     /**
      * Returns the activity's duration in game ticks.

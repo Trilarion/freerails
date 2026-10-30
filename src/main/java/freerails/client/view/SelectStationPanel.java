@@ -305,8 +305,7 @@ public class SelectStationPanel extends JPanel implements View {
         TrainOrder oldOrders, newOrders;
         oldOrders = schedule.getOrder(selectedOrderNumber);
         newOrders = new TrainOrder(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull(), oldOrders.isAutoConsist());
-        schedule.setOrder(selectedOrderNumber, newOrders);
-        return schedule;
+        return schedule.setOrder(selectedOrderNumber, newOrders);
     }
 
 }

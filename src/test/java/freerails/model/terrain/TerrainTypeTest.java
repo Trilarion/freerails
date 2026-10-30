@@ -28,6 +28,7 @@ import freerails.util.TestUtils;
 import freerails.util.Utils;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +53,37 @@ public class TerrainTypeTest extends TestCase {
         Terrain terrainType1 = new Terrain(1, "Grassland", TerrainCategory.COUNTRY, new Money(100), new Money(10), productions, conversions1, consumptions);
 
         TestUtils.assertCloneBySerializationBehavesWell(terrainType1);
+    }
+
+    public void testCargoPoliciesAreCopiedAndCannotBeChangedThroughGetters() {
+        List<CargoProductionOrConsumption> productions =
+                new ArrayList<>(List.of(new CargoProductionOrConsumption(1, 2)));
+        List<CargoConversion> conversions = new ArrayList<>(List.of(new CargoConversion(1, 2, 0.5)));
+        List<CargoProductionOrConsumption> consumptions =
+                new ArrayList<>(List.of(new CargoProductionOrConsumption(2, 3)));
+        Terrain terrain = new Terrain(1, "Grassland", TerrainCategory.COUNTRY,
+                Money.ZERO, Money.ZERO, productions, conversions, consumptions);
+
+        productions.clear();
+        productions.add(new CargoProductionOrConsumption(4, 5));
+        conversions.clear();
+        consumptions.clear();
+
+        assertEquals(List.of(new CargoProductionOrConsumption(1, 2)), terrain.getProductions());
+        assertEquals(List.of(new CargoConversion(1, 2, 0.5)), terrain.getConversions());
+        assertEquals(List.of(new CargoProductionOrConsumption(2, 3)), terrain.getConsumptions());
+        assertThrowsUnsupportedOperation(() -> terrain.getProductions().clear());
+        assertThrowsUnsupportedOperation(() -> terrain.getConversions().clear());
+        assertThrowsUnsupportedOperation(() -> terrain.getConsumptions().clear());
+    }
+
+    private static void assertThrowsUnsupportedOperation(Runnable action) {
+        try {
+            action.run();
+            fail("Expected an immutable policy list");
+        } catch (UnsupportedOperationException expected) {
+            // Policy getters expose immutable snapshots.
+        }
     }
 
     @SafeVarargs

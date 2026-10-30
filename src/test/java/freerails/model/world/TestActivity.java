@@ -35,7 +35,17 @@ public class TestActivity extends Activity {
      * @param duration
      */
     public TestActivity(int duration) {
+        this(duration, Double.MIN_VALUE);
+    }
+
+    private TestActivity(int duration, double startTime) {
+        super(startTime);
         this.duration = duration;
+    }
+
+    @Override
+    public TestActivity withStartTime(double startTime) {
+        return new TestActivity((int) duration, startTime);
     }
 
     @Override

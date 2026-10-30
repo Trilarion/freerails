@@ -38,7 +38,7 @@ public class AddStationMove implements Move {
 
     public AddStationMove(@NotNull Player player, @NotNull Station station) {
         this.player = player;
-        this.station = station;
+        this.station = new Station(station);
     }
 
     @Override
@@ -81,6 +81,6 @@ public class AddStationMove implements Move {
         if (Utils.containsId(station.getId(), world.getStations(player))) {
             throw new RuntimeException("Station with id already existing");
         }
-        world.addStation(player, station);
+        world.addStation(player, new Station(station));
     }
 }

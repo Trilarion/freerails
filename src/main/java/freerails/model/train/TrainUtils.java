@@ -106,10 +106,7 @@ public final class TrainUtils {
      * @return train length in map-distance units
      */
     public static int calculateTrainLength(int engineId, List<Integer> wagons) {
-        // TODO is this a good idea, how often is this called, instead extract getLength() method
-        Train train = new Train(0, engineId);
-        train.setConsist(wagons);
-        return train.getLength();
+        return new TrainConfiguration(engineId, wagons).getLength();
     }
 
     /**

@@ -66,6 +66,8 @@ public class AddActivityMoveTest extends AbstractMoveTestCase {
         BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, 0).getActivities();
 
         assertEquals(bidirectionalIterator.get(), act);
+        assertNotSame(act, bidirectionalIterator.get());
+        assertEquals(Double.MIN_VALUE, act.getStartTime(), 0.00001);
         assertEquals(bidirectionalIterator.get().getStartTime(), currentTime.ticks(), 0.00001);
         assertEquals(50.0d, bidirectionalIterator.get().getDuration(), 0.00001);
         assertEquals(50.0d, bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration(), 0.00001);
@@ -73,6 +75,8 @@ public class AddActivityMoveTest extends AbstractMoveTestCase {
         assertTrue(bidirectionalIterator.hasNext());
         bidirectionalIterator.next();
         assertEquals(bidirectionalIterator.get(), act2);
+        assertNotSame(act2, bidirectionalIterator.get());
+        assertEquals(Double.MIN_VALUE, act2.getStartTime(), 0.00001);
         assertEquals(50, bidirectionalIterator.get().getStartTime(), 0.00001);
         assertEquals(60, bidirectionalIterator.get().getDuration(), 0.0001d);
         assertEquals(110, bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration(), 0.00001);

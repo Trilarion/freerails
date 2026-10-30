@@ -209,7 +209,7 @@ public class TrainStopsHandler implements Serializable {
         boolean waitingForFullLoad = order.isWaitUntilFull() && !TrainUtils.isTrainFull(world, player, trainId);
 
         if (!waitingForFullLoad) {
-            schedule.gotoNextStation();
+            schedule = schedule.gotoNextStation();
             Move move = new UpdateTrainMove(player, trainId, null, null, schedule);
             move.apply(world);
             moves.add(move);

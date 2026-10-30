@@ -26,6 +26,11 @@ import freerails.model.train.schedule.TrainOrder;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import junit.framework.TestCase;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 /**
  *
  */
@@ -42,138 +47,194 @@ public class ScheduleTest extends TestCase {
         assertEquals(-1, schedule.getNextStationId());
         assertCurrentOrderUnavailable(schedule);
 
-        schedule.addOrder(order(10));
+        schedule = schedule.addOrder(order(10));
         assertEquals(0, schedule.getCurrentOrderIndex());
         assertEquals(0, schedule.getNextScheduledOrder());
         assertEquals(10, schedule.getNextStationId());
 
-        schedule.addOrder(order(20));
-        schedule.addOrder(order(30));
+        schedule = schedule.addOrder(order(20));
+        schedule = schedule.addOrder(order(30));
         assertEquals(0, schedule.getCurrentOrderIndex());
         assertEquals(10, schedule.getNextStationId());
 
-        schedule.gotoNextStation();
+        schedule = schedule.gotoNextStation();
         assertEquals(1, schedule.getCurrentOrderIndex());
         assertEquals(20, schedule.getNextStationId());
     }
 
-    public void testAdvancingRegularOrdersWrapsOnce() {
-        Schedule schedule = new Schedule();
-        schedule.addOrder(order(10));
-        schedule.addOrder(order(20));
-        schedule.addOrder(order(30));
+    public void testScheduleOperationsReturnIndependentSnapshots() {
+        Schedule initial = scheduleWithOrders(10, 20);
+        Schedule selected = initial.setOrderToGoto(1);
+        Schedule updated = selected.setOrder(1, order(25));
+        Schedule advanced = selected.gotoNextStation();
+
+        assertEquals(0, initial.getNextScheduledOrder());
+        assertEquals(10, initial.getNextStationId());
+        assertEquals(1, selected.getNextScheduledOrder());
+        assertEquals(20, selected.getNextStationId());
+        assertEquals(25, updated.getNextStationId());
+        assertEquals(10, advanced.getNextStationId());
+        assertNotSame(initial, selected);
+    }
+
+    public void testScheduleDefensivelyCopiesConstructorArrayAndHashIncludesOrders() {
+        TrainOrder[] orders = {order(10), order(20)};
+        Schedule schedule = new Schedule(orders, 0, false);
+        orders[0] = order(99);
 
         assertEquals(10, schedule.getNextStationId());
-        schedule.gotoNextStation();
+        assertEquals(schedule, scheduleWithOrders(10, 20));
+        assertEquals(schedule.hashCode(), scheduleWithOrders(10, 20).hashCode());
+        assertFalse(schedule.equals(scheduleWithOrders(10, 30)));
+        assertFalse(schedule.hashCode() == scheduleWithOrders(10, 30).hashCode());
+    }
+
+    public void testScheduleSerializationRestoresAnImmutableSnapshot() throws Exception {
+        Schedule original = scheduleWithOrders(10, 20).setOrderToGoto(1);
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        try (ObjectOutputStream output = new ObjectOutputStream(bytes)) {
+            output.writeObject(original);
+        }
+
+        Schedule restored;
+        try (ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()))) {
+            restored = (Schedule) input.readObject();
+        }
+
+        assertEquals(original, restored);
+        assertEquals(original.hashCode(), restored.hashCode());
+        Schedule advanced = restored.gotoNextStation();
+        assertEquals(20, restored.getNextStationId());
+        assertEquals(10, advanced.getNextStationId());
+    }
+
+    public void testInvalidMovementIndexesAreRejectedByCapabilities() {
+        Schedule schedule = scheduleWithOrders(10, 20);
+
+        assertFalse(schedule.canPullUp(-1));
+        assertFalse(schedule.canPullUp(schedule.getNumberOfOrders()));
+        assertFalse(schedule.canPushDown(-1));
+        assertFalse(schedule.canPushDown(schedule.getNumberOfOrders()));
+    }
+
+    public void testAdvancingRegularOrdersWrapsOnce() {
+        Schedule schedule = new Schedule();
+        schedule = schedule.addOrder(order(10));
+        schedule = schedule.addOrder(order(20));
+        schedule = schedule.addOrder(order(30));
+
+        assertEquals(10, schedule.getNextStationId());
+        schedule = schedule.gotoNextStation();
         assertEquals(20, schedule.getNextStationId());
-        schedule.gotoNextStation();
+        schedule = schedule.gotoNextStation();
         assertEquals(30, schedule.getNextStationId());
-        schedule.gotoNextStation();
+        schedule = schedule.gotoNextStation();
         assertEquals(10, schedule.getNextStationId());
         assertEquals(0, schedule.getCurrentOrderIndex());
     }
 
     public void testAddingAndRemovingOrdersPreservesSelectedStop() {
         Schedule schedule = scheduleWithOrders(10, 20, 30);
-        schedule.setOrderToGoto(1);
+        schedule = schedule.setOrderToGoto(1);
 
-        schedule.addOrder(1, order(15));
+        schedule = schedule.addOrder(1, order(15));
         assertSelected(schedule, 2, 20);
-        schedule.addOrder(2, order(25));
+        schedule = schedule.addOrder(2, order(25));
         assertSelected(schedule, 3, 20);
-        schedule.addOrder(order(50));
+        schedule = schedule.addOrder(order(50));
         assertSelected(schedule, 3, 20);
 
-        schedule.removeOrder(1);
+        schedule = schedule.removeOrder(1);
         assertSelected(schedule, 2, 20);
-        schedule.removeOrder(4);
+        schedule = schedule.removeOrder(4);
         assertSelected(schedule, 2, 20);
-        schedule.removeOrder(2);
+        schedule = schedule.removeOrder(2);
         assertSelected(schedule, 2, 30);
     }
 
     public void testMovingCurrentOrderPreservesSelectedStop() {
         Schedule schedule = scheduleWithOrders(10, 20, 30, 40);
-        schedule.setOrderToGoto(2);
+        schedule = schedule.setOrderToGoto(2);
 
-        schedule.pullUp(2);
+        schedule = schedule.pullUp(2);
         assertSelected(schedule, 1, 30);
-        schedule.pushDown(1);
+        schedule = schedule.pushDown(1);
         assertSelected(schedule, 2, 30);
     }
 
     public void testPriorityOrderLifecycle() {
         Schedule schedule = new Schedule();
-        schedule.setPriorityOrders(order(90));
+        schedule = schedule.setPriorityOrders(order(90));
         assertTrue(schedule.hasPriorityOrders());
         assertEquals(0, schedule.getCurrentOrderIndex());
         assertEquals(-1, schedule.getNextScheduledOrder());
         assertEquals(90, schedule.getNextStationId());
 
-        schedule.gotoNextStation();
+        schedule = schedule.gotoNextStation();
         assertFalse(schedule.hasPriorityOrders());
         assertEquals(-1, schedule.getCurrentOrderIndex());
         assertEquals(-1, schedule.getNextScheduledOrder());
         assertEquals(-1, schedule.getNextStationId());
-        schedule.setPriorityOrders(order(90));
+        schedule = schedule.setPriorityOrders(order(90));
 
-        schedule.addOrder(order(10));
-        schedule.addOrder(order(20));
+        schedule = schedule.addOrder(order(10));
+        schedule = schedule.addOrder(order(20));
         assertEquals(1, schedule.getNextScheduledOrder());
-        schedule.setOrderToGoto(2);
+        schedule = schedule.setOrderToGoto(2);
         assertEquals(90, schedule.getNextStationId());
 
-        schedule.setPriorityOrders(order(91));
+        schedule = schedule.setPriorityOrders(order(91));
         assertEquals(91, schedule.getNextStationId());
         assertEquals(2, schedule.getNextScheduledOrder());
-        schedule.gotoNextStation();
+        schedule = schedule.gotoNextStation();
         assertFalse(schedule.hasPriorityOrders());
         assertSelected(schedule, 1, 20);
-        schedule.gotoNextStation();
+        schedule = schedule.gotoNextStation();
         assertSelected(schedule, 0, 10);
-        schedule.gotoNextStation();
+        schedule = schedule.gotoNextStation();
         assertSelected(schedule, 1, 20);
 
-        schedule.setPriorityOrders(order(92));
-        schedule.removeOrder(0);
+        schedule = schedule.setPriorityOrders(order(92));
+        schedule = schedule.removeOrder(0);
         assertFalse(schedule.hasPriorityOrders());
         assertSelected(schedule, 1, 20);
     }
 
     public void testPriorityOrderCannotBeReorderedOrSelectedAsRegular() {
         Schedule schedule = new Schedule();
-        schedule.setPriorityOrders(order(90));
-        schedule.addOrder(order(10));
-        schedule.addOrder(order(20));
-        schedule.addOrder(order(30));
+        schedule = schedule.setPriorityOrders(order(90));
+        schedule = schedule.addOrder(order(10));
+        schedule = schedule.addOrder(order(20));
+        schedule = schedule.addOrder(order(30));
 
-        assertFalse(schedule.canPullUp(0));
-        assertFalse(schedule.canPushDown(0));
-        assertFalse(schedule.canSetGotoStation(0));
-        assertThrowsIllegalArgument(() -> schedule.pullUp(0));
-        assertThrowsIllegalArgument(() -> schedule.pushDown(0));
-        assertThrowsIllegalArgument(() -> schedule.setOrderToGoto(0));
+        Schedule prioritySchedule = schedule;
+        assertFalse(prioritySchedule.canPullUp(0));
+        assertFalse(prioritySchedule.canPushDown(0));
+        assertFalse(prioritySchedule.canSetGotoStation(0));
+        assertThrowsIllegalArgument(() -> prioritySchedule.pullUp(0));
+        assertThrowsIllegalArgument(() -> prioritySchedule.pushDown(0));
+        assertThrowsIllegalArgument(() -> prioritySchedule.setOrderToGoto(0));
 
-        assertFalse(schedule.canPullUp(1));
-        assertTrue(schedule.canPushDown(1));
-        assertTrue(schedule.canSetGotoStation(1));
-        assertThrowsIllegalArgument(() -> schedule.pullUp(1));
-        schedule.pushDown(1);
-        schedule.setOrderToGoto(1);
+        assertFalse(prioritySchedule.canPullUp(1));
+        assertTrue(prioritySchedule.canPushDown(1));
+        assertTrue(prioritySchedule.canSetGotoStation(1));
+        assertThrowsIllegalArgument(() -> prioritySchedule.pullUp(1));
+        schedule = schedule.pushDown(1);
+        schedule = schedule.setOrderToGoto(1);
         assertEquals(1, schedule.getNextScheduledOrder());
         assertEquals(90, schedule.getNextStationId());
     }
 
     public void testRemovingAllStopsAtStationKeepsCurrentOrderValid() {
         Schedule schedule = new Schedule();
-        schedule.addOrder(order(20));
-        schedule.addOrder(order(10));
-        schedule.addOrder(order(30));
-        schedule.addOrder(order(10));
-        schedule.setOrderToGoto(2);
-        schedule.setPriorityOrders(order(10));
+        schedule = schedule.addOrder(order(20));
+        schedule = schedule.addOrder(order(10));
+        schedule = schedule.addOrder(order(30));
+        schedule = schedule.addOrder(order(10));
+        schedule = schedule.setOrderToGoto(2);
+        schedule = schedule.setPriorityOrders(order(10));
 
-        schedule.removeAllStopsAtStation(10);
+        schedule = schedule.removeAllStopsAtStation(10);
 
         assertEquals(2, schedule.getNumberOfOrders());
         assertFalse(schedule.hasPriorityOrders());
@@ -184,10 +245,10 @@ public class ScheduleTest extends TestCase {
         assertFalse(schedule.getNextStationId() == 10);
 
         schedule = new Schedule();
-        schedule.setPriorityOrders(order(10));
-        schedule.addOrder(order(10));
-        schedule.setOrderToGoto(1);
-        schedule.removeAllStopsAtStation(10);
+        schedule = schedule.setPriorityOrders(order(10));
+        schedule = schedule.addOrder(order(10));
+        schedule = schedule.setOrderToGoto(1);
+        schedule = schedule.removeAllStopsAtStation(10);
 
         assertEquals(0, schedule.getNumberOfOrders());
         assertFalse(schedule.hasPriorityOrders());
@@ -200,17 +261,17 @@ public class ScheduleTest extends TestCase {
         Schedule schedule = new Schedule();
         for (int i = 0; i < UnmodifiableSchedule.MAXIMUM_NUMBER_OF_ORDER; i++) {
             assertTrue(schedule.canAddOrder());
-            schedule.addOrder(order(i));
+            schedule = schedule.addOrder(order(i));
         }
         assertFalse(schedule.canAddOrder());
         assertAddRejectedWithoutMutation(schedule);
 
-        schedule.setPriorityOrders(order(90));
+        schedule = schedule.setPriorityOrders(order(90));
         assertEquals(UnmodifiableSchedule.MAXIMUM_NUMBER_OF_ORDER + 1, schedule.getNumberOfOrders());
         assertFalse(schedule.canAddOrder());
         assertAddRejectedWithoutMutation(schedule);
 
-        schedule.removeOrder(0);
+        schedule = schedule.removeOrder(0);
         assertEquals(UnmodifiableSchedule.MAXIMUM_NUMBER_OF_ORDER, schedule.getNumberOfOrders());
         assertFalse(schedule.canAddOrder());
         assertAddRejectedWithoutMutation(schedule);
@@ -223,7 +284,7 @@ public class ScheduleTest extends TestCase {
     private static Schedule scheduleWithOrders(int... stationIds) {
         Schedule schedule = new Schedule();
         for (int stationId : stationIds) {
-            schedule.addOrder(order(stationId));
+            schedule = schedule.addOrder(order(stationId));
         }
         return schedule;
     }

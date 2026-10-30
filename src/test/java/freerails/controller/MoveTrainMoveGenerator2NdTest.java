@@ -118,8 +118,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainOrder order0 = new TrainOrder(2, null, false, false);
         TrainOrder order1 = new TrainOrder(0, null, false, false);
         Schedule schedule = new Schedule();
-        schedule.addOrder(order0);
-        schedule.addOrder(order1);
+        schedule = schedule.addOrder(order0);
+        schedule = schedule.addOrder(order1);
 
         Vec2D start = new Vec2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0),
@@ -324,7 +324,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainOrder order0 = new TrainOrder(2, newConsist,true,false);
         Train train2 = world.getTrain(player, 0);
         Schedule schedule = new Schedule(train2.getSchedule());
-        schedule.setOrder(0, order0);
+        schedule = schedule.setOrder(0, order0);
         train2.setSchedule(schedule);
         assertEquals(0, train2.getSchedule().getCurrentOrderIndex());
         assertTrue(train2.getSchedule().getOrder(0).isWaitUntilFull());
@@ -369,7 +369,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainOrder order0 = new TrainOrder(2, newConsist,false,false);
         Train train = world.getTrain(player, 0);
         Schedule schedule = new Schedule(train.getSchedule());
-        schedule.setOrder(0, order0);
+        schedule = schedule.setOrder(0, order0);
         train.setSchedule(schedule);
         assertEquals(0, train.getSchedule().getCurrentOrderIndex());
         assertFalse(train.getSchedule().getOrder(0).isWaitUntilFull());
@@ -398,8 +398,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainOrder order0 = new TrainOrder(1, null, false, true);
         TrainOrder order1 = new TrainOrder(2, null, false, true);
         Schedule schedule = new Schedule();
-        schedule.addOrder(order0);
-        schedule.addOrder(order1);
+        schedule = schedule.addOrder(order0);
+        schedule = schedule.addOrder(order1);
 
         Train train4 = world.getTrain(player, 0);
         assertEquals(0, train4.getSchedule().getCurrentOrderIndex());
@@ -473,7 +473,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainOrder order0 = new TrainOrder(2, newConsist,false,false);
         Train train = world.getTrain(player, 0);
         Schedule schedule = new Schedule(train.getSchedule());
-        schedule.setOrder(0, order0);
+        schedule = schedule.setOrder(0, order0);
         train.setSchedule(schedule);
         assertEquals(0, train.getSchedule().getCurrentOrderIndex());
 

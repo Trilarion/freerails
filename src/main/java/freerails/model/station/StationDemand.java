@@ -18,21 +18,19 @@
 
 package freerails.model.station;
 
-
 import freerails.util.Utils;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Represents the demand for cargo at a station.
  */
-public class StationDemand implements Serializable {
+public record StationDemand(List<Integer> demand) implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 3257565088071038009L;
-    private final List<Integer> demand;
+    public StationDemand {
+        demand = Utils.immutableList(demand);
+    }
 
     /**
      * Creates demand settings from a boolean flag for each cargo type.
@@ -40,21 +38,7 @@ public class StationDemand implements Serializable {
      * @param demandArray demand flags indexed by the world's cargo ordering
      */
     public StationDemand(boolean[] demandArray) {
-        demand = Utils.integerListFromBoolean(demandArray);
-    }
-
-    /**
-     * Tests whether another demand object has the same cargo flags.
-     *
-     * @param obj object to compare
-     * @return {@code true} if both demand lists match
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof StationDemand demandAtStation)) return false;
-
-        return demand.equals(demandAtStation.demand);
+        this(Utils.integerListFromBoolean(demandArray));
     }
 
     /**
@@ -84,5 +68,4 @@ public class StationDemand implements Serializable {
     public boolean isCargoDemanded(int cargoIndex) {
         return demand.get(cargoIndex) == 1;
     }
-
 }

@@ -18,7 +18,8 @@
 
 package freerails.move;
 
-import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.cargo.ImmutableCargoBatchBundle;
+import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.world.UnmodifiableWorld;
@@ -35,12 +36,12 @@ public class ChangeCargoAtStationMove implements Move {
 
     private final Player player;
     private final int stationId;
-    private final CargoBatchBundle cargoBatchBundle;
+    private final UnmodifiableCargoBatchBundle cargoBatchBundle;
 
-    public ChangeCargoAtStationMove(@NotNull Player player, int stationId, @NotNull CargoBatchBundle cargoBatchBundle) {
+    public ChangeCargoAtStationMove(@NotNull Player player, int stationId, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
         this.player = player;
         this.stationId = stationId;
-        this.cargoBatchBundle = cargoBatchBundle;
+        this.cargoBatchBundle = new ImmutableCargoBatchBundle(cargoBatchBundle);
     }
 
     @Override

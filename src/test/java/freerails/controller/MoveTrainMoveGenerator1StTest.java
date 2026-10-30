@@ -81,8 +81,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         TrainOrder order0 = new TrainOrder(1, null, false, false);
         TrainOrder order1 = new TrainOrder(0, null, false, false);
         Schedule schedule = new Schedule();
-        schedule.addOrder(order0);
-        schedule.addOrder(order1);
+        schedule = schedule.addOrder(order0);
+        schedule = schedule.addOrder(order1);
 
         Vec2D start = new Vec2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), start, player, schedule);

@@ -29,7 +29,7 @@ import java.io.Serial;
 /**
  * Represents the state of the economy.
  */
-public class Sentiment extends Identifiable {
+public final class Sentiment extends Identifiable {
 
     @Serial
     private static final long serialVersionUID = 3834025840475321136L;

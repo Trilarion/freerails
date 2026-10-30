@@ -24,7 +24,6 @@ import freerails.model.finance.Money;
 import freerails.model.terrain.TerrainCategory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +31,7 @@ import java.util.Set;
  * Defines a buildable track type, including its cost, terrain restrictions,
  * geometry rules, and optional station properties.
  */
-public class TrackType extends Identifiable {
+public final class TrackType extends Identifiable {
 
     private final String name;
     private final TrackCategory category;
@@ -42,7 +41,7 @@ public class TrackType extends Identifiable {
     private final Set<TerrainCategory> validTerrainCategories;
     private final Set<String> validTrackConfigurations;
     @Expose(serialize = false, deserialize = false)
-    private Set<TrackConfiguration> allValidTrackConfigurations;
+    private Set<TrackConfiguration> allValidTrackConfigurations = Set.of();
 
     /**
      * Creates a track type from its persistent definition.
@@ -60,11 +59,11 @@ public class TrackType extends Identifiable {
         super(id);
         this.name = name;
         this.category = category;
-        this.properties = Collections.unmodifiableSet(properties);
+        this.properties = Set.copyOf(properties);
         this.yearlyMaintenance = yearlyMaintenance;
         this.purchasingPrice = purchasingPrice;
-        this.validTerrainCategories = Collections.unmodifiableSet(validTerrainCategories);
-        this.validTrackConfigurations = Collections.unmodifiableSet(validTrackConfigurations);
+        this.validTerrainCategories = Set.copyOf(validTerrainCategories);
+        this.validTrackConfigurations = Set.copyOf(validTrackConfigurations);
     }
 
     /**
@@ -78,9 +77,7 @@ public class TrackType extends Identifiable {
     public void prepare() {
         validateProperties();
 
-        // rotate all track configurations and add to all list
-        // TODO implement Comparable on TrackConfiguration and use TreeSet instead of HashSet
-        allValidTrackConfigurations = new HashSet<>();
+        Set<TrackConfiguration> configurations = new HashSet<>();
         for (String trackTemplateString: validTrackConfigurations) {
             int trackTemplate = Integer.parseInt(trackTemplateString, 2);
             // Check for invalid parameters.
@@ -90,9 +87,10 @@ public class TrackType extends Identifiable {
             int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer.getRotations(trackTemplate);
             for (int i: rotationsOfTrackTemplate) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(i);
-                allValidTrackConfigurations.add(trackConfiguration);
+                configurations.add(trackConfiguration);
             }
         }
+        allValidTrackConfigurations = Set.copyOf(configurations);
     }
 
     /**
@@ -141,7 +139,7 @@ public class TrackType extends Identifiable {
     }
 
     /**
-     * Returns the legal configurations computed by {@link #prepare()}.
+     * Returns the immutable legal configurations computed by {@link #prepare()}.
      *
      * @return legal configurations, including their rotations
      */

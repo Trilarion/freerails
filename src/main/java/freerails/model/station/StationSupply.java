@@ -18,24 +18,22 @@
 
 package freerails.model.station;
 
+import freerails.util.Utils;
 
-
-import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Represents the supply at a station.
  */
-public class StationSupply implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 4049918272826847286L;
-    private final List<Integer> supply;
+public record StationSupply(List<Integer> supply) implements Serializable {
 
     // TODO what is the meaning of cargoWaiting and do we need it?
+
+    public StationSupply {
+        supply = Utils.immutableList(supply);
+    }
 
     /**
      * Creates supply rates indexed by the world's cargo ordering.
@@ -44,7 +42,7 @@ public class StationSupply implements Serializable {
      *                     type
      */
     public StationSupply(Integer[] cargoWaiting) {
-        supply = new ArrayList<>(Arrays.asList(cargoWaiting));
+        this(Arrays.asList(cargoWaiting));
     }
 
     // TODO why is cargType an int, not the class from world.cargo
@@ -62,20 +60,6 @@ public class StationSupply implements Serializable {
     }
 
     /**
-     * Tests whether another supply object has the same rates.
-     *
-     * @param obj object to compare
-     * @return {@code true} if both supply lists match
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof StationSupply stationSupply)) return false;
-
-        return supply.equals(stationSupply.supply);
-    }
-
-    /**
      * Returns a hash code derived from the cargo supply rates.
      *
      * @return hash code for these supply settings
@@ -84,5 +68,4 @@ public class StationSupply implements Serializable {
     public int hashCode() {
         return supply.hashCode();
     }
-
 }

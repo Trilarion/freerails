@@ -86,7 +86,9 @@ public class World implements UnmodifiableWorld {
     // TODO set trains?
     /**
      * Collects the initial world definitions and required settings before
-     * constructing a {@link World}.
+     * constructing a {@link World}. Collection setters make defensive copies
+     * immediately, so later changes to a caller's set do not alter this
+     * builder's configuration.
      */
     public static class Builder {
 
@@ -109,7 +111,7 @@ public class World implements UnmodifiableWorld {
          * @return this builder
          */
         public Builder setEngines(@NotNull SortedSet<Engine> engines) {
-            this.engines = Utils.verifyNotNull(engines);
+            this.engines = new TreeSet<>(Utils.verifyNotNull(engines));
             return this;
         }
 
@@ -120,7 +122,7 @@ public class World implements UnmodifiableWorld {
          * @return this builder
          */
         public Builder setCities(@NotNull SortedSet<City> cities) {
-            this.cities = Utils.verifyNotNull(cities);
+            this.cities = new TreeSet<>(Utils.verifyNotNull(cities));
             return this;
         }
 
@@ -131,7 +133,7 @@ public class World implements UnmodifiableWorld {
          * @return this builder
          */
         public Builder setCargos(@NotNull SortedSet<Cargo> cargos) {
-            this.cargos = Utils.verifyNotNull(cargos);
+            this.cargos = new TreeSet<>(Utils.verifyNotNull(cargos));
             return this;
         }
 
@@ -142,7 +144,7 @@ public class World implements UnmodifiableWorld {
          * @return this builder
          */
         public Builder setTerrainTypes(@NotNull SortedSet<Terrain> terrainTypes) {
-            this.terrainTypes = Utils.verifyNotNull(terrainTypes);
+            this.terrainTypes = new TreeSet<>(Utils.verifyNotNull(terrainTypes));
             return this;
         }
 
@@ -153,7 +155,7 @@ public class World implements UnmodifiableWorld {
          * @return this builder
          */
         public Builder setTrackTypes(@NotNull SortedSet<TrackType> trackTypes) {
-            this.trackTypes = Utils.verifyNotNull(trackTypes);
+            this.trackTypes = new TreeSet<>(Utils.verifyNotNull(trackTypes));
             return this;
         }
 
@@ -187,7 +189,7 @@ public class World implements UnmodifiableWorld {
          * @return this builder
          */
         public Builder setSentiments(@NotNull SortedSet<Sentiment> sentiments) {
-            this.sentiments = Utils.verifyNotNull(sentiments);
+            this.sentiments = new TreeSet<>(Utils.verifyNotNull(sentiments));
             return this;
         }
 
@@ -536,7 +538,7 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Records an activity on a train and sets its start time to the current
+     * Records an activity on a train with a start time of at least the current
      * world tick.
      *
      * @param player owner of the train
@@ -545,8 +547,7 @@ public class World implements UnmodifiableWorld {
      */
     public void addActivity(Player player, int trainId, Activity activity) {
         Train train = getTrain(player, trainId);
-        activity.setStartTime(clock.getCurrentTime().ticks());
-        train.addActivity(activity);
+        train.getRuntimeState().addActivity(activity, clock.getCurrentTime().ticks());
     }
 
     /**

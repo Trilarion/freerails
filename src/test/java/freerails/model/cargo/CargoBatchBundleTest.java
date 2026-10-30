@@ -142,6 +142,40 @@ public class CargoBatchBundleTest extends TestCase {
         assertTrue(bundle.contains(secondBatch));
     }
 
+    public void testImmutableSnapshotIsDefensiveAndReadOnly() {
+        CargoBatch batch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
+        CargoBatchBundle builder = new CargoBatchBundle();
+        builder.setAmount(batch, 12);
+
+        ImmutableCargoBatchBundle snapshot = new ImmutableCargoBatchBundle(builder);
+        builder.setAmount(batch, 20);
+        builder.addCargo(new CargoBatch(2, new Vec2D(6, 7), 8, 9), 4);
+
+        assertEquals(12, snapshot.getAmount(batch));
+        assertEquals(1, snapshot.size());
+        assertEquals(snapshot, new CargoBatchBundle(snapshot));
+        assertEquals(new CargoBatchBundle(snapshot), snapshot);
+        try {
+            snapshot.getCargoBatches().clear();
+            fail("Snapshot batches must be read-only.");
+        } catch (UnsupportedOperationException expected) {
+            // Expected: the collection is an immutable snapshot.
+        }
+    }
+
+    public void testImmutableSnapshotSurvivesSerialization() {
+        CargoBatch batch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
+        CargoBatchBundle builder = new CargoBatchBundle();
+        builder.setAmount(batch, 12);
+
+        ImmutableCargoBatchBundle snapshot = new ImmutableCargoBatchBundle(builder);
+        ImmutableCargoBatchBundle copy =
+                (ImmutableCargoBatchBundle) Utils.cloneBySerialisation(snapshot);
+
+        assertEquals(snapshot, copy);
+        assertEquals(snapshot.hashCode(), copy.hashCode());
+    }
+
     private void assertBundlesEqual(CargoBatchBundle bundle1, CargoBatchBundle bundle2) {
 
         // equals with itself

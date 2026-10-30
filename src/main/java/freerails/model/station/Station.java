@@ -19,7 +19,7 @@
 package freerails.model.station;
 
 import freerails.util.Identifiable;
-import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 
 import freerails.model.train.TrainTemplate;
@@ -27,14 +27,13 @@ import freerails.util.Vec2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 // TODO doesn't know what type it is (depot, station, terminal)? why not? should know.
 /**
  * Represents a station with a location, name, cargo service data, and
- * production queue. Its cargo bundle is copied on construction and replacement.
+ * production queue. Its cargo bundle is stored as an immutable snapshot.
  */
 public class Station extends Identifiable {
 
@@ -45,7 +44,7 @@ public class Station extends Identifiable {
     private StationSupply supply;
     private StationDemand demandForCargo;
     private StationCargoConversion cargoConversion;
-    private CargoBatchBundle cargoBatchBundle;
+    private ImmutableCargoBatchBundle cargoBatchBundle;
 
     private List<TrainTemplate> production;
 
@@ -63,15 +62,31 @@ public class Station extends Identifiable {
         super(id);
         name = stationName;
         this.location = location;
-        this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
+        this.cargoBatchBundle = new ImmutableCargoBatchBundle(cargoBatchBundle);
 
         // TODO array creation necessary here?
         Integer[] a = new Integer[numberOfCargoTypes];
         Arrays.fill(a, 0);
         supply = new StationSupply(a);
-        production = new ArrayList<>();
+        production = List.of();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
         cargoConversion = StationCargoConversion.emptyInstance(numberOfCargoTypes);
+    }
+
+    /**
+     * Creates a copy of a station, including an immutable snapshot of its cargo.
+     *
+     * @param station station to copy
+     */
+    public Station(@NotNull Station station) {
+        super(station.getId());
+        location = station.location;
+        name = station.name;
+        supply = station.supply;
+        demandForCargo = station.demandForCargo;
+        cargoConversion = station.cargoConversion;
+        cargoBatchBundle = new ImmutableCargoBatchBundle(station.cargoBatchBundle);
+        production = List.copyOf(station.production);
     }
 
     /**
@@ -107,7 +122,7 @@ public class Station extends Identifiable {
      * @return production queue
      */
     public List<TrainTemplate> getProduction() {
-        return production;
+        return List.copyOf(production);
     }
 
     /**
@@ -144,7 +159,7 @@ public class Station extends Identifiable {
      * @param cargoBatchBundle new waiting cargo to copy
      */
     public void setCargoBatchBundle(@NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
-        this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
+        this.cargoBatchBundle = new ImmutableCargoBatchBundle(cargoBatchBundle);
     }
 
     /**
@@ -180,6 +195,6 @@ public class Station extends Identifiable {
      * @param production ordered production queue
      */
     public void setProduction(List<TrainTemplate> production) {
-        this.production = production;
+        this.production = List.copyOf(production);
     }
 }

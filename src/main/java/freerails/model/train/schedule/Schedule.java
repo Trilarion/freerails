@@ -16,50 +16,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * Schedule.java
- *
- */
 package freerails.model.train.schedule;
 
-
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Mutable train schedule containing station orders and the next scheduled stop.
+ * Immutable train schedule containing station orders and the next scheduled stop.
  */
-public class Schedule implements UnmodifiableSchedule {
-    /**
-     * Vector of TrainOrder.
-     */
+public final class Schedule implements UnmodifiableSchedule {
+    @Serial
+    private static final long serialVersionUID = 7943055418460440482L;
     public static final UnmodifiableSchedule EMPTY = new Schedule();
-    private List<TrainOrder> orders = new ArrayList<>();
-    private int nextScheduledOrder = -1;
 
-    /**
-     * Whether the train should ignore the stationToGoto and goto the first
-     * station in the list.
-     */
-    private boolean hasPriorityOrders = false;
+    private final List<TrainOrder> orders;
+    private final int nextScheduledOrder;
+    private final boolean hasPriorityOrders;
 
     /** Creates an empty schedule with no scheduled destination. */
     public Schedule() {
+        this(List.of(), -1, false);
     }
 
     /**
-     * Creates a mutable copy of a read-only schedule.
+     * Creates a copy of a read-only schedule.
      *
      * @param schedule schedule whose order state is copied
      */
     public Schedule(UnmodifiableSchedule schedule) {
-        nextScheduledOrder = schedule.getNextScheduledOrder();
-        hasPriorityOrders = schedule.hasPriorityOrders();
-
-        for (int i = 0; i < schedule.getNumberOfOrders(); i++) {
-            orders.add(schedule.getOrder(i));
-        }
+        this(copyOrders(schedule), schedule.getNextScheduledOrder(), schedule.hasPriorityOrders());
     }
 
     /**
@@ -68,56 +56,76 @@ public class Schedule implements UnmodifiableSchedule {
      * @param hasPriorityOrders whether order zero is a priority order
      */
     public Schedule(TrainOrder[] orders, int gotoStation, boolean hasPriorityOrders) {
-        this.orders = Arrays.asList(orders);
-        nextScheduledOrder = gotoStation;
+        this(Arrays.asList(orders.clone()), gotoStation, hasPriorityOrders);
+    }
+
+    private Schedule(List<TrainOrder> orders, int nextScheduledOrder, boolean hasPriorityOrders) {
+        this.orders = List.copyOf(orders);
+        this.nextScheduledOrder = nextScheduledOrder;
         this.hasPriorityOrders = hasPriorityOrders;
     }
 
-    /**
-     * @param order new priority order
-     */
-    public void setPriorityOrders(TrainOrder order) {
-        if (hasPriorityOrders) {
-            // Replace existing priority orders.
-            orders.set(PRIORITY_ORDERS, order);
-        } else {
-            // Insert priority orders at position 0;
-            hasPriorityOrders = true;
-            orders.add(PRIORITY_ORDERS, order);
-            if (nextScheduledOrder >= 0) {
-                nextScheduledOrder++;
-            }
+    private static List<TrainOrder> copyOrders(UnmodifiableSchedule schedule) {
+        List<TrainOrder> orders = new ArrayList<>(schedule.getNumberOfOrders());
+        for (int i = 0; i < schedule.getNumberOfOrders(); i++) {
+            orders.add(schedule.getOrder(i));
         }
+        return orders;
     }
 
     /**
-     * Removes the order at the specified position.
+     * Returns a schedule with the specified priority order.
+     *
+     * @param order new priority order
+     * @return the updated schedule
+     */
+    public Schedule setPriorityOrders(TrainOrder order) {
+        List<TrainOrder> updatedOrders = new ArrayList<>(orders);
+        int updatedNextOrder = nextScheduledOrder;
+        if (hasPriorityOrders) {
+            updatedOrders.set(PRIORITY_ORDERS, order);
+        } else {
+            updatedOrders.add(PRIORITY_ORDERS, order);
+            if (updatedNextOrder >= 0) {
+                updatedNextOrder++;
+            }
+        }
+        return new Schedule(updatedOrders, updatedNextOrder, true);
+    }
+
+    /**
+     * Returns a schedule with the order at the specified position removed.
+     * Removing an index beyond the end of the schedule leaves it unchanged.
      *
      * @param orderNumber index of the order to remove
+     * @return the updated schedule
      */
-    public void removeOrder(int orderNumber) {
-        if (PRIORITY_ORDERS == orderNumber && hasPriorityOrders) {
-            // If we are removing the priority stop.
-            hasPriorityOrders = false;
-        }
+    public Schedule removeOrder(int orderNumber) {
         if (orderNumber >= orders.size()) {
-            // cannot remove an order that's already removed!
-            return;
-        }
-        orders.remove(orderNumber);
-
-        // shift current station down
-        if (nextScheduledOrder > orderNumber) {
-            nextScheduledOrder--;
+            return this;
         }
 
-        if (orders.size() <= nextScheduledOrder) {
-            nextScheduledOrder = firstScheduleStop();
+        List<TrainOrder> updatedOrders = new ArrayList<>(orders);
+        boolean updatedHasPriority = hasPriorityOrders;
+        if (PRIORITY_ORDERS == orderNumber && updatedHasPriority) {
+            updatedHasPriority = false;
+        }
+        updatedOrders.remove(orderNumber);
+
+        int updatedNextOrder = nextScheduledOrder;
+        if (updatedNextOrder > orderNumber) {
+            updatedNextOrder--;
         }
 
-        if (0 == numberOfScheduledStops()) {
-            nextScheduledOrder = -1;
+        int firstScheduleStop = updatedHasPriority ? 1 : 0;
+        if (updatedOrders.size() <= updatedNextOrder) {
+            updatedNextOrder = firstScheduleStop;
         }
+        if (updatedOrders.size() - firstScheduleStop == 0) {
+            updatedNextOrder = -1;
+        }
+
+        return new Schedule(updatedOrders, updatedNextOrder, updatedHasPriority);
     }
 
     /** Returns the first index reserved for ordinary scheduled stops. */
@@ -131,15 +139,15 @@ public class Schedule implements UnmodifiableSchedule {
     }
 
     /**
-     * Inserts an ordinary order at the specified position. Note you must call
-     * {@link #setPriorityOrders(TrainOrder)} to set a priority order.
+     * Returns a schedule with an ordinary order inserted at the specified position.
      *
      * @param orderNumber index at which to insert the order
      * @param order order to insert
+     * @return the updated schedule
      * @throws IllegalArgumentException if the index is outside the ordinary-order range
      * @throws IllegalStateException if the schedule already contains the maximum number of orders
      */
-    public void addOrder(int orderNumber, TrainOrder order) {
+    public Schedule addOrder(int orderNumber, TrainOrder order) {
         if (orderNumber < firstScheduleStop() || orderNumber > orders.size()) {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
         }
@@ -147,43 +155,45 @@ public class Schedule implements UnmodifiableSchedule {
             throw new IllegalStateException();
         }
 
-        orders.add(orderNumber, order);
+        List<TrainOrder> updatedOrders = new ArrayList<>(orders);
+        updatedOrders.add(orderNumber, order);
 
-        if (nextScheduledOrder >= orderNumber) {
-            nextScheduledOrder++;
+        int updatedNextOrder = nextScheduledOrder;
+        if (updatedNextOrder >= orderNumber) {
+            updatedNextOrder++;
         }
-
-        if (-1 == nextScheduledOrder && 0 < numberOfScheduledStops()) {
-            nextScheduledOrder = firstScheduleStop();
+        if (-1 == updatedNextOrder && 0 < updatedOrders.size() - firstScheduleStop()) {
+            updatedNextOrder = firstScheduleStop();
         }
+        return new Schedule(updatedOrders, updatedNextOrder, hasPriorityOrders);
     }
 
     /**
+     * Returns a schedule with the order appended.
+     *
      * @param order order to append
-     * @return index at which the order was added
+     * @return the updated schedule
      * @throws IllegalStateException if the schedule already contains the maximum number of orders
      */
-    public int addOrder(TrainOrder order) {
-        if (!canAddOrder()) {
-            throw new IllegalStateException();
-        }
-
-        int newOrderNumber = orders.size();
-        addOrder(newOrderNumber, order);
-
-        return newOrderNumber;
+    public Schedule addOrder(TrainOrder order) {
+        return addOrder(orders.size(), order);
     }
 
     /**
+     * Returns a schedule with an order replaced, or appended when the index is beyond its end.
+     *
      * @param orderNumber index to replace, or the end index to append at
      * @param order order to set
+     * @return the updated schedule
      */
-    public void setOrder(int orderNumber, TrainOrder order) {
-        if (orderNumber >= orders.size()) {
-            orders.add(order);
+    public Schedule setOrder(int orderNumber, TrainOrder order) {
+        List<TrainOrder> updatedOrders = new ArrayList<>(orders);
+        if (orderNumber >= updatedOrders.size()) {
+            updatedOrders.add(order);
         } else {
-            orders.set(orderNumber, order);
+            updatedOrders.set(orderNumber, order);
         }
+        return new Schedule(updatedOrders, nextScheduledOrder, hasPriorityOrders);
     }
 
     /**
@@ -195,38 +205,31 @@ public class Schedule implements UnmodifiableSchedule {
         return orders.get(index);
     }
 
-    /**
-     * Returns the index of the order currently being carried out.
-     */
+    /** Returns the index of the order currently being carried out. */
     @Override
     public int getCurrentOrderIndex() {
         return hasPriorityOrders ? 0 : nextScheduledOrder;
     }
 
     /**
-     * @param i index of the order to visit next
+     * Returns a schedule whose next ordinary stop is the specified index.
+     *
+     * @param orderNumber index of the order to visit next
+     * @return the updated schedule
      * @throws IllegalArgumentException if the index is outside the schedule
      */
-    public void setOrderToGoto(int i) {
-        if (!canSetGotoStation(i)) {
-            throw new IllegalArgumentException(String.valueOf(i));
+    public Schedule setOrderToGoto(int orderNumber) {
+        if (!canSetGotoStation(orderNumber)) {
+            throw new IllegalArgumentException(String.valueOf(orderNumber));
         }
-
-        nextScheduledOrder = i;
+        return new Schedule(orders, orderNumber, hasPriorityOrders);
     }
 
-    /**
-     * Returns the station identifier for the current order, or {@code -1} if none.
-     */
+    /** Returns the station identifier for the current order, or {@code -1} if none. */
     @Override
     public int getNextStationId() {
         int orderToGoto = getCurrentOrderIndex();
-
-        if (-1 == orderToGoto) {
-            return -1;
-        }
-        TrainOrder order = orders.get(orderToGoto);
-        return order.getStationID();
+        return orderToGoto == -1 ? -1 : orders.get(orderToGoto).getStationID();
     }
 
     /**
@@ -240,24 +243,24 @@ public class Schedule implements UnmodifiableSchedule {
     }
 
     /**
-     * Advances to the next ordinary stop, wrapping at the end. A priority order
-     * is removed when it has been visited, without advancing the ordinary stop.
+     * Returns a schedule advanced to the next ordinary stop, wrapping at the end.
+     * A priority order is removed when it has been visited, without advancing the ordinary stop.
+     *
+     * @return the updated schedule
      */
-    public void gotoNextStation() {
+    public Schedule gotoNextStation() {
         if (hasPriorityOrders) {
-            removeOrder(PRIORITY_ORDERS);
-            return;
+            return removeOrder(PRIORITY_ORDERS);
         }
-
         if (numberOfScheduledStops() == 0) {
-            return;
+            return this;
         }
 
-        nextScheduledOrder++;
-
-        if (orders.size() <= nextScheduledOrder) {
-            nextScheduledOrder = firstScheduleStop();
+        int updatedNextOrder = nextScheduledOrder + 1;
+        if (orders.size() <= updatedNextOrder) {
+            updatedNextOrder = firstScheduleStop();
         }
+        return new Schedule(orders, updatedNextOrder, hasPriorityOrders);
     }
 
     /** Returns whether the schedule currently has a priority order. */
@@ -266,11 +269,7 @@ public class Schedule implements UnmodifiableSchedule {
         return hasPriorityOrders;
     }
 
-    /**
-     * Returns number of non priority orders + number of priority orders.
-     *
-     * @return Number of orders.
-     */
+    /** Returns the total number of orders, including any priority order. */
     @Override
     public int getNumberOfOrders() {
         return orders.size();
@@ -283,10 +282,9 @@ public class Schedule implements UnmodifiableSchedule {
      * @return {@code true} if it can be pulled up without crossing the priority order
      */
     public boolean canPullUp(int orderNumber) {
-        boolean isAlreadyAtTop = 0 == orderNumber;
-        boolean isPriorityOrdersAbove = orderNumber == 1 && hasPriorityOrders;
-
-        return !isAlreadyAtTop && !isPriorityOrdersAbove;
+        return orderNumber > 0
+                && orderNumber < orders.size()
+                && !(orderNumber == 1 && hasPriorityOrders);
     }
 
     /**
@@ -296,58 +294,49 @@ public class Schedule implements UnmodifiableSchedule {
      * @return {@code true} if it can be pushed down
      */
     public boolean canPushDown(int orderNumber) {
-        boolean isOrderPriorityOrders = orderNumber == 0 && hasPriorityOrders;
-        boolean isAlreadyAtBottom = orderNumber == orders.size() - 1;
-
-        return !isOrderPriorityOrders && !isAlreadyAtBottom;
+        return orderNumber >= firstScheduleStop()
+                && orderNumber < orders.size() - 1;
     }
 
     /**
-     * Moves an order one position toward the top of the schedule.
+     * Returns a schedule with the order moved one position toward the top.
      *
      * @param orderNumber index of the order to move
+     * @return the updated schedule
      * @throws IllegalArgumentException if the order cannot be moved up
      */
-    public void pullUp(int orderNumber) {
+    public Schedule pullUp(int orderNumber) {
         if (!canPullUp(orderNumber)) {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
         }
 
         boolean isGoingToThisStation = nextScheduledOrder == orderNumber;
         TrainOrder order = getOrder(orderNumber);
-        removeOrder(orderNumber);
-        addOrder(orderNumber - 1, order);
-
-        if (isGoingToThisStation) {
-            setOrderToGoto(orderNumber - 1);
-        }
+        Schedule updated = removeOrder(orderNumber).addOrder(orderNumber - 1, order);
+        return isGoingToThisStation ? updated.setOrderToGoto(orderNumber - 1) : updated;
     }
 
     /**
-     * Moves an order one position toward the bottom of the schedule.
+     * Returns a schedule with the order moved one position toward the bottom.
      *
      * @param orderNumber index of the order to move
+     * @return the updated schedule
      * @throws IllegalArgumentException if the order cannot be moved down
      */
-    public void pushDown(int orderNumber) {
+    public Schedule pushDown(int orderNumber) {
         if (!canPushDown(orderNumber)) {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
         }
 
         boolean isGoingToThisStation = nextScheduledOrder == orderNumber;
         TrainOrder order = getOrder(orderNumber);
-        removeOrder(orderNumber);
-        addOrder(orderNumber + 1, order);
-
-        if (isGoingToThisStation) {
-            setOrderToGoto(orderNumber + 1);
-        }
+        Schedule updated = removeOrder(orderNumber).addOrder(orderNumber + 1, order);
+        return isGoingToThisStation ? updated.setOrderToGoto(orderNumber + 1) : updated;
     }
 
     /** Returns whether another order can be added without exceeding the schedule limit. */
     public boolean canAddOrder() {
         int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1 : MAXIMUM_NUMBER_OF_ORDER;
-
         return max > getNumberOfOrders();
     }
 
@@ -358,8 +347,7 @@ public class Schedule implements UnmodifiableSchedule {
      * @return {@code false} if the index is outside the ordinary orders
      */
     public boolean canSetGotoStation(int orderNumber) {
-        return orderNumber >= firstScheduleStop()
-                && orderNumber < orders.size();
+        return orderNumber >= firstScheduleStop() && orderNumber < orders.size();
     }
 
     /** Returns the index of the next ordinary scheduled order. */
@@ -372,38 +360,35 @@ public class Schedule implements UnmodifiableSchedule {
      * Returns whether any order visits the specified station.
      *
      * @param stationId station identifier
-     * @return {@code true} if an order targets the station
+     * @return {@code true} if an order targets that station
      */
     @Override
     public boolean stopsAtStation(int stationId) {
-        for (int i = 0; i < getNumberOfOrders(); i++) {
-            TrainOrder order = getOrder(i);
-
+        for (TrainOrder order : orders) {
             if (order.getStationID() == stationId) {
                 return true;
             }
         }
-
         return false;
     }
 
     /**
-     * Removes every order targeting the specified station.
+     * Returns a schedule with every order targeting the specified station removed.
      *
      * @param stationNumber station identifier
+     * @return the updated schedule
      */
-    public void removeAllStopsAtStation(int stationNumber) {
-        int i = 0;
-
-        while (i < getNumberOfOrders()) {
-            TrainOrder order = getOrder(i);
-
-            if (order.getStationID() == stationNumber) {
-                removeOrder(i);
+    public Schedule removeAllStopsAtStation(int stationNumber) {
+        Schedule updated = this;
+        int index = 0;
+        while (index < updated.getNumberOfOrders()) {
+            if (updated.getOrder(index).getStationID() == stationNumber) {
+                updated = updated.removeOrder(index);
             } else {
-                i++;
+                index++;
             }
         }
+        return updated;
     }
 
     /**
@@ -424,23 +409,28 @@ public class Schedule implements UnmodifiableSchedule {
         return orders.get(currentOrderIndex);
     }
 
+    @Serial
+    private Object readResolve() {
+        return new Schedule(orders, nextScheduledOrder, hasPriorityOrders);
+    }
+
     /** Compares the orders, current destination index, and priority-order state. */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Schedule test) {
-
-            return hasPriorityOrders == test.hasPriorityOrders && nextScheduledOrder == test.nextScheduledOrder && orders.equals(test.orders);
+        if (this == obj) {
+            return true;
         }
-        return false;
+        if (!(obj instanceof Schedule schedule)) {
+            return false;
+        }
+        return hasPriorityOrders == schedule.hasPriorityOrders
+                && nextScheduledOrder == schedule.nextScheduledOrder
+                && orders.equals(schedule.orders);
     }
 
-    /** Returns a hash code based on the next destination and priority-order state. */
+    /** Returns a hash code based on all schedule state. */
     @Override
     public int hashCode() {
-        int result;
-        result = nextScheduledOrder;
-        result = 29 * result + (hasPriorityOrders ? 1 : 0);
-
-        return result;
+        return Objects.hash(orders, nextScheduledOrder, hasPriorityOrders);
     }
 }

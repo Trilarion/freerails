@@ -24,7 +24,7 @@ package freerails.model.cargo;
 import java.util.*;
 
 /**
- * This CargoBatchBundle implementation uses a {@code java.util.SortedMap} to map quantities to cargo batches.
+ * This mutable CargoBatchBundle implementation uses a {@code java.util.SortedMap} to map quantities to cargo batches.
  * Represents a bundle of cargo made up of quantities of cargo from
  * different {@link CargoBatch}s.
  */
@@ -96,10 +96,15 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
         if (null == other) {
             return false;
         }
-        if (!(other instanceof CargoBatchBundle o)) {
+        if (!(other instanceof UnmodifiableCargoBatchBundle o) || size() != o.size()) {
             return false;
         }
-        return cargoMap.equals(o.cargoMap);
+        for (CargoBatch cargoBatch : cargoMap.keySet()) {
+            if (getAmount(cargoBatch) != o.getAmount(cargoBatch)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 

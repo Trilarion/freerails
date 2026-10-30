@@ -103,13 +103,12 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         // Add train to train list.
         // TODO need a way to get a new id for trains, this is not the best way
         int id = world.getTrains(player).size();
-        Train train = new Train(id, engineId);
-        train.setConsist(wagons);
-        train.setSchedule(schedule);
+        Train train = new Train(id, new TrainConfiguration(engineId, wagons));
+        train.getRuntimeState().setSchedule(schedule);
         // add train position.
         PathOnTiles path = TrainUtils.initPositionTrainGetPath(world, point, engineId, wagons);
         TrainMotion motion = TrainUtils.initPositionTrainGetMotion(path, engineId, wagons);
-        train.addActivity(motion);
+        train.getRuntimeState().addActivity(motion);
         AddTrainMove addTrain = new AddTrainMove(player, train);
 
         // TODO add the transaction to the TrainMove and check there, do not use a composite move

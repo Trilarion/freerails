@@ -25,7 +25,7 @@ import freerails.util.Vec2D;
 /**
  * Stores a city's stable identifier, display name, and map location.
  */
-public class City extends Identifiable {
+public final class City extends Identifiable {
 
     private final String name;
     private final Vec2D location;

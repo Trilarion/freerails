@@ -21,7 +21,7 @@ package freerails.model.cargo;
 import freerails.util.Identifiable;
 
 /** Describes a cargo type, including its category and per-unit weight. */
-public class Cargo extends Identifiable {
+public final class Cargo extends Identifiable {
 
     private final String name;
     private final CargoCategory category;

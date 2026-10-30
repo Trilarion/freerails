@@ -30,7 +30,9 @@ import freerails.model.track.PathIterator;
 import freerails.model.terrain.TileTransition;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Test for PathOnTiles.
@@ -202,6 +204,25 @@ public class PathOnTilesTest extends TestCase {
         assertEquals(new Vec2D(4, 6), it.next());
         assertEquals(p1, it.next());
         assertFalse(it.hasNext());
+    }
+
+    public void testMutableTransitionInputCannotChangePathValue() {
+        List<TileTransition> transitions =
+                new ArrayList<>(List.of(TileTransition.EAST, TileTransition.SOUTH));
+        PathOnTiles path = new PathOnTiles(Vec2D.ZERO, transitions);
+        PathOnTiles originalValue = new PathOnTiles(Vec2D.ZERO, TileTransition.EAST, TileTransition.SOUTH);
+        int originalHashCode = path.hashCode();
+        double originalDistance = path.getTotalDistance();
+
+        transitions.clear();
+        transitions.add(TileTransition.NORTH);
+
+        assertEquals(2, path.steps());
+        assertEquals(TileTransition.EAST, path.getStep(0));
+        assertEquals(TileTransition.SOUTH, path.getStep(1));
+        assertEquals(originalDistance, path.getTotalDistance(), 0.0);
+        assertEquals(originalValue, path);
+        assertEquals(originalHashCode, path.hashCode());
     }
 
 }

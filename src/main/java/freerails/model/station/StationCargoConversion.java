@@ -18,25 +18,24 @@
 
 package freerails.model.station;
 
-import java.io.Serial;
+import freerails.util.Utils;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Records which cargo is converted to other cargo at a station.
  */
-public class StationCargoConversion implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 3690754012076978231L;
+public record StationCargoConversion(List<Integer> convertedTo) implements Serializable {
     // TODO what about Null as standard value
     private static final int NOT_CONVERTED = Integer.MIN_VALUE;
     // this should probably be a map
-    private final List<Integer> convertedTo;
 
-    // TODO provide as map
+    public StationCargoConversion {
+        convertedTo = Utils.immutableList(convertedTo);
+    }
+
     /**
      * Creates conversion settings indexed by cargo index. The sentinel value
      * {@code Integer.MIN_VALUE} means that a cargo type is not converted.
@@ -45,7 +44,7 @@ public class StationCargoConversion implements Serializable {
      *                    or the not-converted sentinel
      */
     public StationCargoConversion(Integer[] convertedTo) {
-        this.convertedTo = new ArrayList<>(Arrays.asList(convertedTo));
+        this(Arrays.asList(convertedTo));
     }
 
     // TODO is this really needed
@@ -112,21 +111,6 @@ public class StationCargoConversion implements Serializable {
         for (Integer aConvertedTo : convertedTo) {
             result = 29 * result + aConvertedTo;
         }
-
         return result;
-    }
-
-    /**
-     * Tests whether another conversion configuration has the same entries.
-     *
-     * @param obj object to compare
-     * @return {@code true} if both configurations are equal
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof StationCargoConversion test) {
-            return convertedTo.equals(test.convertedTo);
-        }
-        return false;
     }
 }

@@ -130,6 +130,22 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         this.duration = duration;
     }
 
+    private TrainMotion(TrainMotion activity, double startTime) {
+        super(startTime);
+        duration = activity.duration;
+        distanceEngineWillTravel = activity.distanceEngineWillTravel;
+        initialPosition = activity.initialPosition;
+        path = activity.path;
+        speeds = activity.speeds;
+        trainLength = activity.trainLength;
+        trainState = activity.trainState;
+    }
+
+    @Override
+    public TrainMotion withStartTime(double startTime) {
+        return new TrainMotion(this, startTime);
+    }
+
     /**
      * Checks we are not creating an object with an inconsistent state. That is,
      * at the time stored in the field duration, the engine must not have gone

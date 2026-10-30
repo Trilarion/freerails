@@ -193,8 +193,7 @@ public class TrackMoveProducer {
                     UnmodifiableSchedule schedule = train.getSchedule();
                     if (schedule.stopsAtStation(stationIndex)) {
                         Schedule schedule1 = new Schedule(schedule);
-                        schedule1.removeAllStopsAtStation(stationIndex);
-                        train.setSchedule(schedule1);
+                        schedule1 = schedule1.removeAllStopsAtStation(stationIndex);
                         Move changeScheduleMove = new UpdateTrainMove(player, train.getId(), null, null, schedule1);
                         moves.add(changeScheduleMove);
                     }

@@ -19,21 +19,17 @@
 package freerails.model.train;
 
 import freerails.util.Identifiable;
-import freerails.model.ModelConstants;
 import freerails.model.game.Time;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackSection;
 import freerails.model.train.activity.Activity;
-import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.motion.TrainMotion;
-import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.util.BidirectionalIterator;
 import freerails.util.Vec2D;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -43,15 +39,12 @@ import java.util.Objects;
 // TODO naming of wagonTypes/consist clarify
 // TODO if all activities are TrainMotions, make it a list of Motions instead
 /**
- * Represents a train's consist, cargo, schedule, and planned activities.
+ * Identified train combining an immutable configuration with mutable runtime state.
  */
 public class Train extends Identifiable {
 
-    private int engineId;
-    private List<Integer> wagonTypes = new ArrayList<>();
-    private UnmodifiableCargoBatchBundle cargoBatchBundle = CargoBatchBundle.EMPTY;
-    private UnmodifiableSchedule schedule = Schedule.EMPTY;
-    private List<Activity> activities = new ArrayList<>();
+    private TrainConfiguration configuration;
+    private final TrainRuntimeState runtimeState;
 
     // TODO we have to trust that the ids are valid, only the world can check this consistency
     /**
@@ -61,13 +54,24 @@ public class Train extends Identifiable {
      * @param engineId engine type identifier
      */
     public Train(int id, int engineId) {
+        this(id, new TrainConfiguration(engineId, List.of()));
+    }
+
+    /**
+     * Creates a train with the specified immutable configuration.
+     *
+     * @param id unique train identifier
+     * @param configuration engine and wagon configuration
+     */
+    public Train(int id, @NotNull TrainConfiguration configuration) {
         super(id);
-        this.engineId = engineId;
+        this.configuration = Objects.requireNonNull(configuration);
+        this.runtimeState = new TrainRuntimeState();
     }
 
     /** Returns an iterator over this train's activities. */
     public BidirectionalIterator<Activity> getActivities() {
-        return new BidirectionalIterator<>(activities);
+        return runtimeState.getActivities();
     }
 
     // TODO not sure if this is a good idea, would like to use addActivity probably
@@ -77,11 +81,7 @@ public class Train extends Identifiable {
      * @param iterator iterator positioned before the activities to copy
      */
     public void setActivities(BidirectionalIterator<Activity> iterator) {
-        activities.clear();
-        while (iterator.hasNext()) {
-            iterator.next();
-            activities.add(iterator.get());
-        }
+        runtimeState.setActivities(iterator);
     }
 
     /**
@@ -90,22 +90,17 @@ public class Train extends Identifiable {
      * @param activity activity to append; it is delayed until the previous activity ends
      */
     public void addActivity(@NotNull Activity activity) {
-        if (!activities.isEmpty()) {
-            Activity last = activities.getLast();
-            double lastFinishTime = last.getStartTime() + last.getDuration();
-            activity.setStartTime(Math.max(activity.getStartTime(), lastFinishTime));
-        }
-        activities.add(activity);
+        runtimeState.addActivity(activity);
     }
 
     /** Returns the train length in map-distance units, including its engine. */
     public int getLength() {
-        return (1 + wagonTypes.size()) * ModelConstants.WAGON_LENGTH; // Engine + wagons.
+        return configuration.getLength();
     }
 
     /** Returns the number of wagons in the consist. */
     public int getNumberOfWagons() {
-        return wagonTypes.size();
+        return configuration.getNumberOfWagons();
     }
 
     /**
@@ -116,12 +111,12 @@ public class Train extends Identifiable {
      * @throws IndexOutOfBoundsException if the position is outside the consist
      */
     public int getWagonType(int position) {
-        return wagonTypes.get(position);
+        return configuration.getWagonType(position);
     }
 
     /** Returns the engine type identifier. */
     public int getEngine() {
-        return engineId;
+        return configuration.getEngineId();
     }
 
     /**
@@ -130,12 +125,31 @@ public class Train extends Identifiable {
      * @param engineId engine type identifier
      */
     public void setEngine(int engineId) {
-        this.engineId = engineId;
+        configuration = configuration.withEngineId(engineId);
+    }
+
+    /** Returns the immutable engine and wagon configuration. */
+    public TrainConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    /**
+     * Replaces this train's configuration with an immutable value.
+     *
+     * @param configuration replacement configuration
+     */
+    public void setConfiguration(@NotNull TrainConfiguration configuration) {
+        this.configuration = Objects.requireNonNull(configuration);
+    }
+
+    /** Returns this train's mutable cargo, schedule, and activity state. */
+    public TrainRuntimeState getRuntimeState() {
+        return runtimeState;
     }
 
     /** Returns the train's cargo batches through the read-only bundle interface. */
     public UnmodifiableCargoBatchBundle getCargoBatchBundle() {
-        return cargoBatchBundle;
+        return runtimeState.getCargoBatchBundle();
     }
 
     /**
@@ -144,12 +158,12 @@ public class Train extends Identifiable {
      * @param cargoBatchBundle cargo contents to copy
      */
     public void setCargoBatchBundle(@NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
-        this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
+        runtimeState.setCargoBatchBundle(cargoBatchBundle);
     }
 
     /** Returns the train's schedule through the read-only schedule interface. */
     public UnmodifiableSchedule getSchedule() {
-        return schedule;
+        return runtimeState.getSchedule();
     }
 
     /**
@@ -158,12 +172,12 @@ public class Train extends Identifiable {
      * @param schedule schedule to copy
      */
     public void setSchedule(@NotNull UnmodifiableSchedule schedule) {
-        this.schedule = new Schedule(schedule);
+        runtimeState.setSchedule(schedule);
     }
 
     /** Returns an immutable snapshot of the wagon type identifiers. */
     public List<Integer> getConsist() {
-        return List.copyOf(wagonTypes);
+        return configuration.getWagonTypes();
     }
 
     /**
@@ -172,7 +186,7 @@ public class Train extends Identifiable {
      * @param wagonTypes wagon type identifiers in consist order
      */
     public void setConsist(@NotNull List<Integer> wagonTypes) {
-        this.wagonTypes = new ArrayList<>(wagonTypes);
+        configuration = configuration.withWagonTypes(wagonTypes);
     }
 
     /**
@@ -183,18 +197,7 @@ public class Train extends Identifiable {
      * @throws IllegalStateException if the train has no activities
      */
     public TrainMotion findCurrentMotion(double time) {
-        if (activities.isEmpty()) {
-            throw new IllegalStateException("Train has no activities.");
-        }
-
-        Activity previous = activities.getFirst();
-        for (Activity activity : activities) {
-            if (time < activity.getStartTime()) {
-                break;
-            }
-            previous = activity;
-        }
-        return (TrainMotion) previous;
+        return runtimeState.findCurrentMotion(time);
     }
 
     /**
@@ -244,7 +247,7 @@ public class Train extends Identifiable {
         return positionOnTrack.getLocation();
     }
 
-    /** Compares train identity and its engine, consist, cargo, schedule, and activities. */
+    /** Compares train identity, configuration, and runtime state. */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -254,9 +257,8 @@ public class Train extends Identifiable {
             return false;
         }
         // TODO there is a problem with the equality test on the sorted sets, only the id is tested (see https://docs.oracle.com/javase/7/docs/api/java/util/Set.html#equals(java.lang.Object))
-        boolean equal = getId() == o.getId() && engineId == o.getEngine() && Objects.equals(wagonTypes, o.wagonTypes);
-        equal = equal && Objects.equals(cargoBatchBundle, o.cargoBatchBundle) && Objects.equals(schedule, o.schedule);
-        equal = equal && Objects.equals(activities, o.activities);
-        return equal;
+        return getId() == o.getId()
+                && Objects.equals(configuration, o.configuration)
+                && Objects.equals(runtimeState, o.runtimeState);
     }
 }

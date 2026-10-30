@@ -26,6 +26,7 @@ import freerails.model.finance.Money;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainCategory;
+import freerails.model.terrain.TileTransition;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.model.track.TrackType;
 import freerails.util.Utils;
@@ -91,6 +92,30 @@ public class TrackPathFinderTest extends TestCase {
         } catch (PathNotFoundException e) {
             e.printStackTrace();
             fail();
+        }
+    }
+
+    public void testRepeatedQueriesReturnTheSameRouteAndTieBreak() {
+        BuildTrackStrategy strategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
+        TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer);
+        try {
+            List<Vec2D> first = pathFinder.generatePath(new Vec2D(2, 2), new Vec2D(4, 3), strategy);
+            List<Vec2D> second = pathFinder.generatePath(new Vec2D(2, 2), new Vec2D(4, 3), strategy);
+            List<Vec2D> third = pathFinder.generatePath(new Vec2D(2, 2), new Vec2D(4, 3), strategy);
+
+            assertEquals(first, second);
+            assertEquals(second, third);
+            assertEquals(List.of(new Vec2D(3, 3), new Vec2D(4, 3)), first);
+
+            TileTransition[] expectedTransitions = {TileTransition.SOUTH_EAST, TileTransition.EAST};
+            assertEquals(expectedTransitions.length, first.size());
+            for (int i = 0; i < expectedTransitions.length; i++) {
+                Vec2D from = i == 0 ? new Vec2D(2, 2) : first.get(i - 1);
+                Vec2D to = first.get(i);
+                assertEquals(expectedTransitions[i], TileTransition.getInstance(Vec2D.subtract(to, from)));
+            }
+        } catch (PathNotFoundException e) {
+            fail("Expected the open-map route to be found: " + e.getMessage());
         }
     }
 }

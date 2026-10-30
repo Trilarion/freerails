@@ -20,6 +20,7 @@ package freerails.move;
 
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.finance.Money;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.finance.transaction.TransactionCategory;
@@ -32,6 +33,8 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.model.train.Train;
+import freerails.model.train.TrainConfiguration;
+import freerails.model.train.schedule.Schedule;
 import freerails.model.world.World;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
@@ -138,6 +141,64 @@ public class MoveStateContractTest extends TestCase {
         assertEquals(otherPlayerBalance, world.getCurrentBalance(otherPlayer));
         assertEquals(unrelatedTile, world.getTile(UNRELATED_TILE));
         assertEquals(otherTrain, world.getTrain(otherPlayer, 8));
+    }
+
+    public void testCargoMovePayloadsSnapshotCallerBundles() {
+        CargoBatchBundle stationCargo = cargo(7);
+        ChangeCargoAtStationMove stationMove = new ChangeCargoAtStationMove(player, 10, stationCargo);
+        stationCargo.addCargo(new CargoBatch(2, Vec2D.ZERO, 42, 9), 3);
+
+        assertEquals(new ChangeCargoAtStationMove(player, 10, cargo(7)), stationMove);
+        stationMove.apply(world);
+        assertEquals(cargo(7), world.getStation(player, 10).getCargoBatchBundle());
+
+        CargoBatchBundle trainCargo = cargo(8);
+        UpdateTrainMove trainMove = new UpdateTrainMove(player, 4, trainCargo, null, null);
+        trainCargo.addCargo(new CargoBatch(2, Vec2D.ZERO, 42, 9), 3);
+
+        assertEquals(new UpdateTrainMove(player, 4, cargo(8), null, null), trainMove);
+        trainMove.apply(world);
+        assertEquals(cargo(8), world.getTrain(player, 4).getCargoBatchBundle());
+    }
+
+    public void testAddStationMoveSnapshotsStationCargo() {
+        Station station = station(12, 5);
+        station.setCargoBatchBundle(cargo(6));
+        AddStationMove move = new AddStationMove(player, station);
+        station.setCargoBatchBundle(cargo(20));
+
+        move.apply(world);
+
+        assertEquals(cargo(6), world.getStation(player, 12).getCargoBatchBundle());
+    }
+
+    public void testTrainAndStationPublishImmutableCargoSnapshots() {
+        CargoBatchBundle replacement = cargo(5);
+        Train train = world.getTrain(player, 4);
+        Station station = world.getStation(player, 10);
+
+        train.setCargoBatchBundle(replacement);
+        station.setCargoBatchBundle(replacement);
+        replacement.addCargo(new CargoBatch(2, Vec2D.ZERO, 42, 9), 3);
+
+        assertTrue(train.getCargoBatchBundle() instanceof ImmutableCargoBatchBundle);
+        assertTrue(station.getCargoBatchBundle() instanceof ImmutableCargoBatchBundle);
+        assertEquals(cargo(5), train.getCargoBatchBundle());
+        assertEquals(cargo(5), station.getCargoBatchBundle());
+    }
+
+    public void testUpdatingConsistReplacesConfigurationWithoutChangingRuntimeState() {
+        Train train = world.getTrain(player, 4);
+        CargoBatchBundle trainCargo = cargo(6);
+        Schedule schedule = new Schedule();
+        train.setCargoBatchBundle(trainCargo);
+        train.setSchedule(schedule);
+
+        new UpdateTrainMove(player, 4, null, java.util.List.of(5, 6), null).apply(world);
+
+        assertEquals(new TrainConfiguration(0, java.util.List.of(5, 6)), train.getConfiguration());
+        assertEquals(trainCargo, train.getCargoBatchBundle());
+        assertEquals(schedule, train.getSchedule());
     }
 
     public void testRejectedMovesLeaveTheWorldUnchanged() {

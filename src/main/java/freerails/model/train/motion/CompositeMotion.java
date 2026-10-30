@@ -44,6 +44,11 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
      * @throws NullPointerException if the array or any component motion is null
      */
     public CompositeMotion(Motion... motions) {
+        this(Double.MIN_VALUE, motions);
+    }
+
+    private CompositeMotion(double startTime, Motion... motions) {
+        super(startTime);
         this.motions = new ArrayList<>(Arrays.asList(motions));
         Utils.verifyNoneNull(this.motions);
         double time = 0, distance = 0;
@@ -53,6 +58,11 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         }
         totalTime = time;
         totalDistance = distance;
+    }
+
+    @Override
+    public CompositeMotion withStartTime(double startTime) {
+        return new CompositeMotion(startTime, motions.toArray(Motion[]::new));
     }
 
     /** Compares the ordered component motions and their aggregate totals. */
