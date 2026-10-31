@@ -77,8 +77,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         Status ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.isSuccess());
 
-        TrainOrder order0 = new TrainOrder(0, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
-        TrainOrder order1 = new TrainOrder(1, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
+        TrainOrder order0 = TrainOrder.keepConsist(0);
+        TrainOrder order1 = TrainOrder.keepConsist(1);
         ScheduleState schedule = new ScheduleState();
         schedule = schedule.addOrder(order0);
         schedule = schedule.addOrder(order1);
@@ -151,7 +151,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
             throw new IllegalStateException(status.getMessage());
 
         TrainOrder[] orders = {};
-        UnmodifiableSchedule schedule = new ScheduleState(orders, -1, false);
+        UnmodifiableSchedule schedule = new ScheduleState(orders, orders.length == 0 ? -1 : 0);
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
         Move move = addTrain.generate(world);
         status = move.applicable(world);

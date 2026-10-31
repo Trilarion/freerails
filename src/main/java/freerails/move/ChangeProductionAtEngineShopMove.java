@@ -25,7 +25,7 @@ package freerails.move;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.building.EngineShop;
 import freerails.model.train.TrainTemplate;
 import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
@@ -43,17 +43,17 @@ public class ChangeProductionAtEngineShopMove implements Move {
     @Serial
     private static final long serialVersionUID = 3905519384997737520L;
     private final List<TrainTemplate> production;
-    private final int stationId;
+    private final int engineShopId;
     private final Player player;
 
     /**
      * @param production
-     * @param stationId
+     * @param engineShopId
      * @param player
      */
-    public ChangeProductionAtEngineShopMove(@NotNull List<TrainTemplate> production, int stationId, @NotNull Player player) {
-        this.production = production;
-        this.stationId = stationId;
+    public ChangeProductionAtEngineShopMove(@NotNull List<TrainTemplate> production, int engineShopId, @NotNull Player player) {
+        this.production = List.copyOf(production);
+        this.engineShopId = engineShopId;
         this.player = player;
     }
 
@@ -62,7 +62,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         if (this == obj) return true;
         if (!(obj instanceof ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove)) return false;
 
-        if (stationId != changeProductionAtEngineShopMove.stationId) return false;
+        if (engineShopId != changeProductionAtEngineShopMove.engineShopId) return false;
         if (!Objects.equals(production, changeProductionAtEngineShopMove.production))
             return false;
         return player.equals(changeProductionAtEngineShopMove.player);
@@ -72,7 +72,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
     public int hashCode() {
         int result;
         result = production != null ? production.hashCode() : 0;
-        result = 29 * result + stationId;
+        result = 29 * result + engineShopId;
         result = 29 * result + player.hashCode();
         return result;
     }
@@ -80,9 +80,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
-        // Check that the specified station exists.
-        if (!Utils.containsId(stationId, world.getStations(player))) {
-            return Status.fail("Station not existing.");
+        if (!Utils.containsId(engineShopId, world.getEngineShops(player))) {
+            return Status.fail("Engine shop not existing.");
         }
         return Status.OK;
     }
@@ -94,7 +93,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
             throw new RuntimeException(status.getMessage());
         }
 
-        Station station = world.getStation(player, stationId);
-        station.setProduction(production);
+        EngineShop engineShop = world.getEngineShop(player, engineShopId);
+        engineShop.setProduction(production);
     }
 }

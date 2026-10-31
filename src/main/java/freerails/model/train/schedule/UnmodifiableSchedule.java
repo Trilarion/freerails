@@ -15,64 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-/*
- *
- */
 package freerails.model.train.schedule;
-
 
 import java.io.Serializable;
 
-/**
- * Read-only access to the orders and current destination of a train schedule.
- */
+/** Read-only access to the ordered stops and current destination of a train schedule. */
 public interface UnmodifiableSchedule extends Serializable {
 
-    int PRIORITY_ORDERS = 0;
-    int MAXIMUM_NUMBER_OF_ORDER = 6;
+    int MAXIMUM_NUMBER_OF_STOPS = 6;
 
-    /**
-     * Returns the order at the specified schedule index.
-     *
-     * @param index zero-based order index
-     * @return order at {@code index}
-     * @throws IndexOutOfBoundsException if the index is outside the schedule
-     */
+    /** Returns the stop at the specified schedule index. */
     TrainOrder getOrder(int index);
 
-    /**
-     * Returns the index of the order the train is currently carrying out, or {@code -1}
-     * when the schedule is empty.
-     */
+    /** Returns the index of the current stop, or {@code -1} when the schedule is empty. */
     int getCurrentOrderIndex();
 
-    /**
-     * Returns the station number of the next station the train is scheduled to
-     * stop at, or {@code -1} when the schedule is empty.
-     */
+    /** Returns the station identifier of the current stop, or {@code -1} when empty. */
     int getNextStationId();
 
-    /**
-     * @return
-     */
-    boolean hasPriorityOrders();
-
-    /**
-     * Returns number of non priority orders + number of priority orders.
-     *
-     * @return Number of orders.
-     */
+    /** Returns the total number of stops, including a one-shot urgent stop. */
     int getNumberOfOrders();
 
-    /** Returns the index of the next scheduled (non-priority) order. */
-    int getNextScheduledOrder();
-
-    /**
-     * Returns whether any order in the schedule visits the specified station.
-     *
-     * @param stationId station identifier
-     * @return {@code true} if an order targets that station
-     */
+    /** Returns whether any stop visits the specified station. */
     boolean stopsAtStation(int stationId);
 }

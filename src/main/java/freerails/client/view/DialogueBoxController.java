@@ -25,12 +25,14 @@ package freerails.client.view;
 import freerails.client.ClientConstants;
 import freerails.client.ModelRootImpl;
 import freerails.model.station.StationUtils;
+import freerails.model.building.EngineShop;
 import freerails.model.train.Train;
 import freerails.model.world.*;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRootProperty;
 import freerails.move.ChangeProductionAtEngineShopMove;
+import freerails.move.BuildEngineShopMove;
 import freerails.move.Move;
 import freerails.network.command.CommandToServer;
 import freerails.network.command.RefreshListOfGamesCommandToServer;
@@ -116,14 +118,12 @@ public class DialogueBoxController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            for (Station station: world.getStations(modelRoot.getPlayer())) {
-                int engineId = selectEngine.getSelectedEngineId();
-                List<Integer> wagonTypes = selectWagons.getWagons();
-                List<TrainTemplate> after = List.of(new TrainTemplate(engineId, wagonTypes));
-
-                Move move = new ChangeProductionAtEngineShopMove(after, station.getId(), modelRoot.getPlayer());
-                modelRoot.applyMove(move);
-            }
+            int engineId = selectEngine.getSelectedEngineId();
+            int engineShopId = selectEngine.getSelectedEngineShopId();
+            List<Integer> wagonTypes = selectWagons.getWagons();
+            List<TrainTemplate> after = List.of(new TrainTemplate(engineId, wagonTypes));
+            Move move = new ChangeProductionAtEngineShopMove(after, engineShopId, modelRoot.getPlayer());
+            modelRoot.applyMove(move);
             closeContent();
         }
     };
@@ -248,9 +248,47 @@ public class DialogueBoxController {
     public void showSelectEngine() {
         if (world.getStations(modelRoot.getPlayer()).isEmpty()) {
             modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Can't" + " build train since there are no stations");
+        } else if (world.getEngineShops(modelRoot.getPlayer()).isEmpty()) {
+            modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE,
+                    "Build an engine shop at a station before building trains.");
         } else {
+            selectEngine.setEngineShops(world.getEngineShops(modelRoot.getPlayer()));
             showContent(selectEngine);
         }
+    }
+
+    /** Opens the station selector and builds an engine shop at the chosen station. */
+    public void showBuildEngineShop() {
+        List<Station> availableStations = world.getStations(modelRoot.getPlayer()).stream()
+                .filter(station -> world.getEngineShops(modelRoot.getPlayer()).stream()
+                        .noneMatch(shop -> shop.getLocation().equals(station.getLocation())))
+                .toList();
+        if (availableStations.isEmpty()) {
+            modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE,
+                    "Build a station first, or all stations already have an engine shop.");
+            return;
+        }
+
+        String[] stationOptions = availableStations.stream()
+                .map(station -> station.getStationName() + " (" + station.getLocation().x()
+                        + ", " + station.getLocation().y() + ")")
+                .toArray(String[]::new);
+        Object selectedStation = JOptionPane.showInputDialog(frame,
+                "Choose a station for the engine shop. Construction cost: " + BuildEngineShopMove.BUILD_COST,
+                "Build Engine Shop", JOptionPane.PLAIN_MESSAGE, null, stationOptions, stationOptions[0]);
+        if (selectedStation == null) {
+            return;
+        }
+
+        int selectedIndex = Arrays.asList(stationOptions).indexOf(selectedStation);
+        Station station = availableStations.get(selectedIndex);
+        int nextId = world.getEngineShops(modelRoot.getPlayer()).stream()
+                .mapToInt(EngineShop::getId)
+                .max()
+                .orElse(-1) + 1;
+        Move move = new BuildEngineShopMove(modelRoot.getPlayer(),
+                new EngineShop(nextId, station.getLocation()));
+        modelRoot.applyMove(move);
     }
 
     /**

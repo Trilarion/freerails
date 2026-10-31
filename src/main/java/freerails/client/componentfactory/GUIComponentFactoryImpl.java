@@ -444,6 +444,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         buildMenu.removeAll();
         buildMenu.setText("Build");
         buildMenu.add(actionRoot.getBuildTrainDialogAction());
+        buildMenu.add(actionRoot.getBuildEngineShopAction());
 
 
         mainMapScrollPane1.setViewportView(mapViewJComponent);

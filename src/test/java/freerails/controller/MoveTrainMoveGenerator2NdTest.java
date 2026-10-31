@@ -116,8 +116,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         Status ms3 = stationBuilder.buildStation(station2Location);
         assertTrue(ms3.isSuccess());
 
-        TrainOrder order0 = new TrainOrder(2, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
-        TrainOrder order1 = new TrainOrder(0, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
+        TrainOrder order0 = TrainOrder.keepConsist(2);
+        TrainOrder order1 = TrainOrder.keepConsist(0);
         ScheduleState schedule = new ScheduleState();
         schedule = schedule.addOrder(order0);
         schedule = schedule.addOrder(order1);
@@ -322,7 +322,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     private void putTrainAtStationWaiting4FullLoad() {
         // Set wait until full on schedule.
         List<Integer> newConsist = Arrays.asList(0, 0);
-        TrainOrder order0 = new TrainOrder(2, TrainOrder.ConsistPolicy.EXPLICIT, newConsist, true, false);
+        TrainOrder order0 = TrainOrder.specifiedConsist(2, newConsist, true);
         Train train2 = world.getTrain(player, 0);
         ScheduleState schedule = new ScheduleState(train2.getSchedule());
         schedule = schedule.setOrder(0, order0);
@@ -367,7 +367,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // Now change the train's orders.
         List<Integer> newConsist = Arrays.asList(0, 0);
-        TrainOrder order0 = new TrainOrder(2, TrainOrder.ConsistPolicy.EXPLICIT, newConsist, false, false);
+        TrainOrder order0 = TrainOrder.specifiedConsist(2, newConsist, false);
         Train train = world.getTrain(player, 0);
         ScheduleState schedule = new ScheduleState(train.getSchedule());
         schedule = schedule.setOrder(0, order0);
@@ -396,8 +396,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         train.setConsist(new ArrayList<>());
 
         // Change trains schedule to auto consist.
-        TrainOrder order0 = new TrainOrder(1, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, true);
-        TrainOrder order1 = new TrainOrder(2, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, true);
+        TrainOrder order0 = TrainOrder.autoConsist(1);
+        TrainOrder order1 = TrainOrder.autoConsist(2);
         ScheduleState schedule = new ScheduleState();
         schedule = schedule.addOrder(order0);
         schedule = schedule.addOrder(order1);
@@ -469,7 +469,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     public void testLengtheningTrain() {
         // Set the train to add wagons at station2.
         List<Integer> newConsist = Arrays.asList(0, 0, 0, 0, 0, 0);
-        TrainOrder order0 = new TrainOrder(2, TrainOrder.ConsistPolicy.EXPLICIT, newConsist, false, false);
+        TrainOrder order0 = TrainOrder.specifiedConsist(2, newConsist, false);
         Train train = world.getTrain(player, 0);
         ScheduleState schedule = new ScheduleState(train.getSchedule());
         schedule = schedule.setOrder(0, order0);

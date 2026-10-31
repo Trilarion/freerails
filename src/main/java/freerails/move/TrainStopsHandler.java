@@ -94,7 +94,7 @@ public class TrainStopsHandler implements Serializable {
 
             boolean autoConsist = order.isAutoConsist();
 
-            if (order.getConsistPolicy() == TrainOrder.ConsistPolicy.EXPLICIT) {
+            if (order.hasSpecifiedConsist()) {
                 Move move = new UpdateTrainMove(player, trainId, null, order.getConsist(), null);
                 moves.add(move);
                 move.apply(world);
@@ -165,7 +165,7 @@ public class TrainStopsHandler implements Serializable {
 
         // Should we change the consist?
         List<Integer> consist = train.getConsist();
-        if (order.getConsistPolicy() == TrainOrder.ConsistPolicy.EXPLICIT
+        if (order.hasSpecifiedConsist()
                 && !consist.equals(order.getConsist())) {
             // ..if so, we should change the consist.
             int oldLength = train.getLength();

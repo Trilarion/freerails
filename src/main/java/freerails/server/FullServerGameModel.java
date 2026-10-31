@@ -43,6 +43,7 @@ import freerails.model.track.OccupiedTracks;
 import freerails.model.track.TrackType;
 import freerails.model.train.Train;
 import freerails.model.train.TrainTemplate;
+import freerails.model.building.EngineShop;
 import freerails.model.train.TrainUtils;
 import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.TrainOrder;
@@ -243,15 +244,13 @@ public class FullServerGameModel implements ServerGameModel {
     }
 
     /**
-     * Iterator over the stations and build trains at any that have their
-     * production field set.
+     * Builds trains queued at each engine shop.
      */
     private static void buildTrains(UnmodifiableWorld world, MoveReceiver moveReceiver) {
         // for all player
         for (Player player: world.getPlayers()) {
-            // for all stations of that player
-            for (Station station: world.getStations(player)) {
-                List<TrainTemplate> production = station.getProduction();
+            for (EngineShop engineShop : world.getEngineShops(player)) {
+                List<TrainTemplate> production = engineShop.getProduction();
                 if (production.size() > 0) {
 
                     for (TrainTemplate trainTemplate : production) {
@@ -268,20 +267,22 @@ public class FullServerGameModel implements ServerGameModel {
                         // Add up to 4 stations to the schedule.
                         Iterator<Station> wi = world.getStations(player).iterator();
                         while (wi.hasNext() && schedule.getNumberOfOrders() < 5) {
-                            TrainOrder orders = new TrainOrder(wi.next().getId(), TrainOrder.ConsistPolicy.UNCHANGED,
-                                    List.of(), false, autoSchedule);
+                            int stationId = wi.next().getId();
+                            TrainOrder orders = autoSchedule
+                                    ? TrainOrder.autoConsist(stationId)
+                                    : TrainOrder.keepConsist(stationId);
                             schedule = schedule.addOrder(orders);
                         }
 
                         schedule = schedule.setOrderToGoto(0);
 
-                        MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagonTypes, station.getLocation(), player, schedule);
+                        MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagonTypes, engineShop.getLocation(), player, schedule);
 
                         Move move = addTrain.generate(world);
                         moveReceiver.process(move);
                     }
                     // removes from production list
-                    Move move = new ChangeProductionAtEngineShopMove(new ArrayList<>(), station.getId(), player);
+                    Move move = new ChangeProductionAtEngineShopMove(new ArrayList<>(), engineShop.getId(), player);
                     moveReceiver.process(move);
                 }
             }
@@ -443,7 +444,7 @@ public class FullServerGameModel implements ServerGameModel {
                 Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, trackRuleId, station);
 
                 if (!stationAfter.equals(station)) {
-                    Move move = new UpdateStationCargoDemandSupplyConversionMove(player, stationAfter);
+                    Move move = new UpdateStationCargoPolicyMove(player, stationAfter);
                     moveReceiver.process(move);
                 }
             }

@@ -52,16 +52,13 @@ public class AddStationMove implements Move {
                 && Objects.equals(station.getStationName(), other.station.getStationName())
                 && Objects.equals(station.getSupply(), other.station.getSupply())
                 && Objects.equals(station.getDemandForCargo(), other.station.getDemandForCargo())
-                && Objects.equals(station.getCargoConversion(), other.station.getCargoConversion())
-                && Objects.equals(station.getCargoBatchBundle(), other.station.getCargoBatchBundle())
-                && Objects.equals(station.getProduction(), other.station.getProduction());
+                && Objects.equals(station.getCargoBatchBundle(), other.station.getCargoBatchBundle());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(player, station.getId(), station.getLocation(), station.getStationName(),
-                station.getSupply(), station.getDemandForCargo(), station.getCargoConversion(),
-                station.getCargoBatchBundle(), station.getProduction());
+                station.getSupply(), station.getDemandForCargo(), station.getCargoBatchBundle());
     }
 
     @NotNull

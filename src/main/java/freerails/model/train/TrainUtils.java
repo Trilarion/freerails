@@ -302,7 +302,7 @@ public final class TrainUtils {
         TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
         if (order.getStationId() != stationId) return false;
         if (!order.isWaitUntilFull()) return false;
-        return order.getConsistPolicy() == TrainOrder.ConsistPolicy.EXPLICIT
+        return order.hasSpecifiedConsist()
                 && order.getConsist().equals(train.getConsist());
     }
 }

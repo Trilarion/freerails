@@ -29,12 +29,12 @@ import java.util.Objects;
 /**
  *
  */
-public class UpdateStationCargoDemandSupplyConversionMove implements Move {
+public class UpdateStationCargoPolicyMove implements Move {
 
     private final Player player;
     private final Station station;
 
-    public UpdateStationCargoDemandSupplyConversionMove(@NotNull Player player, @NotNull Station station) {
+    public UpdateStationCargoPolicyMove(@NotNull Player player, @NotNull Station station) {
         this.player = player;
         this.station = station;
     }
@@ -44,20 +44,18 @@ public class UpdateStationCargoDemandSupplyConversionMove implements Move {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof UpdateStationCargoDemandSupplyConversionMove other)) {
+        if (!(obj instanceof UpdateStationCargoPolicyMove other)) {
             return false;
         }
         return Objects.equals(player, other.player)
                 && station.getId() == other.station.getId()
                 && Objects.equals(station.getSupply(), other.station.getSupply())
-                && Objects.equals(station.getCargoConversion(), other.station.getCargoConversion())
                 && Objects.equals(station.getDemandForCargo(), other.station.getDemandForCargo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(player, station.getId(), station.getSupply(),
-                station.getCargoConversion(), station.getDemandForCargo());
+        return Objects.hash(player, station.getId(), station.getSupply(), station.getDemandForCargo());
     }
 
     @NotNull
@@ -70,7 +68,6 @@ public class UpdateStationCargoDemandSupplyConversionMove implements Move {
     public void apply(@NotNull World world) {
         Station oldStation = world.getStation(player, station.getId());
         oldStation.setSupply(station.getSupply());
-        oldStation.setCargoConversion(station.getCargoConversion());
         oldStation.setDemandForCargo(station.getDemandForCargo());
     }
 }

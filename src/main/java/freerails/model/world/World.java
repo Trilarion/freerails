@@ -20,6 +20,7 @@ package freerails.model.world;
 
 import freerails.model.ModelConstants;
 import freerails.model.train.motion.TrainMotion;
+import freerails.model.building.EngineShop;
 import freerails.model.cargo.Cargo;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.game.*;
@@ -29,6 +30,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.train.Train;
+import freerails.model.train.TrainTemplate;
 import freerails.util.*;
 import freerails.model.finance.Money;
 import freerails.model.player.Player;
@@ -43,7 +45,8 @@ import java.util.*;
 /**
  * Mutable implementation of {@link UnmodifiableWorld}, backed by Java
  * collections and a flat array of map tiles. It owns world definitions,
- * player-specific trains and stations, player finances, and simulation state.
+ * player-specific trains, stations, and engine shops, player finances, and
+ * simulation state.
  */
 public class World implements UnmodifiableWorld {
 
@@ -72,6 +75,7 @@ public class World implements UnmodifiableWorld {
     // player specific lists
     private final Map<Integer, List<Train>> trains; // a list of trains by player ID
     private final Map<Integer, SortedSet<Station>> stations; // list of stations by player ID
+    private Map<Integer, SortedSet<EngineShop>> engineShops;
 
     private transient Map<Integer, Integer> cargoIndexById;
     private transient List<Cargo> cargosByIndex;
@@ -86,10 +90,11 @@ public class World implements UnmodifiableWorld {
     private transient Map<Integer, Sentiment> sentimentById;
     private transient Map<Integer, Map<Integer, Integer>> trainIndexByIdByPlayer;
     private transient Map<Integer, Map<Integer, Station>> stationByIdByPlayer;
+    private transient Map<Integer, Map<Integer, EngineShop>> engineShopByIdByPlayer;
 
     private int currentSentimentId = 2;
 
-    // Player-specific trains and stations are initialized by game setup, not scenario definitions.
+    // Player-specific assets are initialized by game setup, not scenario definitions.
     /**
      * Collects the initial world definitions and required settings before
      * constructing a {@link World}. Collection setters make defensive copies
@@ -106,6 +111,7 @@ public class World implements UnmodifiableWorld {
         private SortedSet<Sentiment> sentiments = new TreeSet<>();
         private Map<Integer, List<Train>> trains = new HashMap<>();
         private Map<Integer, SortedSet<Station>> stations = new HashMap<>();
+        private Map<Integer, SortedSet<EngineShop>> engineShops = new HashMap<>();
         private Rules rules = null;
         private Vec2D mapSize = null;
         private Clock clock = new Clock(1840, 1200, new Time(0));
@@ -271,6 +277,7 @@ public class World implements UnmodifiableWorld {
         trackTypes = new TreeSet<>(builder.trackTypes);
         trains = new HashMap<>(builder.trains);
         stations = new HashMap<>(builder.stations);
+        engineShops = new HashMap<>(builder.engineShops);
         rules = builder.rules;
         sentiments = new TreeSet<>(builder.sentiments);
 
@@ -332,6 +339,13 @@ public class World implements UnmodifiableWorld {
         stationByIdByPlayer = new HashMap<>();
         stations.forEach((playerId, playerStations) ->
                 stationByIdByPlayer.put(playerId, createIdLookup(playerStations)));
+        engineShops = engineShops == null ? new HashMap<>() : engineShops;
+        engineShopByIdByPlayer = new HashMap<>();
+        players.forEach(player -> {
+            int playerId = player.getId();
+            SortedSet<EngineShop> shops = engineShops.computeIfAbsent(playerId, ignored -> new TreeSet<>());
+            engineShopByIdByPlayer.put(playerId, createIdLookup(shops));
+        });
     }
 
     /**
@@ -407,7 +421,8 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Restores serialized world state and reconstructs transient lookup indexes.
+     * Restores serialized world state, migrates legacy station production, and
+     * reconstructs transient lookup indexes.
      *
      * @param input serialized data source
      * @throws IOException if reading the serialized object fails
@@ -416,7 +431,36 @@ public class World implements UnmodifiableWorld {
     @Serial
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
         input.defaultReadObject();
+        migrateLegacyEngineShopProduction();
         initializeIndexes();
+    }
+
+    private void migrateLegacyEngineShopProduction() {
+        if (engineShops == null) {
+            engineShops = new HashMap<>();
+        }
+        for (Player player : players) {
+            SortedSet<EngineShop> shops = engineShops.computeIfAbsent(player.getId(), ignored -> new TreeSet<>());
+            int nextId = shops.stream().mapToInt(EngineShop::getId).max().orElse(-1) + 1;
+            for (Station station : stations.getOrDefault(player.getId(), new TreeSet<>())) {
+                List<TrainTemplate> legacyProduction = station.takeLegacyProductionForMigration();
+                if (legacyProduction.isEmpty()) {
+                    continue;
+                }
+
+                EngineShop shop = shops.stream()
+                        .filter(existing -> existing.getLocation().equals(station.getLocation()))
+                        .findFirst()
+                        .orElse(null);
+                if (shop == null) {
+                    shop = new EngineShop(nextId++, station.getLocation());
+                    shops.add(shop);
+                }
+                List<TrainTemplate> production = new ArrayList<>(shop.getProduction());
+                production.addAll(legacyProduction);
+                shop.setProduction(production);
+            }
+        }
     }
 
     /** {@inheritDoc} */
@@ -581,6 +625,54 @@ public class World implements UnmodifiableWorld {
         return get(id, stationByIdByPlayer.get(getPlayerId(player)));
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Collection<EngineShop> getEngineShops(Player player) {
+        return Collections.unmodifiableSortedSet(engineShops.get(getPlayerId(player)));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EngineShop getEngineShop(Player player, int id) {
+        return get(id, engineShopByIdByPlayer.get(getPlayerId(player)));
+    }
+
+    /**
+     * Adds an engine shop to a player's facilities.
+     *
+     * @param player owner of the shop
+     * @param engineShop shop to add
+     * @throws IllegalArgumentException if the player already has a shop with
+     *         the same identifier
+     */
+    public void addEngineShop(Player player, EngineShop engineShop) {
+        int playerId = getPlayerId(player);
+        SortedSet<EngineShop> playerShops = engineShops.get(playerId);
+        Map<Integer, EngineShop> shopsById = engineShopByIdByPlayer.get(playerId);
+        if (shopsById.containsKey(engineShop.getId())) {
+            throw new IllegalArgumentException("Engine shop with id already existing. Cannot add.");
+        }
+        if (!playerShops.add(engineShop)) {
+            throw new IllegalArgumentException("Engine shop cannot be added to the player's collection.");
+        }
+        shopsById.put(engineShop.getId(), engineShop);
+    }
+
+    /**
+     * Removes an engine shop by identifier.
+     *
+     * @param player owner of the shop
+     * @param id identifier of the shop to remove
+     */
+    public void removeEngineShop(Player player, int id) {
+        int playerId = getPlayerId(player);
+        SortedSet<EngineShop> playerShops = engineShops.get(playerId);
+        Map<Integer, EngineShop> shopsById = engineShopByIdByPlayer.get(playerId);
+        EngineShop engineShop = get(id, shopsById);
+        playerShops.remove(engineShop);
+        shopsById.remove(id);
+    }
+
     /**
      * Adds a station to a player's station set.
      *
@@ -614,6 +706,11 @@ public class World implements UnmodifiableWorld {
         SortedSet<Station> playerStations = stations.get(playerId);
         Map<Integer, Station> stationsById = stationByIdByPlayer.get(playerId);
         Station station = get(id, stationsById);
+        engineShops.get(playerId).stream()
+                .filter(engineShop -> engineShop.getLocation().equals(station.getLocation()))
+                .map(EngineShop::getId)
+                .toList()
+                .forEach(engineShopId -> removeEngineShop(player, engineShopId));
         playerStations.remove(station);
         stationsById.remove(id);
     }
@@ -696,8 +793,10 @@ public class World implements UnmodifiableWorld {
         currentBalance.put(player.getId(), Money.ZERO);
         trains.put(player.getId(), new ArrayList<>());
         stations.put(player.getId(), new TreeSet<>());
+        engineShops.put(player.getId(), new TreeSet<>());
         trainIndexByIdByPlayer.put(player.getId(), new HashMap<>());
         stationByIdByPlayer.put(player.getId(), new HashMap<>());
+        engineShopByIdByPlayer.put(player.getId(), new HashMap<>());
 
         return index;
     }
@@ -790,6 +889,7 @@ public class World implements UnmodifiableWorld {
                 && cityGrowthEnabled == o.cityGrowthEnabled
                 && Objects.equals(trains, o.trains)
                 && Objects.equals(stations, o.stations)
+                && engineShopsEqual(engineShops, o.engineShops)
                 && Objects.equals(transactions, o.transactions)
                 && Objects.equals(currentBalance, o.currentBalance)
                 && Objects.equals(mapSize, o.mapSize)
@@ -877,8 +977,46 @@ public class World implements UnmodifiableWorld {
     public int hashCode() {
         return 31 * Objects.hash(players, clock, speed, rules, engines, cities, cargos, terrainTypes,
                 trackTypes, sentiments, currentSentimentId, cityGrowthEnabled, trains, stations, transactions,
-                currentBalance, mapSize)
+                engineShopsHashCode(engineShops), currentBalance, mapSize)
                 + Arrays.hashCode(map);
+    }
+
+    private static boolean engineShopsEqual(Map<Integer, SortedSet<EngineShop>> first,
+                                            Map<Integer, SortedSet<EngineShop>> second) {
+        if (!first.keySet().equals(second.keySet())) {
+            return false;
+        }
+        for (Integer playerId : first.keySet()) {
+            SortedSet<EngineShop> firstShops = first.get(playerId);
+            SortedSet<EngineShop> secondShops = second.get(playerId);
+            if (firstShops.size() != secondShops.size()) {
+                return false;
+            }
+            for (EngineShop firstShop : firstShops) {
+                EngineShop secondShop = secondShops.stream()
+                        .filter(shop -> shop.getId() == firstShop.getId())
+                        .findFirst()
+                        .orElse(null);
+                if (secondShop == null
+                        || !Objects.equals(firstShop.getLocation(), secondShop.getLocation())
+                        || !Objects.equals(firstShop.getProduction(), secondShop.getProduction())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static int engineShopsHashCode(Map<Integer, SortedSet<EngineShop>> shopsByPlayer) {
+        int result = 0;
+        for (Map.Entry<Integer, SortedSet<EngineShop>> entry : shopsByPlayer.entrySet()) {
+            int shopsHash = 0;
+            for (EngineShop shop : entry.getValue()) {
+                shopsHash += Objects.hash(shop.getId(), shop.getLocation(), shop.getProduction());
+            }
+            result += Objects.hash(entry.getKey(), shopsHash);
+        }
+        return result;
     }
 
     /**

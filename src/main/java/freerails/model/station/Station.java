@@ -21,23 +21,22 @@ package freerails.model.station;
 import freerails.util.Identifiable;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
-
 import freerails.model.train.TrainTemplate;
+
 import freerails.util.Vec2D;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 // TODO doesn't know what type it is (depot, station, terminal)? why not? should know.
 /**
- * Represents a station with a location, name, cargo service data, and
- * production queue. Cargo service data is keyed by stable cargo IDs, and its
- * cargo bundle is stored as an immutable snapshot.
+ * Represents a cargo-service station with a location, name, supply and demand
+ * policy, and waiting cargo.
  */
 public class Station extends Identifiable {
 
@@ -47,10 +46,10 @@ public class Station extends Identifiable {
     private final String name;
     private StationSupply supply;
     private StationDemand demandForCargo;
-    private StationCargoConversion cargoConversion;
     private ImmutableCargoBatchBundle cargoBatchBundle;
-
-    private final List<TrainTemplate> production;
+    // Retains the old serialized field name so World can migrate legacy saves.
+    private List<TrainTemplate> production;
+    private transient List<TrainTemplate> legacyProduction;
 
     /**
      * Creates a station with empty cargo demand and supply settings.
@@ -67,9 +66,7 @@ public class Station extends Identifiable {
         this.cargoBatchBundle = new ImmutableCargoBatchBundle(cargoBatchBundle);
 
         supply = new StationSupply(Map.of());
-        production = new ArrayList<>();
         demandForCargo = new StationDemand(Set.of());
-        cargoConversion = new StationCargoConversion(Map.of());
     }
 
     /**
@@ -83,18 +80,7 @@ public class Station extends Identifiable {
         name = station.name;
         supply = station.supply;
         demandForCargo = station.demandForCargo;
-        cargoConversion = station.cargoConversion;
         cargoBatchBundle = new ImmutableCargoBatchBundle(station.cargoBatchBundle);
-        production = new ArrayList<>(station.production);
-    }
-
-    /**
-     * Returns the station's cargo conversion rules.
-     *
-     * @return cargo conversion settings
-     */
-    public StationCargoConversion getCargoConversion() {
-        return cargoConversion;
     }
 
     /**
@@ -113,34 +99,6 @@ public class Station extends Identifiable {
      */
     public Vec2D getLocation() {
         return location;
-    }
-
-    /**
-     * Returns the train templates currently in the station's production queue.
-     *
-     * @return an unmodifiable view of the production queue
-     */
-    public List<TrainTemplate> getProduction() {
-        return Collections.unmodifiableList(production);
-    }
-
-    /**
-     * Adds a train template to the end of the production queue.
-     *
-     * @param trainTemplate template to queue
-     */
-    public void queueProduction(@NotNull TrainTemplate trainTemplate) {
-        production.add(trainTemplate);
-    }
-
-    /**
-     * Removes the first matching train template from the production queue.
-     *
-     * @param trainTemplate template to remove
-     * @return whether a matching template was removed
-     */
-    public boolean removeProduction(@NotNull TrainTemplate trainTemplate) {
-        return production.remove(trainTemplate);
     }
 
     /**
@@ -181,15 +139,6 @@ public class Station extends Identifiable {
     }
 
     /**
-     * Replaces the station's cargo conversion rules.
-     *
-     * @param cargoConversion conversion rules to install
-     */
-    public void setCargoConversion(StationCargoConversion cargoConversion) {
-        this.cargoConversion = cargoConversion;
-    }
-
-    /**
      * Replaces the station's cargo demand settings.
      *
      * @param demandForCargo demand settings to install
@@ -208,13 +157,27 @@ public class Station extends Identifiable {
     }
 
     /**
-     * Replaces the train templates in the station's production queue.
+     * Returns and clears the production queue read from a legacy station save.
+     * The world uses this once to migrate old station queues into engine shops.
      *
-     * @param production ordered production queue
+     * @return legacy queued train templates, or an empty list
      */
-    public void setProduction(List<TrainTemplate> production) {
-        List<TrainTemplate> productionCopy = List.copyOf(production);
-        this.production.clear();
-        this.production.addAll(productionCopy);
+    public List<TrainTemplate> takeLegacyProductionForMigration() {
+        if (legacyProduction == null) {
+            return List.of();
+        }
+        List<TrainTemplate> result = legacyProduction;
+        legacyProduction = null;
+        return result;
     }
+
+    @Serial
+    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
+        input.defaultReadObject();
+        if (production != null && !production.isEmpty()) {
+            legacyProduction = List.copyOf(production);
+        }
+        production = null;
+    }
+
 }

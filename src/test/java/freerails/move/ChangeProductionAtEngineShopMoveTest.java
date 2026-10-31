@@ -21,9 +21,7 @@
  */
 package freerails.move;
 
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.station.*;
-
+import freerails.model.building.EngineShop;
 import freerails.model.train.TrainTemplate;
 import freerails.util.Vec2D;
 import freerails.util.WorldGenerator;
@@ -47,10 +45,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Station station = new Station(0, Vec2D.ZERO, "no name", new CargoBatchBundle());
-        getWorld().addStation(WorldGenerator.TEST_PLAYER, station);
-        //getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);
-        //getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);
+        getWorld().addEngineShop(WorldGenerator.TEST_PLAYER, new EngineShop(0, Vec2D.ZERO));
 
         engineType = 0;
         int wagonType = 0;
@@ -63,7 +58,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     public void testMove() {
         ChangeProductionAtEngineShopMove m;
 
-        // Should fail because station 6 does not exist.
+        // Should fail because engine shop 6 does not exist.
         m = new ChangeProductionAtEngineShopMove(after, 6, WorldGenerator.TEST_PLAYER);
         assertMoveNotApplicable(m);
         assertMoveApplyFails(m);

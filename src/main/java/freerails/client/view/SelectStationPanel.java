@@ -304,8 +304,7 @@ public class SelectStationPanel extends JPanel implements View {
     public ScheduleState generateNewSchedule() {
         TrainOrder oldOrders, newOrders;
         oldOrders = schedule.getOrder(selectedOrderNumber);
-        newOrders = new TrainOrder(selectedStationID, oldOrders.getConsistPolicy(), oldOrders.getConsist(),
-                oldOrders.isWaitUntilFull(), oldOrders.isAutoConsist());
+        newOrders = oldOrders.withStation(selectedStationID);
         return schedule.setOrder(selectedOrderNumber, newOrders);
     }
 

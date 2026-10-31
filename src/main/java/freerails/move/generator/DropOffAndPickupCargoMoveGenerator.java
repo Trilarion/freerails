@@ -28,8 +28,8 @@ import freerails.move.*;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.station.StationCargoConversion;
 import freerails.model.station.StationDemand;
+import freerails.model.station.StationUtils;
 import freerails.model.train.*;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.util.Vec2D;
@@ -93,9 +93,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                 cargoDroppedOff.addCargo(cargoBatch, amount);
 
                 // Now perform any conversions..
-                StationCargoConversion converted = station.getCargoConversion();
-
-                OptionalInt productCargoId = converted.conversionFor(cargoTypeId);
+                OptionalInt productCargoId = StationUtils.cargoConversionAtStation(world, station, cargoTypeId);
                 if (productCargoId.isPresent()) {
                     int newCargoType = productCargoId.getAsInt();
                     CargoBatch newCargoBatch = new CargoBatch(newCargoType, station.getLocation(), 0, stationId);
@@ -133,44 +131,43 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
 
         if (autoConsist) {
-            List<WagonLoad> wagonsAvailable = new ArrayList<>();
-
             UnmodifiableSchedule schedule = train.getSchedule();
-            TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
+            int currentOrderIndex = schedule.getCurrentOrderIndex();
+            if (currentOrderIndex >= 0) {
+                List<WagonLoad> wagonsAvailable = new ArrayList<>();
+                TrainOrder order = schedule.getOrder(currentOrderIndex);
+                Station otherStation = world.getStation(player, order.getStationId());
+                StationDemand demand = otherStation.getDemandForCargo();
 
-            int nextStationId = order.getStationId();
+                for (Cargo cargo : world.getCargos()) {
+                    int cargoId = cargo.getId();
+                    // If this cargo is demanded at the next scheduled station.
+                    if (demand.isCargoDemanded(cargoId)) {
+                        int amount = stationAfter.getAmountOfType(cargoId);
 
-            Station otherStation = world.getStation(player, nextStationId);
-            StationDemand demand = otherStation.getDemandForCargo();
+                        while (amount > 0) {
+                            int amount2remove = Math.min(amount, ModelConstants.UNITS_OF_CARGO_PER_WAGON);
+                            amount -= amount2remove;
 
-            for (Cargo cargo : world.getCargos()) {
-                int cargoId = cargo.getId();
-                // If this cargo is demanded at the next scheduled station.
-                if (demand.isCargoDemanded(cargoId)) {
-                    int amount = stationAfter.getAmountOfType(cargoId);
-
-                    while (amount > 0) {
-                        int amount2remove = Math.min(amount, ModelConstants.UNITS_OF_CARGO_PER_WAGON);
-                        amount -= amount2remove;
-
-                        // Don't bother with less than half a wagon load.
-                        if (amount2remove * 2 > ModelConstants.UNITS_OF_CARGO_PER_WAGON) {
-                            wagonsAvailable.add(new WagonLoad(amount2remove, cargoId));
+                            // Don't bother with less than half a wagon load.
+                            if (amount2remove * 2 > ModelConstants.UNITS_OF_CARGO_PER_WAGON) {
+                                wagonsAvailable.add(new WagonLoad(amount2remove, cargoId));
+                            }
                         }
                     }
                 }
+
+                Collections.sort(wagonsAvailable);
+
+                int numWagonsToadd = Math.min(wagonsAvailable.size(), 3);
+
+                Integer[] temp = new Integer[numWagonsToadd];
+                for (int i = 0; i < numWagonsToadd; i++) {
+                    WagonLoad wagonload = wagonsAvailable.get(i);
+                    temp[i] = wagonload.cargoType();
+                }
+                consist = new ArrayList<>(Arrays.asList(temp));
             }
-
-            Collections.sort(wagonsAvailable);
-
-            int numWagonsToadd = Math.min(wagonsAvailable.size(), 3);
-
-            Integer[] temp = new Integer[numWagonsToadd];
-            for (int i = 0; i < numWagonsToadd; i++) {
-                WagonLoad wagonload = wagonsAvailable.get(i);
-                temp[i] = wagonload.cargoType();
-            }
-            consist = new ArrayList<>(Arrays.asList(temp));
         }
 
         // ie. load train / pickup cargo

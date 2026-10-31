@@ -56,7 +56,7 @@ public class TrainSchedulePanel extends JPanel implements View {
     private JPopupMenu editOrderJPopupMenu;
     private JMenuItem gotoStationJMenuItem;
     private JList<TrainOrdersListModel.TrainOrdersListElement> orders;
-    private JButton priorityOrdersJButton;
+    private JButton urgentStopJButton;
     private JMenuItem pullUpJMenuItem;
     private JMenuItem pushDownJMenuItem;
     private JMenu removeWagonsJMenu;
@@ -96,7 +96,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         selectStationJPopupMenu = new JPopupMenu();
         selectStationJPopupMenu.add(selectStationPanel1);
         addStationJButton = new JButton();
-        priorityOrdersJButton = new JButton();
+        urgentStopJButton = new JButton();
         JScrollPane jScrollPane1 = new JScrollPane();
         orders = new JList<>();
 
@@ -188,14 +188,14 @@ public class TrainSchedulePanel extends JPanel implements View {
         gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(addStationJButton, gridBagConstraints);
 
-        priorityOrdersJButton.setText("Add Priority Orders");
-        priorityOrdersJButton.addActionListener(this::priorityOrdersJButtonActionPerformed);
+        urgentStopJButton.setText("Insert Urgent Stop");
+        urgentStopJButton.addActionListener(this::urgentStopJButtonActionPerformed);
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new Insets(7, 7, 7, 7);
-        add(priorityOrdersJButton, gridBagConstraints);
+        add(urgentStopJButton, gridBagConstraints);
 
         jScrollPane1.setPreferredSize(new Dimension(280, 160));
         orders.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -229,8 +229,8 @@ public class TrainSchedulePanel extends JPanel implements View {
     private void ordersKeyPressed(KeyEvent evt) {
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_O: {
-                // Add priority orders
-                priorityOrdersJButtonActionPerformed(null);
+                // Insert urgent one-shot stop
+                urgentStopJButtonActionPerformed(null);
                 break;
             }
             case KeyEvent.VK_N: {
@@ -323,12 +323,14 @@ public class TrainSchedulePanel extends JPanel implements View {
         noChange();
     }
 
-    private void priorityOrdersJButtonActionPerformed(ActionEvent evt) {
+    private void urgentStopJButtonActionPerformed(ActionEvent evt) {
         ScheduleState schedule = getSchedule();
+        if (!schedule.canAddUrgentOrder()) {
+            return;
+        }
         try {
-            schedule = schedule.setPriorityOrders(new TrainOrder(getFirstStationID(),
-                    TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false));
-            showSelectStation(schedule, UnmodifiableSchedule.PRIORITY_ORDERS);
+            schedule = schedule.addUrgentOrder(TrainOrder.keepConsist(getFirstStationID()));
+            showSelectStation(schedule, schedule.getCurrentOrderIndex());
         } catch (NoSuchElementException e) {
             logger.warn("No stations exist so can't add station to schedule!");
         }
@@ -338,8 +340,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         ScheduleState schedule = getSchedule();
         try {
             int newOrderNumber = schedule.getNumberOfOrders();
-            schedule = schedule.addOrder(new TrainOrder(getFirstStationID(),
-                    TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false));
+            schedule = schedule.addOrder(TrainOrder.keepConsist(getFirstStationID()));
             showSelectStation(schedule, newOrderNumber);
         } catch (NoSuchElementException e) {
             logger.warn("No stations exist so can't add station to schedule!");
@@ -438,8 +439,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         ScheduleState schedule = getSchedule();
         addStationJButton.setEnabled(schedule.canAddOrder());
 
-        // Only one set of priority orders are allowed.
-        priorityOrdersJButton.setEnabled(!schedule.hasPriorityOrders());
+        urgentStopJButton.setEnabled(schedule.canAddUrgentOrder());
     }
 
     private ScheduleState getSchedule() {
@@ -486,7 +486,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         ScheduleState schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
-        newOrders = new TrainOrder(oldOrders.getStationId(), TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
+        newOrders = oldOrders.withPolicy(TrainOrder.LoadingPolicy.KEEP_CONSIST, List.of(), false);
         schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
@@ -497,12 +497,9 @@ public class TrainSchedulePanel extends JPanel implements View {
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
         // If auto-consist is set do nothing
-        if (oldOrders.isAutoConsist()) return;
-        // If no-change is set do nothing
-        if (oldOrders.getConsistPolicy() == TrainOrder.ConsistPolicy.UNCHANGED) return;
-        boolean autoConsist = false;
-        newOrders = new TrainOrder(oldOrders.getStationId(), oldOrders.getConsistPolicy(),
-                oldOrders.getConsist(), b, autoConsist);
+        if (oldOrders.isAutoConsist() || !oldOrders.hasSpecifiedConsist()) return;
+        newOrders = oldOrders.withPolicy(TrainOrder.LoadingPolicy.SPECIFIED_CONSIST,
+                oldOrders.getConsist(), b);
         schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
@@ -512,7 +509,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         ScheduleState schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
-        newOrders = new TrainOrder(oldOrders.getStationId(), TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, true);
+        newOrders = oldOrders.withPolicy(TrainOrder.LoadingPolicy.AUTO_CONSIST, List.of(), false);
         schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
@@ -523,7 +520,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
         Integer[] newConsist;
-        if (oldOrders.getConsistPolicy() == TrainOrder.ConsistPolicy.EXPLICIT) {
+        if (oldOrders.hasSpecifiedConsist()) {
             int oldLength = oldOrders.getConsist().size();
             newConsist = new Integer[oldLength + 1];
             // Copy existing wagons
@@ -535,8 +532,8 @@ public class TrainSchedulePanel extends JPanel implements View {
         } else {
             newConsist = new Integer[]{wagonTypeNumber};
         }
-        newOrders = new TrainOrder(oldOrders.getStationId(), TrainOrder.ConsistPolicy.EXPLICIT,
-                Arrays.asList(newConsist), oldOrders.isWaitUntilFull(), false);
+        newOrders = oldOrders.withPolicy(TrainOrder.LoadingPolicy.SPECIFIED_CONSIST,
+                Arrays.asList(newConsist), oldOrders.isWaitUntilFull());
         schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
@@ -546,8 +543,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         ScheduleState schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
-        newOrders = new TrainOrder(oldOrders.getStationId(), TrainOrder.ConsistPolicy.EXPLICIT,
-                new ArrayList<>(), false, false);
+        newOrders = oldOrders.withPolicy(TrainOrder.LoadingPolicy.SPECIFIED_CONSIST, List.of(), false);
         schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
@@ -558,7 +554,7 @@ public class TrainSchedulePanel extends JPanel implements View {
         ScheduleState schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
-        if (oldOrders.getConsistPolicy() == TrainOrder.ConsistPolicy.UNCHANGED) {
+        if (!oldOrders.hasSpecifiedConsist()) {
             return;
         }
         List<Integer> oldConsist = oldOrders.getConsist();
@@ -570,8 +566,8 @@ public class TrainSchedulePanel extends JPanel implements View {
         List<Integer> newConsist = new ArrayList<>(oldOrders.getConsist());
         newConsist.removeLast();
 
-        newOrders = new TrainOrder(oldOrders.getStationId(), TrainOrder.ConsistPolicy.EXPLICIT,
-                newConsist, oldOrders.isWaitUntilFull(), false);
+        newOrders = oldOrders.withPolicy(TrainOrder.LoadingPolicy.SPECIFIED_CONSIST,
+                newConsist, oldOrders.isWaitUntilFull());
         schedule = schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }

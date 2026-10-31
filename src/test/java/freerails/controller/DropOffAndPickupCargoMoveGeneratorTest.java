@@ -22,6 +22,7 @@
 package freerails.controller;
 
 import freerails.model.train.Train;
+import freerails.model.cargo.CargoConversion;
 import freerails.model.finance.transaction.CargoDeliveryTransaction;
 import freerails.model.finance.transaction.Transaction;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
@@ -31,9 +32,13 @@ import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.cargo.*;
-import freerails.model.station.StationCargoConversion;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
+import freerails.model.terrain.Terrain;
+import freerails.model.terrain.TerrainTile;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackPiece;
+import freerails.model.track.TrackType;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -70,6 +75,13 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         String stationName = "Station 1";
         Station station = new Station(0, new Vec2D(x, y), stationName, CargoBatchBundle.EMPTY);
         world.addStation(WorldGenerator.TEST_PLAYER, station);
+        TrackType stationTrackType = world.getTrackTypes().stream()
+                .filter(TrackType::isStation)
+                .findFirst()
+                .orElseThrow();
+        world.setTile(station.getLocation(), new TerrainTile(0,
+                new TrackPiece(TrackConfiguration.from9bitTemplate(0), stationTrackType,
+                        WorldGenerator.TEST_PLAYER.getId())));
 
         // Set up train: 3 wagons to carry cargo type 0.
         Train train = new Train(0, 0);
@@ -296,14 +308,21 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     public void testDeliveryConvertsCargoByCargoId() {
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
-        station.setDemandForCargo(new StationDemand(Set.of(0)));
-        station.setCargoConversion(new StationCargoConversion(Map.of(0, 1)));
-        setCargoOnTrain(cargoType0FromStation2, 50);
+        Terrain conversionTerrain = world.getTerrains().stream()
+                .filter(terrain -> !terrain.getConversions().isEmpty())
+                .findFirst()
+                .orElseThrow();
+        CargoConversion conversion = conversionTerrain.getConversions().getFirst();
+        station.setDemandForCargo(new StationDemand(Set.of(conversion.sourceCargoId())));
+        world.setTile(new Vec2D(11, 10), new TerrainTile(conversionTerrain.getId()));
+        CargoBatch sourceCargo = new CargoBatch(conversion.sourceCargoId(), Vec2D.ZERO, 0, 2);
+        setCargoOnTrain(sourceCargo, 50);
 
         stopAtStation();
 
         CargoBatchBundle expectedAtStation = new CargoBatchBundle();
-        expectedAtStation.setAmount(new CargoBatch(1, station.getLocation(), 0, station.getId()), 50);
+        expectedAtStation.setAmount(new CargoBatch(conversion.productCargoId(), station.getLocation(), 0,
+                station.getId()), 50);
         assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
         assertEquals(expectedAtStation, getCargoAtStation());
     }

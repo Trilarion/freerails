@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalInt;
 import java.util.Set;
 
 /**
@@ -201,8 +202,8 @@ public final class StationUtils {
     }
 
     /**
-     * Scans terrain within the station radius, updates its supply, demand, and
-     * conversion settings, and returns the same station.
+     * Scans terrain within the station radius, updates its supply and demand
+     * settings, and returns the same station.
      *
      * @param world world providing map and cargo definitions
      * @param trackRuleId track type identifier used to determine station radius
@@ -217,7 +218,6 @@ public final class StationUtils {
         int numCargoTypes = world.getCargos().size();
         double[] supplies = new double[numCargoTypes];
         int[] demand = new int[numCargoTypes];
-        Map<Integer, Integer> converts = new HashMap<>();
 
         // scan adjacent tiles and compute List<CargoProductionOrConsumption>
         int stationDiameter = stationRadius * 2 + 1;
@@ -261,14 +261,9 @@ public final class StationUtils {
                     demand[cargoIndex] += 1;
                 }
 
-                List<CargoConversion> conversion = terrainType.getConversions();
-
-                for (CargoConversion aConversion : conversion) {
-                    int cargoIndex = world.getCargoIndex(aConversion.sourceCargoId());
-
-                    // TODO Only one tile that converts the cargo type is needed for the station to demand the cargo type.
+                for (CargoConversion conversion : terrainType.getConversions()) {
+                    int cargoIndex = world.getCargoIndex(conversion.sourceCargoId());
                     demand[cargoIndex] += 1;
-                    converts.put(aConversion.sourceCargoId(), aConversion.productCargoId());
                 }
             }
         }
@@ -292,9 +287,42 @@ public final class StationUtils {
         }
 
         station.setDemandForCargo(new StationDemand(demandedCargoIds));
-        station.setCargoConversion(new StationCargoConversion(converts));
 
         return station;
+    }
+
+    /**
+     * Finds the product cargo produced by terrain within a station's service
+     * radius for the specified source cargo.
+     *
+     * @param world world providing map and terrain definitions
+     * @param station station whose service area is scanned
+     * @param sourceCargoId source cargo identifier
+     * @return the product cargo identifier, or empty if no conversion applies
+     */
+    public static OptionalInt cargoConversionAtStation(UnmodifiableWorld world, Station station, int sourceCargoId) {
+        int trackTypeId = world.getTile(station.getLocation()).trackPiece().trackType().getId();
+        int stationRadius = world.getTrackType(trackTypeId).getStationRadius();
+        Vec2D location = station.getLocation();
+        int stationDiameter = stationRadius * 2 + 1;
+        Rectangle stationRadiusRect = new Rectangle(location.x() - stationRadius, location.y() - stationRadius,
+                stationDiameter, stationDiameter);
+        Vec2D mapSize = world.getMapSize();
+        Rectangle tilesToScan = stationRadiusRect.intersection(new Rectangle(0, 0, mapSize.x(), mapSize.y()));
+        OptionalInt productCargoId = OptionalInt.empty();
+
+        for (int x = tilesToScan.x; x < tilesToScan.x + tilesToScan.width; x++) {
+            for (int y = tilesToScan.y; y < tilesToScan.y + tilesToScan.height; y++) {
+                Terrain terrain = world.getTerrain(world.getTile(new Vec2D(x, y)).terrainTypeId());
+                for (CargoConversion conversion : terrain.getConversions()) {
+                    if (conversion.sourceCargoId() == sourceCargoId) {
+                        productCargoId = OptionalInt.of(conversion.productCargoId());
+                    }
+                }
+            }
+        }
+
+        return productCargoId;
     }
 
     /**

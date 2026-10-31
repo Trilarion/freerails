@@ -106,10 +106,10 @@ may miss valuable sources or customers; one that is too large may spend money co
 area with little traffic.
 
 Signal Towers are a separate construction choice used to control train movements; they are
-not one of the three station sizes. Stations include signaling, and the first station also
-supplies an engine shop. Additional station improvements can support train building and
+not one of the three station sizes. Stations include signaling. Engine shops are separate
+buildings that can be constructed at stations, while other station improvements can support
 maintenance, speed consist changes, store cargo, or earn extra income from passenger
-traffic. The player must decide whether an improvement’s cost is justified by the traffic
+traffic. The player must decide whether each facility’s cost is justified by the traffic
 and operating needs at that location. (Source 1, pp. 56–62, 88–90.)
 
 Industries and communities create linked cargo flows. Mines, farms, forests, cities, and
@@ -132,8 +132,8 @@ or disappear, so a previously profitable route may need to be revised. (Source 1
 
 ## Trains, schedules, and deliveries
 
-After building a station, the player can buy a locomotive at an engine shop and add cars
-to make a train. The locomotive determines much of the train’s speed and hauling
+After building an engine shop at a station, the player can buy a locomotive there and add
+cars to make a train. The locomotive determines much of the train’s speed and hauling
 capability; cars determine which passengers, mail, or freight it can carry. New locomotive
 models become available over time. Choosing a fast engine for a short passenger service or
 a stronger engine for heavy freight is one of the player’s recurring operating decisions.

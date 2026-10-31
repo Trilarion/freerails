@@ -27,7 +27,6 @@ import freerails.model.game.Speed;
 import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.station.StationCargoConversion;
 import freerails.model.station.StationDemand;
 import freerails.model.station.StationSupply;
 import freerails.model.terrain.TerrainTile;
@@ -114,8 +113,8 @@ public class MoveEqualityContractTest extends TestCase {
         List<Integer> consist = List.of(5, 6);
         ScheduleState schedule = new ScheduleState();
         ScheduleState otherSchedule = new ScheduleState(new TrainOrder[]{
-                new TrainOrder(9, TrainOrder.ConsistPolicy.EXPLICIT, List.of(7), false, false)
-        }, 0, false);
+                TrainOrder.specifiedConsist(9, List.of(7), false)
+        }, 0);
         UpdateTrainMove update = new UpdateTrainMove(PLAYER, 4, cargo, consist, schedule);
         assertEqualMoves(update, new UpdateTrainMove(new Player(1, "One"), 4, cargo(4),
                 List.of(5, 6), new ScheduleState()));
@@ -150,15 +149,6 @@ public class MoveEqualityContractTest extends TestCase {
         stationWithDemand.setDemandForCargo(new StationDemand(Set.of(1)));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithDemand));
-        Station stationWithConversion = station(10, new Vec2D(3, 4), "Central");
-        stationWithConversion.setCargoConversion(new StationCargoConversion(Map.of(1, 2)));
-        assertDifferentMoves(new AddStationMove(PLAYER, station),
-                new AddStationMove(PLAYER, stationWithConversion));
-        Station stationWithProduction = station(10, new Vec2D(3, 4), "Central");
-        stationWithProduction.setProduction(List.of(new TrainTemplate(3, List.of(5))));
-        assertDifferentMoves(new AddStationMove(PLAYER, station),
-                new AddStationMove(PLAYER, stationWithProduction));
-
         assertEqualMoves(new RemoveStationMove(PLAYER, 10), new RemoveStationMove(new Player(1, "One"), 10));
         assertDifferentMoves(new RemoveStationMove(PLAYER, 10), new RemoveStationMove(new Player(2, "One"), 10));
         assertDifferentMoves(new RemoveStationMove(PLAYER, 10), new RemoveStationMove(PLAYER, 11));
@@ -186,26 +176,22 @@ public class MoveEqualityContractTest extends TestCase {
 
         Station cargoSettings = station(10, Vec2D.ZERO, "Settings");
         Station sameSettings = station(10, Vec2D.ZERO, "Different ignored name");
-        UpdateStationCargoDemandSupplyConversionMove settingsMove =
-                new UpdateStationCargoDemandSupplyConversionMove(PLAYER, cargoSettings);
+        UpdateStationCargoPolicyMove settingsMove =
+                new UpdateStationCargoPolicyMove(PLAYER, cargoSettings);
         assertEqualMoves(settingsMove,
-                new UpdateStationCargoDemandSupplyConversionMove(new Player(1, "One"), sameSettings));
+                new UpdateStationCargoPolicyMove(new Player(1, "One"), sameSettings));
         assertDifferentMoves(settingsMove,
-                new UpdateStationCargoDemandSupplyConversionMove(new Player(2, "One"), cargoSettings));
+                new UpdateStationCargoPolicyMove(new Player(2, "One"), cargoSettings));
         assertDifferentMoves(settingsMove,
-                new UpdateStationCargoDemandSupplyConversionMove(PLAYER, station(11, Vec2D.ZERO, "Settings")));
+                new UpdateStationCargoPolicyMove(PLAYER, station(11, Vec2D.ZERO, "Settings")));
 
         Station differentSupply = station(10, Vec2D.ZERO, "Settings");
         differentSupply.setSupply(new StationSupply(Map.of(1, 1)));
-        assertDifferentMoves(settingsMove, new UpdateStationCargoDemandSupplyConversionMove(PLAYER, differentSupply));
+        assertDifferentMoves(settingsMove, new UpdateStationCargoPolicyMove(PLAYER, differentSupply));
 
         Station differentDemand = station(10, Vec2D.ZERO, "Settings");
         differentDemand.setDemandForCargo(new StationDemand(Set.of(1)));
-        assertDifferentMoves(settingsMove, new UpdateStationCargoDemandSupplyConversionMove(PLAYER, differentDemand));
-
-        Station differentConversion = station(10, Vec2D.ZERO, "Settings");
-        differentConversion.setCargoConversion(new StationCargoConversion(Map.of(1, 2)));
-        assertDifferentMoves(settingsMove, new UpdateStationCargoDemandSupplyConversionMove(PLAYER, differentConversion));
+        assertDifferentMoves(settingsMove, new UpdateStationCargoPolicyMove(PLAYER, differentDemand));
     }
 
     public void testMapAndCompositeMovesCompareEveryField() {

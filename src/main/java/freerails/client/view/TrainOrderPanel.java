@@ -44,7 +44,6 @@ import java.util.Map;
 public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListModel.TrainOrdersListElement> {
 
     private final Icon gotoNow = new ImageIcon(TrainOrderPanel.class.getResource(ClientConstants.GRAPHIC_ARROW_SELECTED));
-    private final Icon gotoAfterPriorityOrders = new ImageIcon(TrainOrderPanel.class.getResource(ClientConstants.GRAPHIC_ARROW_DESELECTED));
     private final ImageIcon dontGoto = null;
     public final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
     private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");
@@ -99,7 +98,7 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
             select = Selection.unselect;
         }
         String orderText;
-        if (trainOrders.order.getConsistPolicy() == TrainOrder.ConsistPolicy.UNCHANGED) {
+        if (trainOrders.order.getLoadingPolicy() != TrainOrder.LoadingPolicy.SPECIFIED_CONSIST) {
             if (trainOrders.order.isAutoConsist()) {
                 orderText = "Select wagons automatically";
             } else {
@@ -109,7 +108,8 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
             orderText = "";
         }
 
-        TrainOrderModel tm = new TrainOrderModel(stationName, waitUntilFull, select, trainOrders.gotoStatus, orderText);
+        TrainOrderModel tm = new TrainOrderModel(stationName, waitUntilFull, select, trainOrders.gotoStatus,
+                orderText, trainOrders.isUrgentStop);
         TrainOrderPanelSingle panelSingle = lines.get(tm);
         if (panelSingle == null) {
             panelSingle = new TrainOrderPanelSingle(this);
@@ -134,9 +134,6 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
                 case TrainOrdersListModel.DONT_GOTO:
                     panelSingle.gotoIcon.setIcon(dontGoto);
                     break;
-                case TrainOrdersListModel.GOTO_AFTER_PRIORITY_ORDERS:
-                    panelSingle.gotoIcon.setIcon(gotoAfterPriorityOrders);
-                    break;
                 case TrainOrdersListModel.GOTO_NOW:
                     panelSingle.gotoIcon.setIcon(gotoNow);
                     break;
@@ -149,15 +146,13 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
             TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) panelSingle.consistChangeJPanel;
             trainViewJPanel.display(trainOrders.trainNumber, index);
 
-            // Show priority orders.
-            if (trainOrders.isPriorityOrder) {
-                // Write the station name in upper case
+            if (trainOrders.isUrgentStop) {
                 String s = panelSingle.stationNameJLabel.getText();
-                panelSingle.stationNameJLabel.setText(s + " (Priority Orders)");
+                panelSingle.stationNameJLabel.setText(s + " (Urgent, one-shot)");
             }
 
             // Check for 'No change'
-            if (trainOrders.order.getConsistPolicy() == TrainOrder.ConsistPolicy.UNCHANGED) {
+            if (trainOrders.order.getLoadingPolicy() != TrainOrder.LoadingPolicy.SPECIFIED_CONSIST) {
                 if (trainOrders.order.isAutoConsist()) {
                     panelSingle.noChangeJLabel.setText("Select wagons automatically");
                 } else {
@@ -180,7 +175,8 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
          * contains all data which is displayed for one station (order). This is
          * used to find prebuilt Panels
          */
-        private record TrainOrderModel(String stationName, String waitUntilFull, Selection selected, int gotoStatus, String orderText) {
+        private record TrainOrderModel(String stationName, String waitUntilFull, Selection selected, int gotoStatus,
+                                       String orderText, boolean urgentStop) {
         /**
          * @param stationName
          * @param waitUntilFull

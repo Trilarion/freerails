@@ -27,7 +27,7 @@ public class TrainOrderTest extends TestCase {
 
     public void testConsistIsCopiedAndCannotBeMutatedThroughGetter() {
         List<Integer> source = new ArrayList<>(List.of(2, 4));
-        TrainOrder order = new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, source, true, false);
+        TrainOrder order = TrainOrder.specifiedConsist(10, source, true);
 
         source.set(0, 7);
         source.add(9);
@@ -41,30 +41,36 @@ public class TrainOrderTest extends TestCase {
         }
     }
 
-    public void testWaitUntilFullRequiresANonemptyConsist() {
-        assertFalse(new TrainOrder(10, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), true, false).isWaitUntilFull());
-        assertFalse(new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, List.of(), true, false).isWaitUntilFull());
-        assertTrue(new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, List.of(2), true, false).isWaitUntilFull());
+    public void testWaitUntilFullOnlyAppliesToANonemptySpecifiedConsist() {
+        assertFalse(TrainOrder.keepConsist(10).isWaitUntilFull());
+        assertFalse(TrainOrder.specifiedConsist(10, List.of(), true).isWaitUntilFull());
+        assertTrue(TrainOrder.specifiedConsist(10, List.of(2), true).isWaitUntilFull());
     }
 
-    public void testAutomaticConsistOptionIsIndependentOfExplicitConsist() {
-        List<Integer> consist = new ArrayList<>(List.of(2));
-        TrainOrder explicitAutoOrder = new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, consist, false, true);
-        TrainOrder unspecifiedAutoOrder = new TrainOrder(10, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), true, true);
+    public void testLoadingPoliciesAreMutuallyExclusive() {
+        TrainOrder keep = TrainOrder.keepConsist(10);
+        TrainOrder specified = TrainOrder.specifiedConsist(10, List.of(2), false);
+        TrainOrder automatic = TrainOrder.autoConsist(10);
 
-        consist.clear();
+        assertEquals(TrainOrder.LoadingPolicy.KEEP_CONSIST, keep.getLoadingPolicy());
+        assertEquals(TrainOrder.LoadingPolicy.SPECIFIED_CONSIST, specified.getLoadingPolicy());
+        assertEquals(TrainOrder.LoadingPolicy.AUTO_CONSIST, automatic.getLoadingPolicy());
+        assertFalse(keep.hasSpecifiedConsist());
+        assertTrue(specified.hasSpecifiedConsist());
+        assertTrue(automatic.isAutoConsist());
+        assertFalse(automatic.isWaitUntilFull());
 
-        assertTrue(explicitAutoOrder.isAutoConsist());
-        assertEquals(List.of(2), explicitAutoOrder.getConsist());
-        assertTrue(unspecifiedAutoOrder.isAutoConsist());
-        assertEquals(List.of(), unspecifiedAutoOrder.getConsist());
-        assertEquals(TrainOrder.ConsistPolicy.UNCHANGED, unspecifiedAutoOrder.getConsistPolicy());
-        assertFalse(unspecifiedAutoOrder.isWaitUntilFull());
+        try {
+            automatic.withPolicy(TrainOrder.LoadingPolicy.AUTO_CONSIST, List.of(), true);
+            fail("An automatic consist cannot wait until full");
+        } catch (IllegalArgumentException expected) {
+            // Invalid combinations cannot be represented.
+        }
     }
 
-    public void testUnchangedAndExplicitlyEmptyConsistsAreDistinct() {
-        TrainOrder unchanged = new TrainOrder(10, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
-        TrainOrder explicitlyEmpty = new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, List.of(), false, false);
+    public void testExplicitlyEmptyConsistIsDistinctFromKeepingConsist() {
+        TrainOrder unchanged = TrainOrder.keepConsist(10);
+        TrainOrder explicitlyEmpty = TrainOrder.specifiedConsist(10, List.of(), false);
 
         assertEquals(List.of(), unchanged.getConsist());
         assertEquals(List.of(), explicitlyEmpty.getConsist());
@@ -73,8 +79,19 @@ public class TrainOrderTest extends TestCase {
         assertFalse(explicitlyEmpty.orderHasWagons());
     }
 
-    public void testConsistPolicySurvivesSerialization() throws Exception {
-        TrainOrder order = new TrainOrder(10, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, true);
+    public void testStationAndPolicyUpdatesPreserveOneShotMarker() {
+        TrainOrder urgent = TrainOrder.specifiedConsist(10, List.of(2), true).asOneShot();
+
+        TrainOrder moved = urgent.withStation(20)
+                .withPolicy(TrainOrder.LoadingPolicy.AUTO_CONSIST, List.of(), false);
+
+        assertEquals(20, moved.getStationId());
+        assertEquals(TrainOrder.LoadingPolicy.AUTO_CONSIST, moved.getLoadingPolicy());
+        assertTrue(moved.isOneShot());
+    }
+
+    public void testOrderSurvivesSerialization() throws Exception {
+        TrainOrder order = TrainOrder.autoConsist(10).asOneShot();
         java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream();
         try (java.io.ObjectOutputStream output = new java.io.ObjectOutputStream(bytes)) {
             output.writeObject(order);
@@ -87,6 +104,6 @@ public class TrainOrderTest extends TestCase {
         }
 
         assertEquals(order, restored);
-        assertEquals(TrainOrder.ConsistPolicy.UNCHANGED, restored.getConsistPolicy());
+        assertTrue(restored.isOneShot());
     }
 }

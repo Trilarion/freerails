@@ -40,7 +40,6 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
 
     public static final int DONT_GOTO = 0;
     public static final int GOTO_NOW = 1;
-    public static final int GOTO_AFTER_PRIORITY_ORDERS = 2;
 
     @Serial
     private static final long serialVersionUID = 3762537827703009847L;
@@ -65,25 +64,10 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
         UnmodifiableSchedule schedule = getSchedule();
         int gotoStatus;
 
-        if (schedule.getNextScheduledOrder() == index) {
-            if (schedule.hasPriorityOrders()) {
-                gotoStatus = GOTO_AFTER_PRIORITY_ORDERS;
-            } else {
-                gotoStatus = GOTO_NOW;
-            }
-        } else {
-            if (schedule.hasPriorityOrders() && 0 == index) {
-                // These orders are the priority orders.
-                gotoStatus = GOTO_NOW;
-            } else {
-                gotoStatus = DONT_GOTO;
-            }
-        }
+        gotoStatus = schedule.getCurrentOrderIndex() == index ? GOTO_NOW : DONT_GOTO;
+        TrainOrder order = schedule.getOrder(index);
 
-        boolean isPriorityOrders = 0 == index && schedule.hasPriorityOrders();
-        TrainOrder order = getSchedule().getOrder(index);
-
-        return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order, trainNumber);
+        return new TrainOrdersListElement(order.isOneShot(), gotoStatus, order, trainNumber);
     }
 
     @Override
@@ -118,7 +102,7 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
         /**
          *
          */
-        public final boolean isPriorityOrder;
+        public final boolean isUrgentStop;
 
         /**
          *
@@ -136,13 +120,13 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
         public final int trainNumber;
 
         /**
-         * @param isPriorityOrder
+         * @param isUrgentStop
          * @param gotoStatus
          * @param order
          * @param trainNumber
          */
-        private TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrder order, int trainNumber) {
-            this.isPriorityOrder = isPriorityOrder;
+        private TrainOrdersListElement(boolean isUrgentStop, int gotoStatus, TrainOrder order, int trainNumber) {
+            this.isUrgentStop = isUrgentStop;
             this.gotoStatus = gotoStatus;
             this.order = order;
             this.trainNumber = trainNumber;

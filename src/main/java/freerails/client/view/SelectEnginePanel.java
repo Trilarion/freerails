@@ -27,7 +27,9 @@ import freerails.client.StaticListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainCellRenderer;
 import freerails.client.ModelRoot;
+import freerails.model.building.EngineShop;
 import freerails.model.train.Engine;
+import java.util.Collection;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -45,29 +47,39 @@ public class SelectEnginePanel extends JPanel implements View {
     private JButton cancelButton;
     private JList<Engine> list1;
     private JButton okButton;
+    private JComboBox<EngineShop> engineShopList;
 
     public SelectEnginePanel() {
         GridBagConstraints gridBagConstraints;
 
         okButton = new JButton();
         cancelButton = new JButton();
+        engineShopList = new JComboBox<>();
         JScrollPane jScrollPane1 = new JScrollPane();
         list1 = new JList<>();
 
         setLayout(new GridBagLayout());
 
         setPreferredSize(new Dimension(400, 350));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new Insets(8, 8, 4, 8);
+        add(engineShopList, gridBagConstraints);
+
         okButton.setText("OK");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new Insets(10, 10, 9, 10);
         add(okButton, gridBagConstraints);
 
         cancelButton.setText("Cancel");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new Insets(10, 10, 10, 10);
         add(cancelButton, gridBagConstraints);
 
@@ -78,7 +90,7 @@ public class SelectEnginePanel extends JPanel implements View {
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.anchor = GridBagConstraints.EAST;
@@ -110,6 +122,7 @@ public class SelectEnginePanel extends JPanel implements View {
         list1.setModel(new StaticListModel<>(modelRoot.getWorld().getEngines()));
         // list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), SharedKey.EngineTypes));
         list1.setCellRenderer(new TrainCellRenderer(rendererRoot));
+        setEngineShops(modelRoot.getWorld().getEngineShops(modelRoot.getPlayer()));
         okButton.addActionListener(closeAction);
     }
 
@@ -130,6 +143,30 @@ public class SelectEnginePanel extends JPanel implements View {
      */
     public int getSelectedEngineId() {
         return list1.getSelectedValue().getId();
+    }
+
+    /** Returns the selected engine-shop identifier. */
+    public int getSelectedEngineShopId() {
+        return engineShopList.getItemAt(engineShopList.getSelectedIndex()).getId();
+    }
+
+    /** Refreshes the list of shops available for train construction. */
+    public void setEngineShops(Collection<EngineShop> engineShops) {
+        DefaultComboBoxModel<EngineShop> model = new DefaultComboBoxModel<>();
+        engineShops.forEach(model::addElement);
+        engineShopList.setModel(model);
+        engineShopList.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            JLabel label = new JLabel();
+            if (value != null) {
+                label.setText("Engine Shop " + value.getId() + " at " + value.getLocation());
+            }
+            if (isSelected) {
+                label.setOpaque(true);
+                label.setBackground(list.getSelectionBackground());
+                label.setForeground(list.getSelectionForeground());
+            }
+            return label;
+        });
     }
 
 }

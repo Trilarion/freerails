@@ -22,6 +22,7 @@
 package freerails.model.world;
 
 import freerails.model.cargo.Cargo;
+import freerails.model.building.EngineShop;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.finance.transaction.Transaction;
@@ -41,10 +42,12 @@ import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 import freerails.model.train.Train;
+import freerails.model.train.TrainTemplate;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
@@ -129,6 +132,67 @@ public class WorldTest extends TestCase {
         changed = (World) Utils.cloneBySerialisation(original);
         changed.setSpeed(Speed.FAST);
         assertFalse(original.equals(changed));
+    }
+
+    public void testEngineShopsSurviveWorldSerializationAndArePlayerScoped() {
+        World world = WorldGenerator.minimalWorld();
+        Player player = new Player(0, "One");
+        world.addPlayer(player);
+        world.addEngineShop(player, new EngineShop(3, new Vec2D(4, 5)));
+        world.addPlayer(new Player(1, "Two"));
+
+        World copy = (World) Utils.cloneBySerialisation(world);
+        Player copiedPlayer = copy.getPlayer(copy.getPlayerIndex(0));
+        Player otherCopiedPlayer = copy.getPlayer(copy.getPlayerIndex(1));
+
+        assertEquals(world, copy);
+        assertEquals(world.hashCode(), copy.hashCode());
+        assertEquals(new Vec2D(4, 5), copy.getEngineShop(copiedPlayer, 3).getLocation());
+        assertEquals(1, copy.getEngineShops(copiedPlayer).size());
+        assertTrue(copy.getEngineShops(otherCopiedPlayer).isEmpty());
+        try {
+            copy.getEngineShops(copiedPlayer).clear();
+            fail("Expected the engine-shop collection to be unmodifiable");
+        } catch (UnsupportedOperationException expected) {
+            // The world exposes a read-only collection view.
+        }
+
+        World changed = (World) Utils.cloneBySerialisation(world);
+        Player changedPlayer = changed.getPlayer(changed.getPlayerIndex(0));
+        changed.getEngineShop(changedPlayer, 3).setProduction(List.of(new TrainTemplate(1, List.of(2))));
+        assertFalse(world.equals(changed));
+    }
+
+    public void testLegacyStationProductionMigratesToEngineShopOnLoad() throws Exception {
+        World world = WorldGenerator.minimalWorld();
+        Player player = new Player(0, "One");
+        world.addPlayer(player);
+        Station station = new Station(4, new Vec2D(4, 5), "Central", CargoBatchBundle.EMPTY);
+        world.addStation(player, station);
+
+        Field legacyProduction = Station.class.getDeclaredField("production");
+        legacyProduction.setAccessible(true);
+        legacyProduction.set(station, List.of(new TrainTemplate(2, List.of(3))));
+
+        World copy = (World) Utils.cloneBySerialisation(world);
+        Player copiedPlayer = copy.getPlayer(copy.getPlayerIndex(0));
+        assertEquals(1, copy.getEngineShops(copiedPlayer).size());
+        EngineShop shop = copy.getEngineShops(copiedPlayer).iterator().next();
+        assertEquals(station.getLocation(), shop.getLocation());
+        assertEquals(List.of(new TrainTemplate(2, List.of(3))), shop.getProduction());
+    }
+
+    public void testRemovingStationAlsoRemovesItsEngineShop() {
+        World world = WorldGenerator.minimalWorld();
+        Player player = new Player(0, "One");
+        world.addPlayer(player);
+        Vec2D location = new Vec2D(4, 5);
+        world.addStation(player, new Station(4, location, "Central", CargoBatchBundle.EMPTY));
+        world.addEngineShop(player, new EngineShop(7, location));
+
+        world.removeStation(player, 4);
+
+        assertTrue(world.getEngineShops(player).isEmpty());
     }
 
     /**

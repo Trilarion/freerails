@@ -14,7 +14,10 @@ dragging the mouse).
 (4) Build stations at each of the cities (press F8). Make sure the station radius
 surrounds most of the city tiles.
 
-(5) Build a train (press F7). Don't add any wagons (they will be selected automatically).
+(5) Use Build > Build Engine Shop and choose a station. The shop costs 10,000.
+
+(6) Build a train (press F7), choosing the engine shop and engine. Don't add any wagons
+(they will be selected automatically).
 
 ## Game controls
 
@@ -26,7 +29,8 @@ surrounds most of the city tiles.
 - Save Game: [control] + 'S'
 - Load Game: [control] + 'L'
 - Build Station: 'F8' (on existing track)
-- Build Train: 'F7' (after building a station)
+- Build Engine Shop: Build menu (at an existing station; costs 10,000)
+- Build Train: 'F7' (after building an engine shop)
 - Terrain Info: 'I'
 - Build industry: 'B'
 
@@ -39,7 +43,7 @@ surrounds most of the city tiles.
 - Toggle wait until full: 'W'
 - Remove last wagon: 'Back space'
 - Add station: 'N'
-- Set priority orders: 'O'
+- Insert urgent one-shot stop: 'O'
 
 ### On the select station screen
 

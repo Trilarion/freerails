@@ -58,9 +58,9 @@ and the traffic the network can carry.
 
 Stations gather the goods and passengers produced or needed in the surrounding area. Their
 service area and local development determine the traffic available to a railroad. Stations
-must be placed so their service areas do not overlap. Station improvements can unlock
-train construction or improve operations, maintenance, storage, and the return on selected
-cargo.
+must be placed so their service areas do not overlap. Separate engine shops can be built at
+stations to construct trains; other station improvements can improve operations,
+maintenance, storage, and the return on selected cargo.
 
 The world produces and consumes a variety of cargo, including passengers, mail, and
 freight. Cargo types differ in their delivery needs: some benefit more from speed, while

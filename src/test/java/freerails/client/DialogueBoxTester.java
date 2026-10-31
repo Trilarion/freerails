@@ -117,9 +117,9 @@ class DialogueBoxTester extends JFrame {
 
 
         ScheduleState schedule = new ScheduleState();
-        TrainOrder order = new TrainOrder(0, TrainOrder.ConsistPolicy.EXPLICIT, Arrays.asList(0, 0, 0), false, false);
-        TrainOrder order2 = new TrainOrder(1, TrainOrder.ConsistPolicy.EXPLICIT, Arrays.asList(1, 2, 0, 0, 0), true, false);
-        TrainOrder order3 = new TrainOrder(2, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
+        TrainOrder order = TrainOrder.specifiedConsist(0, Arrays.asList(0, 0, 0), false);
+        TrainOrder order2 = TrainOrder.specifiedConsist(1, Arrays.asList(1, 2, 0, 0, 0), true);
+        TrainOrder order3 = TrainOrder.keepConsist(2);
         schedule = schedule.setOrder(0, order);
         schedule = schedule.setOrder(1, order2);
 
@@ -137,7 +137,7 @@ class DialogueBoxTester extends JFrame {
         world.addTrain(TEST_PLAYER, train);
         schedule = schedule.setOrder(4, order2);
         schedule = schedule.setOrderToGoto(3);
-        schedule = schedule.setPriorityOrders(order);
+        schedule = schedule.addUrgentOrder(order);
         train = new Train(2,0);
         train.setConsist(Arrays.asList(1, 2, 0));
         train.setCargoBatchBundle(cargoBatchBundle);

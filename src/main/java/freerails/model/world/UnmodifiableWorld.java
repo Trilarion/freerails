@@ -19,6 +19,7 @@
 package freerails.model.world;
 
 import freerails.model.cargo.Cargo;
+import freerails.model.building.EngineShop;
 import freerails.model.game.*;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.station.Station;
@@ -179,6 +180,21 @@ public interface UnmodifiableWorld extends Serializable {
      * @return the matching station
      */
     Station getStation(Player player, int id);
+
+    /**
+     * Returns the engine shops belonging to a player.
+     *
+     * @param player owner whose engine shops are requested
+     * @return a live, unmodifiable view of the player's engine shops
+     */
+    Collection<EngineShop> getEngineShops(Player player);
+
+    /**
+     * @param player owner of the engine shop
+     * @param id engine-shop identifier
+     * @return the matching engine shop
+     */
+    EngineShop getEngineShop(Player player, int id);
 
     /** Returns the sentiment currently selected by the world. */
     Sentiment getSentiment();

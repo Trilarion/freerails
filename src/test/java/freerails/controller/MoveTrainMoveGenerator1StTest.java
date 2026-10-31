@@ -32,6 +32,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
+import freerails.model.ModelConstants;
 
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
@@ -79,8 +80,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         Status ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.isSuccess());
 
-        TrainOrder order0 = new TrainOrder(1, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
-        TrainOrder order1 = new TrainOrder(0, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
+        TrainOrder order0 = TrainOrder.keepConsist(1);
+        TrainOrder order1 = TrainOrder.keepConsist(0);
         ScheduleState schedule = new ScheduleState();
         schedule = schedule.addOrder(order0);
         schedule = schedule.addOrder(order1);
@@ -111,11 +112,24 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         Motion speeds = preMove.nextSpeeds(world, TileTransition.EAST);
         assertNotNull(speeds);
-        assertEquals(speeds.calculateSpeedAtTime(0), 0.0d);
-        assertTrue(speeds.getTotalDistance() >= TileTransition.EAST.getLength());
+        int wagons = world.getTrain(player, 0).getNumberOfWagons();
+        double expectedSpeed = ModelConstants.MODEL_UNITS_PER_TILE / 3.0d / (wagons + 1);
+        assertEquals(expectedSpeed, speeds.calculateSpeedAtTime(0), 0.0d);
+        assertEquals(0.0d, speeds.calculateAccelerationAtTime(0), 0.0d);
+        assertEquals(TileTransition.EAST.getLength(), speeds.getTotalDistance(), 0.0d);
         double t = speeds.getTotalTime();
         assertTrue(t > 0);
-        assertTrue(speeds.calculateSpeedAtTime(t) > 0);
+        assertEquals(expectedSpeed, speeds.calculateSpeedAtTime(t), 0.0d);
+    }
+
+    public void testDetailedMotionFidelityRetainsAccelerationProfile() {
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world),
+                MoveTrainMoveGenerator.MotionFidelity.DETAILED_ACCELERATION);
+        Motion speeds = preMove.nextSpeeds(world, TileTransition.EAST);
+
+        assertEquals(0.0d, speeds.calculateSpeedAtTime(0), 0.0d);
+        assertTrue(speeds.calculateAccelerationAtTime(0) > 0.0d);
+        assertTrue(speeds.calculateSpeedAtTime(speeds.getTotalTime()) > 0.0d);
     }
 
     /**
@@ -218,7 +232,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         assertTrue(status.isSuccess());
 
         TrainOrder[] orders = {};
-        UnmodifiableSchedule schedule = new ScheduleState(orders, -1, false);
+        UnmodifiableSchedule schedule = new ScheduleState(orders, orders.length == 0 ? -1 : 0);
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
 
         Move move = addTrain.generate(world);

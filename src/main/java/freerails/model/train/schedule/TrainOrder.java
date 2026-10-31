@@ -16,10 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * TrainOrder.java
- *
- */
 package freerails.model.train.schedule;
 
 import java.io.Serial;
@@ -27,107 +23,117 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Encapsulates the orders for a train.
- */
-public class TrainOrder implements Serializable {
+/** Immutable stop instruction for a train. */
+public final class TrainOrder implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3616453397155559472L;
+    private static final long serialVersionUID = 1L;
     private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
-    private final ConsistPolicy consistPolicy;
-    private final boolean waitUntilFull;
-    private final boolean autoConsist;
+
+    /** Loading and consist behavior to apply at a stop. */
+    public enum LoadingPolicy {
+        KEEP_CONSIST,
+        SPECIFIED_CONSIST,
+        AUTO_CONSIST
+    }
+
+    private final LoadingPolicy loadingPolicy;
     private final List<Integer> consist;
+    private final boolean waitUntilFull;
+    private final boolean oneShot;
     private final int stationId;
 
-    /** Whether an order leaves the consist unchanged or specifies its wagons. */
-    public enum ConsistPolicy {
-        UNCHANGED,
-        EXPLICIT
-    }
-
-    /**
-     * @param station destination station identifier
-     * @param consistPolicy whether the consist is unchanged or explicitly specified
-     * @param consist wagon type identifiers to use; may be empty for an explicitly empty consist
-     * @param wait whether to wait at the station until the train is full
-     * @param auto whether to automatically choose the consist
-     */
-    public TrainOrder(int station, ConsistPolicy consistPolicy, List<Integer> consist, boolean wait, boolean auto) {
-        this.consistPolicy = Objects.requireNonNull(consistPolicy);
+    private TrainOrder(int stationId, LoadingPolicy loadingPolicy, List<Integer> consist,
+                       boolean waitUntilFull, boolean oneShot) {
+        this.loadingPolicy = Objects.requireNonNull(loadingPolicy);
         this.consist = List.copyOf(consist);
-        if (consistPolicy == ConsistPolicy.UNCHANGED && !this.consist.isEmpty()) {
-            throw new IllegalArgumentException("An unchanged consist cannot contain wagon types.");
+        if (loadingPolicy != LoadingPolicy.SPECIFIED_CONSIST && !this.consist.isEmpty()) {
+            throw new IllegalArgumentException("Only a specified-consist stop can contain wagon types.");
         }
-        waitUntilFull = consistPolicy == ConsistPolicy.EXPLICIT && !this.consist.isEmpty() && wait;
-        stationId = station;
-        autoConsist = auto;
+        if (loadingPolicy == LoadingPolicy.AUTO_CONSIST && waitUntilFull) {
+            throw new IllegalArgumentException("An auto-consist stop cannot wait until full.");
+        }
+        this.waitUntilFull = loadingPolicy == LoadingPolicy.SPECIFIED_CONSIST
+                && !this.consist.isEmpty() && waitUntilFull;
+        this.oneShot = oneShot;
+        this.stationId = stationId;
     }
 
-    @Serial
-    private Object readResolve() {
-        if (consistPolicy != null && consist != null) {
-            return this;
-        }
-        ConsistPolicy policy = consist == null ? ConsistPolicy.UNCHANGED : ConsistPolicy.EXPLICIT;
-        List<Integer> restoredConsist = consist == null ? List.of() : consist;
-        return new TrainOrder(stationId, policy, restoredConsist, waitUntilFull, autoConsist);
+    public static TrainOrder keepConsist(int stationId) {
+        return new TrainOrder(stationId, LoadingPolicy.KEEP_CONSIST, List.of(), false, false);
     }
 
-    /** Compares all order settings. */
+    public static TrainOrder specifiedConsist(int stationId, List<Integer> consist, boolean waitUntilFull) {
+        return new TrainOrder(stationId, LoadingPolicy.SPECIFIED_CONSIST, consist, waitUntilFull, false);
+    }
+
+    public static TrainOrder autoConsist(int stationId) {
+        return new TrainOrder(stationId, LoadingPolicy.AUTO_CONSIST, List.of(), false, false);
+    }
+
+    /** Returns an otherwise identical stop that is removed after it is visited. */
+    public TrainOrder asOneShot() {
+        return oneShot ? this : new TrainOrder(stationId, loadingPolicy, consist, waitUntilFull, true);
+    }
+
+    /** Returns this stop with a new station and the same policy and one-shot status. */
+    public TrainOrder withStation(int newStationId) {
+        return new TrainOrder(newStationId, loadingPolicy, consist, waitUntilFull, oneShot);
+    }
+
+    /** Returns this stop with a new policy and the same station and one-shot status. */
+    public TrainOrder withPolicy(LoadingPolicy newPolicy, List<Integer> newConsist, boolean newWaitUntilFull) {
+        return new TrainOrder(stationId, newPolicy, newConsist, newWaitUntilFull, oneShot);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof TrainOrder trainOrder)) return false;
-
-        if (isAutoConsist() != trainOrder.isAutoConsist()) return false;
-        if (getStationId() != trainOrder.getStationId()) return false;
-        if (isWaitUntilFull() != trainOrder.isWaitUntilFull()) return false;
-        return consistPolicy == trainOrder.consistPolicy && consist.equals(trainOrder.consist);
+        if (!(obj instanceof TrainOrder other)) return false;
+        return stationId == other.stationId
+                && waitUntilFull == other.waitUntilFull
+                && oneShot == other.oneShot
+                && loadingPolicy == other.loadingPolicy
+                && consist.equals(other.consist);
     }
 
-    /** Returns a hash code based on the order settings. */
     @Override
     public int hashCode() {
-        return Objects.hash(isWaitUntilFull(), isAutoConsist(), consistPolicy, consist, getStationId());
+        return Objects.hash(stationId, loadingPolicy, consist, waitUntilFull, oneShot);
     }
 
-    /**
-     * Returns the wagon types to use at this stop.
-     *
-     * @return an immutable list of wagon type identifiers, empty when none are specified
-     */
     public List<Integer> getConsist() {
         return consist;
     }
 
-    /** Returns whether the consist is unchanged or explicitly specified. */
-    public ConsistPolicy getConsistPolicy() {
-        return consistPolicy;
+    public LoadingPolicy getLoadingPolicy() {
+        return loadingPolicy;
     }
 
-    /** Returns whether this order explicitly specifies one or more wagons. */
+    public boolean hasSpecifiedConsist() {
+        return loadingPolicy == LoadingPolicy.SPECIFIED_CONSIST;
+    }
+
     public boolean orderHasWagons() {
-        return consistPolicy == ConsistPolicy.EXPLICIT && !consist.isEmpty();
+        return hasSpecifiedConsist() && !consist.isEmpty();
     }
 
-    /** Returns whether the consist has fewer than the supported maximum number of wagons. */
     public boolean hasLessThanMaximumNumberOfWagons() {
         return consist.size() < MAXIMUM_NUMBER_OF_WAGONS;
     }
 
-    /** Returns whether the order uses automatic consist selection. */
     public boolean isAutoConsist() {
-        return autoConsist;
+        return loadingPolicy == LoadingPolicy.AUTO_CONSIST;
     }
 
-    /** Returns whether the train should wait until full at this stop. */
     public boolean isWaitUntilFull() {
         return waitUntilFull;
     }
 
-    /** Returns the identifier of the station to visit. */
+    public boolean isOneShot() {
+        return oneShot;
+    }
+
     public int getStationId() {
         return stationId;
     }

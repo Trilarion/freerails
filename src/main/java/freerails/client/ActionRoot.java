@@ -53,6 +53,10 @@ public class ActionRoot {
         return new BuildTrainDialogAction(this);
     }
 
+    public Action getBuildEngineShopAction() {
+        return new BuildEngineShopDialogAction(this);
+    }
+
     /**
      * @return
      */

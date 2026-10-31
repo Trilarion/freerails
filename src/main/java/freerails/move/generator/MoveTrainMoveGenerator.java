@@ -47,6 +47,15 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     private final Player player;
     private final int trainId;
     private final OccupiedTracks occupiedTracks;
+    private final MotionFidelity motionFidelity;
+
+    /** Selects how train speed changes while a train advances one track segment. */
+    public enum MotionFidelity {
+        /** Moves at the consist's configured top speed for each segment. */
+        CONSTANT_SPEED,
+        /** Uses the detailed acceleration-and-cruise profile. */
+        DETAILED_ACCELERATION
+    }
 
     /**
      * @param trainId
@@ -54,9 +63,22 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      * @param occupiedTracks
      */
     public MoveTrainMoveGenerator(int trainId, Player player, OccupiedTracks occupiedTracks) {
+        this(trainId, player, occupiedTracks, MotionFidelity.CONSTANT_SPEED);
+    }
+
+    /**
+     * Creates a train move generator with an explicit motion fidelity.
+     *
+     * @param trainId train identifier
+     * @param player train owner
+     * @param occupiedTracks track occupancy for this player
+     * @param motionFidelity speed profile to use while moving
+     */
+    public MoveTrainMoveGenerator(int trainId, Player player, OccupiedTracks occupiedTracks, MotionFidelity motionFidelity) {
         this.trainId = trainId;
         this.player = player;
         this.occupiedTracks = occupiedTracks;
+        this.motionFidelity = Objects.requireNonNull(motionFidelity);
     }
 
     @Override
@@ -65,7 +87,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         if (!(obj instanceof MoveTrainMoveGenerator moveTrainPreMove)) return false;
 
         if (trainId != moveTrainPreMove.trainId) return false;
-        return player.equals(moveTrainPreMove.player);
+        return player.equals(moveTrainPreMove.player)
+                && getMotionFidelity() == moveTrainPreMove.getMotionFidelity();
     }
 
     /**
@@ -154,6 +177,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         int result;
         result = trainId;
         result = 29 * result + player.hashCode();
+        result = 29 * result + getMotionFidelity().hashCode();
         return result;
     }
 
@@ -209,13 +233,17 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     public Motion nextSpeeds(UnmodifiableWorld world, TileTransition tileTransition) {
         TrainMotion lastMotion = MotionUtils.lastMotion(world, player, trainId);
 
-        double u = lastMotion.getSpeedAtEnd();
         double s = tileTransition.getLength();
 
         int wagons = world.getTrain(player, trainId).getNumberOfWagons();
-        double a0 = ModelConstants.MODEL_UNITS_PER_TILE / 60.0d / (wagons + 1);
         double topSpeed = ModelConstants.MODEL_UNITS_PER_TILE / 3.0d / (wagons + 1);
 
+        if (getMotionFidelity() == MotionFidelity.CONSTANT_SPEED) {
+            return ConstantAccelerationMotion.fromSpeedAccelerationDistance(topSpeed, 0, s);
+        }
+
+        double u = lastMotion.getSpeedAtEnd();
+        double a0 = ModelConstants.MODEL_UNITS_PER_TILE / 60.0d / (wagons + 1);
         Motion newSpeeds;
         if (u < topSpeed) {
             double t = (topSpeed - u) / a0;
@@ -230,6 +258,11 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         }
 
         return newSpeeds;
+    }
+
+    private MotionFidelity getMotionFidelity() {
+        // A missing field in generators serialized by older versions means the default mode.
+        return motionFidelity == null ? MotionFidelity.CONSTANT_SPEED : motionFidelity;
     }
 
     public TileTransition nextStep(UnmodifiableWorld world) {
