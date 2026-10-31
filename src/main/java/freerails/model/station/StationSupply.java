@@ -18,45 +18,26 @@
 
 package freerails.model.station;
 
-import freerails.util.Utils;
-
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the supply at a station.
  */
-public record StationSupply(List<Integer> supply) implements Serializable {
-
-    // TODO what is the meaning of cargoWaiting and do we need it?
+public record StationSupply(Map<Integer, Integer> supplyByCargoId) implements Serializable {
 
     public StationSupply {
-        supply = Utils.immutableList(supply);
+        supplyByCargoId = Map.copyOf(supplyByCargoId);
     }
-
-    /**
-     * Creates supply rates indexed by the world's cargo ordering.
-     *
-     * @param cargoWaiting number of carloads supplied per year for each cargo
-     *                     type
-     */
-    public StationSupply(Integer[] cargoWaiting) {
-        this(Arrays.asList(cargoWaiting));
-    }
-
-    // TODO why is cargType an int, not the class from world.cargo
 
     /**
      * Returns the carloads supplied per year for a cargo type.
      *
-     * @param cargoIndex zero-based position in the world's cargo collection
+     * @param cargoId stable cargo identifier
      * @return annual number of carloads supplied
-     * @throws IndexOutOfBoundsException if the index is outside the configured
-     *         cargo range
      */
-    public int getSupply(int cargoIndex) {
-        return supply.get(cargoIndex);
+    public int getSupply(int cargoId) {
+        return supplyByCargoId.getOrDefault(cargoId, 0);
     }
 
 }

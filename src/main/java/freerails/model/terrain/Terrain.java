@@ -18,13 +18,15 @@
 
 package freerails.model.terrain;
 
-import freerails.util.Identifiable;
+import com.google.gson.annotations.SerializedName;
 import freerails.model.cargo.CargoConversion;
 import freerails.model.cargo.CargoProductionOrConsumption;
 import freerails.model.finance.Money;
+import freerails.util.Identifiable;
 import freerails.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -33,9 +35,14 @@ import java.util.List;
  */
 public final class Terrain extends Identifiable {
 
+    @Serial
+    private static final long serialVersionUID = 4402566762869522453L;
+
     private final String name;
     private final TerrainCategory category;
+    @SerializedName(value = "trackConstructionCostPerMile", alternate = {"rightOfWayCost"})
     private final Money rightOfWayCost;
+    @SerializedName(value = "industryBuildCost", alternate = {"buildCost"})
     private final Money buildCost;
     private final List<CargoProductionOrConsumption> productions;
     private final List<CargoConversion> conversions;
@@ -47,18 +54,18 @@ public final class Terrain extends Identifiable {
      * @param id stable terrain identifier
      * @param name display name
      * @param category category used by map and city logic
-     * @param rightOfWayCost cost of acquiring a right of way over this terrain
-     * @param buildCost optional cost of building on this terrain
+     * @param trackConstructionCostPerMile cost of constructing track across this terrain per mile
+     * @param industryBuildCost optional cost of constructing an industry on this terrain
      * @param productions cargo production rules
      * @param conversions cargo conversion rules
      * @param consumptions cargo consumption rules
      */
-    public Terrain(int id, String name, TerrainCategory category, Money rightOfWayCost, @Nullable Money buildCost, List<CargoProductionOrConsumption> productions, List<CargoConversion> conversions, List<CargoProductionOrConsumption> consumptions) {
+    public Terrain(int id, String name, TerrainCategory category, Money trackConstructionCostPerMile, @Nullable Money industryBuildCost, List<CargoProductionOrConsumption> productions, List<CargoConversion> conversions, List<CargoProductionOrConsumption> consumptions) {
         super(id);
         this.name = Utils.verifyNotNull(name);
         this.category = Utils.verifyNotNull(category);
-        this.rightOfWayCost = Utils.verifyNotNull(rightOfWayCost);
-        this.buildCost = buildCost;
+        this.rightOfWayCost = Utils.verifyNotNull(trackConstructionCostPerMile);
+        this.buildCost = industryBuildCost;
         this.productions = Utils.verifyUnmodifiable(productions);
         this.conversions = Utils.verifyUnmodifiable(conversions);
         this.consumptions = Utils.verifyUnmodifiable(consumptions);
@@ -74,16 +81,16 @@ public final class Terrain extends Identifiable {
         return category;
     }
 
-    /** Returns the cost of obtaining a right of way across this terrain. */
-    public Money getRightOfWayCost() {
+    /** Returns the cost of constructing track across this terrain per mile. */
+    public Money getTrackConstructionCostPerMile() {
         return rightOfWayCost;
     }
 
     /**
-     * Returns the cost of building on this terrain, or {@code null} if no
-     * separate build cost is defined.
+     * Returns the cost of constructing an industry on this terrain, or
+     * {@code null} if industries cannot be built here.
      */
-    public Money getBuildCost() {
+    public Money getIndustryBuildCost() {
         return buildCost;
     }
 

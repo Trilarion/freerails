@@ -54,6 +54,7 @@ public class World implements UnmodifiableWorld {
 
     // single instances
     private final Clock clock;
+    private boolean cityGrowthEnabled = true;
     private Speed speed = Speed.MODERATE;
     private Rules rules;
     private final Vec2D mapSize;
@@ -86,11 +87,9 @@ public class World implements UnmodifiableWorld {
     private transient Map<Integer, Map<Integer, Integer>> trainIndexByIdByPlayer;
     private transient Map<Integer, Map<Integer, Station>> stationByIdByPlayer;
 
-    // TODO this should also be set by the builder
     private int currentSentimentId = 2;
 
-    // TODO need something to fill the Builder in loading scenario as well as going the other way (when writing out scenario)
-    // TODO set trains?
+    // Player-specific trains and stations are initialized by game setup, not scenario definitions.
     /**
      * Collects the initial world definitions and required settings before
      * constructing a {@link World}. Collection setters make defensive copies
@@ -110,6 +109,8 @@ public class World implements UnmodifiableWorld {
         private Rules rules = null;
         private Vec2D mapSize = null;
         private Clock clock = new Clock(1840, 1200, new Time(0));
+        private int currentSentimentId = 2;
+        private boolean cityGrowthEnabled = true;
 
         /**
          * Sets the engine definitions used by the world.
@@ -201,6 +202,40 @@ public class World implements UnmodifiableWorld {
         }
 
         /**
+         * Sets the clock configuration used by the world.
+         *
+         * @param clock simulation clock
+         * @return this builder
+         */
+        public Builder setClock(@NotNull Clock clock) {
+            Clock value = Utils.verifyNotNull(clock);
+            this.clock = new Clock(value.getStartYear(), value.getTicksPerYear(), value.getCurrentTime());
+            return this;
+        }
+
+        /**
+         * Sets the identifier of the currently selected economic sentiment.
+         *
+         * @param currentSentimentId sentiment identifier
+         * @return this builder
+         */
+        public Builder setCurrentSentimentId(int currentSentimentId) {
+            this.currentSentimentId = currentSentimentId;
+            return this;
+        }
+
+        /**
+         * Sets whether cities expand at the end of each year.
+         *
+         * @param cityGrowthEnabled whether yearly city expansion is enabled
+         * @return this builder
+         */
+        public Builder setCityGrowthEnabled(boolean cityGrowthEnabled) {
+            this.cityGrowthEnabled = cityGrowthEnabled;
+            return this;
+        }
+
+        /**
          * Builds a world from the configured data.
          *
          * @return the initialized world
@@ -239,7 +274,10 @@ public class World implements UnmodifiableWorld {
         rules = builder.rules;
         sentiments = new TreeSet<>(builder.sentiments);
 
-        clock = builder.clock;
+        clock = new Clock(builder.clock.getStartYear(), builder.clock.getTicksPerYear(),
+                builder.clock.getCurrentTime());
+        currentSentimentId = builder.currentSentimentId;
+        cityGrowthEnabled = builder.cityGrowthEnabled;
 
         // setup map
         mapSize = new Vec2D(builder.mapSize);
@@ -597,6 +635,12 @@ public class World implements UnmodifiableWorld {
 
     /** {@inheritDoc} */
     @Override
+    public Collection<Sentiment> getSentiments() {
+        return Collections.unmodifiableSortedSet(sentiments);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Rules getRules() {
         return rules;
     }
@@ -701,6 +745,12 @@ public class World implements UnmodifiableWorld {
 
     /** {@inheritDoc} */
     @Override
+    public boolean isCityGrowthEnabled() {
+        return cityGrowthEnabled;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Speed getSpeed() {
         return speed;
     }
@@ -737,6 +787,7 @@ public class World implements UnmodifiableWorld {
                 && Objects.equals(trackTypes, o.trackTypes)
                 && Objects.equals(sentiments, o.sentiments)
                 && currentSentimentId == o.currentSentimentId
+                && cityGrowthEnabled == o.cityGrowthEnabled
                 && Objects.equals(trains, o.trains)
                 && Objects.equals(stations, o.stations)
                 && Objects.equals(transactions, o.transactions)
@@ -825,7 +876,8 @@ public class World implements UnmodifiableWorld {
     @Override
     public int hashCode() {
         return 31 * Objects.hash(players, clock, speed, rules, engines, cities, cargos, terrainTypes,
-                trackTypes, sentiments, currentSentimentId, trains, stations, transactions, currentBalance, mapSize)
+                trackTypes, sentiments, currentSentimentId, cityGrowthEnabled, trains, stations, transactions,
+                currentBalance, mapSize)
                 + Arrays.hashCode(map);
     }
 

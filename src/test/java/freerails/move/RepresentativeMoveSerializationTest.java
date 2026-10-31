@@ -68,7 +68,7 @@ public class RepresentativeMoveSerializationTest extends TestCase {
                 new AddTrainMove(player, configuredTrain),
                 new AddActivityMove(player, 7, TestTrainMotion.of(60)),
                 new AddStationMove(player,
-                        new Station(9, new Vec2D(4, 5), "Station", 0, CargoBatchBundle.EMPTY)),
+                        new Station(9, new Vec2D(4, 5), "Station", CargoBatchBundle.EMPTY)),
                 cargoMove,
                 new AddTransactionMove(player, transaction),
                 new AddTransactionMove(player, transaction, true)

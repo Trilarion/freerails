@@ -38,6 +38,18 @@ dependencies from the game model to application layers or creating new package c
 Some existing code does not yet satisfy every boundary; do not treat those exceptions as a
 pattern for new code.
 
+Scenario configuration is represented by `freerails.scenario.ScenarioData`. It aggregates
+the definition files and terrain map, and converts explicitly to and from `World.Builder`
+and a world's terrain-only configuration. `ScenarioDataLoader` owns the existing JSON file
+layout; player-specific live state remains outside scenario configuration and is handled by
+game setup or save-game persistence.
+
+## Savegame compatibility during development
+
+FreeRails is currently in active development. Changes to persisted game state do not need
+to support pre-existing savegames; development should always assume that no pre-existing
+savegames need to be loaded.
+
 ## Game-state and move contracts
 
 Treat a `Move` as one coherent game action. Moves cross the client/server boundary, so
@@ -53,8 +65,9 @@ may be mutable and may expose the underlying world state.
 
 Preserve game-state invariants when changing rules. For example, a track connection is
 represented on both neighboring tiles, so track changes must use the appropriate paired
-track operations rather than changing one side alone. Consider scenario loading, save
-games, and serialization compatibility when changing persisted or transmitted data.
+track operations rather than changing one side alone. Consider scenario loading when
+changing persisted data, and serialization compatibility for data transmitted between
+clients and servers.
 
 ## Development practices
 

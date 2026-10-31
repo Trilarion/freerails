@@ -112,7 +112,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
          */
         // TODO maybe a better way to get an id
         int id = world.getStations(player).size();
-        Station station = new Station(id, location, stationName, world.getCargos().size(), CargoBatchBundle.EMPTY);
+        Station station = new Station(id, location, stationName, CargoBatchBundle.EMPTY);
         station = StationUtils.calculateCargoSupplyRateAtStation(world, ruleNumber, station);
 
         Move addStationMove = new AddStationMove(player, station);

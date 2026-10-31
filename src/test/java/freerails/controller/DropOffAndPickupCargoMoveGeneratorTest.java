@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This Junit TestCase tests whether a train picks up and drops off the right
@@ -67,7 +68,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int x = 10;
         int y = 10;
         String stationName = "Station 1";
-        Station station = new Station(0, new Vec2D(x, y), stationName, world.getCargos().size(), CargoBatchBundle.EMPTY);
+        Station station = new Station(0, new Vec2D(x, y), stationName, CargoBatchBundle.EMPTY);
         world.addStation(WorldGenerator.TEST_PLAYER, station);
 
         // Set up train: 3 wagons to carry cargo type 0.
@@ -175,7 +176,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     public void testDropOffCargo() {
         // Set the station to demand cargo type 0.
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
-        StationDemand demand = new StationDemand(new boolean[]{true, false, false, false});
+        StationDemand demand = new StationDemand(Set.of(0));
         station.setDemandForCargo(demand);
         world.removeStation(WorldGenerator.TEST_PLAYER, station.getId());
         world.addStation(WorldGenerator.TEST_PLAYER, station);
@@ -263,7 +264,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     public void testDeliveryRemovesCargoAndRecordsPaymentOnlyOnce() {
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
-        station.setDemandForCargo(new StationDemand(new boolean[]{true, false, false, false}));
+        station.setDemandForCargo(new StationDemand(Set.of(0)));
         setCargoOnTrain(cargoType0FromStation2, 50);
 
         Move delivery = new DropOffAndPickupCargoMoveGenerator(
@@ -295,7 +296,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     public void testDeliveryConvertsCargoByCargoId() {
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
-        station.setDemandForCargo(new StationDemand(new boolean[]{true, false, false, false}));
+        station.setDemandForCargo(new StationDemand(Set.of(0)));
         station.setCargoConversion(new StationCargoConversion(Map.of(0, 1)));
         setCargoOnTrain(cargoType0FromStation2, 50);
 
@@ -317,7 +318,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         // Set station to demand cargo 0.
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
-        StationDemand demand = new StationDemand(new boolean[]{true, false, false, false});
+        StationDemand demand = new StationDemand(Set.of(0));
         station.setDemandForCargo(demand);
 
         // TODO if this is the same station the removal and addition is meaningless

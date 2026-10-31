@@ -45,6 +45,8 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Lets you test dialogue boxes without running the whole game.
@@ -99,23 +101,18 @@ class DialogueBoxTester extends JFrame {
         cargoBatchBundle.setAmount(new CargoBatch(3, new Vec2D(10, 10), 9, 0), 180);
         cargoBatchBundle.setAmount(new CargoBatch(5, new Vec2D(10, 10), 9, 0), 10);
 
-        int numberOfCargoTypes = world.getCargos().size();
-        Station bristol = new Station(0, new Vec2D(10, 10), "Bristol", numberOfCargoTypes, cargoBatchBundle);
-        boolean[] demandArray = new boolean[numberOfCargoTypes];
-
-        // Make the stations demand all cargo..
-        for (int i = 0; i < demandArray.length; i++) {
-            demandArray[i] = true;
-        }
-
-        StationDemand demand = new StationDemand(demandArray);
+        Set<Integer> demandedCargoIds = world.getCargos().stream()
+                .map(cargo -> cargo.getId())
+                .collect(Collectors.toSet());
+        Station bristol = new Station(0, new Vec2D(10, 10), "Bristol", cargoBatchBundle);
+        StationDemand demand = new StationDemand(demandedCargoIds);
         bristol.setDemandForCargo(demand);
         world.addStation(TEST_PLAYER, bristol);
 
-        world.addStation(TEST_PLAYER, new Station(1, new Vec2D(50, 100), "Bath", numberOfCargoTypes, cargoBatchBundle));
-        world.addStation(TEST_PLAYER, new Station(2, new Vec2D(40, 10), "Cardiff", numberOfCargoTypes, cargoBatchBundle));
-        world.addStation(TEST_PLAYER, new Station(3, new Vec2D(100, 10), "London", numberOfCargoTypes, cargoBatchBundle));
-        world.addStation(TEST_PLAYER, new Station(4, new Vec2D(90, 50), "Swansea", numberOfCargoTypes, cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(1, new Vec2D(50, 100), "Bath", cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(2, new Vec2D(40, 10), "Cardiff", cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(3, new Vec2D(100, 10), "London", cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(4, new Vec2D(90, 50), "Swansea", cargoBatchBundle));
 
 
 

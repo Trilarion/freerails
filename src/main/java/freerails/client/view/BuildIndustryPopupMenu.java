@@ -68,10 +68,10 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
         removeAll();
 
         for (Terrain terrain: modelRoot.getWorld().getTerrains()) {
-            final Money price = terrain.getBuildCost();
+            final Money price = terrain.getIndustryBuildCost();
 
             if (null != price) {
-                JMenuItem item = new JMenuItem(terrain.getName() + ' ' + price);
+                JMenuItem item = new JMenuItem("Build " + terrain.getName() + " ($" + price + ")");
                 item.addActionListener(new ActionListener() {
                     private final int terrainId = terrain.getId();
 

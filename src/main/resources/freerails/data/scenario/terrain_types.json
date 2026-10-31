@@ -2,8 +2,8 @@
   {
     "name": "City",
     "category": "URBAN",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [
       {
         "cargoId": 0,
@@ -38,8 +38,8 @@
   {
     "name": "Refinery",
     "category": "INDUSTRY",
-    "rightOfWayCost": 0,
-    "buildCost": 300000,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": 300000,
     "productions": [],
     "conversions": [
       {
@@ -54,8 +54,8 @@
   {
     "name": "Village",
     "category": "URBAN",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [
       {
         "cargoId": 0,
@@ -86,8 +86,8 @@
   {
     "name": "Factory",
     "category": "INDUSTRY",
-    "rightOfWayCost": 1000,
-    "buildCost": 600000,
+    "trackConstructionCostPerMile": 1000,
+    "industryBuildCost": 600000,
     "productions": [],
     "conversions": [
       {
@@ -117,8 +117,8 @@
   {
     "name": "Clear",
     "category": "COUNTRY",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -127,8 +127,8 @@
   {
     "name": "Farm",
     "category": "COUNTRY",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -137,8 +137,8 @@
   {
     "name": "Desert",
     "category": "COUNTRY",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -147,8 +147,8 @@
   {
     "name": "Ocean",
     "category": "OCEAN",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -157,8 +157,8 @@
   {
     "name": "Harbour",
     "category": "OCEAN",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [
       {
         "cargoId": 0,
@@ -208,8 +208,8 @@
   {
     "name": "Stock-Yard",
     "category": "INDUSTRY",
-    "rightOfWayCost": 0,
-    "buildCost": 200000,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": 200000,
     "productions": [],
     "conversions": [
       {
@@ -224,8 +224,8 @@
   {
     "name": "Food_Proc._Plant",
     "category": "INDUSTRY",
-    "rightOfWayCost": 0,
-    "buildCost": 200000,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": 200000,
     "productions": [],
     "conversions": [
       {
@@ -240,8 +240,8 @@
   {
     "name": "Cattle_Ranch",
     "category": "RESOURCE",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [
       {
         "cargoId": 3,
@@ -255,8 +255,8 @@
   {
     "name": "Grain_Elevator",
     "category": "RESOURCE",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [
       {
         "cargoId": 5,
@@ -270,8 +270,8 @@
   {
     "name": "Oil_Well",
     "category": "RESOURCE",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [
       {
         "cargoId": 9,
@@ -285,8 +285,8 @@
   {
     "name": "Lumber_Mill",
     "category": "RESOURCE",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [
       {
         "cargoId": 10,
@@ -300,8 +300,8 @@
   {
     "name": "Sugar_Plant.",
     "category": "RESOURCE",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [
       {
         "cargoId": 11,
@@ -315,8 +315,8 @@
   {
     "name": "River",
     "category": "RIVER",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -325,8 +325,8 @@
   {
     "name": "Landing",
     "category": "RIVER",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [
@@ -356,8 +356,8 @@
   {
     "name": "Terminal",
     "category": "SPECIAL",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -366,8 +366,8 @@
   {
     "name": "Jungle",
     "category": "COUNTRY",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -376,8 +376,8 @@
   {
     "name": "Hills",
     "category": "HILL",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -386,8 +386,8 @@
   {
     "name": "Foothills",
     "category": "HILL",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],
@@ -396,8 +396,8 @@
   {
     "name": "Mountain",
     "category": "HILL",
-    "rightOfWayCost": 0,
-    "buildCost": null,
+    "trackConstructionCostPerMile": 0,
+    "industryBuildCost": null,
     "productions": [],
     "conversions": [],
     "consumptions": [],

@@ -21,20 +21,24 @@ package freerails.model.game;
 import java.io.Serializable;
 
 /**
- * Stores rules governing what players are allowed to do, for example whether
- * they can connect their track to the track of other players.
+ * Stores rules governing what players are allowed to do. Track connections
+ * have two independent rules: whether a player may connect to another player's
+ * track, and whether the player's new track must stay connected to their own
+ * existing track.
  */
 public record Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConnectedToExistingTrack) implements Serializable {
 
     private static final long serialVersionUID = 3258125847557978416L;
 
     /**
-     * Creates a rule set for track connections and network continuity.
+     * Creates a rule set for track connections and network continuity. The
+     * two track rules are independent.
      *
      * @param canConnectToOtherPlayersTracks   whether track may connect to
      *                                         another player's track
      * @param mustStayConnectedToExistingTrack whether newly built track must
-     *                                         remain connected to existing track
+     *                                         remain connected to the player's
+     *                                         own existing track
      */
     public Rules {
     }

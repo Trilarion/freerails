@@ -22,6 +22,7 @@
 package freerails.server;
 
 import freerails.model.ModelConstants;
+import freerails.model.cargo.Cargo;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
@@ -105,11 +106,11 @@ public class FullServerGameModel implements ServerGameModel {
                     }
                 }
 
-                for (int i = 0; i < world.getCargos().size(); i++) {
-                    int amountSupplied = supply.getSupply(i);
+                for (Cargo cargo : world.getCargos()) {
+                    int cargoId = cargo.getId();
+                    int amountSupplied = supply.getSupply(cargoId);
 
                     if (amountSupplied > 0) {
-                        int cargoId = world.getCargoAtIndex(i).getId();
                         CargoBatch cargoBatch = new CargoBatch(cargoId, station.getLocation(), 0, stationId);
                         int amountAlready = after.getAmount(cargoBatch);
 

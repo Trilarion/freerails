@@ -50,6 +50,7 @@ import junit.framework.TestCase;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MoveEqualityContractTest extends TestCase {
 
@@ -142,11 +143,11 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithCargo));
         Station stationWithSupply = station(10, new Vec2D(3, 4), "Central");
-        stationWithSupply.setSupply(new StationSupply(new Integer[]{1}));
+        stationWithSupply.setSupply(new StationSupply(Map.of(1, 1)));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithSupply));
         Station stationWithDemand = station(10, new Vec2D(3, 4), "Central");
-        stationWithDemand.setDemandForCargo(new StationDemand(new boolean[]{true}));
+        stationWithDemand.setDemandForCargo(new StationDemand(Set.of(1)));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithDemand));
         Station stationWithConversion = station(10, new Vec2D(3, 4), "Central");
@@ -195,11 +196,11 @@ public class MoveEqualityContractTest extends TestCase {
                 new UpdateStationCargoDemandSupplyConversionMove(PLAYER, station(11, Vec2D.ZERO, "Settings")));
 
         Station differentSupply = station(10, Vec2D.ZERO, "Settings");
-        differentSupply.setSupply(new StationSupply(new Integer[]{1}));
+        differentSupply.setSupply(new StationSupply(Map.of(1, 1)));
         assertDifferentMoves(settingsMove, new UpdateStationCargoDemandSupplyConversionMove(PLAYER, differentSupply));
 
         Station differentDemand = station(10, Vec2D.ZERO, "Settings");
-        differentDemand.setDemandForCargo(new StationDemand(new boolean[]{true}));
+        differentDemand.setDemandForCargo(new StationDemand(Set.of(1)));
         assertDifferentMoves(settingsMove, new UpdateStationCargoDemandSupplyConversionMove(PLAYER, differentDemand));
 
         Station differentConversion = station(10, Vec2D.ZERO, "Settings");
@@ -282,7 +283,7 @@ public class MoveEqualityContractTest extends TestCase {
     }
 
     private static Station station(int id, Vec2D location, String name) {
-        return new Station(id, location, name, 1, CargoBatchBundle.EMPTY);
+        return new Station(id, location, name, CargoBatchBundle.EMPTY);
     }
 
     private void assertEqualMoves(Move first, Move independent) {

@@ -21,6 +21,7 @@
  */
 package freerails.model.terrain;
 
+import freerails.io.GsonManager;
 import freerails.model.cargo.CargoConversion;
 import freerails.model.cargo.CargoProductionOrConsumption;
 import freerails.model.finance.Money;
@@ -32,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  *
@@ -53,6 +56,35 @@ public class TerrainTypeTest extends TestCase {
         Terrain terrainType1 = new Terrain(1, "Grassland", TerrainCategory.COUNTRY, new Money(100), new Money(10), productions, conversions1, consumptions);
 
         TestUtils.assertCloneBySerializationBehavesWell(terrainType1);
+    }
+
+    public void testConstructionCostsHaveSeparatePurposes() {
+        Terrain terrain = new Terrain(1, "Factory", TerrainCategory.INDUSTRY,
+                new Money(1000), new Money(600000), List.of(), List.of(), List.of());
+
+        assertEquals(new Money(1000), terrain.getTrackConstructionCostPerMile());
+        assertEquals(new Money(600000), terrain.getIndustryBuildCost());
+    }
+
+    public void testLegacyTerrainCostJsonKeysRemainReadable() throws Exception {
+        Path file = Files.createTempFile("terrain-costs", ".json");
+        try {
+            Files.writeString(file, "{\"id\":1,\"name\":\"Factory\",\"category\":\"INDUSTRY\","
+                    + "\"rightOfWayCost\":1000,\"buildCost\":600000,"
+                    + "\"productions\":[],\"conversions\":[],\"consumptions\":[]}");
+
+            Terrain terrain = GsonManager.load(file.toFile(), Terrain.class);
+
+            assertEquals(new Money(1000), terrain.getTrackConstructionCostPerMile());
+            assertEquals(new Money(600000), terrain.getIndustryBuildCost());
+
+            GsonManager.save(file.toFile(), terrain);
+            String savedJson = Files.readString(file);
+            assertTrue(savedJson.contains("\"trackConstructionCostPerMile\""));
+            assertTrue(savedJson.contains("\"industryBuildCost\""));
+        } finally {
+            Files.deleteIfExists(file);
+        }
     }
 
     public void testCargoPoliciesAreCopiedAndCannotBeChangedThroughGetters() {

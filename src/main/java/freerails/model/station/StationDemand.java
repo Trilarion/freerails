@@ -18,38 +18,35 @@
 
 package freerails.model.station;
 
-import freerails.util.Utils;
-
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Represents the demand for cargo at a station.
  */
-public record StationDemand(List<Integer> demand) implements Serializable {
+public record StationDemand(Set<Integer> demandedCargoIds) implements Serializable {
 
     public StationDemand {
-        demand = Utils.immutableList(demand);
+        demandedCargoIds = Set.copyOf(demandedCargoIds);
     }
 
     /**
-     * Creates demand settings from a boolean flag for each cargo type.
+     * Creates demand settings for the specified cargo IDs.
      *
-     * @param demandArray demand flags indexed by the world's cargo ordering
+     * @param demandedCargoIds stable IDs of demanded cargo types
      */
-    public StationDemand(boolean[] demandArray) {
-        this(Utils.integerListFromBoolean(demandArray));
+    public StationDemand(Collection<Integer> demandedCargoIds) {
+        this(Set.copyOf(demandedCargoIds));
     }
 
     /**
      * Tests whether a cargo type is demanded at this station.
      *
-     * @param cargoIndex zero-based position in the world's cargo collection
+     * @param cargoId stable cargo identifier
      * @return {@code true} if the station demands that cargo type
-     * @throws IndexOutOfBoundsException if the index is outside the configured
-     *         cargo range
      */
-    public boolean isCargoDemanded(int cargoIndex) {
-        return demand.get(cargoIndex) == 1;
+    public boolean isCargoDemanded(int cargoId) {
+        return demandedCargoIds.contains(cargoId);
     }
 }

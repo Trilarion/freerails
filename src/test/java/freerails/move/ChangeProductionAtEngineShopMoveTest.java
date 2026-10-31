@@ -47,7 +47,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Station station = new Station(0, Vec2D.ZERO, "no name", 0, new CargoBatchBundle());
+        Station station = new Station(0, Vec2D.ZERO, "no name", new CargoBatchBundle());
         getWorld().addStation(WorldGenerator.TEST_PLAYER, station);
         //getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);
         //getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);

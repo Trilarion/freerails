@@ -183,6 +183,9 @@ public interface UnmodifiableWorld extends Serializable {
     /** Returns the sentiment currently selected by the world. */
     Sentiment getSentiment();
 
+    /** Returns a live, unmodifiable view of the world's sentiment definitions. */
+    Collection<Sentiment> getSentiments();
+
     /** Returns the rules currently governing this world. */
     Rules getRules();
 
@@ -253,6 +256,9 @@ public interface UnmodifiableWorld extends Serializable {
 
     /** Returns the simulation clock. */
     Clock getClock();
+
+    /** Returns whether cities expand at the end of each year. */
+    boolean isCityGrowthEnabled();
 
     /** Returns the current simulation speed. */
     Speed getSpeed();

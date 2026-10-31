@@ -110,6 +110,20 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
     }
 
+    public void testTerrainConstructionCostIsIncludedInEdgeEstimate() {
+        world.setTile(new Vec2D(10, 10), new TerrainTile(3));
+        assertEquals(1000, world.getTerrain(3).getTrackConstructionCostPerMile().amount());
+        assertEquals(600000, world.getTerrain(3).getIndustryBuildCost().amount());
+        PositionOnTrack start = new PositionOnTrack(new Vec2D(10, 10), TileTransition.NORTH);
+
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
+        explorer.setPosition(start.toInt());
+        assertTrue(explorer.hasNextEdge());
+        explorer.nextEdge();
+
+        assertEquals(1_030_000, explorer.getEdgeCost());
+    }
+
     /**
      * Test when we cannot build on some terrain types.
      */

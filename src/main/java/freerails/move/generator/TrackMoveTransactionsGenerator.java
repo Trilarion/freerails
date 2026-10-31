@@ -23,6 +23,7 @@ package freerails.move.generator;
 
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.game.Time;
+import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.move.AddTransactionMove;
 import freerails.move.CompositeMove;
@@ -62,6 +63,7 @@ public class TrackMoveTransactionsGenerator {
     // TODO use Money?
     private long fixedCostsStations = 0;
     private long fixedCostsBridges = 0;
+    private long trackConstructionCostByLength;
     /**
      * Number of each of the track types removed.
      */
@@ -88,6 +90,7 @@ public class TrackMoveTransactionsGenerator {
         trackRemoved = new int[numberOfTrackTypes];
         fixedCostsStations = 0;
         fixedCostsBridges = 0;
+        trackConstructionCostByLength = 0;
         unpackMove(move);
         // generate transaction
         transactions.clear();
@@ -122,6 +125,12 @@ public class TrackMoveTransactionsGenerator {
                         TransactionCategory.TRACK, total, time, -numberRemoved, trackType.getId());
                 transactions.add(transaction1);
             }
+        }
+        long trackConstructionCost = trackConstructionCostByLength / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+        if (trackConstructionCost != 0) {
+            Transaction transaction = new Transaction(
+                    TransactionCategory.TRACK, new Money(-trackConstructionCost), time);
+            transactions.add(transaction);
         }
         if (0 != fixedCostsStations) {
             Transaction transaction1 = new Transaction(TransactionCategory.STATIONS, new Money(fixedCostsStations), time);
@@ -181,7 +190,9 @@ public class TrackMoveTransactionsGenerator {
 
                 if (ruleAfter == ruleBefore) {
                     if (oldLength < newLength) {
-                        trackAdded[ruleAfter] += newLength - oldLength;
+                        int addedLength = newLength - oldLength;
+                        trackAdded[ruleAfter] += addedLength;
+                        addTerrainTrackCost(tm, addedLength);
                     } else if (oldLength > newLength) {
                         trackRemoved[ruleAfter] += oldLength - newLength;
                     }
@@ -195,6 +206,7 @@ public class TrackMoveTransactionsGenerator {
                 int newLength = newTrackPiece.trackConfiguration().getLength();
                 // TODO trackAdded should be a Map
                 trackAdded[ruleAfter] += newLength;
+                addTerrainTrackCost(tm, newLength);
             }
 
             if (newTrackPiece == null) {
@@ -211,6 +223,13 @@ public class TrackMoveTransactionsGenerator {
                 unpackMove(move1);
             }
         }
+    }
+
+    private void addTerrainTrackCost(ChangeTrackPieceMove move, int addedLength) {
+        Terrain terrain = world.getTerrain(world.getTile(move.location()).terrainTypeId());
+        long weightedCost = Math.multiplyExact(
+                terrain.getTrackConstructionCostPerMile().amount(), addedLength);
+        trackConstructionCostByLength = Math.addExact(trackConstructionCostByLength, weightedCost);
     }
 
 }

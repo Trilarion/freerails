@@ -95,7 +95,10 @@ class TerrainInfoPanel extends JPanel {
 
         Terrain type = world.getTerrain(terrainId);
 
-        String row = "<p>Right-of-Way costs $" + type.getRightOfWayCost() + " per mile. </p>";
+        String row = "<p>Track construction (right-of-way): $" + type.getTrackConstructionCostPerMile() + " per mile.</p>";
+        if (type.getIndustryBuildCost() != null) {
+            row += "<p>Industry construction: $" + type.getIndustryBuildCost() + ".</p>";
+        }
         StringBuilder tableString = new StringBuilder();
         int cargosProduced = type.getProductions().size();
         int cargosConsumed = type.getConsumptions().size();

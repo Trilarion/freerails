@@ -18,15 +18,9 @@
 
 package freerails.scenario;
 
-import freerails.io.GsonManager;
-import freerails.model.cargo.Cargo;
-import freerails.model.game.Rules;
-import freerails.model.game.Sentiment;
 import freerails.model.terrain.*;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.city.CityInitializer;
-import freerails.model.track.TrackType;
-import freerails.model.train.Engine;
 import freerails.model.world.World;
 import freerails.util.Array2D;
 import freerails.util.Vec2D;
@@ -63,40 +57,9 @@ public class MapCreator {
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');
 
-        // load engines
-        URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
-        File file = new File(url.toURI());
-        SortedSet<Engine> engines = GsonManager.loadEngines(file);
-
-        // load cities
-        url = MapCreator.class.getResource("/freerails/data/scenario/" + mapName + "_cities.json");
-        file = new File(url.toURI());
-        SortedSet<City> cities = GsonManager.loadCities(file);
-
-        // load cargo types
-        url = MapCreator.class.getResource("/freerails/data/scenario/cargo_types.json");
-        file = new File(url.toURI());
-        SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(file);
-
-        // load terrain types
-        url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
-        file = new File(url.toURI());
-        SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
-
-        // load track types
-        url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
-        file = new File(url.toURI());
-        SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
-
-        // load rules
-        url = MapCreator.class.getResource("/freerails/data/scenario/rules.json");
-        file = new File(url.toURI());
-        Rules rules = GsonManager.load(file, Rules.class);
-
-        // load sentiments
-        url = MapCreator.class.getResource("/freerails/data/scenario/sentiments.json");
-        file = new File(url.toURI());
-        SortedSet<Sentiment> sentiments = GsonManager.loadSentiments(file);
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/");
+        File directory = new File(url.toURI());
+        ScenarioData scenario = ScenarioDataLoader.load(directory, mapName);
 
         /*
         // Load the terrain map
@@ -137,12 +100,8 @@ public class MapCreator {
         GsonManager.saveCompact(file, map);
         */
 
-        url = MapCreator.class.getResource("/freerails/data/scenario/" + mapName + "_map.json");
-        file = new File(url.toURI());
-        Array2D map = GsonManager.loadArray2D(file);
-
-        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).setMapSize(map.getSize()).setSentiments(sentiments);
-        World world = builder.build();
+        Array2D map = scenario.getTerrainMap();
+        World world = scenario.toWorldBuilder().build();
 
         // TODO what is the purpose of the following section (randomization)
         final List<Integer> countryTypes = new ArrayList<>();

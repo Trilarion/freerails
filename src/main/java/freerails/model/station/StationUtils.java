@@ -34,8 +34,10 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides station lookup, naming, and nearby-terrain cargo configuration
@@ -271,9 +273,10 @@ public final class StationUtils {
             }
         }
 
-        Integer[] cargoSupplied = new Integer[numCargoTypes];
+        Map<Integer, Integer> cargoSupplied = new HashMap<>();
         for (int i = 0; i < numCargoTypes; i++) {
-            cargoSupplied[i] = (int) supplies[i];
+            int cargoId = world.getCargoAtIndex(i).getId();
+            cargoSupplied.put(cargoId, (int) supplies[i]);
         }
 
         // set the supply rates for the current station
@@ -281,16 +284,14 @@ public final class StationUtils {
         station.setSupply(stationSupply);
 
 
-        final int n = world.getCargos().size();
-        boolean[] demandboolean = new boolean[n];
-
-        for (int i = 0; i < n; i++) {
+        Set<Integer> demandedCargoIds = new HashSet<>();
+        for (int i = 0; i < numCargoTypes; i++) {
             if (demand[i] >= ModelConstants.PREREQUISITE_FOR_DEMAND) {
-                demandboolean[i] = true;
+                demandedCargoIds.add(world.getCargoAtIndex(i).getId());
             }
         }
 
-        station.setDemandForCargo(new StationDemand(demandboolean));
+        station.setDemandForCargo(new StationDemand(demandedCargoIds));
         station.setCargoConversion(new StationCargoConversion(converts));
 
         return station;

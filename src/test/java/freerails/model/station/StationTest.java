@@ -26,55 +26,75 @@ import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalInt;
+import java.util.Set;
 
 public class StationTest extends TestCase {
 
     public void testCargoPoliciesAndProductionAreCopiedFromInputs() {
-        Integer[] supplyValues = {3, 5};
-        boolean[] demandValues = {true, false};
+        Map<Integer, Integer> supplyValues = new HashMap<>(Map.of(42, 3, 17, 5));
+        Set<Integer> demandValues = new HashSet<>(Set.of(42));
         Map<Integer, Integer> conversionValues = new HashMap<>(Map.of(10, 20));
         List<TrainTemplate> productionValues = new ArrayList<>(List.of(new TrainTemplate(4, List.of(7))));
 
-        Station station = new Station(1, Vec2D.ZERO, "Central", 2, CargoBatchBundle.EMPTY);
+        Station station = new Station(1, Vec2D.ZERO, "Central", CargoBatchBundle.EMPTY);
         station.setSupply(new StationSupply(supplyValues));
         station.setDemandForCargo(new StationDemand(demandValues));
         station.setCargoConversion(new StationCargoConversion(conversionValues));
         station.setProduction(productionValues);
 
-        supplyValues[0] = 9;
-        demandValues[0] = false;
+        supplyValues.put(42, 9);
+        demandValues.remove(42);
         conversionValues.put(10, 8);
         productionValues.clear();
 
-        assertEquals(3, station.getSupply().getSupply(0));
-        assertTrue(station.getDemandForCargo().isCargoDemanded(0));
+        assertEquals(3, station.getSupply().getSupply(42));
+        assertTrue(station.getDemandForCargo().isCargoDemanded(42));
         assertEquals(OptionalInt.of(20), station.getCargoConversion().conversionFor(10));
         assertEquals(List.of(new TrainTemplate(4, List.of(7))), station.getProduction());
     }
 
+    private void assertImmutable(Set<Integer> values) {
+        try {
+            values.clear();
+            fail("Expected the cargo policy record component to be immutable");
+        } catch (UnsupportedOperationException expected) {
+            // Record components expose immutable snapshots.
+        }
+    }
+
+    private void assertImmutable(Map<Integer, Integer> values) {
+        try {
+            values.clear();
+            fail("Expected the cargo policy record component to be immutable");
+        } catch (UnsupportedOperationException expected) {
+            // Record components expose immutable snapshots.
+        }
+    }
+
     public void testCargoPolicyRecordComponentsAreImmutableCopies() {
-        List<Integer> supplyValues = new ArrayList<>(List.of(3, 5));
-        List<Integer> demandValues = new ArrayList<>(List.of(1, 0));
+        Map<Integer, Integer> supplyValues = new HashMap<>(Map.of(42, 3, 17, 5));
+        Set<Integer> demandValues = new HashSet<>(Set.of(42));
         Map<Integer, Integer> conversionValues = new HashMap<>(Map.of(10, 20));
 
         StationSupply supply = new StationSupply(supplyValues);
         StationDemand demand = new StationDemand(demandValues);
         StationCargoConversion conversion = new StationCargoConversion(conversionValues);
 
-        supplyValues.set(0, 9);
-        demandValues.set(0, 0);
+        supplyValues.put(42, 9);
+        demandValues.remove(42);
         conversionValues.put(10, 8);
 
-        assertEquals(List.of(3, 5), supply.supply());
-        assertEquals(List.of(1, 0), demand.demand());
+        assertEquals(Map.of(42, 3, 17, 5), supply.supplyByCargoId());
+        assertEquals(Set.of(42), demand.demandedCargoIds());
         assertEquals(Map.of(10, 20), conversion.conversions());
         assertEquals(OptionalInt.empty(), conversion.conversionFor(11));
 
-        assertImmutable(supply.supply());
-        assertImmutable(demand.demand());
+        assertImmutable(supply.supplyByCargoId());
+        assertImmutable(demand.demandedCargoIds());
         try {
             conversion.conversions().clear();
             fail("Expected the conversion map to be immutable");
@@ -93,17 +113,33 @@ public class StationTest extends TestCase {
         assertEquals(OptionalInt.of(20), copy.conversionFor(10));
     }
 
-    private void assertImmutable(List<Integer> values) {
-        try {
-            values.clear();
-            fail("Expected the cargo policy record component to be immutable");
-        } catch (UnsupportedOperationException expected) {
-            // Record components expose immutable snapshots.
+    public void testCargoPoliciesStayAssociatedWithIdsWhenCatalogueOrderChanges() {
+        StationSupply supply = new StationSupply(Map.of(42, 3, 17, 5));
+        StationDemand demand = new StationDemand(Set.of(42));
+        Map<Integer, Integer> expectedSupplyById = Map.of(42, 3, 17, 5);
+        List<List<Integer>> catalogueOrders = List.of(List.of(42, 17), List.of(17, 42));
+
+        for (List<Integer> cargoOrder : catalogueOrders) {
+            for (int cargoId : cargoOrder) {
+                assertEquals(expectedSupplyById.get(cargoId).intValue(), supply.getSupply(cargoId));
+                assertEquals(cargoId == 42, demand.isCargoDemanded(cargoId));
+            }
         }
     }
 
+    public void testStationCargoPoliciesSurviveSerialization() {
+        Station station = new Station(1, Vec2D.ZERO, "Central", CargoBatchBundle.EMPTY);
+        station.setSupply(new StationSupply(Map.of(42, 3)));
+        station.setDemandForCargo(new StationDemand(Set.of(42)));
+
+        Station copy = (Station) Utils.cloneBySerialisation(station);
+
+        assertEquals(3, copy.getSupply().getSupply(42));
+        assertTrue(copy.getDemandForCargo().isCargoDemanded(42));
+    }
+
     public void testProductionGetterCannotMutateStationPolicy() {
-        Station station = new Station(1, Vec2D.ZERO, "Central", 1, CargoBatchBundle.EMPTY);
+        Station station = new Station(1, Vec2D.ZERO, "Central", CargoBatchBundle.EMPTY);
         station.setProduction(new ArrayList<>(List.of(new TrainTemplate(4, List.of(7)))));
 
         try {
@@ -117,7 +153,7 @@ public class StationTest extends TestCase {
     }
 
     public void testProductionQueueOperationsAllowDuplicatesAndRemoveFirstMatch() {
-        Station station = new Station(1, Vec2D.ZERO, "Central", 1, CargoBatchBundle.EMPTY);
+        Station station = new Station(1, Vec2D.ZERO, "Central", CargoBatchBundle.EMPTY);
         TrainTemplate first = new TrainTemplate(4, List.of(7));
         TrainTemplate second = new TrainTemplate(5, List.of(8));
 

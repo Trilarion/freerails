@@ -49,6 +49,7 @@ import freerails.model.world.World;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Unit test for MoveTrainPreMove, tests stopping at stations.
@@ -412,9 +413,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         station0.setCargoBatchBundle(cargoBatchBundle);
 
         // Make station2 demand cargo #0;
-        boolean[] boolArray = new boolean[world.getCargos().size()];
-        boolArray[0] = true;
-        StationDemand demand = new StationDemand(boolArray);
+        StationDemand demand = new StationDemand(Set.of(0));
         Station station2 = world.getStation(player, 2);
 
         Station stationWithNewDemand = (Station) Utils.cloneBySerialisation(station2);

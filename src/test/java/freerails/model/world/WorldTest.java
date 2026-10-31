@@ -267,7 +267,7 @@ public class WorldTest extends TestCase {
 
         world.addTrain(first, new Train(1, 0));
         world.addStation(first, new Station(
-                2, Vec2D.ZERO, "First station", world.getCargos().size(), CargoBatchBundle.EMPTY));
+                2, Vec2D.ZERO, "First station", CargoBatchBundle.EMPTY));
         world.addTransaction(first, transaction(world, 50));
 
         assertEquals(1, world.getTrains(first).size());
@@ -300,16 +300,16 @@ public class WorldTest extends TestCase {
         assertEquals(List.of(secondTrain), List.copyOf(world.getTrains(second)));
 
         Station firstStation = new Station(
-                9, Vec2D.ZERO, "First", world.getCargos().size(), CargoBatchBundle.EMPTY);
+                9, Vec2D.ZERO, "First", CargoBatchBundle.EMPTY);
         Station firstOtherStation = new Station(
-                10, new Vec2D(1, 0), "First other", world.getCargos().size(), CargoBatchBundle.EMPTY);
+                10, new Vec2D(1, 0), "First other", CargoBatchBundle.EMPTY);
         Station secondStation = new Station(
-                9, new Vec2D(2, 0), "Second", world.getCargos().size(), CargoBatchBundle.EMPTY);
+                9, new Vec2D(2, 0), "Second", CargoBatchBundle.EMPTY);
         world.addStation(first, firstStation);
         world.addStation(first, firstOtherStation);
         world.addStation(second, secondStation);
         assertDuplicateRejected(() -> world.addStation(first,
-                new Station(9, new Vec2D(3, 0), "Duplicate", world.getCargos().size(), CargoBatchBundle.EMPTY)));
+                new Station(9, new Vec2D(3, 0), "Duplicate", CargoBatchBundle.EMPTY)));
         assertEquals(2, world.getStations(first).size());
         assertEquals(List.of(secondStation), List.copyOf(world.getStations(second)));
 
@@ -455,7 +455,7 @@ public class WorldTest extends TestCase {
                 new Transaction(TransactionCategory.MISC_INCOME, new Money(25), world.getClock().getCurrentTime()));
         world.addTrain(first, new Train(101, 0));
         Station firstStation = new Station(
-                202, Vec2D.ZERO, "First", world.getCargos().size(), CargoBatchBundle.EMPTY);
+                202, Vec2D.ZERO, "First", CargoBatchBundle.EMPTY);
         world.addStation(first, firstStation);
         world.addTransaction(second,
                 new Transaction(TransactionCategory.MISC_INCOME, new Money(70), world.getClock().getCurrentTime()));
@@ -624,7 +624,7 @@ public class WorldTest extends TestCase {
         Train train = new Train(101, 12);
         train.setConsist(List.of(5, 6));
         world.addTrain(firstPlayer, train);
-        Station station = new Station(303, new Vec2D(2, 1), "North", world.getCargos().size(), CargoBatchBundle.EMPTY);
+        Station station = new Station(303, new Vec2D(2, 1), "North", CargoBatchBundle.EMPTY);
         world.addStation(firstPlayer, station);
 
         Transaction bond = new Transaction(TransactionCategory.BOND, new Money(100), world.getClock().getCurrentTime());
@@ -745,7 +745,7 @@ public class WorldTest extends TestCase {
         world.addPlayer(player);
         world.addTrain(player, new Train(1, 0));
         world.addStation(player, new Station(
-                2, Vec2D.ZERO, "Station", world.getCargos().size(), CargoBatchBundle.EMPTY));
+                2, Vec2D.ZERO, "Station", CargoBatchBundle.EMPTY));
         world.addTransaction(player, transaction(world, 10));
         UnmodifiableWorld readOnly = world;
 
@@ -766,7 +766,7 @@ public class WorldTest extends TestCase {
         world.addPlayer(new Player(1, "Second"));
         world.addTrain(player, new Train(3, 0));
         world.addStation(player, new Station(
-                4, new Vec2D(1, 0), "Another station", world.getCargos().size(), CargoBatchBundle.EMPTY));
+                4, new Vec2D(1, 0), "Another station", CargoBatchBundle.EMPTY));
         world.addTransaction(player, transaction(world, 5));
         assertEquals(2, playersView.size());
         assertEquals(2, trainsView.size());

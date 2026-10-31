@@ -45,6 +45,10 @@ extended from the existing network; bridges and tunnels allow routes through oth
 difficult terrain. Building and upgrading require investment, while track and trains carry
 ongoing costs.
 
+Track construction is charged at the selected track type's price plus the terrain's
+right-of-way cost per mile. Industry construction has a separate terrain-specific build
+cost.
+
 Track is shared infrastructure with limited capacity. Trains must contend for available
 routes, but a train that has stopped should not permanently prevent other trains from
 moving. Route planning therefore balances direct connections, construction cost, terrain,
@@ -87,6 +91,10 @@ Cities, industries, and resource-producing places respond over time to their eco
 surroundings and to the traffic delivered by railroads. Settlements can grow or decline,
 and the location and mix of economic activity can change. These changes affect where cargo
 is available and where new connections may become worthwhile.
+
+City growth is an explicit part of scenario design, not a universal rule. Scenarios can
+enable yearly city expansion when it creates meaningful gameplay, or use static city
+footprints after initial setup when cities serve only as destinations and cargo sources.
 
 ## Play against other railroads
 

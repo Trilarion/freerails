@@ -85,11 +85,10 @@ public class DropOffAndPickupCargoMoveGenerator {
         // Unload the cargo that the station demands
         for (CargoBatch cargoBatch : trainAfter.getCargoBatches()) {
             int cargoTypeId = cargoBatch.getCargoTypeId();
-            int cargoIndex = world.getCargoIndex(cargoTypeId);
             // if the cargo is demanded and its not from this station originally...
             StationDemand stationDemand = station.getDemandForCargo();
 
-            if (stationDemand.isCargoDemanded(cargoIndex) && stationId != cargoBatch.getOriginalStationId()) {
+            if (stationDemand.isCargoDemanded(cargoTypeId) && stationId != cargoBatch.getOriginalStationId()) {
                 int amount = trainAfter.getAmount(cargoBatch);
                 cargoDroppedOff.addCargo(cargoBatch, amount);
 
@@ -144,10 +143,10 @@ public class DropOffAndPickupCargoMoveGenerator {
             Station otherStation = world.getStation(player, nextStationId);
             StationDemand demand = otherStation.getDemandForCargo();
 
-            for (int i = 0; i < world.getCargos().size(); i++) {
-                int cargoId = world.getCargoAtIndex(i).getId();
+            for (Cargo cargo : world.getCargos()) {
+                int cargoId = cargo.getId();
                 // If this cargo is demanded at the next scheduled station.
-                if (demand.isCargoDemanded(i)) {
+                if (demand.isCargoDemanded(cargoId)) {
                     int amount = stationAfter.getAmountOfType(cargoId);
 
                     while (amount > 0) {

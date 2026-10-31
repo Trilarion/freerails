@@ -219,11 +219,10 @@ public class StationInfoPanel extends JPanel implements View {
 
             for (Cargo cargo : world.getCargos()) {
                 int id = cargo.getId();
-                int cargoIndex = world.getCargoIndex(id);
 
-                String demanded = (station.getDemandForCargo().isCargoDemanded(cargoIndex) ? "Yes" : "No");
+                String demanded = (station.getDemandForCargo().isCargoDemanded(id) ? "Yes" : "No");
 
-                int amountSupplied = station.getSupply().getSupply(cargoIndex);
+                int amountSupplied = station.getSupply().getSupply(id);
                 boolean isSupplied = (amountSupplied > 0);
                 String supply = isSupplied ? String.valueOf(amountSupplied / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
@@ -231,7 +230,7 @@ public class StationInfoPanel extends JPanel implements View {
                 String waiting = (amountWaiting > 0) ? String.valueOf(amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
                 // build the html
-                if (station.getDemandForCargo().isCargoDemanded(cargoIndex) || isSupplied) {
+                if (station.getDemandForCargo().isCargoDemanded(id) || isSupplied) {
                     table1.append("<tr>");
                     table1.append("<td>").append(cargo.getName()).append("</td>");
                     table1.append("<td align=center>").append(demanded).append("</td>");

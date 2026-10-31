@@ -28,15 +28,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 // TODO doesn't know what type it is (depot, station, terminal)? why not? should know.
 /**
  * Represents a station with a location, name, cargo service data, and
- * production queue. Its cargo bundle is stored as an immutable snapshot.
+ * production queue. Cargo service data is keyed by stable cargo IDs, and its
+ * cargo bundle is stored as an immutable snapshot.
  */
 public class Station extends Identifiable {
 
@@ -52,27 +53,22 @@ public class Station extends Identifiable {
     private final List<TrainTemplate> production;
 
     /**
-     * Creates a station and initializes its cargo settings for the world's
-     * cargo types.
+     * Creates a station with empty cargo demand and supply settings.
      *
      * @param id station identifier
      * @param location map location of the station
      * @param stationName display name
-     * @param numberOfCargoTypes number of cargo types in the world
      * @param cargoBatchBundle initial waiting cargo, copied by this station
      */
-    public Station(int id, Vec2D location, String stationName, int numberOfCargoTypes, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
+    public Station(int id, Vec2D location, String stationName, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
         super(id);
         name = stationName;
         this.location = location;
         this.cargoBatchBundle = new ImmutableCargoBatchBundle(cargoBatchBundle);
 
-        // TODO array creation necessary here?
-        Integer[] a = new Integer[numberOfCargoTypes];
-        Arrays.fill(a, 0);
-        supply = new StationSupply(a);
+        supply = new StationSupply(Map.of());
         production = new ArrayList<>();
-        demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
+        demandForCargo = new StationDemand(Set.of());
         cargoConversion = new StationCargoConversion(Map.of());
     }
 

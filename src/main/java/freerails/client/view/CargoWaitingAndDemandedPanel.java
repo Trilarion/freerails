@@ -180,7 +180,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
                 int carloads = amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
                 quantityWaiting.add(carloads);
             }
-            if (station.getDemandForCargo().isCargoDemanded(world.getCargoIndex(cargoId))) {
+            if (station.getDemandForCargo().isCargoDemanded(cargoId)) {
                 typeDemanded.add(cargo.getName());
             }
         }

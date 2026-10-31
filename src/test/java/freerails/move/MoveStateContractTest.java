@@ -248,6 +248,6 @@ public class MoveStateContractTest extends TestCase {
     }
 
     private static Station station(int id, int x) {
-        return new Station(id, new Vec2D(x, 4), "Station " + id, 1, CargoBatchBundle.EMPTY);
+        return new Station(id, new Vec2D(x, 4), "Station " + id, CargoBatchBundle.EMPTY);
     }
 }

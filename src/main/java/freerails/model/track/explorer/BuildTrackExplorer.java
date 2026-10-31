@@ -231,8 +231,8 @@ public class BuildTrackExplorer implements GraphExplorer {
     /**
      * {@inheritDoc}
      *
-     * <p>The estimate includes edge distance and the purchase/upgrade cost of
-     * track that is not already present.
+     * <p>The estimate includes edge distance, track purchase/upgrade costs,
+     * and terrain track-construction costs for track that is not already present.
      *
      * @throws IllegalStateException if no edge has yet been selected
      */
@@ -262,6 +262,11 @@ public class BuildTrackExplorer implements GraphExplorer {
             long priceA = ruleA.getPurchasingPrice().amount();
             long priceB = ruleB.getPurchasingPrice().amount();
             cost += length * (priceA + priceB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT;
+            long terrainCostA = world.getTerrain(world.getTile(new Vec2D(x[0], y[0])).terrainTypeId())
+                    .getTrackConstructionCostPerMile().amount();
+            long terrainCostB = world.getTerrain(world.getTile(new Vec2D(x[1], y[1])).terrainTypeId())
+                    .getTrackConstructionCostPerMile().amount();
+            cost += length * (terrainCostA + terrainCostB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT;
             // Add fixed cost if tile b does not have the desired track type.
             TerrainTile a = world.getTile(new Vec2D(x[0], y[0]));
             TrackPiece trackPiece = a.trackPiece();

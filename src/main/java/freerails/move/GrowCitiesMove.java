@@ -47,6 +47,9 @@ public class GrowCitiesMove implements Move {
 
     @Override
     public void apply(@NotNull World world) {
+        if (!world.isCityGrowthEnabled()) {
+            return;
+        }
         CityGrowth cityGrowth = new CityGrowth(world);
         cityGrowth.growCities();
     }

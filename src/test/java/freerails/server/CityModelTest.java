@@ -23,12 +23,22 @@ import freerails.model.terrain.city.City;
 import freerails.model.terrain.city.CityGrowth;
 import freerails.model.terrain.city.CityInitializer;
 import freerails.model.terrain.city.CityModel;
+import freerails.model.finance.Money;
+import freerails.model.terrain.TerrainCategory;
+import freerails.model.track.TrackCategory;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackPiece;
+import freerails.model.track.TrackProperty;
+import freerails.model.track.TrackType;
+import freerails.move.GrowCitiesMove;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -59,6 +69,17 @@ public class CityModelTest extends TestCase {
         assertTrue(cityModel.getUrbanCityTiles().size() <= 4);
     }
 
+    public void testInitialFootprintsAreInitializedWhenGrowthIsDisabled() throws IOException {
+        World world = worldWithClearCity(false);
+
+        new CityInitializer(world).initializeCities();
+
+        CityModel cityModel = new CityModel();
+        cityModel.loadFromMap(world, 1);
+        assertTrue(cityModel.getUrbanCityTiles().size() >= 2);
+        assertTrue(cityModel.getUrbanCityTiles().size() <= 4);
+    }
+
     public void testGrowthDoesNotAddTilesWithoutStation() throws IOException {
         World world = worldWithClearCity();
 
@@ -71,11 +92,45 @@ public class CityModelTest extends TestCase {
         assertEquals(0, cityModel.getResourceCityTiles().size());
     }
 
+    public void testGrowCitiesMoveDoesNotGrowWhenDisabled() throws IOException {
+        World world = worldWithClearCity(false);
+        Vec2D cityCenter = world.getCity(1).getLocation();
+        TrackType stationType = new TrackType(100, "station", TrackCategory.STATION,
+                EnumSet.of(TrackProperty.SINGLE), Money.ZERO, Money.ZERO,
+                EnumSet.allOf(TerrainCategory.class), Set.of("000010000"));
+        world.setTile(cityCenter, new TerrainTile(0,
+                new TrackPiece(TrackConfiguration.getFlatInstance("000010000"), stationType, 0)));
+
+        CityModel cityModel = new CityModel();
+        cityModel.loadFromMap(world, 1);
+        assertEquals(1, cityModel.getStations());
+
+        new GrowCitiesMove().apply(world);
+
+        cityModel.loadFromMap(world, 1);
+        assertEquals(0, cityModel.getUrbanCityTiles().size());
+        assertEquals(0, cityModel.getIndustryCityTiles().size());
+        assertEquals(0, cityModel.getResourceCityTiles().size());
+    }
+
     private World worldWithClearCity() throws IOException {
+        return worldWithClearCity(true);
+    }
+
+    private World worldWithClearCity(boolean cityGrowthEnabled) throws IOException {
         City city = new City(1,"New York", new Vec2D(5, 5));
         TreeSet<City> cities = new TreeSet<>();
         cities.add(city);
-        World world = WorldGenerator.testWorld(true, cities);
+        World template = WorldGenerator.testWorld(true, cities);
+        World world = new World.Builder()
+                .setRules(template.getRules())
+                .setTrackTypes(new TreeSet<>(template.getTrackTypes()))
+                .setTerrainTypes(new TreeSet<>(template.getTerrains()))
+                .setCargos(new TreeSet<>(template.getCargos()))
+                .setCities(cities)
+                .setMapSize(template.getMapSize())
+                .setCityGrowthEnabled(cityGrowthEnabled)
+                .build();
         Vec2D mapSize = world.getMapSize();
 
         TerrainTile tile = new TerrainTile(0);
