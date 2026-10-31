@@ -34,7 +34,7 @@ import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -55,7 +55,7 @@ public class SelectStationPanel extends JPanel implements View {
     private ActionListener submitButtonCallBack;
     private int selectedStationID = 0;
     private int selectedOrderNumber = 1;
-    private Schedule schedule;
+    private ScheduleState schedule;
     private Rectangle visableMapTiles = new Rectangle();
     private double scale = 1;
     private boolean needsUpdating = true;
@@ -175,11 +175,11 @@ public class SelectStationPanel extends JPanel implements View {
         }
     }
 
-    public void display(Schedule newSchedule, int orderNumber) {
+    public void display(ScheduleState newSchedule, int orderNumber) {
         schedule = newSchedule;
         selectedOrderNumber = orderNumber;
         TrainOrder order = newSchedule.getOrder(selectedOrderNumber);
-        selectedStationID = order.getStationID();
+        selectedStationID = order.getStationId();
 
         // Set the text on the title JLabel.
         label1.setText("Stop " + (selectedOrderNumber + 1));
@@ -259,7 +259,7 @@ public class SelectStationPanel extends JPanel implements View {
             StringBuilder stopNumbersString = new StringBuilder();
             boolean stationIsOnSchedule = false;
             for (int orderNumber = 0; orderNumber < schedule.getNumberOfOrders(); orderNumber++) {
-                int stationID = orderNumber == selectedOrderNumber ? selectedStationID : schedule.getOrder(orderNumber).getStationID();
+                int stationID = orderNumber == selectedOrderNumber ? selectedStationID : schedule.getOrder(orderNumber).getStationId();
                 if (station.getId() == stationID) {
                     if (stationIsOnSchedule) {
                         stopNumbersString.append(", ").append((orderNumber + 1));
@@ -301,10 +301,11 @@ public class SelectStationPanel extends JPanel implements View {
         player = modelRoot.getPlayer();
     }
 
-    public Schedule generateNewSchedule() {
+    public ScheduleState generateNewSchedule() {
         TrainOrder oldOrders, newOrders;
         oldOrders = schedule.getOrder(selectedOrderNumber);
-        newOrders = new TrainOrder(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull(), oldOrders.isAutoConsist());
+        newOrders = new TrainOrder(selectedStationID, oldOrders.getConsistPolicy(), oldOrders.getConsist(),
+                oldOrders.isWaitUntilFull(), oldOrders.isAutoConsist());
         return schedule.setOrder(selectedOrderNumber, newOrders);
     }
 

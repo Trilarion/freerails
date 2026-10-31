@@ -139,7 +139,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         TrainOrder order = schedule.getOrder(newScheduleOrderID);
 
         // Set up the array of images.
-        if (null != order.getConsist()) {
+        if (order.getConsistPolicy() == TrainOrder.ConsistPolicy.EXPLICIT) {
             display(train.getEngine(), order.getConsist());
         } else {
             images = new Image[0];

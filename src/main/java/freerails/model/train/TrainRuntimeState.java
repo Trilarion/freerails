@@ -22,7 +22,7 @@ import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.activity.Activity;
 import freerails.model.train.motion.TrainMotion;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.util.BidirectionalIterator;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +40,7 @@ public final class TrainRuntimeState implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private ImmutableCargoBatchBundle cargoBatchBundle = ImmutableCargoBatchBundle.EMPTY;
-    private UnmodifiableSchedule schedule = Schedule.EMPTY;
+    private UnmodifiableSchedule schedule = ScheduleState.EMPTY;
     private List<Activity> activities = new ArrayList<>();
 
     /** Returns an iterator over this train's activities. */
@@ -104,7 +104,7 @@ public final class TrainRuntimeState implements Serializable {
 
     /** Replaces the schedule with a defensive copy. */
     public void setSchedule(@NotNull UnmodifiableSchedule schedule) {
-        this.schedule = new Schedule(schedule);
+        this.schedule = new ScheduleState(schedule);
     }
 
     /**

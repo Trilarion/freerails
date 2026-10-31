@@ -32,13 +32,13 @@ public final class ModelConstants {
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
     public static final Money BOND_VALUE_ISSUE = new Money(500000);
     public static final Money BOND_VALUE_REPAY = new Money(-500000);
-    /**
-     * size of a tile (height and width)
-     */
-    // TODO the world should not depend on the tile size, currently it still does, maybe a different tile size (not pixel on screen, but kilometer?)
-    public static final int TILE_SIZE = 30;
-    public static final double TILE_DIAGONAL_SIZE = StrictMath.hypot(TILE_SIZE, TILE_SIZE);
-    public static final int WAGON_LENGTH = 24;
+    /** Fixed-point model distance units per map tile. */
+    public static final int MODEL_UNITS_PER_TILE = 100;
+    public static final double MODEL_DIAGONAL_TILE_LENGTH =
+            StrictMath.hypot(MODEL_UNITS_PER_TILE, MODEL_UNITS_PER_TILE);
+    /** Preserves existing track pricing when distances are expressed in the new model units. */
+    public static final double TRACK_COST_PER_MODEL_UNIT = 0.3d;
+    public static final int WAGON_LENGTH = 80;
     public static final int MAX_NUMBER_OF_WAGONS = 6;
     public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS) * WAGON_LENGTH;
     public static final int TRAIN_CRASH_FRAMES_COUNT = 15;

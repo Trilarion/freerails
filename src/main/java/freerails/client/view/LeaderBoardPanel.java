@@ -21,6 +21,7 @@
  */
 package freerails.client.view;
 
+import freerails.client.MoneyFormatter;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.finance.transaction.aggregator.NetWorthAggregator;
@@ -32,6 +33,7 @@ import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
 import javax.swing.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -96,6 +98,23 @@ public class LeaderBoardPanel extends JPanel implements View {
     private JList getPlayersList() {
         if (playersList == null) {
             playersList = new JList<>();
+            playersList.setCellRenderer(new DefaultListCellRenderer() {
+                @Serial
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                              boolean isSelected, boolean cellHasFocus) {
+                    JLabel label = (JLabel) super.getListCellRendererComponent(
+                            list, value, index, isSelected, cellHasFocus);
+                    if (value instanceof PlayerDetails details) {
+                        label.setText(details.getName() + ", "
+                                + MoneyFormatter.format(details.getNetworth())
+                                + " net worth, " + details.getStations() + "  stations.");
+                    }
+                    return label;
+                }
+            });
             playersList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
             playersList.setRequestFocusEnabled(false);
             playersList.setEnabled(true);

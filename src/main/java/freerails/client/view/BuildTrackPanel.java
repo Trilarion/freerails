@@ -25,6 +25,7 @@ package freerails.client.view;
 
 import freerails.client.ActionRoot;
 import freerails.client.ClientConstants;
+import freerails.client.MoneyFormatter;
 import freerails.client.ModelRootProperty;
 import freerails.model.track.TrackType;
 import freerails.util.ui.ImageManager;
@@ -333,7 +334,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
                     break;
             }
             toggleButton.setPreferredSize(new Dimension(36, 36));
-            String tooltip = trackType.getName() + " $" + price.toString();
+            String tooltip = trackType.getName() + " " + MoneyFormatter.format(price);
             toggleButton.setToolTipText(tooltip);
             if (!selectionSet.containsKey(category)) {
                 selectionSet.put(category, trackType.getId());

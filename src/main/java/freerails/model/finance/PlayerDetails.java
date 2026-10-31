@@ -38,7 +38,7 @@ public class PlayerDetails implements Comparable<PlayerDetails> {
      */
     @Override
     public String toString() {
-        return name + ", " + networth.toString() + " net worth, " + stations + "  stations.";
+        return name + ", " + networth.amount() + " net worth, " + stations + "  stations.";
     }
 
     /**

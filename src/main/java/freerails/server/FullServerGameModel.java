@@ -43,7 +43,7 @@ import freerails.model.track.TrackType;
 import freerails.model.train.Train;
 import freerails.model.train.TrainTemplate;
 import freerails.model.train.TrainUtils;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.*;
 import freerails.move.*;
@@ -262,12 +262,13 @@ public class FullServerGameModel implements ServerGameModel {
                         boolean autoSchedule = 0 == wagonTypes.size();
 
                         // generate initial schedule
-                        Schedule schedule = new Schedule();
+                        ScheduleState schedule = new ScheduleState();
 
                         // Add up to 4 stations to the schedule.
                         Iterator<Station> wi = world.getStations(player).iterator();
                         while (wi.hasNext() && schedule.getNumberOfOrders() < 5) {
-                            TrainOrder orders = new TrainOrder(wi.next().getId(), null, false, autoSchedule);
+                            TrainOrder orders = new TrainOrder(wi.next().getId(), TrainOrder.ConsistPolicy.UNCHANGED,
+                                    List.of(), false, autoSchedule);
                             schedule = schedule.addOrder(orders);
                         }
 

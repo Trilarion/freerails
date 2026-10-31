@@ -107,7 +107,7 @@ public class TileTransition implements TrackConfigurations {
         deltaX = x;
         deltaY = y;
         flatTrackTemplate = t;
-        length = x * y == 0 ? ModelConstants.TILE_SIZE : ModelConstants.TILE_DIAGONAL_SIZE;
+        length = x * y == 0 ? ModelConstants.MODEL_UNITS_PER_TILE : ModelConstants.MODEL_DIAGONAL_TILE_LENGTH;
     }
 
     /**
@@ -321,11 +321,9 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * Returns the geometric length of this transition using the model's tile
-     * dimensions.
+     * Returns this transition's length in fixed-point model distance units.
      *
-     * @return tile-size distance for orthogonal transitions, diagonal distance
-     *         for diagonal transitions
+     * @return model units for orthogonal transitions and diagonal transitions
      */
     public double getLength() {
         return length;

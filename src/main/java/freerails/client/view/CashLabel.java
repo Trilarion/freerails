@@ -23,6 +23,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.client.MoneyFormatter;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finance.Money;
 import freerails.model.player.Player;
@@ -63,8 +64,7 @@ public class CashLabel extends JLabel implements View {
     protected void paintComponent(Graphics g) {
         if (null != world) {
             Money m = world.getCurrentBalance(player);
-            String s = m.toString();
-            setText('$' + s);
+            setText(MoneyFormatter.format(m));
         }
 
         super.paintComponent(g);

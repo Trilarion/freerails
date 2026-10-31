@@ -24,7 +24,7 @@ import freerails.model.player.Player;
 import freerails.model.train.Train;
 import freerails.model.train.TrainConfiguration;
 import freerails.model.train.TrainRuntimeState;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
@@ -53,7 +53,7 @@ public class UpdateTrainMove implements Move {
         this.trainId = trainId;
         this.cargoBatchBundle = cargoBatchBundle == null ? null : new ImmutableCargoBatchBundle(cargoBatchBundle);
         this.consist = consist == null ? null : List.copyOf(consist);
-        this.schedule = schedule == null ? null : new Schedule(schedule);
+        this.schedule = schedule == null ? null : new ScheduleState(schedule);
     }
 
     @Override

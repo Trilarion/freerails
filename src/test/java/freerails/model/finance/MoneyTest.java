@@ -20,7 +20,27 @@ package freerails.model.finance;
 
 import junit.framework.TestCase;
 
+import java.util.Locale;
+
 public class MoneyTest extends TestCase {
+
+    public void testToStringIsLocaleIndependent() {
+        Locale originalLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.US);
+            Money amount = new Money(1_234_567);
+            assertEquals("1234567", amount.toString());
+            assertEquals(amount, new Money(1_234_567));
+            assertEquals(new Money(1_234_568), Money.add(amount, new Money(1)));
+
+            Locale.setDefault(Locale.GERMANY);
+            assertEquals("1234567", amount.toString());
+            assertEquals(amount, new Money(1_234_567));
+            assertEquals(new Money(1_234_568), Money.add(amount, new Money(1)));
+        } finally {
+            Locale.setDefault(originalLocale);
+        }
+    }
 
     public void testDivide() {
         assertEquals(new Money(3), Money.divide(new Money(12), 4));

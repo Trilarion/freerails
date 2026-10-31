@@ -40,7 +40,6 @@ import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.util.*;
 
-// TODO for deserializing we might want to use playerId instead of Player as index in Maps
 /**
  * Mutable implementation of {@link UnmodifiableWorld}, backed by Java
  * collections and a flat array of map tiles. It owns world definitions,
@@ -50,8 +49,8 @@ public class World implements UnmodifiableWorld {
 
     @Serial
     private static final long serialVersionUID = 3544393612684505393L;
-    private Map<Player, List<Transaction>> transactions = new HashMap<>();
-    private List<Money> currentBalance = new ArrayList<>();
+    private Map<Integer, List<Transaction>> transactions = new HashMap<>();
+    private Map<Integer, Money> currentBalance = new HashMap<>();
 
     // single instances
     private final Clock clock;
@@ -70,14 +69,22 @@ public class World implements UnmodifiableWorld {
     private final SortedSet<Sentiment> sentiments;
 
     // player specific lists
-    private final Map<Player, List<Train>> trains; // a list of trains by player
-    private final Map<Player, SortedSet<Station>> stations; // list of stations by player
+    private final Map<Integer, List<Train>> trains; // a list of trains by player ID
+    private final Map<Integer, SortedSet<Station>> stations; // list of stations by player ID
 
     private transient Map<Integer, Integer> cargoIndexById;
     private transient List<Cargo> cargosByIndex;
     private transient Map<Integer, Integer> trackTypeIndexById;
     private transient List<TrackType> trackTypesByIndex;
     private transient Map<Integer, Integer> playerIndexById;
+    private transient Map<Integer, Engine> engineById;
+    private transient Map<Integer, City> cityById;
+    private transient Map<Integer, Cargo> cargoById;
+    private transient Map<Integer, Terrain> terrainById;
+    private transient Map<Integer, TrackType> trackTypeById;
+    private transient Map<Integer, Sentiment> sentimentById;
+    private transient Map<Integer, Map<Integer, Integer>> trainIndexByIdByPlayer;
+    private transient Map<Integer, Map<Integer, Station>> stationByIdByPlayer;
 
     // TODO this should also be set by the builder
     private int currentSentimentId = 2;
@@ -98,8 +105,8 @@ public class World implements UnmodifiableWorld {
         private SortedSet<Terrain> terrainTypes = new TreeSet<>();
         private SortedSet<TrackType> trackTypes = new TreeSet<>();
         private SortedSet<Sentiment> sentiments = new TreeSet<>();
-        private Map<Player, List<Train>> trains = new HashMap<>();
-        private Map<Player, SortedSet<Station>> stations = new HashMap<>();
+        private Map<Integer, List<Train>> trains = new HashMap<>();
+        private Map<Integer, SortedSet<Station>> stations = new HashMap<>();
         private Rules rules = null;
         private Vec2D mapSize = null;
         private Clock clock = new Clock(1840, 1200, new Time(0));
@@ -269,11 +276,42 @@ public class World implements UnmodifiableWorld {
 
     /** Rebuilds the transient stable-ID lookup tables from the world lists. */
     private void initializeIndexes() {
+        engineById = createIdLookup(engines);
+        cityById = createIdLookup(cities);
+        cargoById = createIdLookup(cargos);
+        terrainById = createIdLookup(terrainTypes);
+        trackTypeById = createIdLookup(trackTypes);
+        sentimentById = createIdLookup(sentiments);
         cargosByIndex = new ArrayList<>(cargos);
         cargoIndexById = createIndex(cargosByIndex);
         trackTypesByIndex = new ArrayList<>(trackTypes);
         trackTypeIndexById = createIndex(trackTypesByIndex);
         playerIndexById = createIndex(players);
+
+        trainIndexByIdByPlayer = new HashMap<>();
+        trains.forEach((playerId, playerTrains) ->
+                trainIndexByIdByPlayer.put(playerId, createIndex(playerTrains)));
+        stationByIdByPlayer = new HashMap<>();
+        stations.forEach((playerId, playerStations) ->
+                stationByIdByPlayer.put(playerId, createIdLookup(playerStations)));
+    }
+
+    /**
+     * Builds an ID-to-object lookup for an identifiable collection.
+     *
+     * @param values identifiable objects to index
+     * @param <T> indexed object type
+     * @return map from stable IDs to their objects
+     * @throws IllegalArgumentException if identifiers are duplicated
+     */
+    private static <T extends Identifiable> Map<Integer, T> createIdLookup(Collection<T> values) {
+        Map<Integer, T> valueById = new HashMap<>();
+        for (T value : values) {
+            if (valueById.put(value.getId(), value) != null) {
+                throw new IllegalArgumentException("Duplicate model ID: " + value.getId());
+            }
+        }
+        return valueById;
     }
 
     /**
@@ -313,6 +351,24 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
+     * Looks up an object by its stable identifier.
+     *
+     * @param id stable identifier to find
+     * @param valuesById identifier-to-object lookup
+     * @param <T> indexed object type
+     * @return the matching object
+     * @throws IllegalArgumentException if the identifier is absent
+     */
+    private static <T> T get(int id, Map<Integer, T> valuesById) {
+        T value = valuesById.get(id);
+        if (value == null) {
+            throw new IllegalArgumentException(
+                    String.format("Element with Id=%d not existing in collection.", id));
+        }
+        return value;
+    }
+
+    /**
      * Restores serialized world state and reconstructs transient lookup indexes.
      *
      * @param input serialized data source
@@ -334,7 +390,7 @@ public class World implements UnmodifiableWorld {
     /** {@inheritDoc} */
     @Override
     public Engine getEngine(int id) {
-        return get(id, engines);
+        return get(id, engineById);
     }
 
     /** {@inheritDoc} */
@@ -346,7 +402,7 @@ public class World implements UnmodifiableWorld {
     /** {@inheritDoc} */
     @Override
     public City getCity(int id) {
-        return get(id, cities);
+        return get(id, cityById);
     }
 
     /** {@inheritDoc} */
@@ -358,7 +414,7 @@ public class World implements UnmodifiableWorld {
     /** {@inheritDoc} */
     @Override
     public Cargo getCargo(int id) {
-        return get(id, cargos);
+        return get(id, cargoById);
     }
 
     /** {@inheritDoc} */
@@ -382,7 +438,7 @@ public class World implements UnmodifiableWorld {
     /** {@inheritDoc} */
     @Override
     public Terrain getTerrain(int id) {
-        return get(id, terrainTypes);
+        return get(id, terrainById);
     }
 
     /** {@inheritDoc} */
@@ -394,7 +450,7 @@ public class World implements UnmodifiableWorld {
     /** {@inheritDoc} */
     @Override
     public TrackType getTrackType(int id) {
-        return get(id, trackTypes);
+        return get(id, trackTypeById);
     }
 
     /** {@inheritDoc} */
@@ -412,25 +468,29 @@ public class World implements UnmodifiableWorld {
     /** {@inheritDoc} */
     @Override
     public Collection<Train> getTrains(Player player) {
-        return Collections.unmodifiableList(trains.get(player));
+        return Collections.unmodifiableList(trains.get(getPlayerId(player)));
     }
 
     /** {@inheritDoc} */
     @Override
     public Train getTrain(Player player, int id) {
-        return get(id, trains.get(player));
+        int playerId = getPlayerId(player);
+        return trains.get(playerId).get(getTrainIndex(playerId, id));
     }
 
     /** {@inheritDoc} */
     @Override
     public int getTrainIndex(Player player, int trainId) {
-        List<Train> playerTrains = trains.get(player);
-        for (int index = 0; index < playerTrains.size(); index++) {
-            if (playerTrains.get(index).getId() == trainId) {
-                return index;
-            }
+        int playerId = getPlayerId(player);
+        return getTrainIndex(playerId, trainId);
+    }
+
+    private int getTrainIndex(int playerId, int trainId) {
+        Integer index = trainIndexByIdByPlayer.get(playerId).get(trainId);
+        if (index == null) {
+            throw new IllegalArgumentException("Unknown train ID " + trainId + " for player " + playerId);
         }
-        throw new IllegalArgumentException("Unknown train ID " + trainId + " for player " + player.getId());
+        return index;
     }
 
     /**
@@ -442,10 +502,14 @@ public class World implements UnmodifiableWorld {
      *         the same identifier
      */
     public void addTrain(Player player, Train train) {
-        if (Utils.containsId(train.getId(), trains.get(player))) {
+        int playerId = getPlayerId(player);
+        List<Train> playerTrains = trains.get(playerId);
+        Map<Integer, Integer> trainIndexes = trainIndexByIdByPlayer.get(playerId);
+        if (trainIndexes.containsKey(train.getId())) {
             throw new IllegalArgumentException("Train with id already existing. Cannot add.");
         }
-        trains.get(player).add(train);
+        playerTrains.add(train);
+        trainIndexes.put(train.getId(), playerTrains.size() - 1);
     }
 
     /**
@@ -456,19 +520,27 @@ public class World implements UnmodifiableWorld {
      * @throws IllegalArgumentException if no matching train exists
      */
     public void removeTrain(Player player, int id) {
-        trains.get(player).remove(get(id, trains.get(player)));
+        int playerId = getPlayerId(player);
+        List<Train> playerTrains = trains.get(playerId);
+        Map<Integer, Integer> trainIndexes = trainIndexByIdByPlayer.get(playerId);
+        int index = getTrainIndex(playerId, id);
+        playerTrains.remove(index);
+        trainIndexes.remove(id);
+        for (int i = index; i < playerTrains.size(); i++) {
+            trainIndexes.put(playerTrains.get(i).getId(), i);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<Station> getStations(Player player) {
-        return Collections.unmodifiableSortedSet(stations.get(player));
+        return Collections.unmodifiableSortedSet(stations.get(getPlayerId(player)));
     }
 
     /** {@inheritDoc} */
     @Override
     public Station getStation(Player player, int id) {
-        return get(id, stations.get(player));
+        return get(id, stationByIdByPlayer.get(getPlayerId(player)));
     }
 
     /**
@@ -480,10 +552,16 @@ public class World implements UnmodifiableWorld {
      *         with the same identifier
      */
     public void addStation(Player player, Station station) {
-        if (Utils.containsId(station.getId(), stations.get(player))) {
+        int playerId = getPlayerId(player);
+        SortedSet<Station> playerStations = stations.get(playerId);
+        Map<Integer, Station> stationsById = stationByIdByPlayer.get(playerId);
+        if (stationsById.containsKey(station.getId())) {
             throw new IllegalArgumentException("Station with id already existing. Cannot add.");
         }
-        stations.get(player).add(station);
+        if (!playerStations.add(station)) {
+            throw new IllegalArgumentException("Station cannot be added to the player's collection.");
+        }
+        stationsById.put(station.getId(), station);
     }
 
     /**
@@ -494,7 +572,12 @@ public class World implements UnmodifiableWorld {
      * @throws IllegalArgumentException if no matching station exists
      */
     public void removeStation(Player player, int id) {
-        stations.get(player).remove(get(id, stations.get(player)));
+        int playerId = getPlayerId(player);
+        SortedSet<Station> playerStations = stations.get(playerId);
+        Map<Integer, Station> stationsById = stationByIdByPlayer.get(playerId);
+        Station station = get(id, stationsById);
+        playerStations.remove(station);
+        stationsById.remove(id);
     }
 
     /**
@@ -506,19 +589,10 @@ public class World implements UnmodifiableWorld {
      * @return the matching object
      * @throws IllegalArgumentException if no matching object is present
      */
-    private <E extends Identifiable> E get(final int id, @NotNull final Collection<E> c) {
-        for (E e: c) {
-            if (e.getId() == id) {
-                return e;
-            }
-        }
-        throw new IllegalArgumentException(String.format("Element with Id=%d not existing in collection.", id));
-    }
-
     /** Returns the sentiment currently selected by this world. */
     @Override
     public Sentiment getSentiment() {
-        return get(currentSentimentId, sentiments);
+        return get(currentSentimentId, sentimentById);
     }
 
     /** {@inheritDoc} */
@@ -566,16 +640,20 @@ public class World implements UnmodifiableWorld {
             throw new IllegalArgumentException("Player with ID already exists: " + player.getId());
         }
 
-        if (trains.containsKey(player) || stations.containsKey(player) || transactions.containsKey(player)) {
+        if (trains.containsKey(player.getId())
+                || stations.containsKey(player.getId())
+                || transactions.containsKey(player.getId())) {
             throw new IllegalStateException("World already contains state for player " + player.getId());
         }
         int index = players.size();
         players.add(player);
         playerIndexById.put(player.getId(), index);
-        transactions.put(player, new ArrayList<>());
-        currentBalance.add(Money.ZERO);
-        trains.put(player, new ArrayList<>());
-        stations.put(player, new TreeSet<>());
+        transactions.put(player.getId(), new ArrayList<>());
+        currentBalance.put(player.getId(), Money.ZERO);
+        trains.put(player.getId(), new ArrayList<>());
+        stations.put(player.getId(), new TreeSet<>());
+        trainIndexByIdByPlayer.put(player.getId(), new HashMap<>());
+        stationByIdByPlayer.put(player.getId(), new HashMap<>());
 
         return index;
     }
@@ -593,16 +671,13 @@ public class World implements UnmodifiableWorld {
      */
     public void addTransaction(Player player, Transaction transaction) {
         Objects.requireNonNull(transaction, "transaction");
-        int playerIndex = getPlayerIndex(player.getId());
-        List<Transaction> playerTransactions = transactions.get(player);
-        if (playerTransactions == null) {
-            throw new IllegalArgumentException("Player is not part of this world: " + player.getId());
-        }
+        int playerId = getPlayerId(player);
+        List<Transaction> playerTransactions = transactions.get(playerId);
 
         // adjust balance
-        Money newBalance = Money.add(transaction.getAmount(), currentBalance.get(playerIndex));
+        Money newBalance = Money.add(transaction.getAmount(), currentBalance.get(playerId));
         playerTransactions.add(transaction);
-        currentBalance.set(playerIndex, newBalance);
+        currentBalance.put(playerId, newBalance);
     }
 
     /**
@@ -678,7 +753,7 @@ public class World implements UnmodifiableWorld {
      */
     @Override
     public Money getCurrentBalance(Player player) {
-        return currentBalance.get(getPlayerIndex(player.getId()));
+        return currentBalance.get(getPlayerId(player));
     }
 
     /** {@inheritDoc} */
@@ -733,13 +808,13 @@ public class World implements UnmodifiableWorld {
      */
     @Override
     public Transaction getTransaction(Player player, int i) {
-        return transactions.get(player).get(i);
+        return transactions.get(getPlayerId(player)).get(i);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<Transaction> getTransactions(Player player) {
-        return Collections.unmodifiableList(transactions.get(player));
+        return Collections.unmodifiableList(transactions.get(getPlayerId(player)));
     }
 
     /**
@@ -788,18 +863,30 @@ public class World implements UnmodifiableWorld {
      * @throws IllegalStateException if the player has no transactions
      */
     public Transaction removeLastTransaction(Player player) {
-        int playerIndex = getPlayerIndex(player.getId());
-
-        List<Transaction> transactions = this.transactions.get(player);
+        int playerId = getPlayerId(player);
+        List<Transaction> transactions = this.transactions.get(playerId);
         if (transactions == null || transactions.isEmpty()) {
             throw new IllegalStateException("Player has no transactions to remove.");
         }
         Transaction transactionRecord = transactions.removeLast();
 
-        Money oldBalance = currentBalance.get(playerIndex);
+        Money oldBalance = currentBalance.get(playerId);
         Money newBalance = Money.subtract(oldBalance, transactionRecord.getAmount());
-        currentBalance.set(playerIndex, newBalance);
+        currentBalance.put(playerId, newBalance);
         return transactionRecord;
+    }
+
+    /**
+     * Validates a player reference and returns its stable identifier.
+     *
+     * @param player player to validate
+     * @return the player's stable identifier
+     * @throws IllegalArgumentException if the player identifier is unknown
+     */
+    private int getPlayerId(Player player) {
+        int playerId = Objects.requireNonNull(player, "player").getId();
+        getPlayerIndex(playerId);
+        return playerId;
     }
 
     /**

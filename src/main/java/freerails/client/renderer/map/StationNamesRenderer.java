@@ -23,6 +23,7 @@ import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
 import freerails.model.*;
+import freerails.client.ClientConstants;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
@@ -73,8 +74,9 @@ public class StationNamesRenderer implements Painter {
             // for all stations of this player
             for (Station station: world.getStations(player)) {
                 Vec2D location = station.getLocation();
-                Vec2D displayLocation = Vec2D.multiply(location, ModelConstants.TILE_SIZE);
-                Rectangle stationBox = new Rectangle(displayLocation.x() - ModelConstants.TILE_SIZE * 3, displayLocation.y() - ModelConstants.TILE_SIZE * 3, ModelConstants.TILE_SIZE * 7, ModelConstants.TILE_SIZE * 7);
+                Vec2D displayLocation = MapCoordinateAdapter.tileOrigin(location);
+                int tileSize = ClientConstants.TILE_PIXEL_SIZE;
+                Rectangle stationBox = new Rectangle(displayLocation.x() - tileSize * 3, displayLocation.y() - tileSize * 3, tileSize * 7, tileSize * 7);
                 if (newVisibleRectangle != null && !newVisibleRectangle.intersects(stationBox)) {
                     continue; // station box not visible
                 }
@@ -82,9 +84,9 @@ public class StationNamesRenderer implements Painter {
                 if (showStationBorders) {
                     TerrainTile tile = world.getTile(location);
                     int radius = tile.trackPiece().trackType().getStationRadius();
-                    int diameterInPixels = (radius * 2 + 1) * ModelConstants.TILE_SIZE;
-                    int radiusX = (location.x() - radius) * ModelConstants.TILE_SIZE;
-                    int radiusY = (location.y() - radius) * ModelConstants.TILE_SIZE;
+                    int diameterInPixels = (radius * 2 + 1) * tileSize;
+                    int radiusX = (location.x() - radius) * tileSize;
+                    int radiusY = (location.y() - radius) * tileSize;
                     g.setColor(Color.WHITE);
                     g.setStroke(dashed);
                     g.draw(new RoundRectangle2D.Double(radiusX, radiusY, diameterInPixels, diameterInPixels, 10, 10));
@@ -94,8 +96,8 @@ public class StationNamesRenderer implements Painter {
                 if (showStationNames) {
                     String stationName = station.getStationName();
 
-                    int positionX = displayLocation.x() + ModelConstants.TILE_SIZE / 2;
-                    int positionY = displayLocation.y() + ModelConstants.TILE_SIZE;
+                    int positionX = displayLocation.x() + tileSize / 2;
+                    int positionY = displayLocation.y() + tileSize;
 
                     TextLayout layout = new TextLayout(stationName, font, g.getFontRenderContext());
                     float visibleAdvance = layout.getVisibleAdvance();

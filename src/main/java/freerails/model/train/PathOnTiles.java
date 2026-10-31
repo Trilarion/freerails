@@ -99,8 +99,8 @@ public class PathOnTiles implements Serializable {
     }
 
     /**
-     * Returns the display-coordinate point at the specified distance from the
-     * start of the path.
+     * Returns the fixed-point model-coordinate point at the specified model
+     * distance from the start of the path.
      *
      * @param distance distance along the path
      * @return point at that distance
@@ -119,20 +119,17 @@ public class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new Vec2D(x * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2, y * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2);
+                return new Vec2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
             }
             if (distanceSoFar > distance) {
-                int excess = (int) (ModelConstants.TILE_SIZE * (distanceSoFar - distance) / v.getLength());
-                x = x * ModelConstants.TILE_SIZE - v.deltaX * excess;
-                y = y * ModelConstants.TILE_SIZE - v.deltaY * excess;
-                return new Vec2D(x + ModelConstants.TILE_SIZE / 2, y + ModelConstants.TILE_SIZE / 2);
+                return pointWithinTransition(x, y, v, distanceSoFar - distance);
             }
         }
         throw new IllegalArgumentException("distance:" + distance + " > getLength():" + vectors.size() + " distanceSoFar:" + distanceSoFar);
     }
 
     /**
-     * Returns the two display-coordinate points delimiting the specified path interval.
+     * Returns the two fixed-point model-coordinate points delimiting the specified path interval.
      *
      * @param firstdistance interval start measured from the path start
      * @param lastdistance interval end measured from the path start
@@ -163,14 +160,11 @@ public class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == firstdistance) {
-                firstPoint = new Vec2D(x * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2, y * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2);
+                firstPoint = new Vec2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
                 break;
             }
             if (distanceSoFar > firstdistance) {
-                int excess = (int) (ModelConstants.TILE_SIZE * (distanceSoFar - firstdistance) / v.getLength());
-                int nx = x * ModelConstants.TILE_SIZE - v.deltaX * excess + ModelConstants.TILE_SIZE / 2;
-                int ny = y * ModelConstants.TILE_SIZE - v.deltaY * excess + ModelConstants.TILE_SIZE / 2;
-                firstPoint = new Vec2D(nx, ny);
+                firstPoint = pointWithinTransition(x, y, v, distanceSoFar - firstdistance);
                 break;
             }
         }
@@ -185,14 +179,11 @@ public class PathOnTiles implements Serializable {
         do {
 
             if (distanceSoFar == lastdistance) {
-                secondPoint = new Vec2D(x * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2, y * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2);
+                secondPoint = new Vec2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
                 break;
             }
             if (distanceSoFar > lastdistance) {
-                int excess = (int) (ModelConstants.TILE_SIZE * (distanceSoFar - lastdistance) / v.getLength());
-                int nx = x * ModelConstants.TILE_SIZE - v.deltaX * excess + ModelConstants.TILE_SIZE / 2;
-                int ny = y * ModelConstants.TILE_SIZE - v.deltaY * excess + ModelConstants.TILE_SIZE / 2;
-                secondPoint = new Vec2D(nx, ny);
+                secondPoint = pointWithinTransition(x, y, v, distanceSoFar - lastdistance);
                 break;
             }
             i++;
@@ -256,7 +247,7 @@ public class PathOnTiles implements Serializable {
      */
     public int getStepIndex(int distance) {
         if (0 > distance) throw new IllegalArgumentException("distance < 0");
-        int distanceSoFar = 0;
+        double distanceSoFar = 0;
         for (int i = 0; i < vectors.size(); i++) {
             TileTransition v = vectors.get(i);
             distanceSoFar += v.getLength();
@@ -292,6 +283,15 @@ public class PathOnTiles implements Serializable {
         return new PathOnTiles(start, Arrays.asList(newPath));
     }
 
+    private static Vec2D pointWithinTransition(int tileX, int tileY, TileTransition transition, double distanceToEnd) {
+        double excess = ModelConstants.MODEL_UNITS_PER_TILE * distanceToEnd / transition.getLength();
+        return new Vec2D(
+                (int) Math.round(tileX * (double) ModelConstants.MODEL_UNITS_PER_TILE
+                        - transition.deltaX * excess + ModelConstants.MODEL_UNITS_PER_TILE / 2.0),
+                (int) Math.round(tileY * (double) ModelConstants.MODEL_UNITS_PER_TILE
+                        - transition.deltaY * excess + ModelConstants.MODEL_UNITS_PER_TILE / 2.0));
+    }
+
     /**
      * Returns an iterator over the portion of this path between the given distances.
      *
@@ -312,15 +312,15 @@ public class PathOnTiles implements Serializable {
         Vec2D tile = start;
         int tileX = tile.x();
         int tileY = tile.y();
-        int distanceSoFar = 0;
+        double distanceSoFar = 0;
         for (TileTransition vector : vectors) {
 
             if (distanceSoFar > offset + length) {
                 break;
             }
             if (distanceSoFar >= offset) {
-                int x = ModelConstants.TILE_SIZE / 2 + ModelConstants.TILE_SIZE * tileX;
-                int y = ModelConstants.TILE_SIZE / 2 + ModelConstants.TILE_SIZE * tileY;
+                int x = ModelConstants.MODEL_UNITS_PER_TILE / 2 + ModelConstants.MODEL_UNITS_PER_TILE * tileX;
+                int y = ModelConstants.MODEL_UNITS_PER_TILE / 2 + ModelConstants.MODEL_UNITS_PER_TILE * tileY;
                 points.add(new Vec2D(x, y));
             }
 

@@ -31,6 +31,7 @@ import freerails.model.game.Sentiment;
 import freerails.model.game.Time;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
+import freerails.model.terrain.city.City;
 import freerails.model.track.TrackConfiguration;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
@@ -293,6 +294,8 @@ public class WorldTest extends TestCase {
         world.addTrain(first, firstOtherTrain);
         world.addTrain(second, secondTrain);
         assertDuplicateRejected(() -> world.addTrain(first, new Train(7, 1)));
+        assertEquals(0, world.getTrainIndex(first, 7));
+        assertEquals(1, world.getTrainIndex(first, 8));
         assertEquals(List.of(firstTrain, firstOtherTrain), List.copyOf(world.getTrains(first)));
         assertEquals(List.of(secondTrain), List.copyOf(world.getTrains(second)));
 
@@ -312,10 +315,72 @@ public class WorldTest extends TestCase {
 
         world.removeTrain(first, 7);
         assertEquals(firstOtherTrain, world.getTrain(first, 8));
+        Train lastTrain = new Train(11, 0);
+        world.addTrain(first, lastTrain);
+        assertEquals(1, world.getTrainIndex(first, 11));
+        world.removeTrain(first, 8);
+        assertEquals(0, world.getTrainIndex(first, 11));
         assertEquals(secondTrain, world.getTrain(second, 7));
         world.removeStation(first, 9);
         assertEquals(firstOtherStation, world.getStation(first, 10));
         assertEquals(secondStation, world.getStation(second, 9));
+    }
+
+    public void testWorldEntityLookupsUseStableIdsAndKeepSortedIteration() {
+        World catalog = WorldGenerator.defaultWorld();
+        City city = new City(77, "Test city", Vec2D.ZERO);
+        SortedSet<City> cities = new TreeSet<>();
+        cities.add(city);
+        SortedSet<Sentiment> sentiments = new TreeSet<>();
+        sentiments.add(catalog.getSentiment());
+
+        World world = new World.Builder()
+                .setRules(catalog.getRules())
+                .setMapSize(catalog.getMapSize())
+                .setEngines(new TreeSet<>(catalog.getEngines()))
+                .setCities(cities)
+                .setCargos(new TreeSet<>(catalog.getCargos()))
+                .setTerrainTypes(new TreeSet<>(catalog.getTerrains()))
+                .setTrackTypes(new TreeSet<>(catalog.getTrackTypes()))
+                .setSentiments(sentiments)
+                .build();
+
+        for (var engine : world.getEngines()) {
+            assertSame(engine, world.getEngine(engine.getId()));
+        }
+        assertSame(city, world.getCity(city.getId()));
+        for (var cargo : world.getCargos()) {
+            assertSame(cargo, world.getCargo(cargo.getId()));
+        }
+        for (var terrain : world.getTerrains()) {
+            assertSame(terrain, world.getTerrain(terrain.getId()));
+        }
+        for (var trackType : world.getTrackTypes()) {
+            assertSame(trackType, world.getTrackType(trackType.getId()));
+        }
+        assertSame(catalog.getSentiment(), world.getSentiment());
+        assertEquals(world.getEngines().stream().map(engine -> engine.getId()).sorted().toList(),
+                world.getEngines().stream().map(engine -> engine.getId()).toList());
+        assertEquals(world.getCities().stream().map(City::getId).sorted().toList(),
+                world.getCities().stream().map(City::getId).toList());
+
+        World copy = (World) Utils.cloneBySerialisation(world);
+        for (var engine : copy.getEngines()) {
+            assertSame(engine, copy.getEngine(engine.getId()));
+        }
+        for (var cityCopy : copy.getCities()) {
+            assertSame(cityCopy, copy.getCity(cityCopy.getId()));
+        }
+        for (var cargo : copy.getCargos()) {
+            assertSame(cargo, copy.getCargo(cargo.getId()));
+        }
+        for (var terrain : copy.getTerrains()) {
+            assertSame(terrain, copy.getTerrain(terrain.getId()));
+        }
+        for (var trackType : copy.getTrackTypes()) {
+            assertSame(trackType, copy.getTrackType(trackType.getId()));
+        }
+        assertEquals(world.getSentiment().getId(), copy.getSentiment().getId());
     }
 
     public void testTransactionAppendIsOrderedAndOverflowIsAtomic() {
@@ -388,11 +453,32 @@ public class WorldTest extends TestCase {
 
         world.addTransaction(first,
                 new Transaction(TransactionCategory.MISC_INCOME, new Money(25), world.getClock().getCurrentTime()));
+        world.addTrain(first, new Train(101, 0));
+        Station firstStation = new Station(
+                202, Vec2D.ZERO, "First", world.getCargos().size(), CargoBatchBundle.EMPTY);
+        world.addStation(first, firstStation);
+        world.addTransaction(second,
+                new Transaction(TransactionCategory.MISC_INCOME, new Money(70), world.getClock().getCurrentTime()));
+        Player firstReference = new Player(40, "Another reference to First");
+
         assertEquals(new Money(25), world.getCurrentBalance(first));
+        assertEquals(new Money(25), world.getCurrentBalance(firstReference));
+        assertEquals(List.of(new Train(101, 0)), List.copyOf(world.getTrains(firstReference)));
+        assertEquals(List.of(firstStation), List.copyOf(world.getStations(firstReference)));
+        assertEquals(new Money(70), world.getCurrentBalance(second));
+        assertTrue(world.getTrains(second).isEmpty());
+        assertTrue(world.getStations(second).isEmpty());
+        assertEquals(List.of(first, second), List.copyOf(world.getPlayers()));
+        assertEquals(List.of(first.getId(), second.getId()),
+                world.getPlayers().stream().map(Player::getId).toList());
 
         World copy = (World) Utils.cloneBySerialisation(world);
         assertEquals(0, copy.getPlayerIndex(40));
-        assertEquals(new Money(25), copy.getCurrentBalance(first));
+        assertEquals(1, copy.getPlayerIndex(7));
+        assertEquals(new Money(25), copy.getCurrentBalance(firstReference));
+        assertEquals(new Money(70), copy.getCurrentBalance(second));
+        assertEquals(List.of(new Train(101, 0)), List.copyOf(copy.getTrains(firstReference)));
+        assertEquals(List.of(firstStation), List.copyOf(copy.getStations(firstReference)));
     }
 
     public void testDuplicatePlayerIdDoesNotChangePlayerOrAccountState() {
@@ -564,6 +650,7 @@ public class WorldTest extends TestCase {
         assertEquals(40, copy.getTile(trackLocation).trackPiece().playerId());
         Train restoredTrain = copy.getTrain(restoredPlayer, 101);
         assertEquals(train, restoredTrain);
+        assertEquals(0, copy.getTrainIndex(restoredPlayer, 101));
         assertEquals(12, restoredTrain.getEngine());
         assertEquals(List.of(5, 6), restoredTrain.getConsist());
         Station restoredStation = copy.getStation(restoredPlayer, 303);

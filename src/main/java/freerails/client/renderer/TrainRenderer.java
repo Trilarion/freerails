@@ -19,7 +19,10 @@
 package freerails.client.renderer;
 
 import freerails.model.train.*;
+import freerails.model.ModelConstants;
 import freerails.model.train.motion.TrainPositionOnMap;
+import freerails.client.ClientConstants;
+import freerails.client.renderer.map.MapCoordinateAdapter;
 import freerails.util.Segment;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
@@ -67,7 +70,7 @@ public class TrainRenderer {
     }
 
     private void renderWagon(Graphics g, PathWalker pathWalker, int type, boolean engine) {
-        pathWalker.stepForward(16);
+        pathWalker.stepForward(ModelConstants.WAGON_LENGTH * 2.0 / 3.0);
 
         boolean firstIteration = true;
 
@@ -85,9 +88,11 @@ public class TrainRenderer {
 
         Segment wagon = new Segment(p, line.b());
 
-        Vec2D diff = Vec2D.subtract(wagon.b(), wagon.a());
+        Vec2D pixelA = MapCoordinateAdapter.modelToPixel(wagon.a());
+        Vec2D pixelB = MapCoordinateAdapter.modelToPixel(wagon.b());
+        Vec2D diff = Vec2D.subtract(pixelB, pixelA);
         TileTransition v = TileTransition.getNearestVector(diff.x(), diff.y());
-        Vec2D center = Vec2D.divide(Vec2D.add(wagon.a(), wagon.b()), 2);
+        Vec2D center = Vec2D.divide(Vec2D.add(pixelA, pixelB), 2);
         Image image;
 
         if (engine) {
@@ -96,10 +101,12 @@ public class TrainRenderer {
             image = rendererRoot.getWagonImages(type).getOverheadImage(v.getID());
         }
 
-        g.drawImage(image, center.x() - 15, center.y() - 15, null);
+        int halfTilePixelSize = ClientConstants.TILE_PIXEL_SIZE / 2;
+        g.drawImage(image, center.x() - halfTilePixelSize, center.y() - halfTilePixelSize,
+                ClientConstants.TILE_PIXEL_SIZE, ClientConstants.TILE_PIXEL_SIZE, null);
 
         // The gap between wagons
-        pathWalker.stepForward(8);
+        pathWalker.stepForward(ModelConstants.WAGON_LENGTH / 3.0);
 
         while (pathWalker.hasNext()) {
             line = pathWalker.nextSegment();

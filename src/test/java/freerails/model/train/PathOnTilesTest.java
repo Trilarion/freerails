@@ -67,9 +67,9 @@ public class PathOnTilesTest extends TestCase {
         PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
         assertEquals(0, pathOnTiles.getStepIndex(0));
         assertEquals(0, pathOnTiles.getStepIndex(1));
-        assertEquals(0, pathOnTiles.getStepIndex(30));
-        assertEquals(1, pathOnTiles.getStepIndex(60));
-        assertEquals(2, pathOnTiles.getStepIndex(90));
+        assertEquals(0, pathOnTiles.getStepIndex(100));
+        assertEquals(1, pathOnTiles.getStepIndex(200));
+        assertEquals(2, pathOnTiles.getStepIndex(300));
     }
 
     /**
@@ -79,7 +79,7 @@ public class PathOnTilesTest extends TestCase {
         Vec2D p1 = Vec2D.ZERO;
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
-        assertEquals(3 * ModelConstants.TILE_SIZE, pathOnTiles.getTotalDistance(), 0.001);
+        assertEquals(3 * ModelConstants.MODEL_UNITS_PER_TILE, pathOnTiles.getTotalDistance(), 0.001);
     }
 
     /**
@@ -89,17 +89,22 @@ public class PathOnTilesTest extends TestCase {
         Vec2D p1 = Vec2D.ZERO;
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
-        Vec2D expected = new Vec2D(15, 15);
+        Vec2D expected = new Vec2D(50, 50);
         Vec2D actual = pathOnTiles.getPoint(0);
         assertEquals(expected, actual);
 
-        expected = new Vec2D(45, 15);
-        actual = pathOnTiles.getPoint(30);
+        expected = new Vec2D(150, 50);
+        actual = pathOnTiles.getPoint(100);
         assertEquals(expected, actual);
 
-        expected = new Vec2D(60, 15);
-        actual = pathOnTiles.getPoint(45);
+        assertEquals(new Vec2D(51, 50), pathOnTiles.getPoint(1));
+
+        expected = new Vec2D(200, 50);
+        actual = pathOnTiles.getPoint(150);
         assertEquals(expected, actual);
+
+        PathOnTiles diagonal = new PathOnTiles(Vec2D.ZERO, TileTransition.NORTH_EAST);
+        assertEquals(new Vec2D(100, 0), diagonal.getPoint(ModelConstants.MODEL_DIAGONAL_TILE_LENGTH / 2));
     }
 
     /**
@@ -109,18 +114,18 @@ public class PathOnTilesTest extends TestCase {
         Vec2D p1 = new Vec2D();
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
-        Vec2D expected1 = new Vec2D(15, 15);
+        Vec2D expected1 = new Vec2D(50, 50);
         Pair<Vec2D, Vec2D> actual = pathOnTiles.getPoint(0, 0);
         assertEquals(expected1, actual.a());
         assertEquals(expected1, actual.b());
 
-        Vec2D expected2 = new Vec2D(45, 15);
-        actual = pathOnTiles.getPoint(0, 30);
+        Vec2D expected2 = new Vec2D(150, 50);
+        actual = pathOnTiles.getPoint(0, 100);
         assertEquals(expected1, actual.a());
         assertEquals(expected2, actual.b());
 
-        Vec2D expected3 = new Vec2D(60, 15);
-        actual = pathOnTiles.getPoint(30, 45);
+        Vec2D expected3 = new Vec2D(200, 50);
+        actual = pathOnTiles.getPoint(100, 150);
         assertEquals(expected2, actual.a());
         assertEquals(expected3, actual.b());
     }
@@ -135,20 +140,20 @@ public class PathOnTilesTest extends TestCase {
 
         // First check
         Pair<PathIterator, Integer> pathIt = pathOnTiles.subPath(0, pathOnTiles.getTotalDistance());
-        Vec2D[] expected = {new Vec2D(15, 15), new Vec2D(45, 15), new Vec2D(75, 15), new Vec2D(105, 15)};
+        Vec2D[] expected = {new Vec2D(50, 50), new Vec2D(150, 50), new Vec2D(250, 50), new Vec2D(350, 50)};
         assertEquals(Integer.valueOf(expected.length), pathIt.b());
         checkPath(pathIt.a(), expected);
 
         // Second check
-        pathIt = pathOnTiles.subPath(3, pathOnTiles.getTotalDistance() - 3);
-        expected = new Vec2D[]{new Vec2D(18, 15), new Vec2D(45, 15), new Vec2D(75, 15), new Vec2D(105, 15)};
+        pathIt = pathOnTiles.subPath(10, pathOnTiles.getTotalDistance() - 10);
+        expected = new Vec2D[]{new Vec2D(60, 50), new Vec2D(150, 50), new Vec2D(250, 50), new Vec2D(350, 50)};
         assertEquals(Integer.valueOf(expected.length), pathIt.b());
         checkPath(pathIt.a(), expected);
 
         // 3rd check
-        double i = pathOnTiles.getTotalDistance() - 10;
-        pathIt = pathOnTiles.subPath(3, i);
-        expected = new Vec2D[]{new Vec2D(18, 15), new Vec2D(45, 15), new Vec2D(75, 15), new Vec2D(98, 15)};
+        double i = pathOnTiles.getTotalDistance() - ModelConstants.MODEL_UNITS_PER_TILE / 3.0;
+        pathIt = pathOnTiles.subPath(10, i);
+        expected = new Vec2D[]{new Vec2D(60, 50), new Vec2D(150, 50), new Vec2D(250, 50), new Vec2D(327, 50)};
         assertEquals(Integer.valueOf(expected.length), pathIt.b());
         checkPath(pathIt.a(), expected);
 
@@ -156,11 +161,11 @@ public class PathOnTilesTest extends TestCase {
         p1 = new Vec2D(5, 5);
         tileTransitions = new TileTransition[]{TileTransition.SOUTH_WEST};
         pathOnTiles = new PathOnTiles(p1, tileTransitions);
-        pathIt = pathOnTiles.subPath(18, 24);
+        pathIt = pathOnTiles.subPath(60, 80);
         Segment line = null;
         assertTrue(pathIt.a().hasNext());
         line = pathIt.a().nextSegment();
-        assertEquals("The length of the train.", 24, line.getLength(), 1.0d);
+        assertEquals("The length of the train.", 80, line.getLength(), 1.0d);
         assertFalse(pathIt.a().hasNext());
 
         // 5th check, same as 2nd but with different starting position.
@@ -169,12 +174,12 @@ public class PathOnTilesTest extends TestCase {
         p1 = new Vec2D(4, 7);
         pathOnTiles = new PathOnTiles(p1, tileTransitions);
 
-        pathIt = pathOnTiles.subPath(3, pathOnTiles.getTotalDistance() - 3);
-        expected = new Vec2D[]{new Vec2D(18, 15), new Vec2D(45, 15),
-                new Vec2D(75, 15), new Vec2D(105, 15)};
+        pathIt = pathOnTiles.subPath(10, pathOnTiles.getTotalDistance() - 10);
+        expected = new Vec2D[]{new Vec2D(60, 50), new Vec2D(150, 50),
+                new Vec2D(250, 50), new Vec2D(350, 50)};
         for (int j = 0; j < expected.length; j++) {
-            int x = expected[j].x() + p1.x() * ModelConstants.TILE_SIZE;
-            int y = expected[j].y() + p1.y() * ModelConstants.TILE_SIZE;
+            int x = expected[j].x() + p1.x() * ModelConstants.MODEL_UNITS_PER_TILE;
+            int y = expected[j].y() + p1.y() * ModelConstants.MODEL_UNITS_PER_TILE;
             expected[j] = new Vec2D(x, y);
         }
         assertEquals(Integer.valueOf(expected.length), pathIt.b());

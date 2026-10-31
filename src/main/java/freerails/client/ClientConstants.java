@@ -18,7 +18,6 @@
 
 package freerails.client;
 
-import freerails.model.ModelConstants;
 import freerails.util.Vec2D;
 
 import java.awt.*;
@@ -185,7 +184,8 @@ public final class ClientConstants {
      */
     public static final int SERVERUPDATE = 50;
 
-    public static final Vec2D TILE_SIZE = new Vec2D(ModelConstants.TILE_SIZE, ModelConstants.TILE_SIZE);
+    public static final int TILE_PIXEL_SIZE = TileSetMetadata.loadDefault().tilePixelSize();
+    public static final Vec2D TILE_SIZE = new Vec2D(TILE_PIXEL_SIZE, TILE_PIXEL_SIZE);
     /**
      * Affects scroll direction and scroll speed relative to the cursor.
      * Examples:

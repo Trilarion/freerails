@@ -261,7 +261,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             // TODO use Money arithmetic
             long priceA = ruleA.getPurchasingPrice().amount();
             long priceB = ruleB.getPurchasingPrice().amount();
-            cost += length * (priceA + priceB);
+            cost += length * (priceA + priceB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT;
             // Add fixed cost if tile b does not have the desired track type.
             TerrainTile a = world.getTile(new Vec2D(x[0], y[0]));
             TrackPiece trackPiece = a.trackPiece();
@@ -270,7 +270,8 @@ public class BuildTrackExplorer implements GraphExplorer {
                 if (!currentRuleA.equals(ruleA)) {
                     assert !currentRuleA.isStation(); // We shouldn't be upgrading a station.
                     // TODO was getFixedCost(), meaning?,
-                    cost += ruleA.getYearlyMaintenance().amount() * ModelConstants.TILE_SIZE;
+                    cost += ruleA.getYearlyMaintenance().amount() * ModelConstants.MODEL_UNITS_PER_TILE
+                            * ModelConstants.TRACK_COST_PER_MODEL_UNIT;
                 }
             }
         }

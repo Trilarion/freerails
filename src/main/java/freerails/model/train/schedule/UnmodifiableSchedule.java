@@ -23,7 +23,6 @@ package freerails.model.train.schedule;
 
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Read-only access to the orders and current destination of a train schedule.
@@ -53,21 +52,6 @@ public interface UnmodifiableSchedule extends Serializable {
      * stop at, or {@code -1} when the schedule is empty.
      */
     int getNextStationId();
-
-    /**
-     * Returns the wagons to add at the next scheduled stop.
-     *
-     * @throws IllegalStateException if the schedule has no current order
-     */
-
-    List<Integer> getWagonsToAdd();
-
-    /**
-     * Returns the value for the auto consist flag at the next scheduled stop.
-     *
-     * @throws IllegalStateException if the schedule has no current order
-     */
-    boolean autoConsist();
 
     /**
      * @return

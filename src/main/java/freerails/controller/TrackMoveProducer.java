@@ -26,7 +26,7 @@ import freerails.model.station.StationUtils;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
 import freerails.model.train.Train;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
@@ -192,7 +192,7 @@ public class TrackMoveProducer {
                 for (Train train: world.getTrains(player1)) {
                     UnmodifiableSchedule schedule = train.getSchedule();
                     if (schedule.stopsAtStation(stationIndex)) {
-                        Schedule schedule1 = new Schedule(schedule);
+                        ScheduleState schedule1 = new ScheduleState(schedule);
                         schedule1 = schedule1.removeAllStopsAtStation(stationIndex);
                         Move changeScheduleMove = new UpdateTrainMove(player, train.getId(), null, null, schedule1);
                         moves.add(changeScheduleMove);

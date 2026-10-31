@@ -34,7 +34,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.train.*;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import org.apache.log4j.Logger;
 
@@ -86,16 +86,16 @@ public class TrainStopsHandler implements Serializable {
             Train train = world.getTrain(player, trainId);
             UnmodifiableSchedule schedule = train.getSchedule();
 
-            List<Integer> wagonsToAdd = schedule.getWagonsToAdd();
+            TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
 
             // Loading and unloading cargo takes time, so we make the train wait for a few ticks.
             // makeTrainWait not implemented
             // makeTrainWait(50);
 
-            boolean autoConsist = schedule.autoConsist();
+            boolean autoConsist = order.isAutoConsist();
 
-            if (null != wagonsToAdd) {
-                Move move = new UpdateTrainMove(player, trainId, null, wagonsToAdd, null);
+            if (order.getConsistPolicy() == TrainOrder.ConsistPolicy.EXPLICIT) {
+                Move move = new UpdateTrainMove(player, trainId, null, order.getConsist(), null);
                 moves.add(move);
                 move.apply(world);
             }
@@ -165,7 +165,8 @@ public class TrainStopsHandler implements Serializable {
 
         // Should we change the consist?
         List<Integer> consist = train.getConsist();
-        if (!consist.equals(order.getConsist())) {
+        if (order.getConsistPolicy() == TrainOrder.ConsistPolicy.EXPLICIT
+                && !consist.equals(order.getConsist())) {
             // ..if so, we should change the consist.
             int oldLength = train.getLength();
             Move move = new UpdateTrainMove(player, trainId, null, order.getConsist(), null);
@@ -203,7 +204,7 @@ public class TrainStopsHandler implements Serializable {
 
     private void updateSchedule() {
         Train train =  world.getTrain(player, trainId);
-        Schedule schedule = new Schedule(train.getSchedule());
+        ScheduleState schedule = new ScheduleState(train.getSchedule());
 
         TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
         boolean waitingForFullLoad = order.isWaitUntilFull() && !TrainUtils.isTrainFull(world, player, trainId);

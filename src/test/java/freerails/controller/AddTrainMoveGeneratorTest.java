@@ -36,10 +36,11 @@ import freerails.util.BidirectionalIterator;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.Player;
 import freerails.model.train.*;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Test for AddTrainPreMove.
@@ -77,9 +78,9 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         Status ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.isSuccess());
 
-        TrainOrder order0 = new TrainOrder(0, null, false, false);
-        TrainOrder order1 = new TrainOrder(1, null, false, false);
-        Schedule schedule = new Schedule();
+        TrainOrder order0 = new TrainOrder(0, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
+        TrainOrder order1 = new TrainOrder(1, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
+        ScheduleState schedule = new ScheduleState();
         schedule = schedule.addOrder(order0);
         schedule = schedule.addOrder(order1);
         defaultSchedule = schedule;
@@ -151,7 +152,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
             throw new IllegalStateException(status.getMessage());
 
         TrainOrder[] orders = {};
-        UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
+        UnmodifiableSchedule schedule = new ScheduleState(orders, -1, false);
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
         Move move = addTrain.generate(world);
         status = move.applicable(world);

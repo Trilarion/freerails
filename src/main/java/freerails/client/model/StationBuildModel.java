@@ -21,6 +21,7 @@
  */
 package freerails.client.model;
 
+import freerails.client.MoneyFormatter;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.track.TrackPieceRenderer;
@@ -93,7 +94,7 @@ public class StationBuildModel {
                 Action action = new StationChooseAction(trackType.getId());
                 String name = trackType.getName();
                 Money price = trackType.getPurchasingPrice();
-                String shortDescrpt = name + " $" + price.toString();
+                String shortDescrpt = name + " " + MoneyFormatter.format(price);
                 action.putValue(Action.SHORT_DESCRIPTION, shortDescrpt);
                 action.putValue(Action.NAME, "Build " + name);
 

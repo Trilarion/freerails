@@ -19,6 +19,7 @@
 package freerails.client.renderer.map.detail;
 
 import freerails.client.ClientConstants;
+import freerails.client.renderer.map.MapCoordinateAdapter;
 import freerails.model.ModelConstants;
 import freerails.model.train.Train;
 import freerails.model.train.activity.Activity;
@@ -112,7 +113,13 @@ public class OverHeadTrainView implements Painter {
 
         Vec2D start = trainMotion.getPath().getStart();
         int trainLength = trainMotion.getTrainLength();
-        Rectangle trainBox = new Rectangle(start.x() * ModelConstants.TILE_SIZE - trainLength * 2, start.y() * ModelConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
+        Vec2D startPixels = MapCoordinateAdapter.tileOrigin(start);
+        int trainLengthPixels = MapCoordinateAdapter.modelDistanceToPixel(trainLength);
+        Rectangle trainBox = new Rectangle(
+                startPixels.x() - trainLengthPixels * 2,
+                startPixels.y() - trainLengthPixels * 2,
+                trainLengthPixels * 4,
+                trainLengthPixels * 4);
         if (!view.intersects(trainBox)) {
             return null; // TODO doesn't work
         }

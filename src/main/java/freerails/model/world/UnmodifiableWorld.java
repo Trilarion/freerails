@@ -38,12 +38,19 @@ import java.util.Collection;
 
 /**
  * Read-oriented access to a game world's map, definitions, players, player
- * assets, finances, rules, and simulation clock. Returned collections expose
- * the world's data without providing collection-level mutation operations.
+ * assets, finances, rules, and simulation clock. Collection-returning methods
+ * provide live, unmodifiable views: changes to a collection made through the
+ * world are reflected in the view, but callers cannot add or remove elements
+ * through it. These views are shallow; returned elements and other world state
+ * are not immutable snapshots and may themselves be mutable. This interface
+ * also exposes the simulation-speed setter.
  */
 public interface UnmodifiableWorld extends Serializable {
 
-    /** Returns all engine definitions in stable identifier order. */
+    /**
+     * Returns a live, unmodifiable view of all engine definitions in stable
+     * identifier order.
+     */
     Collection<Engine> getEngines();
 
     /**
@@ -52,7 +59,10 @@ public interface UnmodifiableWorld extends Serializable {
      */
     Engine getEngine(int id);
 
-    /** Returns all cities in stable identifier order. */
+    /**
+     * Returns a live, unmodifiable view of all cities in stable identifier
+     * order.
+     */
     Collection<City> getCities();
 
     /**
@@ -61,7 +71,10 @@ public interface UnmodifiableWorld extends Serializable {
      */
     City getCity(int id);
 
-    /** Returns all cargo definitions in their index order. */
+    /**
+     * Returns a live, unmodifiable view of all cargo definitions in index
+     * order.
+     */
     Collection<Cargo> getCargos();
 
     /**
@@ -86,7 +99,10 @@ public interface UnmodifiableWorld extends Serializable {
      */
     Cargo getCargoAtIndex(int index);
 
-    /** Returns all terrain definitions in stable identifier order. */
+    /**
+     * Returns a live, unmodifiable view of all terrain definitions in stable
+     * identifier order.
+     */
     Collection<Terrain> getTerrains();
 
     /**
@@ -95,7 +111,10 @@ public interface UnmodifiableWorld extends Serializable {
      */
     Terrain getTerrain(int id);
 
-    /** Returns all track type definitions in their index order. */
+    /**
+     * Returns a live, unmodifiable view of all track type definitions in index
+     * order.
+     */
     Collection<TrackType> getTrackTypes();
 
     /**
@@ -121,10 +140,11 @@ public interface UnmodifiableWorld extends Serializable {
     TrackType getTrackTypeAtIndex(int index);
 
     /**
-     * Returns the trains belonging to a player in train-list order.
+     * Returns a live, unmodifiable view of the trains belonging to a player
+     * in train-list order. The trains themselves are not immutable snapshots.
      *
      * @param player owner whose trains are requested
-     * @return the player's trains
+     * @return a live, unmodifiable view of the player's trains
      */
     Collection<Train> getTrains(Player player);
 
@@ -145,10 +165,11 @@ public interface UnmodifiableWorld extends Serializable {
     int getTrainIndex(Player player, int trainId);
 
     /**
-     * Returns the stations belonging to a player in station order.
+     * Returns a live, unmodifiable view of the stations belonging to a player
+     * in station order. The stations themselves are not immutable snapshots.
      *
      * @param player owner whose stations are requested
-     * @return the player's stations
+     * @return a live, unmodifiable view of the player's stations
      */
     Collection<Station> getStations(Player player);
 
@@ -200,7 +221,10 @@ public interface UnmodifiableWorld extends Serializable {
      */
     int getPlayerIndex(int playerId);
 
-    /** Returns the players in the order they were added. */
+    /**
+     * Returns a live, unmodifiable view of the players in the order they were
+     * added. The players themselves are not immutable snapshots.
+     */
     Collection<Player> getPlayers();
 
     /**
@@ -219,10 +243,11 @@ public interface UnmodifiableWorld extends Serializable {
     Transaction getTransaction(Player player, int i);
 
     /**
-     * Returns the transactions recorded for a player in insertion order.
+     * Returns a live, unmodifiable view of the transactions recorded for a
+     * player in insertion order.
      *
      * @param player account owner
-     * @return the player's transaction history
+     * @return a live, unmodifiable view of the player's transaction history
      */
     Collection<Transaction> getTransactions(Player player);
 

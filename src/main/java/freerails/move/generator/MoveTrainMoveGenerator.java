@@ -21,6 +21,7 @@
  */
 package freerails.move.generator;
 
+import freerails.model.ModelConstants;
 import freerails.model.track.*;
 import freerails.model.station.StationUtils;
 import freerails.model.train.motion.*;
@@ -212,8 +213,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         double s = tileTransition.getLength();
 
         int wagons = world.getTrain(player, trainId).getNumberOfWagons();
-        double a0 = 0.5d / (wagons + 1);
-        double topSpeed = 10 / (wagons + 1);
+        double a0 = ModelConstants.MODEL_UNITS_PER_TILE / 60.0d / (wagons + 1);
+        double topSpeed = ModelConstants.MODEL_UNITS_PER_TILE / 3.0d / (wagons + 1);
 
         Motion newSpeeds;
         if (u < topSpeed) {

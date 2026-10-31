@@ -130,7 +130,7 @@ public final class TrainUtils {
 
         List<TileTransition> tileTransitions = new ArrayList<>();
         int length = calculateTrainLength(engineId, wagons);
-        int distanceTravelled = 0;
+        double distanceTravelled = 0;
         PositionOnTrack p = new PositionOnTrack();
         while (distanceTravelled < length) {
             fte.nextEdge();
@@ -293,17 +293,17 @@ public final class TrainUtils {
      * @return {@code true} while the current full-load order remains applicable
      */
     public static boolean keepWaiting(UnmodifiableWorld world, Player player, int trainId) {
-        Time currentTime = world.getClock().getCurrentTime();
         Train train = world.getTrain(player, trainId);
-        Integer stationId =  StationUtils.getStationId(world, player, train.getLocation(currentTime));
+        TrainMotion trainMotion = train.findCurrentMotion(Double.MAX_VALUE);
+        Integer stationId = StationUtils.getStationId(world, player, trainMotion.getFinalPosition().getLocation());
         if (stationId == null) return false;
-        TrainMotion trainMotion = train.findCurrentMotion(currentTime.ticks());
         TrainState trainState = trainMotion.getTrainState();
         if (trainState != TrainState.WAITING_FOR_FULL_LOAD) return false;
         UnmodifiableSchedule schedule = train.getSchedule();
         TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
         if (order.getStationId() != stationId) return false;
         if (!order.isWaitUntilFull()) return false;
-        return order.getConsist().equals(train.getConsist());
+        return order.getConsistPolicy() == TrainOrder.ConsistPolicy.EXPLICIT
+                && order.getConsist().equals(train.getConsist());
     }
 }

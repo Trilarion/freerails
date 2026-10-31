@@ -119,7 +119,7 @@ public class TrainSummeryModel {
                 break;
             }
         }
-        Station station = world.getStation(player, orders.getStationID());
+        Station station = world.getStation(player, orders.getStationId());
         String stationName = station.getStationName();
         lastStations.put(trainNum, stationName);
         return stationName;

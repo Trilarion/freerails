@@ -27,7 +27,14 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.train.motion.CompositeMotion;
 import freerails.model.train.motion.ConstantAccelerationMotion;
 import freerails.model.train.motion.Motion;
+import freerails.model.ModelConstants;
 import junit.framework.TestCase;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
 
 /**
  *
@@ -38,33 +45,34 @@ public class TrainMotionTest extends TestCase {
      *
      */
     public void test4Bug1266695() {
+        double modelScale = ModelConstants.MODEL_UNITS_PER_TILE / 30.0d;
         // The figures are copied from the debugger.
         Vec2D start = new Vec2D(14, 5);
         TileTransition[] vectors = {TileTransition.getInstance(new Vec2D(1, 1)), TileTransition.getInstance(new Vec2D(1, 0))};
         PathOnTiles path = new PathOnTiles(start, vectors);
 
-        ConstantAccelerationMotion constantAccelerationMovement0 = ConstantAccelerationMotion.fromSpeedAccelerationTime(6.5135556243263055d, 0.5d,
+        ConstantAccelerationMotion constantAccelerationMovement0 = ConstantAccelerationMotion.fromSpeedAccelerationTime(6.5135556243263055d * modelScale, 0.5d * modelScale,
                 6.972888751347389d);
-        ConstantAccelerationMotion constantAccelerationMovement1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(10.0, 0.0d, 4.0d);
+        ConstantAccelerationMotion constantAccelerationMovement1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(10.0 * modelScale, 0.0d, 4.0d);
 
         Motion speeds = new CompositeMotion(constantAccelerationMovement0, constantAccelerationMovement1);
 
-        double expectedTotalDistance = 97.57359312880715d; // Copied from
+        double expectedTotalDistance = 97.57359312880715d * modelScale; // Copied from
         // debugger.
         double actualTotalDistance = speeds.getTotalDistance();
 
-        assertEquals(expectedTotalDistance, actualTotalDistance, 0.0d);
+        assertEquals(expectedTotalDistance, actualTotalDistance, 1.0e-12d);
 
         double expectedDuration = 10.972888751347389d;
         double actualDuration = speeds.getTotalTime();
         assertEquals(expectedDuration, actualDuration, 0.0d);
 
         int engineStep = 1;
-        int trainLength = 24;
+        int trainLength = 80;
 
         TrainMotion motion = new TrainMotion(path, engineStep, trainLength, speeds);
 
-        double expectedInitialPosition = 42.42640687119285;
+        double expectedInitialPosition = ModelConstants.MODEL_DIAGONAL_TILE_LENGTH;
         double actualInitialPosition = motion.getInitialPosition();
         assertEquals(expectedInitialPosition, actualInitialPosition, 0.0d);
 
@@ -80,19 +88,50 @@ public class TrainMotionTest extends TestCase {
 
     public void testStateAtTimeIncludesStartAndEndButRejectsOutsideInterval() {
         PathOnTiles path = new PathOnTiles(Vec2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
-        Motion speeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(10.0, 0.0, 6.0);
-        TrainMotion motion = new TrainMotion(path, 1, 24, speeds);
+        Motion speeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(
+                ModelConstants.MODEL_UNITS_PER_TILE / 3.0d, 0.0, 6.0);
+        TrainMotion motion = new TrainMotion(path, 1, 80, speeds);
         double duration = motion.getDuration();
 
         assertEquals(0.0, motion.getDistance(0.0), 0.0);
         assertTrue(motion.getStateAtTime(0.0).getLength() > 0);
-        assertEquals(59.99, motion.getDistance(duration - 0.001), 0.000001);
+        assertEquals(ModelConstants.MODEL_UNITS_PER_TILE / 3.0d * (duration - 0.001), motion.getDistance(duration - 0.001), 0.000001);
         assertTrue(motion.getStateAtTime(duration - 0.001).getLength() > 0);
         assertEquals(path.getFinalPosition(), motion.getFinalPosition());
-        assertEquals(60.0, motion.getDistance(duration), 0.0);
+        assertEquals(200.0, motion.getDistance(duration), 0.0);
         assertTrue(motion.getStateAtTime(duration).getLength() > 0);
         assertThrowsIllegalArgument(() -> motion.getStateAtTime(-0.001));
         assertThrowsIllegalArgument(() -> motion.getStateAtTime(duration + 0.001));
+    }
+
+    public void testLegacySerializedMotionIsScaledToCurrentModelUnits() throws Exception {
+        PathOnTiles path = new PathOnTiles(Vec2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
+        TrainMotion legacyMotion = new TrainMotion(path, 80, 6, freerails.model.train.TrainState.READY);
+        setField(legacyMotion, "modelUnitsPerTile", 0);
+        setField(legacyMotion, "trainLength", 24);
+        setField(legacyMotion, "initialPosition", 30.0);
+        setField(legacyMotion, "distanceEngineWillTravel", 60.0);
+        setField(legacyMotion, "speeds", ConstantAccelerationMotion.fromSpeedAccelerationTime(10.0, 0.0, 6.0));
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        try (ObjectOutputStream output = new ObjectOutputStream(bytes)) {
+            output.writeObject(legacyMotion);
+        }
+
+        TrainMotion migrated;
+        try (ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()))) {
+            migrated = (TrainMotion) input.readObject();
+        }
+
+        assertEquals(80, migrated.getTrainLength());
+        assertEquals(100.0, migrated.getInitialPosition(), 0.0);
+        assertEquals(200.0, migrated.getDistance(6.0), 0.0);
+    }
+
+    private static void setField(Object target, String name, Object value) throws Exception {
+        Field field = target.getClass().getDeclaredField(name);
+        field.setAccessible(true);
+        field.set(target, value);
     }
 
     private static void assertThrowsIllegalArgument(Runnable action) {

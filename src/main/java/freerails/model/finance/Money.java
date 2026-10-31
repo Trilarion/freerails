@@ -19,7 +19,6 @@
 package freerails.model.finance;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 
 /**
  * Represents an immutable amount of money in the game's unit of account.
@@ -121,17 +120,14 @@ public record Money(long amount) implements Serializable, Comparable<Money> {
         return compareTo(other) == 0;
     }
 
-    // TODO add currency here (not in the client)
-
     /**
-     * Returns this amount formatted with grouping separators and no currency
-     * symbol.
+     * Returns the amount as a locale-independent decimal integer.
      *
-     * @return formatted amount
+     * @return the amount without grouping separators or a currency symbol
      */
     @Override
     public String toString() {
-        return new DecimalFormat("#,###").format(amount);
+        return Long.toString(amount);
     }
 
     /**

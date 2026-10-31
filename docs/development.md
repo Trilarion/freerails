@@ -45,6 +45,12 @@ they should be serializable, immutable, logically comparable, and refer to world
 through stable identifiers or positions. `applicable` checks a move against an
 `UnmodifiableWorld` without changing the state; `apply` performs the change on `World`.
 
+`UnmodifiableWorld` collection getters return live, unmodifiable views: changes made
+through the world are visible through previously obtained views, but the views do not
+allow adding or removing elements. This is a shallow read-only boundary, not a deep
+immutable snapshot. Returned entities and state objects (including trains and stations)
+may be mutable and may expose the underlying world state.
+
 Preserve game-state invariants when changing rules. For example, a track connection is
 represented on both neighboring tiles, so track changes must use the appropriate paired
 track operations rather than changing one side alone. Consider scenario loading, save

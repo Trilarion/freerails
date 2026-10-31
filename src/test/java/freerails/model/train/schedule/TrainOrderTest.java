@@ -27,7 +27,7 @@ public class TrainOrderTest extends TestCase {
 
     public void testConsistIsCopiedAndCannotBeMutatedThroughGetter() {
         List<Integer> source = new ArrayList<>(List.of(2, 4));
-        TrainOrder order = new TrainOrder(10, source, true, false);
+        TrainOrder order = new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, source, true, false);
 
         source.set(0, 7);
         source.add(9);
@@ -42,22 +42,51 @@ public class TrainOrderTest extends TestCase {
     }
 
     public void testWaitUntilFullRequiresANonemptyConsist() {
-        assertFalse(new TrainOrder(10, null, true, false).isWaitUntilFull());
-        assertFalse(new TrainOrder(10, List.of(), true, false).isWaitUntilFull());
-        assertTrue(new TrainOrder(10, List.of(2), true, false).isWaitUntilFull());
+        assertFalse(new TrainOrder(10, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), true, false).isWaitUntilFull());
+        assertFalse(new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, List.of(), true, false).isWaitUntilFull());
+        assertTrue(new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, List.of(2), true, false).isWaitUntilFull());
     }
 
     public void testAutomaticConsistOptionIsIndependentOfExplicitConsist() {
         List<Integer> consist = new ArrayList<>(List.of(2));
-        TrainOrder explicitAutoOrder = new TrainOrder(10, consist, false, true);
-        TrainOrder unspecifiedAutoOrder = new TrainOrder(10, null, true, true);
+        TrainOrder explicitAutoOrder = new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, consist, false, true);
+        TrainOrder unspecifiedAutoOrder = new TrainOrder(10, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), true, true);
 
         consist.clear();
 
         assertTrue(explicitAutoOrder.isAutoConsist());
         assertEquals(List.of(2), explicitAutoOrder.getConsist());
         assertTrue(unspecifiedAutoOrder.isAutoConsist());
-        assertNull(unspecifiedAutoOrder.getConsist());
+        assertEquals(List.of(), unspecifiedAutoOrder.getConsist());
+        assertEquals(TrainOrder.ConsistPolicy.UNCHANGED, unspecifiedAutoOrder.getConsistPolicy());
         assertFalse(unspecifiedAutoOrder.isWaitUntilFull());
+    }
+
+    public void testUnchangedAndExplicitlyEmptyConsistsAreDistinct() {
+        TrainOrder unchanged = new TrainOrder(10, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
+        TrainOrder explicitlyEmpty = new TrainOrder(10, TrainOrder.ConsistPolicy.EXPLICIT, List.of(), false, false);
+
+        assertEquals(List.of(), unchanged.getConsist());
+        assertEquals(List.of(), explicitlyEmpty.getConsist());
+        assertFalse(unchanged.equals(explicitlyEmpty));
+        assertFalse(unchanged.orderHasWagons());
+        assertFalse(explicitlyEmpty.orderHasWagons());
+    }
+
+    public void testConsistPolicySurvivesSerialization() throws Exception {
+        TrainOrder order = new TrainOrder(10, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, true);
+        java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream();
+        try (java.io.ObjectOutputStream output = new java.io.ObjectOutputStream(bytes)) {
+            output.writeObject(order);
+        }
+
+        TrainOrder restored;
+        try (java.io.ObjectInputStream input = new java.io.ObjectInputStream(
+                new java.io.ByteArrayInputStream(bytes.toByteArray()))) {
+            restored = (TrainOrder) input.readObject();
+        }
+
+        assertEquals(order, restored);
+        assertEquals(TrainOrder.ConsistPolicy.UNCHANGED, restored.getConsistPolicy());
     }
 }

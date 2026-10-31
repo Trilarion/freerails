@@ -36,7 +36,7 @@ public class PlayerDetailsTest extends TestCase {
         assertEquals("Ada", details.getName());
         assertEquals(new Money(1234), details.getNetworth());
         assertEquals(3, details.getStations());
-        assertEquals("Ada, 1,234 net worth, 3  stations.", details.toString());
+        assertEquals("Ada, 1234 net worth, 3  stations.", details.toString());
     }
 
     public void testComparisonUsesNetWorth() {

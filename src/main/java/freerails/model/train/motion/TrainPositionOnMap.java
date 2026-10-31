@@ -39,8 +39,9 @@ import java.util.List;
  * of the front of the train; the last point is the position of the end of the
  * train. Any intermediate points are positions of 'kinks' in the track.
  * <p>
- * Coordinates are expressed in display coordinates relative to the map origin
- * (as opposed to map squares).
+ * Coordinates are expressed in fixed-point model units relative to the map
+ * origin; {@code ModelConstants.MODEL_UNITS_PER_TILE} units correspond to one
+ * tile.
  * <p>
  * Train positions can be combined and divided as illustrated below (notice what
  * happens to the head and tail that are combined)

@@ -31,6 +31,7 @@ import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
+import freerails.model.train.schedule.TrainOrder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -98,7 +99,7 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
             select = Selection.unselect;
         }
         String orderText;
-        if (null == trainOrders.order.getConsist()) {
+        if (trainOrders.order.getConsistPolicy() == TrainOrder.ConsistPolicy.UNCHANGED) {
             if (trainOrders.order.isAutoConsist()) {
                 orderText = "Select wagons automatically";
             } else {
@@ -156,7 +157,7 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
             }
 
             // Check for 'No change'
-            if (null == trainOrders.order.getConsist()) {
+            if (trainOrders.order.getConsistPolicy() == TrainOrder.ConsistPolicy.UNCHANGED) {
                 if (trainOrders.order.isAutoConsist()) {
                     panelSingle.noChangeJLabel.setText("Select wagons automatically");
                 } else {

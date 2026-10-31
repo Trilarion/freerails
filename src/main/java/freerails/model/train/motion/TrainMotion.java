@@ -31,7 +31,9 @@ import freerails.model.train.activity.Activity;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
 
+import java.io.InvalidObjectException;
 import java.io.Serial;
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 
 /**
@@ -66,6 +68,9 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     private final Motion speeds;
     private final int trainLength;
     private final TrainState trainState;
+    private final int modelUnitsPerTile;
+
+    private static final int LEGACY_MODEL_UNITS_PER_TILE = 30;
 
     /**
      * Creates a moving train activity along a tile path.
@@ -87,6 +92,7 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         this.path = path;
         this.speeds = speeds;
         this.trainLength = trainLength;
+        modelUnitsPerTile = ModelConstants.MODEL_UNITS_PER_TILE;
 
         if (engineStep > path.steps()) throw new ArrayIndexOutOfBoundsException(String.valueOf(engineStep));
 
@@ -123,6 +129,7 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     public TrainMotion(PathOnTiles path, int trainLength, double duration, TrainState act) {
         this.path = path;
         this.trainLength = trainLength;
+        modelUnitsPerTile = ModelConstants.MODEL_UNITS_PER_TILE;
         trainState = act;
         distanceEngineWillTravel = 0;
         initialPosition = path.getTotalDistance();
@@ -139,6 +146,35 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         speeds = activity.speeds;
         trainLength = activity.trainLength;
         trainState = activity.trainState;
+        modelUnitsPerTile = ModelConstants.MODEL_UNITS_PER_TILE;
+    }
+
+    private TrainMotion(double duration, double distanceEngineWillTravel, double initialPosition,
+                        PathOnTiles path, Motion speeds, int trainLength, TrainState trainState, double startTime) {
+        super(startTime);
+        this.duration = duration;
+        this.distanceEngineWillTravel = distanceEngineWillTravel;
+        this.initialPosition = initialPosition;
+        this.path = path;
+        this.speeds = speeds;
+        this.trainLength = trainLength;
+        this.trainState = trainState;
+        modelUnitsPerTile = ModelConstants.MODEL_UNITS_PER_TILE;
+    }
+
+    @Serial
+    private Object readResolve() throws ObjectStreamException {
+        if (modelUnitsPerTile == ModelConstants.MODEL_UNITS_PER_TILE) {
+            return this;
+        }
+        if (modelUnitsPerTile != 0) {
+            throw new InvalidObjectException("Unsupported model distance scale: " + modelUnitsPerTile);
+        }
+        double conversionFactor = (double) ModelConstants.MODEL_UNITS_PER_TILE / LEGACY_MODEL_UNITS_PER_TILE;
+        return new TrainMotion(duration, distanceEngineWillTravel * conversionFactor,
+                initialPosition * conversionFactor, path,
+                new DistanceScaledMotion(speeds, conversionFactor),
+                (int) Math.round(trainLength * conversionFactor), trainState, getStartTime());
     }
 
     @Override
@@ -229,7 +265,7 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
      * Returns the train's position at the specified elapsed time.
      *
      * @param time elapsed time in this activity
-     * @return the train's head-to-tail map position with its speed and state
+     * @return the train's head-to-tail model position with its speed and state
      * @throws IllegalArgumentException if the underlying motion rejects the time
      */
     @Override
@@ -317,6 +353,61 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     /** Returns the engine's initial distance along the route. */
     public double getInitialPosition() {
         return initialPosition;
+    }
+
+    private static class DistanceScaledMotion implements Motion {
+
+        @Serial
+        private static final long serialVersionUID = 1L;
+        private final Motion motion;
+        private final double scale;
+
+        private DistanceScaledMotion(Motion motion, double scale) {
+            this.motion = motion;
+            this.scale = scale;
+        }
+
+        @Override
+        public double getTotalTime() {
+            return motion.getTotalTime();
+        }
+
+        @Override
+        public double getTotalDistance() {
+            return motion.getTotalDistance() * scale;
+        }
+
+        @Override
+        public double calculateDistanceAtTime(double time) {
+            return motion.calculateDistanceAtTime(time) * scale;
+        }
+
+        @Override
+        public double calculateTimeAtDistance(double distance) {
+            return motion.calculateTimeAtDistance(distance / scale);
+        }
+
+        @Override
+        public double calculateSpeedAtTime(double time) {
+            return motion.calculateSpeedAtTime(time) * scale;
+        }
+
+        @Override
+        public double calculateAccelerationAtTime(double time) {
+            return motion.calculateAccelerationAtTime(time) * scale;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof DistanceScaledMotion other)) return false;
+            return Double.compare(scale, other.scale) == 0 && motion.equals(other.motion);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * motion.hashCode() + Double.hashCode(scale);
+        }
     }
 
 }

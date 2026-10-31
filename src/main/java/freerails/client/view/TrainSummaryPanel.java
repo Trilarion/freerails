@@ -24,6 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.model.TrainSummeryModel;
+import freerails.client.MoneyFormatter;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
@@ -130,7 +131,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer<Train>
 
     private String findTrainIncome(int trainNum) {
         Money m = model.findTrainIncome(trainNum);
-        return '$' + m.toString();
+        return MoneyFormatter.format(m);
     }
 
     @Override
@@ -183,6 +184,6 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer<Train>
         long cost = (long) (month / 12 * 5000);
 
         Money m = new Money(cost);
-        return '$' + m.toString();
+        return MoneyFormatter.format(m);
     }
 }

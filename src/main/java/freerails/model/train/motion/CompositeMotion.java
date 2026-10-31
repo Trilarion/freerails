@@ -220,8 +220,8 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         for (int idx = 0; idx < motions.size(); idx++) {
             Motion motion = motions.get(idx);
 
-            if (time <= timeSoFar + motion.getTotalTime()) {
-                double offset = time - timeSoFar;
+            if (time <= timeSoFar + motion.getTotalTime() || idx == motions.size() - 1) {
+                double offset = Math.min(time - timeSoFar, motion.getTotalTime());
                 return new SubTime(idx, offset);
             }
             timeSoFar += motion.getTotalTime();

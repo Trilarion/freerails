@@ -19,7 +19,7 @@
 package freerails.model.train;
 
 import freerails.model.train.activity.Activity;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -44,14 +44,14 @@ public class TrainTest extends TestCase {
     public void testReplacingConfigurationPreservesRuntimeState() {
         Train train = new Train(1, new TrainConfiguration(2, List.of(3)));
         TrainRuntimeState runtimeState = train.getRuntimeState();
-        train.setSchedule(Schedule.EMPTY);
+        train.setSchedule(ScheduleState.EMPTY);
         TrainConfiguration replacement = new TrainConfiguration(4, List.of(5, 6));
 
         train.setConfiguration(replacement);
 
         assertSame(replacement, train.getConfiguration());
         assertSame(runtimeState, train.getRuntimeState());
-        assertEquals(Schedule.EMPTY, train.getSchedule());
+        assertEquals(ScheduleState.EMPTY, train.getSchedule());
     }
 
     public void testActivitiesStartNoEarlierThanPreviousCompletion() {

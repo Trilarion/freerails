@@ -26,7 +26,6 @@ import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.ModelConstants;
 
 import java.awt.*;
 
@@ -73,7 +72,7 @@ public class DetailMapRenderer implements MapRenderer {
      */
     @Override
     public float scale() {
-        return ModelConstants.TILE_SIZE;
+        return ClientConstants.TILE_PIXEL_SIZE;
     }
 
     /**

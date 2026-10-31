@@ -82,13 +82,13 @@ public class ValueObjectEqualityContractTest extends TestCase {
     }
 
     public void testTrainOrderEqualityContractAndEveryOption() {
-        TrainOrder order = new TrainOrder(1, List.of(2, 3), true, false);
-        assertEqualContract(order, new TrainOrder(1, List.of(2, 3), true, false),
-                new TrainOrder(1, List.of(2, 3), true, false));
-        assertDifferent(order, new TrainOrder(2, List.of(2, 3), true, false));
-        assertDifferent(order, new TrainOrder(1, List.of(3, 2), true, false));
-        assertDifferent(order, new TrainOrder(1, List.of(2, 3), false, false));
-        assertDifferent(order, new TrainOrder(1, List.of(2, 3), true, true));
+        TrainOrder order = new TrainOrder(1, TrainOrder.ConsistPolicy.EXPLICIT, List.of(2, 3), true, false);
+        assertEqualContract(order, new TrainOrder(1, TrainOrder.ConsistPolicy.EXPLICIT, List.of(2, 3), true, false),
+                new TrainOrder(1, TrainOrder.ConsistPolicy.EXPLICIT, List.of(2, 3), true, false));
+        assertDifferent(order, new TrainOrder(2, TrainOrder.ConsistPolicy.EXPLICIT, List.of(2, 3), true, false));
+        assertDifferent(order, new TrainOrder(1, TrainOrder.ConsistPolicy.EXPLICIT, List.of(3, 2), true, false));
+        assertDifferent(order, new TrainOrder(1, TrainOrder.ConsistPolicy.EXPLICIT, List.of(2, 3), false, false));
+        assertDifferent(order, new TrainOrder(1, TrainOrder.ConsistPolicy.EXPLICIT, List.of(2, 3), true, true));
     }
 
     public void testTrainTemplateEqualityContractAndEveryField() {

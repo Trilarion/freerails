@@ -37,13 +37,14 @@ import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.world.World;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Lets you test dialogue boxes without running the whole game.
@@ -118,10 +119,10 @@ class DialogueBoxTester extends JFrame {
 
 
 
-        Schedule schedule = new Schedule();
-        TrainOrder order = new TrainOrder(0, Arrays.asList(0, 0, 0),false, false);
-        TrainOrder order2 = new TrainOrder(1, Arrays.asList(1, 2, 0, 0, 0), true, false);
-        TrainOrder order3 = new TrainOrder(2, null, true, false);
+        ScheduleState schedule = new ScheduleState();
+        TrainOrder order = new TrainOrder(0, TrainOrder.ConsistPolicy.EXPLICIT, Arrays.asList(0, 0, 0), false, false);
+        TrainOrder order2 = new TrainOrder(1, TrainOrder.ConsistPolicy.EXPLICIT, Arrays.asList(1, 2, 0, 0, 0), true, false);
+        TrainOrder order3 = new TrainOrder(2, TrainOrder.ConsistPolicy.UNCHANGED, List.of(), false, false);
         schedule = schedule.setOrder(0, order);
         schedule = schedule.setOrder(1, order2);
 

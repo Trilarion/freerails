@@ -34,7 +34,7 @@ import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.model.train.Train;
 import freerails.model.train.TrainConfiguration;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.world.World;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
@@ -190,7 +190,7 @@ public class MoveStateContractTest extends TestCase {
     public void testUpdatingConsistReplacesConfigurationWithoutChangingRuntimeState() {
         Train train = world.getTrain(player, 4);
         CargoBatchBundle trainCargo = cargo(6);
-        Schedule schedule = new Schedule();
+        ScheduleState schedule = new ScheduleState();
         train.setCargoBatchBundle(trainCargo);
         train.setSchedule(schedule);
 

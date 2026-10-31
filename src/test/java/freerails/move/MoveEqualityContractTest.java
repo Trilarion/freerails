@@ -37,7 +37,7 @@ import freerails.model.track.TrackType;
 import freerails.model.train.Train;
 import freerails.model.train.TrainTemplate;
 import freerails.model.train.activity.Activity;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.TestActivity;
 import freerails.move.mapupdatemove.ChangeTileMove;
@@ -110,13 +110,13 @@ public class MoveEqualityContractTest extends TestCase {
 
         CargoBatchBundle cargo = cargo(4);
         List<Integer> consist = List.of(5, 6);
-        Schedule schedule = new Schedule();
-        Schedule otherSchedule = new Schedule(new TrainOrder[]{
-                new TrainOrder(9, List.of(7), false, false)
+        ScheduleState schedule = new ScheduleState();
+        ScheduleState otherSchedule = new ScheduleState(new TrainOrder[]{
+                new TrainOrder(9, TrainOrder.ConsistPolicy.EXPLICIT, List.of(7), false, false)
         }, 0, false);
         UpdateTrainMove update = new UpdateTrainMove(PLAYER, 4, cargo, consist, schedule);
         assertEqualMoves(update, new UpdateTrainMove(new Player(1, "One"), 4, cargo(4),
-                List.of(5, 6), new Schedule()));
+                List.of(5, 6), new ScheduleState()));
         assertDifferentMoves(update, new UpdateTrainMove(new Player(2, "One"), 4, cargo, consist, schedule));
         assertDifferentMoves(update, new UpdateTrainMove(PLAYER, 5, cargo, consist, schedule));
         assertDifferentMoves(update, new UpdateTrainMove(PLAYER, 4, cargo(5), consist, schedule));

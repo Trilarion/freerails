@@ -31,7 +31,7 @@ import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.model.train.Train;
 import freerails.model.train.TrainConfiguration;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.ScheduleState;
 import freerails.model.world.TestActivity;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
@@ -57,7 +57,7 @@ public class RepresentativeMoveSerializationTest extends TestCase {
         ChangeCargoAtStationMove cargoMove = new ChangeCargoAtStationMove(player, 9, cargo);
 
         Train configuredTrain = new Train(7, new TrainConfiguration(2, List.of(4, 5)));
-        configuredTrain.setSchedule(new Schedule());
+        configuredTrain.setSchedule(new ScheduleState());
         configuredTrain.setCargoBatchBundle(cargo);
         configuredTrain.addActivity(new TestActivity(60));
 
