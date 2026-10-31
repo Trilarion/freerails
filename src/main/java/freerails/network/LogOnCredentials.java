@@ -42,13 +42,6 @@ public record LogOnCredentials(String username, String password) implements Seri
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof LogOnCredentials)) return false;
-        LogOnCredentials test = (LogOnCredentials) obj;
-        return test.password.equals(password) && test.username.equals(username);
-    }
-
-    @Override
     public String toString() {
         return username;
     }

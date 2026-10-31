@@ -30,10 +30,9 @@ import java.util.*;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-// TODO only used from CityTilePositioner
 /**
- * Collects the terrain tiles and station count in a city area and writes
- * changes to those tiles back to the world.
+ * Collects the terrain tiles and station count in a city area, then writes
+ * tile changes back to the world.
  */
 public class CityModel {
 

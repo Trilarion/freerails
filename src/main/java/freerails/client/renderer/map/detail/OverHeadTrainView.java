@@ -22,7 +22,6 @@ import freerails.client.ClientConstants;
 import freerails.client.renderer.map.MapCoordinateAdapter;
 import freerails.model.ModelConstants;
 import freerails.model.train.Train;
-import freerails.model.train.activity.Activity;
 import freerails.model.train.motion.TrainMotion;
 import freerails.util.BidirectionalIterator;
 import freerails.util.Vec2D;
@@ -93,7 +92,7 @@ public class OverHeadTrainView implements Painter {
      * @return
      */
     public static TrainPositionOnMap findPosition(double time, Rectangle view, UnmodifiableWorld world, Player player, int trainId) {
-        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
+        BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
 
         // TODO why starting at the end and going backwards?
         // goto last
@@ -109,7 +108,7 @@ public class OverHeadTrainView implements Painter {
         }
         double dt = time - bidirectionalIterator.get().getStartTime();
         dt = Math.min(dt, bidirectionalIterator.get().getDuration());
-        TrainMotion trainMotion = (TrainMotion) bidirectionalIterator.get();
+        TrainMotion trainMotion = bidirectionalIterator.get();
 
         Vec2D start = trainMotion.getPath().getStart();
         int trainLength = trainMotion.getTrainLength();

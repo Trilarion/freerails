@@ -190,32 +190,6 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
         private TrainOrderModel {
         }
 
-            @Override
-            public boolean equals(Object obj) {
-                if (!(obj instanceof TrainOrderModel cmp)) {
-                    return false;
-                }
-                if (cmp.gotoStatus != gotoStatus) {
-                    return false;
-                }
-                if (cmp.selected != selected) {
-                    return false;
-                }
-                if (stationName != null && cmp.stationName == null) {
-                    return false;
-                }
-                if (stationName != null && !stationName.equals(cmp.stationName)) {
-                    return false;
-                }
-                if (waitUntilFull != null && cmp.waitUntilFull == null) {
-                    return false;
-                }
-                if (waitUntilFull != null && !waitUntilFull.equals(cmp.waitUntilFull)) {
-                    return false;
-                }
-                return orderText == null || orderText.equals(cmp.orderText);
-            }
-
     }
 
 }

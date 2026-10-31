@@ -21,7 +21,6 @@ package freerails.model.terrain;
 import freerails.model.track.TrackPiece;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 // TODO find better name for what it really is
 
@@ -52,45 +51,11 @@ public record TerrainTile(TrackPiece trackPiece, int terrainTypeId) implements S
     }
 
     /**
-     * Compares this tile's terrain identifier and track piece with another
-     * object.
-     *
-     * @param obj object to compare
-     * @return {@code true} when {@code obj} is an equal terrain tile
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        final TerrainTile that = (TerrainTile) obj;
-
-        if (terrainTypeId != that.terrainTypeId) return false;
-        return Objects.equals(trackPiece, that.trackPiece);
-    }
-
-    /**
-     * @return the terrain type identifier
-     */
-    @Override
-    public int terrainTypeId() {
-        return terrainTypeId;
-    }
-
-    /**
      * Returns a readable representation of the track and terrain identifier.
      */
     @Override
     public String toString() {
         return "trackPiece=" + trackPiece + " and terrainType is " + terrainTypeId;
-    }
-
-    /**
-     * @return the track piece, or {@code null} if the tile has no track
-     */
-    @Override
-    public TrackPiece trackPiece() {
-        return trackPiece;
     }
 
     /**

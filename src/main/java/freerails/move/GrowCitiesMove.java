@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.model.terrain.city.CityTilePositioner;
+import freerails.model.terrain.city.CityGrowth;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +47,7 @@ public class GrowCitiesMove implements Move {
 
     @Override
     public void apply(@NotNull World world) {
-        CityTilePositioner cityTilePositioner = new CityTilePositioner(world);
-        cityTilePositioner.growCities();
+        CityGrowth cityGrowth = new CityGrowth(world);
+        cityGrowth.growCities();
     }
 }

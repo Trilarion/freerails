@@ -47,23 +47,4 @@ public record WagonLoad(int quantity, int cargoType) implements Comparable<Wagon
         return quantity - o.quantity;
     }
 
-    /**
-     * Returns the cargo quantity represented by this load.
-     *
-     * @return cargo quantity
-     */
-    @Override
-    public int quantity() {
-        return quantity;
-    }
-
-    /**
-     * Returns the identifier of the loaded cargo type.
-     *
-     * @return cargo type identifier
-     */
-    @Override
-    public int cargoType() {
-        return cargoType;
-    }
 }

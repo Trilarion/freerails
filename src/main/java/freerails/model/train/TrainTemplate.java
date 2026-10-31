@@ -43,42 +43,6 @@ public record TrainTemplate(int engineId, List<Integer> wagonTypes) implements S
     }
 
     /**
-     * Returns a hash code based on the engine type identifier.
-     */
-    @Override
-    public int hashCode() {
-        return engineId;
-    }
-
-    /**
-     * Compares the engine type and ordered wagon types.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof TrainTemplate productionAtEngineShop)) return false;
-
-        if (engineId != productionAtEngineShop.engineId) return false;
-        return wagonTypes.equals(productionAtEngineShop.wagonTypes);
-    }
-
-    /**
-     * Returns the engine type identifier.
-     */
-    @Override
-    public int engineId() {
-        return engineId;
-    }
-
-    /**
-     * Returns the immutable ordered list of wagon type identifiers.
-     */
-    @Override
-    public List<Integer> wagonTypes() {
-        return wagonTypes;
-    }
-
-    /**
      * Returns a concise description of this production template.
      */
     @Override

@@ -19,7 +19,7 @@
 package freerails.move;
 
 import freerails.model.player.Player;
-import freerails.model.train.activity.Activity;
+import freerails.model.train.motion.TrainMotion;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -33,10 +33,10 @@ public class AddActivityMove implements Move {
 
     private final Player player;
     private final int trainId;
-    private final Activity activity;
+    private final TrainMotion activity;
 
 
-    public AddActivityMove(@NotNull Player player, int trainId, @NotNull Activity activity) {
+    public AddActivityMove(@NotNull Player player, int trainId, @NotNull TrainMotion activity) {
         this.player = player;
         this.trainId = trainId;
         this.activity = activity;

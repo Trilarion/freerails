@@ -18,99 +18,28 @@
 
 package freerails.model.station;
 
-import freerails.util.Utils;
-
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
+import java.util.OptionalInt;
 
 /**
- * Records which cargo is converted to other cargo at a station.
+ * Maps source cargo IDs to their product cargo IDs at a station.
+ * A source cargo absent from the map is not converted.
  */
-public record StationCargoConversion(List<Integer> convertedTo) implements Serializable {
-    // TODO what about Null as standard value
-    private static final int NOT_CONVERTED = Integer.MIN_VALUE;
-    // this should probably be a map
+public record StationCargoConversion(Map<Integer, Integer> conversions) implements Serializable {
 
     public StationCargoConversion {
-        convertedTo = Utils.immutableList(convertedTo);
+        conversions = Map.copyOf(conversions);
     }
 
     /**
-     * Creates conversion settings indexed by cargo index. The sentinel value
-     * {@code Integer.MIN_VALUE} means that a cargo type is not converted.
+     * Returns the configured product cargo ID for a source cargo ID.
      *
-     * @param convertedTo product cargo identifier for each source cargo index,
-     *                    or the not-converted sentinel
+     * @param sourceCargoId cargo ID to look up
+     * @return the product cargo ID, or empty when no conversion is configured
      */
-    public StationCargoConversion(Integer[] convertedTo) {
-        this(Arrays.asList(convertedTo));
-    }
-
-    // TODO is this really needed
-    /**
-     * Creates a conversion configuration in which no cargo type is converted.
-     *
-     * @param numberOfCargoTypes number of cargo types to configure
-     * @return empty conversion settings sized for the cargo collection
-     */
-    public static StationCargoConversion emptyInstance(int numberOfCargoTypes) {
-        return new StationCargoConversion(emptyConversionArray(numberOfCargoTypes));
-    }
-
-    // TODO eliminate this
-    /**
-     * Creates an array initialized to the not-converted sentinel.
-     *
-     * @param numberOfCargoTypes number of cargo types to include
-     * @return conversion array with one entry per cargo type
-     */
-    public static Integer[] emptyConversionArray(int numberOfCargoTypes) {
-        Integer[] convertedTo = new Integer[numberOfCargoTypes];
-
-        for (int i = 0; i < numberOfCargoTypes; i++) {
-            convertedTo[i] = NOT_CONVERTED;
-        }
-        return convertedTo;
-    }
-
-    /**
-     * Tests whether the cargo at an index has a configured conversion.
-     *
-     * @param cargoIndex zero-based position in the world's cargo collection
-     * @return {@code true} if a product cargo is configured
-     * @throws IndexOutOfBoundsException if the index is outside the configured
-     *         cargo range
-     */
-    public boolean convertsCargo(int cargoIndex) {
-        return NOT_CONVERTED != convertedTo.get(cargoIndex);
-    }
-
-    /**
-     * Returns the product cargo identifier configured for a source cargo.
-     *
-     * @param cargoIndex zero-based position of the source cargo in the world's
-     *                   cargo collection
-     * @return product cargo identifier, or {@code Integer.MIN_VALUE} when no
-     *         conversion is configured
-     * @throws IndexOutOfBoundsException if the index is outside the configured
-     *         cargo range
-     */
-    public int getConversion(int cargoIndex) {
-        return convertedTo.get(cargoIndex);
-    }
-
-    /**
-     * Returns a hash code derived from the configured conversion entries.
-     *
-     * @return hash code for these conversion settings
-     */
-    @Override
-    public int hashCode() {
-        int result = 0;
-        for (Integer aConvertedTo : convertedTo) {
-            result = 29 * result + aConvertedTo;
-        }
-        return result;
+    public OptionalInt conversionFor(int sourceCargoId) {
+        Integer productCargoId = conversions.get(sourceCargoId);
+        return productCargoId == null ? OptionalInt.empty() : OptionalInt.of(productCargoId);
     }
 }

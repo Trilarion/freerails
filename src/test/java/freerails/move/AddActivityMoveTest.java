@@ -21,11 +21,11 @@
  */
 package freerails.move;
 
-import freerails.model.train.activity.Activity;
+import freerails.model.train.motion.TrainMotion;
 import freerails.util.BidirectionalIterator;
 import freerails.model.game.Time;
 import freerails.model.player.Player;
-import freerails.model.world.TestActivity;
+import freerails.model.world.TestTrainMotion;
 import freerails.model.world.World;
 
 /**
@@ -39,10 +39,10 @@ public class AddActivityMoveTest extends AbstractMoveTestCase {
     public void testMove() {
         World world = getWorld();
         Player player = getPlayer();
-        Activity act = new TestActivity(50);
+        TrainMotion act = TestTrainMotion.of(50);
         world.addActivity(player, 0, act);
 
-        Activity act2 = new TestActivity(60);
+        TrainMotion act2 = TestTrainMotion.of(60);
         Move move = new AddActivityMove(player, 0, act2);
         assertSurvivesSerialisation(move);
         assertOkAndRepeatable(move);
@@ -54,16 +54,16 @@ public class AddActivityMoveTest extends AbstractMoveTestCase {
     public void testStackingOfActivities() {
         World world = getWorld();
         Player player = getPlayer();
-        Activity act = new TestActivity(50);
+        TrainMotion act = TestTrainMotion.of(50);
         world.addActivity(player, 0, act);
 
-        Activity act2 = new TestActivity(60);
+        TrainMotion act2 = TestTrainMotion.of(60);
         Move move = new AddActivityMove(player, 0, act2);
         assertMoveApplyIsOk(move);
 
         Time currentTime = new Time(0);
         assertEquals(currentTime, world.getClock().getCurrentTime());
-        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, 0).getActivities();
+        BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, 0).getActivities();
 
         assertEquals(bidirectionalIterator.get(), act);
         assertNotSame(act, bidirectionalIterator.get());

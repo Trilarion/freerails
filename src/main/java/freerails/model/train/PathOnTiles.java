@@ -46,8 +46,7 @@ public class PathOnTiles implements Serializable {
      * @throws NullPointerException if the start, transition list, or any transition is null
      */
     public PathOnTiles(Vec2D start, List<TileTransition> tileTransitions) {
-        vectors = new ArrayList<>(tileTransitions);
-        Utils.verifyNoneNull(vectors);
+        vectors = List.copyOf(tileTransitions);
         this.start = Utils.verifyNotNull(start);
     }
 
@@ -60,8 +59,7 @@ public class PathOnTiles implements Serializable {
      * @throws NullPointerException if the start, transition array, or any transition is null
      */
     public PathOnTiles(Vec2D start, TileTransition... tileTransitions) {
-        vectors = new ArrayList<>(Arrays.asList(tileTransitions));
-        Utils.verifyNoneNull(vectors);
+        vectors = List.copyOf(Arrays.asList(tileTransitions));
         this.start = Utils.verifyNotNull(start);
     }
 

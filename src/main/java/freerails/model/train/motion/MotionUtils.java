@@ -18,7 +18,6 @@
 
 package freerails.model.train.motion;
 
-import freerails.model.train.activity.Activity;
 import freerails.util.BidirectionalIterator;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
@@ -39,8 +38,8 @@ public final class MotionUtils {
      * @return the train's final recorded motion
      */
     public static TrainMotion lastMotion(UnmodifiableWorld world, Player player, int trainId) {
-        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
+        BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
         bidirectionalIterator.gotoLast();
-        return (TrainMotion) bidirectionalIterator.get();
+        return bidirectionalIterator.get();
     }
 }

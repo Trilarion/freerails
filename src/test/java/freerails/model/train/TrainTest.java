@@ -18,8 +18,9 @@
 
 package freerails.model.train;
 
-import freerails.model.train.activity.Activity;
 import freerails.model.train.schedule.ScheduleState;
+import freerails.model.train.motion.TrainMotion;
+import freerails.model.world.TestTrainMotion;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -56,10 +57,10 @@ public class TrainTest extends TestCase {
 
     public void testActivitiesStartNoEarlierThanPreviousCompletion() {
         Train train = new Train(1, 1);
-        TestActivity first = new TestActivity(10, 5);
-        TestActivity delayed = new TestActivity(12, 4);
-        TestActivity later = new TestActivity(30, 2);
-        TestActivity delayedAfterLater = new TestActivity(31, 1);
+        TrainMotion first = TestTrainMotion.of(10, 5);
+        TrainMotion delayed = TestTrainMotion.of(12, 4);
+        TrainMotion later = TestTrainMotion.of(30, 2);
+        TrainMotion delayedAfterLater = TestTrainMotion.of(31, 1);
 
         train.addActivity(first);
         train.addActivity(delayed);
@@ -83,30 +84,8 @@ public class TrainTest extends TestCase {
         activities.next();
         assertNotSame(delayedAfterLater, activities.get());
         assertEquals(32.0, activities.get().getStartTime(), 0.0);
-    }
 
-    private static final class TestActivity extends Activity<String> {
-
-        private final double duration;
-
-        private TestActivity(double proposedStartTime, double duration) {
-            super(proposedStartTime);
-            this.duration = duration;
-        }
-
-        @Override
-        public TestActivity withStartTime(double startTime) {
-            return new TestActivity(startTime, duration);
-        }
-
-        @Override
-        public double getDuration() {
-            return duration;
-        }
-
-        @Override
-        public String getStateAtTime(double time) {
-            return "";
-        }
+        assertEquals(10.0, train.findCurrentMotion(14).getStartTime(), 0.0);
+        assertEquals(15.0, train.findCurrentMotion(15).getStartTime(), 0.0);
     }
 }

@@ -67,21 +67,6 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
     }
 
     /**
-     * Tests whether another object has the same coordinates.
-     *
-     * @param obj object to compare
-     * @return {@code true} if {@code obj} is a {@code Vec2D} with matching
-     * coordinates
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Vec2D other)) return false;
-
-        return x == other.x && y == other.y;
-    }
-
-    /**
      * Returns the Euclidean length of this vector.
      *
      * @return the Euclidean length of this vector

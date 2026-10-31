@@ -24,7 +24,7 @@ import freerails.model.game.Rules;
 import freerails.model.game.Sentiment;
 import freerails.model.terrain.*;
 import freerails.model.terrain.city.City;
-import freerails.model.terrain.city.CityTilePositioner;
+import freerails.model.terrain.city.CityInitializer;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.world.World;
@@ -206,8 +206,8 @@ public class MapCreator {
         }
 
         // Randomly position the city tiles
-        CityTilePositioner cityTilePositioner = new CityTilePositioner(world);
-        cityTilePositioner.initCities();
+        CityInitializer cityInitializer = new CityInitializer(world);
+        cityInitializer.initializeCities();
 
         /*
          * Note, money used to get added to player finance here, now it is done

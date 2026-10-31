@@ -22,7 +22,6 @@ import freerails.util.Identifiable;
 import freerails.model.game.Time;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackSection;
-import freerails.model.train.activity.Activity;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.UnmodifiableSchedule;
@@ -37,7 +36,6 @@ import java.util.Objects;
 // TODO add position on map to train
 // TODO delete Activities when they are finished
 // TODO naming of wagonTypes/consist clarify
-// TODO if all activities are TrainMotions, make it a list of Motions instead
 /**
  * Identified train combining an immutable configuration with mutable runtime state.
  */
@@ -70,7 +68,7 @@ public class Train extends Identifiable {
     }
 
     /** Returns an iterator over this train's activities. */
-    public BidirectionalIterator<Activity> getActivities() {
+    public BidirectionalIterator<TrainMotion> getActivities() {
         return runtimeState.getActivities();
     }
 
@@ -80,7 +78,7 @@ public class Train extends Identifiable {
      *
      * @param iterator iterator positioned before the activities to copy
      */
-    public void setActivities(BidirectionalIterator<Activity> iterator) {
+    public void setActivities(BidirectionalIterator<TrainMotion> iterator) {
         runtimeState.setActivities(iterator);
     }
 
@@ -89,7 +87,7 @@ public class Train extends Identifiable {
      *
      * @param activity activity to append; it is delayed until the previous activity ends
      */
-    public void addActivity(@NotNull Activity activity) {
+    public void addActivity(@NotNull TrainMotion activity) {
         runtimeState.addActivity(activity);
     }
 

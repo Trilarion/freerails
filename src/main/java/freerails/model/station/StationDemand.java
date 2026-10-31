@@ -42,22 +42,6 @@ public record StationDemand(List<Integer> demand) implements Serializable {
     }
 
     /**
-     * Returns a hash code derived from the cargo demand flags.
-     *
-     * @return hash code for these demand settings
-     */
-    @Override
-    public int hashCode() {
-        int result = 0;
-
-        for (Integer aDemand : demand) {
-            result = 29 * result + aDemand;
-        }
-
-        return result;
-    }
-
-    /**
      * Tests whether a cargo type is demanded at this station.
      *
      * @param cargoIndex zero-based position in the world's cargo collection

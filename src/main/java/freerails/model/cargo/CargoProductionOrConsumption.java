@@ -20,8 +20,6 @@ package freerails.model.cargo;
 
 import java.io.Serializable;
 
-// TODO equals, hashcode
-
 /**
  * Describes a cargo type and its nonnegative production or consumption rate.
  */
@@ -42,50 +40,4 @@ public record CargoProductionOrConsumption(int cargoId, double rate) implements 
         this.rate = rate == 0 ? 0 : rate;
     }
 
-    /**
-     * Returns the identifier of the cargo type affected by this rate.
-     *
-     * @return cargo identifier
-     */
-    @Override
-    public int cargoId() {
-        return cargoId;
-    }
-
-    /**
-     * Returns the configured production or consumption rate.
-     *
-     * @return configured rate
-     */
-    @Override
-    public double rate() {
-        return rate;
-    }
-
-    /**
-     * Tests equality of the cargo identifier and rate.
-     *
-     * @param obj object to compare
-     * @return {@code true} if both fields match
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof CargoProductionOrConsumption other) {
-            return cargoId == other.cargoId && rate == other.rate;
-        }
-        return false;
-    }
-
-    /**
-     * Returns a hash code consistent with the cargo identifier and rate.
-     *
-     * @return hash code for this rate
-     */
-    @Override
-    public int hashCode() {
-        return cargoId + 31 * Double.hashCode(rate);
-    }
 }

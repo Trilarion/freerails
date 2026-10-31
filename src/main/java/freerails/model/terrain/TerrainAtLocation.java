@@ -32,19 +32,4 @@ public record TerrainAtLocation(Vec2D location, int terrainType) {
     public TerrainAtLocation {
     }
 
-    /**
-     * @return the associated map coordinate
-     */
-    @Override
-    public Vec2D location() {
-        return location;
-    }
-
-    /**
-     * @return the terrain type identifier
-     */
-    @Override
-    public int terrainType() {
-        return terrainType;
-    }
 }

@@ -19,7 +19,7 @@
 package freerails.model.world;
 
 import freerails.model.ModelConstants;
-import freerails.model.train.activity.Activity;
+import freerails.model.train.motion.TrainMotion;
 import freerails.model.cargo.Cargo;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.game.*;
@@ -619,7 +619,7 @@ public class World implements UnmodifiableWorld {
      * @param trainId identifier of the train
      * @param activity activity to attach
      */
-    public void addActivity(Player player, int trainId, Activity activity) {
+    public void addActivity(Player player, int trainId, TrainMotion activity) {
         Train train = getTrain(player, trainId);
         train.getRuntimeState().addActivity(activity, clock.getCurrentTime().ticks());
     }

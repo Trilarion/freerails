@@ -36,10 +36,10 @@ import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 import freerails.model.train.Train;
 import freerails.model.train.TrainTemplate;
-import freerails.model.train.activity.Activity;
+import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.TrainOrder;
-import freerails.model.world.TestActivity;
+import freerails.model.world.TestTrainMotion;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
@@ -49,6 +49,7 @@ import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.util.List;
+import java.util.Map;
 
 public class MoveEqualityContractTest extends TestCase {
 
@@ -97,16 +98,16 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new AddTrainMove(PLAYER, train), new AddTrainMove(new Player(2, "One"), train));
         Train trainWithActivity = new Train(4, 3);
         trainWithActivity.setConsist(List.of(5, 6));
-        trainWithActivity.addActivity(new TestActivity(10));
+        trainWithActivity.addActivity(TestTrainMotion.of(10));
         assertDifferentMoves(new AddTrainMove(PLAYER, train), new AddTrainMove(PLAYER, trainWithActivity));
 
-        Activity activity = new TestActivity(10);
+        TrainMotion activity = TestTrainMotion.of(10);
         assertEqualMoves(new AddActivityMove(PLAYER, 4, activity),
-                new AddActivityMove(new Player(1, "One"), 4, new TestActivity(10)));
+                new AddActivityMove(new Player(1, "One"), 4, TestTrainMotion.of(10)));
         assertDifferentMoves(new AddActivityMove(PLAYER, 4, activity),
                 new AddActivityMove(new Player(2, "One"), 4, activity));
         assertDifferentMoves(new AddActivityMove(PLAYER, 4, activity), new AddActivityMove(PLAYER, 5, activity));
-        assertDifferentMoves(new AddActivityMove(PLAYER, 4, activity), new AddActivityMove(PLAYER, 4, new TestActivity(11)));
+        assertDifferentMoves(new AddActivityMove(PLAYER, 4, activity), new AddActivityMove(PLAYER, 4, TestTrainMotion.of(11)));
 
         CargoBatchBundle cargo = cargo(4);
         List<Integer> consist = List.of(5, 6);
@@ -149,7 +150,7 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithDemand));
         Station stationWithConversion = station(10, new Vec2D(3, 4), "Central");
-        stationWithConversion.setCargoConversion(new StationCargoConversion(new Integer[]{1}));
+        stationWithConversion.setCargoConversion(new StationCargoConversion(Map.of(1, 2)));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithConversion));
         Station stationWithProduction = station(10, new Vec2D(3, 4), "Central");
@@ -202,7 +203,7 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(settingsMove, new UpdateStationCargoDemandSupplyConversionMove(PLAYER, differentDemand));
 
         Station differentConversion = station(10, Vec2D.ZERO, "Settings");
-        differentConversion.setCargoConversion(new StationCargoConversion(new Integer[]{1}));
+        differentConversion.setCargoConversion(new StationCargoConversion(Map.of(1, 2)));
         assertDifferentMoves(settingsMove, new UpdateStationCargoDemandSupplyConversionMove(PLAYER, differentConversion));
     }
 

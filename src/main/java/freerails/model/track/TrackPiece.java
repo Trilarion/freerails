@@ -36,24 +36,6 @@ public record TrackPiece(TrackConfiguration trackConfiguration, TrackType trackT
     }
 
     /**
-     * Tests equality across the configuration, type, and owner.
-     *
-     * @param obj object to compare
-     * @return {@code true} when all track-piece properties match
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        final TrackPiece other = (TrackPiece) obj;
-
-        if (playerId != other.playerId) return false;
-        if (!trackConfiguration.equals(other.trackConfiguration)) return false;
-        return trackType.equals(other.trackType);
-    }
-
-    /**
      * Returns the encoded track configuration used by track graphics.
      *
      * @return track graphic/configuration ID
@@ -62,33 +44,4 @@ public record TrackPiece(TrackConfiguration trackConfiguration, TrackType trackT
         return trackConfiguration.getConfiguration();
     }
 
-    /**
-     * Returns the directional configuration of this piece.
-     *
-     * @return track configuration
-     */
-    @Override
-    public TrackConfiguration trackConfiguration() {
-        return trackConfiguration;
-    }
-
-    /**
-     * Returns the ID of the player who owns this piece.
-     *
-     * @return owner player ID
-     */
-    @Override
-    public int playerId() {
-        return playerId;
-    }
-
-    /**
-     * Returns the type of this track piece.
-     *
-     * @return track type
-     */
-    @Override
-    public TrackType trackType() {
-        return trackType;
-    }
 }

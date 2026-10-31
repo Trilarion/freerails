@@ -33,7 +33,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides station lookup, naming, and nearby-terrain cargo configuration
@@ -213,7 +215,7 @@ public final class StationUtils {
         int numCargoTypes = world.getCargos().size();
         double[] supplies = new double[numCargoTypes];
         int[] demand = new int[numCargoTypes];
-        Integer[] converts = StationCargoConversion.emptyConversionArray(numCargoTypes);
+        Map<Integer, Integer> converts = new HashMap<>();
 
         // scan adjacent tiles and compute List<CargoProductionOrConsumption>
         int stationDiameter = stationRadius * 2 + 1;
@@ -264,7 +266,7 @@ public final class StationUtils {
 
                     // TODO Only one tile that converts the cargo type is needed for the station to demand the cargo type.
                     demand[cargoIndex] += 1;
-                    converts[cargoIndex] = aConversion.productCargoId();
+                    converts.put(aConversion.sourceCargoId(), aConversion.productCargoId());
                 }
             }
         }

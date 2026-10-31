@@ -103,24 +103,6 @@ public record Money(long amount) implements Serializable, Comparable<Money> {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return Long.hashCode(amount);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Money other)) return false;
-        return compareTo(other) == 0;
-    }
-
-    /**
      * Returns the amount as a locale-independent decimal integer.
      *
      * @return the amount without grouping separators or a currency symbol

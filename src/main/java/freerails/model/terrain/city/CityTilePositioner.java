@@ -25,29 +25,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-// TODO does two things, initial position of tiles and growing of cities
-// TODO what is random used for? Seed of random generator?, convert to static code maybe?
 /**
- * Initializes city layouts and grows cities by changing the supplied world
- * directly. Changes made after play begins must be propagated to clients by
- * the caller.
+ * Selects urban, industry, and resource terrain types for city tiles.
  */
-public class CityTilePositioner {
+final class CityTilePositioner {
 
-    private final Random random = new Random();
+    private final Random random;
     private final List<Terrain> urbanTerrainTypes = new ArrayList<>();
     private final List<Terrain> resourceTerrainTypes = new ArrayList<>();
     private final List<Terrain> industryTerrainTypes = new ArrayList<>();
-    private final World world;
 
-    /**
-     * @param world world whose city tiles will be initialized and grown
-     */
-    public CityTilePositioner(World world) {
-        this.world = world;
+    CityTilePositioner(World world, Random random) {
+        this.random = random;
 
-        // get the different types of Urban/Industry/Resource terrain
-        for (Terrain terrainType: world.getTerrains()) {
+        for (Terrain terrainType : world.getTerrains()) {
             switch (terrainType.getCategory()) {
                 case URBAN:
                     urbanTerrainTypes.add(terrainType);
@@ -62,113 +53,21 @@ public class CityTilePositioner {
         }
     }
 
-    /** Randomly populates each city's surrounding area with initial tiles. */
-    public void initCities() {
-        for (City city: world.getCities()) {
-            CityModel cityModel = new CityModel();
-            cityModel.loadFromMap(world, city.getId());
-
-            final int urbanTiles = 2 + random.nextInt(3);
-
-            for (int i = 0; i < urbanTiles; i++) {
-                addUrbanTile(cityModel);
-            }
-
-            final int industryTiles = random.nextInt(3);
-
-            for (int i = 0; i < industryTiles; i++) {
-                addIndustryTile(cityModel);
-            }
-
-            final int resourceTiles = random.nextInt(3);
-
-            for (int i = 0; i < resourceTiles; i++) {
-                addResourceTile(cityModel);
-            }
-
-            cityModel.writeToMap(world);
-        }
-    }
-
-    /**
-     * Adds one randomly selected resource terrain type to an available city tile.
-     *
-     * @param city city model to update
-     */
-    private void addResourceTile(CityModel city) {
+    void addResourceTile(CityModel city) {
         int tileTypeNo = random.nextInt(resourceTerrainTypes.size());
-        Terrain type = resourceTerrainTypes.get(tileTypeNo);
-        city.addTile(type);
+        city.addTile(resourceTerrainTypes.get(tileTypeNo));
     }
 
-    /**
-     * Adds a not-yet-present industry type when one is available.
-     *
-     * @param city city model to update
-     */
-    private void addIndustryTile(CityModel city) {
-        int size = city.getIndustriesNotAtCity().size();
-
-        if (size > 0) {
-            int tileTypeNo = random.nextInt(size);
-            Terrain type = city.getIndustriesNotAtCity().get(tileTypeNo);
-            city.addTile(type);
+    void addIndustryTile(CityModel city) {
+        List<Terrain> availableIndustries = city.getIndustriesNotAtCity();
+        if (!availableIndustries.isEmpty()) {
+            int tileTypeNo = random.nextInt(availableIndustries.size());
+            city.addTile(availableIndustries.get(tileTypeNo));
         }
     }
 
-    /**
-     * Adds one randomly selected urban terrain type to an available city tile.
-     *
-     * @param city city model to update
-     */
-    private void addUrbanTile(CityModel city) {
+    void addUrbanTile(CityModel city) {
         int tileTypeNo = random.nextInt(urbanTerrainTypes.size());
-        Terrain type = urbanTerrainTypes.get(tileTypeNo);
-        city.addTile(type);
-    }
-
-    // TODO make that static and move somewhere else
-    /**
-     * Grows cities that have at least one station and fewer than 16 developed
-     * tiles, using the configured random growth chances.
-     */
-    public void growCities() {
-        /*
-         * At some stage this will be refined to take into account how much
-         * cargo has been picked up and delivered and what city tiles are
-         * already present.
-         */
-        for (City city: world.getCities()) {
-            CityModel cityModel = new CityModel();
-            cityModel.loadFromMap(world, city.getId());
-
-            // Only increase cities with stations and less than 16 tiles
-            if (cityModel.getUrbanCityTiles().size() + cityModel.getIndustryCityTiles().size() + cityModel.getResourceCityTiles().size() < 16 && cityModel.getStations() > 0) {
-                switch (random.nextInt(10)) {
-                    case 0:
-                    case 1:
-                        addResourceTile(cityModel); // 20% chance
-                        break;
-
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                        addUrbanTile(cityModel); // 40% chance
-
-                        break;
-
-                    case 6:
-                        addIndustryTile(cityModel); // 10% chance
-
-                        break;
-
-                    default:
-                        // Do nothing. 30% chance
-                        break;
-                }
-                cityModel.writeToMap(world);
-            }
-        }
+        city.addTile(urbanTerrainTypes.get(tileTypeNo));
     }
 }

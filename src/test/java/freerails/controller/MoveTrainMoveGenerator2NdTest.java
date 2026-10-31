@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
-import freerails.model.train.activity.Activity;
+import freerails.model.train.motion.TrainMotion;
 import freerails.util.BidirectionalIterator;
 import freerails.model.game.Time;
 import freerails.model.track.OccupiedTracks;
@@ -60,7 +60,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     private Vec2D station2Location;
 
     public static void incrementTime(World world, Player player) {
-        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, 0).getActivities();
+        BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, 0).getActivities();
         while (bidirectionalIterator.hasNext())
             bidirectionalIterator.next();
 

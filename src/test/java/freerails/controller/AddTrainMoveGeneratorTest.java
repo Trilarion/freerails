@@ -23,7 +23,6 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
-import freerails.model.train.activity.Activity;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.TrainOrder;
@@ -123,8 +122,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         Status status = move.applicable(world);
         assertTrue(status.isSuccess());
         move.apply(world);
-        BidirectionalIterator<Activity> activities = world.getTrain(player, 0).getActivities();
-        TrainMotion tm = (TrainMotion) activities.get();
+        BidirectionalIterator<TrainMotion> activities = world.getTrain(player, 0).getActivities();
+        TrainMotion tm = activities.get();
         assertEquals(0.0d, tm.getDuration());
         assertEquals(0.0d, tm.getSpeedAtEnd());
         assertEquals(0.0d, tm.getDistance(0));

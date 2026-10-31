@@ -19,7 +19,6 @@
 package freerails.network;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Stores the result of a request to log onto the server.
@@ -39,46 +38,4 @@ public record LogOnResponse(boolean success, int id, String message) implements 
         assert !success;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof LogOnResponse logOnResponse)) return false;
-
-        if (id != logOnResponse.id) return false;
-        if (success != logOnResponse.success) return false;
-        return Objects.equals(message, logOnResponse.message);
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        result = Boolean.hashCode(success);
-        result = 29 * result + id;
-        result = 29 * result + (message != null ? message.hashCode() : 0);
-        return result;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public int id() {
-        return id;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public String message() {
-        return message;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public boolean success() {
-        return success;
-    }
 }

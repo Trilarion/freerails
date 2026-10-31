@@ -51,27 +51,6 @@ public record Segment(Vec2D a, Vec2D b) implements Serializable {
     }
 
     /**
-     * Tests whether another object is a segment with the same ordered
-     * endpoints.
-     *
-     * @param obj object to compare
-     * @return {@code true} if {@code obj} is an equal segment
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj instanceof Segment line) {
-            return a.equals(line.a) && b.equals(line.b);
-        }
-        return false;
-    }
-
-    /**
      * Returns a string containing the two endpoints.
      *
      * @return this segment's textual representation
@@ -81,23 +60,4 @@ public record Segment(Vec2D a, Vec2D b) implements Serializable {
         return "(" + a + ", " + b + ')';
     }
 
-    /**
-     * Returns the starting endpoint.
-     *
-     * @return endpoint {@code a}
-     */
-    @Override
-    public Vec2D a() {
-        return a;
-    }
-
-    /**
-     * Returns the ending endpoint.
-     *
-     * @return endpoint {@code b}
-     */
-    @Override
-    public Vec2D b() {
-        return b;
-    }
 }

@@ -31,6 +31,7 @@ import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.cargo.*;
+import freerails.model.station.StationCargoConversion;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
 import freerails.util.WorldGenerator;
@@ -39,6 +40,7 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This Junit TestCase tests whether a train picks up and drops off the right
@@ -289,6 +291,20 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         repeatedDelivery.apply(world);
         assertEquals(1, world.getTransactions(WorldGenerator.TEST_PLAYER).size());
         assertEquals(cargoDelivery.getAmount(), world.getCurrentBalance(WorldGenerator.TEST_PLAYER));
+    }
+
+    public void testDeliveryConvertsCargoByCargoId() {
+        Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
+        station.setDemandForCargo(new StationDemand(new boolean[]{true, false, false, false}));
+        station.setCargoConversion(new StationCargoConversion(Map.of(0, 1)));
+        setCargoOnTrain(cargoType0FromStation2, 50);
+
+        stopAtStation();
+
+        CargoBatchBundle expectedAtStation = new CargoBatchBundle();
+        expectedAtStation.setAmount(new CargoBatch(1, station.getLocation(), 0, station.getId()), 50);
+        assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
+        assertEquals(expectedAtStation, getCargoAtStation());
     }
 
     /**

@@ -20,7 +20,6 @@ package freerails.model.train;
 
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
-import freerails.model.train.activity.Activity;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.ScheduleState;
 import freerails.model.train.schedule.UnmodifiableSchedule;
@@ -41,10 +40,10 @@ public final class TrainRuntimeState implements Serializable {
 
     private ImmutableCargoBatchBundle cargoBatchBundle = ImmutableCargoBatchBundle.EMPTY;
     private UnmodifiableSchedule schedule = ScheduleState.EMPTY;
-    private List<Activity> activities = new ArrayList<>();
+    private List<TrainMotion> activities = new ArrayList<>();
 
     /** Returns an iterator over this train's activities. */
-    public BidirectionalIterator<Activity> getActivities() {
+    public BidirectionalIterator<TrainMotion> getActivities() {
         return new BidirectionalIterator<>(activities);
     }
 
@@ -53,7 +52,7 @@ public final class TrainRuntimeState implements Serializable {
      *
      * @param iterator iterator positioned before the activities to copy
      */
-    public void setActivities(BidirectionalIterator<Activity> iterator) {
+    public void setActivities(BidirectionalIterator<TrainMotion> iterator) {
         activities.clear();
         while (iterator.hasNext()) {
             iterator.next();
@@ -66,7 +65,7 @@ public final class TrainRuntimeState implements Serializable {
      *
      * @param activity activity to append
      */
-    public void addActivity(@NotNull Activity activity) {
+    public void addActivity(@NotNull TrainMotion activity) {
         addActivity(activity, activity.getStartTime());
     }
 
@@ -77,10 +76,10 @@ public final class TrainRuntimeState implements Serializable {
      * @param activity activity to append
      * @param requestedStartTime requested start time in game ticks
      */
-    public void addActivity(@NotNull Activity activity, double requestedStartTime) {
+    public void addActivity(@NotNull TrainMotion activity, double requestedStartTime) {
         double startTime = requestedStartTime;
         if (!activities.isEmpty()) {
-            Activity last = activities.getLast();
+            TrainMotion last = activities.getLast();
             double lastFinishTime = last.getStartTime() + last.getDuration();
             startTime = Math.max(startTime, lastFinishTime);
         }
@@ -119,14 +118,14 @@ public final class TrainRuntimeState implements Serializable {
             throw new IllegalStateException("Train has no activities.");
         }
 
-        Activity previous = activities.getFirst();
-        for (Activity activity : activities) {
+        TrainMotion previous = activities.getFirst();
+        for (TrainMotion activity : activities) {
             if (time < activity.getStartTime()) {
                 break;
             }
             previous = activity;
         }
-        return (TrainMotion) previous;
+        return previous;
     }
 
     @Override

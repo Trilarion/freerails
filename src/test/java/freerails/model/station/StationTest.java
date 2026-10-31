@@ -20,18 +20,22 @@ package freerails.model.station;
 
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.train.TrainTemplate;
+import freerails.util.Utils;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.OptionalInt;
 
 public class StationTest extends TestCase {
 
     public void testCargoPoliciesAndProductionAreCopiedFromInputs() {
         Integer[] supplyValues = {3, 5};
         boolean[] demandValues = {true, false};
-        Integer[] conversionValues = {1, Integer.MIN_VALUE};
+        Map<Integer, Integer> conversionValues = new HashMap<>(Map.of(10, 20));
         List<TrainTemplate> productionValues = new ArrayList<>(List.of(new TrainTemplate(4, List.of(7))));
 
         Station station = new Station(1, Vec2D.ZERO, "Central", 2, CargoBatchBundle.EMPTY);
@@ -42,19 +46,19 @@ public class StationTest extends TestCase {
 
         supplyValues[0] = 9;
         demandValues[0] = false;
-        conversionValues[0] = 8;
+        conversionValues.put(10, 8);
         productionValues.clear();
 
         assertEquals(3, station.getSupply().getSupply(0));
         assertTrue(station.getDemandForCargo().isCargoDemanded(0));
-        assertEquals(1, station.getCargoConversion().getConversion(0));
+        assertEquals(OptionalInt.of(20), station.getCargoConversion().conversionFor(10));
         assertEquals(List.of(new TrainTemplate(4, List.of(7))), station.getProduction());
     }
 
     public void testCargoPolicyRecordComponentsAreImmutableCopies() {
         List<Integer> supplyValues = new ArrayList<>(List.of(3, 5));
         List<Integer> demandValues = new ArrayList<>(List.of(1, 0));
-        List<Integer> conversionValues = new ArrayList<>(List.of(1, Integer.MIN_VALUE));
+        Map<Integer, Integer> conversionValues = new HashMap<>(Map.of(10, 20));
 
         StationSupply supply = new StationSupply(supplyValues);
         StationDemand demand = new StationDemand(demandValues);
@@ -62,15 +66,31 @@ public class StationTest extends TestCase {
 
         supplyValues.set(0, 9);
         demandValues.set(0, 0);
-        conversionValues.set(0, 8);
+        conversionValues.put(10, 8);
 
         assertEquals(List.of(3, 5), supply.supply());
         assertEquals(List.of(1, 0), demand.demand());
-        assertEquals(List.of(1, Integer.MIN_VALUE), conversion.convertedTo());
+        assertEquals(Map.of(10, 20), conversion.conversions());
+        assertEquals(OptionalInt.empty(), conversion.conversionFor(11));
 
         assertImmutable(supply.supply());
         assertImmutable(demand.demand());
-        assertImmutable(conversion.convertedTo());
+        try {
+            conversion.conversions().clear();
+            fail("Expected the conversion map to be immutable");
+        } catch (UnsupportedOperationException expected) {
+            // Conversion settings expose an immutable snapshot.
+        }
+    }
+
+    public void testCargoConversionSurvivesSerialization() {
+        StationCargoConversion conversion = new StationCargoConversion(Map.of(10, 20));
+
+        StationCargoConversion copy = (StationCargoConversion) Utils.cloneBySerialisation(conversion);
+
+        assertEquals(conversion, copy);
+        assertEquals(conversion.hashCode(), copy.hashCode());
+        assertEquals(OptionalInt.of(20), copy.conversionFor(10));
     }
 
     private void assertImmutable(List<Integer> values) {
@@ -94,5 +114,26 @@ public class StationTest extends TestCase {
         }
 
         assertEquals(List.of(new TrainTemplate(4, List.of(7))), station.getProduction());
+    }
+
+    public void testProductionQueueOperationsAllowDuplicatesAndRemoveFirstMatch() {
+        Station station = new Station(1, Vec2D.ZERO, "Central", 1, CargoBatchBundle.EMPTY);
+        TrainTemplate first = new TrainTemplate(4, List.of(7));
+        TrainTemplate second = new TrainTemplate(5, List.of(8));
+
+        station.queueProduction(first);
+        List<TrainTemplate> productionView = station.getProduction();
+        station.queueProduction(first);
+        station.queueProduction(second);
+
+        assertEquals(List.of(first, first, second), productionView);
+        assertTrue(station.removeProduction(first));
+        assertEquals(List.of(first, second), station.getProduction());
+        assertTrue(station.removeProduction(first));
+        assertFalse(station.removeProduction(first));
+        assertEquals(List.of(second), station.getProduction());
+
+        station.setProduction(List.of(first));
+        assertEquals(List.of(first), productionView);
     }
 }

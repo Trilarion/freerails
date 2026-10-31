@@ -20,6 +20,8 @@ package freerails.server;
 
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.city.City;
+import freerails.model.terrain.city.CityGrowth;
+import freerails.model.terrain.city.CityInitializer;
 import freerails.model.terrain.city.CityModel;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
@@ -30,14 +32,46 @@ import java.io.IOException;
 import java.util.TreeSet;
 
 /**
- * Test for CityModel
+ * Tests city tile loading and lifecycle operations.
  */
 public class CityModelTest extends TestCase {
 
     /**
-     * Tests generating populated CityModel from cities on the map.
+     * Tests generating a populated CityModel from cities on the map.
      */
     public void testLoadFromMap() throws IOException {
+        World world = worldWithClearCity();
+        CityModel cityModel = new CityModel();
+        cityModel.loadFromMap(world, 1);
+        assertEquals(0, cityModel.getIndustryCityTiles().size());
+        assertEquals(0, cityModel.getUrbanCityTiles().size());
+        assertEquals("A city is a 7*7 area", 49, cityModel.getClearTiles().size());
+    }
+
+    public void testInitializeCitiesAddsInitialUrbanTiles() throws IOException {
+        World world = worldWithClearCity();
+
+        new CityInitializer(world).initializeCities();
+
+        CityModel cityModel = new CityModel();
+        cityModel.loadFromMap(world, 1);
+        assertTrue(cityModel.getUrbanCityTiles().size() >= 2);
+        assertTrue(cityModel.getUrbanCityTiles().size() <= 4);
+    }
+
+    public void testGrowthDoesNotAddTilesWithoutStation() throws IOException {
+        World world = worldWithClearCity();
+
+        new CityGrowth(world).growCities();
+
+        CityModel cityModel = new CityModel();
+        cityModel.loadFromMap(world, 1);
+        assertEquals(0, cityModel.getUrbanCityTiles().size());
+        assertEquals(0, cityModel.getIndustryCityTiles().size());
+        assertEquals(0, cityModel.getResourceCityTiles().size());
+    }
+
+    private World worldWithClearCity() throws IOException {
         City city = new City(1,"New York", new Vec2D(5, 5));
         TreeSet<City> cities = new TreeSet<>();
         cities.add(city);
@@ -50,12 +84,7 @@ public class CityModelTest extends TestCase {
                 world.setTile(new Vec2D(x, y), tile);
             }
         }
-
-        CityModel cityModel = new CityModel();
-        cityModel.loadFromMap(world, 1);
-        assertEquals(0, cityModel.getIndustryCityTiles().size());
-        assertEquals(0, cityModel.getUrbanCityTiles().size());
-        assertEquals("A city is a 7*7 area", 49, cityModel.getClearTiles().size());
+        return world;
     }
 
 }

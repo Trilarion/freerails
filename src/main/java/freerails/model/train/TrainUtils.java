@@ -27,7 +27,6 @@ import freerails.model.station.StationUtils;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
 import freerails.model.track.explorer.FlatTrackExplorer;
-import freerails.model.train.activity.Activity;
 import freerails.model.train.motion.ConstantAccelerationMotion;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.TrainOrder;
@@ -243,7 +242,7 @@ public final class TrainUtils {
      */
     public static boolean isUpdateDue(UnmodifiableWorld world, Player player, int trainId) {
         Time currentTime = world.getClock().getCurrentTime();
-        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
+        BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
         bidirectionalIterator.gotoLast();
 
         double finishTime = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration();

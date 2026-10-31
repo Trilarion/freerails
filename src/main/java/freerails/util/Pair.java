@@ -19,7 +19,6 @@
 package freerails.util;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Generic immutable pair for cases that need two values without additional
@@ -47,43 +46,6 @@ public record Pair<A, B>(A a, B b) implements Serializable {
      * @param b Second element.
      */
     public Pair {
-    }
-
-    /**
-     * @return First element.
-     */
-    @Override
-    public A a() {
-        return a;
-    }
-
-    /**
-     * @return Second element.
-     */
-    @Override
-    public B b() {
-        return b;
-    }
-
-    /**
-     * Compares this pair with another pair.
-     *
-     * <p>Both elements are compared with {@link Objects#equals(Object, Object)}.
-     *
-     * @param obj object to compare
-     * @return {@code true} if {@code obj} is a pair of the same runtime class
-     * with equal elements
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj != null && getClass() == obj.getClass()) {
-            @SuppressWarnings("unchecked") Pair<A, B> o = (Pair<A, B>) obj;
-            return Objects.equals(a, o.a) && Objects.equals(b, o.b);
-        }
-        return false;
     }
 
     /**

@@ -96,8 +96,9 @@ public class DropOffAndPickupCargoMoveGenerator {
                 // Now perform any conversions..
                 StationCargoConversion converted = station.getCargoConversion();
 
-                if (converted.convertsCargo(cargoIndex)) {
-                    int newCargoType = converted.getConversion(cargoIndex);
+                OptionalInt productCargoId = converted.conversionFor(cargoTypeId);
+                if (productCargoId.isPresent()) {
+                    int newCargoType = productCargoId.getAsInt();
                     CargoBatch newCargoBatch = new CargoBatch(newCargoType, station.getLocation(), 0, stationId);
                     stationAfter.addCargo(newCargoBatch, amount);
                 }

@@ -54,14 +54,6 @@ public record Time(int ticks) implements Comparable<Time>, Serializable {
     }
 
     /**
-     * Returns the elapsed tick count.
-     */
-    @Override
-    public int ticks() {
-        return ticks;
-    }
-
-    /**
      * Returns a new time one tick after this time.
      *
      * @return the next simulation time
@@ -80,23 +72,6 @@ public record Time(int ticks) implements Comparable<Time>, Serializable {
     @Override
     public int compareTo(@NotNull Time o) {
         return Integer.compare(ticks, o.ticks);
-    }
-
-    /**
-     * Compares this time with another object by elapsed tick count.
-     *
-     * @param obj object to compare
-     * @return {@code true} if {@code obj} is an equal {@code Time}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Time o)) {
-            return false;
-        }
-        return compareTo(o) == 0;
     }
 
     /**

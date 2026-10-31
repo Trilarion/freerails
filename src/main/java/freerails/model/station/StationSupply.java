@@ -59,13 +59,4 @@ public record StationSupply(List<Integer> supply) implements Serializable {
         return supply.get(cargoIndex);
     }
 
-    /**
-     * Returns a hash code derived from the cargo supply rates.
-     *
-     * @return hash code for these supply settings
-     */
-    @Override
-    public int hashCode() {
-        return supply.hashCode();
-    }
 }

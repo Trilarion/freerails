@@ -27,8 +27,11 @@ import freerails.util.Vec2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 // TODO doesn't know what type it is (depot, station, terminal)? why not? should know.
 /**
@@ -46,7 +49,7 @@ public class Station extends Identifiable {
     private StationCargoConversion cargoConversion;
     private ImmutableCargoBatchBundle cargoBatchBundle;
 
-    private List<TrainTemplate> production;
+    private final List<TrainTemplate> production;
 
     /**
      * Creates a station and initializes its cargo settings for the world's
@@ -68,9 +71,9 @@ public class Station extends Identifiable {
         Integer[] a = new Integer[numberOfCargoTypes];
         Arrays.fill(a, 0);
         supply = new StationSupply(a);
-        production = List.of();
+        production = new ArrayList<>();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
-        cargoConversion = StationCargoConversion.emptyInstance(numberOfCargoTypes);
+        cargoConversion = new StationCargoConversion(Map.of());
     }
 
     /**
@@ -86,7 +89,7 @@ public class Station extends Identifiable {
         demandForCargo = station.demandForCargo;
         cargoConversion = station.cargoConversion;
         cargoBatchBundle = new ImmutableCargoBatchBundle(station.cargoBatchBundle);
-        production = List.copyOf(station.production);
+        production = new ArrayList<>(station.production);
     }
 
     /**
@@ -119,10 +122,29 @@ public class Station extends Identifiable {
     /**
      * Returns the train templates currently in the station's production queue.
      *
-     * @return production queue
+     * @return an unmodifiable view of the production queue
      */
     public List<TrainTemplate> getProduction() {
-        return List.copyOf(production);
+        return Collections.unmodifiableList(production);
+    }
+
+    /**
+     * Adds a train template to the end of the production queue.
+     *
+     * @param trainTemplate template to queue
+     */
+    public void queueProduction(@NotNull TrainTemplate trainTemplate) {
+        production.add(trainTemplate);
+    }
+
+    /**
+     * Removes the first matching train template from the production queue.
+     *
+     * @param trainTemplate template to remove
+     * @return whether a matching template was removed
+     */
+    public boolean removeProduction(@NotNull TrainTemplate trainTemplate) {
+        return production.remove(trainTemplate);
     }
 
     /**
@@ -195,6 +217,8 @@ public class Station extends Identifiable {
      * @param production ordered production queue
      */
     public void setProduction(List<TrainTemplate> production) {
-        this.production = List.copyOf(production);
+        List<TrainTemplate> productionCopy = List.copyOf(production);
+        this.production.clear();
+        this.production.addAll(productionCopy);
     }
 }

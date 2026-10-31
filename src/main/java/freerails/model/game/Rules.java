@@ -39,34 +39,4 @@ public record Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConn
     public Rules {
     }
 
-    /**
-     * @return {@code true} if connecting to another player's track is allowed
-     */
-    @Override
-    public boolean canConnectToOtherPlayersTracks() {
-        return canConnectToOtherPlayersTracks;
-    }
-
-    /**
-     * @return {@code true} if track must remain connected to existing track
-     */
-    @Override
-    public boolean mustStayConnectedToExistingTrack() {
-        return mustStayConnectedToExistingTrack;
-    }
-
-    /**
-     * Compares both rule flags with those of another rule set.
-     *
-     * @param obj object to compare
-     * @return {@code true} if {@code obj} is a rule set with identical flags
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Rules test)) {
-            return false;
-        }
-
-        return canConnectToOtherPlayersTracks == test.canConnectToOtherPlayersTracks && mustStayConnectedToExistingTrack == test.mustStayConnectedToExistingTrack;
-    }
 }

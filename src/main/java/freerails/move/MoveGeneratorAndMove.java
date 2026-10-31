@@ -21,7 +21,6 @@ package freerails.move;
 import freerails.move.generator.MoveGenerator;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 // TODO remove this, only used in MovePrecommitter
 
@@ -40,15 +39,6 @@ public record MoveGeneratorAndMove(Move move, MoveGenerator moveGenerator) imple
      */
     public MoveGeneratorAndMove(MoveGenerator moveGenerator, Move move) {
         this(move, moveGenerator);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof MoveGeneratorAndMove preMoveAndMove)) return false;
-
-        if (!Objects.equals(move, preMoveAndMove.move)) return false;
-        return Objects.equals(moveGenerator, preMoveAndMove.moveGenerator);
     }
 
 }

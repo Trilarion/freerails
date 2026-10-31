@@ -51,14 +51,6 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
     /**
      * @return
      */
-    @Override
-    public Vec2D location() {
-        return location;
-    }
-
-    /**
-     * @return
-     */
     public TrackPiece getOldTrackPiece() {
         return trackPieceBefore;
     }
@@ -211,21 +203,4 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
         return new Rectangle(x, y, width, height);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof ChangeTrackPieceMove other)) {
-            return false;
-        }
-        return Objects.equals(trackPieceBefore, other.trackPieceBefore)
-                && Objects.equals(trackPieceAfter, other.trackPieceAfter)
-                && Objects.equals(location, other.location);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(trackPieceBefore, trackPieceAfter, location);
-    }
 }

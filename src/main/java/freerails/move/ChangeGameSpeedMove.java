@@ -46,22 +46,6 @@ public record ChangeGameSpeedMove(Speed speed) implements Move {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof ChangeGameSpeedMove other)) return false;
-
-        return speed.equals(other.speed);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public Speed speed() {
-        return speed;
-    }
-
-    @Override
     public String toString() {
         return "ChangeGameSpeedMove: => " + speed;
     }
