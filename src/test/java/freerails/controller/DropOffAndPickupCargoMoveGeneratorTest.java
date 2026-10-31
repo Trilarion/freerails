@@ -21,19 +21,19 @@
  */
 package freerails.controller;
 
-import freerails.model.train.Train;
-import freerails.model.cargo.CargoConversion;
-import freerails.model.finance.transaction.CargoDeliveryTransaction;
-import freerails.model.finance.transaction.Transaction;
+import freerails.model.operations.train.Train;
+import freerails.model.operations.cargo.CargoConversion;
+import freerails.model.economy.transaction.CargoDeliveryTransaction;
+import freerails.model.economy.transaction.Transaction;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
 import freerails.move.Status;
 
 import freerails.util.Vec2D;
 import freerails.model.world.World;
-import freerails.model.cargo.*;
-import freerails.model.station.StationDemand;
-import freerails.model.station.Station;
+import freerails.model.operations.cargo.*;
+import freerails.model.operations.station.StationDemand;
+import freerails.model.operations.station.Station;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackConfiguration;

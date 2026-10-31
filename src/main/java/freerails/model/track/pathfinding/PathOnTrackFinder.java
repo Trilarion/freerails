@@ -27,7 +27,7 @@ import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.PositionOnTrack;
+import freerails.model.operations.train.PositionOnTrack;
 import org.apache.log4j.Logger;
 
 import java.util.List;

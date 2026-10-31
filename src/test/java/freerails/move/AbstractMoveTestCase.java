@@ -21,13 +21,13 @@
  */
 package freerails.move;
 
-import freerails.model.train.Train;
+import freerails.model.operations.train.Train;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.PathOnTiles;
+import freerails.model.operations.train.PathOnTiles;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;

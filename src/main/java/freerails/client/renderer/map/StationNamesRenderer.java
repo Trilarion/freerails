@@ -25,7 +25,7 @@ import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.client.ClientConstants;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.operations.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
 

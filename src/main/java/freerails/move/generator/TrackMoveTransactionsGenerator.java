@@ -21,8 +21,8 @@
  */
 package freerails.move.generator;
 
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.game.Time;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.simulation.Time;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.move.AddTransactionMove;
@@ -31,9 +31,9 @@ import freerails.move.Move;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
-import freerails.model.finance.transaction.ItemTransaction;
-import freerails.model.finance.Money;
-import freerails.model.finance.transaction.TransactionCategory;
+import freerails.model.economy.transaction.ItemTransaction;
+import freerails.model.economy.Money;
+import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackPiece;

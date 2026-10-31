@@ -55,7 +55,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
      */
     private String permanentMessage = null;
     /**
-     * Clock.Time at which to stop displaying the current user message.
+     * Simulation time at which to stop displaying the current user message.
      */
     private long displayMessageUntil = 0;
     private FreerailsCursor mapCursor;

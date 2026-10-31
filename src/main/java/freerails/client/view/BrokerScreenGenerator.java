@@ -23,13 +23,13 @@
 
 package freerails.client.view;
 
-import freerails.model.finance.*;
-import freerails.model.finance.transaction.aggregator.FinancialDataAggregator;
-import freerails.model.finance.transaction.aggregator.ItemsTransactionAggregator;
-import freerails.model.game.Clock;
-import freerails.model.game.Time;
+import freerails.model.economy.*;
+import freerails.model.economy.transaction.aggregator.FinancialDataAggregator;
+import freerails.model.economy.transaction.aggregator.ItemsTransactionAggregator;
+import freerails.model.simulation.Clock;
+import freerails.model.simulation.Time;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finance.transaction.TransactionCategory;
+import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.player.Player;
 
 import java.text.DecimalFormat;
@@ -41,7 +41,7 @@ class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-    // TODO is the code here ever really used? move it to model.finance
+    // TODO is the code here ever really used? move it to model.economy
     /**
      * Creates a new instance of BrokerScreenGenerator
      */

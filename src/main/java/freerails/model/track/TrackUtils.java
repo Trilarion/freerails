@@ -19,7 +19,7 @@
 package freerails.model.track;
 
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.operations.station.Station;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -27,7 +27,7 @@ import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.track.explorer.GraphExplorer;
 import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.PathOnTrackFinder;
-import freerails.model.train.PositionOnTrack;
+import freerails.model.operations.train.PositionOnTrack;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Vec2D;
 

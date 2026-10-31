@@ -19,9 +19,9 @@
 package freerails.model.terrain;
 
 import com.google.gson.annotations.SerializedName;
-import freerails.model.cargo.CargoConversion;
-import freerails.model.cargo.CargoProductionOrConsumption;
-import freerails.model.finance.Money;
+import freerails.model.operations.cargo.CargoConversion;
+import freerails.model.operations.cargo.CargoProductionOrConsumption;
+import freerails.model.economy.Money;
 import freerails.util.Identifiable;
 import freerails.util.Utils;
 import org.jetbrains.annotations.Nullable;

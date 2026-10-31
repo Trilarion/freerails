@@ -19,11 +19,11 @@
 package freerails.move;
 
 import freerails.model.building.EngineShop;
-import freerails.model.finance.Money;
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.finance.transaction.TransactionCategory;
+import freerails.model.economy.Money;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.operations.station.Station;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;

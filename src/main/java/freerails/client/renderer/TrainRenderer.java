@@ -18,9 +18,9 @@
 
 package freerails.client.renderer;
 
-import freerails.model.train.*;
+import freerails.model.operations.train.*;
 import freerails.model.ModelConstants;
-import freerails.model.train.motion.TrainPositionOnMap;
+import freerails.model.operations.train.motion.TrainPositionOnMap;
 import freerails.client.ClientConstants;
 import freerails.client.renderer.map.MapCoordinateAdapter;
 import freerails.util.Segment;

@@ -28,7 +28,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.WagonCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.ModelConstants;
-import freerails.model.cargo.Cargo;
+import freerails.model.operations.cargo.Cargo;
 
 import javax.swing.*;
 import java.awt.*;

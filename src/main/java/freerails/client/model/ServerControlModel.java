@@ -18,7 +18,7 @@
 
 package freerails.client.model;
 
-import freerails.model.game.Speed;
+import freerails.model.simulation.Speed;
 import freerails.network.command.NewGameCommandToServer;
 import freerails.scenario.MapCreator;
 import freerails.util.ui.ActionAdapter;

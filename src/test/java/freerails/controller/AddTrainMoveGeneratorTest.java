@@ -23,9 +23,9 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
-import freerails.model.train.motion.TrainMotion;
-import freerails.model.train.schedule.UnmodifiableSchedule;
-import freerails.model.train.schedule.TrainOrder;
+import freerails.model.operations.train.motion.TrainMotion;
+import freerails.model.operations.train.schedule.UnmodifiableSchedule;
+import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
@@ -34,8 +34,8 @@ import freerails.util.Vec2D;
 import freerails.util.BidirectionalIterator;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.Player;
-import freerails.model.train.*;
-import freerails.model.train.schedule.ScheduleState;
+import freerails.model.operations.train.*;
+import freerails.model.operations.train.schedule.ScheduleState;
 
 import java.util.ArrayList;
 import java.util.Arrays;

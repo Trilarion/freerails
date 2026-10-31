@@ -21,16 +21,16 @@ package freerails.client.view;
 import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.cargo.Cargo;
-import freerails.model.station.Station;
-import freerails.model.train.schedule.TrainOrder;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.operations.station.Station;
+import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.model.world.*;
 import freerails.move.Move;
 
 import freerails.model.player.Player;
-import freerails.model.train.*;
-import freerails.model.train.schedule.ScheduleState;
-import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.operations.train.*;
+import freerails.model.operations.train.schedule.ScheduleState;
+import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.move.UpdateTrainMove;
 import org.apache.log4j.Logger;
 

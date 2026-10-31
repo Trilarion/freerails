@@ -30,7 +30,7 @@ import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.player.Player;
-import freerails.model.train.PositionOnTrack;
+import freerails.model.operations.train.PositionOnTrack;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;

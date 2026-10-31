@@ -25,7 +25,7 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
-import freerails.model.train.PositionOnTrack;
+import freerails.model.operations.train.PositionOnTrack;
 
 import java.io.Serial;
 import java.io.Serializable;

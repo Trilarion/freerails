@@ -18,8 +18,8 @@
 
 package freerails.model.track;
 
-import freerails.model.game.Time;
-import freerails.model.train.Train;
+import freerails.model.simulation.Time;
+import freerails.model.operations.train.Train;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 

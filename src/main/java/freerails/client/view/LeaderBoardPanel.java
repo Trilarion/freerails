@@ -24,11 +24,11 @@ package freerails.client.view;
 import freerails.client.MoneyFormatter;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.finance.transaction.aggregator.NetWorthAggregator;
-import freerails.model.finance.Money;
-import freerails.model.finance.PlayerDetails;
-import freerails.model.finance.transaction.aggregator.TransactionAggregator;
-import freerails.model.game.Time;
+import freerails.model.economy.transaction.aggregator.NetWorthAggregator;
+import freerails.model.economy.Money;
+import freerails.model.economy.PlayerDetails;
+import freerails.model.economy.transaction.aggregator.TransactionAggregator;
+import freerails.model.simulation.Time;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 

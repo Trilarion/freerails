@@ -22,7 +22,7 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.model.finance.TransactionUtils;
+import freerails.model.economy.TransactionUtils;
 import freerails.model.world.*;
 import freerails.move.*;
 import freerails.model.game.Rules;

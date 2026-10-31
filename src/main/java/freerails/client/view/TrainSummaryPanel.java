@@ -28,11 +28,11 @@ import freerails.client.MoneyFormatter;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
-import freerails.model.game.Clock;
+import freerails.model.simulation.Clock;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.player.Player;
-import freerails.model.train.Train;
+import freerails.model.operations.train.Train;
 
 import javax.swing.*;
 import java.awt.*;

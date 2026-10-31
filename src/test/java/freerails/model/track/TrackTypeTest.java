@@ -18,7 +18,7 @@
 
 package freerails.model.track;
 
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.terrain.TerrainCategory;
 import junit.framework.TestCase;
 

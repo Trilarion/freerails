@@ -19,11 +19,11 @@
 package freerails.move;
 
 import freerails.model.building.EngineShop;
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.finance.Money;
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.finance.transaction.TransactionCategory;
-import freerails.model.station.Station;
+import freerails.model.operations.cargo.CargoBatchBundle;
+import freerails.model.economy.Money;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.TransactionCategory;
+import freerails.model.operations.station.Station;
 import freerails.util.Vec2D;
 import freerails.util.WorldGenerator;
 

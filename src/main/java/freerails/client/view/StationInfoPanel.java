@@ -29,7 +29,7 @@ import freerails.client.ModelRoot;
 import freerails.model.world.*;
 import freerails.util.Vec2D;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.operations.station.Station;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

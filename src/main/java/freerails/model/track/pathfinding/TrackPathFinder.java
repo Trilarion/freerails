@@ -28,7 +28,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.PositionOnTrack;
+import freerails.model.operations.train.PositionOnTrack;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

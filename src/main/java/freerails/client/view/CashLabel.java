@@ -25,7 +25,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.client.MoneyFormatter;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.player.Player;
 
 import javax.swing.*;

@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.model.game.Speed;
+import freerails.model.simulation.Speed;
 import junit.framework.TestCase;
 
 public class ChangeGameSpeedMoveTest extends TestCase {

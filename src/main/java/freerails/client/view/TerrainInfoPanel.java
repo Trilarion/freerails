@@ -25,9 +25,9 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.model.ModelConstants;
-import freerails.model.cargo.Cargo;
-import freerails.model.cargo.CargoConversion;
-import freerails.model.cargo.CargoProductionOrConsumption;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.operations.cargo.CargoConversion;
+import freerails.model.operations.cargo.CargoProductionOrConsumption;
 import freerails.model.terrain.*;
 import freerails.model.world.UnmodifiableWorld;
 

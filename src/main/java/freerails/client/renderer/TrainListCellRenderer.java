@@ -24,11 +24,11 @@ package freerails.client.renderer;
 
 import freerails.client.view.View;
 import freerails.client.ModelRoot;
-import freerails.model.train.Train;
+import freerails.model.operations.train.Train;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.train.schedule.UnmodifiableSchedule;
-import freerails.model.train.schedule.TrainOrder;
+import freerails.model.operations.train.schedule.UnmodifiableSchedule;
+import freerails.model.operations.train.schedule.TrainOrder;
 
 import javax.swing.*;
 

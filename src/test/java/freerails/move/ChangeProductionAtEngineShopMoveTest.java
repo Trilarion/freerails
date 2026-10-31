@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.model.building.EngineShop;
-import freerails.model.train.TrainTemplate;
+import freerails.model.operations.train.TrainTemplate;
 import freerails.util.Vec2D;
 import freerails.util.WorldGenerator;
 

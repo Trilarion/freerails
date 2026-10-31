@@ -20,7 +20,7 @@ package freerails.model.track;
 
 import com.google.gson.annotations.Expose;
 import freerails.util.Identifiable;
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.terrain.TerrainCategory;
 import org.jetbrains.annotations.NotNull;
 

@@ -28,7 +28,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.building.EngineShop;
-import freerails.model.train.Engine;
+import freerails.model.operations.train.Engine;
 import java.util.Collection;
 
 import javax.swing.*;

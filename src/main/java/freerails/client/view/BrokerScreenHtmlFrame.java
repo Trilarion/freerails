@@ -25,10 +25,10 @@ package freerails.client.view;
 
 import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
-import freerails.model.finance.*;
+import freerails.model.economy.*;
 import freerails.client.ModelRoot;
-import freerails.model.finance.transaction.ItemTransaction;
-import freerails.model.finance.transaction.aggregator.FinancialDataAggregator;
+import freerails.model.economy.transaction.ItemTransaction;
+import freerails.model.economy.transaction.aggregator.FinancialDataAggregator;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.model.world.UnmodifiableWorld;

@@ -20,7 +20,7 @@ package freerails.client.view;
 
 import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
-import freerails.model.finance.BalanceSheetGenerator;
+import freerails.model.economy.reporting.BalanceSheetGenerator;
 import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;

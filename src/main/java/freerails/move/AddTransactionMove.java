@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.model.finance.transaction.Transaction;
+import freerails.model.economy.transaction.Transaction;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Utils;
 import freerails.model.world.World;

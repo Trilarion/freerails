@@ -21,12 +21,12 @@
  */
 package freerails.model;
 
-import freerails.model.finance.*;
-import freerails.model.finance.transaction.ItemTransaction;
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.finance.transaction.TransactionCategory;
-import freerails.model.finance.transaction.aggregator.ItemsTransactionAggregator;
-import freerails.model.game.Time;
+import freerails.model.economy.*;
+import freerails.model.economy.transaction.ItemTransaction;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.TransactionCategory;
+import freerails.model.economy.transaction.aggregator.ItemsTransactionAggregator;
+import freerails.model.simulation.Time;
 import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;

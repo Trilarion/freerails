@@ -37,7 +37,7 @@ import freerails.client.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.track.TrackCategory;
 
 import javax.swing.*;

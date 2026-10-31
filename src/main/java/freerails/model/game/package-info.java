@@ -17,7 +17,7 @@
  */
 
 /**
- * Defines game rules, clock, time, speed, and sentiment values.
+ * Defines gameplay rules and sentiment values.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

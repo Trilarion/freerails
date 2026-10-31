@@ -20,7 +20,7 @@ package freerails.client.view;
 
 import freerails.client.*;
 import freerails.client.renderer.RendererRoot;
-import freerails.model.station.StationUtils;
+import freerails.model.operations.station.StationUtils;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import org.apache.log4j.Logger;

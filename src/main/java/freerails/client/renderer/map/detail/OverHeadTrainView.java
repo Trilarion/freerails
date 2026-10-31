@@ -21,8 +21,8 @@ package freerails.client.renderer.map.detail;
 import freerails.client.ClientConstants;
 import freerails.client.renderer.map.MapCoordinateAdapter;
 import freerails.model.ModelConstants;
-import freerails.model.train.Train;
-import freerails.model.train.motion.TrainMotion;
+import freerails.model.operations.train.Train;
+import freerails.model.operations.train.motion.TrainMotion;
 import freerails.util.BidirectionalIterator;
 import freerails.util.Vec2D;
 import freerails.util.ui.Painter;
@@ -33,7 +33,7 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.train.motion.TrainPositionOnMap;
+import freerails.model.operations.train.motion.TrainPositionOnMap;
 
 import java.awt.*;
 

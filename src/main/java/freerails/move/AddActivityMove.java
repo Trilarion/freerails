@@ -19,7 +19,7 @@
 package freerails.move;
 
 import freerails.model.player.Player;
-import freerails.model.train.motion.TrainMotion;
+import freerails.model.operations.train.motion.TrainMotion;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;

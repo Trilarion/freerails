@@ -21,19 +21,19 @@
  */
 package freerails.move.generator;
 
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.train.motion.TrainMotion;
-import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.operations.train.motion.TrainMotion;
+import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
 
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finance.transaction.ItemTransaction;
-import freerails.model.finance.Money;
-import freerails.model.finance.transaction.TransactionCategory;
+import freerails.model.economy.transaction.ItemTransaction;
+import freerails.model.economy.Money;
+import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.player.Player;
-import freerails.model.train.*;
+import freerails.model.operations.train.*;
 
 import java.io.Serial;
 import java.util.Arrays;

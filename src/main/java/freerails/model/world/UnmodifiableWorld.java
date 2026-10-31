@@ -18,19 +18,20 @@
 
 package freerails.model.world;
 
-import freerails.model.cargo.Cargo;
+import freerails.model.operations.cargo.Cargo;
 import freerails.model.building.EngineShop;
 import freerails.model.game.*;
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.station.Station;
+import freerails.model.simulation.*;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.operations.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
-import freerails.model.train.Engine;
-import freerails.model.train.Train;
+import freerails.model.operations.train.Engine;
+import freerails.model.operations.train.Train;
 import freerails.util.Vec2D;
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.player.Player;
 import org.jetbrains.annotations.NotNull;
 

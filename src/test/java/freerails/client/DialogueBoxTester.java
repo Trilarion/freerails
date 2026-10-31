@@ -20,8 +20,8 @@ package freerails.client;
 
 import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRootImpl;
-import freerails.model.train.Train;
-import freerails.model.train.schedule.TrainOrder;
+import freerails.model.operations.train.Train;
+import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.client.receiver.TestMoveReceiver;
 import freerails.util.WorldGenerator;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
@@ -32,12 +32,12 @@ import freerails.client.receiver.MoveChainFork;
 import freerails.client.receiver.UntriedMoveReceiver;
 
 import freerails.util.Vec2D;
-import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.player.Player;
-import freerails.model.station.StationDemand;
-import freerails.model.station.Station;
-import freerails.model.train.schedule.ScheduleState;
+import freerails.model.operations.station.StationDemand;
+import freerails.model.operations.station.Station;
+import freerails.model.operations.train.schedule.ScheduleState;
 import freerails.model.world.World;
 
 import javax.swing.*;

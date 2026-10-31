@@ -19,11 +19,11 @@
 package freerails.util;
 
 import freerails.io.GsonManager;
-import freerails.model.cargo.Cargo;
-import freerails.model.cargo.CargoCategory;
-import freerails.model.cargo.CargoConversion;
-import freerails.model.cargo.CargoProductionOrConsumption;
-import freerails.model.finance.Money;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.operations.cargo.CargoCategory;
+import freerails.model.operations.cargo.CargoConversion;
+import freerails.model.operations.cargo.CargoProductionOrConsumption;
+import freerails.model.economy.Money;
 import freerails.model.game.Rules;
 import freerails.model.game.Sentiment;
 import freerails.model.player.Player;
@@ -33,7 +33,7 @@ import freerails.model.terrain.city.City;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackProperty;
 import freerails.model.track.TrackType;
-import freerails.model.train.Engine;
+import freerails.model.operations.train.Engine;
 import freerails.model.world.World;
 import freerails.scenario.MapCreator;
 

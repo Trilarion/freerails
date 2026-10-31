@@ -18,14 +18,14 @@
 
 package freerails.client.view;
 
-import freerails.model.cargo.CargoCategory;
-import freerails.model.cargo.Cargo;
-import freerails.model.finance.IncomeStatementGenerator;
+import freerails.model.operations.cargo.CargoCategory;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.economy.reporting.IncomeStatementGenerator;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
-import freerails.model.cargo.CargoBatch;
-import freerails.model.finance.transaction.CargoDeliveryTransaction;
-import freerails.model.finance.Money;
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.economy.transaction.CargoDeliveryTransaction;
+import freerails.model.economy.Money;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 

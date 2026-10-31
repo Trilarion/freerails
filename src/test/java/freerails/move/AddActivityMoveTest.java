@@ -21,9 +21,9 @@
  */
 package freerails.move;
 
-import freerails.model.train.motion.TrainMotion;
+import freerails.model.operations.train.motion.TrainMotion;
 import freerails.util.BidirectionalIterator;
-import freerails.model.game.Time;
+import freerails.model.simulation.Time;
 import freerails.model.player.Player;
 import freerails.model.world.TestTrainMotion;
 import freerails.model.world.World;

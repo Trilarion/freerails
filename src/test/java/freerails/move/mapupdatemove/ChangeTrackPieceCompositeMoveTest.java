@@ -24,7 +24,7 @@
 package freerails.move.mapupdatemove;
 
 import freerails.controller.TrackMoveProducer;
-import freerails.model.finance.TransactionUtils;
+import freerails.model.economy.TransactionUtils;
 import freerails.model.world.World;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;

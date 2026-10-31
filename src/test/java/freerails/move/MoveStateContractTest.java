@@ -18,23 +18,23 @@
 
 package freerails.move;
 
-import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.cargo.ImmutableCargoBatchBundle;
-import freerails.model.finance.Money;
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.finance.transaction.TransactionCategory;
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.operations.cargo.CargoBatchBundle;
+import freerails.model.operations.cargo.ImmutableCargoBatchBundle;
+import freerails.model.economy.Money;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.game.Rules;
-import freerails.model.game.Time;
+import freerails.model.simulation.Time;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.operations.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
-import freerails.model.train.Train;
-import freerails.model.train.TrainConfiguration;
-import freerails.model.train.schedule.ScheduleState;
+import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainConfiguration;
+import freerails.model.operations.train.schedule.ScheduleState;
 import freerails.model.world.World;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;

@@ -21,8 +21,8 @@
  */
 package freerails.client.view;
 
-import freerails.model.finance.*;
-import freerails.model.finance.transaction.ItemTransaction;
+import freerails.model.economy.*;
+import freerails.model.economy.transaction.ItemTransaction;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;

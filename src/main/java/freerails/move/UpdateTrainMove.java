@@ -18,14 +18,14 @@
 
 package freerails.move;
 
-import freerails.model.cargo.ImmutableCargoBatchBundle;
-import freerails.model.cargo.UnmodifiableCargoBatchBundle;
+import freerails.model.operations.cargo.ImmutableCargoBatchBundle;
+import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
-import freerails.model.train.Train;
-import freerails.model.train.TrainConfiguration;
-import freerails.model.train.TrainRuntimeState;
-import freerails.model.train.schedule.ScheduleState;
-import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainConfiguration;
+import freerails.model.operations.train.TrainRuntimeState;
+import freerails.model.operations.train.schedule.ScheduleState;
+import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.util.Utils;

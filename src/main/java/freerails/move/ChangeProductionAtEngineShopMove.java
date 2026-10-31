@@ -26,7 +26,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.building.EngineShop;
-import freerails.model.train.TrainTemplate;
+import freerails.model.operations.train.TrainTemplate;
 import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 

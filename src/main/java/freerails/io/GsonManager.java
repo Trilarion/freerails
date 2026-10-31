@@ -25,13 +25,13 @@ import freerails.io.adapter.ColorAdapter;
 import freerails.io.adapter.MoneyAdapter;
 import freerails.util.Identifiable;
 import freerails.model.ModelConstants;
-import freerails.model.cargo.Cargo;
-import freerails.model.finance.Money;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.economy.Money;
 import freerails.model.game.Sentiment;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
-import freerails.model.train.Engine;
+import freerails.model.operations.train.Engine;
 import freerails.util.Array2D;
 import org.apache.commons.io.FileUtils;
 

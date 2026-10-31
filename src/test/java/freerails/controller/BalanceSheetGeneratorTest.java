@@ -22,12 +22,12 @@
 package freerails.controller;
 
 import freerails.model.player.Player;
-import freerails.model.finance.BalanceSheetGenerator;
+import freerails.model.economy.reporting.BalanceSheetGenerator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.Status;
 import freerails.model.*;
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
@@ -72,7 +72,6 @@ public class BalanceSheetGeneratorTest extends TestCase {
         assertTrue(status.getMessage(), status.isSuccess());
         move.apply(world);
 
-        // world.setTime(new Clock.Time(100));
     }
 
 }

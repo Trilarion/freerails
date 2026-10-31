@@ -19,10 +19,10 @@
 package freerails.model.world;
 
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.PathOnTiles;
-import freerails.model.train.TrainState;
+import freerails.model.operations.train.PathOnTiles;
+import freerails.model.operations.train.TrainState;
 import freerails.model.ModelConstants;
-import freerails.model.train.motion.TrainMotion;
+import freerails.model.operations.train.motion.TrainMotion;
 import freerails.util.Vec2D;
 
 /** Factory for simple train motions in tests. */

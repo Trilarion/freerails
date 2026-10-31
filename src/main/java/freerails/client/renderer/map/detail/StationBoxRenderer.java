@@ -21,13 +21,13 @@ package freerails.client.renderer.map.detail;
 import freerails.client.ClientConstants;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
-import freerails.model.cargo.*;
+import freerails.model.operations.cargo.*;
 import freerails.model.world.*;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.model.*;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.operations.station.Station;
 
 import java.awt.*;
 import java.io.IOException;

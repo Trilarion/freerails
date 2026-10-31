@@ -44,6 +44,22 @@ and a world's terrain-only configuration. `ScenarioDataLoader` owns the existing
 layout; player-specific live state remains outside scenario configuration and is handled by
 game setup or save-game persistence.
 
+Economic value types, account and transaction state, and transaction aggregation belong
+under `freerails.model.economy`. Financial report generators belong in its
+`reporting` subpackage.
+
+Simulation-wide time primitives (`Clock`, `Time`, and `Speed`) belong to
+`freerails.model.simulation`, rather than the gameplay-specific `freerails.model.game`
+package. Train activities and motion remain under `freerails.model.operations.train`; their time
+offsets and durations use simulation ticks and may be fractional for smooth interpolation.
+`Time` represents whole tick boundaries.
+
+Transport model state is grouped under `freerails.model.operations`: train consists,
+schedules, activities and motion, station cargo queues, and cargo handling. Its `train`,
+`station`, and `cargo` subpackages expose those independently useful APIs. Moves that
+change this state stay in `freerails.move`; cargo delivery transactions remain in
+`freerails.model.economy.transaction` as accounting records.
+
 ## Savegame compatibility during development
 
 FreeRails is currently in active development. Changes to persisted game state do not need

@@ -29,7 +29,7 @@ import freerails.move.Status;
 import freerails.move.SimpleMoveExecutor;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.Vec2D;
-import freerails.model.train.PositionOnTrack;
+import freerails.model.operations.train.PositionOnTrack;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import freerails.model.terrain.TerrainTile;

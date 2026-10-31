@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.model.cargo.Cargo;
+import freerails.model.operations.cargo.Cargo;
 
 import javax.swing.*;
 import java.awt.*;

@@ -21,12 +21,12 @@
  */
 package freerails.controller;
 
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.finance.transaction.aggregator.FinancialDataAggregator;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.aggregator.FinancialDataAggregator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.Status;
-import freerails.model.finance.*;
+import freerails.model.economy.*;
 import freerails.model.ModelConstants;
 import freerails.model.world.World;
 import freerails.model.player.Player;

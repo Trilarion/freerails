@@ -18,12 +18,12 @@
 
 package freerails.model;
 
-import freerails.model.cargo.CargoConversion;
-import freerails.model.cargo.CargoProductionOrConsumption;
+import freerails.model.operations.cargo.CargoConversion;
+import freerails.model.operations.cargo.CargoProductionOrConsumption;
 import freerails.model.game.Rules;
-import freerails.model.game.Time;
+import freerails.model.simulation.Time;
 import freerails.model.terrain.TerrainTile;
-import freerails.model.train.TrainTemplate;
+import freerails.model.operations.train.TrainTemplate;
 import junit.framework.TestCase;
 
 import java.util.List;

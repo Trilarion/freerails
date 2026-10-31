@@ -26,9 +26,9 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
-import freerails.model.cargo.Cargo;
-import freerails.model.cargo.UnmodifiableCargoBatchBundle;
-import freerails.model.train.Train;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
+import freerails.model.operations.train.Train;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 

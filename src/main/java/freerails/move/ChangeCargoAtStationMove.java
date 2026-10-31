@@ -18,10 +18,10 @@
 
 package freerails.move;
 
-import freerails.model.cargo.ImmutableCargoBatchBundle;
-import freerails.model.cargo.UnmodifiableCargoBatchBundle;
+import freerails.model.operations.cargo.ImmutableCargoBatchBundle;
+import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.operations.station.Station;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.util.Utils;

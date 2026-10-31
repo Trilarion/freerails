@@ -29,7 +29,7 @@ import freerails.model.ModelConstants;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.PositionOnTrack;
+import freerails.model.operations.train.PositionOnTrack;
 
 import java.util.NoSuchElementException;
 

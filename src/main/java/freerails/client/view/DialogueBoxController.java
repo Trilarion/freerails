@@ -24,9 +24,9 @@ package freerails.client.view;
 
 import freerails.client.ClientConstants;
 import freerails.client.ModelRootImpl;
-import freerails.model.station.StationUtils;
+import freerails.model.operations.station.StationUtils;
 import freerails.model.building.EngineShop;
-import freerails.model.train.Train;
+import freerails.model.operations.train.Train;
 import freerails.model.world.*;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
@@ -40,8 +40,8 @@ import freerails.network.command.RefreshListOfGamesCommandToServer;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
-import freerails.model.train.TrainTemplate;
+import freerails.model.operations.station.Station;
+import freerails.model.operations.train.TrainTemplate;
 import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
 

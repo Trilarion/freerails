@@ -28,7 +28,7 @@ import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.train.Train;
+import freerails.model.operations.train.Train;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

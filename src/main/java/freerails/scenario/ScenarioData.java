@@ -18,16 +18,16 @@
 
 package freerails.scenario;
 
-import freerails.model.cargo.Cargo;
-import freerails.model.game.Clock;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.simulation.Clock;
 import freerails.model.game.Rules;
 import freerails.model.game.Sentiment;
-import freerails.model.game.Time;
+import freerails.model.simulation.Time;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.city.City;
 import freerails.model.track.TrackType;
-import freerails.model.train.Engine;
+import freerails.model.operations.train.Engine;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.util.Array2D;

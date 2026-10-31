@@ -30,8 +30,8 @@ import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
-import freerails.model.train.schedule.TrainOrder;
+import freerails.model.operations.station.Station;
+import freerails.model.operations.train.schedule.TrainOrder;
 
 import javax.swing.*;
 import java.awt.*;

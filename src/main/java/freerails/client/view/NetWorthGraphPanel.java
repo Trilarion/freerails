@@ -25,13 +25,13 @@ import freerails.client.model.PlayerColors;
 import freerails.client.model.CompanyDetails;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.finance.transaction.aggregator.NetWorthAggregator;
-import freerails.model.game.Clock;
-import freerails.model.game.Time;
+import freerails.model.economy.transaction.aggregator.NetWorthAggregator;
+import freerails.model.simulation.Clock;
+import freerails.model.simulation.Time;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finance.transaction.aggregator.TransactionAggregator;
-import freerails.model.finance.Money;
+import freerails.model.economy.transaction.aggregator.TransactionAggregator;
+import freerails.model.economy.Money;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

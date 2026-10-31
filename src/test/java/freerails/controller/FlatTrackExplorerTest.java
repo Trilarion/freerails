@@ -29,7 +29,7 @@ import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
-import freerails.model.train.PositionOnTrack;
+import freerails.model.operations.train.PositionOnTrack;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;

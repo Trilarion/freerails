@@ -18,7 +18,7 @@
 
 package freerails.model.building;
 
-import freerails.model.train.TrainTemplate;
+import freerails.model.operations.train.TrainTemplate;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;

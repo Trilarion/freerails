@@ -18,19 +18,19 @@
 
 package freerails.model.world;
 
-import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.finance.BalanceSheetGenerator;
-import freerails.model.finance.Money;
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.finance.transaction.TransactionCategory;
-import freerails.model.game.Time;
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.operations.cargo.CargoBatchBundle;
+import freerails.model.economy.reporting.BalanceSheetGenerator;
+import freerails.model.economy.Money;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.TransactionCategory;
+import freerails.model.simulation.Time;
 import freerails.model.player.Player;
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.PathOnTiles;
-import freerails.model.train.Train;
-import freerails.model.train.TrainState;
-import freerails.model.train.motion.TrainMotion;
+import freerails.model.operations.train.PathOnTiles;
+import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainState;
+import freerails.model.operations.train.motion.TrainMotion;
 import freerails.move.AddTransactionMove;
 import freerails.move.AdvanceClockMove;
 import freerails.util.Utils;

@@ -23,10 +23,10 @@ package freerails.move;
 
 import freerails.controller.TrackMoveProducer;
 import freerails.io.GsonManager;
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.game.Rules;
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.finance.transaction.TransactionCategory;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.terrain.TileTransition;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainCategory;

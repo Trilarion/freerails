@@ -21,28 +21,28 @@
  */
 package freerails.model.world;
 
-import freerails.model.cargo.Cargo;
+import freerails.model.operations.cargo.Cargo;
 import freerails.model.building.EngineShop;
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.cargo.CargoCategory;
-import freerails.model.finance.transaction.Transaction;
-import freerails.model.finance.transaction.TransactionCategory;
-import freerails.model.game.Speed;
+import freerails.model.operations.cargo.CargoBatchBundle;
+import freerails.model.operations.cargo.CargoCategory;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.TransactionCategory;
+import freerails.model.simulation.Speed;
 import freerails.model.game.Sentiment;
-import freerails.model.game.Time;
-import freerails.model.station.Station;
+import freerails.model.simulation.Time;
+import freerails.model.operations.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.city.City;
 import freerails.model.track.TrackConfiguration;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.finance.*;
+import freerails.model.economy.*;
 import freerails.model.player.Player;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
-import freerails.model.train.Train;
-import freerails.model.train.TrainTemplate;
+import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainTemplate;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 

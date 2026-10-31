@@ -23,7 +23,7 @@ import freerails.model.terrain.city.City;
 import freerails.model.terrain.city.CityGrowth;
 import freerails.model.terrain.city.CityInitializer;
 import freerails.model.terrain.city.CityModel;
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackConfiguration;

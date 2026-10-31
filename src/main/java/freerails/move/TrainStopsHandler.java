@@ -21,10 +21,10 @@
  */
 package freerails.move;
 
-import freerails.model.game.Time;
-import freerails.model.station.StationUtils;
-import freerails.model.train.motion.TrainMotion;
-import freerails.model.train.schedule.TrainOrder;
+import freerails.model.simulation.Time;
+import freerails.model.operations.station.StationUtils;
+import freerails.model.operations.train.motion.TrainMotion;
+import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 
@@ -32,10 +32,10 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
-import freerails.model.train.*;
-import freerails.model.train.schedule.ScheduleState;
-import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.operations.station.Station;
+import freerails.model.operations.train.*;
+import freerails.model.operations.train.schedule.ScheduleState;
+import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import org.apache.log4j.Logger;
 
 import java.io.Serial;

@@ -21,8 +21,8 @@
  */
 package freerails.move.generator;
 
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.station.StationUtils;
+import freerails.model.operations.cargo.CargoBatchBundle;
+import freerails.model.operations.station.StationUtils;
 import freerails.model.terrain.city.CityUtils;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
@@ -31,7 +31,7 @@ import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
+import freerails.model.operations.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 

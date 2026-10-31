@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 import junit.framework.TestCase;
 
 import java.util.Locale;

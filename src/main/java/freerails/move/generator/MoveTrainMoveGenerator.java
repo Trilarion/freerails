@@ -23,8 +23,8 @@ package freerails.move.generator;
 
 import freerails.model.ModelConstants;
 import freerails.model.track.*;
-import freerails.model.station.StationUtils;
-import freerails.model.train.motion.*;
+import freerails.model.operations.station.StationUtils;
+import freerails.model.operations.train.motion.*;
 import freerails.move.*;
 
 import freerails.util.Vec2D;
@@ -32,7 +32,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.*;
+import freerails.model.operations.train.*;
 
 import java.io.Serial;
 import java.util.*;
@@ -181,7 +181,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return result;
     }
 
-    // TODO parts of this should be in the model.train
+    // TODO parts of this should be in model.operations.train
     private Move moveTrain(UnmodifiableWorld world, OccupiedTracks occupiedTracks) {
         // Find the next vector.
         TileTransition nextVector = nextStep(world);

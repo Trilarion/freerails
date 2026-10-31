@@ -22,9 +22,9 @@
 package freerails.model.terrain;
 
 import freerails.io.GsonManager;
-import freerails.model.cargo.CargoConversion;
-import freerails.model.cargo.CargoProductionOrConsumption;
-import freerails.model.finance.Money;
+import freerails.model.operations.cargo.CargoConversion;
+import freerails.model.operations.cargo.CargoProductionOrConsumption;
+import freerails.model.economy.Money;
 import freerails.util.TestUtils;
 import freerails.util.Utils;
 import junit.framework.TestCase;

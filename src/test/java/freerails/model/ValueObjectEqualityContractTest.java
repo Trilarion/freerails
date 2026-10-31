@@ -18,14 +18,14 @@
 
 package freerails.model;
 
-import freerails.model.cargo.CargoBatch;
-import freerails.model.finance.Money;
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.economy.Money;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
-import freerails.model.train.TrainTemplate;
-import freerails.model.train.schedule.TrainOrder;
+import freerails.model.operations.train.TrainTemplate;
+import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.util.Vec2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;

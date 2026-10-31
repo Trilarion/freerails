@@ -19,9 +19,9 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConstants;
-import freerails.model.cargo.Cargo;
+import freerails.model.operations.cargo.Cargo;
 import freerails.model.terrain.Terrain;
-import freerails.model.train.Engine;
+import freerails.model.operations.train.Engine;
 import freerails.util.ui.SoundManager;
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;

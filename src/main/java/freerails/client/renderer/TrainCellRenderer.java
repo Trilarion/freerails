@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.model.train.Engine;
+import freerails.model.operations.train.Engine;
 
 import javax.swing.*;
 import java.awt.*;

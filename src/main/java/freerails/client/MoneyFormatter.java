@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import freerails.model.finance.Money;
+import freerails.model.economy.Money;
 
 import java.text.NumberFormat;
 import java.util.Currency;

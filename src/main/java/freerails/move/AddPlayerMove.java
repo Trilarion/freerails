@@ -18,8 +18,8 @@
 
 package freerails.move;
 
-import freerails.model.finance.*;
-import freerails.model.finance.transaction.Transaction;
+import freerails.model.economy.*;
+import freerails.model.economy.transaction.Transaction;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;

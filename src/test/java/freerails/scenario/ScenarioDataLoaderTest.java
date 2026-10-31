@@ -20,8 +20,8 @@ package freerails.scenario;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import freerails.model.game.Clock;
-import freerails.model.game.Time;
+import freerails.model.simulation.Clock;
+import freerails.model.simulation.Time;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.World;
 import freerails.util.Vec2D;

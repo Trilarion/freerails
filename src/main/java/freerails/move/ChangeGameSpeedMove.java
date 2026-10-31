@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.model.game.Speed;
+import freerails.model.simulation.Speed;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
