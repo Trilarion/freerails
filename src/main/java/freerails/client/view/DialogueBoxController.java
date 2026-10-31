@@ -37,7 +37,7 @@ import freerails.move.Move;
 import freerails.network.command.CommandToServer;
 import freerails.network.command.RefreshListOfGamesCommandToServer;
 
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
@@ -395,7 +395,7 @@ public class DialogueBoxController {
      *
      * @param p the map coordinate
      */
-    private void showTerrainInfo(Vec2D p) {
+    private void showTerrainInfo(Vector2D p) {
         TerrainTile tile = world.getTile(p);
         int terrainType = tile.terrainTypeId();
         showTerrainInfo(terrainType);
@@ -567,7 +567,7 @@ public class DialogueBoxController {
      *
      * @param p the map coordinate
      */
-    public void showStationOrTerrainInfo(Vec2D p) {
+    public void showStationOrTerrainInfo(Vector2D p) {
         int stationNumberAtLocation = StationUtils.getStationIdAtLocation(world, modelRoot.getPlayer(), p);
         if (stationNumberAtLocation > -1) {
             showStationInfo(stationNumberAtLocation);

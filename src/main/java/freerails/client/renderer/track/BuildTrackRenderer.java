@@ -23,7 +23,7 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
@@ -68,10 +68,10 @@ public class BuildTrackRenderer implements Painter {
         if (!(proposedTrackProperty instanceof Map<?, ?> proposedTrackValues)) {
             throw new IllegalStateException("Proposed track property is not a map.");
         }
-        Map<Vec2D, TrackPiece> proposedTrack = new LinkedHashMap<>();
+        Map<Vector2D, TrackPiece> proposedTrack = new LinkedHashMap<>();
 
         for (Map.Entry<?, ?> entry : proposedTrackValues.entrySet()) {
-            if (!(entry.getKey() instanceof Vec2D point)) {
+            if (!(entry.getKey() instanceof Vector2D point)) {
                 throw new IllegalStateException("Proposed track map contains a non-position key.");
             }
             if (entry.getValue() == null) {
@@ -83,8 +83,8 @@ public class BuildTrackRenderer implements Painter {
             }
         }
 
-        for (Map.Entry<Vec2D, TrackPiece> entry : proposedTrack.entrySet()) {
-            Vec2D point = entry.getKey();
+        for (Map.Entry<Vector2D, TrackPiece> entry : proposedTrack.entrySet()) {
+            Vector2D point = entry.getKey();
             TrackPiece trackPiece = entry.getValue();
             if (trackPiece != null) {
 
@@ -102,8 +102,8 @@ public class BuildTrackRenderer implements Painter {
          * are white if track has been added or upgraded and red if it has
          * been removed.
          */
-        for (Vec2D p : proposedTrack.keySet()) {
-            Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConstants.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConstants.TILE_SIZE, ClientConstants.SMALL_DOT_WIDTH), 2));
+        for (Vector2D p : proposedTrack.keySet()) {
+            Vector2D location = Vector2D.add(Vector2D.multiply(p, ClientConstants.TILE_SIZE), Vector2D.divide(Vector2D.subtract(ClientConstants.TILE_SIZE, ClientConstants.SMALL_DOT_WIDTH), 2));
             TerrainTile before = world.getTile(p);
             TrackPiece trackPieceBefore = before.trackPiece();
             TrackPiece trackPiece = proposedTrack.get(p);

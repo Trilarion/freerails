@@ -29,7 +29,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainTile;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.economy.transaction.ItemTransaction;
 import freerails.model.economy.Money;
 import freerails.model.economy.transaction.TransactionCategory;
@@ -49,14 +49,14 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
 
     @Serial
     private static final long serialVersionUID = 3689636912575165749L;
-    private Vec2D location;
+    private Vector2D location;
 
     /**
      * Sets the cursor location.
      *
      * @param p the map coordinate
      */
-    public void setCursorLocation(Vec2D p) {
+    public void setCursorLocation(Vector2D p) {
         location = p;
     }
 

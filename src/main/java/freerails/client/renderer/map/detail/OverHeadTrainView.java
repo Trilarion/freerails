@@ -24,7 +24,7 @@ import freerails.model.ModelConstants;
 import freerails.model.operations.train.Train;
 import freerails.model.operations.train.motion.TrainMotion;
 import freerails.util.BidirectionalIterator;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.ui.Painter;
 import freerails.util.ui.SoundManager;
 import freerails.client.renderer.RendererRoot;
@@ -116,9 +116,9 @@ public class OverHeadTrainView implements Painter {
         dt = Math.min(dt, bidirectionalIterator.get().getDuration());
         TrainMotion trainMotion = bidirectionalIterator.get();
 
-        Vec2D start = trainMotion.getPath().getStart();
+        Vector2D start = trainMotion.getPath().getStart();
         int trainLength = trainMotion.getTrainLength();
-        Vec2D startPixels = MapCoordinateAdapter.tileOrigin(start);
+        Vector2D startPixels = MapCoordinateAdapter.tileOrigin(start);
         int trainLengthPixels = MapCoordinateAdapter.modelDistanceToPixel(trainLength);
         Rectangle trainBox = new Rectangle(
                 startPixels.x() - trainLengthPixels * 2,

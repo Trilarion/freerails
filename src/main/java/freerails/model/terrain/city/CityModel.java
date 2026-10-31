@@ -21,7 +21,7 @@ package freerails.model.terrain.city;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.terrain.TerrainTile;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 
@@ -36,11 +36,11 @@ import java.util.function.BiConsumer;
  */
 public class CityModel {
 
-    private final Map<Vec2D, Integer> urbanCityTiles = new HashMap<>();
-    private final Map<Vec2D, Integer> industryCityTiles = new HashMap<>();
+    private final Map<Vector2D, Integer> urbanCityTiles = new HashMap<>();
+    private final Map<Vector2D, Integer> industryCityTiles = new HashMap<>();
     private final List<Terrain> industriesNotAtCity = new ArrayList<>();
-    private final Map<Vec2D, Integer> resourceCityTiles = new HashMap<>();
-    private final List<Vec2D> clearTiles = new ArrayList<>();
+    private final Map<Vector2D, Integer> resourceCityTiles = new HashMap<>();
+    private final List<Vector2D> clearTiles = new ArrayList<>();
     private int stations = 0;
 
     /**
@@ -56,7 +56,7 @@ public class CityModel {
         // Pick a spot at random at which to place the tile.
         if (!getClearTiles().isEmpty()) {
             int tilePos = rand.nextInt(getClearTiles().size());
-            Vec2D p = getClearTiles().remove(tilePos);
+            Vector2D p = getClearTiles().remove(tilePos);
 
             switch (terrainType.getCategory()) {
                 case URBAN:
@@ -101,17 +101,17 @@ public class CityModel {
         stations = 0;
 
         // Identify city's bounds.
-        Vec2D mapSize = world.getMapSize();
+        Vector2D mapSize = world.getMapSize();
         Rectangle mapRect = new Rectangle(0, 0, mapSize.x(), mapSize.y());
         City city = world.getCity(cityID);
-        Vec2D topleft = Vec2D.subtract(city.getLocation(), new Vec2D(3, 3));
+        Vector2D topleft = Vector2D.subtract(city.getLocation(), new Vector2D(3, 3));
         Rectangle cityArea = new Rectangle(topleft.x(), topleft.y(), 7, 7);
         cityArea = cityArea.intersection(mapRect);
 
         // Count tile types.
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
-                TerrainTile tile = world.getTile(new Vec2D(x, y));
+                TerrainTile tile = world.getTile(new Vector2D(x, y));
 
                 // Count the number of stations at the city.
                 if (tile.trackPiece() != null && tile.trackPiece().trackType().isStation()) {
@@ -121,7 +121,7 @@ public class CityModel {
                 int terrainTypeId = tile.terrainTypeId();
                 Terrain type = world.getTerrain(terrainTypeId);
 
-                Vec2D location = new Vec2D(x, y);
+                Vector2D location = new Vector2D(x, y);
                 switch (type.getCategory()) {
                     case URBAN:
                         getUrbanCityTiles().put(location, type.getId());
@@ -148,7 +148,7 @@ public class CityModel {
      * @param world mutable world to update
      */
     public void writeToMap(World world) {
-        BiConsumer<Vec2D, Integer> f = (location, terrainTypeId) -> {
+        BiConsumer<Vector2D, Integer> f = (location, terrainTypeId) -> {
             TerrainTile terrainTile = world.getTile(location);
             terrainTile = new TerrainTile(terrainTypeId, terrainTile.trackPiece());
             world.setTile(location, terrainTile);
@@ -163,7 +163,7 @@ public class CityModel {
      *
      * @return urban tile locations mapped to terrain identifiers
      */
-    public Map<Vec2D, Integer> getUrbanCityTiles() {
+    public Map<Vector2D, Integer> getUrbanCityTiles() {
         return urbanCityTiles;
     }
 
@@ -172,7 +172,7 @@ public class CityModel {
      *
      * @return industry tile locations mapped to terrain identifiers
      */
-    public Map<Vec2D, Integer> getIndustryCityTiles() {
+    public Map<Vector2D, Integer> getIndustryCityTiles() {
         return industryCityTiles;
     }
 
@@ -190,7 +190,7 @@ public class CityModel {
      *
      * @return resource tile locations mapped to terrain identifiers
      */
-    public Map<Vec2D, Integer> getResourceCityTiles() {
+    public Map<Vector2D, Integer> getResourceCityTiles() {
         return resourceCityTiles;
     }
 
@@ -199,7 +199,7 @@ public class CityModel {
      *
      * @return clear map locations available for development
      */
-    public List<Vec2D> getClearTiles() {
+    public List<Vector2D> getClearTiles() {
         return clearTiles;
     }
 

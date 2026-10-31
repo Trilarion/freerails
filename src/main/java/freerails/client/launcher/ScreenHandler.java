@@ -19,7 +19,7 @@
 package freerails.client.launcher;
 
 import freerails.client.ClientConstants;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -42,7 +42,7 @@ public class ScreenHandler {
     public final JFrame frame;
     private final int mode;
     private BufferStrategy bufferStrategy;
-    private Vec2D displayMode;
+    private Vector2D displayMode;
     private boolean isInUse = false;
     /**
      * Whether the window is minimised.
@@ -56,7 +56,7 @@ public class ScreenHandler {
      * @param mode the mode parameter
      * @param displayMode the map coordinate
      */
-    public ScreenHandler(JFrame f, int mode, Vec2D displayMode) {
+    public ScreenHandler(JFrame f, int mode, Vector2D displayMode) {
         this.displayMode = displayMode;
         frame = f;
         this.mode = mode;
@@ -99,13 +99,13 @@ public class ScreenHandler {
      * Returns the best display mode.
      * @return the best display mode
      */
-    private static Vec2D getBestDisplayMode() {
+    private static Vector2D getBestDisplayMode() {
         for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
             DisplayMode[] modes = device.getDisplayModes();
 
             for (DisplayMode mode1 : modes) {
                 if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth() && mode1.getHeight() == BEST_DISPLAY_MODE.getHeight() && mode1.getBitDepth() == BEST_DISPLAY_MODE.getBitDepth()) {
-                    return new Vec2D(BEST_DISPLAY_MODE.getWidth(), BEST_DISPLAY_MODE.getHeight());
+                    return new Vector2D(BEST_DISPLAY_MODE.getWidth(), BEST_DISPLAY_MODE.getHeight());
                 }
             }
         }
@@ -126,7 +126,7 @@ public class ScreenHandler {
     public synchronized void apply() {
         switch (mode) {
             case ClientConstants.FULL_SCREEN: {
-                Vec2D displayMode1 = displayMode;
+                Vector2D displayMode1 = displayMode;
 
                 setRepaintOffAndDisableDoubleBuffering(frame);
 

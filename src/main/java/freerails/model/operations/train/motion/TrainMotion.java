@@ -26,7 +26,7 @@ import freerails.model.operations.train.PathOnTiles;
 import freerails.model.operations.train.PositionOnTrack;
 import freerails.model.operations.train.TrainState;
 import freerails.util.Pair;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.operations.train.activity.Activity;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
@@ -341,7 +341,7 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
             tileTransitions.add(path.getStep(i));
         }
 
-        Vec2D p = path.getStart();
+        Vector2D p = path.getStart();
         int x = p.x();
         int y = p.y();
         for (int i = 0; i < stepsBeforeStart; i++) {
@@ -350,7 +350,7 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
             y += tileTransition.deltaY;
         }
 
-        Vec2D startPoint = new Vec2D(x, y);
+        Vector2D startPoint = new Vector2D(x, y);
 
         return new PathOnTiles(startPoint, tileTransitions);
     }

@@ -27,7 +27,7 @@ import freerails.move.MoveExecutor;
 import freerails.move.Status;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import junit.framework.TestCase;
@@ -61,15 +61,15 @@ public class StationBuilderTest extends TestCase {
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
 
-        Status status = trackBuilder.buildTrack(new Vec2D(10, 10), track);
+        Status status = trackBuilder.buildTrack(new Vector2D(10, 10), track);
         assertTrue(status.isSuccess());
-        assertTrue(stationBuilder.tryBuildingStation(new Vec2D(10, 10)).isSuccess());
-        assertTrue(stationBuilder.tryBuildingStation(new Vec2D(13, 10)).isSuccess());
+        assertTrue(stationBuilder.tryBuildingStation(new Vector2D(10, 10)).isSuccess());
+        assertTrue(stationBuilder.tryBuildingStation(new Vector2D(13, 10)).isSuccess());
 
-        status = stationBuilder.buildStation(new Vec2D(10, 10));
+        status = stationBuilder.buildStation(new Vector2D(10, 10));
         assertTrue(status.isSuccess());
 
-        assertFalse(stationBuilder.tryBuildingStation(new Vec2D(13, 10)).isSuccess());
+        assertFalse(stationBuilder.tryBuildingStation(new Vector2D(13, 10)).isSuccess());
     }
 
 }

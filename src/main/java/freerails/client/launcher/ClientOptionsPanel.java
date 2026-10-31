@@ -26,7 +26,7 @@ package freerails.client.launcher;
 import freerails.Options;
 import freerails.client.ClientConstants;
 import freerails.client.view.DisplayModesComboBoxModels;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -55,7 +55,7 @@ public class ClientOptionsPanel extends JPanel {
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
     private JRadioButton fullScreenButton;
-    private JList<Vec2D> list1;
+    private JList<Vector2D> list1;
     private JPanel jPanel4;
     private JTextField playerName;
     private JComboBox<String> playerNames;
@@ -168,7 +168,7 @@ public class ClientOptionsPanel extends JPanel {
         jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "Select Display Mode"));
         jScrollPane1.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
-        Vec2D displayMode = Options.DISPLAY_MODE;
+        Vector2D displayMode = Options.DISPLAY_MODE;
         Boolean fullscreenProp = Options.MAINWINDOW_FULLSCREEN;
         boolean fullscreen = false;
         if (displayMode != null) {
@@ -303,10 +303,10 @@ public class ClientOptionsPanel extends JPanel {
      * Returns the display mode.
      * @return the display mode
      */
-    Vec2D getDisplayMode() {
+    Vector2D getDisplayMode() {
         if (fullScreenButton.isSelected()) {
             // TODO readout list1
-            return new Vec2D(800, 600);
+            return new Vector2D(800, 600);
         }
         return null;
     }

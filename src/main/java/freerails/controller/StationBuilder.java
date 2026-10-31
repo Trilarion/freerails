@@ -23,7 +23,7 @@ import freerails.move.Move;
 import freerails.move.MoveExecutor;
 import freerails.move.Status;
 import freerails.move.generator.AddStationMoveGenerator;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import org.apache.log4j.Logger;
@@ -64,7 +64,7 @@ public class StationBuilder {
      * @param location the map coordinate
      * @return the try building station produced by this method
      */
-    public Status tryBuildingStation(Vec2D location) {
+    public Status tryBuildingStation(Vector2D location) {
         // TODO under which circumstances would build a station fail (not enough funds, station already existing)
         UnmodifiableWorld world = executor.getWorld();
 
@@ -81,7 +81,7 @@ public class StationBuilder {
      * @param location the map coordinate
      * @return the station produced by this method
      */
-    public Status buildStation(Vec2D location) {
+    public Status buildStation(Vector2D location) {
         // Only build a station if there is track at the specified point.
         Status status = tryBuildingStation(location);
         if (status.isSuccess()) {

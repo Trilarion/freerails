@@ -29,7 +29,7 @@ import freerails.client.ModelRoot;
 import freerails.model.track.TrackType;
 import freerails.controller.StationBuilder;
 import freerails.move.Status;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.economy.Money;
 import freerails.model.track.TrackConfiguration;
@@ -134,7 +134,7 @@ public class StationBuildModel {
     public boolean canBuildStationHere() {
         java.awt.Point p = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
 
-        return stationBuilder.tryBuildingStation(new Vec2D(p.x, p.y)).isSuccess();
+        return stationBuilder.tryBuildingStation(new Vector2D(p.x, p.y)).isSuccess();
     }
 
     /**
@@ -255,7 +255,7 @@ public class StationBuildModel {
         @Override
         public void actionPerformed(ActionEvent e) {
             java.awt.Point value = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
-            Status status = stationBuilder.buildStation(new Vec2D(value.x, value.y));
+            Status status = stationBuilder.buildStation(new Vector2D(value.x, value.y));
             String message = null;
 
             if (status.isSuccess()) {

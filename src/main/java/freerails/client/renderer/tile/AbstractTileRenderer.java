@@ -24,7 +24,7 @@ package freerails.client.renderer.tile;
 
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.Terrain;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -63,7 +63,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param world the game world being queried
      */
     @Override
-    public void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, UnmodifiableWorld world) {
+    public void render(Graphics g, Vector2D renderLocation, Vector2D mapLocation, UnmodifiableWorld world) {
         Image icon = getIcon(mapLocation, world);
 
         if (null != icon) {
@@ -94,7 +94,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * <p>
      * In the standard implementation it doesn't though.
      */
-    public Image getIcon(Vec2D mapLocation, UnmodifiableWorld world) {
+    public Image getIcon(Vector2D mapLocation, UnmodifiableWorld world) {
         int index = selectTileIconIndex(mapLocation, world);
 
         // TODO here we can assume that all icons in the array are not null, however, make sure of that before
@@ -108,7 +108,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param world the game world being queried
      * @return the tile icon index produced by this method
      */
-    public abstract int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world);
+    public abstract int selectTileIconIndex(Vector2D mapLocation, UnmodifiableWorld world);
 
     // TODO remove world !
     /**
@@ -117,11 +117,11 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param world the world
      * @return {@code true} if the tile is handled by this renderer
      */
-    public int checkTile(Vec2D location, UnmodifiableWorld world) {
+    public int checkTile(Vector2D location, UnmodifiableWorld world) {
         int match = 0;
 
-        Vec2D mapSize = world.getMapSize();
-        if (location.below(mapSize) && location.aboveOrEqual(Vec2D.ZERO)) {
+        Vector2D mapSize = world.getMapSize();
+        if (location.below(mapSize) && location.aboveOrEqual(Vector2D.ZERO)) {
             for (int typeNumber : typesTreatedAsSame) {
                 TerrainTile terrainTile = world.getTile(location);
 

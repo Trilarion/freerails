@@ -37,7 +37,7 @@ public class PathOnTiles implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 3544386994122536753L;
-    private final Vec2D start;
+    private final Vector2D start;
     private final List<TileTransition> vectors;
 
     /**
@@ -45,7 +45,7 @@ public class PathOnTiles implements Serializable {
      * @param tileTransitions transitions from the start tile, in traversal order
      * @throws NullPointerException if the start, transition list, or any transition is null
      */
-    public PathOnTiles(Vec2D start, List<TileTransition> tileTransitions) {
+    public PathOnTiles(Vector2D start, List<TileTransition> tileTransitions) {
         vectors = List.copyOf(tileTransitions);
         this.start = Utils.verifyNotNull(start);
     }
@@ -58,7 +58,7 @@ public class PathOnTiles implements Serializable {
      * @param tileTransitions transitions from the start tile, in traversal order
      * @throws NullPointerException if the start, transition array, or any transition is null
      */
-    public PathOnTiles(Vec2D start, TileTransition... tileTransitions) {
+    public PathOnTiles(Vector2D start, TileTransition... tileTransitions) {
         vectors = List.copyOf(Arrays.asList(tileTransitions));
         this.start = Utils.verifyNotNull(start);
     }
@@ -106,7 +106,7 @@ public class PathOnTiles implements Serializable {
      * @throws IllegalArgumentException if distance &lt; 0
      * @throws IllegalArgumentException if distance exceeds the path length
      */
-    public Vec2D getPoint(double distance) {
+    public Vector2D getPoint(double distance) {
         if (0 > distance) throw new IllegalArgumentException("distance:" + distance + " < 0");
 
         int x = start.x();
@@ -117,7 +117,7 @@ public class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new Vec2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
+                return new Vector2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
             }
             if (distanceSoFar > distance) {
                 return pointWithinTransition(x, y, v, distanceSoFar - distance);
@@ -135,7 +135,7 @@ public class PathOnTiles implements Serializable {
      * @throws IllegalArgumentException if either distance is negative, the start
      *         exceeds the end, or the end lies beyond the path
      */
-    public Pair<Vec2D, Vec2D> getPoint(double firstdistance, double lastdistance) {
+    public Pair<Vector2D, Vector2D> getPoint(double firstdistance, double lastdistance) {
         if (0 > firstdistance) {
             throw new IllegalArgumentException("firstdistance:" + firstdistance + " < 0");
         }
@@ -148,7 +148,7 @@ public class PathOnTiles implements Serializable {
         int x = start.x();
         int y = start.y();
         double distanceSoFar = 0;
-        Vec2D firstPoint = null;
+        Vector2D firstPoint = null;
         int i;
         TileTransition v = null;
         final int vectorsSize = vectors.size();
@@ -158,7 +158,7 @@ public class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == firstdistance) {
-                firstPoint = new Vec2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
+                firstPoint = new Vector2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
                 break;
             }
             if (distanceSoFar > firstdistance) {
@@ -172,12 +172,12 @@ public class PathOnTiles implements Serializable {
         if (firstdistance == lastdistance) {
             return new Pair<>(firstPoint, firstPoint);
         }
-        Vec2D secondPoint = null;
+        Vector2D secondPoint = null;
 
         do {
 
             if (distanceSoFar == lastdistance) {
-                secondPoint = new Vec2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
+                secondPoint = new Vector2D(x * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2, y * ModelConstants.MODEL_UNITS_PER_TILE + ModelConstants.MODEL_UNITS_PER_TILE / 2);
                 break;
             }
             if (distanceSoFar > lastdistance) {
@@ -202,7 +202,7 @@ public class PathOnTiles implements Serializable {
     }
 
     /** Returns the starting tile coordinates. */
-    public Vec2D getStart() {
+    public Vector2D getStart() {
         return start;
     }
 
@@ -232,7 +232,7 @@ public class PathOnTiles implements Serializable {
         }
         int i = vectors.size() - 1;
         TileTransition finalTileTransition = vectors.get(i);
-        return new PositionOnTrack(new Vec2D(x, y), finalTileTransition.getOpposite());
+        return new PositionOnTrack(new Vector2D(x, y), finalTileTransition.getOpposite());
     }
 
     /**
@@ -290,9 +290,9 @@ public class PathOnTiles implements Serializable {
      * @param distanceToEnd the distance to end
      * @return the point within transition
      */
-    private static Vec2D pointWithinTransition(int tileX, int tileY, TileTransition transition, double distanceToEnd) {
+    private static Vector2D pointWithinTransition(int tileX, int tileY, TileTransition transition, double distanceToEnd) {
         double excess = ModelConstants.MODEL_UNITS_PER_TILE * distanceToEnd / transition.getLength();
-        return new Vec2D(
+        return new Vector2D(
                 (int) Math.round(tileX * (double) ModelConstants.MODEL_UNITS_PER_TILE
                         - transition.deltaX * excess + ModelConstants.MODEL_UNITS_PER_TILE / 2.0),
                 (int) Math.round(tileY * (double) ModelConstants.MODEL_UNITS_PER_TILE
@@ -315,8 +315,8 @@ public class PathOnTiles implements Serializable {
         if (offset + length > getTotalDistance())
             throw new IllegalArgumentException(offset + " + " + length + " > " + getTotalDistance());
 
-        final LinkedList<Vec2D> points = new LinkedList<>();
-        Vec2D tile = start;
+        final LinkedList<Vector2D> points = new LinkedList<>();
+        Vector2D tile = start;
         int tileX = tile.x();
         int tileY = tile.y();
         double distanceSoFar = 0;
@@ -328,7 +328,7 @@ public class PathOnTiles implements Serializable {
             if (distanceSoFar >= offset) {
                 int x = ModelConstants.MODEL_UNITS_PER_TILE / 2 + ModelConstants.MODEL_UNITS_PER_TILE * tileX;
                 int y = ModelConstants.MODEL_UNITS_PER_TILE / 2 + ModelConstants.MODEL_UNITS_PER_TILE * tileY;
-                points.add(new Vec2D(x, y));
+                points.add(new Vector2D(x, y));
             }
 
             tileX += vector.deltaX;
@@ -336,9 +336,9 @@ public class PathOnTiles implements Serializable {
             distanceSoFar += vector.getLength();
         }
 
-        Pair<Vec2D, Vec2D> point = getPoint(offset, offset + length);
+        Pair<Vector2D, Vector2D> point = getPoint(offset, offset + length);
 
-        Vec2D first = point.a();
+        Vector2D first = point.a();
 
         if (points.isEmpty()) {
             points.addFirst(first);
@@ -346,7 +346,7 @@ public class PathOnTiles implements Serializable {
             points.addFirst(first);
         }
 
-        Vec2D last = point.b();
+        Vector2D last = point.b();
 
         if (!points.getLast().equals(last)) {
             points.addLast(last);
@@ -362,12 +362,12 @@ public class PathOnTiles implements Serializable {
      *
      * @return iterator over visited tile coordinates
      */
-    public Iterator<Vec2D> tilesIterator() {
+    public Iterator<Vector2D> tilesIterator() {
         // TODO no anonymous class here
         return new Iterator<>() {
             private int index = 0;
 
-            private Vec2D next = start;
+            private Vector2D next = start;
 
             /** Returns whether another visited tile remains. */
             @Override
@@ -382,17 +382,17 @@ public class PathOnTiles implements Serializable {
              * @throws NoSuchElementException if all tiles have been returned
              */
             @Override
-            public Vec2D next() {
+            public Vector2D next() {
                 if (next == null) throw new NoSuchElementException();
 
-                Vec2D returnValue = next;
+                Vector2D returnValue = next;
                 int x = next.x();
                 int y = next.y();
                 if (index < vectors.size()) {
                     TileTransition s = vectors.get(index);
                     x += s.deltaX;
                     y += s.deltaY;
-                    next = new Vec2D(x, y);
+                    next = new Vector2D(x, y);
                 } else {
                     next = null;
                 }
@@ -429,11 +429,11 @@ public class PathOnTiles implements Serializable {
     private static class MyPathIterator implements PathIterator {
 
         private static final long serialVersionUID = -4128415959622019625L;
-        private final LinkedList<Vec2D> points;
+        private final LinkedList<Vector2D> points;
         private int index;
 
         /** Creates an iterator over the supplied points. */
-        private MyPathIterator(LinkedList<Vec2D> points) {
+        private MyPathIterator(LinkedList<Vector2D> points) {
             this.points = points;
             index = 0;
         }
@@ -455,8 +455,8 @@ public class PathOnTiles implements Serializable {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            Vec2D a = points.get(index);
-            Vec2D b = points.get(index + 1);
+            Vector2D a = points.get(index);
+            Vector2D b = points.get(index + 1);
             index++;
 
             return new Segment(a, b);

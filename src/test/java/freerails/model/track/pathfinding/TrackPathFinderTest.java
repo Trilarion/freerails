@@ -30,7 +30,7 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.model.track.TrackType;
 import freerails.util.Utils;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.World;
 import freerails.model.game.Rules;
 import freerails.util.WorldGenerator;
@@ -70,7 +70,7 @@ public class TrackPathFinderTest extends TestCase {
         File file = new File(url.toURI());
         Rules rules = GsonManager.load(file, Rules.class);
 
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
+        world = new World.Builder().setMapSize(new Vector2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
         world.addPlayer(testPlayer);
     }
 
@@ -82,13 +82,13 @@ public class TrackPathFinderTest extends TestCase {
             BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
 
             TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer);
-            List l = pathFinder.generatePath(Vec2D.ZERO, new Vec2D(0,5), buildTrackStrategy);
+            List l = pathFinder.generatePath(Vector2D.ZERO, new Vector2D(0,5), buildTrackStrategy);
             assertEquals(5, l.size());
 
-            List list2 = pathFinder.generatePath(new Vec2D(5, 5),new Vec2D(5, 10), buildTrackStrategy);
+            List list2 = pathFinder.generatePath(new Vector2D(5, 5),new Vector2D(5, 10), buildTrackStrategy);
             assertEquals(5, list2.size());
 
-            list2 = pathFinder.generatePath(new Vec2D(5, 10), new Vec2D(5,5), buildTrackStrategy);
+            list2 = pathFinder.generatePath(new Vector2D(5, 10), new Vector2D(5,5), buildTrackStrategy);
             assertEquals(5, list2.size());
         } catch (PathNotFoundException e) {
             e.printStackTrace();
@@ -103,20 +103,20 @@ public class TrackPathFinderTest extends TestCase {
         BuildTrackStrategy strategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
         TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer);
         try {
-            List<Vec2D> first = pathFinder.generatePath(new Vec2D(2, 2), new Vec2D(4, 3), strategy);
-            List<Vec2D> second = pathFinder.generatePath(new Vec2D(2, 2), new Vec2D(4, 3), strategy);
-            List<Vec2D> third = pathFinder.generatePath(new Vec2D(2, 2), new Vec2D(4, 3), strategy);
+            List<Vector2D> first = pathFinder.generatePath(new Vector2D(2, 2), new Vector2D(4, 3), strategy);
+            List<Vector2D> second = pathFinder.generatePath(new Vector2D(2, 2), new Vector2D(4, 3), strategy);
+            List<Vector2D> third = pathFinder.generatePath(new Vector2D(2, 2), new Vector2D(4, 3), strategy);
 
             assertEquals(first, second);
             assertEquals(second, third);
-            assertEquals(List.of(new Vec2D(3, 3), new Vec2D(4, 3)), first);
+            assertEquals(List.of(new Vector2D(3, 3), new Vector2D(4, 3)), first);
 
             TileTransition[] expectedTransitions = {TileTransition.SOUTH_EAST, TileTransition.EAST};
             assertEquals(expectedTransitions.length, first.size());
             for (int i = 0; i < expectedTransitions.length; i++) {
-                Vec2D from = i == 0 ? new Vec2D(2, 2) : first.get(i - 1);
-                Vec2D to = first.get(i);
-                assertEquals(expectedTransitions[i], TileTransition.getInstance(Vec2D.subtract(to, from)));
+                Vector2D from = i == 0 ? new Vector2D(2, 2) : first.get(i - 1);
+                Vector2D to = first.get(i);
+                assertEquals(expectedTransitions[i], TileTransition.getInstance(Vector2D.subtract(to, from)));
             }
         } catch (PathNotFoundException e) {
             fail("Expected the open-map route to be found: " + e.getMessage());

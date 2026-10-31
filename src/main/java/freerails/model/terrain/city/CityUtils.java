@@ -19,7 +19,7 @@
 package freerails.model.terrain.city;
 
 import freerails.model.world.UnmodifiableWorld;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.NoSuchElementException;
@@ -40,12 +40,12 @@ public final class CityUtils {
      * @return the name of the closest city
      * @throws NoSuchElementException if the world contains no cities
      */
-    public static String findNearestCity(@NotNull UnmodifiableWorld world, @NotNull Vec2D location) {
+    public static String findNearestCity(@NotNull UnmodifiableWorld world, @NotNull Vector2D location) {
         double closestDistance = Double.MAX_VALUE;
         String cityName = null;
 
         for (City city: world.getCities()) {
-            Vec2D delta = Vec2D.subtract(location, city.getLocation());
+            Vector2D delta = Vector2D.subtract(location, city.getLocation());
             double distance = delta.norm();
             if (distance < closestDistance) {
                 closestDistance = distance;

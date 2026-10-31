@@ -24,7 +24,7 @@ import freerails.model.economy.Money;
 import freerails.model.economy.transaction.Transaction;
 import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.operations.station.Station;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.WorldGenerator;
 
 /**
@@ -32,7 +32,7 @@ import freerails.util.WorldGenerator;
  */
 public class BuildEngineShopMoveTest extends AbstractMoveTestCase {
 
-    private final Vec2D location = new Vec2D(4, 5);
+    private final Vector2D location = new Vector2D(4, 5);
 
     /**
      * Sets up.
@@ -69,7 +69,7 @@ public class BuildEngineShopMoveTest extends AbstractMoveTestCase {
      */
     public void testBuildEngineShopRequiresStationAndFunds() {
         BuildEngineShopMove noStation = new BuildEngineShopMove(WorldGenerator.TEST_PLAYER,
-                new EngineShop(0, Vec2D.ZERO));
+                new EngineShop(0, Vector2D.ZERO));
         assertFalse(noStation.applicable(getWorld()).isSuccess());
 
         getWorld().removeStation(WorldGenerator.TEST_PLAYER, 0);

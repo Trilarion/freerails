@@ -19,7 +19,7 @@
 package freerails.model.track.explorer;
 
 import freerails.model.track.NoTrackException;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -40,7 +40,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     @Serial
     private static final long serialVersionUID = 3834311713465185081L;
     /** A representative branch direction used to seed exploration. */
-    public final PositionOnTrack currentBranch = new PositionOnTrack(Vec2D.ZERO, TileTransition.NORTH);
+    public final PositionOnTrack currentBranch = new PositionOnTrack(Vector2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;
     private PositionOnTrack currentPosition;
     private boolean beforeFirst = true;
@@ -71,7 +71,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * possible orientations at this position (heading towards the
      * center of the tile)
      */
-    public static PositionOnTrack[] getPossiblePositions(UnmodifiableWorld world, Vec2D location) {
+    public static PositionOnTrack[] getPossiblePositions(UnmodifiableWorld world, Vector2D location) {
         TrackPiece trackPiece = world.getTile(location).trackPiece();
         TrackConfiguration conf = trackPiece.trackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();
@@ -164,7 +164,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
         TileTransition branchDirection = TileTransition.getInstance(i);
         currentBranch.setComingFrom(branchDirection);
-        currentBranch.setLocation(Vec2D.add(currentPosition.getLocation(), branchDirection.getD()));
+        currentBranch.setLocation(Vector2D.add(currentPosition.getLocation(), branchDirection.getD()));
 
         beforeFirst = false;
     }

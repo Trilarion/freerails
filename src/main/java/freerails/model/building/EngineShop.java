@@ -20,7 +20,7 @@ package freerails.model.building;
 
 import freerails.model.operations.train.TrainTemplate;
 import freerails.util.Identifiable;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
@@ -35,7 +35,7 @@ public class EngineShop extends Identifiable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    private final Vec2D location;
+    private final Vector2D location;
     private final List<TrainTemplate> production = new ArrayList<>();
 
     /**
@@ -44,9 +44,9 @@ public class EngineShop extends Identifiable {
      * @param id stable engine-shop identifier
      * @param location station location of the shop
      */
-    public EngineShop(int id, @NotNull Vec2D location) {
+    public EngineShop(int id, @NotNull Vector2D location) {
         super(id);
-        this.location = new Vec2D(location);
+        this.location = new Vector2D(location);
     }
 
     /**
@@ -56,7 +56,7 @@ public class EngineShop extends Identifiable {
      */
     public EngineShop(@NotNull EngineShop other) {
         super(other.getId());
-        location = new Vec2D(other.location);
+        location = new Vector2D(other.location);
         production.addAll(other.production);
     }
 
@@ -65,7 +65,7 @@ public class EngineShop extends Identifiable {
      *
      * @return the shop location
      */
-    public Vec2D getLocation() {
+    public Vector2D getLocation() {
         return location;
     }
 

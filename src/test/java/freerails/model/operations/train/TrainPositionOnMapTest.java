@@ -23,7 +23,7 @@ import freerails.util.Segment;
 import freerails.util.TestUtils;
 import freerails.model.track.PathIterator;
 import freerails.model.track.SimplePathIteratorImpl;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -33,27 +33,27 @@ import java.util.Arrays;
  */
 public class TrainPositionOnMapTest extends TestCase {
 
-    private final Vec2D p1 = new Vec2D(10, 11);
-    private final Vec2D p2 = new Vec2D(10, 20);
-    private final Vec2D p3 = new Vec2D(10, 30);
+    private final Vector2D p1 = new Vector2D(10, 11);
+    private final Vector2D p2 = new Vector2D(10, 20);
+    private final Vector2D p3 = new Vector2D(10, 30);
 
-    private final Vec2D p4 = new Vec2D(11, 22);
-    private final Vec2D p5 = new Vec2D(11, 33);
+    private final Vector2D p4 = new Vector2D(11, 22);
+    private final Vector2D p5 = new Vector2D(11, 33);
 
-    private final Vec2D p6 = new Vec2D(20, 30);
-    private final Vec2D p7 = new Vec2D(20, 22);
+    private final Vector2D p6 = new Vector2D(20, 30);
+    private final Vector2D p7 = new Vector2D(20, 22);
 
-    private final Vec2D p8 = new Vec2D(22, 33);
+    private final Vector2D p8 = new Vector2D(22, 33);
 
-    private final Vec2D p9 = new Vec2D(30, 33);
-    private final Vec2D p10 = new Vec2D(30, 40);
-    private final Vec2D p11 = new Vec2D(33, 44);
+    private final Vector2D p9 = new Vector2D(30, 33);
+    private final Vector2D p10 = new Vector2D(30, 40);
+    private final Vector2D p11 = new Vector2D(33, 44);
 
-    private final Vec2D p12 = new Vec2D(40, 44);
-    private final Vec2D p13 = new Vec2D(48, 49);
+    private final Vector2D p12 = new Vector2D(40, 44);
+    private final Vector2D p13 = new Vector2D(48, 49);
 
-    private final Vec2D p14 = new Vec2D(50, 55);
-    private final Vec2D p15 = new Vec2D(60, 66);
+    private final Vector2D p14 = new Vector2D(50, 55);
+    private final Vector2D p15 = new Vector2D(60, 66);
 
     /**
      * Tests get length behavior.

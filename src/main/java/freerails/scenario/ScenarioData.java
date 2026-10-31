@@ -31,7 +31,7 @@ import freerails.model.operations.train.Engine;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.util.Array2D;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.util.*;
 
@@ -135,11 +135,11 @@ public final class ScenarioData {
     /** Captures scenario configuration and terrain IDs from an existing world. */
     public static ScenarioData fromWorld(UnmodifiableWorld world) {
         Objects.requireNonNull(world, "world");
-        Vec2D size = world.getMapSize();
+        Vector2D size = world.getMapSize();
         Array2D map = new Array2D(size.x(), size.y());
         for (int x = 0; x < size.x(); x++) {
             for (int y = 0; y < size.y(); y++) {
-                TerrainTile tile = world.getTile(new Vec2D(x, y));
+                TerrainTile tile = world.getTile(new Vector2D(x, y));
                 map.set(x, y, tile.terrainTypeId());
             }
         }

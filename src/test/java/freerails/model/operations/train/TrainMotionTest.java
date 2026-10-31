@@ -22,7 +22,7 @@
 package freerails.model.operations.train;
 
 import freerails.model.operations.train.motion.TrainMotion;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.operations.train.motion.CompositeMotion;
 import freerails.model.operations.train.motion.ConstantAccelerationMotion;
@@ -47,8 +47,8 @@ public class TrainMotionTest extends TestCase {
     public void test4Bug1266695() {
         double modelScale = ModelConstants.MODEL_UNITS_PER_TILE / 30.0d;
         // The figures are copied from the debugger.
-        Vec2D start = new Vec2D(14, 5);
-        TileTransition[] vectors = {TileTransition.getInstance(new Vec2D(1, 1)), TileTransition.getInstance(new Vec2D(1, 0))};
+        Vector2D start = new Vector2D(14, 5);
+        TileTransition[] vectors = {TileTransition.getInstance(new Vector2D(1, 1)), TileTransition.getInstance(new Vector2D(1, 0))};
         PathOnTiles path = new PathOnTiles(start, vectors);
 
         ConstantAccelerationMotion constantAccelerationMovement0 = ConstantAccelerationMotion.fromSpeedAccelerationTime(6.5135556243263055d * modelScale, 0.5d * modelScale,
@@ -90,7 +90,7 @@ public class TrainMotionTest extends TestCase {
      * Tests state at time includes start and end but rejects outside interval behavior.
      */
     public void testStateAtTimeIncludesStartAndEndButRejectsOutsideInterval() {
-        PathOnTiles path = new PathOnTiles(Vec2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
+        PathOnTiles path = new PathOnTiles(Vector2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
         Motion speeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(
                 ModelConstants.MODEL_UNITS_PER_TILE / 3.0d, 0.0, 6.0);
         TrainMotion motion = new TrainMotion(path, 1, 80, speeds);
@@ -112,7 +112,7 @@ public class TrainMotionTest extends TestCase {
      * @throws Exception if the test legacy serialized motion is scaled to current model units operation fails.
      */
     public void testLegacySerializedMotionIsScaledToCurrentModelUnits() throws Exception {
-        PathOnTiles path = new PathOnTiles(Vec2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
+        PathOnTiles path = new PathOnTiles(Vector2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
         TrainMotion legacyMotion = new TrainMotion(path, 80, 6, freerails.model.operations.train.TrainState.READY);
         setField(legacyMotion, "modelUnitsPerTile", 0);
         setField(legacyMotion, "trainLength", 24);

@@ -22,7 +22,7 @@
 package freerails.model.track;
 
 import freerails.util.Segment;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -34,7 +34,7 @@ public class TestPathIterator implements PathIterator {
 
     private static final long serialVersionUID = 3258411750679720758L;
     private final boolean forwards;
-    private final List<Vec2D> points;
+    private final List<Vector2D> points;
     private int position;
 
     /**
@@ -42,7 +42,7 @@ public class TestPathIterator implements PathIterator {
      * @param l the l to use in the test.
      * @param f the f to use in the test.
      */
-    public TestPathIterator(List<Vec2D> l, boolean f) {
+    public TestPathIterator(List<Vector2D> l, boolean f) {
         points = l;
         forwards = f;
 
@@ -59,7 +59,7 @@ public class TestPathIterator implements PathIterator {
      * @param l the l to use in the test.
      * @return the result of forwards iterator.
      */
-    public static PathIterator forwardsIterator(List<Vec2D> l) {
+    public static PathIterator forwardsIterator(List<Vector2D> l) {
         return new TestPathIterator(l, true);
     }
 
@@ -84,8 +84,8 @@ public class TestPathIterator implements PathIterator {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        Vec2D a;
-        Vec2D b;
+        Vector2D a;
+        Vector2D b;
 
         if (forwards) {
             position++;

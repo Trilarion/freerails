@@ -19,7 +19,7 @@
 package freerails.client.renderer.tile;
 
 import freerails.model.world.UnmodifiableWorld;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.awt.*;
 
@@ -43,6 +43,6 @@ public interface TileRenderer {
      * @param mapLocation the map coordinate
      * @param world the game world being queried
      */
-    void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, UnmodifiableWorld world);
+    void render(Graphics g, Vector2D renderLocation, Vector2D mapLocation, UnmodifiableWorld world);
 
 }

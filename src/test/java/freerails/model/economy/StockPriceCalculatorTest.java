@@ -29,7 +29,7 @@ import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.economy.transaction.aggregator.FinancialDataAggregator;
 import freerails.model.simulation.Clock;
 import freerails.model.simulation.Time;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.WorldGenerator;
 import freerails.model.world.World;
 import freerails.model.operations.cargo.CargoBatch;
@@ -80,7 +80,7 @@ public class StockPriceCalculatorTest extends TestCase {
         while (clock.getCurrentTime().compareTo(newTime) < 0) {
             clock.advanceTime();
         }
-        CargoBatch batch = new CargoBatch(0, Vec2D.ZERO, 0, 0);
+        CargoBatch batch = new CargoBatch(0, Vector2D.ZERO, 0, 0);
         Money income = new Money(100000);
         Transaction transaction = new CargoDeliveryTransaction(income, world.getClock().getCurrentTime(), 10, 0,0, batch);
         Player player = world.getPlayer(0);
@@ -139,7 +139,7 @@ public class StockPriceCalculatorTest extends TestCase {
      * @param income the income to use in the test.
      */
     private void addIncome(Money income) {
-        CargoBatch batch = new CargoBatch(0, Vec2D.ZERO, 0, 0);
+        CargoBatch batch = new CargoBatch(0, Vector2D.ZERO, 0, 0);
         Transaction transaction = new CargoDeliveryTransaction(income, world.getClock().getCurrentTime(), 10, 0, 0, batch);
         Player princ = world.getPlayer(0);
         world.addTransaction(princ, transaction);

@@ -30,7 +30,7 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.Status;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.game.Rules;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -69,19 +69,19 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         TrackType trackType = getWorld().getTrackType(0);
 
-        assertBuildTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST, trackType);
-        assertBuildTrackSucceeds(new Vec2D(0, 6), TileTransition.EAST, trackType);
-        assertBuildTrackSucceeds(new Vec2D(1, 6), TileTransition.EAST, trackType);
-        assertBuildTrackSucceeds(new Vec2D(0, 7), TileTransition.EAST, trackType);
-        assertBuildTrackSucceeds(new Vec2D(1, 7), TileTransition.EAST, trackType);
-        assertBuildTrackSucceeds(new Vec2D(2, 7), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(0, 5), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(0, 6), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(1, 6), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(0, 7), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(1, 7), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(2, 7), TileTransition.EAST, trackType);
 
         // Remove only track piece built.
-        assertRemoveTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST);
-        TrackPiece trackPiece = getWorld().getTile(new Vec2D(0, 5)).trackPiece();
+        assertRemoveTrackSucceeds(new Vector2D(0, 5), TileTransition.EAST);
+        TrackPiece trackPiece = getWorld().getTile(new Vector2D(0, 5)).trackPiece();
         assertEquals(null, trackPiece);
 
-        trackPiece = getWorld().getTile(new Vec2D(1, 5)).trackPiece();
+        trackPiece = getWorld().getTile(new Vector2D(1, 5)).trackPiece();
         assertEquals(null, trackPiece);
     }
 
@@ -99,7 +99,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         boolean hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(world, WorldGenerator.TEST_PLAYER);
         assertFalse("No track has been built yet.", hasTrackBeenBuilt);
-        assertBuildTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(0, 5), TileTransition.EAST, trackType);
 
         // Building the track should have added a transaction.
         numberOfTransactions = world.getTransactions(WorldGenerator.TEST_PLAYER).size();
@@ -108,8 +108,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(world, WorldGenerator.TEST_PLAYER);
         assertTrue("One track piece has been built.", hasTrackBeenBuilt);
 
-        assertBuildTrackSucceeds(new Vec2D(1, 5), TileTransition.EAST, trackType);
-        assertBuildTrackFails(new Vec2D(4, 8), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(1, 5), TileTransition.EAST, trackType);
+        assertBuildTrackFails(new Vector2D(4, 8), TileTransition.EAST, trackType);
     }
 
     /**
@@ -121,26 +121,26 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         final int TRACK_RULE_ID = 0;
         TrackType trackType = getWorld().getTrackType(TRACK_RULE_ID);
 
-        assertBuildTrackSucceeds(new Vec2D(0, 6), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(0, 6), TileTransition.EAST, trackType);
         // Now change the owner of the track piece at (1, 6);
         int anotherPlayer = 999;
-        TerrainTile oldTile = world.getTile(new Vec2D(1, 6));
+        TerrainTile oldTile = world.getTile(new Vector2D(1, 6));
         TrackPiece tp = oldTile.trackPiece();
         TrackPiece newTrackPiece = new TrackPiece(tp.trackConfiguration(), tp.trackType(), anotherPlayer);
         TerrainTile newTile = new TerrainTile(oldTile.terrainTypeId(), newTrackPiece);
-        world.setTile(new Vec2D(1, 6), newTile);
-        assertBuildTrackFails(new Vec2D(1, 6), TileTransition.EAST, trackType);
-        world.setTile(new Vec2D(1, 6), oldTile);
-        assertBuildTrackSucceeds(new Vec2D(1, 6), TileTransition.EAST, trackType);
+        world.setTile(new Vector2D(1, 6), newTile);
+        assertBuildTrackFails(new Vector2D(1, 6), TileTransition.EAST, trackType);
+        world.setTile(new Vector2D(1, 6), oldTile);
+        assertBuildTrackSucceeds(new Vector2D(1, 6), TileTransition.EAST, trackType);
     }
 
     /**
      * Tests build track behavior.
      */
     public void testBuildTrack() {
-        Vec2D pointA = Vec2D.ZERO;
-        Vec2D pointB = new Vec2D(1, 1);
-        Vec2D pointC = new Vec2D(1, 0);
+        Vector2D pointA = Vector2D.ZERO;
+        Vector2D pointB = new Vector2D(1, 1);
+        Vector2D pointC = new Vector2D(1, 0);
 
         TrackType trackType = getWorld().getTrackType(0);
 
@@ -166,13 +166,13 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertBuildTrackFails(pointA, TileTransition.SOUTH, trackType);
 
         // Illegal config. connecting to one existing track piece
-        assertBuildTrackFails(new Vec2D(0, 1), TileTransition.NORTH_EAST, trackType);
+        assertBuildTrackFails(new Vector2D(0, 1), TileTransition.NORTH_EAST, trackType);
 
         // Illegal config. connecting between two existing track pieces
         assertBuildTrackFails(pointC, TileTransition.SOUTH, trackType);
 
         // Not allowed on this terrain type, from existing track.
-        assertBuildTrackFails(new Vec2D(2, 0), TileTransition.NORTH_EAST, getWorld().getTrackType(1));
+        assertBuildTrackFails(new Vector2D(2, 0), TileTransition.NORTH_EAST, getWorld().getTrackType(1));
     }
 
     /**
@@ -183,48 +183,48 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         world.setRules(new Rules(false, false));
         TrackType trackType = world.getTrackType(0);
 
-        assertBuildTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(0, 5), TileTransition.EAST, trackType);
         assertSymmetricConnections();
-        assertBuildTrackSucceeds(new Vec2D(1, 5), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(1, 5), TileTransition.EAST, trackType);
         assertSymmetricConnections();
-        TrackConfiguration straight = world.getTile(new Vec2D(1, 5)).trackPiece().trackConfiguration();
+        TrackConfiguration straight = world.getTile(new Vector2D(1, 5)).trackPiece().trackConfiguration();
         assertTrue(straight.contains(TileTransition.WEST));
         assertTrue(straight.contains(TileTransition.EAST));
         assertTrue(straight.contains(TrackConfiguration.getFlatInstance("000010000")));
         assertEquals(2, Integer.bitCount(straight.get8bitTemplate()));
 
-        assertBuildTrackSucceeds(new Vec2D(5, 5), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(5, 5), TileTransition.EAST, trackType);
         assertSymmetricConnections();
-        assertBuildTrackSucceeds(new Vec2D(6, 5), TileTransition.SOUTH, trackType);
+        assertBuildTrackSucceeds(new Vector2D(6, 5), TileTransition.SOUTH, trackType);
         assertSymmetricConnections();
-        TrackConfiguration corner = world.getTile(new Vec2D(6, 5)).trackPiece().trackConfiguration();
+        TrackConfiguration corner = world.getTile(new Vector2D(6, 5)).trackPiece().trackConfiguration();
         assertTrue(corner.contains(TileTransition.WEST));
         assertTrue(corner.contains(TileTransition.SOUTH));
         assertEquals(2, Integer.bitCount(corner.get8bitTemplate()));
 
-        assertBuildTrackSucceeds(new Vec2D(8, 5), TileTransition.EAST, trackType);
+        assertBuildTrackSucceeds(new Vector2D(8, 5), TileTransition.EAST, trackType);
         assertSymmetricConnections();
-        TrackConfiguration endpoint = world.getTile(new Vec2D(8, 5)).trackPiece().trackConfiguration();
+        TrackConfiguration endpoint = world.getTile(new Vector2D(8, 5)).trackPiece().trackConfiguration();
         assertTrue(endpoint.contains(TileTransition.EAST));
         assertTrue(endpoint.contains(TrackConfiguration.getFlatInstance("000010000")));
         assertEquals(1, Integer.bitCount(endpoint.get8bitTemplate()));
 
-        assertRemoveTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST);
+        assertRemoveTrackSucceeds(new Vector2D(0, 5), TileTransition.EAST);
         assertSymmetricConnections();
-        assertNull(world.getTile(new Vec2D(0, 5)).trackPiece());
-        straight = world.getTile(new Vec2D(1, 5)).trackPiece().trackConfiguration();
+        assertNull(world.getTile(new Vector2D(0, 5)).trackPiece());
+        straight = world.getTile(new Vector2D(1, 5)).trackPiece().trackConfiguration();
         assertTrue(straight.contains(TileTransition.EAST));
         assertEquals(1, Integer.bitCount(straight.get8bitTemplate()));
-        assertRemoveTrackSucceeds(new Vec2D(6, 5), TileTransition.SOUTH);
+        assertRemoveTrackSucceeds(new Vector2D(6, 5), TileTransition.SOUTH);
         assertSymmetricConnections();
-        assertNull(world.getTile(new Vec2D(6, 6)).trackPiece());
-        endpoint = world.getTile(new Vec2D(6, 5)).trackPiece().trackConfiguration();
+        assertNull(world.getTile(new Vector2D(6, 6)).trackPiece());
+        endpoint = world.getTile(new Vector2D(6, 5)).trackPiece().trackConfiguration();
         assertTrue(endpoint.contains(TileTransition.WEST));
         assertEquals(1, Integer.bitCount(endpoint.get8bitTemplate()));
-        assertRemoveTrackSucceeds(new Vec2D(8, 5), TileTransition.EAST);
+        assertRemoveTrackSucceeds(new Vector2D(8, 5), TileTransition.EAST);
         assertSymmetricConnections();
-        assertNull(world.getTile(new Vec2D(8, 5)).trackPiece());
-        assertNull(world.getTile(new Vec2D(9, 5)).trackPiece());
+        assertNull(world.getTile(new Vector2D(8, 5)).trackPiece());
+        assertNull(world.getTile(new Vector2D(9, 5)).trackPiece());
     }
 
     /**
@@ -237,14 +237,14 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 TrackType trackType = world.getTrackType(0);
 
                 World ownTrackWorld = createWorld(rules);
-                assertBuild(ownTrackWorld, new Vec2D(0, 5), TileTransition.EAST, trackType, true);
-                assertBuild(ownTrackWorld, new Vec2D(1, 5), TileTransition.EAST, trackType, true);
+                assertBuild(ownTrackWorld, new Vector2D(0, 5), TileTransition.EAST, trackType, true);
+                assertBuild(ownTrackWorld, new Vector2D(1, 5), TileTransition.EAST, trackType, true);
                 assertEquals(WorldGenerator.TEST_PLAYER.getId(),
-                        ownTrackWorld.getTile(new Vec2D(2, 5)).trackPiece().playerId());
+                        ownTrackWorld.getTile(new Vector2D(2, 5)).trackPiece().playerId());
 
                 World otherTrackWorld = createWorld(rules);
-                assertBuild(otherTrackWorld, new Vec2D(0, 5), TileTransition.EAST, trackType, true);
-                Vec2D sharedTile = new Vec2D(1, 5);
+                assertBuild(otherTrackWorld, new Vector2D(0, 5), TileTransition.EAST, trackType, true);
+                Vector2D sharedTile = new Vector2D(1, 5);
                 TerrainTile oldTile = otherTrackWorld.getTile(sharedTile);
                 TrackPiece oldPiece = oldTile.trackPiece();
                 otherTrackWorld.setTile(sharedTile, new TerrainTile(oldTile.terrainTypeId(),
@@ -252,15 +252,15 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 boolean canBuildOnOtherTrack = canConnectToOtherPlayers;
                 assertBuild(otherTrackWorld, sharedTile, TileTransition.EAST, trackType, canBuildOnOtherTrack);
                 assertEquals(canBuildOnOtherTrack,
-                        otherTrackWorld.getTile(new Vec2D(2, 5)).trackPiece() != null);
+                        otherTrackWorld.getTile(new Vector2D(2, 5)).trackPiece() != null);
 
                 World disconnectedWorld = createWorld(rules);
-                assertBuild(disconnectedWorld, new Vec2D(0, 5), TileTransition.EAST, trackType, true);
+                assertBuild(disconnectedWorld, new Vector2D(0, 5), TileTransition.EAST, trackType, true);
                 boolean canBuildDisconnected = !mustStayConnected;
-                assertBuild(disconnectedWorld, new Vec2D(7, 7), TileTransition.EAST,
+                assertBuild(disconnectedWorld, new Vector2D(7, 7), TileTransition.EAST,
                         trackType, canBuildDisconnected);
                 assertEquals(canBuildDisconnected,
-                        disconnectedWorld.getTile(new Vec2D(7, 7)).trackPiece() != null);
+                        disconnectedWorld.getTile(new Vector2D(7, 7)).trackPiece() != null);
             }
         }
     }
@@ -285,9 +285,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @param type the type to use in the test.
      * @param expectedSuccess the expected success to use in the test.
      */
-    private static void assertBuild(World testWorld, Vec2D from, TileTransition direction,
+    private static void assertBuild(World testWorld, Vector2D from, TileTransition direction,
                                     TrackType type, boolean expectedSuccess) {
-        Vec2D to = direction.createRelocatedPoint(from);
+        Vector2D to = direction.createRelocatedPoint(from);
         TerrainTile fromBefore = testWorld.getTile(from);
         TerrainTile toBefore = testWorld.getTile(to);
         ChangeTrackPieceCompositeMove build = TrackMoveProducer.generateBuildTrackMove(
@@ -312,13 +312,13 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     private void assertSymmetricConnections() {
         for (int x = 0; x < world.getMapSize().x(); x++) {
             for (int y = 0; y < world.getMapSize().y(); y++) {
-                Vec2D position = new Vec2D(x, y);
+                Vector2D position = new Vector2D(x, y);
                 TrackPiece piece = world.getTile(position).trackPiece();
                 if (piece == null) {
                     continue;
                 }
                 for (TileTransition direction : TileTransition.getTransitions()) {
-                    Vec2D neighborPosition = direction.createRelocatedPoint(position);
+                    Vector2D neighborPosition = direction.createRelocatedPoint(position);
                     boolean hasConnection = piece.trackConfiguration().contains(direction);
                     boolean neighborHasMatchingConnection = world.boundsContain(neighborPosition)
                             && world.getTile(neighborPosition).trackPiece() != null
@@ -337,7 +337,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @param v the v to use in the test.
      * @param type the type to use in the test.
      */
-    private void assertBuildTrackFails(Vec2D p, TileTransition v, TrackType type) {
+    private void assertBuildTrackFails(Vector2D p, TileTransition v, TrackType type) {
         ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
         Status status = move.applicable(getWorld());
         assertFalse(status.isSuccess());
@@ -350,7 +350,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @param v the v to use in the test.
      * @param type the type to use in the test.
      */
-    private void assertBuildTrackSucceeds(Vec2D p, TileTransition v, TrackType type) {
+    private void assertBuildTrackSucceeds(Vector2D p, TileTransition v, TrackType type) {
         ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
 
         Move move1 = transactionsGenerator.addTransactions(move);
@@ -364,7 +364,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @param p the p to use in the test.
      * @param v the v to use in the test.
      */
-    private void assertRemoveTrackSucceeds(Vec2D p, TileTransition v) {
+    private void assertRemoveTrackSucceeds(Vector2D p, TileTransition v) {
         try {
             ChangeTrackPieceCompositeMove move = TrackMoveProducer
                     .generateRemoveTrackMove(p, v, getWorld(), WorldGenerator.TEST_PLAYER);
@@ -381,7 +381,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @throws Exception if the test move operation fails.
      */
     public void testMove() throws Exception {
-        Vec2D pointA = Vec2D.ZERO;
+        Vector2D pointA = Vector2D.ZERO;
         TrackType trackType = getWorld().getTrackType(0);
 
         ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackType, trackType, getWorld(), WorldGenerator.TEST_PLAYER);

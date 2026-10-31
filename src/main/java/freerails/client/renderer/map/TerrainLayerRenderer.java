@@ -23,7 +23,7 @@ import freerails.client.renderer.tile.TileRenderer;
 import freerails.client.renderer.tile.TileRendererList;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -37,7 +37,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
 
     private final TileRendererList tiles;
     private final UnmodifiableWorld world;
-    private final Vec2D mapSize;
+    private final Vector2D mapSize;
 
     /**
      * Creates a terrain layer renderer instance.
@@ -58,8 +58,8 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void paintTile(Graphics g, Vec2D tileLocation) {
-        Vec2D screenLocation = Vec2D.multiply(ClientConstants.TILE_SIZE, tileLocation);
+    public void paintTile(Graphics g, Vector2D tileLocation) {
+        Vector2D screenLocation = Vector2D.multiply(ClientConstants.TILE_SIZE, tileLocation);
 
         if (tileLocation.x() >= 0 && tileLocation.x() < mapSize.x() && tileLocation.y() >= 0 && tileLocation.y() < mapSize.y()) {
             TerrainTile terrainTile = world.getTile(tileLocation);
@@ -84,7 +84,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     private void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
         for (int tileX = tilesToPaint.x; tileX < tilesToPaint.x + tilesToPaint.width; tileX++) {
             for (int tileY = tilesToPaint.y; tileY < tilesToPaint.y + tilesToPaint.height; tileY++) {
-                paintTile(g, new Vec2D(tileX, tileY));
+                paintTile(g, new Vector2D(tileX, tileY));
             }
         }
     }
@@ -118,7 +118,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void refreshTile(Vec2D tileLocation) {}
+    public void refreshTile(Vector2D tileLocation) {}
 
     /**
      * Performs the refresh all operation.

@@ -23,7 +23,7 @@ import freerails.util.Segment;
 import freerails.util.Pair;
 import freerails.model.track.PathIterator;
 import freerails.model.track.SimplePathIteratorImpl;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -96,7 +96,7 @@ public class TrainPositionOnMap implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 3979269144611010865L;
-    private final List<Vec2D> points;
+    private final List<Vector2D> points;
     private final double speed, acceleration;
     private final TrainState activity;
 
@@ -108,7 +108,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param acceleration acceleration at this position
      * @param activity train lifecycle state
      */
-    private TrainPositionOnMap(List<Vec2D> points, double speed, double acceleration, TrainState activity) {
+    private TrainPositionOnMap(List<Vector2D> points, double speed, double acceleration, TrainState activity) {
         this.points = points;
         this.acceleration = acceleration;
         this.speed = speed;
@@ -121,7 +121,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param points train points in head-to-tail order
      * @return position with zero speed and acceleration and state {@link TrainState#READY}
      */
-    public static TrainPositionOnMap createInstance(List<Vec2D> points) {
+    public static TrainPositionOnMap createInstance(List<Vector2D> points) {
         return new TrainPositionOnMap(points, 0.0d, 0.0d, TrainState.READY);
     }
 
@@ -133,7 +133,7 @@ public class TrainPositionOnMap implements Serializable {
      * @throws IllegalStateException if more than 10,000 points are encountered
      */
     public static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path) {
-        List<Vec2D> points = new ArrayList<>();
+        List<Vector2D> points = new ArrayList<>();
         Segment line = null;
         int i = 0;
 
@@ -170,7 +170,7 @@ public class TrainPositionOnMap implements Serializable {
         if (pathSize > 10000) {
             throw new IllegalStateException("The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
         }
-        Vec2D[] points = new Vec2D[pathSize];
+        Vector2D[] points = new Vector2D[pathSize];
 
         for (int i = pathSize - 1; i > 0; i--) {
             if (!pathIt.hasNext()) {
@@ -191,8 +191,8 @@ public class TrainPositionOnMap implements Serializable {
      * @return {@code true} if their first (head) points are equal
      */
     private static boolean headsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
-        Vec2D aHead = a.getP(0);
-        Vec2D bHead = b.getP(0);
+        Vector2D aHead = a.getP(0);
+        Vector2D bHead = b.getP(0);
         return aHead.equals(bHead);
     }
 
@@ -202,8 +202,8 @@ public class TrainPositionOnMap implements Serializable {
      * @return {@code true} if their last (tail) points are equal
      */
     private static boolean tailsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
-        Vec2D aTail = a.getP(a.getLength() - 1);
-        Vec2D bTail = b.getP(b.getLength() - 1);
+        Vector2D aTail = a.getP(a.getLength() - 1);
+        Vector2D bTail = b.getP(b.getLength() - 1);
         return aTail.equals(bTail);
     }
 
@@ -213,8 +213,8 @@ public class TrainPositionOnMap implements Serializable {
      * @return {@code true} if the head of {@code a} meets the tail of {@code b}
      */
     private static boolean aHeadEqualsBTail(TrainPositionOnMap a, TrainPositionOnMap b) {
-        Vec2D aHead = a.getP(0);
-        Vec2D bTail = b.getP(b.getLength() - 1);
+        Vector2D aHead = a.getP(0);
+        Vector2D bTail = b.getP(b.getLength() - 1);
         return aHead.equals(bTail);
     }
 
@@ -242,7 +242,7 @@ public class TrainPositionOnMap implements Serializable {
         }
         int newLength = a.getLength() + b.getLength() - 2;
 
-        Vec2D[] newPoints = new Vec2D[newLength];
+        Vector2D[] newPoints = new Vector2D[newLength];
 
         int aLength = a.getLength();
         int bLength = b.getLength();
@@ -318,7 +318,7 @@ public class TrainPositionOnMap implements Serializable {
      * @return point at that index
      * @throws IndexOutOfBoundsException if the index is outside the points
      */
-    public Vec2D getP(int position) {
+    public Vector2D getP(int position) {
         return points.get(position);
     }
 
@@ -329,14 +329,14 @@ public class TrainPositionOnMap implements Serializable {
 
     /** Returns an iterator over segments from the tail toward the head. */
     public PathIterator reversePath() {
-        List<Vec2D> list = new ArrayList<>(points); // clone() not available for lists
+        List<Vector2D> list = new ArrayList<>(points); // clone() not available for lists
         Collections.reverse(list); // reverse the list in place
         return new SimplePathIteratorImpl(list);
     }
 
     /** Returns a new position with its point order reversed. */
     public TrainPositionOnMap reverse() {
-        List<Vec2D> list = new ArrayList<>(points); // clone() not available for lists
+        List<Vector2D> list = new ArrayList<>(points); // clone() not available for lists
         Collections.reverse(list); // reverse the list in place
         return new TrainPositionOnMap(list, speed, acceleration, activity);
     }
@@ -421,7 +421,7 @@ public class TrainPositionOnMap implements Serializable {
         if (tailsAreEqual(this, b)) {
             int newLength = getLength() - b.getLength() + 2;
 
-            Vec2D[] newPoints = new Vec2D[newLength];
+            Vector2D[] newPoints = new Vector2D[newLength];
 
             // Copy from this
             for (int i = 0; i < newLength - 1; i++) {
@@ -468,7 +468,7 @@ public class TrainPositionOnMap implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("TrainPosition {");
 
-        for (Vec2D point : points) {
+        for (Vector2D point : points) {
             sb.append('(');
             sb.append(point);
             sb.append("), ");

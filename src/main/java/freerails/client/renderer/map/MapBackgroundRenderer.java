@@ -27,7 +27,7 @@ import freerails.client.renderer.track.TrackLayerRenderer;
 import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.client.ClientConstants;
 
@@ -79,7 +79,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void paintTile(Graphics g, Vec2D tileLocation) {
+    public void paintTile(Graphics g, Vector2D tileLocation) {
         terrainLayer.paintTile(g, tileLocation);
         trackLayer.paintTile(g, tileLocation);
         cityNames.paint((Graphics2D) g, null);
@@ -105,7 +105,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
         int height = clipRectangle.height / tileHeight + 2;
 
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
-        trackLayer.paintRectangleOfTiles(g, new Vec2D(x, y), width, height);
+        trackLayer.paintRectangleOfTiles(g, new Vector2D(x, y), width, height);
         Rectangle visibleRectangle = new Rectangle(x * tileWidth, y * tileHeight, width * tileWidth, height * tileHeight);
         cityNames.paint((Graphics2D) g, visibleRectangle);
         stationNames.paint((Graphics2D) g, visibleRectangle);
@@ -117,7 +117,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void refreshTile(Vec2D tileLocation) {}
+    public void refreshTile(Vector2D tileLocation) {}
 
     /**
      * Performs the refresh all operation.

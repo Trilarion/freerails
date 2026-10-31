@@ -61,7 +61,7 @@ public final class WorldGenerator {
      * @return the result of minimal world.
      */
     public static World minimalWorld() {
-        return minimalWorld(new Vec2D(20, 20));
+        return minimalWorld(new Vector2D(20, 20));
     }
 
     /**
@@ -69,7 +69,7 @@ public final class WorldGenerator {
      * @param mapSize the map size to use in the test.
      * @return the result of minimal world.
      */
-    public static World minimalWorld(Vec2D mapSize) {
+    public static World minimalWorld(Vector2D mapSize) {
         World.Builder builder = new World.Builder();
         try {
             builder.setRules(getUnrestrictedRules());
@@ -87,7 +87,7 @@ public final class WorldGenerator {
      */
     public static World defaultWorld() {
         World.Builder builder = new World.Builder();
-        builder.setMapSize(new Vec2D(200, 200));
+        builder.setMapSize(new Vector2D(200, 200));
         try {
             builder.setRules(getDefaultRules());
             builder.setEngines(getEngines());
@@ -131,7 +131,7 @@ public final class WorldGenerator {
         builder.setTerrainTypes(testTerrainTypes());
         builder.setCargos(testCargos());
         builder.setCities(cities);
-        builder.setMapSize(new Vec2D(10, 10));
+        builder.setMapSize(new Vector2D(10, 10));
         return builder.build();
     }
 

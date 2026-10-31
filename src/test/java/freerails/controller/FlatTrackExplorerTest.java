@@ -25,7 +25,7 @@ import freerails.model.track.TrackType;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Status;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.game.Rules;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
@@ -67,14 +67,14 @@ public class FlatTrackExplorerTest extends TestCase {
         // generate track types
         SortedSet<TrackType> trackTypes = WorldGenerator.testTrackTypes();
 
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
+        world = new World.Builder().setMapSize(new Vector2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
         world.addPlayer(testPlayer);
 
         TrackType trackType = world.getTrackType(0);
 
         TileTransition[] vectors = {TileTransition.WEST, TileTransition.EAST, TileTransition.NORTH_EAST};
-        Vec2D p = new Vec2D(10, 10);
-        Vec2D[] points = {p, p, p};
+        Vector2D p = new Vector2D(10, 10);
+        Vector2D[] points = {p, p, p};
 
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = TrackMoveProducer
@@ -90,7 +90,7 @@ public class FlatTrackExplorerTest extends TestCase {
      * @throws NoTrackException if the test get first vector to try operation fails.
      */
     public void testGetFirstVectorToTry() throws NoTrackException {
-        PositionOnTrack p = new PositionOnTrack(new Vec2D(10, 10), TileTransition.SOUTH_WEST);
+        PositionOnTrack p = new PositionOnTrack(new Vector2D(10, 10), TileTransition.SOUTH_WEST);
         FlatTrackExplorer fte = new FlatTrackExplorer(world, p);
         TileTransition v = fte.getFirstVectorToTry();
         assertEquals(TileTransition.EAST, v);
@@ -105,7 +105,7 @@ public class FlatTrackExplorerTest extends TestCase {
     public void testGetPossibleDirections() throws NoTrackException {
         FlatTrackExplorer fte;
 
-        PositionOnTrack p = new PositionOnTrack(new Vec2D(10, 10), TileTransition.SOUTH_WEST);
+        PositionOnTrack p = new PositionOnTrack(new Vector2D(10, 10), TileTransition.SOUTH_WEST);
         fte = new FlatTrackExplorer(world, p);
 
         // There should be 3 branches.
@@ -135,7 +135,7 @@ public class FlatTrackExplorerTest extends TestCase {
     public void testMoveTrackExplorer() throws NoTrackException {
         FlatTrackExplorer fte;
 
-        PositionOnTrack p = new PositionOnTrack(new Vec2D(10, 10), TileTransition.EAST);
+        PositionOnTrack p = new PositionOnTrack(new Vector2D(10, 10), TileTransition.EAST);
         fte = new FlatTrackExplorer(world, p);
 
         PositionOnTrack pos = new PositionOnTrack(fte.getPosition());
@@ -171,7 +171,7 @@ public class FlatTrackExplorerTest extends TestCase {
      * @throws NoTrackException if the test has next operation fails.
      */
     public void testHasNext() throws NoTrackException {
-        FlatTrackExplorer explorer = new FlatTrackExplorer(world, new PositionOnTrack(new Vec2D(10, 10), TileTransition.EAST));
+        FlatTrackExplorer explorer = new FlatTrackExplorer(world, new PositionOnTrack(new Vector2D(10, 10), TileTransition.EAST));
         assertTrue(explorer.hasNextEdge());
     }
 
@@ -181,7 +181,7 @@ public class FlatTrackExplorerTest extends TestCase {
     public void testNoTrack() {
         try {
             FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-                    new PositionOnTrack(new Vec2D(4, 7), TileTransition.EAST));
+                    new PositionOnTrack(new Vector2D(4, 7), TileTransition.EAST));
             fail("Expected an Exception");
         } catch (NoTrackException e) {
             // ignore
@@ -192,7 +192,7 @@ public class FlatTrackExplorerTest extends TestCase {
      * Tests get possible positions behavior.
      */
     public void testGetPossiblePositions() {
-        PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(world, new Vec2D(10, 10));
+        PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(world, new Vector2D(10, 10));
         assertNotNull(positions);
         assertEquals(3, positions.length);
 

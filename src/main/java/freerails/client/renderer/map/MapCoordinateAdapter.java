@@ -20,7 +20,7 @@ package freerails.client.renderer.map;
 
 import freerails.client.ClientConstants;
 import freerails.model.ModelConstants;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 /** Converts integer map/model coordinates to the active tile set's pixel space. */
 public final class MapCoordinateAdapter {
@@ -32,13 +32,13 @@ public final class MapCoordinateAdapter {
     }
 
     /** Returns the pixel origin of the specified map tile. */
-    public static Vec2D tileOrigin(Vec2D tileLocation) {
-        return Vec2D.multiply(tileLocation, ClientConstants.TILE_PIXEL_SIZE);
+    public static Vector2D tileOrigin(Vector2D tileLocation) {
+        return Vector2D.multiply(tileLocation, ClientConstants.TILE_PIXEL_SIZE);
     }
 
     /** Converts a fixed-point model position to pixels relative to the map origin. */
-    public static Vec2D modelToPixel(Vec2D modelPosition) {
-        return new Vec2D(
+    public static Vector2D modelToPixel(Vector2D modelPosition) {
+        return new Vector2D(
                 modelToPixel(modelPosition.x()),
                 modelToPixel(modelPosition.y()));
     }

@@ -21,7 +21,7 @@ public class Array2DTest extends TestCase {
         assertEquals(-4, array.get(1, 0));
         assertEquals(3, array.getWidth());
         assertEquals(2, array.getHeight());
-        assertEquals(new Vec2D(3, 2), array.getSize());
+        assertEquals(new Vector2D(3, 2), array.getSize());
     }
 
     /**

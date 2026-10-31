@@ -31,7 +31,7 @@ import freerails.client.view.*;
 import freerails.client.receiver.MoveChainFork;
 import freerails.client.receiver.UntriedMoveReceiver;
 
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.operations.cargo.CargoBatch;
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.player.Player;
@@ -99,24 +99,24 @@ class DialogueBoxTester extends JFrame {
 
         // Set up cargo bundle, for the purpose of this test code all the trains and stations can share the same one.
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
-        cargoBatchBundle.setAmount(new CargoBatch(0, new Vec2D(10, 10), 8, 0), 80);
-        cargoBatchBundle.setAmount(new CargoBatch(0, new Vec2D(10, 10), 9, 0), 60);
-        cargoBatchBundle.setAmount(new CargoBatch(1, new Vec2D(10, 10), 9, 0), 140);
-        cargoBatchBundle.setAmount(new CargoBatch(3, new Vec2D(10, 10), 9, 0), 180);
-        cargoBatchBundle.setAmount(new CargoBatch(5, new Vec2D(10, 10), 9, 0), 10);
+        cargoBatchBundle.setAmount(new CargoBatch(0, new Vector2D(10, 10), 8, 0), 80);
+        cargoBatchBundle.setAmount(new CargoBatch(0, new Vector2D(10, 10), 9, 0), 60);
+        cargoBatchBundle.setAmount(new CargoBatch(1, new Vector2D(10, 10), 9, 0), 140);
+        cargoBatchBundle.setAmount(new CargoBatch(3, new Vector2D(10, 10), 9, 0), 180);
+        cargoBatchBundle.setAmount(new CargoBatch(5, new Vector2D(10, 10), 9, 0), 10);
 
         Set<Integer> demandedCargoIds = world.getCargos().stream()
                 .map(cargo -> cargo.getId())
                 .collect(Collectors.toSet());
-        Station bristol = new Station(0, new Vec2D(10, 10), "Bristol", cargoBatchBundle);
+        Station bristol = new Station(0, new Vector2D(10, 10), "Bristol", cargoBatchBundle);
         StationDemand demand = new StationDemand(demandedCargoIds);
         bristol.setDemandForCargo(demand);
         world.addStation(TEST_PLAYER, bristol);
 
-        world.addStation(TEST_PLAYER, new Station(1, new Vec2D(50, 100), "Bath", cargoBatchBundle));
-        world.addStation(TEST_PLAYER, new Station(2, new Vec2D(40, 10), "Cardiff", cargoBatchBundle));
-        world.addStation(TEST_PLAYER, new Station(3, new Vec2D(100, 10), "London", cargoBatchBundle));
-        world.addStation(TEST_PLAYER, new Station(4, new Vec2D(90, 50), "Swansea", cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(1, new Vector2D(50, 100), "Bath", cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(2, new Vector2D(40, 10), "Cardiff", cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(3, new Vector2D(100, 10), "London", cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(4, new Vector2D(90, 50), "Swansea", cargoBatchBundle));
 
 
 

@@ -34,7 +34,7 @@ import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.RemoveStationCompositeMove;
 import freerails.move.mapupdatemove.TrackMove;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
@@ -100,7 +100,7 @@ public class TrackMoveProducer {
      * @param player the player whose game state is used
      * @return the build track move produced by this method
      */
-    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, Player player) {
+    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vector2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, Player player) {
         ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, typeA, world, player);
         ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), typeB, world, player);
 
@@ -117,7 +117,7 @@ public class TrackMoveProducer {
      * @return the remove track move produced by this method
      * @throws Exception if the operation cannot be completed.
      */
-    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, UnmodifiableWorld world, Player player) throws Exception {
+    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vector2D from, TileTransition direction, UnmodifiableWorld world, Player player) throws Exception {
         TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, player);
         TrackMove b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, player);
 
@@ -135,7 +135,7 @@ public class TrackMoveProducer {
      * @param player the player
      * @return the build track change track piece move
      */
-    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
+    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vector2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
         TrackPiece oldTrackPiece = null;
         TrackPiece newTrackPiece;
 
@@ -166,7 +166,7 @@ public class TrackMoveProducer {
      * @return the remove track change track piece move
      * @throws Exception if the operation cannot be completed
      */
-    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
+    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vector2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
         TrackPiece oldTrackPiece = null;
         TrackPiece newTrackPiece;
 
@@ -239,13 +239,13 @@ public class TrackMoveProducer {
      * @param path the path parameter
      * @return the track produced by this method
      */
-    public Status buildTrack(Vec2D from, TileTransition[] path) {
+    public Status buildTrack(Vector2D from, TileTransition[] path) {
         Status returnValue = Status.OK;
         int x = from.x();
         int y = from.y();
         for (TileTransition aPath : path) {
 
-            returnValue = buildTrack(new Vec2D(x, y), aPath);
+            returnValue = buildTrack(new Vector2D(x, y), aPath);
             x += aPath.deltaX;
             y += aPath.deltaY;
             if (!returnValue.isSuccess()) {
@@ -262,7 +262,7 @@ public class TrackMoveProducer {
      * @param trackVector the track vector parameter
      * @return the track produced by this method
      */
-    public Status buildTrack(Vec2D from, TileTransition trackVector) {
+    public Status buildTrack(Vector2D from, TileTransition trackVector) {
 
         UnmodifiableWorld world = executor.getWorld();
         Player player = executor.getPlayer();
@@ -300,7 +300,7 @@ public class TrackMoveProducer {
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
-            TerrainTile tile = world.getTile(new Vec2D(x, y));
+            TerrainTile tile = world.getTile(new Vector2D(x, y));
             int terrainTypeId = tile.terrainTypeId();
             ruleIDs[i] = getBuildTrackStrategy().getRule(terrainTypeId);
 
@@ -322,7 +322,7 @@ public class TrackMoveProducer {
                         return status;
                     }
                 }
-                Vec2D point = Vec2D.add(from, trackVector.getD());
+                Vector2D point = Vector2D.add(from, trackVector.getD());
                 TerrainTile tileB = world.getTile(point);
                 if (tileB.trackPiece().trackType().getId() != ruleIDs[1] && !StationUtils.isStationHere(executor.getWorld(), point)) {
                     Status status = upgradeTrack(point, ruleIDs[1]);
@@ -350,7 +350,7 @@ public class TrackMoveProducer {
      * @param trackRuleID the track rule id
      * @return the status of the submitted upgrade move
      */
-    private Status upgradeTrack(Vec2D point, int trackRuleID) {
+    private Status upgradeTrack(Vector2D point, int trackRuleID) {
         UnmodifiableWorld world = executor.getWorld();
         TrackPiece before = world.getTile(point).trackPiece();
         // Check whether there is track here.

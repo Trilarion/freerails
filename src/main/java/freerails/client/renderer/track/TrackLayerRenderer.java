@@ -24,7 +24,7 @@ import freerails.client.renderer.map.MapLayerRenderer;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.awt.*;
 
@@ -35,7 +35,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
 
     private final UnmodifiableWorld world;
     private final RendererRoot rendererRoot;
-    private final Vec2D mapSize;
+    private final Vector2D mapSize;
 
     /**
      * Creates a track layer renderer instance.
@@ -66,7 +66,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
         for (int tileX = tilesToPaint.x - 1; tileX < tilesToPaint.x + tilesToPaint.width + 1; tileX++) {
             for (int tileY = tilesToPaint.y - 1; tileY < tilesToPaint.y + tilesToPaint.height + 1; tileY++) {
                 if (tileX >= 0 && tileX < mapSize.x() && tileY >= 0 && tileY < mapSize.y()) {
-                    Vec2D tileLocation = new Vec2D(tileX, tileY);
+                    Vector2D tileLocation = new Vector2D(tileX, tileY);
                     TerrainTile terrainTile = world.getTile(tileLocation);
                     TrackPiece trackPiece = terrainTile.trackPiece();
                     if (trackPiece != null) {
@@ -87,7 +87,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void paintTile(Graphics g, Vec2D tileLocation) {
+    public void paintTile(Graphics g, Vector2D tileLocation) {
         /*
          * Since track tiles overlap the adjacent terrain tiles, we create a
          * temporary Graphics object that only lets us draw on the selected
@@ -103,7 +103,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
      * @param width the width
      * @param height the height
      */
-    public void paintRectangleOfTiles(Graphics g, Vec2D p, int width, int height) {
+    public void paintRectangleOfTiles(Graphics g, Vector2D p, int width, int height) {
         paintRectangleOfTiles(g, new Rectangle(p.x(), p.y(), width, height));
     }
 
@@ -113,7 +113,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void refreshTile(Vec2D tileLocation) {}
+    public void refreshTile(Vector2D tileLocation) {}
 
     /**
      * Performs the paint rect operation.

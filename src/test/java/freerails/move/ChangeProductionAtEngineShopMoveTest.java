@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.model.building.EngineShop;
 import freerails.model.operations.train.TrainTemplate;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.WorldGenerator;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        getWorld().addEngineShop(WorldGenerator.TEST_PLAYER, new EngineShop(0, Vec2D.ZERO));
+        getWorld().addEngineShop(WorldGenerator.TEST_PLAYER, new EngineShop(0, Vector2D.ZERO));
 
         engineType = 0;
         int wagonType = 0;

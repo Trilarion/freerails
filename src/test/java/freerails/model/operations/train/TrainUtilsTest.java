@@ -24,7 +24,7 @@ import freerails.model.operations.cargo.CargoBatch;
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.operations.cargo.CargoCategory;
 import freerails.model.world.World;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -47,12 +47,12 @@ public class TrainUtilsTest extends TestCase {
         cargos.add(new Cargo(90, "Coal", CargoCategory.BULK_FREIGHT, 2));
         World world = new World.Builder()
                 .setRules(base.getRules())
-                .setMapSize(new Vec2D(2, 2))
+                .setMapSize(new Vector2D(2, 2))
                 .setCargos(cargos)
                 .build();
 
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(90, Vec2D.ZERO, 0, 0), 10);
+        cargo.addCargo(new CargoBatch(90, Vector2D.ZERO, 0, 0), 10);
         List<Integer> space = TrainUtils.spaceAvailable2(world, cargo, List.of(90));
 
         assertEquals(0, space.get(world.getCargoIndex(7)).intValue());

@@ -24,7 +24,7 @@ import freerails.model.track.TrackOverlapResult;
 import freerails.model.track.TrackUtils;
 import freerails.model.world.*;
 import freerails.move.Status;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.game.Rules;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
@@ -40,7 +40,7 @@ import java.util.Objects;
  * @param trackPieceAfter the track piece to place, or {@code null} to remove track
  * @param location the map location of the terrain
  */
-public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece trackPieceAfter, Vec2D location) implements TrackMove {
+public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece trackPieceAfter, Vector2D location) implements TrackMove {
 
     private static final long serialVersionUID = 4120849958418591801L;
 

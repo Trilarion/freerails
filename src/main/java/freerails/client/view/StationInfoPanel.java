@@ -27,7 +27,7 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.world.*;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
 import org.apache.log4j.Logger;
@@ -159,7 +159,7 @@ public class StationInfoPanel extends JPanel implements View {
         /**
         // Add your handling code here:
         if (worldIterator.previous()) {
-            Vec2D p = ((Station) worldIterator.getElement()).getLocation();
+            Vector2D p = ((Station) worldIterator.getElement()).getLocation();
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
 
             display();
@@ -177,7 +177,7 @@ public class StationInfoPanel extends JPanel implements View {
 
         // Add your handling code here:
         if (worldIterator.hasNext()) {
-            Vec2D p = worldIterator.next().getLocation();
+            Vector2D p = worldIterator.next().getLocation();
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
             display();
         } else {

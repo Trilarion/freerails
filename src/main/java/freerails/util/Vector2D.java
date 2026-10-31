@@ -21,8 +21,6 @@ package freerails.util;
 import java.awt.*;
 import java.io.Serializable;
 
-// TODO double version of it?
-
 /**
  * Immutable vector with two integer coordinates and arithmetic convenience
  * functions.
@@ -32,13 +30,13 @@ import java.io.Serializable;
  * @param x The horizontal coordinate.
  * @param y The vertical coordinate.
  */
-public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
+public record Vector2D(int x, int y) implements Serializable, Comparable<Vector2D> {
 
     private static final long serialVersionUID = -3053020239886388576L;
     /**
      * Static zero vector.
      */
-    public static final Vec2D ZERO = new Vec2D(0, 0);
+    public static final Vector2D ZERO = new Vector2D(0, 0);
 
     /**
      * Creates a vector with the given coordinates.
@@ -46,13 +44,13 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param x horizontal coordinate
      * @param y vertical coordinate
      */
-    public Vec2D {
+    public Vector2D {
     }
 
     /**
      * Creates the zero vector.
      */
-    public Vec2D() {
+    public Vector2D() {
         this(0, 0);
     }
 
@@ -62,7 +60,7 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param o vector to copy
      * @throws NullPointerException if {@code o} is null
      */
-    public Vec2D(Vec2D o) {
+    public Vector2D(Vector2D o) {
         this(o.x, o.y);
     }
 
@@ -92,8 +90,8 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param b second vector
      * @return the sum
      */
-    public static Vec2D add(Vec2D a, Vec2D b) {
-        return new Vec2D(a.x + b.x, a.y + b.y);
+    public static Vector2D add(Vector2D a, Vector2D b) {
+        return new Vector2D(a.x + b.x, a.y + b.y);
     }
 
     /**
@@ -103,8 +101,8 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param b vector to subtract
      * @return the difference
      */
-    public static Vec2D subtract(Vec2D a, Vec2D b) {
-        return new Vec2D(a.x - b.x, a.y - b.y);
+    public static Vector2D subtract(Vector2D a, Vector2D b) {
+        return new Vector2D(a.x - b.x, a.y - b.y);
     }
 
     /**
@@ -114,8 +112,8 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param b scalar to subtract from each coordinate
      * @return the resulting vector
      */
-    public static Vec2D subtract(Vec2D a, int b) {
-        return new Vec2D(a.x - b, a.y - b);
+    public static Vector2D subtract(Vector2D a, int b) {
+        return new Vector2D(a.x - b, a.y - b);
     }
 
     /**
@@ -125,8 +123,8 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param b second vector
      * @return the pointwise product
      */
-    public static Vec2D multiply(Vec2D a, Vec2D b) {
-        return new Vec2D(a.x * b.x, a.y * b.y);
+    public static Vector2D multiply(Vector2D a, Vector2D b) {
+        return new Vector2D(a.x * b.x, a.y * b.y);
     }
 
     /**
@@ -136,8 +134,8 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param b scalar multiplier
      * @return the resulting vector
      */
-    public static Vec2D multiply(Vec2D a, int b) {
-        return new Vec2D(a.x * b, a.y * b);
+    public static Vector2D multiply(Vector2D a, int b) {
+        return new Vector2D(a.x * b, a.y * b);
     }
 
     /**
@@ -148,8 +146,8 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @return the resulting vector
      * @throws ArithmeticException if {@code b} is zero
      */
-    public static Vec2D divide(Vec2D a, int b) {
-        return new Vec2D(a.x / b, a.y / b);
+    public static Vector2D divide(Vector2D a, int b) {
+        return new Vector2D(a.x / b, a.y / b);
     }
 
     /**
@@ -159,8 +157,8 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param b second vector
      * @return the vector containing the greater coordinate from each input
      */
-    public static Vec2D max(Vec2D a, Vec2D b) {
-        return new Vec2D(Math.max(a.x, b.x), Math.max(a.y, b.y));
+    public static Vector2D max(Vector2D a, Vector2D b) {
+        return new Vector2D(Math.max(a.x, b.x), Math.max(a.y, b.y));
     }
 
     /**
@@ -170,8 +168,8 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param b second vector
      * @return the vector containing the lesser coordinate from each input
      */
-    public static Vec2D min(Vec2D a, Vec2D b) {
-        return new Vec2D(Math.min(a.x, b.x), Math.min(a.y, b.y));
+    public static Vector2D min(Vector2D a, Vector2D b) {
+        return new Vector2D(Math.min(a.x, b.x), Math.min(a.y, b.y));
     }
 
     /**
@@ -183,7 +181,7 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @throws NullPointerException if {@code o} is null
      */
     @Override
-    public int compareTo(Vec2D o) {
+    public int compareTo(Vector2D o) {
         int compareY = Integer.compare(y, o.y);
         return compareY != 0 ? compareY : Integer.compare(x, o.x);
     }
@@ -196,7 +194,7 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @return {@code true} if both coordinates are less than the corresponding
      * coordinates in {@code o}
      */
-    public boolean below(Vec2D o) {
+    public boolean below(Vector2D o) {
         return x < o.x && y < o.y;
     }
 
@@ -208,7 +206,7 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @return {@code true} if both coordinates are less than or equal to the
      * corresponding coordinates in {@code o}
      */
-    public boolean belowOrEqual(Vec2D o) {
+    public boolean belowOrEqual(Vector2D o) {
         return x <= o.x && y <= o.y;
     }
 
@@ -220,7 +218,7 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @return {@code true} if both coordinates are greater than the
      * corresponding coordinates in {@code o}
      */
-    public boolean above(Vec2D o) {
+    public boolean above(Vector2D o) {
         return x > o.x && y > o.y;
     }
 
@@ -232,7 +230,7 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @return {@code true} if both coordinates are greater than or equal to
      * the corresponding coordinates in {@code o}
      */
-    public boolean aboveOrEqual(Vec2D o) {
+    public boolean aboveOrEqual(Vector2D o) {
         return x >= o.x && y >= o.y;
     }
 
@@ -242,7 +240,7 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @param p vector to convert
      * @return a point with the same coordinates
      */
-    public static Point toPoint(Vec2D p) {
+    public static Point toPoint(Vector2D p) {
         return new Point(p.x, p.y);
     }
 
@@ -253,7 +251,7 @@ public record Vec2D(int x, int y) implements Serializable, Comparable<Vec2D> {
      * @return a dimension whose width and height are the vector's
      * {@code x} and {@code y}
      */
-    public static Dimension toDimension(Vec2D p) {
+    public static Dimension toDimension(Vector2D p) {
         return new Dimension(p.x, p.y);
     }
 }

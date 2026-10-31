@@ -31,7 +31,7 @@ import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackProperty;
 import freerails.model.track.TrackType;
 import freerails.move.GrowCitiesMove;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
@@ -110,7 +110,7 @@ public class CityModelTest extends TestCase {
      */
     public void testGrowCitiesMoveDoesNotGrowWhenDisabled() throws IOException {
         World world = worldWithClearCity(false);
-        Vec2D cityCenter = world.getCity(1).getLocation();
+        Vector2D cityCenter = world.getCity(1).getLocation();
         TrackType stationType = new TrackType(100, "station", TrackCategory.STATION,
                 EnumSet.of(TrackProperty.SINGLE), Money.ZERO, Money.ZERO,
                 EnumSet.allOf(TerrainCategory.class), Set.of("000010000"));
@@ -145,7 +145,7 @@ public class CityModelTest extends TestCase {
      * @throws IOException if the world with clear city operation fails.
      */
     private World worldWithClearCity(boolean cityGrowthEnabled) throws IOException {
-        City city = new City(1,"New York", new Vec2D(5, 5));
+        City city = new City(1,"New York", new Vector2D(5, 5));
         TreeSet<City> cities = new TreeSet<>();
         cities.add(city);
         World template = WorldGenerator.testWorld(true, cities);
@@ -158,12 +158,12 @@ public class CityModelTest extends TestCase {
                 .setMapSize(template.getMapSize())
                 .setCityGrowthEnabled(cityGrowthEnabled)
                 .build();
-        Vec2D mapSize = world.getMapSize();
+        Vector2D mapSize = world.getMapSize();
 
         TerrainTile tile = new TerrainTile(0);
         for (int x = 0; x < mapSize.x(); x++) {
             for (int y = 0; y < mapSize.y(); y++) {
-                world.setTile(new Vec2D(x, y), tile);
+                world.setTile(new Vector2D(x, y), tile);
             }
         }
         return world;

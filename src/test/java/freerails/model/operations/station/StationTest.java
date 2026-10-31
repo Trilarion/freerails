@@ -20,7 +20,7 @@ package freerails.model.operations.station;
 
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.util.Utils;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import junit.framework.TestCase;
 
 import java.util.HashMap;
@@ -41,7 +41,7 @@ public class StationTest extends TestCase {
         Map<Integer, Integer> supplyValues = new HashMap<>(Map.of(42, 3, 17, 5));
         Set<Integer> demandValues = new HashSet<>(Set.of(42));
 
-        Station station = new Station(1, Vec2D.ZERO, "Central", CargoBatchBundle.EMPTY);
+        Station station = new Station(1, Vector2D.ZERO, "Central", CargoBatchBundle.EMPTY);
         station.setSupply(new StationSupply(supplyValues));
         station.setDemandForCargo(new StationDemand(demandValues));
 
@@ -118,7 +118,7 @@ public class StationTest extends TestCase {
      * Tests station cargo policies survive serialization behavior.
      */
     public void testStationCargoPoliciesSurviveSerialization() {
-        Station station = new Station(1, Vec2D.ZERO, "Central", CargoBatchBundle.EMPTY);
+        Station station = new Station(1, Vector2D.ZERO, "Central", CargoBatchBundle.EMPTY);
         station.setSupply(new StationSupply(Map.of(42, 3)));
         station.setDemandForCargo(new StationDemand(Set.of(42)));
 

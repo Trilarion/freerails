@@ -30,7 +30,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.BidirectionalIterator;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.Player;
@@ -48,7 +48,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
 
     private Player player;
     private UnmodifiableSchedule defaultSchedule;
-    private Vec2D stationA;
+    private Vector2D stationA;
 
     /**
      * Sets up world.
@@ -66,14 +66,14 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         // Build track.
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        stationA = new Vec2D(10, 10);
+        stationA = new Vector2D(10, 10);
         Status ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.isSuccess());
 
         // Build 2 stations.
         Status ms1 = stationBuilder.buildStation(stationA);
         assertTrue(ms1.isSuccess());
-        Vec2D stationB = new Vec2D(19, 10);
+        Vector2D stationB = new Vector2D(19, 10);
         Status ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.isSuccess());
 
@@ -145,7 +145,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
-        Vec2D from = new Vec2D(5, 5);
+        Vector2D from = new Vector2D(5, 5);
         Status status = producer.buildTrack(from, trackPath);
         if (!status.isSuccess())
             throw new IllegalStateException(status.getMessage());

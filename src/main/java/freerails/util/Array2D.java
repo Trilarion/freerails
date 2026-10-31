@@ -118,8 +118,8 @@ public class Array2D {
      *
      * @return the array dimensions
      */
-    public Vec2D getSize() {
-        return new Vec2D(width, height);
+    public Vector2D getSize() {
+        return new Vector2D(width, height);
     }
 
     /**

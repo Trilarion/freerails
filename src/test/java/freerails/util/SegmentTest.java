@@ -29,7 +29,7 @@ public class SegmentTest extends TestCase {
      * Tests get length behavior.
      */
     public void testGetLength() {
-        Segment line = new Segment(Vec2D.ZERO, new Vec2D(100, 0));
+        Segment line = new Segment(Vector2D.ZERO, new Vector2D(100, 0));
         assertEquals(100, line.getLength(), 0.1);
     }
 
@@ -37,8 +37,8 @@ public class SegmentTest extends TestCase {
      * Tests length does not overflow for extreme coordinates behavior.
      */
     public void testLengthDoesNotOverflowForExtremeCoordinates() {
-        Segment line = new Segment(new Vec2D(Integer.MIN_VALUE, Integer.MIN_VALUE),
-                new Vec2D(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        Segment line = new Segment(new Vector2D(Integer.MIN_VALUE, Integer.MIN_VALUE),
+                new Vector2D(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         assertEquals(6_074_000_998.537885, line.getLength(), 0.001);
     }
@@ -48,12 +48,12 @@ public class SegmentTest extends TestCase {
      */
     public void testEndpointsMustNotBeNull() {
         try {
-            new Segment(null, Vec2D.ZERO);
+            new Segment(null, Vector2D.ZERO);
             fail("Expected NullPointerException");
         } catch (NullPointerException expected) {
         }
         try {
-            new Segment(Vec2D.ZERO, null);
+            new Segment(Vector2D.ZERO, null);
             fail("Expected NullPointerException");
         } catch (NullPointerException expected) {
         }
@@ -63,10 +63,10 @@ public class SegmentTest extends TestCase {
      * Tests equality hash code and endpoint accessors behavior.
      */
     public void testEqualityHashCodeAndEndpointAccessors() {
-        Vec2D start = new Vec2D(1, 2);
-        Vec2D end = new Vec2D(4, 6);
+        Vector2D start = new Vector2D(1, 2);
+        Vector2D end = new Vector2D(4, 6);
         Segment segment = new Segment(start, end);
-        Segment equal = new Segment(new Vec2D(1, 2), new Vec2D(4, 6));
+        Segment equal = new Segment(new Vector2D(1, 2), new Vector2D(4, 6));
 
         assertSame(start, segment.a());
         assertSame(end, segment.b());

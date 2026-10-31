@@ -34,7 +34,7 @@ import freerails.model.operations.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.city.City;
 import freerails.model.track.TrackConfiguration;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.economy.*;
 import freerails.model.player.Player;
@@ -66,7 +66,7 @@ public class WorldTest extends TestCase {
      */
     public void testConstructor() {
         World world = WorldGenerator.minimalWorld();
-        assertEquals(world.getMapSize(), new Vec2D(20, 20));
+        assertEquals(world.getMapSize(), new Vector2D(20, 20));
     }
 
     /**
@@ -93,7 +93,7 @@ public class WorldTest extends TestCase {
         World original = createWorldWithMutableState();
         World copy = (World) Utils.cloneBySerialisation(original);
         Player copiedPlayer = copy.getPlayer(copy.getPlayerIndex(0));
-        Vec2D location = Vec2D.ZERO;
+        Vector2D location = Vector2D.ZERO;
         TerrainTile originalTile = original.getTile(location);
 
         copy.setTile(location, new TerrainTile(1));
@@ -119,7 +119,7 @@ public class WorldTest extends TestCase {
         assertEquals(original, copy);
         assertEquals(original.hashCode(), copy.hashCode());
 
-        Vec2D location = Vec2D.ZERO;
+        Vector2D location = Vector2D.ZERO;
         World changed = (World) Utils.cloneBySerialisation(original);
         changed.setTile(location, new TerrainTile(1));
         assertFalse(original.equals(changed));
@@ -147,7 +147,7 @@ public class WorldTest extends TestCase {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "One");
         world.addPlayer(player);
-        world.addEngineShop(player, new EngineShop(3, new Vec2D(4, 5)));
+        world.addEngineShop(player, new EngineShop(3, new Vector2D(4, 5)));
         world.addPlayer(new Player(1, "Two"));
 
         World copy = (World) Utils.cloneBySerialisation(world);
@@ -156,7 +156,7 @@ public class WorldTest extends TestCase {
 
         assertEquals(world, copy);
         assertEquals(world.hashCode(), copy.hashCode());
-        assertEquals(new Vec2D(4, 5), copy.getEngineShop(copiedPlayer, 3).getLocation());
+        assertEquals(new Vector2D(4, 5), copy.getEngineShop(copiedPlayer, 3).getLocation());
         assertEquals(1, copy.getEngineShops(copiedPlayer).size());
         assertTrue(copy.getEngineShops(otherCopiedPlayer).isEmpty());
         try {
@@ -180,7 +180,7 @@ public class WorldTest extends TestCase {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "One");
         world.addPlayer(player);
-        Station station = new Station(4, new Vec2D(4, 5), "Central", CargoBatchBundle.EMPTY);
+        Station station = new Station(4, new Vector2D(4, 5), "Central", CargoBatchBundle.EMPTY);
         world.addStation(player, station);
 
         Field legacyProduction = Station.class.getDeclaredField("production");
@@ -202,7 +202,7 @@ public class WorldTest extends TestCase {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "One");
         world.addPlayer(player);
-        Vec2D location = new Vec2D(4, 5);
+        Vector2D location = new Vector2D(4, 5);
         world.addStation(player, new Station(4, location, "Central", CargoBatchBundle.EMPTY));
         world.addEngineShop(player, new EngineShop(7, location));
 
@@ -269,38 +269,38 @@ public class WorldTest extends TestCase {
      */
     public void testBoundsContain() {
         World world = WorldGenerator.minimalWorld();
-        assertTrue(world.boundsContain(new Vec2D(1, 1)));
-        assertTrue(world.boundsContain(Vec2D.ZERO));
-        assertFalse(world.boundsContain(new Vec2D(-1, -1)));
-        assertFalse(world.boundsContain(new Vec2D(20, 20)));
+        assertTrue(world.boundsContain(new Vector2D(1, 1)));
+        assertTrue(world.boundsContain(Vector2D.ZERO));
+        assertFalse(world.boundsContain(new Vector2D(-1, -1)));
+        assertFalse(world.boundsContain(new Vector2D(20, 20)));
     }
 
     /**
      * Tests non square map bounds agree with tile access and indexing behavior.
      */
     public void testNonSquareMapBoundsAgreeWithTileAccessAndIndexing() {
-        World world = WorldGenerator.minimalWorld(new Vec2D(3, 5));
-        List<Vec2D> coordinates = List.of(
-                new Vec2D(0, 0), new Vec2D(0, 4), new Vec2D(2, 0), new Vec2D(2, 4),
-                new Vec2D(1, 1), new Vec2D(1, 3), new Vec2D(2, 2));
+        World world = WorldGenerator.minimalWorld(new Vector2D(3, 5));
+        List<Vector2D> coordinates = List.of(
+                new Vector2D(0, 0), new Vector2D(0, 4), new Vector2D(2, 0), new Vector2D(2, 4),
+                new Vector2D(1, 1), new Vector2D(1, 3), new Vector2D(2, 2));
         int terrainId = 1;
-        for (Vec2D coordinate : coordinates) {
+        for (Vector2D coordinate : coordinates) {
             assertTrue(world.boundsContain(coordinate));
             world.setTile(coordinate, new TerrainTile(terrainId++));
         }
 
-        assertEquals(1, world.getTile(new Vec2D(0, 0)).terrainTypeId());
-        assertEquals(2, world.getTile(new Vec2D(0, 4)).terrainTypeId());
-        assertEquals(3, world.getTile(new Vec2D(2, 0)).terrainTypeId());
-        assertEquals(4, world.getTile(new Vec2D(2, 4)).terrainTypeId());
-        assertEquals(5, world.getTile(new Vec2D(1, 1)).terrainTypeId());
-        assertEquals(6, world.getTile(new Vec2D(1, 3)).terrainTypeId());
-        assertEquals(7, world.getTile(new Vec2D(2, 2)).terrainTypeId());
+        assertEquals(1, world.getTile(new Vector2D(0, 0)).terrainTypeId());
+        assertEquals(2, world.getTile(new Vector2D(0, 4)).terrainTypeId());
+        assertEquals(3, world.getTile(new Vector2D(2, 0)).terrainTypeId());
+        assertEquals(4, world.getTile(new Vector2D(2, 4)).terrainTypeId());
+        assertEquals(5, world.getTile(new Vector2D(1, 1)).terrainTypeId());
+        assertEquals(6, world.getTile(new Vector2D(1, 3)).terrainTypeId());
+        assertEquals(7, world.getTile(new Vector2D(2, 2)).terrainTypeId());
 
-        List<Vec2D> outsideCoordinates = List.of(
-                new Vec2D(-1, 0), new Vec2D(3, 0), new Vec2D(0, -1),
-                new Vec2D(0, 5), new Vec2D(-1, 5), new Vec2D(3, 5));
-        for (Vec2D coordinate : outsideCoordinates) {
+        List<Vector2D> outsideCoordinates = List.of(
+                new Vector2D(-1, 0), new Vector2D(3, 0), new Vector2D(0, -1),
+                new Vector2D(0, 5), new Vector2D(-1, 5), new Vector2D(3, 5));
+        for (Vector2D coordinate : outsideCoordinates) {
             assertFalse(world.boundsContain(coordinate));
             try {
                 world.getTile(coordinate);
@@ -353,7 +353,7 @@ public class WorldTest extends TestCase {
 
         world.addTrain(first, new Train(1, 0));
         world.addStation(first, new Station(
-                2, Vec2D.ZERO, "First station", CargoBatchBundle.EMPTY));
+                2, Vector2D.ZERO, "First station", CargoBatchBundle.EMPTY));
         world.addTransaction(first, transaction(world, 50));
 
         assertEquals(1, world.getTrains(first).size());
@@ -389,16 +389,16 @@ public class WorldTest extends TestCase {
         assertEquals(List.of(secondTrain), List.copyOf(world.getTrains(second)));
 
         Station firstStation = new Station(
-                9, Vec2D.ZERO, "First", CargoBatchBundle.EMPTY);
+                9, Vector2D.ZERO, "First", CargoBatchBundle.EMPTY);
         Station firstOtherStation = new Station(
-                10, new Vec2D(1, 0), "First other", CargoBatchBundle.EMPTY);
+                10, new Vector2D(1, 0), "First other", CargoBatchBundle.EMPTY);
         Station secondStation = new Station(
-                9, new Vec2D(2, 0), "Second", CargoBatchBundle.EMPTY);
+                9, new Vector2D(2, 0), "Second", CargoBatchBundle.EMPTY);
         world.addStation(first, firstStation);
         world.addStation(first, firstOtherStation);
         world.addStation(second, secondStation);
         assertDuplicateRejected(() -> world.addStation(first,
-                new Station(9, new Vec2D(3, 0), "Duplicate", CargoBatchBundle.EMPTY)));
+                new Station(9, new Vector2D(3, 0), "Duplicate", CargoBatchBundle.EMPTY)));
         assertEquals(2, world.getStations(first).size());
         assertEquals(List.of(secondStation), List.copyOf(world.getStations(second)));
 
@@ -420,7 +420,7 @@ public class WorldTest extends TestCase {
      */
     public void testWorldEntityLookupsUseStableIdsAndKeepSortedIteration() {
         World catalog = WorldGenerator.defaultWorld();
-        City city = new City(77, "Test city", Vec2D.ZERO);
+        City city = new City(77, "Test city", Vector2D.ZERO);
         SortedSet<City> cities = new TreeSet<>();
         cities.add(city);
         SortedSet<Sentiment> sentiments = new TreeSet<>();
@@ -556,7 +556,7 @@ public class WorldTest extends TestCase {
                 new Transaction(TransactionCategory.MISC_INCOME, new Money(25), world.getClock().getCurrentTime()));
         world.addTrain(first, new Train(101, 0));
         Station firstStation = new Station(
-                202, Vec2D.ZERO, "First", CargoBatchBundle.EMPTY);
+                202, Vector2D.ZERO, "First", CargoBatchBundle.EMPTY);
         world.addStation(first, firstStation);
         world.addTransaction(second,
                 new Transaction(TransactionCategory.MISC_INCOME, new Money(70), world.getClock().getCurrentTime()));
@@ -621,7 +621,7 @@ public class WorldTest extends TestCase {
         cargos.add(new Cargo(7, "Mail", CargoCategory.MAIL, 1));
         World.Builder builder = new World.Builder()
                 .setRules(base.getRules())
-                .setMapSize(new Vec2D(2, 2))
+                .setMapSize(new Vector2D(2, 2))
                 .setCargos(cargos);
         cargos.add(new Cargo(90, "Coal", CargoCategory.BULK_FREIGHT, 2));
         World world = builder.build();
@@ -650,7 +650,7 @@ public class WorldTest extends TestCase {
                 Money.ZERO, Money.ZERO, Collections.emptySet(), Collections.emptySet()));
         World world = new World.Builder()
                 .setRules(base.getRules())
-                .setMapSize(new Vec2D(2, 2))
+                .setMapSize(new Vector2D(2, 2))
                 .setTrackTypes(trackTypes)
                 .build();
 
@@ -673,7 +673,7 @@ public class WorldTest extends TestCase {
         trackTypes.add(trackType);
         World world = new World.Builder()
                 .setRules(base.getRules())
-                .setMapSize(new Vec2D(2, 2))
+                .setMapSize(new Vector2D(2, 2))
                 .setCargos(cargos)
                 .setTrackTypes(trackTypes)
                 .build();
@@ -687,7 +687,7 @@ public class WorldTest extends TestCase {
         assertUnsupportedMutation(() -> world.getTrackTypes().clear());
 
         try {
-            new World.Builder().setMapSize(new Vec2D(2, 2)).build();
+            new World.Builder().setMapSize(new Vector2D(2, 2)).build();
             fail("Builder without rules must fail.");
         } catch (IllegalStateException expected) {
             assertTrue(expected.getMessage().contains("Rules"));
@@ -720,7 +720,7 @@ public class WorldTest extends TestCase {
 
         World world = new World.Builder()
                 .setRules(base.getRules())
-                .setMapSize(new Vec2D(3, 3))
+                .setMapSize(new Vector2D(3, 3))
                 .setCargos(cargos)
                 .setTrackTypes(trackTypes)
                 .setSentiments(sentiments)
@@ -731,16 +731,16 @@ public class WorldTest extends TestCase {
         assertEquals(1, world.addPlayer(secondPlayer));
         world.getClock().advanceTimeTo(new Time(15));
 
-        Vec2D trackLocation = new Vec2D(1, 1);
+        Vector2D trackLocation = new Vector2D(1, 1);
         TrackPiece trackPiece = new TrackPiece(
                 TrackConfiguration.getFlatInstance("000010000"), world.getTrackType(88), firstPlayer.getId());
         world.setTile(trackLocation, new TerrainTile(9, trackPiece));
-        world.setTile(new Vec2D(2, 2), new TerrainTile(4));
+        world.setTile(new Vector2D(2, 2), new TerrainTile(4));
 
         Train train = new Train(101, 12);
         train.setConsist(List.of(5, 6));
         world.addTrain(firstPlayer, train);
-        Station station = new Station(303, new Vec2D(2, 1), "North", CargoBatchBundle.EMPTY);
+        Station station = new Station(303, new Vector2D(2, 1), "North", CargoBatchBundle.EMPTY);
         world.addStation(firstPlayer, station);
 
         Transaction bond = new Transaction(TransactionCategory.BOND, new Money(100), world.getClock().getCurrentTime());
@@ -772,7 +772,7 @@ public class WorldTest extends TestCase {
         Station restoredStation = copy.getStation(restoredPlayer, 303);
         assertEquals(station, restoredStation);
         assertEquals("North", restoredStation.getStationName());
-        assertEquals(new Vec2D(2, 1), restoredStation.getLocation());
+        assertEquals(new Vector2D(2, 1), restoredStation.getLocation());
         assertEquals(bond, copy.getTransaction(restoredPlayer, 0));
         assertEquals(income, copy.getTransaction(restoredPlayer, 1));
         assertEquals(new Money(125), copy.getCurrentBalance(restoredPlayer));
@@ -797,7 +797,7 @@ public class WorldTest extends TestCase {
                 Money.ZERO, Money.ZERO, Collections.emptySet(), Collections.emptySet()));
         World world = new World.Builder()
                 .setRules(base.getRules())
-                .setMapSize(new Vec2D(2, 2))
+                .setMapSize(new Vector2D(2, 2))
                 .setCargos(cargos)
                 .setTrackTypes(trackTypes)
                 .build();
@@ -836,10 +836,10 @@ public class WorldTest extends TestCase {
         World world = new World.Builder()
                 .setRules(base.getRules())
                 .setTrackTypes(trackTypes)
-                .setMapSize(new Vec2D(3, 2))
+                .setMapSize(new Vector2D(3, 2))
                 .build();
-        Vec2D target = new Vec2D(1, 1);
-        Vec2D neighbor = new Vec2D(1, 0);
+        Vector2D target = new Vector2D(1, 1);
+        Vector2D neighbor = new Vector2D(1, 0);
         TerrainTile terrainOnly = new TerrainTile(4);
         TerrainTile neighborTile = new TerrainTile(5);
         TrackPiece trackPiece = new TrackPiece(
@@ -856,9 +856,9 @@ public class WorldTest extends TestCase {
         assertEquals(withTrack, world.getTile(target));
         assertEquals(trackPiece, world.getTile(target).trackPiece());
         assertEquals(neighborTile, world.getTile(neighbor));
-        assertOutOfBoundsWriteRejected(world, new Vec2D(-1, 0));
-        assertOutOfBoundsWriteRejected(world, new Vec2D(3, 0));
-        assertOutOfBoundsWriteRejected(world, new Vec2D(0, 2));
+        assertOutOfBoundsWriteRejected(world, new Vector2D(-1, 0));
+        assertOutOfBoundsWriteRejected(world, new Vector2D(3, 0));
+        assertOutOfBoundsWriteRejected(world, new Vector2D(0, 2));
     }
 
     /**
@@ -870,7 +870,7 @@ public class WorldTest extends TestCase {
         world.addPlayer(player);
         world.addTrain(player, new Train(1, 0));
         world.addStation(player, new Station(
-                2, Vec2D.ZERO, "Station", CargoBatchBundle.EMPTY));
+                2, Vector2D.ZERO, "Station", CargoBatchBundle.EMPTY));
         world.addTransaction(player, transaction(world, 10));
         UnmodifiableWorld readOnly = world;
 
@@ -891,7 +891,7 @@ public class WorldTest extends TestCase {
         world.addPlayer(new Player(1, "Second"));
         world.addTrain(player, new Train(3, 0));
         world.addStation(player, new Station(
-                4, new Vec2D(1, 0), "Another station", CargoBatchBundle.EMPTY));
+                4, new Vector2D(1, 0), "Another station", CargoBatchBundle.EMPTY));
         world.addTransaction(player, transaction(world, 5));
         assertEquals(2, playersView.size());
         assertEquals(2, trainsView.size());
@@ -903,25 +903,25 @@ public class WorldTest extends TestCase {
      * Tests map dimension and tile count limits behavior.
      */
     public void testMapDimensionAndTileCountLimits() {
-        assertInvalidMapSize(new Vec2D(0, 1));
-        assertInvalidMapSize(new Vec2D(1, 0));
-        assertInvalidMapSize(new Vec2D(-1, 1));
-        assertInvalidMapSize(new Vec2D(1, -1));
-        assertInvalidMapSize(new Vec2D(10_001, 1));
-        assertInvalidMapSize(new Vec2D(1, 10_001));
-        assertInvalidMapSize(new Vec2D(1_000, 1_001));
+        assertInvalidMapSize(new Vector2D(0, 1));
+        assertInvalidMapSize(new Vector2D(1, 0));
+        assertInvalidMapSize(new Vector2D(-1, 1));
+        assertInvalidMapSize(new Vector2D(1, -1));
+        assertInvalidMapSize(new Vector2D(10_001, 1));
+        assertInvalidMapSize(new Vector2D(1, 10_001));
+        assertInvalidMapSize(new Vector2D(1_000, 1_001));
 
-        assertEquals(new Vec2D(10_000, 1), WorldGenerator.minimalWorld(new Vec2D(10_000, 1)).getMapSize());
-        assertEquals(new Vec2D(1, 10_000), WorldGenerator.minimalWorld(new Vec2D(1, 10_000)).getMapSize());
-        assertEquals(new Vec2D(1_000, 1_000),
-                WorldGenerator.minimalWorld(new Vec2D(1_000, 1_000)).getMapSize());
+        assertEquals(new Vector2D(10_000, 1), WorldGenerator.minimalWorld(new Vector2D(10_000, 1)).getMapSize());
+        assertEquals(new Vector2D(1, 10_000), WorldGenerator.minimalWorld(new Vector2D(1, 10_000)).getMapSize());
+        assertEquals(new Vector2D(1_000, 1_000),
+                WorldGenerator.minimalWorld(new Vector2D(1_000, 1_000)).getMapSize());
     }
 
     /**
      * Asserts invalid map size.
      * @param size the size to use in the test.
      */
-    private static void assertInvalidMapSize(Vec2D size) {
+    private static void assertInvalidMapSize(Vector2D size) {
         try {
             WorldGenerator.minimalWorld(size);
             fail("Expected invalid map size to be rejected: " + size);
@@ -975,7 +975,7 @@ public class WorldTest extends TestCase {
      * @param world the world state used by the test.
      * @param coordinate the coordinate to use in the test.
      */
-    private static void assertOutOfBoundsWriteRejected(World world, Vec2D coordinate) {
+    private static void assertOutOfBoundsWriteRejected(World world, Vector2D coordinate) {
         try {
             world.setTile(coordinate, new TerrainTile(99));
             fail("Out-of-bounds tile write must fail: " + coordinate);
@@ -1005,7 +1005,7 @@ public class WorldTest extends TestCase {
         world.addTrain(player, new Train(1, 0));
         world.addTransaction(player, new Transaction(
                 TransactionCategory.MISC_INCOME, new Money(100), world.getClock().getCurrentTime()));
-        world.setTile(Vec2D.ZERO, new TerrainTile(0));
+        world.setTile(Vector2D.ZERO, new TerrainTile(0));
         return world;
     }
 

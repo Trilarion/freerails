@@ -76,7 +76,7 @@ public final class TestUtils {
      * @param b the b to use in the test.
      * @param segment the segment to use in the test.
      */
-    public static void assertLineSegmentEquals(Vec2D a, Vec2D b, Segment segment) {
+    public static void assertLineSegmentEquals(Vector2D a, Vector2D b, Segment segment) {
         Assert.assertEquals(segment, new Segment(a, b));
     }
 

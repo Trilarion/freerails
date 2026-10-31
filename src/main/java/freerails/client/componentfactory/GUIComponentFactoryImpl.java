@@ -32,7 +32,7 @@ import freerails.controller.BuildTrackController;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.move.ChangeGameSpeedMove;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -455,10 +455,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
          * same as the last map size, then the cursor should take the position
          * it had on the last map.
          */
-        Vec2D cursorPosition = Vec2D.ZERO;
+        Vector2D cursorPosition = Vector2D.ZERO;
         if (null != this.world) {
             if (world.getMapSize().equals(this.world.getMapSize())) {
-                cursorPosition = (Vec2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+                cursorPosition = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
             }
         }
         this.world = world;
@@ -550,13 +550,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         } else {
             // TODO this bug still exists, but why? (coordinates outside, what effect has this)
             // Fix for bug 967673 (Crash when building track close to edge of map).
-            Vec2D mapSize = world.getMapSize();
+            Vector2D mapSize = world.getMapSize();
             Rectangle mapRect = new Rectangle(0, 0, mapSize.x(), mapSize.y());
             tilesChanged = tilesChanged.intersection(mapRect);
 
             for (int tileX = tilesChanged.x; tileX < tilesChanged.x + tilesChanged.width; tileX++) {
                 for (int tileY = tilesChanged.y; tileY < tilesChanged.y + tilesChanged.height; tileY++) {
-                    Vec2D p = new Vec2D(tileX, tileY);
+                    Vector2D p = new Vector2D(tileX, tileY);
                     mainMap.refreshTile(p);
                     overviewMap.refreshTile(p);
                 }

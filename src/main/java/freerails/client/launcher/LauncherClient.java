@@ -31,7 +31,7 @@ import freerails.model.simulation.Speed;
 import freerails.model.simulation.Time;
 import freerails.model.player.Player;
 import freerails.network.command.ClientProperty;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 
@@ -58,7 +58,7 @@ public class LauncherClient extends FreerailsClient {
      * @param screenMode the screen mode parameter
      * @param displayMode the map coordinate
      */
-    public LauncherClient(String name, int screenMode, Vec2D displayMode) {
+    public LauncherClient(String name, int screenMode, Vector2D displayMode) {
         this.name = name;
         // Set up model root and action root.
         modelRoot = new ModelRootImpl();

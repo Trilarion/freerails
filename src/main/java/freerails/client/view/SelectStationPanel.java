@@ -28,7 +28,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.operations.station.StationUtils;
 import freerails.model.operations.train.schedule.TrainOrder;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
@@ -208,7 +208,7 @@ public class SelectStationPanel extends JPanel implements View {
         double y = evt.getY();
         y = y / scale + visableMapTiles.y;
 
-        int station = StationUtils.findNearestStation(world, player, new Vec2D((int)x, (int)y));
+        int station = StationUtils.findNearestStation(world, player, new Vector2D((int)x, (int)y));
 
         if (selectedStationID != station && station != StationUtils.NOT_FOUND) {
             selectedStationID = station;
@@ -245,16 +245,16 @@ public class SelectStationPanel extends JPanel implements View {
         Rectangle r = cargoWaitingAndDemandedPanel1.getBounds();
         mapRect.width -= r.width;
 
-        Vec2D topLeft = new Vec2D(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        Vec2D bottomRight = new Vec2D(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        Vector2D topLeft = new Vector2D(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        Vector2D bottomRight = new Vector2D(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
         for (Station station: world.getStations(player)) {
-            topLeft = Vec2D.min(topLeft, station.getLocation());
-            bottomRight = Vec2D.max(bottomRight, station.getLocation());
+            topLeft = Vector2D.min(topLeft, station.getLocation());
+            bottomRight = Vector2D.max(bottomRight, station.getLocation());
         }
-        Vec2D margin = new Vec2D(10, 10);
-        topLeft = Vec2D.subtract(topLeft, margin);
-        bottomRight = Vec2D.add(bottomRight, margin);
+        Vector2D margin = new Vector2D(10, 10);
+        topLeft = Vector2D.subtract(topLeft, margin);
+        bottomRight = Vector2D.add(bottomRight, margin);
 
         visableMapTiles = new Rectangle(topLeft.x(), topLeft.y(), bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y());
         boolean heightConstraintBinds = visableMapTiles.getHeight() / visableMapTiles.getWidth() > mapRect.getHeight() / mapRect.getWidth();
@@ -282,10 +282,10 @@ public class SelectStationPanel extends JPanel implements View {
 
         // Draw track
         g2.setColor(Color.BLACK);
-        Vec2D mapSize = world.getMapSize();
+        Vector2D mapSize = world.getMapSize();
         for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, mapSize.x()); x++) {
             for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, mapSize.y()); y++) {
-                TerrainTile terrainTile = world.getTile(new Vec2D(x, y));
+                TerrainTile terrainTile = world.getTile(new Vector2D(x, y));
                 if (terrainTile.trackPiece() != null) {
                     double xDouble = x - visableMapTiles.x;
                     xDouble = xDouble * scale;

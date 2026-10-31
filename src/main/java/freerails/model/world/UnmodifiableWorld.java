@@ -30,7 +30,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.operations.train.Engine;
 import freerails.model.operations.train.Train;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.economy.Money;
 import freerails.model.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -212,7 +212,7 @@ public interface UnmodifiableWorld extends Serializable {
      * @param location tile coordinate to test
      * @return {@code true} if the coordinate is within the map
      */
-    boolean boundsContain(Vec2D location);
+    boolean boundsContain(Vector2D location);
 
     /**
      * @param player player whose current balance is requested
@@ -225,7 +225,7 @@ public interface UnmodifiableWorld extends Serializable {
      *
      * @return a vector whose x and y values are map width and height
      */
-    Vec2D getMapSize();
+    Vector2D getMapSize();
 
     /**
      * @param i zero-based position in the player list
@@ -253,7 +253,7 @@ public interface UnmodifiableWorld extends Serializable {
      * @param location map coordinate of the tile
      * @return tile at that coordinate
      */
-    TerrainTile getTile(Vec2D location);
+    TerrainTile getTile(Vector2D location);
 
     /**
      * @param player owner of the transaction

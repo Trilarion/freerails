@@ -38,7 +38,7 @@ import freerails.model.operations.train.schedule.ScheduleState;
 import freerails.model.world.World;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import junit.framework.TestCase;
 
 /**
@@ -46,8 +46,8 @@ import junit.framework.TestCase;
  */
 public class MoveStateContractTest extends TestCase {
 
-    private static final Vec2D TILE_TO_CHANGE = new Vec2D(10, 10);
-    private static final Vec2D UNRELATED_TILE = new Vec2D(11, 10);
+    private static final Vector2D TILE_TO_CHANGE = new Vector2D(10, 10);
+    private static final Vector2D UNRELATED_TILE = new Vector2D(11, 10);
     private Player player;
     private Player otherPlayer;
     private World world;
@@ -73,7 +73,7 @@ public class MoveStateContractTest extends TestCase {
      */
     public void testApplicableIsPureForAcceptedAndRejectedMoves() {
         CargoBatchBundle cargo = cargo(3);
-        ChangeTrackPieceMove outsideMap = new ChangeTrackPieceMove(null, null, new Vec2D(-1, 0));
+        ChangeTrackPieceMove outsideMap = new ChangeTrackPieceMove(null, null, new Vector2D(-1, 0));
         world.setRules(new Rules(false, false));
         TrackPiece before = new TrackPiece(
                 TrackConfiguration.getFlatInstance("000010000"), world.getTrackType(0), player.getId());
@@ -167,7 +167,7 @@ public class MoveStateContractTest extends TestCase {
     public void testCargoMovePayloadsSnapshotCallerBundles() {
         CargoBatchBundle stationCargo = cargo(7);
         ChangeCargoAtStationMove stationMove = new ChangeCargoAtStationMove(player, 10, stationCargo);
-        stationCargo.addCargo(new CargoBatch(2, Vec2D.ZERO, 42, 9), 3);
+        stationCargo.addCargo(new CargoBatch(2, Vector2D.ZERO, 42, 9), 3);
 
         assertEquals(new ChangeCargoAtStationMove(player, 10, cargo(7)), stationMove);
         stationMove.apply(world);
@@ -175,7 +175,7 @@ public class MoveStateContractTest extends TestCase {
 
         CargoBatchBundle trainCargo = cargo(8);
         UpdateTrainMove trainMove = new UpdateTrainMove(player, 4, trainCargo, null, null);
-        trainCargo.addCargo(new CargoBatch(2, Vec2D.ZERO, 42, 9), 3);
+        trainCargo.addCargo(new CargoBatch(2, Vector2D.ZERO, 42, 9), 3);
 
         assertEquals(new UpdateTrainMove(player, 4, cargo(8), null, null), trainMove);
         trainMove.apply(world);
@@ -206,7 +206,7 @@ public class MoveStateContractTest extends TestCase {
 
         train.setCargoBatchBundle(replacement);
         station.setCargoBatchBundle(replacement);
-        replacement.addCargo(new CargoBatch(2, Vec2D.ZERO, 42, 9), 3);
+        replacement.addCargo(new CargoBatch(2, Vector2D.ZERO, 42, 9), 3);
 
         assertTrue(train.getCargoBatchBundle() instanceof ImmutableCargoBatchBundle);
         assertTrue(station.getCargoBatchBundle() instanceof ImmutableCargoBatchBundle);
@@ -246,7 +246,7 @@ public class MoveStateContractTest extends TestCase {
         assertRejectedWithoutMutation(new ChangeCargoAtStationMove(player, 999, cargo(1)));
         assertRejectedWithoutMutation(new UpdateTrainMove(player, 999, null, java.util.List.of(), null));
         assertRejectedWithoutMutation(new AddTransactionMove(player, transaction(-1_000_000_000_000L), true));
-        assertRejectedWithoutMutation(new ChangeTrackPieceMove(null, null, new Vec2D(-1, 0)));
+        assertRejectedWithoutMutation(new ChangeTrackPieceMove(null, null, new Vector2D(-1, 0)));
         assertRejectedWithoutMutation(new ChangeTrackPieceMove(before, otherOwner, TILE_TO_CHANGE));
     }
 
@@ -299,7 +299,7 @@ public class MoveStateContractTest extends TestCase {
      */
     private static CargoBatchBundle cargo(int amount) {
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(1, Vec2D.ZERO, 42, 9), amount);
+        cargo.addCargo(new CargoBatch(1, Vector2D.ZERO, 42, 9), amount);
         return cargo;
     }
 
@@ -310,6 +310,6 @@ public class MoveStateContractTest extends TestCase {
      * @return the result of station.
      */
     private static Station station(int id, int x) {
-        return new Station(id, new Vec2D(x, 4), "Station " + id, CargoBatchBundle.EMPTY);
+        return new Station(id, new Vector2D(x, 4), "Station " + id, CargoBatchBundle.EMPTY);
     }
 }

@@ -22,7 +22,7 @@
  */
 package freerails.client.renderer.map;
 
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.awt.*;
 
@@ -37,14 +37,14 @@ public interface MapLayerRenderer {
      * @param g the graphics context used for drawing
      * @param tileLocation the map coordinate
      */
-    void paintTile(Graphics g, Vec2D tileLocation);
+    void paintTile(Graphics g, Vector2D tileLocation);
 
     /**
      * Performs the refresh tile operation.
      *
      * @param tileLocation the map coordinate
      */
-    void refreshTile(Vec2D tileLocation);
+    void refreshTile(Vector2D tileLocation);
 
     /**
      * Performs the refresh all operation.

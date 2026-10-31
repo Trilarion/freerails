@@ -21,7 +21,7 @@ package freerails.client.view;
 import freerails.client.*;
 import freerails.client.renderer.RendererRoot;
 import freerails.model.operations.station.StationUtils;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import org.apache.log4j.Logger;
 
@@ -144,7 +144,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
     public void propertyChange(ModelRootProperty modelRootProperty, Object before, Object after) {
         if (modelRootProperty == ModelRootProperty.CURSOR_POSITION) {
 
-            Vec2D location = (Vec2D) after;
+            Vector2D location = (Vector2D) after;
 
             // Select priority element at location
             logger.debug("Let's try to show the station.");

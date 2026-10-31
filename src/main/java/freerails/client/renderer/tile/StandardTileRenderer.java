@@ -22,7 +22,7 @@
 package freerails.client.renderer.tile;
 
 import freerails.model.terrain.Terrain;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -63,7 +63,7 @@ public class StandardTileRenderer extends AbstractTileRenderer {
      * @return the index of the selected tile icon
      */
     @Override
-    public int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world) {
+    public int selectTileIconIndex(Vector2D mapLocation, UnmodifiableWorld world) {
         return 0;
     }
 

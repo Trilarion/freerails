@@ -33,7 +33,7 @@ import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.BidirectionalIterator;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -81,16 +81,16 @@ public final class TrainUtils {
      * @param world world containing the train and stations
      * @param player owner of the train
      * @param trainId train identifier
-     * @return the target station location, or {@link Vec2D#ZERO} if no station is scheduled
+     * @return the target station location, or {@link Vector2D#ZERO} if no station is scheduled
      */
-    public static Vec2D getTargetLocation(UnmodifiableWorld world, Player player, int trainId) {
+    public static Vector2D getTargetLocation(UnmodifiableWorld world, Player player, int trainId) {
         Train train = world.getTrain(player, trainId);
         UnmodifiableSchedule schedule = train.getSchedule();
         int stationId = schedule.getNextStationId();
 
         if (-1 == stationId) {
             // There are no stations on the schedule.
-            return Vec2D.ZERO;
+            return Vector2D.ZERO;
         }
 
         Station station = world.getStation(player, stationId);
@@ -118,7 +118,7 @@ public final class TrainUtils {
      * @return path long enough to place the complete train
      * @throws IllegalArgumentException if no track is available at the selected position
      */
-    public static PathOnTiles initPositionTrainGetPath(UnmodifiableWorld world, Vec2D point, int engineId, List<Integer> wagons) {
+    public static PathOnTiles initPositionTrainGetPath(UnmodifiableWorld world, Vector2D point, int engineId, List<Integer> wagons) {
         PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(world, point);
         FlatTrackExplorer fte;
         try {
@@ -168,7 +168,7 @@ public final class TrainUtils {
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
         List<TileTransition> tileTransitions = new ArrayList<>();
-        Vec2D start = path.getStart();
+        Vector2D start = path.getStart();
         TileTransition firstTileTransition = path.getStep(0);
         PositionOnTrack nextPositionOnTrack = new PositionOnTrack(start, firstTileTransition);
 

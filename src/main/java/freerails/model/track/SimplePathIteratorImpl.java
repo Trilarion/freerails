@@ -20,7 +20,7 @@ package freerails.model.track;
 
 
 import freerails.util.Segment;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,13 +31,13 @@ import java.util.NoSuchElementException;
 public class SimplePathIteratorImpl implements PathIterator {
 
     private static final long serialVersionUID = 3618420406261003576L;
-    private final List<Vec2D> points;
+    private final List<Vector2D> points;
     private int position = 0;
 
     /**
      * @param points ordered path points; each consecutive pair defines a segment
      */
-    public SimplePathIteratorImpl(List<Vec2D> points) {
+    public SimplePathIteratorImpl(List<Vector2D> points) {
         this.points = points;
     }
 

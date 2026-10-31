@@ -41,9 +41,9 @@ public class UtilsTest extends TestCase {
      */
     public void testEqualsBySerialization() {
 
-        Serializable a = new Vec2D(10, 10);
-        Serializable b = new Vec2D(10, 10);
-        Serializable c = new Vec2D(30, 10);
+        Serializable a = new Vector2D(10, 10);
+        Serializable b = new Vector2D(10, 10);
+        Serializable c = new Vector2D(30, 10);
 
         assertTrue(Utils.equalsBySerialization(a, b));
         assertTrue(Utils.equalsBySerialization(a, a));
@@ -127,7 +127,7 @@ public class UtilsTest extends TestCase {
      * Tests clone by serialisation creates equal independent copy behavior.
      */
     public void testCloneBySerialisationCreatesEqualIndependentCopy() {
-        Vec2D original = new Vec2D(4, 9);
+        Vector2D original = new Vector2D(4, 9);
 
         Serializable copy = Utils.cloneBySerialisation(original);
 

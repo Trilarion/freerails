@@ -18,7 +18,7 @@
 
 package freerails.model.operations.train;
 
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.terrain.TileTransition;
 import junit.framework.TestCase;
 
@@ -50,8 +50,8 @@ public class PositionOnTrackTest extends TestCase {
      * Tests to int behavior.
      */
     public void testToInt() {
-        PositionOnTrack p1 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
-        PositionOnTrack p2 = new PositionOnTrack(new Vec2D(10, 30), TileTransition.NORTH);
+        PositionOnTrack p1 = new PositionOnTrack(new Vector2D(10, 20), TileTransition.NORTH);
+        PositionOnTrack p2 = new PositionOnTrack(new Vector2D(10, 30), TileTransition.NORTH);
         assertTrue(p1.toInt() != p2.toInt());
     }
 
@@ -59,10 +59,10 @@ public class PositionOnTrackTest extends TestCase {
      * Tests set values from int behavior.
      */
     public void testSetValuesFromInt() {
-        PositionOnTrack p1 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
+        PositionOnTrack p1 = new PositionOnTrack(new Vector2D(10, 20), TileTransition.NORTH);
 
         int i = p1.toInt();
-        PositionOnTrack p2 = new PositionOnTrack(new Vec2D(60, 70), TileTransition.EAST);
+        PositionOnTrack p2 = new PositionOnTrack(new Vector2D(60, 70), TileTransition.EAST);
         assertTrue(!p1.equals(p2));
         p2.setValuesFromInt(i);
 
@@ -70,7 +70,7 @@ public class PositionOnTrackTest extends TestCase {
 
         TileTransition v = TileTransition.getInstance(7); // 7 is the maximum vector number.
 
-        p1 = new PositionOnTrack(new Vec2D(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE), v);
+        p1 = new PositionOnTrack(new Vector2D(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE), v);
     }
 
     /*
@@ -80,12 +80,12 @@ public class PositionOnTrackTest extends TestCase {
      * Tests equals object behavior.
      */
     public void testEqualsObject() {
-        PositionOnTrack p1 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
-        PositionOnTrack p2 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
+        PositionOnTrack p1 = new PositionOnTrack(new Vector2D(10, 20), TileTransition.NORTH);
+        PositionOnTrack p2 = new PositionOnTrack(new Vector2D(10, 20), TileTransition.NORTH);
         assertEquals(p1, p2);
 
-        p1 = new PositionOnTrack(new Vec2D(10, 50), TileTransition.NORTH);
-        p2 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
+        p1 = new PositionOnTrack(new Vector2D(10, 50), TileTransition.NORTH);
+        p2 = new PositionOnTrack(new Vector2D(10, 20), TileTransition.NORTH);
 
         assertTrue(!p1.equals(p2));
     }
@@ -99,7 +99,7 @@ public class PositionOnTrackTest extends TestCase {
      */
     private void assertNoException(int x, int y, TileTransition v) {
         try {
-            new PositionOnTrack(new Vec2D(x, y), v);
+            new PositionOnTrack(new Vector2D(x, y), v);
         } catch (Exception e) {
             assertTrue(false);
         }
@@ -113,7 +113,7 @@ public class PositionOnTrackTest extends TestCase {
      */
     private void assertException(int x, int y, TileTransition v) {
         try {
-            new PositionOnTrack(new Vec2D(x, y), v);
+            new PositionOnTrack(new Vector2D(x, y), v);
             assertTrue(false);
         } catch (Exception e) {
         }

@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.model.operations.train.Train;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
@@ -238,7 +238,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     protected void assertTrackHere(int x, int y) {
 
-        TerrainTile tile = world.getTile(new Vec2D(x, y));
+        TerrainTile tile = world.getTile(new Vector2D(x, y));
         assertTrue(tile.hasTrack());
     }
 
@@ -247,7 +247,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * @param path the path to use in the test.
      */
     protected void assertTrackHere(PathOnTiles path) {
-        Vec2D start = path.getStart();
+        Vector2D start = path.getStart();
         int x = start.x();
         int y = start.y();
         for (int i = 0; i < path.steps(); i++) {

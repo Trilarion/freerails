@@ -27,7 +27,7 @@ import freerails.model.operations.station.StationUtils;
 import freerails.model.operations.train.motion.*;
 import freerails.move.*;
 
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
@@ -121,7 +121,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 // Are we at a station?
                 TrainStopsHandler stopsHandler = new TrainStopsHandler(trainId, player, world);
                 PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
-                Vec2D location = positionOnTrack.getLocation();
+                Vector2D location = positionOnTrack.getLocation();
                 boolean atStation = StationUtils.getStationId(world, player, location) != null;
 
                 TrainMotion nextMotion;
@@ -209,8 +209,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrackSection desiredTrackSection = new TrackSection(nextVector, positionOnTrack.getLocation());
 
         // Check whether the desired track section is single or double track.
-        Vec2D tileA = desiredTrackSection.tileA();
-        Vec2D tileB = desiredTrackSection.tileB();
+        Vector2D tileA = desiredTrackSection.tileA();
+        Vector2D tileB = desiredTrackSection.tileB();
         TerrainTile fta = world.getTile(tileA);
         TerrainTile ftb = world.getTile(tileB);
         TrackPiece tpa = fta.trackPiece();
@@ -306,7 +306,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrainMotion currentMotion = MotionUtils.lastMotion(world, player, trainId);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
         // Find targets
-        Vec2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
+        Vector2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
         return TrackUtils.findNextStep(world, currentPosition, targetPoint);
     }
 

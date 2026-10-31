@@ -18,7 +18,7 @@
 
 package freerails.model.terrain;
 
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 /**
  * Associates a map location with the identifier of its terrain type.
@@ -26,7 +26,7 @@ import freerails.util.Vec2D;
  * @param location the map location of the terrain
  * @param terrainType the identifier of the terrain type at the location
  */
-public record TerrainAtLocation(Vec2D location, int terrainType) {
+public record TerrainAtLocation(Vector2D location, int terrainType) {
 
     /**
      * @param location    map coordinate

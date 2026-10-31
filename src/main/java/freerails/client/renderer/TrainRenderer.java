@@ -26,7 +26,7 @@ import freerails.client.renderer.map.MapCoordinateAdapter;
 import freerails.util.Segment;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.awt.*;
 
@@ -85,7 +85,7 @@ public class TrainRenderer {
 
         boolean firstIteration = true;
 
-        Vec2D p = null;
+        Vector2D p = null;
         // get the start of the first and the end of the last
         Segment line = null;
         while (pathWalker.hasNext()) {
@@ -99,11 +99,11 @@ public class TrainRenderer {
 
         Segment wagon = new Segment(p, line.b());
 
-        Vec2D pixelA = MapCoordinateAdapter.modelToPixel(wagon.a());
-        Vec2D pixelB = MapCoordinateAdapter.modelToPixel(wagon.b());
-        Vec2D diff = Vec2D.subtract(pixelB, pixelA);
+        Vector2D pixelA = MapCoordinateAdapter.modelToPixel(wagon.a());
+        Vector2D pixelB = MapCoordinateAdapter.modelToPixel(wagon.b());
+        Vector2D diff = Vector2D.subtract(pixelB, pixelA);
         TileTransition v = TileTransition.getNearestVector(diff.x(), diff.y());
-        Vec2D center = Vec2D.divide(Vec2D.add(pixelA, pixelB), 2);
+        Vector2D center = Vector2D.divide(Vector2D.add(pixelA, pixelB), 2);
         Image image;
 
         if (engine) {

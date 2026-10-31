@@ -32,7 +32,7 @@ import freerails.model.operations.station.StationDemand;
 import freerails.model.operations.station.StationUtils;
 import freerails.model.operations.train.*;
 import freerails.model.operations.train.schedule.UnmodifiableSchedule;
-import freerails.util.Vec2D;
+import freerails.util.Vector2D;
 
 import java.util.*;
 
@@ -111,7 +111,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         moves = new ArrayList<>();
 
         for (CargoBatch cargoBatch : cargoDroppedOff.getCargoBatches()) {
-            double distance = Vec2D.subtract(cargoBatch.getSourceP(), station.getLocation()).norm();
+            double distance = Vector2D.subtract(cargoBatch.getSourceP(), station.getLocation()).norm();
             int amount = cargoDroppedOff.getAmount(cargoBatch);
 
             Money money = new Money((long) (amount * Math.log(distance) * ModelConstants.CARGO_DELIVERY_EARNINGS_FACTOR));

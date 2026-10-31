@@ -28,7 +28,7 @@ import java.util.Objects;
  * @param a starting endpoint
  * @param b ending endpoint
  */
-public record Segment(Vec2D a, Vec2D b) implements Serializable {
+public record Segment(Vector2D a, Vector2D b) implements Serializable {
 
     private static final long serialVersionUID = 3257853198755705393L;
 
@@ -39,7 +39,7 @@ public record Segment(Vec2D a, Vec2D b) implements Serializable {
      * @param b ending endpoint
      * @throws NullPointerException if either endpoint is null
      */
-    public Segment(Vec2D a, Vec2D b) {
+    public Segment(Vector2D a, Vector2D b) {
         this.a = Objects.requireNonNull(a, "a");
         this.b = Objects.requireNonNull(b, "b");
     }
