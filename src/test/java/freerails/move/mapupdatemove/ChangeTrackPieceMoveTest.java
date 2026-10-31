@@ -42,12 +42,13 @@ import java.net.URL;
 import java.util.SortedSet;
 
 /**
- *
+ * Tests change track piece move behavior.
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
     /**
-     *
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -70,7 +71,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests try do move behavior.
      */
     public void testTryDoMove() {
         TrackPiece oldTrackPiece;
@@ -121,7 +122,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Verifies that applying a track-piece move replaces the tile's track configuration.
      */
     public void testDoMove() {
         TrackPiece oldTrackPiece;
@@ -139,8 +140,9 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     * @param oldTrackPiece
-     * @param newTrackPiece
+     * Asserts move do move is ok.
+     * @param oldTrackPiece the old track piece to use in the test.
+     * @param newTrackPiece the new track piece to use in the test.
      */
     private void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
         TrackMove move;
@@ -156,7 +158,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move behavior.
      */
     public void testMove() {
         TrackPiece oldTrackPiece = getWorld().getTile(Vec2D.ZERO).trackPiece();

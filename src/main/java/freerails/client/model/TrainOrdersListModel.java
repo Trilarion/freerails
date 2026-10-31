@@ -48,9 +48,11 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
     private final Player player;
 
     /**
-     * @param world
-     * @param trainNumber
-     * @param player
+     * Creates a train orders list model instance.
+     *
+     * @param world the game world being queried
+     * @param trainNumber the train number parameter
+     * @param player the player whose game state is used
      */
     public TrainOrdersListModel(UnmodifiableWorld world, int trainNumber, Player player) {
         this.trainNumber = trainNumber;
@@ -59,6 +61,11 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
         assert null != getSchedule();
     }
 
+    /**
+     * Returns the element at.
+     * @param index the index
+     * @return the element at
+     */
     @Override
     public TrainOrdersListElement getElementAt(int index) {
         UnmodifiableSchedule schedule = getSchedule();
@@ -70,6 +77,10 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
         return new TrainOrdersListElement(order.isOneShot(), gotoStatus, order, trainNumber);
     }
 
+    /**
+     * Returns the size.
+     * @return the size
+     */
     @Override
     public int getSize() {
         UnmodifiableSchedule schedule = getSchedule();
@@ -81,12 +92,16 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
     }
 
     /**
-     *
+     * Performs the fire refresh operation.
      */
     public void fireRefresh() {
         super.fireContentsChanged(this, 0, getSize());
     }
 
+    /**
+     * Returns the schedule.
+     * @return the schedule
+     */
     private UnmodifiableSchedule getSchedule() {
         Train train = world.getTrain(player, trainNumber);
         return train.getSchedule();
@@ -120,10 +135,12 @@ public class TrainOrdersListModel extends AbstractListModel<TrainOrdersListModel
         public final int trainNumber;
 
         /**
-         * @param isUrgentStop
-         * @param gotoStatus
-         * @param order
-         * @param trainNumber
+         * Creates a train orders list element instance.
+         *
+         * @param isUrgentStop the is urgent stop parameter
+         * @param gotoStatus the goto status parameter
+         * @param order the order parameter
+         * @param trainNumber the train number parameter
          */
         private TrainOrdersListElement(boolean isUrgentStop, int gotoStatus, TrainOrder order, int trainNumber) {
             this.isUrgentStop = isUrgentStop;

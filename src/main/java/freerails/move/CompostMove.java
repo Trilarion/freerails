@@ -40,6 +40,11 @@ public class CompostMove implements Move {
 
     private final Collection<Move> moves;
 
+    /**
+     * Creates a compost move from the supplied values.
+     *
+     * @param moves the moves
+     */
     public CompostMove(@NotNull Collection<Move> moves) {
         if (moves.size() < 2) {
             throw new IllegalArgumentException("Must contain at least two moves.");
@@ -68,11 +73,22 @@ public class CompostMove implements Move {
         return new ArrayList<>(moves).equals(new ArrayList<>(((CompostMove) obj).moves));
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return new ArrayList<>(moves).hashCode();
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @Override
     public @NotNull Status applicable(@NotNull UnmodifiableWorld world) {
         for (Move move: moves) {
@@ -84,6 +100,11 @@ public class CompostMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         if (!applicable(world).isSuccess()) {

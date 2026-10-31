@@ -26,7 +26,10 @@ import java.io.Serializable;
  */
 public interface CommandToClient extends Serializable {
     /**
-     * Executes this command on the specified ClientControlInterface.
+     * Executes this command on a client.
+     *
+     * @param client client control interface receiving the command
+     * @return status describing whether execution succeeded
      */
     CommandStatus execute(ClientControlInterface client);
 

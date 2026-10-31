@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Provides the train summery model functionality.
  */
 public class TrainSummeryModel {
 
@@ -43,7 +43,7 @@ public class TrainSummeryModel {
     private long lastStationUpdate;
 
     /**
-     *
+     * Creates a train summery model instance.
      */
     public TrainSummeryModel() {
         lastTrainIncome = new HashMap<>(64);
@@ -52,8 +52,10 @@ public class TrainSummeryModel {
     }
 
     /**
-     * @param world
-     * @param player
+     * Sets the world.
+     *
+     * @param world the game world being queried
+     * @param player the player whose game state is used
      */
     public void setWorld(UnmodifiableWorld world, Player player) {
         if (this.world != world) {
@@ -65,8 +67,10 @@ public class TrainSummeryModel {
     }
 
     /**
-     * @param trainNum
-     * @return
+     * Performs the find train income operation.
+     *
+     * @param trainNum the train num parameter
+     * @return the train income produced by this method
      */
     public Money findTrainIncome(int trainNum) {
         int numberOfTransactions = world.getTransactions(player).size();
@@ -97,8 +101,10 @@ public class TrainSummeryModel {
     }
 
     /**
-     * @param trainNum
-     * @return
+     * Returns the station name.
+     *
+     * @param trainNum the train num parameter
+     * @return the station name produced by this method
      */
     public String getStationName(int trainNum) {
         long currentTime = System.currentTimeMillis();

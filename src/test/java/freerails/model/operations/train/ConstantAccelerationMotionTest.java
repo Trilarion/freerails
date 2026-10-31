@@ -28,12 +28,12 @@ import junit.framework.TestCase;
 import java.util.Random;
 
 /**
- *
+ * Tests constant acceleration motion behavior.
  */
 public class ConstantAccelerationMotionTest extends TestCase {
 
     /**
-     *
+     * Tests tand s behavior.
      */
     public void testTandS() {
         Motion accelerationMotion1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(0, 10, 5);
@@ -50,7 +50,7 @@ public class ConstantAccelerationMotionTest extends TestCase {
     }
 
     /**
-     *
+     * Tests equals behavior.
      */
     public void testEquals() {
         Motion accelerationMotion1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(0, 10, 4);
@@ -59,7 +59,7 @@ public class ConstantAccelerationMotionTest extends TestCase {
     }
 
     /**
-     *
+     * Tests contract behavior.
      */
     public void testContract() {
         Random r = new Random(88);
@@ -75,7 +75,7 @@ public class ConstantAccelerationMotionTest extends TestCase {
      * Checks the specified object satisfies the contract defined by the
      * interface Motion.
      *
-     * @param sat
+     * @param sat the motion whose distance, speed, and acceleration are checked.
      */
     public static void checkContract(Motion sat) {
         double s = sat.getTotalDistance();
@@ -109,9 +109,9 @@ public class ConstantAccelerationMotionTest extends TestCase {
     }
 
     /**
-     *
-     * @param sat
-     * @param t
+     * Checks calc s calc vand calc a.
+     * @param sat the sat to use in the test.
+     * @param t the t to use in the test.
      */
     private static void checkCalcSCalcVandCalcA(Motion sat, double t) {
         boolean exceptionExpected = t < 0 || t > sat.getTotalTime();
@@ -140,9 +140,9 @@ public class ConstantAccelerationMotionTest extends TestCase {
     }
 
     /**
-     *
-     * @param sat
-     * @param s
+     * Checks calc t.
+     * @param sat the sat to use in the test.
+     * @param s the s to use in the test.
      */
     private static void checkCalcT(Motion sat, double s) {
         boolean exceptionExpected = s < 0 || s > sat.getTotalDistance();

@@ -28,13 +28,15 @@ import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 /**
+ * Tests map fixture factory2 behavior.
  */
 public class MapFixtureFactory2Test extends TestCase {
 
     private World world;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -43,7 +45,7 @@ public class MapFixtureFactory2Test extends TestCase {
     }
 
     /**
-     *
+     * Tests get copy behavior.
      */
     public void testGetCopy() {
         World world2;
@@ -56,7 +58,7 @@ public class MapFixtureFactory2Test extends TestCase {
     }
 
     /**
-     *
+     * Tests lists behavior.
      */
     public void testLists() {
 
@@ -66,21 +68,21 @@ public class MapFixtureFactory2Test extends TestCase {
     }
 
     /**
-     *
+     * Tests map behavior.
      */
     public void testMap() {
         assertEquals(world.getMapSize(), new Vec2D(200, 200));
     }
 
     /**
-     *
+     * Tests players behavior.
      */
     public void testPlayers() {
         assertEquals(4, world.getPlayers().size());
     }
 
     /**
-     *
+     * Tests that stock is issued behavior.
      */
     public void testThatStockIsIssued() {
         Player player = world.getPlayer(0);

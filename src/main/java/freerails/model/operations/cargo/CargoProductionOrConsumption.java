@@ -22,6 +22,9 @@ import java.io.Serializable;
 
 /**
  * Describes a cargo type and its nonnegative production or consumption rate.
+
+ * @param cargoId the identifier of the cargo produced or consumed
+ * @param rate the quantity of cargo produced or consumed per time unit
  */
 public record CargoProductionOrConsumption(int cargoId, double rate) implements Serializable {
 

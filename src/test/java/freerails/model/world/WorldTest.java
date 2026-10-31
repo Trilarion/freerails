@@ -62,7 +62,7 @@ public class WorldTest extends TestCase {
     private static final Serializable fs = new TestState(1);
 
     /**
-     *
+     * Tests constructor behavior.
      */
     public void testConstructor() {
         World world = WorldGenerator.minimalWorld();
@@ -86,6 +86,9 @@ public class WorldTest extends TestCase {
         assertEquals("The copies should be logically equal.", original, copy);
     }
 
+    /**
+     * Tests serialization round trip creates independent mutable world behavior.
+     */
     public void testSerializationRoundTripCreatesIndependentMutableWorld() {
         World original = createWorldWithMutableState();
         World copy = (World) Utils.cloneBySerialisation(original);
@@ -106,6 +109,9 @@ public class WorldTest extends TestCase {
         assertEquals(Speed.MODERATE, original.getSpeed());
     }
 
+    /**
+     * Tests serialization round trip equals and hash code track world state behavior.
+     */
     public void testSerializationRoundTripEqualsAndHashCodeTrackWorldState() {
         World original = createWorldWithMutableState();
         World copy = (World) Utils.cloneBySerialisation(original);
@@ -134,6 +140,9 @@ public class WorldTest extends TestCase {
         assertFalse(original.equals(changed));
     }
 
+    /**
+     * Tests engine shops survive world serialization and are player scoped behavior.
+     */
     public void testEngineShopsSurviveWorldSerializationAndArePlayerScoped() {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "One");
@@ -163,6 +172,10 @@ public class WorldTest extends TestCase {
         assertFalse(world.equals(changed));
     }
 
+    /**
+     * Tests legacy station production migrates to engine shop on load behavior.
+     * @throws Exception if the test legacy station production migrates to engine shop on load operation fails.
+     */
     public void testLegacyStationProductionMigratesToEngineShopOnLoad() throws Exception {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "One");
@@ -182,6 +195,9 @@ public class WorldTest extends TestCase {
         assertEquals(List.of(new TrainTemplate(2, List.of(3))), shop.getProduction());
     }
 
+    /**
+     * Tests removing station also removes its engine shop behavior.
+     */
     public void testRemovingStationAlsoRemovesItsEngineShop() {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "One");
@@ -196,7 +212,7 @@ public class WorldTest extends TestCase {
     }
 
     /**
-     *
+     * Tests equals behavior.
      */
     public void testEquals() {
         World original;
@@ -224,7 +240,7 @@ public class WorldTest extends TestCase {
     }
 
     /**
-     *
+     * Tests equals2 behavior.
      */
     public void testEquals2() {
         World original;
@@ -249,7 +265,7 @@ public class WorldTest extends TestCase {
     }
 
     /**
-     *
+     * Tests bounds contain behavior.
      */
     public void testBoundsContain() {
         World world = WorldGenerator.minimalWorld();
@@ -259,6 +275,9 @@ public class WorldTest extends TestCase {
         assertFalse(world.boundsContain(new Vec2D(20, 20)));
     }
 
+    /**
+     * Tests non square map bounds agree with tile access and indexing behavior.
+     */
     public void testNonSquareMapBoundsAgreeWithTileAccessAndIndexing() {
         World world = WorldGenerator.minimalWorld(new Vec2D(3, 5));
         List<Vec2D> coordinates = List.of(
@@ -293,7 +312,7 @@ public class WorldTest extends TestCase {
     }
 
     /**
-     *
+     * Tests bank account behavior.
      */
     public void testBankAccount() {
         World world = WorldGenerator.minimalWorld();
@@ -313,6 +332,9 @@ public class WorldTest extends TestCase {
         assertEquals(new Money(0), world.getCurrentBalance(player));
     }
 
+    /**
+     * Tests player owned collections are initialized and isolated behavior.
+     */
     public void testPlayerOwnedCollectionsAreInitializedAndIsolated() {
         World world = WorldGenerator.minimalWorld();
         Player first = new Player(10, "First");
@@ -344,6 +366,9 @@ public class WorldTest extends TestCase {
         assertEquals(Money.ZERO, world.getCurrentBalance(second));
     }
 
+    /**
+     * Tests train and station ids are unique per owner behavior.
+     */
     public void testTrainAndStationIdsAreUniquePerOwner() {
         World world = WorldGenerator.minimalWorld();
         Player first = new Player(10, "First");
@@ -390,6 +415,9 @@ public class WorldTest extends TestCase {
         assertEquals(secondStation, world.getStation(second, 9));
     }
 
+    /**
+     * Tests world entity lookups use stable ids and keep sorted iteration behavior.
+     */
     public void testWorldEntityLookupsUseStableIdsAndKeepSortedIteration() {
         World catalog = WorldGenerator.defaultWorld();
         City city = new City(77, "Test city", Vec2D.ZERO);
@@ -447,6 +475,9 @@ public class WorldTest extends TestCase {
         assertEquals(world.getSentiment().getId(), copy.getSentiment().getId());
     }
 
+    /**
+     * Tests transaction append is ordered and overflow is atomic behavior.
+     */
     public void testTransactionAppendIsOrderedAndOverflowIsAtomic() {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "Account");
@@ -477,6 +508,9 @@ public class WorldTest extends TestCase {
         assertEquals(new Money(Long.MAX_VALUE), overflowWorld.getCurrentBalance(overflowPlayer));
     }
 
+    /**
+     * Tests undoing transactions restores prior account state behavior.
+     */
     public void testUndoingTransactionsRestoresPriorAccountState() {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "Account");
@@ -505,6 +539,9 @@ public class WorldTest extends TestCase {
         assertEquals(Money.ZERO, world.getCurrentBalance(player));
     }
 
+    /**
+     * Tests sparse player ids map to stable collection indices behavior.
+     */
     public void testSparsePlayerIdsMapToStableCollectionIndices() {
         World world = WorldGenerator.minimalWorld();
         Player first = new Player(40, "First");
@@ -545,6 +582,9 @@ public class WorldTest extends TestCase {
         assertEquals(List.of(firstStation), List.copyOf(copy.getStations(firstReference)));
     }
 
+    /**
+     * Tests duplicate player id does not change player or account state behavior.
+     */
     public void testDuplicatePlayerIdDoesNotChangePlayerOrAccountState() {
         World world = WorldGenerator.minimalWorld();
         Player first = new Player(40, "First");
@@ -572,6 +612,9 @@ public class WorldTest extends TestCase {
         assertEquals(new Money(25), copy.getCurrentBalance(copy.getPlayer(0)));
     }
 
+    /**
+     * Tests sparse cargo ids map to collection indices and builder copies input behavior.
+     */
     public void testSparseCargoIdsMapToCollectionIndicesAndBuilderCopiesInput() {
         World base = WorldGenerator.minimalWorld();
         SortedSet<Cargo> cargos = new TreeSet<>();
@@ -595,6 +638,9 @@ public class WorldTest extends TestCase {
         }
     }
 
+    /**
+     * Tests sparse track type ids map to collection indices behavior.
+     */
     public void testSparseTrackTypeIdsMapToCollectionIndices() {
         World base = WorldGenerator.minimalWorld();
         SortedSet<TrackType> trackTypes = new TreeSet<>();
@@ -613,6 +659,9 @@ public class WorldTest extends TestCase {
         assertEquals(88, world.getTrackTypeAtIndex(1).getId());
     }
 
+    /**
+     * Tests world builder snapshots catalogues and rejects missing configuration behavior.
+     */
     public void testWorldBuilderSnapshotsCataloguesAndRejectsMissingConfiguration() {
         World base = WorldGenerator.minimalWorld();
         SortedSet<Cargo> cargos = new TreeSet<>();
@@ -651,6 +700,9 @@ public class WorldTest extends TestCase {
         }
     }
 
+    /**
+     * Tests populated world serialization round trip restores state and indexes behavior.
+     */
     public void testPopulatedWorldSerializationRoundTripRestoresStateAndIndexes() {
         World base = WorldGenerator.minimalWorld();
         SortedSet<Cargo> cargos = new TreeSet<>();
@@ -730,6 +782,9 @@ public class WorldTest extends TestCase {
         assertEquals(1.5, copy.getSentiment().getRate(), 0.0);
     }
 
+    /**
+     * Tests unknown catalogue ids fail without aliasing other entries behavior.
+     */
     public void testUnknownCatalogueIdsFailWithoutAliasingOtherEntries() {
         World base = WorldGenerator.minimalWorld();
         SortedSet<Cargo> cargos = new TreeSet<>();
@@ -769,6 +824,9 @@ public class WorldTest extends TestCase {
         assertUnknownId(() -> copy.getTrackTypeIndex(13), "track type");
     }
 
+    /**
+     * Tests tile replacement preserves neighbors and rejects out of bounds writes behavior.
+     */
     public void testTileReplacementPreservesNeighborsAndRejectsOutOfBoundsWrites() {
         SortedSet<TrackType> trackTypes = new TreeSet<>();
         TrackType trackType = new TrackType(0, "test", TrackCategory.TRACK, Collections.emptySet(),
@@ -803,6 +861,9 @@ public class WorldTest extends TestCase {
         assertOutOfBoundsWriteRejected(world, new Vec2D(0, 2));
     }
 
+    /**
+     * Tests unmodifiable world collections are read only and live behavior.
+     */
     public void testUnmodifiableWorldCollectionsAreReadOnlyAndLive() {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "Player");
@@ -838,6 +899,9 @@ public class WorldTest extends TestCase {
         assertEquals(2, transactionsView.size());
     }
 
+    /**
+     * Tests map dimension and tile count limits behavior.
+     */
     public void testMapDimensionAndTileCountLimits() {
         assertInvalidMapSize(new Vec2D(0, 1));
         assertInvalidMapSize(new Vec2D(1, 0));
@@ -853,6 +917,10 @@ public class WorldTest extends TestCase {
                 WorldGenerator.minimalWorld(new Vec2D(1_000, 1_000)).getMapSize());
     }
 
+    /**
+     * Asserts invalid map size.
+     * @param size the size to use in the test.
+     */
     private static void assertInvalidMapSize(Vec2D size) {
         try {
             WorldGenerator.minimalWorld(size);
@@ -862,6 +930,10 @@ public class WorldTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts duplicate rejected.
+     * @param action the action to use in the test.
+     */
     private static void assertDuplicateRejected(Runnable action) {
         try {
             action.run();
@@ -871,6 +943,10 @@ public class WorldTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts unsupported mutation.
+     * @param action the action to use in the test.
+     */
     private static void assertUnsupportedMutation(Runnable action) {
         try {
             action.run();
@@ -880,6 +956,11 @@ public class WorldTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts unknown id.
+     * @param action the action to use in the test.
+     * @param type the type to use in the test.
+     */
     private static void assertUnknownId(Runnable action, String type) {
         try {
             action.run();
@@ -889,6 +970,11 @@ public class WorldTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts out of bounds write rejected.
+     * @param world the world state used by the test.
+     * @param coordinate the coordinate to use in the test.
+     */
     private static void assertOutOfBoundsWriteRejected(World world, Vec2D coordinate) {
         try {
             world.setTile(coordinate, new TerrainTile(99));
@@ -898,10 +984,20 @@ public class WorldTest extends TestCase {
         }
     }
 
+    /**
+     * Performs transaction.
+     * @param world the world state used by the test.
+     * @param amount the amount to use in the test.
+     * @return the result of transaction.
+     */
     private static Transaction transaction(World world, long amount) {
         return new Transaction(TransactionCategory.MISC_INCOME, new Money(amount), world.getClock().getCurrentTime());
     }
 
+    /**
+     * Creates world with mutable state.
+     * @return the result of create world with mutable state.
+     */
     private static World createWorldWithMutableState() {
         World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "Original");

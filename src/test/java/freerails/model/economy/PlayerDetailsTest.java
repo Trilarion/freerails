@@ -20,8 +20,14 @@ package freerails.model.economy;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests player details behavior.
+ */
 public class PlayerDetailsTest extends TestCase {
 
+    /**
+     * Tests default values and setters behavior.
+     */
     public void testDefaultValuesAndSetters() {
         PlayerDetails details = new PlayerDetails();
 
@@ -39,6 +45,9 @@ public class PlayerDetailsTest extends TestCase {
         assertEquals("Ada, 1234 net worth, 3  stations.", details.toString());
     }
 
+    /**
+     * Tests comparison uses net worth behavior.
+     */
     public void testComparisonUsesNetWorth() {
         PlayerDetails poorer = new PlayerDetails();
         PlayerDetails wealthier = new PlayerDetails();

@@ -34,13 +34,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 
+/**
+ * Tests value object equality contract behavior.
+ */
 public class ValueObjectEqualityContractTest extends TestCase {
 
+    /**
+     * Tests money equality contract and amount field behavior.
+     */
     public void testMoneyEqualityContractAndAmountField() {
         assertEqualContract(new Money(12), new Money(12), new Money(12));
         assertDifferent(new Money(12), new Money(13));
     }
 
+    /**
+     * Tests cargo batch equality contract and every identity field behavior.
+     */
     public void testCargoBatchEqualityContractAndEveryIdentityField() {
         CargoBatch batch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
         assertEqualContract(batch, new CargoBatch(1, new Vec2D(2, 3), 4, 5),
@@ -56,6 +65,9 @@ public class ValueObjectEqualityContractTest extends TestCase {
         assertEquals(1, sortedBatches.size());
     }
 
+    /**
+     * Tests track piece equality contract and every configuration field behavior.
+     */
     public void testTrackPieceEqualityContractAndEveryConfigurationField() {
         var type = WorldGenerator.testTrackTypes().first();
         var otherType = WorldGenerator.testTrackTypes().last();
@@ -69,6 +81,9 @@ public class ValueObjectEqualityContractTest extends TestCase {
         assertDifferent(track, new TrackPiece(configuration, type, 2));
     }
 
+    /**
+     * Tests terrain tile equality contract and every field behavior.
+     */
     public void testTerrainTileEqualityContractAndEveryField() {
         TrackPiece track = new TrackPiece(TrackConfiguration.getFlatInstance(TileTransition.NORTH),
                 WorldGenerator.testTrackTypes().first(), 1);
@@ -81,6 +96,9 @@ public class ValueObjectEqualityContractTest extends TestCase {
         assertDifferent(tile, new TerrainTile(3));
     }
 
+    /**
+     * Tests train order equality contract and every option behavior.
+     */
     public void testTrainOrderEqualityContractAndEveryOption() {
         TrainOrder order = TrainOrder.specifiedConsist(1, List.of(2, 3), true);
         assertEqualContract(order, TrainOrder.specifiedConsist(1, List.of(2, 3), true),
@@ -91,6 +109,9 @@ public class ValueObjectEqualityContractTest extends TestCase {
         assertDifferent(order, TrainOrder.specifiedConsist(1, List.of(2, 3), true).asOneShot());
     }
 
+    /**
+     * Tests train template equality contract and every field behavior.
+     */
     public void testTrainTemplateEqualityContractAndEveryField() {
         TrainTemplate template = new TrainTemplate(1, List.of(2, 3));
         assertEqualContract(template, new TrainTemplate(1, List.of(2, 3)),
@@ -100,6 +121,12 @@ public class ValueObjectEqualityContractTest extends TestCase {
         assertDifferent(template, new TrainTemplate(1, List.of(2)));
     }
 
+    /**
+     * Asserts equal contract.
+     * @param first the first to use in the test.
+     * @param second the second to use in the test.
+     * @param third the third to use in the test.
+     */
     private void assertEqualContract(Object first, Object second, Object third) {
         assertTrue(first.equals(first));
         assertTrue(first.equals(second));
@@ -118,6 +145,11 @@ public class ValueObjectEqualityContractTest extends TestCase {
         assertEquals(1, values.size());
     }
 
+    /**
+     * Asserts different.
+     * @param first the first to use in the test.
+     * @param second the second to use in the test.
+     */
     private void assertDifferent(Object first, Object second) {
         assertFalse(first.equals(second));
         assertFalse(second.equals(first));

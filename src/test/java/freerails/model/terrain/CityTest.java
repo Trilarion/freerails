@@ -24,12 +24,12 @@ import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 /**
- *
+ * Tests city behavior.
  */
 public class CityTest extends TestCase {
 
     /**
-     *
+     * Tests hash code and equals behavior.
      */
     public void testHashCodeAndEquals() {
         City city1 = new City(1,"London", new Vec2D(20, 70));

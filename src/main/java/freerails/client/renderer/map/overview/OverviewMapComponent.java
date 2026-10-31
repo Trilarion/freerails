@@ -38,7 +38,9 @@ public class OverviewMapComponent extends JPanel {
     private MapRenderer mapRenderer = new BlankMapRenderer(0.4F);
 
     /**
-     * @param visibleRect
+     * Creates a overview map component instance.
+     *
+     * @param visibleRect the visible area to render
      */
     public OverviewMapComponent(Rectangle visibleRect) {
         setPreferredSize(Vec2D.toDimension(mapRenderer.getMapSizeInPixels()));
@@ -46,7 +48,9 @@ public class OverviewMapComponent extends JPanel {
     }
 
     /**
-     * @param mapRenderer
+     * Sets the up.
+     *
+     * @param mapRenderer the map renderer parameter
      */
     public void setup(MapRenderer mapRenderer) {
         this.mapRenderer = mapRenderer;
@@ -60,6 +64,10 @@ public class OverviewMapComponent extends JPanel {
         }
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -69,6 +77,10 @@ public class OverviewMapComponent extends JPanel {
         g2.drawRect(mainMapVisRect.x, mainMapVisRect.y, mainMapVisRect.width, mainMapVisRect.height);
     }
 
+    /**
+     * Returns the preferred size.
+     * @return the preferred size
+     */
     @Override
     public Dimension getPreferredSize() {
         return Vec2D.toDimension(mapRenderer.getMapSizeInPixels());

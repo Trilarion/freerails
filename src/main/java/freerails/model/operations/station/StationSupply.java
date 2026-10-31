@@ -23,9 +23,16 @@ import java.util.Map;
 
 /**
  * Represents the supply at a station.
+ *
+ * @param supplyByCargoId the available quantity for each cargo identifier
  */
 public record StationSupply(Map<Integer, Integer> supplyByCargoId) implements Serializable {
 
+    /**
+     * Creates a station supply from the supplied values.
+     *
+     * @param supplyByCargoId the identifier to use
+     */
     public StationSupply {
         supplyByCargoId = Map.copyOf(supplyByCargoId);
     }

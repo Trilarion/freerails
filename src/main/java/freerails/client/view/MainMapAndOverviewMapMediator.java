@@ -50,26 +50,30 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
     private boolean draggingAndStartedInside = false;
 
     /**
-     *
+     * Creates a main map and overview map mediator instance.
      */
     public MainMapAndOverviewMapMediator() {
     }
 
     /**
-     * @param omv
-     * @param v
-     * @param mm
-     * @param rect
+     * Creates a main map and overview map mediator instance.
+     *
+     * @param omv the omv parameter
+     * @param v the v parameter
+     * @param mm the mm parameter
+     * @param rect the rect parameter
      */
     public MainMapAndOverviewMapMediator(JComponent omv, JViewport v, JComponent mm, Rectangle rect) {
         setup(omv, v, mm, rect);
     }
 
     /**
-     * @param omv
-     * @param v
-     * @param mm
-     * @param rect
+     * Sets the up.
+     *
+     * @param omv the omv parameter
+     * @param v the v parameter
+     * @param mm the mm parameter
+     * @param rect the rect parameter
      */
     public void setup(JComponent omv, JViewport v, JComponent mm, Rectangle rect) {
         currentVisRect = rect;
@@ -82,11 +86,19 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         v.addChangeListener(e -> updateObservedRect());
 
         overviewMapJPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            /**
+             * Component resized.
+             * @param e the e
+             */
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
                 updateObservedRect();
             }
 
+            /**
+             * Component shown.
+             * @param e the e
+             */
             @Override
             public void componentShown(java.awt.event.ComponentEvent e) {
                 updateObservedRect();
@@ -94,6 +106,10 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         });
     }
 
+    /**
+     * Mouse moved.
+     * @param e the e
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         lastMouseLocation.x = e.getX();
@@ -101,6 +117,10 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         updateInside(e);
     }
 
+    /**
+     * Mouse pressed.
+     * @param e the e
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (inside) {
@@ -108,11 +128,19 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         }
     }
 
+    /**
+     * Mouse released.
+     * @param e the e
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         draggingAndStartedInside = false;
     }
 
+    /**
+     * Mouse dragged.
+     * @param e the e
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         if (draggingAndStartedInside) {
@@ -146,6 +174,10 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         }
     }
 
+    /**
+     * Mouse clicked.
+     * @param e the e
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         /*
@@ -168,6 +200,10 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         updateInside(e);
     }
 
+    /**
+     * Updates the inside.
+     * @param evt the evt
+     */
     private void updateInside(MouseEvent evt) {
         // Rectangle r= overviewMapJPanel.mainMapVisibleRect;
         boolean b = currentVisRect.contains(evt.getX(), evt.getY());
@@ -183,6 +219,9 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         }
     }
 
+    /**
+     * Updates the observed rect.
+     */
     private void updateObservedRect() {
         Rectangle r = mainMap.getVisibleRect();
 

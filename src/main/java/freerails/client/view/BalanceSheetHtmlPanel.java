@@ -41,7 +41,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
     private ModelRoot modelRoot;
 
     /**
-     *
+     * Creates a balance sheet html panel instance.
      */
     public BalanceSheetHtmlPanel() {
         super();
@@ -51,9 +51,11 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
     }
 
     /**
-     * @param m
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param m the model parameter
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot m, RendererRoot rendererRoot, Action closeAction) {
@@ -62,6 +64,9 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
         updateHtml();
     }
 
+    /**
+     * Updates the html.
+     */
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();
         Player playerPlayer = modelRoot.getPlayer();
@@ -70,6 +75,10 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
         setHtml(populatedTemplate);
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.

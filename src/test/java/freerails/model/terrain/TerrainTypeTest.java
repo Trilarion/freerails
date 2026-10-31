@@ -37,12 +37,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- *
+ * Tests terrain type behavior.
  */
 public class TerrainTypeTest extends TestCase {
 
     /**
-     *
+     * Tests tile type impl behavior.
      */
     public void testTileTypeImpl() {
         List<CargoProductionOrConsumption> productions = asList(new CargoProductionOrConsumption(69, 10));
@@ -58,6 +58,9 @@ public class TerrainTypeTest extends TestCase {
         TestUtils.assertCloneBySerializationBehavesWell(terrainType1);
     }
 
+    /**
+     * Tests construction costs have separate purposes behavior.
+     */
     public void testConstructionCostsHaveSeparatePurposes() {
         Terrain terrain = new Terrain(1, "Factory", TerrainCategory.INDUSTRY,
                 new Money(1000), new Money(600000), List.of(), List.of(), List.of());
@@ -66,6 +69,10 @@ public class TerrainTypeTest extends TestCase {
         assertEquals(new Money(600000), terrain.getIndustryBuildCost());
     }
 
+    /**
+     * Tests legacy terrain cost json keys remain readable behavior.
+     * @throws Exception if the test legacy terrain cost json keys remain readable operation fails.
+     */
     public void testLegacyTerrainCostJsonKeysRemainReadable() throws Exception {
         Path file = Files.createTempFile("terrain-costs", ".json");
         try {
@@ -87,6 +94,9 @@ public class TerrainTypeTest extends TestCase {
         }
     }
 
+    /**
+     * Tests cargo policies are copied and cannot be changed through getters behavior.
+     */
     public void testCargoPoliciesAreCopiedAndCannotBeChangedThroughGetters() {
         List<CargoProductionOrConsumption> productions =
                 new ArrayList<>(List.of(new CargoProductionOrConsumption(1, 2)));
@@ -109,6 +119,10 @@ public class TerrainTypeTest extends TestCase {
         assertThrowsUnsupportedOperation(() -> terrain.getConsumptions().clear());
     }
 
+    /**
+     * Asserts throws unsupported operation.
+     * @param action the action to use in the test.
+     */
     private static void assertThrowsUnsupportedOperation(Runnable action) {
         try {
             action.run();
@@ -118,6 +132,11 @@ public class TerrainTypeTest extends TestCase {
         }
     }
 
+    /**
+     * Performs as list.
+     * @param e the e to use in the test.
+     * @return the result of as list.
+     */
     @SafeVarargs
     public static <E> List<E> asList(E... e) {
         Utils.verifyNotNull(e);

@@ -42,8 +42,14 @@ import junit.framework.TestCase;
 
 import java.util.List;
 
+/**
+ * Tests representative move serialization behavior.
+ */
 public class RepresentativeMoveSerializationTest extends TestCase {
 
+    /**
+     * Tests representative moves survive serialization behavior.
+     */
     public void testRepresentativeMovesSurviveSerialization() {
         Player player = new Player(3, "Test player");
         Transaction transaction = new Transaction(
@@ -86,6 +92,10 @@ public class RepresentativeMoveSerializationTest extends TestCase {
         assertFalse(cargoMove.equals(new ChangeCargoAtStationMove(player, 9, differentCargo)));
     }
 
+    /**
+     * Asserts survives serialization.
+     * @param move the move under test.
+     */
     private void assertSurvivesSerialization(Move move) {
         Move copy = (Move) Utils.cloneBySerialisation(move);
 

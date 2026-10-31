@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 public class BinaryNumberFormatterTest extends TestCase {
 
     /**
-     *
+     * Tests binary format behavior.
      */
     public void testBinaryFormat() {
         assertEquals("0", BinaryNumberFormatter.format(0, 1));
@@ -65,6 +65,10 @@ public class BinaryNumberFormatterTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts invalid width.
+     * @param bits the bits to use in the test.
+     */
     private void assertInvalidWidth(int bits) {
         try {
             BinaryNumberFormatter.format(0, bits);

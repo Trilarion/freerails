@@ -43,16 +43,18 @@ public class CashLabel extends JLabel implements View {
     private Player player;
 
     /**
-     *
+     * Creates a cash label instance.
      */
     public CashLabel() {
         setText("          ");
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
@@ -60,6 +62,10 @@ public class CashLabel extends JLabel implements View {
         player = modelRoot.getPlayer();
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if (null != world) {

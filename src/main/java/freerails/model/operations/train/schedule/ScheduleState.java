@@ -31,7 +31,19 @@ public final class ScheduleState implements UnmodifiableSchedule {
     public static final UnmodifiableSchedule EMPTY = new ScheduleState();
     private static final int MAXIMUM_ONE_SHOT_STOPS = 1;
 
+    /**
+     * Stores the immutable stop orders and current order index for a train schedule.
+     *
+     * @param orders the ordered train stops in the schedule
+     * @param currentOrderIndex the index of the stop currently being processed
+     */
     private record State(List<TrainOrder> orders, int currentOrderIndex) implements java.io.Serializable {
+        /**
+         * Creates a state from the supplied values.
+         *
+         * @param orders the orders
+         * @param currentOrderIndex the index to use
+         */
         private State {
             orders = List.copyOf(orders);
         }
@@ -39,27 +51,58 @@ public final class ScheduleState implements UnmodifiableSchedule {
 
     private final State state;
 
+    /**
+     * Creates a schedule state from the supplied values.
+     */
     public ScheduleState() {
         this(List.of(), -1);
     }
 
+    /**
+     * Creates a schedule state from the supplied values.
+     *
+     * @param schedule the schedule
+     */
     public ScheduleState(UnmodifiableSchedule schedule) {
         this(copyOrders(schedule), schedule.getCurrentOrderIndex());
     }
 
+    /**
+     * Creates a schedule state from the supplied values.
+     *
+     * @param orders the orders
+     * @param currentOrderIndex the index to use
+     */
     public ScheduleState(TrainOrder[] orders, int currentOrderIndex) {
         this(Arrays.asList(orders.clone()), currentOrderIndex);
     }
 
+    /**
+     * Creates a schedule state from the supplied values.
+     *
+     * @param orders the orders
+     * @param currentOrderIndex the index to use
+     */
     private ScheduleState(List<TrainOrder> orders, int currentOrderIndex) {
         validate(orders, currentOrderIndex);
         state = new State(orders, currentOrderIndex);
     }
 
+    /**
+     * Returns the stop orders stored in this schedule state.
+     *
+     * @return the orders
+     */
     private List<TrainOrder> orders() {
         return state.orders();
     }
 
+    /**
+     * Returns the orders.
+     *
+     * @param schedule the schedule
+     * @return the orders
+     */
     private static List<TrainOrder> copyOrders(UnmodifiableSchedule schedule) {
         List<TrainOrder> orders = new ArrayList<>(schedule.getNumberOfOrders());
         for (int i = 0; i < schedule.getNumberOfOrders(); i++) {
@@ -68,6 +111,12 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return orders;
     }
 
+    /**
+     * Validates the current state and reports invalid values.
+     *
+     * @param orders the orders
+     * @param currentOrderIndex the index to use
+     */
     private static void validate(List<TrainOrder> orders, int currentOrderIndex) {
         int oneShotCount = 0;
         int regularCount = 0;
@@ -100,6 +149,11 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return new ScheduleState(updatedOrders, insertionIndex);
     }
 
+    /**
+     * Returns whether add urgent order.
+     *
+     * @return true if add urgent order, otherwise false
+     */
     public boolean canAddUrgentOrder() {
         if (orders().stream().anyMatch(TrainOrder::isOneShot)) {
             return false;
@@ -151,6 +205,12 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return new ScheduleState(updatedOrders, currentIndex);
     }
 
+    /**
+     * Adds the add order to this schedule state.
+     *
+     * @param order the order
+     * @return the add order
+     */
     public ScheduleState addOrder(TrainOrder order) {
         return addOrder(orders().size(), order);
     }
@@ -172,16 +232,32 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return new ScheduleState(updatedOrders, state.currentOrderIndex());
     }
 
+    /**
+     * Returns the order.
+     *
+     * @param index the index to use
+     * @return the order
+     */
     @Override
     public TrainOrder getOrder(int index) {
         return orders().get(index);
     }
 
+    /**
+     * Returns the current order index.
+     *
+     * @return the current order index
+     */
     @Override
     public int getCurrentOrderIndex() {
         return state.currentOrderIndex();
     }
 
+    /**
+     * Returns the next station id.
+     *
+     * @return the next station id
+     */
     @Override
     public int getNextStationId() {
         int index = getCurrentOrderIndex();
@@ -215,19 +291,42 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return new ScheduleState(orders(), nextIndex);
     }
 
+    /**
+     * Returns the number of orders.
+     *
+     * @return the number of orders
+     */
     @Override
     public int getNumberOfOrders() {
         return orders().size();
     }
 
+    /**
+     * Returns whether pull up.
+     *
+     * @param orderNumber the order number
+     * @return true if pull up, otherwise false
+     */
     public boolean canPullUp(int orderNumber) {
         return orderNumber > 0 && orderNumber < orders().size();
     }
 
+    /**
+     * Returns whether push down.
+     *
+     * @param orderNumber the order number
+     * @return true if push down, otherwise false
+     */
     public boolean canPushDown(int orderNumber) {
         return orderNumber >= 0 && orderNumber < orders().size() - 1;
     }
 
+    /**
+     * Moves the specified stop order one position earlier when possible.
+     *
+     * @param orderNumber the order number
+     * @return the pull up
+     */
     public ScheduleState pullUp(int orderNumber) {
         if (!canPullUp(orderNumber)) {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
@@ -235,6 +334,12 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return moveOrder(orderNumber, orderNumber - 1);
     }
 
+    /**
+     * Moves the specified stop order one position later when possible.
+     *
+     * @param orderNumber the order number
+     * @return the push down
+     */
     public ScheduleState pushDown(int orderNumber) {
         if (!canPushDown(orderNumber)) {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
@@ -242,6 +347,13 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return moveOrder(orderNumber, orderNumber + 1);
     }
 
+    /**
+     * Moves a stop order to the requested position when the move is valid.
+     *
+     * @param from the from
+     * @param to the to
+     * @return the move order
+     */
     private ScheduleState moveOrder(int from, int to) {
         List<TrainOrder> updatedOrders = new ArrayList<>(orders());
         TrainOrder order = updatedOrders.remove(from);
@@ -257,19 +369,42 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return new ScheduleState(updatedOrders, currentIndex);
     }
 
+    /**
+     * Returns whether add order.
+     *
+     * @return true if add order, otherwise false
+     */
     public boolean canAddOrder() {
         return orders().stream().filter(order -> !order.isOneShot()).count() < MAXIMUM_NUMBER_OF_STOPS;
     }
 
+    /**
+     * Returns whether set goto station.
+     *
+     * @param orderNumber the order number
+     * @return true if set goto station, otherwise false
+     */
     public boolean canSetGotoStation(int orderNumber) {
         return orderNumber >= 0 && orderNumber < orders().size();
     }
 
+    /**
+     * Returns whether stops at station.
+     *
+     * @param stationId the identifier to use
+     * @return the stops at station
+     */
     @Override
     public boolean stopsAtStation(int stationId) {
         return orders().stream().anyMatch(order -> order.getStationId() == stationId);
     }
 
+    /**
+     * Removes the remove all stops at station from this schedule state.
+     *
+     * @param stationId the identifier to use
+     * @return the remove all stops at station
+     */
     public ScheduleState removeAllStopsAtStation(int stationId) {
         ScheduleState updated = this;
         int index = 0;
@@ -283,11 +418,22 @@ public final class ScheduleState implements UnmodifiableSchedule {
         return updated;
     }
 
+    /**
+     * Returns the canonical form of this object after deserialization.
+     *
+     * @return the read resolve
+     */
     @Serial
     private Object readResolve() {
         return new ScheduleState(orders(), state.currentOrderIndex());
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -296,6 +442,11 @@ public final class ScheduleState implements UnmodifiableSchedule {
                 && orders().equals(schedule.orders());
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(orders(), state.currentOrderIndex());

@@ -82,6 +82,9 @@ tasks.register('generateVersionInfo') {
                 """
 package freerails;
 
+/**
+ * Holds build-time version information for the application.
+ */
 public final class Version {
     public static final String VERSION = "$projectVersion";
     public static final String GIT_REVISION = "$gitRevision";

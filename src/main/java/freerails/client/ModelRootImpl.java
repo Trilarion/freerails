@@ -52,7 +52,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private UnmodifiableWorld world;
 
     /**
-     *
+     * Creates a model root impl instance.
      */
     public ModelRootImpl() {
         properties.put(ModelRootProperty.CURSOR_POSITION, new Vec2D());
@@ -75,36 +75,46 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param moveReceiver
+     * Adds the complete move receiver.
+     *
+     * @param moveReceiver the move receiver parameter
      */
     public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
         moveFork.addCompleteMoveReceiver(moveReceiver);
     }
 
     /**
-     * @param listener
+     * Adds the map listener.
+     *
+     * @param listener the listener parameter
      */
     public void addMapListener(WorldMapListener listener) {
         moveFork.addMapListener(listener);
     }
 
     /**
-     * @param listener
+     * Adds the property change listener.
+     *
+     * @param listener the listener parameter
      */
     public void addPropertyChangeListener(ModelRootListener listener) {
         listeners.add(listener);
     }
 
     /**
-     * @param moveReceiver
+     * Adds the split move receiver.
+     *
+     * @param moveReceiver the move receiver parameter
      */
     public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
         moveFork.addSplitMoveReceiver(moveReceiver);
     }
 
     /**
-     * @param move
-     * @return
+     * Performs the apply move operation.
+     *
+     * @param move the move parameter
+     * @return the apply move produced by this method
      */
     @Override
     public Status applyMove(Move move) {
@@ -115,8 +125,10 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param moveGenerator
-     * @return
+     * Performs the do pre move operation.
+     *
+     * @param moveGenerator the move generator parameter
+     * @return the do pre move produced by this method
      */
     @Override
     public Status doPreMove(MoveGenerator moveGenerator) {
@@ -128,7 +140,9 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @return
+     * Returns the player.
+     *
+     * @return the player produced by this method
      */
     @Override
     public Player getPlayer() {
@@ -136,8 +150,10 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param property
-     * @return
+     * Returns the property.
+     *
+     * @param property the client property to access
+     * @return the property produced by this method
      */
     @Override
     public Object getProperty(ModelRootProperty property) {
@@ -145,7 +161,9 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @return
+     * Returns the world.
+     *
+     * @return the world produced by this method
      */
     @Override
     public UnmodifiableWorld getWorld() {
@@ -153,7 +171,9 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param message
+     * Performs the send command operation.
+     *
+     * @param message the message parameter
      */
     @Override
     public void sendCommand(CommandToServer message) {
@@ -165,22 +185,28 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param moveFork
+     * Sets the move fork.
+     *
+     * @param moveFork the move fork parameter
      */
     public void setMoveFork(MoveChainFork moveFork) {
         this.moveFork = moveFork;
     }
 
     /**
-     * @param moveReceiver
+     * Sets the move receiver.
+     *
+     * @param moveReceiver the move receiver parameter
      */
     public void setMoveReceiver(UntriedMoveReceiver moveReceiver) {
         this.moveReceiver = moveReceiver;
     }
 
     /**
-     * @param property
-     * @param value
+     * Sets the property.
+     *
+     * @param property the client property to access
+     * @param value the value to use
      */
     @Override
     public void setProperty(ModelRootProperty property, Object value) {
@@ -192,7 +218,9 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param serverCommandReceiver
+     * Sets the server command receiver.
+     *
+     * @param serverCommandReceiver the server command receiver parameter
      */
     public void setServerCommandReceiver(ServerCommandReceiver serverCommandReceiver) {
         this.serverCommandReceiver = serverCommandReceiver;
@@ -212,8 +240,10 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param move
-     * @return
+     * Performs the try move operation.
+     *
+     * @param move the move parameter
+     * @return the try move produced by this method
      */
     @Override
     public Status tryMove(Move move) {

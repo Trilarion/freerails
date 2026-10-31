@@ -55,7 +55,7 @@ public class SelectWagonsPanel extends JPanel implements View {
     private JList<Cargo> wagonTypesJList;
 
     /**
-     *
+     * Creates a select wagons panel instance.
      */
     public SelectWagonsPanel() {
         GridBagConstraints gridBagConstraints;
@@ -77,12 +77,20 @@ public class SelectWagonsPanel extends JPanel implements View {
         jPanel1.setMinimumSize(new Dimension(170, 300));
         jPanel1.setPreferredSize(new Dimension(170, 300));
         wagonTypesJList.addKeyListener(new KeyAdapter() {
+            /**
+             * Key typed.
+             * @param e the e
+             */
             @Override
             public void keyTyped(KeyEvent e) {
                 wagonTypesJListKeyTyped(e);
             }
         });
         wagonTypesJList.addMouseListener(new MouseAdapter() {
+            /**
+             * Mouse clicked.
+             * @param e the e
+             */
             @Override
             public void mouseClicked(MouseEvent e) {
                 wagonTypesJListMouseClicked(e);
@@ -151,18 +159,26 @@ public class SelectWagonsPanel extends JPanel implements View {
     }
 
     /**
-     *
+     * Performs the reset selected wagons operation.
      */
     public void resetSelectedWagons() {
         wagons.clear();
     }
 
 
+    /**
+     * Wagon types j list mouse clicked.
+     * @param evt the evt
+     */
     private void wagonTypesJListMouseClicked(MouseEvent evt) {
         // Add your handling code here:
         addwagon();
     }
 
+    /**
+     * Wagon types j list key typed.
+     * @param evt the evt
+     */
     private void wagonTypesJListKeyTyped(KeyEvent evt) {
         // Add your handling code here:
         if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
@@ -171,6 +187,9 @@ public class SelectWagonsPanel extends JPanel implements View {
     }
 
     // Adds the wagon selected in the list to the train consist.
+    /**
+     * Adds the wagon.
+     */
     private void addwagon() {
         if (wagons.size() < ModelConstants.MAX_NUMBER_OF_WAGONS) {
             int type = wagonTypesJList.getSelectedIndex();
@@ -181,6 +200,9 @@ public class SelectWagonsPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Updates the max wagons text.
+     */
     private void updateMaxWagonsText() {
         if (wagons.size() >= ModelConstants.MAX_NUMBER_OF_WAGONS) {
             label1.setText("Max train length is " + ModelConstants.MAX_NUMBER_OF_WAGONS + " wagons");
@@ -189,6 +211,10 @@ public class SelectWagonsPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Button1 action performed.
+     * @param evt the evt
+     */
     private void Button1ActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         wagons.clear();
@@ -196,6 +222,10 @@ public class SelectWagonsPanel extends JPanel implements View {
         repaint();
     }
 
+    /**
+     * Paint.
+     * @param g the g
+     */
     @Override
     public void paint(Graphics g) {
         // paint the background
@@ -232,9 +262,11 @@ public class SelectWagonsPanel extends JPanel implements View {
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
@@ -247,14 +279,18 @@ public class SelectWagonsPanel extends JPanel implements View {
     }
 
     /**
-     * @return
+     * Returns the wagons.
+     *
+     * @return the wagons produced by this method
      */
     public List<Integer> getWagons() {
         return wagons;
     }
 
     /**
-     * @param engineId
+     * Sets the engine id.
+     *
+     * @param engineId the engine id parameter
      */
     public void setEngineId(int engineId) {
         this.engineId = engineId;

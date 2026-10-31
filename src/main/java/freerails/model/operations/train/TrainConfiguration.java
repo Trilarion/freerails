@@ -87,6 +87,12 @@ public final class TrainConfiguration implements Serializable {
         return new TrainConfiguration(engineId, newWagonTypes);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -98,6 +104,11 @@ public final class TrainConfiguration implements Serializable {
         return engineId == other.engineId && wagonTypes.equals(other.wagonTypes);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(engineId, wagonTypes);

@@ -19,16 +19,22 @@
 package freerails.util.ui;
 
 /**
- *
+ * Utility conversions used by Swing views.
  */
 public final class UiUtils {
 
+    /**
+     * Prevents instantiation of this utility class.
+     */
     private UiUtils() {}
 
     /**
+     * Converts a hexadecimal RGB string to the packed ARGB format used by
+     * buffered map images.
      *
-     * @param colorString
-     * @return
+     * @param colorString hexadecimal RGB text, without a prefix
+     * @return packed ARGB color value
+     * @throws NumberFormatException if the string is not a valid hexadecimal integer
      */
     public static int stringToRGBValue(String colorString) {
         int rgb = Integer.parseInt(colorString, 16);

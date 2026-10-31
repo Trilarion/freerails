@@ -47,17 +47,21 @@ public class AddTransactionMove implements Move {
     private final boolean cashConstrained;
 
     /**
-     * @param player
-     * @param transaction
+     * Creates a transaction move without enforcing cash constraints.
+     *
+     * @param player the player who owns or performs the operation
+     * @param transaction the financial transaction to apply
      */
     public AddTransactionMove(@NotNull Player player, @NotNull Transaction transaction) {
         this(player, transaction, false);
     }
 
     /**
-     * @param player
-     * @param transaction
-     * @param constrain
+     * Creates a transaction move with the requested cash constraint.
+     *
+     * @param player the player who owns or performs the operation
+     * @param transaction the financial transaction to apply
+     * @param constrain whether transaction constraints are enforced
      */
     public AddTransactionMove(@NotNull Player player, @NotNull Transaction transaction, boolean constrain) {
         this.player = player;
@@ -65,6 +69,11 @@ public class AddTransactionMove implements Move {
         cashConstrained = constrain;
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         int result;
@@ -75,6 +84,12 @@ public class AddTransactionMove implements Move {
         return result;
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -93,6 +108,11 @@ public class AddTransactionMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         Status status = applicable(world);
@@ -103,6 +123,12 @@ public class AddTransactionMove implements Move {
         world.addTransaction(player, transaction);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof AddTransactionMove test) {

@@ -56,7 +56,7 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
     private ModelRoot modelRoot;
 
     /**
-     *
+     * Creates a train order panel instance.
      */
     public TrainOrderPanel() {
         super();
@@ -64,9 +64,11 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
@@ -77,6 +79,15 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
         player = modelRoot.getPlayer();
     }
 
+    /**
+     * Returns the list cell renderer component.
+     * @param list the list
+     * @param trainOrders the train orders
+     * @param index the index
+     * @param isSelected the is selected
+     * @param cellHasFocus the cell has focus
+     * @return the list cell renderer component
+     */
     @Override
     public Component getListCellRendererComponent(JList<? extends TrainOrdersListModel.TrainOrdersListElement> list, TrainOrdersListModel.TrainOrdersListElement trainOrders, int index, boolean isSelected, boolean cellHasFocus) {
 
@@ -172,16 +183,25 @@ public class TrainOrderPanel implements View, ListCellRenderer<TrainOrdersListMo
     // TODO model still not correct ...
 
     /**
-         * contains all data which is displayed for one station (order). This is
-         * used to find prebuilt Panels
-         */
+     * Contains the data displayed for one station order and identifies its
+     * prebuilt panel.
+     *
+     * @param stationName displayed name of the station in the order
+     * @param waitUntilFull wait-until-full setting for the order
+     * @param selected selection state of the order
+     * @param gotoStatus destination status associated with the order
+     * @param orderText text displayed for the order
+     * @param urgentStop whether the order is an urgent stop
+     */
         private record TrainOrderModel(String stationName, String waitUntilFull, Selection selected, int gotoStatus,
                                        String orderText, boolean urgentStop) {
         /**
-         * @param stationName
-         * @param waitUntilFull
-         * @param selected
-         * @param gotoStatus
+         * Creates a model for one station's train order.
+         *
+         * @param stationName the name of the station
+         * @param waitUntilFull the wait-until-full setting
+         * @param selected the selection state for the order
+         * @param gotoStatus the order's destination status
          */
         private TrainOrderModel {
         }

@@ -25,6 +25,9 @@ import freerails.util.Vec2D;
 /** Converts integer map/model coordinates to the active tile set's pixel space. */
 public final class MapCoordinateAdapter {
 
+    /**
+     * Creates a map coordinate adapter instance.
+     */
     private MapCoordinateAdapter() {
     }
 
@@ -45,6 +48,11 @@ public final class MapCoordinateAdapter {
         return (int) Math.round(modelDistance * ClientConstants.TILE_PIXEL_SIZE / ModelConstants.MODEL_UNITS_PER_TILE);
     }
 
+    /**
+     * Converts a model coordinate to its pixel coordinate.
+     * @param modelCoordinate the model coordinate
+     * @return the corresponding pixel coordinate
+     */
     private static int modelToPixel(int modelCoordinate) {
         return modelDistanceToPixel(modelCoordinate);
     }

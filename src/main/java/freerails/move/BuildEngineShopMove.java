@@ -55,6 +55,12 @@ public class BuildEngineShopMove implements Move {
         this.engineShop = new EngineShop(engineShop);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -68,11 +74,22 @@ public class BuildEngineShopMove implements Move {
                 && Objects.equals(engineShop.getLocation(), other.engineShop.getLocation());
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(player, engineShop.getId(), engineShop.getLocation());
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -95,6 +112,11 @@ public class BuildEngineShopMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         Status status = applicable(world);

@@ -56,9 +56,16 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
     private boolean performActionOnSetSelectedItem = true;
 
     /**
-     * An array of the actions to be used. The ComboBoxModel objects are taken
+     * Creates a model mapping action names to toggle-button models.
+     *
+     * <p>The ComboBoxModel objects are taken
      * from the NAME property of the Action. The ButtonModel icons are obtained
      * from the SMALL_ICON property.
+     *
+     * @param actions actions to expose; their names must be unique
+     * @throws NullPointerException if the array or an action is null
+     * @throws IllegalArgumentException if an action has no string name or
+     *                                  names are duplicated
      */
     public ActionAdapter(Action[] actions) {
         super();
@@ -80,10 +87,10 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
     }
 
     /**
-     * @param actions  An array of the actions to be used. The ComboBoxModel objects
-     *                 are taken from the NAME property of the Action. The
-     *                 ButtonModel icons are obtained from the SMALL_ICON property.
-     * @param selected Index of the default selected action.
+     * Creates a model and selects the action at the specified index.
+     *
+     * @param actions actions to expose
+     * @param selected index of the initially selected action
      */
     public ActionAdapter(Action[] actions, int selected) {
         this(actions);
@@ -95,6 +102,8 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
     }
 
     /**
+     * Returns the actions represented by this model.
+     *
      * @return a defensive copy of the actions
      */
     public Action[] getActions() {
@@ -102,6 +111,8 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
     }
 
     /**
+     * Returns the button models associated with this model's actions.
+     *
      * @return an enumeration of MappedButtonModel
      */
     public Enumeration<MappedButtonModel> getButtonModels() {
@@ -109,7 +120,9 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
     }
 
     /**
-     * @param anObject The NAME of the Action selected
+     * Selects the action with the given name and optionally performs it.
+     *
+     * @param anObject name of the action to select, or {@code null}
      */
     @Override
     public void setSelectedItem(Object anObject) {
@@ -142,14 +155,17 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
     }
 
     /**
-     * @param performActionOnSetSelectedItem
+     * Controls whether selecting an item invokes its action.
+     *
+     * @param performActionOnSetSelectedItem {@code true} to invoke the action
+     *                                       when the selected item changes
      */
     public void setPerformActionOnSetSelectedItem(boolean performActionOnSetSelectedItem) {
         this.performActionOnSetSelectedItem = performActionOnSetSelectedItem;
     }
 
     /**
-     *
+     * Button model that mirrors selection and enabled-state changes of an action.
      */
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel implements PropertyChangeListener {
         @Serial
@@ -161,7 +177,9 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
         private final Action action;
 
         /**
-         * @param action
+         * Creates a model associated with an action.
+         *
+         * @param action action represented by this button model
          */
         private MappedButtonModel(Action action) {
             this.action = action;
@@ -169,10 +187,20 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
             setEnabled(action.isEnabled());
         }
 
+        /**
+         * Returns the current name of the associated action.
+         *
+         * @return the action's name
+         */
         private String actionName() {
             return ActionAdapter.actionName(action);
         }
 
+        /**
+         * Updates this model's selection and synchronizes the combo-box selection.
+         *
+         * @param b whether this model should be selected
+         */
         @Override
         public void setSelected(boolean b) {
             if (isSelected() != b) {
@@ -184,6 +212,11 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
             }
         }
 
+        /**
+         * Mirrors enabled and name property changes from the associated action.
+         *
+         * @param evt action property change event
+         */
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             setEnabled(((Action) evt.getSource()).isEnabled());
@@ -210,6 +243,13 @@ public class ActionAdapter extends DefaultComboBoxModel<Object> {
         }
     }
 
+    /**
+     * Returns the action's string-valued name property.
+     *
+     * @param action action to inspect
+     * @return the action name
+     * @throws IllegalArgumentException if the name property is not a string
+     */
     private static String actionName(Action action) {
         Object name = action.getValue(Action.NAME);
         if (!(name instanceof String stringName)) {

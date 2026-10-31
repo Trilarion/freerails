@@ -26,12 +26,16 @@ import freerails.util.network.Connection;
 public interface GameServer {
 
     /**
-     * @param connection
+     * Adds a client connection to the server.
+     *
+     * @param connection the client connection to add to the server
      */
     void addConnection(Connection connection);
 
-    /**g
-     * @return
+    /**
+     * Returns the number of open client connections.
+     *
+     * @return the number of open connections
      */
     int getNumberOpenConnections();
 

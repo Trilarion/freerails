@@ -27,35 +27,61 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Exposes a collection of elements through Swing's list model interface.
  *
- * @param <E>
+ * @param <E> the E type parameter
  */
 public class StaticListModel<E> implements ListModel<E> {
 
     private List<E> list;
 
+    /**
+     * Creates a static list model instance.
+     * @param list the list
+     */
     public StaticListModel(@NotNull List<E> list) {
         this.list = list;
     }
 
+    /**
+     * Creates a static list model instance.
+     * @param c the c
+     */
     public StaticListModel(@NotNull Collection<? extends E> c) {
         list = new ArrayList<>(c);
     }
 
+    /**
+     * Returns the size.
+     * @return the size
+     */
     @Override
     public int getSize() {
         return list.size();
     }
 
+    /**
+     * Returns the element at.
+     * @param index the index
+     * @return the element at
+     */
     @Override
     public E getElementAt(int index) {
         return list.get(index);
     }
 
+    /**
+     * Adds the list data listener.
+     * @param l the l
+     */
     @Override
     public void addListDataListener(ListDataListener l) {
     }
 
+    /**
+     * Removes the list data listener.
+     * @param l the l
+     */
     @Override
     public void removeListDataListener(ListDataListener l) {
     }

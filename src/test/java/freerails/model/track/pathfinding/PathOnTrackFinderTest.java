@@ -35,6 +35,7 @@ import junit.framework.TestCase;
 import java.util.Arrays;
 
 /**
+ * Tests path on track finder behavior.
  */
 public class PathOnTrackFinderTest extends TestCase {
 
@@ -42,7 +43,8 @@ public class PathOnTrackFinderTest extends TestCase {
     private PathOnTrackFinder pathFinder;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -55,7 +57,7 @@ public class PathOnTrackFinderTest extends TestCase {
     }
 
     /**
-     *
+     * Tests path as vectors1 behavior.
      */
     public void testPathAsVectors1() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
@@ -74,7 +76,7 @@ public class PathOnTrackFinderTest extends TestCase {
     }
 
     /**
-     *
+     * Tests path as vectors2 behavior.
      */
     public void testPathAsVectors2() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.NORTH_EAST};
@@ -93,7 +95,7 @@ public class PathOnTrackFinderTest extends TestCase {
     }
 
     /**
-     *
+     * Tests setup search behavior.
      */
     public void testSetupSearch() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};

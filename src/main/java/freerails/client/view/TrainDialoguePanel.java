@@ -53,6 +53,9 @@ public class TrainDialoguePanel extends JPanel implements View {
     private UnmodifiableWorld world;
     private Player player;
 
+    /**
+     * Creates a train dialogue panel instance.
+     */
     public TrainDialoguePanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -115,6 +118,10 @@ public class TrainDialoguePanel extends JPanel implements View {
     }
 
 
+    /**
+     * Previous j button action performed.
+     * @param evt the evt
+     */
     private void previousJButtonActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         // TODO need bidirectional iterator over trains
@@ -127,6 +134,10 @@ public class TrainDialoguePanel extends JPanel implements View {
         */
     }
 
+    /**
+     * Next j button action performed.
+     * @param evt the evt
+     */
     private void nextJButtonActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         // TODO need bidirectional iterator over trains
@@ -139,6 +150,12 @@ public class TrainDialoguePanel extends JPanel implements View {
         */
     }
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         newTrainSchedulePanel1.setup(modelRoot, rendererRoot, closeAction);
@@ -148,6 +165,10 @@ public class TrainDialoguePanel extends JPanel implements View {
         world = modelRoot.getWorld();
     }
 
+    /**
+     * Display.
+     * @param trainNumber the train number
+     */
     public void display(int trainNumber) {
         // TODO this enables and disables the next/previous buttons, we need to re-implement this
         /*
@@ -170,6 +191,10 @@ public class TrainDialoguePanel extends JPanel implements View {
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
 
+    /**
+     * Sets the train details button action listener.
+     * @param l the l
+     */
     void setTrainDetailsButtonActionListener(ActionListener l) {
         ActionListener[] oldListeners = trainListJButton.getActionListeners();
         for (ActionListener oldListener : oldListeners) {

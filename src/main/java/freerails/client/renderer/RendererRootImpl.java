@@ -52,8 +52,10 @@ public class RendererRootImpl implements RendererRoot {
     private final Map<Integer, TrainImages> engineImages = new HashMap<>();
 
     /**
-     * @param world
-     * @throws IOException
+     * Creates a renderer root impl instance.
+     *
+     * @param world the game world being queried
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public RendererRootImpl(UnmodifiableWorld world) throws IOException {
         imageManager = new ImageManagerImpl(ClientConstants.GRAPHICS_PATH);
@@ -76,6 +78,11 @@ public class RendererRootImpl implements RendererRoot {
         }
     }
 
+    /**
+     * Loads the train images.
+     * @param world the world
+     * @throws IOException if the operation cannot be completed
+     */
     private void loadTrainImages(UnmodifiableWorld world) throws IOException {
         // Load wagon images.
         for (Cargo cargo : world.getCargos()) {
@@ -92,11 +99,23 @@ public class RendererRootImpl implements RendererRoot {
         }
     }
 
+    /**
+     * Loads and returns the track views.
+     * @param world the world
+     * @return the result of this operation
+     * @throws IOException if the operation cannot be completed
+     */
     private TrackPieceRendererList loadTrackViews(UnmodifiableWorld world) throws IOException {
         return new TrackPieceRendererList(world, imageManager);
     }
 
     // TODO this tile renderer list must have a certain length and structure otherwise the scenario start will hang, fix this behavior and simplify
+    /**
+     * Loads and returns the new tile view list.
+     * @param world the world
+     * @return the result of this operation
+     * @throws IOException if the operation cannot be completed
+     */
     private TileRendererList loadNewTileViewList(UnmodifiableWorld world) throws IOException {
         Map<Integer, TileRenderer> tileRenderers = new HashMap<>();
 
@@ -175,15 +194,22 @@ public class RendererRootImpl implements RendererRoot {
         return new StandardTileRendererList(tileRenderers);
     }
 
+    /**
+     * Returns whether validate.
+     * @param world the world
+     * @return whether validate
+     */
     @Override
     public boolean validate(UnmodifiableWorld world) {
         return tileRendererList.validate(world) && trackPieceViewList.validate(world);
     }
 
     /**
-     * @param relativeFilename
-     * @return
-     * @throws IOException
+     * Returns the image.
+     *
+     * @param relativeFilename the relative filename parameter
+     * @return the image produced by this method
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     @Override
     public Image getImage(String relativeFilename) throws IOException {
@@ -191,8 +217,10 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     /**
-     * @param index
-     * @return
+     * Returns the tile renderer by index.
+     *
+     * @param index the index of the item
+     * @return the tile renderer by index produced by this method
      */
     @Override
     public TileRenderer getTileRendererByIndex(int index) {
@@ -200,8 +228,10 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     /**
-     * @param i
-     * @return
+     * Returns the track piece view.
+     *
+     * @param i the index of the item
+     * @return the track piece view produced by this method
      */
     @Override
     public TrackPieceRenderer getTrackPieceView(int i) {
@@ -209,8 +239,10 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     /**
-     * @param cargoTypeId
-     * @return
+     * Returns the wagon images.
+     *
+     * @param cargoTypeId the cargo type id parameter
+     * @return the wagon images produced by this method
      */
     @Override
     public TrainImages getWagonImages(int cargoTypeId) {
@@ -222,8 +254,10 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     /**
-     * @param type
-     * @return
+     * Returns the engine images.
+     *
+     * @param type the type parameter
+     * @return the engine images produced by this method
      */
     @Override
     public TrainImages getEngineImages(int type) {
@@ -231,10 +265,12 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     /**
-     * @param relativeFilename
-     * @param height
-     * @return
-     * @throws IOException
+     * Returns the scaled image.
+     *
+     * @param relativeFilename the relative filename parameter
+     * @param height the height parameter
+     * @return the scaled image produced by this method
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     @Override
     public Image getScaledImage(String relativeFilename, int height) throws IOException {

@@ -42,6 +42,12 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     private Image[] tileIcons;
 
     // TODO if only mapSize is needed, do not send the full world here
+    /**
+     * Creates a abstract tile renderer instance.
+     * @param terrainType the terrain type
+     * @param typesTreatedAsSame the types treated as same
+     * @param numberTileIcons the number tile icons
+     */
     public AbstractTileRenderer(Terrain terrainType, List<Integer> typesTreatedAsSame, int numberTileIcons) {
         this.terrainType = Utils.verifyNotNull(terrainType);
         this.typesTreatedAsSame = Utils.verifyNotNull(typesTreatedAsSame);
@@ -49,10 +55,12 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     /**
-     * @param g
-     * @param renderLocation
-     * @param mapLocation
-     * @param world
+     * Performs the render operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param renderLocation the map coordinate
+     * @param mapLocation the map coordinate
+     * @param world the game world being queried
      */
     @Override
     public void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, UnmodifiableWorld world) {
@@ -64,13 +72,19 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     /**
-     * @return
+     * Returns the default icon.
+     *
+     * @return the default icon produced by this method
      */
     @Override
     public Image getDefaultIcon() {
         return tileIcons[0];
     }
 
+    /**
+     * Returns the terrain type name.
+     * @return the terrain type name
+     */
     public String getTerrainTypeName() {
         return terrainType.getName();
     }
@@ -90,13 +104,19 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     /**
      * Which of the stored icons to use for that specific map location. May also depend on surrounding icons.
      *
-     * @param mapLocation
-     * @param world
-     * @return
+     * @param mapLocation the map coordinate
+     * @param world the game world being queried
+     * @return the tile icon index produced by this method
      */
     public abstract int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world);
 
     // TODO remove world !
+    /**
+     * Checks whether the renderer handles the tile at the specified location.
+     * @param location the location
+     * @param world the world
+     * @return {@code true} if the tile is handled by this renderer
+     */
     public int checkTile(Vec2D location, UnmodifiableWorld world) {
         int match = 0;
 
@@ -120,20 +140,27 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         return match;
     }
 
+    /**
+     * Generates the relative filename for the specified tile icon.
+     * @param i the i
+     * @return the relative icon filename
+     */
     public String generateRelativeFileName(int i) {
         return "terrain" + File.separator + getTerrainTypeName() + '_' + generateFileNameNumber(i) + ".png";
     }
 
     /**
-     * @param i
-     * @return
+     * Performs the generate file name number operation.
+     *
+     * @param i the index of the item
+     * @return the file name number produced by this method
      */
     protected abstract String generateFileNameNumber(int i);
 
     /**
      * Only for subclasses.
      *
-     * @return
+     * @return the tile icons produced by this method
      */
     protected Image[] getTileIcons() {
         return tileIcons;

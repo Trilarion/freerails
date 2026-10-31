@@ -51,22 +51,28 @@ public class StationRadiusRenderer implements Painter {
     private int y;
 
     /**
-     * @param modelRoot
+     * Creates a station radius renderer instance.
+     *
+     * @param modelRoot the client model that provides current game state
      */
     public StationRadiusRenderer(ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
     }
 
     /**
-     * @param c
+     * Sets the border color.
+     *
+     * @param c the c parameter
      */
     public void setBorderColor(Color c) {
         borderColor = c;
     }
 
     /**
-     * @param x
-     * @param y
+     * Sets the position.
+     *
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
      */
     public void setPosition(int x, int y) {
         this.x = x;
@@ -74,14 +80,16 @@ public class StationRadiusRenderer implements Painter {
     }
 
     /**
-     * @param radius
+     * Sets the radius.
+     *
+     * @param radius the radius parameter
      */
     public void setRadius(int radius) {
         this.radius = radius;
     }
 
     /**
-     *
+     * Performs the show operation.
      */
     public void show() {
         if (!modelRoot.getProperty(ModelRootProperty.CURSOR_MODE).equals(ModelRootValue.PLACE_STATION_CURSOR_MODE)) {
@@ -92,7 +100,7 @@ public class StationRadiusRenderer implements Painter {
     }
 
     /**
-     *
+     * Performs the hide operation.
      */
     public void hide() {
         ModelRootValue lastCursorMode = (ModelRootValue) modelRoot.getProperty(ModelRootProperty.PREVIOUS_CURSOR_MODE);
@@ -104,8 +112,10 @@ public class StationRadiusRenderer implements Painter {
     }
 
     /**
-     * @param g
-     * @param newVisibleRectangle
+     * Performs the paint operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param newVisibleRectangle the new visible rectangle parameter
      */
     @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {

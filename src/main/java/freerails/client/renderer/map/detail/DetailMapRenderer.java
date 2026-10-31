@@ -42,9 +42,11 @@ public class DetailMapRenderer implements MapRenderer {
     private final Painter stationBoxes;
 
     /**
-     * @param world
-     * @param rendererRoot
-     * @param modelRoot
+     * Creates a detail map renderer instance.
+     *
+     * @param world the game world being queried
+     * @param rendererRoot the renderer root parameter
+     * @param modelRoot the client model that provides current game state
      */
     public DetailMapRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trainsview = new OverHeadTrainView(world, rendererRoot, modelRoot);
@@ -61,14 +63,18 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     * @return
+     * Returns the station radius.
+     *
+     * @return the station radius produced by this method
      */
     public StationRadiusRenderer getStationRadius() {
         return stationRadius;
     }
 
     /**
-     * @return
+     * Performs the scale operation.
+     *
+     * @return the scale produced by this method
      */
     @Override
     public float scale() {
@@ -76,7 +82,9 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     * @return
+     * Returns the map size in pixels.
+     *
+     * @return the map size in pixels produced by this method
      */
     @Override
     public Vec2D getMapSizeInPixels() {
@@ -84,7 +92,9 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     * @param g
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
      */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
@@ -97,6 +107,9 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
+     * Refreshes the background tile at the specified map location.
+     *
+     * @param tileLocation location of the tile to refresh
      */
     @Override
     public void refreshTile(Vec2D tileLocation) {
@@ -104,8 +117,10 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     * @param g
-     * @param visibleRect
+     * Performs the paint rect operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
@@ -117,7 +132,7 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     *
+     * Performs the refresh all operation.
      */
     @Override
     public void refreshAll() {

@@ -22,11 +22,15 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
+/**
+ * Holds small executable experiments that are separate from the game.
+ */
 public class Sandbox {
 
-
     /**
-     * @param args
+     * Runs the scratchpad experiment.
+     *
+     * @param args command-line arguments, which are unused
      */
     public static void main(String[] args) {
 

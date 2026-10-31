@@ -38,16 +38,20 @@ public class TrainRenderer {
     private final RendererRoot rendererRoot;
 
     /**
-     * @param rendererRoot
+     * Creates a train renderer instance.
+     *
+     * @param rendererRoot the renderer root parameter
      */
     public TrainRenderer(RendererRoot rendererRoot) {
         this.rendererRoot = rendererRoot;
     }
 
     /**
-     * @param g
-     * @param train
-     * @param s
+     * Performs the paint train operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param train the train parameter
+     * @param s the s parameter
      */
     public void paintTrain(Graphics g, Train train, TrainPositionOnMap s) {
         // If the train has been removed, it will be null!
@@ -69,6 +73,13 @@ public class TrainRenderer {
         }
     }
 
+    /**
+     * Renders the wagon.
+     * @param g the g
+     * @param pathWalker the path walker
+     * @param type the type
+     * @param engine the engine
+     */
     private void renderWagon(Graphics g, PathWalker pathWalker, int type, boolean engine) {
         pathWalker.stepForward(ModelConstants.WAGON_LENGTH * 2.0 / 3.0);
 

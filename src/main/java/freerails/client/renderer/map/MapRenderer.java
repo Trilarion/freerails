@@ -27,12 +27,16 @@ import freerails.util.Vec2D;
 public interface MapRenderer extends MapLayerRenderer {
 
     /**
-     * @return
+     * Performs the scale operation.
+     *
+     * @return the scale produced by this method
      */
     float scale();
 
     /**
-     * @return
+     * Returns the map size in pixels.
+     *
+     * @return the map size in pixels produced by this method
      */
     Vec2D getMapSizeInPixels();
 }

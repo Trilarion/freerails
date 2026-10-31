@@ -34,21 +34,43 @@ public class AdvanceClockMove implements Move {
     private static final long serialVersionUID = 3257290240212153393L;
     private final Player player;
 
+    /**
+     * Creates an advance clock move from the supplied values.
+     *
+     * @param player the player
+     */
     public AdvanceClockMove(@NotNull Player player) {
         this.player = player;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         return obj instanceof AdvanceClockMove other && player.equals(other.player);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return player.hashCode();
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -58,6 +80,11 @@ public class AdvanceClockMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         world.getClock().advanceTime();

@@ -27,10 +27,17 @@ import freerails.model.operations.station.Station;
 import freerails.util.Vec2D;
 import freerails.util.WorldGenerator;
 
+/**
+ * Tests build engine shop move behavior.
+ */
 public class BuildEngineShopMoveTest extends AbstractMoveTestCase {
 
     private final Vec2D location = new Vec2D(4, 5);
 
+    /**
+     * Sets up.
+     * @throws Exception if the operation fails.
+     */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -41,6 +48,9 @@ public class BuildEngineShopMoveTest extends AbstractMoveTestCase {
                         BuildEngineShopMove.BUILD_COST, getWorld().getClock().getCurrentTime()));
     }
 
+    /**
+     * Tests build engine shop charges and registers facility behavior.
+     */
     public void testBuildEngineShopChargesAndRegistersFacility() {
         BuildEngineShopMove move = new BuildEngineShopMove(WorldGenerator.TEST_PLAYER,
                 new EngineShop(0, location));
@@ -54,6 +64,9 @@ public class BuildEngineShopMoveTest extends AbstractMoveTestCase {
                 getWorld().getTransaction(WorldGenerator.TEST_PLAYER, 1).getCategory());
     }
 
+    /**
+     * Tests build engine shop requires station and funds behavior.
+     */
     public void testBuildEngineShopRequiresStationAndFunds() {
         BuildEngineShopMove noStation = new BuildEngineShopMove(WorldGenerator.TEST_PLAYER,
                 new EngineShop(0, Vec2D.ZERO));

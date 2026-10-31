@@ -25,26 +25,49 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Changes the game speed item on the world object.
+
+ * @param speed the simulation speed to set
  */
 public record ChangeGameSpeedMove(Speed speed) implements Move {
 
     private static final long serialVersionUID = 3545794368956086071L;
 
+    /**
+     * Creates a change game speed move from the supplied values.
+     *
+     * @param speed the speed
+     */
     public ChangeGameSpeedMove(@NotNull Speed speed) {
         this.speed = speed;
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         world.setSpeed(speed);
     }
 
+    /**
+     * Returns a string representation of this object.
+     *
+     * @return the string
+     */
     @Override
     public String toString() {
         return "ChangeGameSpeedMove: => " + speed;

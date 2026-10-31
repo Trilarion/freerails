@@ -63,6 +63,9 @@ public class SelectStationPanel extends JPanel implements View {
     private CargoWaitingAndDemandedPanel cargoWaitingAndDemandedPanel1;
     private JLabel label1;
     
+    /**
+     * Creates a select station panel instance.
+     */
     public SelectStationPanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -73,29 +76,49 @@ public class SelectStationPanel extends JPanel implements View {
 
         setPreferredSize(new Dimension(500, 350));
         addComponentListener(new ComponentAdapter() {
+            /**
+             * Component resized.
+             * @param e the e
+             */
             @Override
             public void componentResized(ComponentEvent e) {
                 formComponentResized(e);
             }
 
+            /**
+             * Component shown.
+             * @param e the e
+             */
             @Override
             public void componentShown(ComponentEvent e) {
                 formComponentShown(e);
             }
         });
         addKeyListener(new KeyAdapter() {
+            /**
+             * Key pressed.
+             * @param e the e
+             */
             @Override
             public void keyPressed(KeyEvent e) {
                 formKeyPressed(e);
             }
         });
         addMouseListener(new MouseAdapter() {
+            /**
+             * Mouse clicked.
+             * @param e the e
+             */
             @Override
             public void mouseClicked(MouseEvent e) {
                 formMouseClicked(e);
             }
         });
         addMouseMotionListener(new MouseMotionAdapter() {
+            /**
+             * Mouse moved.
+             * @param e the e
+             */
             @Override
             public void mouseMoved(MouseEvent e) {
                 formMouseMoved(e);
@@ -122,16 +145,28 @@ public class SelectStationPanel extends JPanel implements View {
         add(label1, gridBagConstraints);
     }
 
+    /**
+     * Form component shown.
+     * @param evt the evt
+     */
     private void formComponentShown(ComponentEvent evt) {
         setZoom();
     }
 
+    /**
+     * Form mouse clicked.
+     * @param evt the evt
+     */
     private void formMouseClicked(MouseEvent evt) {
         formMouseMoved(evt);
         needsUpdating = true;
         submitButtonCallBack.actionPerformed(null);
     }
 
+    /**
+     * Form key pressed.
+     * @param evt the evt
+     */
     private void formKeyPressed(KeyEvent evt) {
         try {
             TileTransition tileTransition = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt.getKeyCode());
@@ -154,10 +189,18 @@ public class SelectStationPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Form component resized.
+     * @param evt the evt
+     */
     private void formComponentResized(ComponentEvent evt) {
         setZoom();
     }
 
+    /**
+     * Form mouse moved.
+     * @param evt the evt
+     */
     private void formMouseMoved(MouseEvent evt) {
         // Add your handling code here:
         double x = evt.getX();
@@ -175,6 +218,11 @@ public class SelectStationPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Display.
+     * @param newSchedule the new schedule
+     * @param orderNumber the order number
+     */
     public void display(ScheduleState newSchedule, int orderNumber) {
         schedule = newSchedule;
         selectedOrderNumber = orderNumber;
@@ -218,6 +266,10 @@ public class SelectStationPanel extends JPanel implements View {
         needsUpdating = false;
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if (needsUpdating) {
@@ -293,6 +345,12 @@ public class SelectStationPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         cargoWaitingAndDemandedPanel1.setup(modelRoot, rendererRoot, null);
@@ -301,6 +359,10 @@ public class SelectStationPanel extends JPanel implements View {
         player = modelRoot.getPlayer();
     }
 
+    /**
+     * Creates a schedule using the selected station orders.
+     * @return the generated schedule
+     */
     public ScheduleState generateNewSchedule() {
         TrainOrder oldOrders, newOrders;
         oldOrders = schedule.getOrder(selectedOrderNumber);

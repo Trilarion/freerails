@@ -30,7 +30,9 @@ import java.awt.*;
 public interface MapUpdateMove extends Move {
 
     /**
-     * @return
+     * Returns the map tile bounds affected by this move.
+     *
+     * @return the rectangle enclosing the affected map tiles
      */
     Rectangle getUpdatedTiles();
 }

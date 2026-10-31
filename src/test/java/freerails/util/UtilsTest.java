@@ -32,12 +32,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Tests utils behavior.
  */
 public class UtilsTest extends TestCase {
 
     /**
-     *
+     * Tests equals by serialization behavior.
      */
     public void testEqualsBySerialization() {
 
@@ -52,6 +52,9 @@ public class UtilsTest extends TestCase {
         assertFalse(Utils.equalsBySerialization(a, c));
     }
 
+    /**
+     * Tests remove last removes last element rather than size value behavior.
+     */
     public void testRemoveLastRemovesLastElementRatherThanSizeValue() {
         List<Integer> values = new ArrayList<>(Arrays.asList(4, 2, 3));
 
@@ -60,6 +63,9 @@ public class UtilsTest extends TestCase {
         assertEquals(Arrays.asList(4, 2), values);
     }
 
+    /**
+     * Tests remove last rejects empty collection behavior.
+     */
     public void testRemoveLastRejectsEmptyCollection() {
         try {
             Utils.removeLast(new ArrayList<>());
@@ -69,6 +75,9 @@ public class UtilsTest extends TestCase {
         }
     }
 
+    /**
+     * Tests remove last of list returns copy without last element behavior.
+     */
     public void testRemoveLastOfListReturnsCopyWithoutLastElement() {
         List<String> original = new ArrayList<>(Arrays.asList("a", "b", "c"));
 
@@ -78,6 +87,9 @@ public class UtilsTest extends TestCase {
         assertEquals(Arrays.asList("a", "b", "c"), original);
     }
 
+    /**
+     * Tests verify unmodifiable returns defensive immutable copy behavior.
+     */
     public void testVerifyUnmodifiableReturnsDefensiveImmutableCopy() {
         List<String> source = new ArrayList<>(Arrays.asList("one", "two"));
 
@@ -93,6 +105,9 @@ public class UtilsTest extends TestCase {
         }
     }
 
+    /**
+     * Tests immutable list overloads return defensive immutable copies behavior.
+     */
     public void testImmutableListOverloadsReturnDefensiveImmutableCopies() {
         List<String> sourceList = new ArrayList<>(Arrays.asList("one", "two"));
         String[] sourceArray = {"three", "four"};
@@ -108,6 +123,9 @@ public class UtilsTest extends TestCase {
         assertUnmodifiable(fromArray);
     }
 
+    /**
+     * Tests clone by serialisation creates equal independent copy behavior.
+     */
     public void testCloneBySerialisationCreatesEqualIndependentCopy() {
         Vec2D original = new Vec2D(4, 9);
 
@@ -117,6 +135,9 @@ public class UtilsTest extends TestCase {
         assertNotSame(original, copy);
     }
 
+    /**
+     * Tests find constant field name and equal behavior.
+     */
     public void testFindConstantFieldNameAndEqual() {
         assertEquals("MATCH", Utils.findConstantFieldName(ConstantHolder.MATCH));
         assertNull(Utils.findConstantFieldName(new ConstantHolder()));
@@ -127,6 +148,9 @@ public class UtilsTest extends TestCase {
         assertFalse(Utils.equal("one", "two"));
     }
 
+    /**
+     * Tests null verification returns value and rejects null behavior.
+     */
     public void testNullVerificationReturnsValueAndRejectsNull() {
         Object value = new Object();
 
@@ -157,6 +181,9 @@ public class UtilsTest extends TestCase {
         }
     }
 
+    /**
+     * Tests integer list sum and list combination behavior.
+     */
     public void testIntegerListSumAndListCombination() {
         assertEquals(Arrays.asList(1, 0, 1), Utils.integerListFromBoolean(true, false, true));
         assertEquals(Collections.emptyList(), Utils.integerListFromBoolean());
@@ -166,6 +193,9 @@ public class UtilsTest extends TestCase {
                 Utils.combineTwoLists(Arrays.asList("a", "b"), Collections.singletonList("c")));
     }
 
+    /**
+     * Tests initialized map and contains id behavior.
+     */
     public void testInitializedMapAndContainsId() {
         List<Identifiable> values = Arrays.asList(new Identifiable(3), new Identifiable(7));
         Map<String, Integer> initialized = Utils.initializedMap(Arrays.asList("a", "b"), 5);
@@ -179,6 +209,10 @@ public class UtilsTest extends TestCase {
         assertFalse(Utils.containsId(7, Collections.emptyList()));
     }
 
+    /**
+     * Asserts unmodifiable.
+     * @param list the list to use in the test.
+     */
     private static void assertUnmodifiable(List<?> list) {
         try {
             list.clear();
@@ -188,6 +222,9 @@ public class UtilsTest extends TestCase {
         }
     }
 
+    /**
+     * Provides test support for constant holder.
+     */
     public static final class ConstantHolder {
         public static final ConstantHolder MATCH = new ConstantHolder();
         public final String INSTANCE = "match";

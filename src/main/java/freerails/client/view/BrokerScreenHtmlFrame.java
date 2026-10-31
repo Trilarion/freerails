@@ -43,6 +43,7 @@ import java.net.URL;
 
 // TODO simplify this code, creates too many FinancialDataAggregator instances
 /**
+ * Displays the broker screen using an HTML template.
  */
 public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
@@ -56,6 +57,10 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         @Serial
         private static final long serialVersionUID = 440368637080877578L;
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.repayBond(5, modelRoot.getWorld().getClock().getCurrentTime()));
@@ -68,6 +73,10 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         @Serial
         private static final long serialVersionUID = -8074364543650188583L;
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -92,9 +101,11 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     }
 
     /**
-     * @param m
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param m the model parameter
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(final ModelRoot m, RendererRoot rendererRoot, Action closeAction) {
@@ -109,6 +120,9 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         repayBond.setAction(repayBondAction);
     }
 
+    /**
+     * Sets the up stock menu.
+     */
     private void setupStockMenu() {
         stocks.removeAll();
         UnmodifiableWorld world = modelRoot.getWorld();
@@ -130,6 +144,10 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                 @Serial
                 private static final long serialVersionUID = -6360550478693971570L;
 
+                /**
+                 * Handles the specified action event.
+                 * @param e the e
+                 */
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerIndex];
@@ -146,6 +164,10 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                 @Serial
                 private static final long serialVersionUID = 3993755349229011031L;
 
+                /**
+                 * Handles the specified action event.
+                 * @param e the e
+                 */
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerIndex];
@@ -162,6 +184,9 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         enableAndDisableActions();
     }
 
+    /**
+     * Enable and disable actions.
+     */
     private void enableAndDisableActions() {
         UnmodifiableWorld world = modelRoot.getWorld();
         Player player = modelRoot.getPlayer();
@@ -206,6 +231,9 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         issueBondAction.setEnabled(outstandingBonds < 4);
     }
 
+    /**
+     * Updates the html.
+     */
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();
         Player player = modelRoot.getPlayer();
@@ -231,6 +259,10 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         enableAndDisableActions();
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.

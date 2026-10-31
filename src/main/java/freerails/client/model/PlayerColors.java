@@ -31,14 +31,19 @@ public class PlayerColors {
 
     private static final Color[] colors = new Color[]{Color.BLUE, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW};// Save
 
+    /**
+     * Creates a player colors instance.
+     */
     private PlayerColors() {
     }
 
     // keep red for when we need to grab the player's attention!
 
     /**
-     * @param playerNumber
-     * @return
+     * Returns the color.
+     *
+     * @param playerNumber the player number parameter
+     * @return the color produced by this method
      */
 
     public static Color getColor(int playerNumber) {

@@ -126,6 +126,11 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
         refreshBackground();
     }
 
+    /**
+     * Sets the background buffer.
+     * @param w the w
+     * @param h the h
+     */
     private void setbackgroundBuffer(int w, int h) {
         // Releases VRAM used by backgroundBuffer.
         if (backgroundBuffer != null) {
@@ -154,13 +159,20 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
     }
 
     /**
-     * @param x
-     * @param y
-     * @param width
-     * @param height
+     * Performs the paint buffer rectangle operation.
+     *
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     * @param width the width parameter
+     * @param height the height parameter
      */
     protected abstract void paintBufferRectangle(int x, int y, int width, int height);
 
+    /**
+     * Scrollbackground buffer.
+     * @param dx the dx
+     * @param dy the dy
+     */
     private void scrollbackgroundBuffer(int dx, int dy) {
         int copyWidth = bufferRect.width;
         int copyHeight = bufferRect.height;

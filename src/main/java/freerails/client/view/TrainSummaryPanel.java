@@ -39,7 +39,7 @@ import java.awt.*;
 import java.io.Serial;
 
 /**
- *
+ * Provides the train summary panel functionality.
  */
 public class TrainSummaryPanel extends JPanel implements ListCellRenderer<Train>, View {
 
@@ -116,6 +116,12 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer<Train>
         add(trainIncomeLabel, gridBagConstraints);
     }
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         player = modelRoot.getPlayer();
@@ -125,15 +131,34 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer<Train>
         model.setWorld(world, player);
     }
 
+    /**
+     * Finds the station name associated with the specified train.
+     * @param trainNum the train num
+     * @return the station name, or an empty string if none is available
+     */
     private String findStationName(int trainNum) {
         return model.getStationName(trainNum);
     }
 
+    /**
+     * Finds the displayed income summary for the specified train.
+     * @param trainNum the train num
+     * @return the train income summary
+     */
     private String findTrainIncome(int trainNum) {
         Money m = model.findTrainIncome(trainNum);
         return MoneyFormatter.format(m);
     }
 
+    /**
+     * Returns the list cell renderer component.
+     * @param list the list
+     * @param value the value
+     * @param index the index
+     * @param isSelected the is selected
+     * @param cellHasFocus the cell has focus
+     * @return the list cell renderer component
+     */
     @Override
     public Component getListCellRendererComponent(JList<? extends Train> list, Train value, int index, boolean isSelected, boolean cellHasFocus) {
 
@@ -177,6 +202,10 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer<Train>
         return this;
     }
 
+    /**
+     * Finds the displayed maintenance cost summary.
+     * @return the maintenance cost summary
+     */
     private String findMaintenanceCost() {
 
         Clock clock = world.getClock();

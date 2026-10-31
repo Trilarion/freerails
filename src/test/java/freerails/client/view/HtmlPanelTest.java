@@ -28,7 +28,7 @@ import java.util.HashMap;
 public class HtmlPanelTest extends TestCase {
 
     /**
-     *
+     * Tests populate tokens behavior.
      */
     public void testPopulateTokens() {
         String template = "test";
@@ -54,7 +54,7 @@ public class HtmlPanelTest extends TestCase {
     }
 
     /**
-     *
+     * Tests populate tokens2 behavior.
      */
     public void testPopulateTokens2() {
         String template = "Hey $a.name$ I would like you to meet $b.name$";
@@ -69,15 +69,17 @@ public class HtmlPanelTest extends TestCase {
         assertEquals(expectedOutput, output);
     }
 
+    /**
+     * Provides test support for html panel person.
+     */
     static public class HtmlPanelPerson {
 
-        /**
-         *
-         */
+        /** The name exposed to HtmlPanel token substitution. */
         public final String name;
 
         /**
-         * @param name
+         * Creates an instance of html panel person.
+         * @param name the name to use in the test.
          */
         HtmlPanelPerson(String name) {
             this.name = name;

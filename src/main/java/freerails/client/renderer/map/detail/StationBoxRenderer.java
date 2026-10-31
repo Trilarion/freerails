@@ -46,9 +46,11 @@ public class StationBoxRenderer implements Painter {
     private final Image[] cargoImages;
 
     /**
-     * @param world
-     * @param rendererRoot
-     * @param modelRoot
+     * Creates a station box renderer instance.
+     *
+     * @param world the game world being queried
+     * @param rendererRoot the renderer root parameter
+     * @param modelRoot the client model that provides current game state
      */
     public StationBoxRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         this.world = world;
@@ -74,8 +76,10 @@ public class StationBoxRenderer implements Painter {
     }
 
     /**
-     * @param g
-     * @param newVisibleRectangle
+     * Performs the paint operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param newVisibleRectangle the new visible rectangle parameter
      */
     @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {

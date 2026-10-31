@@ -39,6 +39,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
     @Serial
     private static final long serialVersionUID = 3834311713465185081L;
+    /** A representative branch direction used to seed exploration. */
     public final PositionOnTrack currentBranch = new PositionOnTrack(Vec2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;
     private PositionOnTrack currentPosition;
@@ -62,6 +63,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
+     * Returns all valid orientations for track at the specified map location.
+     *
      * @param world world containing the track
      * @param location location of track to consider
      * @return an array of PositionOnTrack objects describing the set of

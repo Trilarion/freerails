@@ -58,9 +58,9 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     }
 
     /**
-     * @param trainId
-     * @param player
-     * @param occupiedTracks
+     * @param trainId the identifier of the train to advance
+     * @param player the player who owns or performs the operation
+     * @param occupiedTracks the track sections currently occupied by trains
      */
     public MoveTrainMoveGenerator(int trainId, Player player, OccupiedTracks occupiedTracks) {
         this(trainId, player, occupiedTracks, MotionFidelity.CONSTANT_SPEED);
@@ -81,6 +81,12 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         this.motionFidelity = Objects.requireNonNull(motionFidelity);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -92,8 +98,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     }
 
     /**
-     * @param world
-     * @return
+     * @param world the game world used by this operation
+     * @return the move that advances the train along its route
      */
     @Override
     public Move generate(UnmodifiableWorld world) {
@@ -172,6 +178,11 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         }
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         int result;
@@ -182,6 +193,13 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     }
 
     // TODO parts of this should be in model.operations.train
+    /**
+     * Creates the move that advances the train along its next track section.
+     *
+     * @param world the world whose state is used or updated
+     * @param occupiedTracks the occupied tracks
+     * @return the move train
+     */
     private Move moveTrain(UnmodifiableWorld world, OccupiedTracks occupiedTracks) {
         // Find the next vector.
         TileTransition nextVector = nextStep(world);
@@ -230,6 +248,13 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return new AddActivityMove(player, trainId, nextMotion);
     }
 
+    /**
+     * Calculates the train speeds for its next movement activity.
+     *
+     * @param world the world whose state is used or updated
+     * @param tileTransition the tile transition
+     * @return the next speeds
+     */
     public Motion nextSpeeds(UnmodifiableWorld world, TileTransition tileTransition) {
         TrainMotion lastMotion = MotionUtils.lastMotion(world, player, trainId);
 
@@ -260,11 +285,22 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return newSpeeds;
     }
 
+    /**
+     * Returns the motion fidelity.
+     *
+     * @return the motion fidelity
+     */
     private MotionFidelity getMotionFidelity() {
         // A missing field in generators serialized by older versions means the default mode.
         return motionFidelity == null ? MotionFidelity.CONSTANT_SPEED : motionFidelity;
     }
 
+    /**
+     * Returns the next track transition along the train route.
+     *
+     * @param world the world whose state is used or updated
+     * @return the next step
+     */
     public TileTransition nextStep(UnmodifiableWorld world) {
         // Find current position.
         TrainMotion currentMotion = MotionUtils.lastMotion(world, player, trainId);

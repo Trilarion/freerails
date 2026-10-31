@@ -77,8 +77,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     private UnmodifiableWorld world;
     private BuildTrackController buildTrackController;
     /**
-     * @param modelRoot
-     * @param actionRoot
+     * Creates a gui component factory impl instance.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param actionRoot the root that supplies client actions
      */
     public GUIComponentFactoryImpl(ModelRootImpl modelRoot, ActionRoot actionRoot) {
         this.modelRoot = modelRoot;
@@ -124,6 +126,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     // TODO this does more then just count stations! currently not updated anymore
+    /**
+     * Count stations.
+     */
     private void countStations() {
         boolean enabled = world.getStations(modelRoot.getPlayer()).size() > 0;
 
@@ -132,6 +137,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     // TODO currently after AddTrainMove the count is not updated!
+    /**
+     * Count trains.
+     */
     private void countTrains() {
         boolean enabled = !modelRoot.getWorld().getTrains(modelRoot.getPlayer()).isEmpty();
 
@@ -141,7 +149,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the build menu.
+     *
+     * @return the build menu produced by this method
      */
     @Override
     public JMenu createBuildMenu() {
@@ -149,7 +159,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the cash j label.
+     *
+     * @return the cash jlabel produced by this method
      */
     @Override
     public JLabel createCashJLabel() {
@@ -157,8 +169,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @param title
-     * @return
+     * Creates the client j frame.
+     *
+     * @param title the title parameter
+     * @return the client jframe produced by this method
      */
     public JFrame createClientJFrame(String title) {
         clientFrame.setTitle(title);
@@ -167,7 +181,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the date j label.
+     *
+     * @return the date jlabel produced by this method
      */
     @Override
     public JLabel createDateJLabel() {
@@ -175,7 +191,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the broker menu.
+     *
+     * @return the broker menu produced by this method
      */
     @Override
     public JMenu createBrokerMenu() {
@@ -190,7 +208,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the display menu.
+     *
+     * @return the display menu produced by this method
      */
     @Override
     public JMenu createDisplayMenu() {
@@ -243,7 +263,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the game menu.
+     *
+     * @return the game menu produced by this method
      */
     @Override
     public JMenu createGameMenu() {
@@ -260,14 +282,26 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         final JMenu newGameJMenu = new JMenu(serverControlModel.getNewGameAction());
         newGameJMenu.addMenuListener(new MenuListener() {
 
+            /**
+             * Menu canceled.
+             * @param e the e
+             */
             @Override
             public void menuCanceled(MenuEvent e) {
             }
 
+            /**
+             * Menu deselected.
+             * @param e the e
+             */
             @Override
             public void menuDeselected(MenuEvent e) {
             }
 
+            /**
+             * Menu selected.
+             * @param e the e
+             */
             @Override
             public void menuSelected(MenuEvent e) {
                 newGameJMenu.removeAll();
@@ -314,7 +348,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
     // TODO the whole help menu is pretty dead, needs redesign
     /**
-     * @return
+     * Creates the help menu.
+     *
+     * @return the help menu produced by this method
      */
     @Override
     public JMenu createHelpMenu() {
@@ -337,7 +373,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the main map.
+     *
+     * @return the main map produced by this method
      */
     @Override
     public JScrollPane createMainMap() {
@@ -345,7 +383,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the overview map.
+     *
+     * @return the overview map produced by this method
      */
     @Override
     public JPanel createOverviewMap() {
@@ -353,7 +393,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the reports menu.
+     *
+     * @return the reports menu produced by this method
      */
     @Override
     public JMenu createReportsMenu() {
@@ -379,7 +421,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Creates the trains j tab pane.
+     *
+     * @return the trains jtab pane produced by this method
      */
     @Override
     public JTabbedPane createTrainsJTabPane() {
@@ -387,7 +431,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
+     * Returns the build track controller.
+     *
+     * @return the build track controller produced by this method
      */
     public BuildTrackController getBuildTrackController() {
         return buildTrackController;

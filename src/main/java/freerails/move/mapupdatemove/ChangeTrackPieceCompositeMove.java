@@ -44,6 +44,13 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     private final Rectangle rectangle;
     private final Player player;
 
+    /**
+     * Creates a change track piece composite move from the supplied values.
+     *
+     * @param a the a
+     * @param b the b
+     * @param player the player
+     */
     public ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b, Player player) {
         super(Arrays.asList(a, b));
         rectangle = a.getUpdatedTiles().union(b.getUpdatedTiles());
@@ -51,13 +58,19 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     /**
-     * @return
+     * @return the bounds of the map tiles updated by this composite move
      */
     @Override
     public Rectangle getUpdatedTiles() {
         return rectangle;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -69,11 +82,22 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         return getMoves().equals(other.getMoves()) && Objects.equals(player, other.player);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getMoves(), player);
     }
 
+    /**
+     * Checks whether the composite track changes satisfy the connection rules.
+     *
+     * @param world the world whose state is used or updated
+     * @return the composite test
+     */
     @Override
     public Status compositeTest(World world) {
         // must connect to existing track
@@ -99,6 +123,11 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         super.apply(world);

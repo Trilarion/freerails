@@ -35,6 +35,7 @@ public class IncomeStatementGenerator {
     private final Player player;
     private final int startyear;
 
+    /** Total income from mail carried by the player's trains. */
     public Money mailTotal;
 
     /**

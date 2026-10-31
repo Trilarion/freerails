@@ -32,13 +32,21 @@ import java.net.URL;
 import java.util.*;
 
 /**
- *
+ * Builds a new game world from a scenario map resource.
  */
 public class MapCreator {
 
+    /**
+     * Creates a map creator from the supplied values.
+     */
     private MapCreator() {}
 
     // TODO This would be better implemented in a config file, or better still dynamically determined by scanning the directory.
+    /**
+     * Returns the available map names.
+     *
+     * @return the available map names
+     */
     public static String[] getAvailableMapNames() {
         return new String[]{"South America", "Small South America"};
     }
@@ -47,9 +55,9 @@ public class MapCreator {
      * Note, the map name is converted to lower case and any spaces are replaced
      * with underscores.
      *
-     * @param filePath
-     * @return
-     * @throws IOException
+     * @param filePath the path to the scenario map resource
+     * @return a new game world initialized from the specified map resource
+     * @throws IOException if the operation cannot complete because of an input/output error
      */
     public static World newMap(String filePath) throws URISyntaxException, IOException {
         String mapName = filePath;

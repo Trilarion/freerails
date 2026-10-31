@@ -25,12 +25,12 @@ import freerails.model.player.Player;
 import freerails.util.Utils;
 
 /**
- *
+ * Tests add player move behavior.
  */
 public class AddPlayerMoveTest extends AbstractMoveTestCase {
 
     /**
-     *
+     * Tests move behavior.
      */
     public void testMove() {
         Player newPlayer = new Player(0, "New Player");
@@ -43,7 +43,7 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move2 behavior.
      */
     public void testMove2() {
         Player newPlayer = new Player(1, "New Player");

@@ -38,14 +38,15 @@ import freerails.model.track.*;
 import freerails.util.WorldGenerator;
 
 /**
- *
+ * Tests change track piece composite move behavior.
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
     private TrackMoveTransactionsGenerator transactionsGenerator;
 
     /**
-     *
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -59,7 +60,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests remove track behavior.
      */
     public void testRemoveTrack() {
         // TODO need this rules change here really?
@@ -112,7 +113,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests cannot connect2 other r rs track behavior.
      */
     public void testCannotConnect2OtherRRsTrack() {
         Rules rules = world.getRules();
@@ -134,7 +135,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests build track behavior.
      */
     public void testBuildTrack() {
         Vec2D pointA = Vec2D.ZERO;
@@ -174,6 +175,10 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertBuildTrackFails(new Vec2D(2, 0), TileTransition.NORTH_EAST, getWorld().getTrackType(1));
     }
 
+    /**
+     * Tests construction and removal keep adjacent connections symmetric behavior.
+     * @throws Exception if the test construction and removal keep adjacent connections symmetric operation fails.
+     */
     public void testConstructionAndRemovalKeepAdjacentConnectionsSymmetric() throws Exception {
         world.setRules(new Rules(false, false));
         TrackType trackType = world.getTrackType(0);
@@ -222,6 +227,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertNull(world.getTile(new Vec2D(9, 5)).trackPiece());
     }
 
+    /**
+     * Tests track rules across ownership and connectivity cases behavior.
+     */
     public void testTrackRulesAcrossOwnershipAndConnectivityCases() {
         for (boolean canConnectToOtherPlayers : new boolean[]{false, true}) {
             for (boolean mustStayConnected : new boolean[]{false, true}) {
@@ -257,6 +265,11 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         }
     }
 
+    /**
+     * Creates world.
+     * @param rules the rules used by this test.
+     * @return the result of create world.
+     */
     private static World createWorld(Rules rules) {
         World testWorld = WorldGenerator.testWorld(true);
         testWorld.addPlayer(WorldGenerator.TEST_PLAYER);
@@ -264,6 +277,14 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         return testWorld;
     }
 
+    /**
+     * Asserts build.
+     * @param testWorld the test world to use in the test.
+     * @param from the from to use in the test.
+     * @param direction the direction to use in the test.
+     * @param type the type to use in the test.
+     * @param expectedSuccess the expected success to use in the test.
+     */
     private static void assertBuild(World testWorld, Vec2D from, TileTransition direction,
                                     TrackType type, boolean expectedSuccess) {
         Vec2D to = direction.createRelocatedPoint(from);
@@ -285,6 +306,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         }
     }
 
+    /**
+     * Asserts symmetric connections.
+     */
     private void assertSymmetricConnections() {
         for (int x = 0; x < world.getMapSize().x(); x++) {
             for (int y = 0; y < world.getMapSize().y(); y++) {
@@ -307,6 +331,12 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         }
     }
 
+    /**
+     * Asserts build track fails.
+     * @param p the p to use in the test.
+     * @param v the v to use in the test.
+     * @param type the type to use in the test.
+     */
     private void assertBuildTrackFails(Vec2D p, TileTransition v, TrackType type) {
         ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
         Status status = move.applicable(getWorld());
@@ -314,6 +344,12 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         move.apply(getWorld());
     }
 
+    /**
+     * Asserts build track succeeds.
+     * @param p the p to use in the test.
+     * @param v the v to use in the test.
+     * @param type the type to use in the test.
+     */
     private void assertBuildTrackSucceeds(Vec2D p, TileTransition v, TrackType type) {
         ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
 
@@ -323,6 +359,11 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         move1.apply(getWorld());
     }
 
+    /**
+     * Asserts remove track succeeds.
+     * @param p the p to use in the test.
+     * @param v the v to use in the test.
+     */
     private void assertRemoveTrackSucceeds(Vec2D p, TileTransition v) {
         try {
             ChangeTrackPieceCompositeMove move = TrackMoveProducer
@@ -336,7 +377,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move behavior.
+     * @throws Exception if the test move operation fails.
      */
     public void testMove() throws Exception {
         Vec2D pointA = Vec2D.ZERO;

@@ -53,27 +53,47 @@ public final class Engine extends Identifiable {
         this.maximumThrust = maximumThrust;
     }
 
-    /** Returns the engine's display name. */
+    /**
+     * Returns the engine's display name.
+     *
+     * @return the display name
+     */
     public String getName() {
         return name;
     }
 
-    /** Returns the purchase price of this engine type. */
+    /**
+     * Returns the purchase price of this engine type.
+     *
+     * @return the purchase price
+     */
     public Money getPrice() {
         return price;
     }
 
-    /** Returns the upkeep cost of this engine type. */
+    /**
+     * Returns the upkeep cost of this engine type.
+     *
+     * @return the upkeep cost
+     */
     public Money getUpkeep() {
         return upkeep;
     }
 
-    /** Returns the maximum speed of this engine type. */
+    /**
+     * Returns the maximum speed of this engine type.
+     *
+     * @return the maximum speed
+     */
     public int getMaximumSpeed() {
         return maximumSpeed;
     }
 
-    /** Returns the maximum tractive force of this engine type. */
+    /**
+     * Returns the maximum tractive force of this engine type.
+     *
+     * @return the maximum tractive force
+     */
     public int getMaximumThrust() {
         return maximumThrust;
     }

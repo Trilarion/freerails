@@ -38,8 +38,10 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
     private final Vec2D mapSize;
 
     /**
-     * @param world
-     * @param trackPieceViewList
+     * Creates a track layer renderer instance.
+     *
+     * @param world the game world being queried
+     * @param trackPieceViewList the track piece view list parameter
      */
     public TrackLayerRenderer(UnmodifiableWorld world, RendererRoot trackPieceViewList) {
         rendererRoot = trackPieceViewList;
@@ -79,8 +81,10 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
     }
 
     /**
-     * @param g
-     * @param tileLocation
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param tileLocation the map coordinate
      */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
@@ -92,19 +96,30 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
         paintRectangleOfTiles(g, new Rectangle(tileLocation.x(), tileLocation.y(), 1, 1));
     }
 
+    /**
+     * Paint rectangle of tiles.
+     * @param g the g
+     * @param p the p
+     * @param width the width
+     * @param height the height
+     */
     public void paintRectangleOfTiles(Graphics g, Vec2D p, int width, int height) {
         paintRectangleOfTiles(g, new Rectangle(p.x(), p.y(), width, height));
     }
 
     /**
-     * @param tileLocation
+     * Performs the refresh tile operation.
+     *
+     * @param tileLocation the map coordinate
      */
     @Override
     public void refreshTile(Vec2D tileLocation) {}
 
     /**
-     * @param g
-     * @param visibleRect
+     * Performs the paint rect operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
@@ -112,7 +127,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
     }
 
     /**
-     *
+     * Performs the refresh all operation.
      */
     @Override
     public void refreshAll() {

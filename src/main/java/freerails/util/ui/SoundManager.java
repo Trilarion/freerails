@@ -43,6 +43,9 @@ public class SoundManager implements LineListener {
     private Mixer mixer;
     private volatile boolean playingSounds = true;
 
+    /**
+     * Selects an audio mixer capable of playing the manager's sound format.
+     */
     private SoundManager() {
         AudioFormat format = new AudioFormat(8000.0f, 16, 1, true, false);
         DataLine.Info lineInfo = new DataLine.Info(Clip.class, format);
@@ -60,16 +63,20 @@ public class SoundManager implements LineListener {
     }
 
     /**
-     * @return
+     * Returns the shared sound manager instance.
+     *
+     * @return singleton sound manager
      */
     public static SoundManager getInstance() {
         return INSTANCE;
     }
 
     /**
-     * @param s
-     * @throws IOException
-     * @throws UnsupportedAudioFileException
+     * Loads and caches a sound resource for later playback.
+     *
+     * @param s classpath resource path of the sound
+     * @throws IOException if the resource is missing, empty, or cannot be read
+     * @throws UnsupportedAudioFileException if the resource format is unsupported
      */
     public synchronized void addClip(String s) throws IOException, UnsupportedAudioFileException {
         if (samples.containsKey(s)) {
@@ -92,8 +99,10 @@ public class SoundManager implements LineListener {
     }
 
     /**
-     * @param s
-     * @param loops
+     * Plays a sound, reusing an available audio line when necessary.
+     *
+     * @param s classpath resource path of the sound
+     * @param loops number of repetitions as interpreted by {@link Clip#loop(int)}
      */
     public synchronized void playSound(String s, int loops) {
         if (!playingSounds) {
@@ -130,6 +139,11 @@ public class SoundManager implements LineListener {
         }
     }
 
+    /**
+     * Releases a clip after it reports that playback has stopped.
+     *
+     * @param event audio line event
+     */
     @Override
     public synchronized void update(LineEvent event) {
         if (event.getType() == LineEvent.Type.STOP && event.getSource() instanceof Clip clip
@@ -138,16 +152,30 @@ public class SoundManager implements LineListener {
         }
     }
 
+    /**
+     * Indicates whether sound playback is enabled.
+     *
+     * @return {@code true} if sounds may be played
+     */
     public boolean isPlayingSounds() {
         return playingSounds;
     }
 
+    /**
+     * Enables or disables sound playback.
+     *
+     * @param playingSounds {@code true} to enable playback
+     */
     public void setPlayingSounds(boolean playingSounds) {
         this.playingSounds = playingSounds;
     }
 
     /**
      * Stores the audio data and properties of a sample.
+     *
+     * @param format format used to decode and play the sample
+     * @param audio encoded audio bytes
+     * @param info audio-line metadata for the sample
      */
     private record AudioSample(AudioFormat format, byte[] audio, DataLine.Info info) {
     }

@@ -35,15 +35,19 @@ public class StandardTileRendererList implements TileRendererList {
     private final Map<Integer, TileRenderer> tileRenderer;
 
     /**
-     * @param tileRenderer
+     * Creates a standard tile renderer list instance.
+     *
+     * @param tileRenderer the tile renderer parameter
      */
     public StandardTileRendererList(Map<Integer, TileRenderer> tileRenderer) {
         this.tileRenderer = tileRenderer;
     }
 
     /**
+     * Returns the tile renderer by index.
+     *
      * @param terrainId stable ID of the terrain type
-     * @return
+     * @return the tile renderer by index produced by this method
      */
     @Override
     public TileRenderer getTileRendererByIndex(int terrainId) {
@@ -54,6 +58,11 @@ public class StandardTileRendererList implements TileRendererList {
         return renderer;
     }
 
+    /**
+     * Returns whether validate.
+     * @param world the world
+     * @return whether validate
+     */
     @Override
     public boolean validate(UnmodifiableWorld world) {
         return world.getTerrains().size() == tileRenderer.size()

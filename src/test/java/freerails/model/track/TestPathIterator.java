@@ -38,9 +38,9 @@ public class TestPathIterator implements PathIterator {
     private int position;
 
     /**
-     *
-     * @param l
-     * @param f
+     * Creates an instance of test path iterator.
+     * @param l the l to use in the test.
+     * @param f the f to use in the test.
      */
     public TestPathIterator(List<Vec2D> l, boolean f) {
         points = l;
@@ -55,13 +55,18 @@ public class TestPathIterator implements PathIterator {
     }
 
     /**
-     * @param l
-     * @return
+     * Performs forwards iterator.
+     * @param l the l to use in the test.
+     * @return the result of forwards iterator.
      */
     public static PathIterator forwardsIterator(List<Vec2D> l) {
         return new TestPathIterator(l, true);
     }
 
+    /**
+     * Indicates whether next is present.
+     * @return whether next is present.
+     */
     @Override
     public boolean hasNext() {
         if (forwards) {
@@ -70,6 +75,10 @@ public class TestPathIterator implements PathIterator {
         return position - 1 >= 0;
     }
 
+    /**
+     * Advances to the next segment.
+     * @return the next segment.
+     */
     @Override
     public Segment nextSegment() {
         if (!hasNext()) {

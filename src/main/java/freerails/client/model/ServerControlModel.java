@@ -51,7 +51,9 @@ public class ServerControlModel implements ModelRootListener {
     private DialogueBoxController dialogueBoxController;
 
     /**
-     * @param modelRoot
+     * Creates a server control model instance.
+     *
+     * @param modelRoot the client model that provides current game state
      */
     public ServerControlModel(ModelRootImpl modelRoot) {
         this.modelRoot = modelRoot;
@@ -82,6 +84,8 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
+     * Returns the load game action.
+     *
      * @return an action to load a game.
      */
     public Action getLoadGameAction() {
@@ -89,8 +93,9 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
+     * Returns the map names.
+     *
      * @return an ActionAdapter representing a list of actions representing
-     * valid map names.
      */
     public ActionAdapter getMapNames() {
         return selectMapActions;
@@ -108,14 +113,17 @@ public class ServerControlModel implements ModelRootListener {
 
     // TODO The action produces a file selector
     /**
+     * Returns the save game action.
+     *
      * @return an action to save a game
-     * dialog to save the game
      */
     public Action getSaveGameAction() {
         return saveGameAction;
     }
 
     /**
+     * Returns the set target tick per second actions.
+     *
      * @return an action adapter to set the target ticks per second
      */
     public ActionAdapter getSetTargetTickPerSecondActions() {
@@ -123,7 +131,9 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     * @return
+     * Returns the target ticks per second.
+     *
+     * @return the target ticks per second produced by this method
      */
     private int getTargetTicksPerSecond() {
         UnmodifiableWorld world = modelRoot.getWorld();
@@ -131,9 +141,11 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     * @param modelRootProperty
-     * @param oldValue
-     * @param newValue
+     * Performs the property change operation.
+     *
+     * @param modelRootProperty the model root property parameter
+     * @param oldValue the old value parameter
+     * @param newValue the new value parameter
      */
     @Override
     public void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue) {
@@ -148,8 +160,10 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     * @param modelRoot
-     * @param dbc
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param dbc the dbc parameter
      */
     public void setup(ModelRootImpl modelRoot, DialogueBoxController dbc) {
         this.modelRoot = modelRoot;
@@ -158,7 +172,7 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     *
+     * Sets the server control interface.
      */
     private void setServerControlInterface() {
         // Check that there is a file to load..
@@ -183,25 +197,42 @@ public class ServerControlModel implements ModelRootListener {
         newGameAction.setEnabled(true);
     }
 
+    /**
+     * Provides the load game action functionality.
+     */
     private class LoadGameAction extends AbstractAction {
         @Serial
         private static final long serialVersionUID = 3616451215278682931L;
 
+        /**
+         * Creates a load game action instance.
+         */
         private LoadGameAction() {
             putValue(NAME, "Load Game");
             putValue(MNEMONIC_KEY, 76);
         }
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             dialogueBoxController.showSelectSavedGame2Load();
         }
     }
 
+    /**
+     * Provides the new game action functionality.
+     */
     private class NewGameAction extends AbstractAction {
         @Serial
         private static final long serialVersionUID = 3690758388631745337L;
 
+        /**
+         * Creates a new game action instance.
+         * @param s the s
+         */
         private NewGameAction(String s) {
             if (s == null) {
                 putValue(NAME, "New Game...");
@@ -211,6 +242,10 @@ public class ServerControlModel implements ModelRootListener {
             }
         }
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -223,15 +258,25 @@ public class ServerControlModel implements ModelRootListener {
         }
     }
 
+    /**
+     * Provides the save game action functionality.
+     */
     private class SaveGameAction extends AbstractAction {
         @Serial
         private static final long serialVersionUID = 3905808578064562480L;
 
+        /**
+         * Creates a save game action instance.
+         */
         private SaveGameAction() {
             putValue(NAME, "Save Game");
             putValue(MNEMONIC_KEY, 83);
         }
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             dialogueBoxController.showSaveGame();
@@ -253,6 +298,9 @@ public class ServerControlModel implements ModelRootListener {
         }
     }
 
+    /**
+     * Provides the set target ticks per second action functionality.
+     */
     private class SetTargetTicksPerSecondAction extends AbstractAction {
         @Serial
         private static final long serialVersionUID = 3256437014978048052L;
@@ -276,6 +324,10 @@ public class ServerControlModel implements ModelRootListener {
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyEvent, 0));
         }
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             int speed2set = speed;

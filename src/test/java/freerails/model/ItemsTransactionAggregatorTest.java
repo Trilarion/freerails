@@ -33,12 +33,12 @@ import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 /**
- *
+ * Tests items transaction aggregator behavior.
  */
 public class ItemsTransactionAggregatorTest extends TestCase {
 
     /**
-     *
+     * Tests 1 behavior.
      */
     public void test1() {
         World world = WorldGenerator.minimalWorld();

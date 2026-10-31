@@ -23,11 +23,12 @@ import freerails.util.ui.ImageManagerImpl;
 import junit.framework.TestCase;
 
 /**
+ * Tests image manager impl behavior.
  */
 public class ImageManagerImplTest extends TestCase {
 
     /**
-     *
+     * Tests whether the image manager accepts a valid relative resource path and rejects a leading slash.
      */
     public void testIsValid() {
         assertTrue(ImageManagerImpl.isValid("cursor/infomode.png"));

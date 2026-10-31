@@ -25,8 +25,14 @@ import junit.framework.TestCase;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Tests track type behavior.
+ */
 public class TrackTypeTest extends TestCase {
 
+    /**
+     * Tests definition collections are copied and prepared configurations are immutable behavior.
+     */
     public void testDefinitionCollectionsAreCopiedAndPreparedConfigurationsAreImmutable() {
         Set<TrackProperty> properties = new HashSet<>(Set.of(TrackProperty.SINGLE));
         Set<TerrainCategory> validTerrainCategories = new HashSet<>(Set.of(TerrainCategory.COUNTRY));
@@ -52,6 +58,10 @@ public class TrackTypeTest extends TestCase {
         assertThrowsUnsupportedOperation(() -> trackType.getValidTrackConfigurations().clear());
     }
 
+    /**
+     * Asserts throws unsupported operation.
+     * @param action the action to use in the test.
+     */
     private static void assertThrowsUnsupportedOperation(Runnable action) {
         try {
             action.run();

@@ -47,9 +47,11 @@ public class ChangeProductionAtEngineShopMove implements Move {
     private final Player player;
 
     /**
-     * @param production
-     * @param engineShopId
-     * @param player
+     * Creates a move that changes the train production at an engine shop.
+     *
+     * @param production the train production to configure at the engine shop
+     * @param engineShopId the identifier of the engine shop to update
+     * @param player the player who owns or performs the operation
      */
     public ChangeProductionAtEngineShopMove(@NotNull List<TrainTemplate> production, int engineShopId, @NotNull Player player) {
         this.production = List.copyOf(production);
@@ -57,6 +59,12 @@ public class ChangeProductionAtEngineShopMove implements Move {
         this.player = player;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -68,6 +76,11 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return player.equals(changeProductionAtEngineShopMove.player);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         int result;
@@ -77,6 +90,12 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return result;
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -86,6 +105,11 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         Status status = applicable(world);

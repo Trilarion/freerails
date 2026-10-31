@@ -33,23 +33,31 @@ import java.io.Serializable;
 public interface ServerGameModel extends GameModel, Serializable {
 
     /**
-     * @param world
-     * @param passwords
+     * Replaces the model's world and associated player passwords.
+     *
+     * @param world the game world used by this operation
+     * @param passwords the player passwords associated with the world
      */
     void setWorld(World world, String[] passwords);
 
     /**
-     * @return
+     * Returns the world maintained by this server model.
+     *
+     * @return the current game world
      */
     World getWorld();
 
     /**
-     * @return
+     * Returns the passwords associated with the players in the world.
+     *
+     * @return the player passwords
      */
     String[] getPasswords();
 
     /**
-     * @param moveReceiver
+     * Initializes server processing and sends generated moves to the receiver.
+     *
+     * @param moveReceiver the receiver to which generated moves are submitted
      */
     void initialize(MoveReceiver moveReceiver);
 

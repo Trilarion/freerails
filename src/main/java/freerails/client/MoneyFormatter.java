@@ -32,6 +32,9 @@ public final class MoneyFormatter {
 
     private static final Currency GAME_CURRENCY = Currency.getInstance("USD");
 
+    /**
+     * Creates a money formatter instance.
+     */
     private MoneyFormatter() {
     }
 

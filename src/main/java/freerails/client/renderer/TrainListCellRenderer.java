@@ -68,15 +68,17 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     private int trainWidth = 0;
 
     /**
-     *
+     * Creates a train list cell renderer instance.
      */
     public TrainListCellRenderer() {
         setOpaque(false);
     }
 
     /**
-     * @param modelRoot
-     * @param vl
+     * Creates a train list cell renderer instance.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param vl the vl parameter
      */
     public TrainListCellRenderer(ModelRoot modelRoot, RendererRoot vl) {
         setup(modelRoot, vl, null);
@@ -84,14 +86,18 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     /**
-     * @param b
+     * Sets the center train.
+     *
+     * @param b the button or flag parameter
      */
     public void setCenterTrain(boolean b) {
         centerTrain = b;
     }
 
     /**
-     * @param newTrainNumber
+     * Performs the display operation.
+     *
+     * @param newTrainNumber the new train number parameter
      */
     public void display(int newTrainNumber) {
         showingOrder = false;
@@ -102,6 +108,11 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         resetPreferredSize();
     }
 
+    /**
+     * Display.
+     * @param engine the engine
+     * @param wagons the wagons
+     */
     private void display(int engine, List<Integer> wagons) {
         images = new Image[1 + wagons.size()];
         // images[0] = vl.getTrainImages().getSideOnEngineImage(
@@ -126,8 +137,10 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     /**
-     * @param newTrainNumber
-     * @param newScheduleOrderID
+     * Performs the display operation.
+     *
+     * @param newTrainNumber the new train number parameter
+     * @param newScheduleOrderID the new schedule order id parameter
      */
     public void display(int newTrainNumber, int newScheduleOrderID) {
         showingOrder = true;
@@ -148,6 +161,9 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         resetPreferredSize();
     }
 
+    /**
+     * Reset preferred size.
+     */
     private void resetPreferredSize() {
         int width = 0;
 
@@ -160,9 +176,11 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
@@ -171,6 +189,15 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         player = modelRoot.getPlayer();
     }
 
+    /**
+     * Returns the list cell renderer component.
+     * @param list the list
+     * @param value the value
+     * @param trainId the train id
+     * @param isSelected the is selected
+     * @param cellHasFocus the cell has focus
+     * @return the list cell renderer component
+     */
     @Override
     public Component getListCellRendererComponent(JList<? extends Train> list, Train value, int trainId, boolean isSelected, boolean cellHasFocus) {
 
@@ -190,18 +217,28 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         return this;
     }
 
+    /**
+     * Returns the height.
+     * @return the height
+     */
     @Override
     public int getHeight() {
         return height;
     }
 
     /**
-     * @param i
+     * Sets the height.
+     *
+     * @param i the index of the item
      */
     public void setHeight(int i) {
         height = i;
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

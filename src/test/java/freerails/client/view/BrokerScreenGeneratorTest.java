@@ -34,7 +34,7 @@ import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 /**
- *
+ * Tests broker screen generator behavior.
  */
 public class BrokerScreenGeneratorTest extends TestCase {
 
@@ -43,7 +43,8 @@ public class BrokerScreenGeneratorTest extends TestCase {
     private World world;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {

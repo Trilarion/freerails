@@ -260,6 +260,10 @@ public class BuildTrackController implements GameModel {
         isBuildTrackSuccessful = false;
     }
 
+    /**
+     * Returns the current status of the track path search.
+     * @return the path finder status for the active search
+     */
     private PathFinderStatus searchStatus() {
         if (buildNewTrack) {
             return trackPathFinder.getStatus();
@@ -333,6 +337,8 @@ public class BuildTrackController implements GameModel {
     }
 
     /**
+     * Sets the target point.
+     *
      * @param newTargetPoint The m_targetPoint to set.
      */
     private void setTargetPoint(Vec2D newTargetPoint) {
@@ -340,6 +346,10 @@ public class BuildTrackController implements GameModel {
         modelRoot.setProperty(ModelRootProperty.THINKING_POINT, newTargetPoint);
     }
 
+    /**
+     * Sets the visible.
+     * @param show the show
+     */
     private void setVisible(boolean show) {
         if (show == visible) {
             return;
@@ -353,14 +363,14 @@ public class BuildTrackController implements GameModel {
     }
 
     /**
-     *
+     * Performs the show operation.
      */
     public void show() {
         setVisible(true);
     }
 
     /**
-     *
+     * Performs the update operation.
      */
     @Override
     public void update() {
@@ -371,7 +381,7 @@ public class BuildTrackController implements GameModel {
     }
 
     /**
-     *
+     * Updates the until complete.
      */
     public void updateUntilComplete() {
         while (searchStatus() != PathFinderStatus.PATH_FOUND) {
@@ -482,6 +492,10 @@ public class BuildTrackController implements GameModel {
         }
     }
 
+    /**
+     * Returns the build mode.
+     * @return the build mode
+     */
     private BuildMode getBuildMode() {
         BuildMode mode;
         mode = (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);

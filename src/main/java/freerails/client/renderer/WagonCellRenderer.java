@@ -23,10 +23,18 @@ import freerails.model.operations.cargo.Cargo;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Provides the wagon cell renderer functionality.
+ */
 public class WagonCellRenderer implements ListCellRenderer<Cargo> {
 
     private final Component[] labels;
 
+    /**
+     * Creates a wagon cell renderer instance.
+     * @param listModel the list model
+     * @param rendererRoot the renderer root
+     */
     public WagonCellRenderer(ListModel<Cargo> listModel, RendererRoot rendererRoot) {
 
         labels = new Component[listModel.getSize()];
@@ -46,13 +54,14 @@ public class WagonCellRenderer implements ListCellRenderer<Cargo> {
     }
 
     /**
+     * Returns the list cell renderer component.
      *
-     * @param list
+     * @param list the list parameter
      * @param value value to display
      * @param index cell index
      * @param isSelected is the cell selected
      * @param cellHasFocus the list and the cell have the focus
-     * @return
+     * @return the list cell renderer component produced by this method
      */
     @Override
     public Component getListCellRendererComponent(JList<? extends Cargo> list, Cargo value,

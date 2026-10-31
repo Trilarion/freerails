@@ -37,7 +37,7 @@ import freerails.model.player.Player;
 import junit.framework.TestCase;
 
 /**
- *
+ * Tests stock price calculator behavior.
  */
 public class StockPriceCalculatorTest extends TestCase {
 
@@ -45,7 +45,8 @@ public class StockPriceCalculatorTest extends TestCase {
     private StockPriceCalculator calculator;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -55,7 +56,7 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     /**
-     *
+     * Verifies that the first-year check is true initially and changes after the first year elapses.
      */
     public void testIsFirstYear() {
         assertTrue(calculator.isFirstYear(0));
@@ -69,7 +70,7 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests net worth behavior.
      */
     public void testNetWorth() {
         Money initialNetworth = new Money(500000);
@@ -96,7 +97,7 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     /**
-     *
+     * Performs advance time one tick.
      */
     private void advanceTimeOneTick() {
         Clock clock = world.getClock();
@@ -108,7 +109,7 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     /**
-     *
+     * Performs advance time one year.
      */
     private void advanceTimeOneYear() {
         Clock clock = world.getClock();
@@ -117,7 +118,7 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests profits last year behavior.
      */
     public void testProfitsLastYear() {
         Clock clock = world.getClock();
@@ -134,8 +135,8 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     /**
-     *
-     * @param income
+     * Adds income.
+     * @param income the income to use in the test.
      */
     private void addIncome(Money income) {
         CargoBatch batch = new CargoBatch(0, Vec2D.ZERO, 0, 0);
@@ -145,7 +146,7 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests calculate behavior.
      */
     public void testCalculate() {
         Money stockPrice = calculator.calculate()[0].currentPrice;
@@ -161,6 +162,9 @@ public class StockPriceCalculatorTest extends TestCase {
         assertEquals(new Money(11), stockPrice);
     }
 
+    /**
+     * Tests sparse player ids in stock transactions behavior.
+     */
     public void testSparsePlayerIdsInStockTransactions() {
         World sparseWorld = WorldGenerator.minimalWorld();
         Player holder = new Player(40, "Holder");

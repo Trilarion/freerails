@@ -32,14 +32,21 @@ public class JFrameMinimumSizeEnforcer implements ComponentListener {
     private final int minHeight;
 
     /**
-     * @param w
-     * @param h
+     * Creates a listener that enforces the specified minimum dimensions.
+     *
+     * @param w minimum width in pixels
+     * @param h minimum height in pixels
      */
     public JFrameMinimumSizeEnforcer(int w, int h) {
         minHeight = h;
         minWidth = w;
     }
 
+    /**
+     * Resizes the component if necessary to meet the configured minimum size.
+     *
+     * @param e component resize event
+     */
     @Override
     public void componentResized(ComponentEvent e) {
         Component c = e.getComponent();
@@ -66,14 +73,29 @@ public class JFrameMinimumSizeEnforcer implements ComponentListener {
         }
     }
 
+    /**
+     * Ignores component movement because it does not affect the minimum size.
+     *
+     * @param e component movement event
+     */
     @Override
     public void componentMoved(ComponentEvent e) {
     }
 
+    /**
+     * Ignores component visibility changes.
+     *
+     * @param e component visibility event
+     */
     @Override
     public void componentShown(ComponentEvent e) {
     }
 
+    /**
+     * Ignores component visibility changes.
+     *
+     * @param e component visibility event
+     */
     @Override
     public void componentHidden(ComponentEvent e) {
     }

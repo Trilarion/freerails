@@ -32,12 +32,12 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 
 /**
- *
+ * Tests valid track configurations behavior.
  */
 public class ValidTrackConfigurationsTest extends TestCase {
 
     /**
-     *
+     * Tests track piece is legal behavior.
      */
     public void testTrackPieceIsLegal() {
         ArrayList<String> templates = new ArrayList<>();

@@ -54,7 +54,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     private int validEngineId;
 
     /**
-     *
+     * Sets up world.
      */
     @Override
     protected void setupWorld() {
@@ -95,7 +95,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests next vector behavior.
      */
     public void testNextVector() {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
@@ -106,7 +106,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests next speeds behavior.
      */
     public void testNextSpeeds() {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
@@ -122,6 +122,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         assertEquals(expectedSpeed, speeds.calculateSpeedAtTime(t), 0.0d);
     }
 
+    /**
+     * Tests detailed motion fidelity retains acceleration profile behavior.
+     */
     public void testDetailedMotionFidelityRetainsAccelerationProfile() {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world),
                 MoveTrainMoveGenerator.MotionFidelity.DETAILED_ACCELERATION);
@@ -133,7 +136,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move behavior.
      */
     public void testMove() {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
@@ -143,7 +146,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move2 behavior.
      */
     public void testMove2() {
         Status status;
@@ -219,6 +222,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         move.apply(world);
     }
 
+    /**
+     * Sets up loop of track.
+     */
     private void setupLoopOfTrack() {
         world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
@@ -249,7 +255,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests moving round loop behavior.
      */
     public void testMovingRoundLoop() {
         setupLoopOfTrack();
@@ -261,7 +267,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests get tiles behavior.
      */
     public void testGetTiles() {
         setupLoopOfTrack();
@@ -286,7 +292,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests find next vector behavior.
      */
     public void testFindNextVector() {
         setupLoopOfTrack();

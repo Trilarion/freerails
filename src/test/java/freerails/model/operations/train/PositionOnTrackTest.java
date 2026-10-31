@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 public class PositionOnTrackTest extends TestCase {
 
     /**
-     *
+     * Tests validation behavior.
      */
     public void testValidation() {
         assertTrue(PositionOnTrack.MAX_COORDINATE < 70000);
@@ -47,7 +47,7 @@ public class PositionOnTrackTest extends TestCase {
     }
 
     /**
-     *
+     * Tests to int behavior.
      */
     public void testToInt() {
         PositionOnTrack p1 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
@@ -56,7 +56,7 @@ public class PositionOnTrackTest extends TestCase {
     }
 
     /**
-     *
+     * Tests set values from int behavior.
      */
     public void testSetValuesFromInt() {
         PositionOnTrack p1 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
@@ -76,6 +76,9 @@ public class PositionOnTrackTest extends TestCase {
     /*
      * Test for boolean equals(Object)
      */
+    /**
+     * Tests equals object behavior.
+     */
     public void testEqualsObject() {
         PositionOnTrack p1 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
         PositionOnTrack p2 = new PositionOnTrack(new Vec2D(10, 20), TileTransition.NORTH);
@@ -88,6 +91,12 @@ public class PositionOnTrackTest extends TestCase {
     }
 
     // TODO replace with TestUtils
+    /**
+     * Asserts no exception.
+     * @param x the x to use in the test.
+     * @param y the y to use in the test.
+     * @param v the v to use in the test.
+     */
     private void assertNoException(int x, int y, TileTransition v) {
         try {
             new PositionOnTrack(new Vec2D(x, y), v);
@@ -96,6 +105,12 @@ public class PositionOnTrackTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts exception.
+     * @param x the x to use in the test.
+     * @param y the y to use in the test.
+     * @param v the v to use in the test.
+     */
     private void assertException(int x, int y, TileTransition v) {
         try {
             new PositionOnTrack(new Vec2D(x, y), v);

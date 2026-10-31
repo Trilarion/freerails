@@ -32,7 +32,8 @@ public class SimpleAStarPathFinderTest extends TestCase {
     private SimpleAStarPathFinder pathFinder;
 
     /**
-     *
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -42,7 +43,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
     }
 
     /**
-     *
+     * Tests findpath behavior.
      */
     public void testFindpath() {
         int i = pathFinder.findstep(0, new int[]{1}, map);
@@ -74,7 +75,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
     }
 
     /**
-     *
+     * Tests explorer behavior.
      */
     public void testExplorer() {
         assertEquals(0, map.getPosition());
@@ -97,6 +98,9 @@ public class SimpleAStarPathFinderTest extends TestCase {
         assertEquals(5, map.getVertexConnectedByEdge());
     }
 
+    /**
+     * Provides test support for map.
+     */
     private static class Map implements GraphExplorer {
         // Look at SimpleAStarPathFinderTest.svg to see it
         private final Node[] nodes = new Node[]{
@@ -117,17 +121,28 @@ public class SimpleAStarPathFinderTest extends TestCase {
 
         private int branch = -1;
 
+        /**
+         * Returns position.
+         * @return the result of get position.
+         */
         @Override
         public int getPosition() {
             return position;
         }
 
+        /**
+         * Sets position.
+         * @param vertex the vertex used by this test.
+         */
         @Override
         public void setPosition(int vertex) {
             position = vertex;
             branch = -1;
         }
 
+        /**
+         * Advances to the next edge.
+         */
         @Override
         public void nextEdge() {
             if (hasNextEdge()) {
@@ -137,32 +152,53 @@ public class SimpleAStarPathFinderTest extends TestCase {
             }
         }
 
+        /**
+         * Returns vertex connected by edge.
+         * @return the result of get vertex connected by edge.
+         */
         @Override
         public int getVertexConnectedByEdge() {
             return nodes[position].edges[branch];
         }
 
+        /**
+         * Returns edge cost.
+         * @return the result of get edge cost.
+         */
         @Override
         public int getEdgeCost() {
             return nodes[position].distances[branch];
         }
 
+        /**
+         * Indicates whether next edge is present.
+         * @return whether next edge is present.
+         */
         @Override
         public boolean hasNextEdge() {
             return nodes[position].edges.length > branch + 1;
         }
 
+        /**
+         * Performs move forward.
+         */
         @Override
         public void moveForward() {
             setPosition(getVertexConnectedByEdge());
         }
     }
 
+    /**
+     * Provides test support for node.
+     */
     private static class Node {
 
         int[] edges;
         int[] distances;
 
+        /**
+         * Provides test support for node.
+         */
         Node(int[] e, int[] d) {
             if (e.length != d.length) {
                 throw new IllegalArgumentException("e.length=" + e.length  + ", e.length=" + e.length);

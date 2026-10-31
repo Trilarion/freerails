@@ -52,9 +52,11 @@ public class LauncherClient extends FreerailsClient {
     private RendererRoot rendererRoot;
 
     /**
-     * @param name
-     * @param screenMode
-     * @param displayMode
+     * Creates a launcher client instance.
+     *
+     * @param name the name parameter
+     * @param screenMode the screen mode parameter
+     * @param displayMode the map coordinate
      */
     public LauncherClient(String name, int screenMode, Vec2D displayMode) {
         this.name = name;
@@ -71,6 +73,9 @@ public class LauncherClient extends FreerailsClient {
         screenHandler = new ScreenHandler(createClientJFrame, screenMode, displayMode);
     }
 
+    /**
+     * Client updates.
+     */
     @Override
     protected void clientUpdates() {
         BuildTrackController buildTrackController = factory.getBuildTrackController();
@@ -95,12 +100,18 @@ public class LauncherClient extends FreerailsClient {
     }
 
     /**
-     * @return
+     * Returns the screen handler.
+     *
+     * @return the screen handler produced by this method
      */
     public ScreenHandler getScreenHandler() {
         return screenHandler;
     }
 
+    /**
+     * New world.
+     * @param world the world
+     */
     @Override
     protected void newWorld(World world) {
         try {
@@ -125,6 +136,11 @@ public class LauncherClient extends FreerailsClient {
         }
     }
 
+    /**
+     * Sets the property.
+     * @param property the property
+     * @param value the value
+     */
     @Override
     public void setProperty(ClientProperty property, Serializable value) {
         super.setProperty(property, value);

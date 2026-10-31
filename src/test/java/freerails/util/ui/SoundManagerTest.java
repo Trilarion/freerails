@@ -4,8 +4,15 @@ import junit.framework.TestCase;
 
 import java.io.IOException;
 
+/**
+ * Tests sound manager behavior.
+ */
 public class SoundManagerTest extends TestCase {
 
+    /**
+     * Tests loads and caches sound clip behavior.
+     * @throws Exception if the test loads and caches sound clip operation fails.
+     */
     public void testLoadsAndCachesSoundClip() throws Exception {
         SoundManager manager = SoundManager.getInstance();
         String sound = "/freerails/client/sounds/cash.wav";
@@ -14,6 +21,9 @@ public class SoundManagerTest extends TestCase {
         manager.addClip(sound);
     }
 
+    /**
+     * Tests missing sound resource is reported behavior.
+     */
     public void testMissingSoundResourceIsReported() {
         try {
             SoundManager.getInstance().addClip("/missing-test-sound.wav");
@@ -24,6 +34,9 @@ public class SoundManagerTest extends TestCase {
         }
     }
 
+    /**
+     * Tests disabled sound playback does not load or play clip behavior.
+     */
     public void testDisabledSoundPlaybackDoesNotLoadOrPlayClip() {
         SoundManager manager = SoundManager.getInstance();
         manager.setPlayingSounds(false);

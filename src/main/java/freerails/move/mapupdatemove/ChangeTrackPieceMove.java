@@ -35,33 +35,49 @@ import java.util.Objects;
 
 /**
  * This Move adds, removes, or upgrades the track on a single tile.
+
+ * @param trackPieceBefore the track piece present before the change, or {@code null}
+ * @param trackPieceAfter the track piece to place, or {@code null} to remove track
+ * @param location the map location of the terrain
  */
 public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece trackPieceAfter, Vec2D location) implements TrackMove {
 
     private static final long serialVersionUID = 4120849958418591801L;
 
     /**
-     * @param trackPieceBefore
-     * @param trackPieceAfter
-     * @param location
+     * Creates a move that replaces the track piece at a map location.
+     *
+     * @param trackPieceBefore the track piece present before the change, or {@code null}
+     * @param trackPieceAfter the track piece to place, or {@code null} to remove track
+     * @param location the map location of the tile or track section
      */
     public ChangeTrackPieceMove {
     }
 
     /**
-     * @return
+     * Returns the track piece that was present before this move.
+     *
+     * @return the previous track piece, or {@code null} if the tile had no track
      */
     public TrackPiece getOldTrackPiece() {
         return trackPieceBefore;
     }
 
     /**
-     * @return
+     * Returns the track piece this move will place.
+     *
+     * @return the new track piece, or {@code null} if the move removes track
      */
     public TrackPiece getNewTrackPiece() {
         return trackPieceAfter;
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -151,6 +167,11 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         Status status = applicable(world);
@@ -165,7 +186,7 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
     }
 
     /**
-     * @return
+     * @return the bounds of the map tiles updated by this move
      */
     @Override
     public Rectangle getUpdatedTiles() {

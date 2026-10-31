@@ -2,8 +2,14 @@ package freerails.util;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests pair behavior.
+ */
 public class PairTest extends TestCase {
 
+    /**
+     * Tests equals handles null values and is reflexive behavior.
+     */
     public void testEqualsHandlesNullValuesAndIsReflexive() {
         Pair<String, Integer> bothNull = new Pair<>(null, null);
         Pair<String, Integer> sameValues = new Pair<>(null, null);
@@ -15,6 +21,9 @@ public class PairTest extends TestCase {
         assertFalse(bothNull.equals(new Pair<>("value", null)));
     }
 
+    /**
+     * Tests accessors string representation and type sensitive equality behavior.
+     */
     public void testAccessorsStringRepresentationAndTypeSensitiveEquality() {
         Pair<String, Integer> pair = new Pair<>("route", 12);
 

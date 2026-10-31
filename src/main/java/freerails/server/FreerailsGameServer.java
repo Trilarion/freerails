@@ -66,14 +66,18 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     private ServerGameModel serverGameModel;
 
     /**
-     * @param saveGamesManager
+     * Creates a server that uses the supplied save-game manager.
+     *
+     * @param saveGamesManager the manager used to load and save games
      */
     public FreerailsGameServer(SaveGamesManager saveGamesManager) {
         this.saveGamesManager = saveGamesManager;
     }
 
     /**
-     * @param connection
+     * Handles a new client connection, including authentication and initial state delivery.
+     *
+     * @param connection the client connection to add to the server
      */
     @Override
     public synchronized void addConnection(Connection connection) {
@@ -132,14 +136,18 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * @param listener
+     * Registers a listener for server property changes.
+     *
+     * @param listener the property-change listener to register
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
     /**
-     * @return
+     * Returns the number of currently open client connections.
+     *
+     * @return the number of open connections
      */
     @Override
     public synchronized int getNumberOpenConnections() {
@@ -157,7 +165,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * @return
+     * Returns the usernames of the players configured for the current game.
+     *
+     * @return the player usernames
      */
     public String[] getPlayerNames() {
         String[] playerNames = new String[players.size()];
@@ -170,12 +180,20 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * @param newPlayersAllowed
+     * Sets whether new players may join the current game.
+     *
+     * @param newPlayersAllowed whether new players may join the game
      */
     public void setNewPlayersAllowed(boolean newPlayersAllowed) {
         this.newPlayersAllowed = newPlayersAllowed;
     }
 
+    /**
+     * Returns whether a player with the specified username is registered.
+     *
+     * @param username the username
+     * @return true if player, otherwise false
+     */
     private boolean isPlayer(String username) {
         for (LogOnCredentials p : players) {
             if (p.username().equals(username)) return true;
@@ -184,8 +202,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * @param saveGameName
-     * @throws IOException
+     * @param saveGameName the name of the saved game to load or save
+     * @throws IOException if the operation cannot complete because of an input/output error
      */
     @Override
     public void loadGame(String saveGameName) throws IOException {
@@ -217,7 +235,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * @param player
+     * Removes the player at the specified index from the logged-in set.
+     *
+     * @param player the player who owns or performs the operation
      */
     public void logoff(int player) {
         LogOnCredentials np = players.get(player);
@@ -225,8 +245,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * @param credentials
-     * @return
+     * Authenticates credentials and returns the login result.
+     *
+     * @param credentials the credentials to authenticate
+     * @return the login response
      */
     public LogOnResponse logon(LogOnCredentials credentials) {
         boolean isReturningPlayer = isPlayer(credentials.username());
@@ -252,7 +274,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * @param mapName
+     * Creates a new game from the specified scenario map.
+     *
+     * @param mapName the name of the scenario map to load
      */
     @Override
     public void newGame(String mapName) {
@@ -285,6 +309,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         logger.debug("newGame");
     }
 
+    /**
+     * Removes the remove connection from this freerails game server.
+     *
+     * @param p the p
+     */
     private void removeConnection(LogOnCredentials p) {
         String[] before = getPlayerNames();
         Connection connection = acceptedConnections.get(p);
@@ -304,13 +333,18 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
     }
 
+    /**
+     * Performs the run operation.
+     */
     @Override
     public void run() {
         status.countDown();
     }
 
     /**
-     * @param saveGameName
+     * Saves the current server game model under the supplied name.
+     *
+     * @param saveGameName the name of the saved game to load or save
      */
     @Override
     public void saveGame(String saveGameName) {
@@ -325,6 +359,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         sendToAll(request);
     }
 
+    /**
+     * Performs the send to all operation.
+     *
+     * @param message the message
+     */
     private void sendToAll(Serializable message) {
         sendToAllExcept(null, message);
     }
@@ -350,6 +389,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         }
     }
 
+    /**
+     * Performs the send list of connected players2 clients operation.
+     */
     private void sendListOfConnectedPlayers2Clients() {
         // Send the client the list of players.
 
@@ -358,6 +400,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         sendToAll(request);
     }
 
+    /**
+     * Performs the send world updated command operation.
+     */
     private void sendWorldUpdatedCommand() {
         // Send the world to the clients.
 
@@ -368,7 +413,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
     // TODO this is very convoluted with ServerGameModel and MoveReceiver cyclically referencing each other
     /**
-     * @param serverGameModel
+     * Installs the server-side model and connects its move receiver to this server.
+     *
+     * @param serverGameModel the server-side model to install
      */
     public void setServerGameModel(ServerGameModel serverGameModel) {
         this.serverGameModel = serverGameModel;
@@ -457,7 +504,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     *
+     * Coordinates client connections, game sessions, and the server-side game model.
      */
     @Override
     public void refreshSavedGames() {
@@ -467,6 +514,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         sendToAll(setSaveGames);
     }
 
+    /**
+     * Returns the status.
+     *
+     * @return the status
+     */
     public CountDownLatch getStatus() {
         return status;
     }

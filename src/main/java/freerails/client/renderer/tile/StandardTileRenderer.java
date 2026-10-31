@@ -36,28 +36,42 @@ import java.util.List;
 public class StandardTileRenderer extends AbstractTileRenderer {
 
     /**
-     * @param imageManager
-     * @param typesTreatedAsSame
-     * @param terrainType
-     * @throws IOException
+     * Creates a standard tile renderer instance.
+     *
+     * @param imageManager the image manager parameter
+     * @param typesTreatedAsSame the types treated as same parameter
+     * @param terrainType the terrain type parameter
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public StandardTileRenderer(ImageManager imageManager, List<Integer> typesTreatedAsSame, Terrain terrainType) throws IOException {
         super(terrainType, typesTreatedAsSame, 1);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
     }
 
+    /**
+     * Generates the filename of this terrain type's tile image.
+     * @return the terrain tile image filename
+     */
     private String generateFilename() {
         return "terrain" + File.separator + getTerrainTypeName() + ".png";
     }
 
+    /**
+     * Selects the tile icon index.
+     * @param mapLocation the map location
+     * @param world the world
+     * @return the index of the selected tile icon
+     */
     @Override
     public int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world) {
         return 0;
     }
 
     /**
-     * @param i
-     * @return
+     * Performs the generate file name number operation.
+     *
+     * @param i the index of the item
+     * @return the file name number produced by this method
      */
     @Override
     protected String generateFileNameNumber(int i) {

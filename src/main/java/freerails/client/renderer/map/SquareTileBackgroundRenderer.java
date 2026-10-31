@@ -38,7 +38,9 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
     private final MapLayerRenderer mapLayerRenderer;
 
     /**
-     * @param mapLayerRenderer
+     * Creates a square tile background renderer instance.
+     *
+     * @param mapLayerRenderer the map layer renderer parameter
      */
     public SquareTileBackgroundRenderer(MapLayerRenderer mapLayerRenderer) {
         this.mapLayerRenderer = Utils.verifyNotNull(mapLayerRenderer);
@@ -47,10 +49,10 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
     /**
      * The map has changed.
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     * @param width the width parameter
+     * @param height the height parameter
      */
     @Override
     protected void paintBufferRectangle(int x, int y, int width, int height) {
@@ -66,8 +68,10 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
     }
 
     /**
-     * @param g
-     * @param tileLocation
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param tileLocation the map coordinate
      */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
@@ -75,7 +79,9 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
     }
 
     /**
-     * @param tileLocation
+     * Performs the refresh tile operation.
+     *
+     * @param tileLocation the map coordinate
      */
     @Override
     public void refreshTile(Vec2D tileLocation) {

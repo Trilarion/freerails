@@ -24,8 +24,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
+/**
+ * Tests bidirectional iterator behavior.
+ */
 public class BidirectionalIteratorTest extends TestCase {
 
+    /**
+     * Tests traverses forwards and backwards behavior.
+     */
     public void testTraversesForwardsAndBackwards() {
         BidirectionalIterator<String> iterator = new BidirectionalIterator<>(Arrays.asList("first", "second", "third"));
 
@@ -48,6 +54,9 @@ public class BidirectionalIteratorTest extends TestCase {
         assertFalse(iterator.hasPrevious());
     }
 
+    /**
+     * Tests empty iterator has no current element or traversal behavior.
+     */
     public void testEmptyIteratorHasNoCurrentElementOrTraversal() {
         BidirectionalIterator<String> iterator = new BidirectionalIterator<>(Collections.emptyList());
 
@@ -56,6 +65,9 @@ public class BidirectionalIteratorTest extends TestCase {
         assertFalse(iterator.hasPrevious());
     }
 
+    /**
+     * Tests next and previous throw when traversal is unavailable behavior.
+     */
     public void testNextAndPreviousThrowWhenTraversalIsUnavailable() {
         BidirectionalIterator<Integer> iterator = new BidirectionalIterator<>(Collections.singletonList(1));
 
@@ -74,6 +86,9 @@ public class BidirectionalIteratorTest extends TestCase {
         }
     }
 
+    /**
+     * Tests goto last rejects empty list behavior.
+     */
     public void testGotoLastRejectsEmptyList() {
         BidirectionalIterator<Integer> iterator = new BidirectionalIterator<>(Collections.emptyList());
 

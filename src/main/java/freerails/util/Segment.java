@@ -24,6 +24,9 @@ import java.util.Objects;
 /**
  * A directed straight-line segment between two two-dimensional integer
  * points. Coordinate units are arbitrary.
+ *
+ * @param a starting endpoint
+ * @param b ending endpoint
  */
 public record Segment(Vec2D a, Vec2D b) implements Serializable {
 

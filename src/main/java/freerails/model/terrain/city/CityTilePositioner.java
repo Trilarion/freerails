@@ -35,6 +35,12 @@ final class CityTilePositioner {
     private final List<Terrain> resourceTerrainTypes = new ArrayList<>();
     private final List<Terrain> industryTerrainTypes = new ArrayList<>();
 
+    /**
+     * Creates a city tile positioner from the supplied values.
+     *
+     * @param world the world whose state is used or updated
+     * @param random the random
+     */
     CityTilePositioner(World world, Random random) {
         this.random = random;
 
@@ -53,11 +59,21 @@ final class CityTilePositioner {
         }
     }
 
+    /**
+     * Adds the add resource tile to this city tile positioner.
+     *
+     * @param city the city
+     */
     void addResourceTile(CityModel city) {
         int tileTypeNo = random.nextInt(resourceTerrainTypes.size());
         city.addTile(resourceTerrainTypes.get(tileTypeNo));
     }
 
+    /**
+     * Adds the add industry tile to this city tile positioner.
+     *
+     * @param city the city
+     */
     void addIndustryTile(CityModel city) {
         List<Terrain> availableIndustries = city.getIndustriesNotAtCity();
         if (!availableIndustries.isEmpty()) {
@@ -66,6 +82,11 @@ final class CityTilePositioner {
         }
     }
 
+    /**
+     * Adds the add urban tile to this city tile positioner.
+     *
+     * @param city the city
+     */
     void addUrbanTile(CityModel city) {
         int tileTypeNo = random.nextInt(urbanTerrainTypes.size());
         city.addTile(urbanTerrainTypes.get(tileTypeNo));

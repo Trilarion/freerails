@@ -201,7 +201,7 @@ public class Train extends Identifiable {
     /**
      * Convenience function.
      *
-     * @param time
+     * @param time the time at which train movement is checked
      * @return {@code true} if the train's current motion ends with nonzero speed
      */
     public boolean isMoving(@NotNull Time time) {

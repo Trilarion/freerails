@@ -22,12 +22,21 @@ import junit.framework.TestCase;
 
 import java.util.List;
 
+/**
+ * Tests terrain utils behavior.
+ */
 public class TerrainUtilsTest extends TestCase {
 
+    /**
+     * Tests protected terrain is never replaced behavior.
+     */
     public void testProtectedTerrainIsNeverReplaced() {
         assertEquals(8, TerrainUtils.randomizeTerrain(8, List.of(4, 7), List.of(8, 9)));
     }
 
+    /**
+     * Tests unprotected terrain uses clear or one of the candidates behavior.
+     */
     public void testUnprotectedTerrainUsesClearOrOneOfTheCandidates() {
         List<Integer> candidates = List.of(7, 8, 9);
 

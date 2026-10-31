@@ -40,10 +40,12 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
     private static final int[] X_LOOK_AT = {-1, 0, 1, 0};
 
     /**
-     * @param imageManager
-     * @param typesTreatedAsSame
-     * @param tileModel
-     * @throws IOException
+     * Creates a river style tile renderer instance.
+     *
+     * @param imageManager the image manager parameter
+     * @param typesTreatedAsSame the types treated as same parameter
+     * @param tileModel the tile model parameter
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public RiverStyleTileRenderer(ImageManager imageManager, List<Integer> typesTreatedAsSame, Terrain tileModel) throws IOException {
         super(tileModel, typesTreatedAsSame, 16);
@@ -70,8 +72,10 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * @param i
-     * @return
+     * Performs the generate file name number operation.
+     *
+     * @param i the index of the item
+     * @return the file name number produced by this method
      */
     @Override
     protected String generateFileNameNumber(int i) {

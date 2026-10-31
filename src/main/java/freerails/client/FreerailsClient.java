@@ -55,12 +55,14 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     private boolean readerFailureReported;
 
     /**
-     *
+     * Creates a freerails client instance.
      */
     public FreerailsClient() {}
 
     /**
-     * @return
+     * Returns the move fork.
+     *
+     * @return the move fork produced by this method
      */
     protected final MoveChainFork getMoveFork() {
         return moveChainFork;
@@ -114,6 +116,10 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         connectionToServer.close();
     }
 
+    /**
+     * Sets the game model.
+     * @param world the world
+     */
     @Override
     public final void setGameModel(World world) {
         this.world = world;
@@ -127,23 +133,38 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      */
     protected void newWorld(World world) {}
 
+    /**
+     * Sets the property.
+     * @param property the property
+     * @param value the value
+     */
     @Override
     public void setProperty(ClientProperty property, Serializable value) {
         properties.put(property, value);
     }
 
     /**
-     * @param property
-     * @return
+     * Returns the property.
+     *
+     * @param property the client property to access
+     * @return the property produced by this method
      */
     public final Serializable getProperty(ClientProperty property) {
         return properties.get(property);
     }
 
+    /**
+     * Reads the next object received from the server.
+     * @return the received object
+     */
     public final Serializable read() {
         return connectionToServer.receiveObject();
     }
 
+    /**
+     * Write.
+     * @param fs the fs
+     */
     public final void write(Serializable fs) {
         try {
             connectionToServer.sendObject(fs);
@@ -210,7 +231,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     /**
-     * @return
+     * Returns the world.
+     *
+     * @return the world produced by this method
      */
     public final World getWorld() {
         return world;
@@ -235,7 +258,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     /**
-     * @param message
+     * Performs the send command operation.
+     *
+     * @param message the message parameter
      */
     @Override
     public void sendCommand(CommandToServer message) {
@@ -243,7 +268,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     /**
-     * @param moveGenerator
+     * Performs the process move generator operation.
+     *
+     * @param moveGenerator the move generator parameter
      */
     @Override
     public void processMoveGenerator(MoveGenerator moveGenerator) {
@@ -253,7 +280,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     /**
-     * @return
+     * Returns the last tick time.
+     *
+     * @return the last tick time produced by this method
      */
     protected long getLastTickTime() {
         return moveChainFork.getLastTickTime();

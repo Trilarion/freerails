@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Creates a move that adds a train with the selected engine, wagons, and schedule.
  */
 public class AddTrainMoveGenerator implements MoveGenerator {
 
@@ -52,11 +53,13 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     private final UnmodifiableSchedule schedule;
 
     /**
-     * @param engineId
-     * @param wagons
-     * @param p
-     * @param player
-     * @param schedule
+     * Creates a generator for adding a train with the specified consist and schedule.
+     *
+     * @param engineId the identifier of the engine for the new train
+     * @param wagons the wagon type identifiers for the new train
+     * @param p the location at which to build the train
+     * @param player the player who owns or performs the operation
+     * @param schedule the stop schedule for the new train
      */
     public AddTrainMoveGenerator(int engineId, List<Integer> wagons, Vec2D p, Player player, UnmodifiableSchedule schedule) {
         this.engineId = engineId;
@@ -66,6 +69,12 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         this.schedule = Utils.verifyNotNull(schedule);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -78,6 +87,11 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         return wagons.equals(addTrainPreMove.wagons);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         int result;

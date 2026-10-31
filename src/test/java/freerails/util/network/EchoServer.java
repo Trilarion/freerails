@@ -31,7 +31,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- *
+ * Provides test support for echo server.
  */
 public class EchoServer {
 
@@ -43,8 +43,8 @@ public class EchoServer {
     private CountDownLatch signal;
 
     /**
-     *
-     * @return
+     * Returns the local port.
+     * @return the local port.
      */
     public int getLocalPort() {
         if (!running) {
@@ -54,8 +54,9 @@ public class EchoServer {
     }
 
     /**
-     *
-     * @throws IOException
+     * Performs start running.
+     * @param address the address to use in the test.
+     * @throws IOException if the start running operation fails.
      */
     public void startRunning(InetSocketAddress address) throws IOException {
         Utils.verifyNotNull(address);
@@ -135,15 +136,15 @@ public class EchoServer {
     }
 
     /**
-     *
-     * @return
+     * Indicates whether running.
+     * @return whether running.
      */
     public boolean isRunning() {
         return running;
     }
 
     /**
-     *
+     * Performs stop running.
      */
     public void stopRunning() {
         if (!running) {
@@ -164,8 +165,8 @@ public class EchoServer {
     }
 
     /**
-     *
-     * @return
+     * Returns the number active connections.
+     * @return the number active connections.
      */
     public int getNumberActiveConnections() {
         return activeConnections.size();

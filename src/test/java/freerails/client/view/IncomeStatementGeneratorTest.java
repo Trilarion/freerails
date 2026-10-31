@@ -38,7 +38,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
     private IncomeStatementGenerator balanceSheetGenerator;
 
     /**
-     *
+     * Tests cal expense behavior.
      */
     public void testCalExpense() {
         balanceSheetGenerator.calculateAll();
@@ -56,6 +56,11 @@ public class IncomeStatementGeneratorTest extends TestCase {
         assertEquals(amount, money);
     }
 
+    /**
+     * Adds trans.
+     * @param category the category used by this test.
+     * @param amount the amount used by this test.
+     */
     private void addTrans(CargoCategory category, Money amount) {
         // TODO i is not an id
         for (int i = 0; i < world.getCargos().size(); i++) {
@@ -73,7 +78,8 @@ public class IncomeStatementGeneratorTest extends TestCase {
     }
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {

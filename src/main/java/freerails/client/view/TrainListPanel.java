@@ -100,6 +100,10 @@ public class TrainListPanel extends JPanel implements View {
         list1.setCellRenderer(trainSummaryPanel1);
         list1.setDoubleBuffered(true);
         list1.addKeyListener(new KeyAdapter() {
+            /**
+             * Key pressed.
+             * @param e the e
+             */
             @Override
             public void keyPressed(KeyEvent e) {
                 list1KeyPressed(e);
@@ -107,6 +111,10 @@ public class TrainListPanel extends JPanel implements View {
         });
         list1.addListSelectionListener(this::list1ValueChanged);
         list1.addMouseListener(new MouseAdapter() {
+            /**
+             * Mouse clicked.
+             * @param e the e
+             */
             @Override
             public void mouseClicked(MouseEvent e) {
                 list1MouseClicked(e);
@@ -155,21 +163,37 @@ public class TrainListPanel extends JPanel implements View {
         add(incomeLabel, new GridBagConstraints());
     }
 
+    /**
+     * Creates a train list panel instance.
+     * @param isInRHSJTabPane the is in rhsj tab pane
+     */
     public TrainListPanel(boolean isInRHSJTabPane) {
         this();
         rhsjTabPane = isInRHSJTabPane;
     }
 
 
+    /**
+     * List1 value changed.
+     * @param evt the evt
+     */
     private void list1ValueChanged(ListSelectionEvent evt) {
         // if a train is selected, enable the 'show details' button.
         showDetails.setEnabled(list1.getSelectedIndex() != -1);
     }
 
+    /**
+     * Show details action performed.
+     * @param evt the evt
+     */
     private void showDetailsActionPerformed(ActionEvent evt) {
         showTrainDetails.actionPerformed(evt);
     }
 
+    /**
+     * List1 mouse clicked.
+     * @param evt the evt
+     */
     private void list1MouseClicked(MouseEvent evt) {
         // Add your handling code here:
         if (evt.getClickCount() == 2) {
@@ -177,6 +201,10 @@ public class TrainListPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * List1 key pressed.
+     * @param evt the evt
+     */
     private void list1KeyPressed(KeyEvent evt) {
         // Add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -184,6 +212,12 @@ public class TrainListPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         world = modelRoot.getWorld();
@@ -205,10 +239,18 @@ public class TrainListPanel extends JPanel implements View {
         player = modelRoot.getPlayer();
     }
 
+    /**
+     * Sets the show train details action listener.
+     * @param l the l
+     */
     void setShowTrainDetailsActionListener(ActionListener l) {
         showTrainDetails = l;
     }
 
+    /**
+     * Returns the selected train id.
+     * @return the selected train id
+     */
     int getSelectedTrainID() {
         /*
          * Note, the selected index is not the train id since trains that have
@@ -237,12 +279,18 @@ public class TrainListPanel extends JPanel implements View {
     }
 
     /**
-     * @param trainViewHeight
+     * Sets the train view height.
+     *
+     * @param trainViewHeight the train view height parameter
      */
     public void setTrainViewHeight(int trainViewHeight) {
         this.trainViewHeight = trainViewHeight;
     }
 
+    /**
+     * Paint.
+     * @param g the g
+     */
     @Override
     public void paint(Graphics g) {
         if (null != world) {

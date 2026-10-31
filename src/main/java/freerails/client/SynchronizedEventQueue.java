@@ -48,7 +48,7 @@ public class SynchronizedEventQueue extends EventQueue {
     }
 
     /**
-     *
+     * Performs the use operation.
      */
     public static synchronized void use() {
         if (!alreadyInUse) {
@@ -60,12 +60,18 @@ public class SynchronizedEventQueue extends EventQueue {
     }
 
     /**
-     * @return
+     * Returns the instance.
+     *
+     * @return the instance produced by this method
      */
     public static SynchronizedEventQueue getInstance() {
         return instance;
     }
 
+    /**
+     * Post event.
+     * @param theEvent the the event
+     */
     @Override
     public void postEvent(AWTEvent theEvent) {
         synchronized (list) {
@@ -87,6 +93,10 @@ public class SynchronizedEventQueue extends EventQueue {
         super.postEvent(theEvent);
     }
 
+    /**
+     * Dispatch event.
+     * @param event the event
+     */
     @Override
     protected void dispatchEvent(AWTEvent event) {
         synchronized (MUTEX) {

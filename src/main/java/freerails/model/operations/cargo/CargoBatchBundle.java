@@ -30,6 +30,7 @@ import java.util.*;
  */
 public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
 
+    /** Shared empty bundle exposed through the read-only interface. */
     public static final UnmodifiableCargoBatchBundle EMPTY = new CargoBatchBundle();
     private final SortedMap<CargoBatch, Integer> cargoMap;
 

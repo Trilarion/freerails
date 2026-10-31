@@ -32,6 +32,8 @@ public class CityInitializer {
     private final CityTilePositioner tilePositioner;
 
     /**
+     * Creates an initializer for the cities in the supplied world.
+     *
      * @param world world whose cities will be initialized
      */
     public CityInitializer(World world) {

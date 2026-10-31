@@ -56,15 +56,20 @@ public class ImageManagerImpl implements ImageManager {
     private String pathToWriteTo;
 
     /**
-     * @param readpath
+     * Creates an image manager that reads from the supplied classpath path.
+     *
+     * @param readpath the classpath prefix used to load images
      */
     private ImageManagerImpl(String readpath) {
         this(readpath, null);
     }
 
     /**
-     * @param readpath
-     * @param writePath
+     * Creates an image manager with paths for reading and writing images.
+     *
+     * @param readpath the classpath prefix used to load images
+     * @param writePath the directory used to write images, or {@code null} if
+     *        writing is disabled
      */
     public ImageManagerImpl(String readpath, String writePath) {
         pathToReadFrom = readpath;
@@ -76,8 +81,10 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param s
-     * @return
+     * Checks whether a relative image path is valid.
+     *
+     * @param s the path to validate
+     * @return {@code true} if the path does not begin with a slash
      */
     private static boolean isValid(CharSequence s) {
         Matcher m = pattern.matcher(s);
@@ -85,9 +92,11 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param relativeFilename
-     * @return
-     * @throws IOException
+     * Loads an image from the configured classpath directory.
+     *
+     * @param relativeFilename the image's relative filename
+     * @return the loaded image
+     * @throws IOException if the image cannot be found or read
      */
     @Override
     public Image getImage(String relativeFilename) throws IOException {
@@ -125,6 +134,11 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * Returns the specified image scaled so that its height is equal to the
      * specified height.
+     *
+     * @param relativeFilename the image's relative filename
+     * @param height the requested image height
+     * @return the scaled image
+     * @throws IOException if the image cannot be loaded
      */
     @Override
     public Image getScaledImage(String relativeFilename, int height) throws IOException {
@@ -153,9 +167,11 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param height
-     * @param width
-     * @return
+     * Creates a transparent image with the specified dimensions.
+     *
+     * @param height the image height
+     * @param width the image width
+     * @return the new compatible image
      */
     @Override
     public Image newBlankImage(int height, int width) {
@@ -163,8 +179,10 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param relativeFilename
-     * @param i
+     * Stores an image under the supplied relative filename.
+     *
+     * @param relativeFilename the image's relative filename
+     * @param i the image to store
      */
     @Override
     public void setImage(String relativeFilename, Image i) {
@@ -178,7 +196,9 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @throws IOException
+     * Writes all cached images to the configured output directory.
+     *
+     * @throws IOException if an image cannot be written
      */
     public void writeAllImages() throws IOException {
 
@@ -188,8 +208,10 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param relativeFilename
-     * @throws IOException
+     * Writes a cached image to the configured output directory.
+     *
+     * @param relativeFilename the image's relative filename
+     * @throws IOException if the image cannot be written
      */
     private void writeImage(String relativeFilename) throws IOException {
 

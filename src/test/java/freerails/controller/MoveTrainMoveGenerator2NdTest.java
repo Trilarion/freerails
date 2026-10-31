@@ -60,6 +60,11 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     private Vec2D station1Location;
     private Vec2D station2Location;
 
+    /**
+     * Performs increment time.
+     * @param world the world state used by the test.
+     * @param player the player to use in the test.
+     */
     public static void incrementTime(World world, Player player) {
         BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, 0).getActivities();
         while (bidirectionalIterator.hasNext())
@@ -82,6 +87,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
       <li>Schedules the train to move between stations 0 and 2 without
       changing consist</li>
       </ol>
+     */
+    /**
+     * Sets up.
+     * @throws Exception if the operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -132,7 +141,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests path finding behavior.
      */
     public void testPathFinding() {
         // setTargetAsStation2();
@@ -145,8 +154,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
-     * @return
+     * Advances to the next step.
+     * @return the next step.
      */
     private TileTransition nextStep() {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
@@ -168,8 +177,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
-     * @return
+     * Performs move train.
+     * @return the result of move train.
      */
     private TrainMotion moveTrain() {
         incrementTime(world, player);
@@ -319,6 +328,9 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(TrainState.READY, trainMotion.getTrainState());
     }
 
+    /**
+     * Performs put train at station waiting4 full load.
+     */
     private void putTrainAtStationWaiting4FullLoad() {
         // Set wait until full on schedule.
         List<Integer> newConsist = Arrays.asList(0, 0);
@@ -450,7 +462,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Verifies that the train move generator can generate an applicable move when an update is due.
      */
     public void testCanGenerateMove() {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));

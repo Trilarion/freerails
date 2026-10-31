@@ -24,13 +24,17 @@ import java.awt.event.KeyEvent;
 import java.io.Serial;
 
 /**
- *
+ * Provides the build train dialog action functionality.
  */
 class BuildTrainDialogAction extends AbstractAction {
     @Serial
     private static final long serialVersionUID = 3257853173002416948L;
     private ActionRoot actionRoot;
 
+    /**
+     * Creates a build train dialog action instance.
+     * @param actionRoot the action root
+     */
     BuildTrainDialogAction(ActionRoot actionRoot) {
         super("Build Train");
         this.actionRoot = actionRoot;
@@ -38,6 +42,10 @@ class BuildTrainDialogAction extends AbstractAction {
         putValue(SHORT_DESCRIPTION, "Build a new train");
     }
 
+    /**
+     * Handles the specified action event.
+     * @param e the e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (actionRoot.getDialogueBoxController() != null) {

@@ -31,7 +31,9 @@ import freerails.model.world.UnmodifiableWorld;
  */
 public class BalanceSheetGenerator {
 
+    /** Lifetime statistics for the player's balance sheet. */
     public final Statistics total;
+    /** Year-to-date statistics for the player's balance sheet. */
     public final Statistics ytd;
 
     /**

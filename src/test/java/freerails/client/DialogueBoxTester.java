@@ -60,6 +60,10 @@ class DialogueBoxTester extends JFrame {
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
         private static final long serialVersionUID = -7379893226410558610L;
 
+        /**
+         * Performs action performed.
+         * @param e the e to use in the test.
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             dialogueBoxController.closeContent();
@@ -162,12 +166,20 @@ class DialogueBoxTester extends JFrame {
         JMenuItem showNetworthGraph = new JMenuItem();
 
         addKeyListener(new KeyAdapter() {
+            /**
+             * Performs key pressed.
+             * @param e the e to use in the test.
+             */
             @Override
             public void keyPressed(KeyEvent e) {
                 formKeyPressed(e);
             }
         });
         addWindowListener(new WindowAdapter() {
+            /**
+             * Performs window closing.
+             * @param e the e to use in the test.
+             */
             @Override
             public void windowClosing(WindowEvent e) {
                 exitForm(e);
@@ -249,22 +261,38 @@ class DialogueBoxTester extends JFrame {
         setSize(640, 480);
     }
 
+    /**
+     * Performs main.
+     * @param args the args to use in the test.
+     */
     public static void main(String[] args) {
         DialogueBoxTester test = new DialogueBoxTester();
         test.setVisible(true);
     }
 
 
+    /**
+     * Performs main.
+     * @param args the args to use in the test.
+     */
     private void showNetworthGraphActionPerformed(ActionEvent evt) {
         dialogueBoxController.showNetworthGraph();
     }
 
+    /**
+     * Performs form key pressed.
+     * @param evt the evt to use in the test.
+     */
     private void formKeyPressed(KeyEvent evt) {
         if (KeyEvent.VK_ESCAPE == evt.getKeyCode()) {
             dialogueBoxController.closeContent();
         }
     }
 
+    /**
+     * Performs form key pressed.
+     * @param evt the evt to use in the test.
+     */
     private void showCargoWaitingAndDemandActionPerformed(
             ActionEvent evt) {
         // Add your handling code here:
@@ -275,28 +303,48 @@ class DialogueBoxTester extends JFrame {
         dialogueBoxController.showContent(panel);
     }
 
+    /**
+     * Performs show train list action performed.
+     * @param evt the evt to use in the test.
+     */
     private void showTrainListActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showTrainList();
     }
 
+    /**
+     * Performs show station info action performed.
+     * @param evt the evt to use in the test.
+     */
     private void showStationInfoActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         int stationNumber = 0;
         dialogueBoxController.showStationInfo(stationNumber);
     }
 
+    /**
+     * Performs show station info action performed.
+     * @param evt the evt to use in the test.
+     */
     private void showTerrainInfoActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         int terrainType = 0;
         dialogueBoxController.showTerrainInfo(terrainType);
     }
 
+    /**
+     * Performs show terrain info action performed.
+     * @param evt the evt to use in the test.
+     */
     private void showControlsActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showGameControls();
     }
 
+    /**
+     * Performs select train orders action performed.
+     * @param evt the evt to use in the test.
+     */
     private void selectTrainOrdersActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         trainDialoguePanel.setup(modelRoot, vl, closeCurrentDialogue);
@@ -304,16 +352,28 @@ class DialogueBoxTester extends JFrame {
         dialogueBoxController.showContent(trainDialoguePanel);
     }
 
+    /**
+     * Performs select train orders action performed.
+     * @param evt the evt to use in the test.
+     */
     private void selectWagonsActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showSelectWagons();
     }
 
+    /**
+     * Performs select engine action performed.
+     * @param evt the evt to use in the test.
+     */
     private void selectEngineActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showSelectEngine();
     }
 
+    /**
+     * Performs newspaper action performed.
+     * @param evt the evt to use in the test.
+     */
     private void newspaperActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showBrokerScreen();

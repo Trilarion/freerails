@@ -51,7 +51,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     private Vec2D stationA;
 
     /**
-     *
+     * Sets up world.
      */
     @Override
     protected void setupWorld() {
@@ -86,7 +86,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move behavior.
      */
     public void testMove() {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
@@ -114,7 +114,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move2 behavior.
      */
     public void testMove2() {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
@@ -135,7 +135,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests get schedule behavior.
      */
     public void testGetSchedule() {
         world = MapFixtureFactory2.getCopy();

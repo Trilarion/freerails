@@ -41,8 +41,10 @@ public class BuildTrackRenderer implements Painter {
     private final RendererRoot rendererRoot;
 
     /**
-     * @param trackPieceViewList
-     * @param modelRoot
+     * Creates a build track renderer instance.
+     *
+     * @param trackPieceViewList the track piece view list parameter
+     * @param modelRoot the client model that provides current game state
      */
     public BuildTrackRenderer(RendererRoot trackPieceViewList, ModelRoot modelRoot) {
         this.modelRoot = modelRoot;

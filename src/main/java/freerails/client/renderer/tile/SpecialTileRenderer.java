@@ -42,11 +42,13 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
     private final TileRenderer parentTileView;
 
     /**
-     * @param imageManager
-     * @param treatTypeAsSame
-     * @param tileModel
-     * @param parentTileView
-     * @throws IOException
+     * Creates a special tile renderer instance.
+     *
+     * @param imageManager the image manager parameter
+     * @param treatTypeAsSame the treat type as same parameter
+     * @param tileModel the tile model parameter
+     * @param parentTileView the parent tile view parameter
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public SpecialTileRenderer(ImageManager imageManager, List<Integer> treatTypeAsSame, Terrain tileModel, TileRenderer parentTileView) throws IOException {
         super(tileModel, treatTypeAsSame, 1);
@@ -55,10 +57,12 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * @param g
-     * @param renderLocation
-     * @param mapLocation
-     * @param world
+     * Performs the render operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param renderLocation the map coordinate
+     * @param mapLocation the map coordinate
+     * @param world the game world being queried
      */
     @Override
     public void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, UnmodifiableWorld world) {
@@ -78,9 +82,11 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * @param mapLocation
-     * @param world
-     * @return
+     * Selects the tile icon index.
+     *
+     * @param mapLocation the map coordinate
+     * @param world the game world being queried
+     * @return the tile icon index produced by this method
      */
     @Override
     public int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world) {
@@ -88,8 +94,10 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * @param i
-     * @return
+     * Performs the generate file name number operation.
+     *
+     * @param i the index of the item
+     * @return the file name number produced by this method
      */
     @Override
     protected String generateFileNameNumber(int i) {

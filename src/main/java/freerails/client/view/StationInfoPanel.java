@@ -64,16 +64,27 @@ public class StationInfoPanel extends JPanel implements View {
     private JButton nextStation;
     private JButton previousStation;
     private final ComponentListener componentListener = new ComponentAdapter() {
+        /**
+         * Component hidden.
+         * @param e the e
+         */
         @Override
         public void componentHidden(ComponentEvent e) {
         }
 
+        /**
+         * Component shown.
+         * @param evt the evt
+         */
         @Override
         public void componentShown(ComponentEvent evt) {
             display();
         }
     };
 
+    /**
+     * Creates a station info panel instance.
+     */
     public StationInfoPanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -139,6 +150,10 @@ public class StationInfoPanel extends JPanel implements View {
     }
 
 
+    /**
+     * Previous station action performed.
+     * @param evt the evt
+     */
     private void previousStationActionPerformed(ActionEvent evt) {
 
         /**
@@ -154,6 +169,10 @@ public class StationInfoPanel extends JPanel implements View {
          <*/
     }
 
+    /**
+     * Next station action performed.
+     * @param evt the evt
+     */
     private void nextStationActionPerformed(ActionEvent evt) {
 
         // Add your handling code here:
@@ -166,6 +185,12 @@ public class StationInfoPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         worldIterator = modelRoot.getWorld().getStations(modelRoot.getPlayer()).iterator();
@@ -175,12 +200,19 @@ public class StationInfoPanel extends JPanel implements View {
         close.addActionListener(closeAction);
     }
 
+    /**
+     * Sets the station.
+     * @param stationNumber the station number
+     */
     public void setStation(int stationNumber) {
         // TODO broken with the demise of the NonNullWorldIterator
         //worldIterator.gotoIndex(stationNumber);
         display();
     }
 
+    /**
+     * Display.
+     */
     private void display() {
 /*
         if (worldIterator.getRowID() > 0) {
@@ -251,6 +283,10 @@ public class StationInfoPanel extends JPanel implements View {
         */
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         // We need to update if the cargo bundle has changed.
@@ -271,6 +307,11 @@ public class StationInfoPanel extends JPanel implements View {
         super.paintComponent(g);
     }
 
+    /**
+     * React to update.
+     * @param changedIndex the changed index
+     * @param isAddition the is addition
+     */
     private void reactToUpdate(int changedIndex, boolean isAddition) {
         if (!isVisible()) {
             return;
@@ -306,6 +347,9 @@ public class StationInfoPanel extends JPanel implements View {
         */
     }
 
+    /**
+     * Removes the close button.
+     */
     void removeCloseButton() {
         remove(close);
     }

@@ -25,17 +25,20 @@ import java.io.Serializable;
 // TODO remove this, only used in MovePrecommitter
 
 /**
- *
+ * Associates a move with the generator that produced or controls it.
+
+ * @param move the move associated with the generator
+ * @param moveGenerator the generator associated with the move
  */
 public record MoveGeneratorAndMove(Move move, MoveGenerator moveGenerator) implements Serializable {
 
     private static final long serialVersionUID = 3256443607635342897L;
 
     /**
-     * Both parameters could be null.
+     * Creates a move-generator association with either value optionally absent.
      *
-     * @param moveGenerator
-     * @param move
+     * @param moveGenerator the generator associated with the move, or {@code null}
+     * @param move the move associated with the generator, or {@code null}
      */
     public MoveGeneratorAndMove(MoveGenerator moveGenerator, Move move) {
         this(move, moveGenerator);

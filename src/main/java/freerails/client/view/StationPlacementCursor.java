@@ -55,6 +55,10 @@ public class StationPlacementCursor extends MouseInputAdapter {
     private final StationRadiusRenderer stationRadiusRenderer;
     private boolean buildEnabled;
     private final PropertyChangeListener buildActionListener = new PropertyChangeListener() {
+        /**
+         * Property change.
+         * @param evt the evt
+         */
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_POSITION_KEY)) {
@@ -90,6 +94,12 @@ public class StationPlacementCursor extends MouseInputAdapter {
         }
     };
 
+    /**
+     * Creates a station placement cursor instance.
+     * @param actionRoot the action root
+     * @param stationRadiusRenderer the station radius renderer
+     * @param mapView the map view
+     */
     private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer stationRadiusRenderer, DetailMapViewComponent mapView) {
         scale = mapView.scale();
         this.mapView = mapView;
@@ -99,15 +109,20 @@ public class StationPlacementCursor extends MouseInputAdapter {
     }
 
     /**
-     * @param actionRoot
-     * @param srr
-     * @param mapView
+     * Performs the wire up operation.
+     *
+     * @param actionRoot the root that supplies client actions
+     * @param srr the srr parameter
+     * @param mapView the map view parameter
      */
     public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr, DetailMapViewComponent mapView) {
         StationPlacementCursor spc = new StationPlacementCursor(actionRoot, srr, mapView);
         spc.init();
     }
 
+    /**
+     * Init.
+     */
     private void init() {
         if (buildEnabled) {
             mapView.addMouseListener(this);
@@ -121,6 +136,10 @@ public class StationPlacementCursor extends MouseInputAdapter {
         stationBuildModel.getStationBuildAction().addPropertyChangeListener(buildActionListener);
     }
 
+    /**
+     * Mouse clicked.
+     * @param e the e
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         int button = e.getButton();
@@ -134,16 +153,28 @@ public class StationPlacementCursor extends MouseInputAdapter {
         }
     }
 
+    /**
+     * Mouse entered.
+     * @param e the e
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
         stationRadiusRenderer.show();
     }
 
+    /**
+     * Mouse exited.
+     * @param e the e
+     */
     @Override
     public void mouseExited(MouseEvent e) {
         stationRadiusRenderer.hide();
     }
 
+    /**
+     * Mouse moved.
+     * @param e the e
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         if (stationBuildModel.isPositionFollowsMouse()) {

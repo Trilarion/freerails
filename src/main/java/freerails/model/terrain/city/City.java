@@ -43,12 +43,20 @@ public final class City extends Identifiable {
         this.location = location;
     }
 
-    /** Returns the city's display name. */
+    /**
+     * Returns the city's display name.
+     *
+     * @return the display name
+     */
     public String getName() {
         return name;
     }
 
-    /** Returns the map coordinate of the city center. */
+    /**
+     * Returns the map coordinate of the city center.
+     *
+     * @return the city center location
+     */
     public Vec2D getLocation() {
         return location;
     }

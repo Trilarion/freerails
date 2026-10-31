@@ -20,8 +20,14 @@ package freerails.network;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests log on credentials behavior.
+ */
 public class LogOnCredentialsTest extends TestCase {
 
+    /**
+     * Tests string representation omits password behavior.
+     */
     public void testStringRepresentationOmitsPassword() {
         LogOnCredentials credentials = new LogOnCredentials("player", "secret");
 

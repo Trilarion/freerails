@@ -22,8 +22,14 @@ import junit.framework.TestCase;
 
 import java.util.Locale;
 
+/**
+ * Tests money behavior.
+ */
 public class MoneyTest extends TestCase {
 
+    /**
+     * Tests to string is locale independent behavior.
+     */
     public void testToStringIsLocaleIndependent() {
         Locale originalLocale = Locale.getDefault();
         try {
@@ -42,6 +48,9 @@ public class MoneyTest extends TestCase {
         }
     }
 
+    /**
+     * Tests divide behavior.
+     */
     public void testDivide() {
         assertEquals(new Money(3), Money.divide(new Money(12), 4));
         assertEquals(new Money(-3), Money.divide(new Money(-12), 4));
@@ -51,6 +60,9 @@ public class MoneyTest extends TestCase {
         assertArithmeticException(() -> Money.divide(new Money(1), 0));
     }
 
+    /**
+     * Tests arithmetic is exact at long limits behavior.
+     */
     public void testArithmeticIsExactAtLongLimits() {
         assertEquals(new Money(Long.MAX_VALUE), Money.add(new Money(Long.MAX_VALUE), Money.ZERO));
         assertEquals(new Money(Long.MIN_VALUE), Money.add(new Money(Long.MIN_VALUE), Money.ZERO));
@@ -60,6 +72,9 @@ public class MoneyTest extends TestCase {
         assertEquals(new Money(Long.MIN_VALUE), Money.multiply(new Money(Long.MIN_VALUE), 1));
     }
 
+    /**
+     * Tests arithmetic overflow is rejected behavior.
+     */
     public void testArithmeticOverflowIsRejected() {
         assertArithmeticException(() -> Money.add(new Money(Long.MAX_VALUE), new Money(1)));
         assertArithmeticException(() -> Money.add(new Money(Long.MIN_VALUE), new Money(-1)));
@@ -69,6 +84,10 @@ public class MoneyTest extends TestCase {
         assertArithmeticException(() -> Money.multiply(new Money(Long.MIN_VALUE), -1));
     }
 
+    /**
+     * Asserts arithmetic exception.
+     * @param operation the operation to use in the test.
+     */
     private static void assertArithmeticException(Runnable operation) {
         try {
             operation.run();

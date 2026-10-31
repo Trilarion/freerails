@@ -64,6 +64,10 @@ public class ClientOptionsPanel extends JPanel {
     private JRadioButton windowedButton;
     private String[] names;
 
+    /**
+     * Creates a client options panel instance.
+     * @param owner the owner
+     */
     public ClientOptionsPanel(LauncherInterface owner) {
         this.owner = owner;
         GridBagConstraints gridBagConstraints;
@@ -89,6 +93,10 @@ public class ClientOptionsPanel extends JPanel {
         setLayout(new GridBagLayout());
 
         addComponentListener(new ComponentAdapter() {
+            /**
+             * Component shown.
+             * @param e the e
+             */
             @Override
             public void componentShown(ComponentEvent e) {
                 formComponentShown(e);
@@ -219,16 +227,28 @@ public class ClientOptionsPanel extends JPanel {
         validateInput();
         // Listen for changes in the server port text box.
         DocumentListener documentListener = new DocumentListener() {
+            /**
+             * Insert update.
+             * @param e the e
+             */
             @Override
             public void insertUpdate(DocumentEvent e) {
                 validateInput();
             }
 
+            /**
+             * Removes the update.
+             * @param e the e
+             */
             @Override
             public void removeUpdate(DocumentEvent e) {
                 validateInput();
             }
 
+            /**
+             * Changed update.
+             * @param e the e
+             */
             @Override
             public void changedUpdate(DocumentEvent e) {
                 validateInput();
@@ -266,6 +286,10 @@ public class ClientOptionsPanel extends JPanel {
         revalidate();
     }
 
+    /**
+     * Returns the player name.
+     * @return the player name
+     */
     String getPlayerName() {
         if (playerName.isVisible()) {
             return playerName.getText();
@@ -275,6 +299,10 @@ public class ClientOptionsPanel extends JPanel {
         return names[index];
     }
 
+    /**
+     * Returns the display mode.
+     * @return the display mode
+     */
     Vec2D getDisplayMode() {
         if (fullScreenButton.isSelected()) {
             // TODO readout list1
@@ -283,6 +311,10 @@ public class ClientOptionsPanel extends JPanel {
         return null;
     }
 
+    /**
+     * Returns the remote server address.
+     * @return the remote server address
+     */
     InetSocketAddress getRemoteServerAddress() {
         String portStr = remotePort.getText();
         if (portStr == null) {
@@ -309,6 +341,9 @@ public class ClientOptionsPanel extends JPanel {
         return address;
     }
 
+    /**
+     * Validate input.
+     */
     private void validateInput() {
         // Validate player name.
         if (playerName.getText() == null || playerName.getText().isEmpty()) {
@@ -356,6 +391,10 @@ public class ClientOptionsPanel extends JPanel {
         }
     }
 
+    /**
+     * Returns the screen mode.
+     * @return the screen mode
+     */
     int getScreenMode() {
         if (fullScreenButton.isSelected()) {
             return ClientConstants.FULL_SCREEN;
@@ -366,6 +405,10 @@ public class ClientOptionsPanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the controls enabled.
+     * @param enabled the enabled
+     */
     public void setControlsEnabled(boolean enabled) {
         windowedButton.setEnabled(enabled);
         fullScreenButton.setEnabled(enabled);
@@ -374,18 +417,34 @@ public class ClientOptionsPanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the remote server panel visible.
+     * @param b the b
+     */
     void setRemoteServerPanelVisible(boolean b) {
         jPanel4.setVisible(b);
     }
 
+    /**
+     * List1 value changed.
+     * @param evt the evt
+     */
     private void list1ValueChanged(ListSelectionEvent evt) {
         validateInput();
     }
 
+    /**
+     * Form component shown.
+     * @param evt the evt
+     */
     private void formComponentShown(ComponentEvent evt) {
         validateInput();
     }
 
+    /**
+     * Full screen button state changed.
+     * @param evt the evt
+     */
     private void fullScreenButtonStateChanged(ChangeEvent evt) {
         list1.setEnabled(fullScreenButton.isSelected());
         validateInput();

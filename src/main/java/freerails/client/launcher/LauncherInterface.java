@@ -25,23 +25,27 @@ package freerails.client.launcher;
 interface LauncherInterface {
 
     /**
-     * @param text
-     * @param status
+     * Sets the info text.
+     *
+     * @param text the text parameter
+     * @param status the status parameter
      */
     void setInfoText(String text, InfoMessageType status);
 
     /**
-     * @param enabled
+     * Sets the next enabled.
+     *
+     * @param enabled whether the control is enabled
      */
     void setNextEnabled(boolean enabled);
 
     /**
-     *
+     * Hides the error messages.
      */
     void hideErrorMessages();
 
     /**
-     *
+     * Hides the all messages.
      */
     void hideAllMessages();
 }

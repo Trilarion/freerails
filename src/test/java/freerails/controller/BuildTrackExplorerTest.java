@@ -49,7 +49,8 @@ public class BuildTrackExplorerTest extends TestCase {
     private Player player;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -110,6 +111,9 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
     }
 
+    /**
+     * Tests terrain construction cost is included in edge estimate behavior.
+     */
     public void testTerrainConstructionCostIsIncludedInEdgeEstimate() {
         world.setTile(new Vec2D(10, 10), new TerrainTile(3));
         assertEquals(1000, world.getTerrain(3).getTrackConstructionCostPerMile().amount());
@@ -207,6 +211,13 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
     }
 
+    /**
+     * Asserts next vertex is.
+     * @param oneTileMoveVector the one tile move vector to use in the test.
+     * @param x the x to use in the test.
+     * @param y the y to use in the test.
+     * @param explorer the explorer to use in the test.
+     */
     private void assertNextVertexIs(TileTransition oneTileMoveVector, int x, int y, BuildTrackExplorer explorer) {
         assertTrue(explorer.hasNextEdge());
         explorer.nextEdge();
@@ -215,6 +226,12 @@ public class BuildTrackExplorerTest extends TestCase {
         assertEquals(pos2, pos);
     }
 
+    /**
+     * Builds track.
+     * @param x the x used by this test.
+     * @param y the y used by this test.
+     * @param direction the direction used by this test.
+     */
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackType trackType = world.getTrackType(0);
         ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, WorldGenerator.TEST_PLAYER);

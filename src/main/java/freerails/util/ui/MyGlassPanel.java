@@ -35,7 +35,7 @@ public class MyGlassPanel extends JPanel {
     private static final long serialVersionUID = 3976735856986239795L;
 
     /**
-     *
+     * Creates the transparent glass panel and adds its fixed-size content panel.
      */
     public MyGlassPanel() {
         JComponent contentPanel = new JPanel();

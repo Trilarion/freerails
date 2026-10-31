@@ -26,8 +26,10 @@ import java.awt.*;
 public interface Painter {
 
     /**
-     * @param g
-     * @param newVisibleRectangle
+     * Paints this layer within the currently visible rectangle.
+     *
+     * @param g graphics context to draw with
+     * @param newVisibleRectangle visible area to repaint
      */
     void paint(Graphics2D g, Rectangle newVisibleRectangle);
 }

@@ -42,8 +42,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Tests world determinism behavior.
+ */
 public class WorldDeterminismTest extends TestCase {
 
+    /**
+     * Tests equivalent worlds advance identically through the same moves and ticks behavior.
+     */
     public void testEquivalentWorldsAdvanceIdenticallyThroughTheSameMovesAndTicks() {
         Player firstPlayer = new Player(1, "One");
         Player secondPlayer = new Player(1, "One");
@@ -72,6 +78,9 @@ public class WorldDeterminismTest extends TestCase {
         assertEquals(first, second);
     }
 
+    /**
+     * Tests repeated model queries do not mutate the world or train behavior.
+     */
     public void testRepeatedModelQueriesDoNotMutateTheWorldOrTrain() {
         Player player = new Player(1, "One");
         World world = createWorld(player);
@@ -103,6 +112,11 @@ public class WorldDeterminismTest extends TestCase {
         assertEquals(beforeQueries, world);
     }
 
+    /**
+     * Creates world.
+     * @param player the player used by this test.
+     * @return the result of create world.
+     */
     private static World createWorld(Player player) {
         World world = WorldGenerator.minimalWorld();
         world.addPlayer(player);
@@ -120,6 +134,12 @@ public class WorldDeterminismTest extends TestCase {
         return world;
     }
 
+    /**
+     * Performs transaction.
+     * @param amount the amount to use in the test.
+     * @param time the time to use in the test.
+     * @return the result of transaction.
+     */
     private static Transaction transaction(long amount, Time time) {
         return new Transaction(TransactionCategory.MISC_INCOME, new Money(amount), time);
     }

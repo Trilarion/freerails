@@ -33,7 +33,7 @@ import java.util.List;
 public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
     /**
-     *
+     * Tests logon behavior.
      */
     public void testLogon() {
         try {
@@ -74,6 +74,11 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         }
     }
 
+    /**
+     * Asserts connect clients equals.
+     * @param client the client to use in the test.
+     * @param expectedPlayerNames the expected player names to use in the test.
+     */
     private void assertConnectClientsEquals(FreerailsClient client, List<String> expectedPlayerNames) {
         CommandToClient commandToClient = (CommandToClient) client.read();
         commandToClient.execute(client);
@@ -83,6 +88,10 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         assertEquals(expectedPlayerNames, actualPlayerNames);
     }
 
+    /**
+     * Asserts maps and save games received.
+     * @param client the client to use in the test.
+     */
     private void assertMapsAndSaveGamesReceived(FreerailsClient client) {
         // 2 commands to read.
         CommandToClient commandToClient = (CommandToClient) client.read();

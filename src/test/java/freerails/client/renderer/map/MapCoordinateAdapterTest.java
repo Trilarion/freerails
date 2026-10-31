@@ -23,13 +23,22 @@ import freerails.client.TileSetMetadata;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
+/**
+ * Tests map coordinate adapter behavior.
+ */
 public class MapCoordinateAdapterTest extends TestCase {
 
+    /**
+     * Tests bundled tile set metadata behavior.
+     */
     public void testBundledTileSetMetadata() {
         assertEquals(30, TileSetMetadata.loadDefault().tilePixelSize());
         assertEquals(TileSetMetadata.loadDefault().tilePixelSize(), ClientConstants.TILE_PIXEL_SIZE);
     }
 
+    /**
+     * Tests converts tile and fixed point model coordinates to pixels behavior.
+     */
     public void testConvertsTileAndFixedPointModelCoordinatesToPixels() {
         assertEquals(new Vec2D(30, 60), MapCoordinateAdapter.tileOrigin(new Vec2D(1, 2)));
         assertEquals(new Vec2D(15, 30), MapCoordinateAdapter.modelToPixel(new Vec2D(50, 100)));

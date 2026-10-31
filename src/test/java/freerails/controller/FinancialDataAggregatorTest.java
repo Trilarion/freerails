@@ -42,7 +42,8 @@ public class FinancialDataAggregatorTest extends TestCase {
     private Player player;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -58,7 +59,7 @@ public class FinancialDataAggregatorTest extends TestCase {
     }
 
     /**
-     *
+     * Verifies that bond issuance is limited by the resulting interest rate.
      */
     public void testCanIssueBond() {
         FinancialDataAggregator aggregator = new FinancialDataAggregator(world, player);
@@ -84,7 +85,7 @@ public class FinancialDataAggregatorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests next bond interest rate behavior.
      */
     public void testNextBondInterestRate() {
         FinancialDataAggregator financialDataAggregator = new FinancialDataAggregator(world, player);
@@ -96,7 +97,7 @@ public class FinancialDataAggregatorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests treasury stock behavior.
      */
     public void testTreasuryStock() {
         FinancialDataAggregator aggregator = new FinancialDataAggregator(world, player);
@@ -115,7 +116,7 @@ public class FinancialDataAggregatorTest extends TestCase {
     }
 
     /**
-     *
+     * Verifies that buying another railroad's stock is recorded as shares held by the player.
      */
     public void testBuyingStakesInOtherRRs() {
         world = WorldGenerator.minimalWorld();
@@ -141,7 +142,7 @@ public class FinancialDataAggregatorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests total shares behavior.
      */
     public void testTotalShares() {
         FinancialDataAggregator fdg = new FinancialDataAggregator(world, player);

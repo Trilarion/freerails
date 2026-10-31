@@ -38,6 +38,14 @@ public class ServerSocketAcceptor implements AutoCloseable {
     private volatile boolean open;
     private volatile IOException failure;
 
+    /**
+     * Opens a listening socket and begins accepting connections into a queue.
+     *
+     * @param address local address to bind
+     * @param sockets queue receiving accepted sockets
+     * @throws IOException if the server socket cannot be opened
+     * @throws NullPointerException if either argument is null
+     */
     public ServerSocketAcceptor(InetSocketAddress address, BlockingQueue<Socket> sockets)
             throws IOException {
         this.sockets = Utils.verifyNotNull(sockets);
@@ -49,6 +57,9 @@ public class ServerSocketAcceptor implements AutoCloseable {
         acceptThread.start();
     }
 
+    /**
+     * Accepts sockets while the listener remains open and queues each one.
+     */
     private void acceptConnections() {
         try {
             while (open) {
@@ -77,21 +88,39 @@ public class ServerSocketAcceptor implements AutoCloseable {
         }
     }
 
+    /**
+     * Returns the local port assigned to the listening socket.
+     *
+     * @return listening port
+     */
     public int getLocalPort() {
         return serverSocket.getLocalPort();
     }
 
+    /**
+     * Indicates whether the listener is still open.
+     *
+     * @return {@code true} if it has not been closed
+     */
     public boolean isOpen() {
         return open;
     }
 
     /**
      * Returns an unexpected accept failure, or {@code null} if none occurred.
+     *
+     * @return recorded accept failure, if any
      */
     public IOException getFailure() {
         return failure;
     }
 
+    /**
+     * Closes the listening socket and waits for the accept thread to finish.
+     *
+     * @throws IllegalStateException if closing fails or the caller is
+     * interrupted while waiting
+     */
     @Override
     public void close() {
         open = false;

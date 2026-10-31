@@ -39,13 +39,18 @@ public class RemoveStationCompositeMove extends CompostMove implements TrackMove
 
     private final Rectangle rectangle;
 
+    /**
+     * Creates a remove station composite move from the supplied values.
+     *
+     * @param moves the moves
+     */
     public RemoveStationCompositeMove(List<Move> moves) {
         super(moves);
         rectangle =  ((MapUpdateMove) moves.getFirst()).getUpdatedTiles();
     }
 
     /**
-     * @return
+     * @return the bounds of the map tiles updated by station removal
      */
     @Override
     public Rectangle getUpdatedTiles() {

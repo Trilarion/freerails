@@ -31,21 +31,27 @@ import java.io.Serializable;
 public interface SaveGamesManager {
 
     /**
-     * @return
+     * Returns the names of saved games available to load.
+     *
+     * @return the saved-game names
      */
     String[] getSaveGameNames();
 
     /**
-     * @param path
-     * @param serializable
-     * @throws IOException
+     * Serializes a game object to a named save-game file.
+     *
+     * @param path the path of the save-game file
+     * @param serializable the object to serialize to the save-game file
+     * @throws IOException if the operation cannot complete because of an input/output error
      */
     void saveGame(String path, Serializable serializable) throws IOException;
 
     /**
-     * @param path
-     * @return
-     * @throws IOException
+     * Loads a server game model from a save-game file.
+     *
+     * @param path the path of the save-game file
+     * @return the loaded server game model
+     * @throws IOException if the operation cannot complete because of an input/output error
      */
     ServerGameModel loadGame(String path) throws IOException;
 }

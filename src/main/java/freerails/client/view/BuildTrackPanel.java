@@ -110,11 +110,19 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
 
         setFocusable(false);
         addKeyListener(new KeyAdapter() {
+            /**
+             * Key pressed.
+             * @param e the e
+             */
             @Override
             public void keyPressed(KeyEvent e) {
                 formKeyPressed(e);
             }
 
+            /**
+             * Key typed.
+             * @param e the e
+             */
             @Override
             public void keyTyped(KeyEvent e) {
                 formKeyTyped(e);
@@ -254,8 +262,10 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
     }
 
     /**
-     * @param modelRoot
-     * @param actionRoot
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param actionRoot the root that supplies client actions
      */
     @Override
     public void setup(ModelRoot modelRoot, ActionRoot actionRoot) {
@@ -371,6 +381,9 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         // });
     }
 
+    /**
+     * Adds the no tunnels button.
+     */
     private void addNoTunnelsButton() {
         JToggleButton toggleButton = new JToggleButton();
         tunnelButtonGroup.add(toggleButton);
@@ -384,6 +397,9 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         tunnelsJPanel.add(toggleButton);
     }
 
+    /**
+     * Adds the no bridges button.
+     */
     private void addNoBridgesButton() {
         JToggleButton toggleButton = new JToggleButton();
         bridgeButtonGroup.add(toggleButton);
@@ -397,6 +413,11 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         bridgesJPanel.add(toggleButton);
     }
 
+    /**
+     * Returns the icon.
+     * @param typeName the type name
+     * @return the icon
+     */
     private Icon getIcon(String typeName) {
         try {
 
@@ -411,20 +432,36 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
     }
 
 
+    /**
+     * Form key typed.
+     * @param evt the evt
+     */
     private void formKeyTyped(KeyEvent evt) {
         viewMode.doClick();
     }
 
+    /**
+     * Form key pressed.
+     * @param evt the evt
+     */
     private void formKeyPressed(KeyEvent evt) {
         viewMode.doClick();
     }
 
+    /**
+     * View mode action performed.
+     * @param evt the evt
+     */
     private void viewModeActionPerformed(ActionEvent evt) {
         setVisible(false, false, false, false);
         cancelStationPlacement();
         setTrackBuilderMode(BuildMode.IGNORE_TRACK);
     }
 
+    /**
+     * Bulldoze action performed.
+     * @param evt the evt
+     */
     private void bulldozeActionPerformed(ActionEvent evt) {
 
         setVisible(false, false, false, false);
@@ -432,12 +469,20 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         setTrackBuilderMode(BuildMode.REMOVE_TRACK);
     }
 
+    /**
+     * Adds the station action performed.
+     * @param evt the evt
+     */
     private void addStationActionPerformed(ActionEvent evt) {
 
         setVisible(false, false, false, true);
         setTrackBuilderMode(BuildMode.BUILD_STATION);
     }
 
+    /**
+     * Upgrade track action performed.
+     * @param evt the evt
+     */
     private void upgradeTrackActionPerformed(ActionEvent evt) {
 
         setVisible(true, true, false, false);
@@ -445,6 +490,10 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
     }
 
+    /**
+     * Adds the track action performed.
+     * @param evt the evt
+     */
     private void addTrackActionPerformed(ActionEvent evt) {
 
         setVisible(true, true, true, false);
@@ -452,6 +501,13 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         setTrackBuilderMode(BuildMode.BUILD_TRACK);
     }
 
+    /**
+     * Sets the visible.
+     * @param track the track
+     * @param bridges the bridges
+     * @param tunnels the tunnels
+     * @param stations the stations
+     */
     private void setVisible(boolean track, boolean bridges, boolean tunnels, boolean stations) {
         trackJPanel.setVisible(bridges);
         bridgesJPanel.setVisible(bridges);
@@ -459,6 +515,9 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         stationsJPanel.setVisible(stations);
     }
 
+    /**
+     * Sets the build track strategy.
+     */
     private void setBuildTrackStrategy() {
         Collection<Integer> ruleIDs = new ArrayList<>();
         ruleIDs.add(selectionSet.get(TrackCategory.TRACK));
@@ -468,11 +527,18 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         modelRoot.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, bts);
     }
 
+    /**
+     * Returns whether this object can cel station placement.
+     */
     private void cancelStationPlacement() {
         // Cancel build station mode
         stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
     }
 
+    /**
+     * Sets the track builder mode.
+     * @param mode the mode
+     */
     private void setTrackBuilderMode(BuildMode mode) {
         trackMoveProducer.setTrackBuilderMode(mode);
         // modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);

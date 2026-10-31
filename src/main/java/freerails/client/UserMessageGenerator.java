@@ -39,8 +39,10 @@ public class UserMessageGenerator implements MoveReceiver {
     private ActionRoot actionRoot;
 
     /**
-     * @param modelRoot
-     * @param actionRoot
+     * Creates a user message generator instance.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param actionRoot the root that supplies client actions
      */
     public UserMessageGenerator(ModelRoot modelRoot, ActionRoot actionRoot) {
         this.actionRoot = Utils.verifyNotNull(actionRoot);
@@ -48,7 +50,9 @@ public class UserMessageGenerator implements MoveReceiver {
     }
 
     /**
-     * @param move
+     * Performs the process operation.
+     *
+     * @param move the move parameter
      */
     @Override
     public void process(Move move) {
@@ -72,7 +76,7 @@ public class UserMessageGenerator implements MoveReceiver {
     /**
      * Generates a message giving details of any cargo delivered and plays a
      * cash register sound to indicate that revenue is coming in.
-     * @param mov
+     * @param mov the mov parameter
      */
     private void trainArrives(Move mov) {
         /*
@@ -136,7 +140,7 @@ public class UserMessageGenerator implements MoveReceiver {
     }
 
     /**
-     *
+     * Performs the log speed operation.
      */
     public void logSpeed() {
         UnmodifiableWorld world = modelRoot.getWorld();

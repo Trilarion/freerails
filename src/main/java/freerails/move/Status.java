@@ -33,6 +33,12 @@ public class Status implements Serializable {
     private final boolean success;
     private final String message;
 
+    /**
+     * Creates a status from the supplied values.
+     *
+     * @param success the success
+     * @param message the message
+     */
     private Status(boolean success, String message) {
         if (!success && message == null) {
             throw new IllegalArgumentException();
@@ -41,18 +47,40 @@ public class Status implements Serializable {
         this.message = message;
     }
 
+    /**
+     * Creates a failure status with the specified message.
+     *
+     * @param message the message
+     * @return the fail
+     */
     public static Status fail(@NotNull String message) {
         return new Status(false, message);
     }
 
+    /**
+     * Returns whether success.
+     *
+     * @return true if success, otherwise false
+     */
     public boolean isSuccess() {
         return success;
     }
 
+    /**
+     * Returns the message.
+     *
+     * @return the message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -62,11 +90,21 @@ public class Status implements Serializable {
         return Objects.equals(message, other.message);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(success, message);
     }
 
+    /**
+     * Returns a string representation of this object.
+     *
+     * @return the string
+     */
     @Override
     public String toString() {
         if (success) {

@@ -53,6 +53,9 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     private JLabel label1;
     private TrainListCellRenderer trainViewJPanel1;
 
+    /**
+     * Creates a train description panel instance.
+     */
     public TrainDescriptionPanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -83,6 +86,10 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         add(trainViewJPanel1, gridBagConstraints);
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         // Check whether the train or its cargo have changed since the last call
@@ -92,6 +99,9 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         super.paintComponent(g);
     }
 
+    /**
+     * Updates the if necessary.
+     */
     private void updateIfNecessary() {
         Train train = world.getTrain(player, trainNumber);
 
@@ -101,6 +111,12 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     }
 
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
 
@@ -111,6 +127,10 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         player = modelRoot.getPlayer();
     }
 
+    /**
+     * Display train.
+     * @param newTrainNumber the new train number
+     */
     public void displayTrain(int newTrainNumber) {
 
         trainNumber = newTrainNumber;

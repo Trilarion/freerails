@@ -16,8 +16,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Tests connection behavior.
+ */
 public class ConnectionTest extends TestCase {
 
+    /**
+     * Tests allowed protocol messages round trip behavior.
+     * @throws Exception if the test allowed protocol messages round trip operation fails.
+     */
     public void testAllowedProtocolMessagesRoundTrip() throws Exception {
         EchoServer server = new EchoServer();
         server.startRunning(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0));
@@ -36,6 +43,10 @@ public class ConnectionTest extends TestCase {
         }
     }
 
+    /**
+     * Tests inbound queue backpressures when messages are not consumed behavior.
+     * @throws Exception if the test inbound queue backpressures when messages are not consumed operation fails.
+     */
     public void testInboundQueueBackpressuresWhenMessagesAreNotConsumed() throws Exception {
         try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
             ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -65,6 +76,10 @@ public class ConnectionTest extends TestCase {
         }
     }
 
+    /**
+     * Tests closes when peer sends disallowed class behavior.
+     * @throws Exception if the test closes when peer sends disallowed class operation fails.
+     */
     public void testClosesWhenPeerSendsDisallowedClass() throws Exception {
         try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
             ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -89,6 +104,10 @@ public class ConnectionTest extends TestCase {
         }
     }
 
+    /**
+     * Tests receive fails when peer closes behavior.
+     * @throws Exception if the test receive fails when peer closes operation fails.
+     */
     public void testReceiveFailsWhenPeerCloses() throws Exception {
         EchoServer server = new EchoServer();
         server.startRunning(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0));
@@ -103,6 +122,10 @@ public class ConnectionTest extends TestCase {
         }
     }
 
+    /**
+     * Tests default world passes deserialization filter behavior.
+     * @throws Exception if the test default world passes deserialization filter operation fails.
+     */
     public void testDefaultWorldPassesDeserializationFilter() throws Exception {
         try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
             ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -131,6 +154,11 @@ public class ConnectionTest extends TestCase {
         }
     }
 
+    /**
+     * Performs await connection close.
+     * @param connection the connection to use in the test.
+     * @throws InterruptedException if the await connection close operation fails.
+     */
     private static void awaitConnectionClose(Connection connection) throws InterruptedException {
         long deadline = System.currentTimeMillis() + 2_000;
         while (connection.isOpen() && System.currentTimeMillis() < deadline) {
@@ -139,6 +167,10 @@ public class ConnectionTest extends TestCase {
         assertFalse("Connection should close after rejected input.", connection.isOpen());
     }
 
+    /**
+     * Asserts receive fails after remote closure.
+     * @param connection the connection to use in the test.
+     */
     private static void assertReceiveFailsAfterRemoteClosure(Connection connection) {
         try {
             connection.receiveObject();

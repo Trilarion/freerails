@@ -22,6 +22,8 @@ import java.io.Serializable;
 
 /**
  * Represents an immutable amount of money in the game's unit of account.
+
+ * @param amount the monetary amount in the smallest currency unit
  */
 public record Money(long amount) implements Serializable, Comparable<Money> {
 

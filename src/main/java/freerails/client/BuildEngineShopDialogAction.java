@@ -21,16 +21,27 @@ package freerails.client;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * Provides the build engine shop dialog action functionality.
+ */
 class BuildEngineShopDialogAction extends AbstractAction {
 
     private final ActionRoot actionRoot;
 
+    /**
+     * Creates a build engine shop dialog action instance.
+     * @param actionRoot the action root
+     */
     BuildEngineShopDialogAction(ActionRoot actionRoot) {
         super("Build Engine Shop");
         this.actionRoot = actionRoot;
         putValue(SHORT_DESCRIPTION, "Build an engine shop at a station");
     }
 
+    /**
+     * Handles the specified action event.
+     * @param event the event
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         if (actionRoot.getDialogueBoxController() != null) {

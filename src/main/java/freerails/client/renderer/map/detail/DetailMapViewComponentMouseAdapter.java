@@ -65,10 +65,18 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
      */
     private final Point tiledelta = new Point();
 
+    /**
+     * Creates a detail map view component mouse adapter instance.
+     * @param detailMapViewComponentConcrete the detail map view component concrete
+     */
     public DetailMapViewComponentMouseAdapter(DetailMapViewComponentConcrete detailMapViewComponentConcrete) {
         this.detailMapViewComponentConcrete = detailMapViewComponentConcrete;
     }
 
+    /**
+     * Mouse pressed.
+     * @param e the e
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         /*
@@ -87,11 +95,19 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
         }
     }
 
+    /**
+     * Mouse released.
+     * @param e the e
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         detailMapViewComponentConcrete.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
+    /**
+     * Mouse dragged.
+     * @param e the e
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {

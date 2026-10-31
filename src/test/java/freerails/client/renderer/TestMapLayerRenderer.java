@@ -24,18 +24,33 @@ import freerails.util.Vec2D;
 import java.awt.*;
 
 /**
- *
+ * Provides test support for map layer renderer.
  */
 public class TestMapLayerRenderer implements MapLayerRenderer {
+    /**
+     * Performs paint tile.
+     * @param g the g to use in the test.
+     * @param tileLocation the tile location to use in the test.
+     */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {}
 
+    /**
+     * Performs refresh tile.
+     * @param tileLocation the tile location to use in the test.
+     */
     @Override
     public void refreshTile(Vec2D tileLocation) {}
 
+    /**
+     * Performs refresh all.
+     */
     @Override
     public void refreshAll() {}
 
+    /**
+     * Performs refresh all.
+     */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {}
 }

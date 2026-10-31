@@ -65,6 +65,9 @@ public class CargoBatchBundleTest extends TestCase {
         assertBundlesEqual(bundle1, bundle2);
     }
 
+    /**
+     * Tests zero and negative quantities have defined behavior behavior.
+     */
     public void testZeroAndNegativeQuantitiesHaveDefinedBehavior() {
         CargoBatch batch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
         CargoBatchBundle bundle = new CargoBatchBundle();
@@ -88,6 +91,9 @@ public class CargoBatchBundleTest extends TestCase {
         assertFalse(bundle.contains(batch));
     }
 
+    /**
+     * Tests copy and equality preserve batch identity and hash contract behavior.
+     */
     public void testCopyAndEqualityPreserveBatchIdentityAndHashContract() {
         CargoBatch firstBatch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
         CargoBatch secondBatch = new CargoBatch(1, new Vec2D(7, 8), 9, 10);
@@ -125,6 +131,9 @@ public class CargoBatchBundleTest extends TestCase {
         assertFalse(source.equals(copy));
     }
 
+    /**
+     * Tests amount of type sums distinct production batches behavior.
+     */
     public void testAmountOfTypeSumsDistinctProductionBatches() {
         CargoBatchBundle bundle = new CargoBatchBundle();
         CargoBatch firstBatch = new CargoBatch(1, new Vec2D(1, 2), 3, 4);
@@ -142,6 +151,9 @@ public class CargoBatchBundleTest extends TestCase {
         assertTrue(bundle.contains(secondBatch));
     }
 
+    /**
+     * Tests immutable snapshot is defensive and read only behavior.
+     */
     public void testImmutableSnapshotIsDefensiveAndReadOnly() {
         CargoBatch batch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
         CargoBatchBundle builder = new CargoBatchBundle();
@@ -163,6 +175,9 @@ public class CargoBatchBundleTest extends TestCase {
         }
     }
 
+    /**
+     * Tests immutable snapshot survives serialization behavior.
+     */
     public void testImmutableSnapshotSurvivesSerialization() {
         CargoBatch batch = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
         CargoBatchBundle builder = new CargoBatchBundle();
@@ -176,6 +191,11 @@ public class CargoBatchBundleTest extends TestCase {
         assertEquals(snapshot.hashCode(), copy.hashCode());
     }
 
+    /**
+     * Asserts bundles equal.
+     * @param bundle1 the bundle1 to use in the test.
+     * @param bundle2 the bundle2 to use in the test.
+     */
     private void assertBundlesEqual(CargoBatchBundle bundle1, CargoBatchBundle bundle2) {
 
         // equals with itself
@@ -207,6 +227,11 @@ public class CargoBatchBundleTest extends TestCase {
         assertEquals(cloneA, cloneB);
     }
 
+    /**
+     * Asserts bundles not equal.
+     * @param bundle1 the bundle1 to use in the test.
+     * @param bundle2 the bundle2 to use in the test.
+     */
     private void assertBundlesNotEqual(CargoBatchBundle bundle1, CargoBatchBundle bundle2) {
 
         // not equal with each other

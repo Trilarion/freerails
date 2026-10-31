@@ -38,8 +38,10 @@ public class CommandStatus implements Serializable {
     private final boolean successful;
 
     /**
-     * @param successful
-     * @param reason
+     * Creates a command result with an optional explanation.
+     *
+     * @param successful whether the command completed successfully
+     * @param reason explanation associated with the result, if any
      */
     public CommandStatus(boolean successful, String reason) {
         this.reason = reason;
@@ -47,13 +49,21 @@ public class CommandStatus implements Serializable {
     }
 
     /**
-     * @param successful
+     * Creates a command result without an explanation.
+     *
+     * @param successful whether the command completed successfully
      */
     public CommandStatus(boolean successful) {
         reason = null;
         this.successful = successful;
     }
 
+    /**
+     * Compares this result with another result.
+     *
+     * @param obj object to compare
+     * @return {@code true} if the success flag and reason match
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -63,6 +73,11 @@ public class CommandStatus implements Serializable {
         return Objects.equals(reason, commandStatus.reason);
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     *
+     * @return this result's hash code
+     */
     @Override
     public int hashCode() {
         int result;

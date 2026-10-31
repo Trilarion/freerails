@@ -25,12 +25,25 @@ import com.google.gson.annotations.Expose;
  * Excludes fields explicitly marked as non-persistent from Gson operations.
  */
 public class ExclusionStrategy implements com.google.gson.ExclusionStrategy {
+    /**
+     * Skips a field unless it is exposed for both serialization and
+     * deserialization.
+     *
+     * @param field field metadata to inspect
+     * @return {@code true} if the field is not exposed in both directions
+     */
     @Override
     public boolean shouldSkipField(FieldAttributes field) {
         Expose expose = field.getAnnotation(Expose.class);
         return expose != null && (!expose.serialize() || !expose.deserialize());
     }
 
+    /**
+     * Allows every class to participate in Gson serialization.
+     *
+     * @param clazz class metadata to inspect
+     * @return always {@code false}
+     */
     @Override
     public boolean shouldSkipClass(Class<?> clazz) {
         return false;

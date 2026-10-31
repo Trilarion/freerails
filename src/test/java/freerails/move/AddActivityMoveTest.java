@@ -29,12 +29,12 @@ import freerails.model.world.TestTrainMotion;
 import freerails.model.world.World;
 
 /**
- *
+ * Tests add activity move behavior.
  */
 public class AddActivityMoveTest extends AbstractMoveTestCase {
 
     /**
-     *
+     * Tests move behavior.
      */
     public void testMove() {
         World world = getWorld();
@@ -49,7 +49,7 @@ public class AddActivityMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests stacking of activities behavior.
      */
     public void testStackingOfActivities() {
         World world = getWorld();

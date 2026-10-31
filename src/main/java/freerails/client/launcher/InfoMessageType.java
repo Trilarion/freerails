@@ -19,7 +19,7 @@
 package freerails.client.launcher;
 
 /**
- *
+ * Defines the available info message type values.
  */
 public enum InfoMessageType {
 

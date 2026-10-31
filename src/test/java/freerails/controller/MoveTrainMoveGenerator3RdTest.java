@@ -46,7 +46,8 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
     private World world;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -70,7 +71,7 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
     }
 
     /**
-     *
+     * Tests finding path behavior.
      */
     public void testFindingPath() {
         findPath2Target(new Vec2D(14, 7), line1);
@@ -78,6 +79,11 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
         findPath2Target(new Vec2D(9, 13), line2);
     }
 
+    /**
+     * Finds path2 target.
+     * @param target1 the target1 to use in the test.
+     * @param expectedPath the expected path to use in the test.
+     */
     private void findPath2Target(Vec2D target1, TileTransition[] expectedPath) {
         TerrainTile tile = world.getTile(target1);
         assertTrue(tile.hasTrack());

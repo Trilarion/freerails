@@ -57,6 +57,20 @@ public final class ScenarioData {
     private final int currentSentimentId;
     private final boolean cityGrowthEnabled;
 
+    /**
+     * Creates a scenario data from the supplied values.
+     *
+     * @param engines the engines
+     * @param cities the cities
+     * @param cargos the cargos
+     * @param terrainTypes the terrain types
+     * @param trackTypes the track types
+     * @param sentiments the sentiments
+     * @param rules the rules
+     * @param terrainMap the terrain map
+     * @param clock the clock
+     * @param currentSentimentId the identifier to use
+     */
     public ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, SortedSet<Cargo> cargos,
                         SortedSet<Terrain> terrainTypes, SortedSet<TrackType> trackTypes,
                         SortedSet<Sentiment> sentiments, Rules rules, Array2D terrainMap,
@@ -65,6 +79,21 @@ public final class ScenarioData {
                 clock, currentSentimentId, true);
     }
 
+    /**
+     * Creates a scenario data from the supplied values.
+     *
+     * @param engines the engines
+     * @param cities the cities
+     * @param cargos the cargos
+     * @param terrainTypes the terrain types
+     * @param trackTypes the track types
+     * @param sentiments the sentiments
+     * @param rules the rules
+     * @param terrainMap the terrain map
+     * @param clock the clock
+     * @param currentSentimentId the identifier to use
+     * @param cityGrowthEnabled the city growth enabled
+     */
     public ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, SortedSet<Cargo> cargos,
                         SortedSet<Terrain> terrainTypes, SortedSet<TrackType> trackTypes,
                         SortedSet<Sentiment> sentiments, Rules rules, Array2D terrainMap,
@@ -128,6 +157,9 @@ public final class ScenarioData {
                 world.isCityGrowthEnabled());
     }
 
+    /**
+     * Validates the current state and reports invalid values.
+     */
     private void validate() {
         if (terrainMap.getWidth() <= 0 || terrainMap.getHeight() <= 0) {
             throw new IllegalArgumentException("Scenario map dimensions must be positive.");
@@ -154,10 +186,23 @@ public final class ScenarioData {
         }
     }
 
+    /**
+     * Returns the set.
+     *
+     * @param <T> the type parameter
+     * @param values the values to use
+     * @return the set
+     */
     private static <T> SortedSet<T> copySet(SortedSet<T> values) {
         return Collections.unmodifiableSortedSet(new TreeSet<>(Objects.requireNonNull(values)));
     }
 
+    /**
+     * Returns the array.
+     *
+     * @param source the source value to copy
+     * @return the array
+     */
     private static Array2D copyArray(Array2D source) {
         Objects.requireNonNull(source, "terrainMap");
         Array2D copy = new Array2D(source.getWidth(), source.getHeight());
@@ -169,47 +214,103 @@ public final class ScenarioData {
         return copy;
     }
 
+    /**
+     * Returns the clock.
+     *
+     * @param source the source value to copy
+     * @return the clock
+     */
     private static Clock copyClock(Clock source) {
         Objects.requireNonNull(source, "clock");
         return new Clock(source.getStartYear(), source.getTicksPerYear(), source.getCurrentTime());
     }
 
+    /**
+     * Returns the engines.
+     *
+     * @return the engines
+     */
     public SortedSet<Engine> getEngines() {
         return copySet(engines);
     }
 
+    /**
+     * Returns the cities.
+     *
+     * @return the cities
+     */
     public SortedSet<City> getCities() {
         return copySet(cities);
     }
 
+    /**
+     * Returns the cargos.
+     *
+     * @return the cargos
+     */
     public SortedSet<Cargo> getCargos() {
         return copySet(cargos);
     }
 
+    /**
+     * Returns the terrain types.
+     *
+     * @return the terrain types
+     */
     public SortedSet<Terrain> getTerrainTypes() {
         return copySet(terrainTypes);
     }
 
+    /**
+     * Returns the track types.
+     *
+     * @return the track types
+     */
     public SortedSet<TrackType> getTrackTypes() {
         return copySet(trackTypes);
     }
 
+    /**
+     * Returns the sentiments.
+     *
+     * @return the sentiments
+     */
     public SortedSet<Sentiment> getSentiments() {
         return copySet(sentiments);
     }
 
+    /**
+     * Returns the rules.
+     *
+     * @return the rules
+     */
     public Rules getRules() {
         return rules;
     }
 
+    /**
+     * Returns the terrain map.
+     *
+     * @return the terrain map
+     */
     public Array2D getTerrainMap() {
         return copyArray(terrainMap);
     }
 
+    /**
+     * Returns the clock.
+     *
+     * @return the clock
+     */
     public Clock getClock() {
         return copyClock(clock);
     }
 
+    /**
+     * Returns the current sentiment id.
+     *
+     * @return the current sentiment id
+     */
     public int getCurrentSentimentId() {
         return currentSentimentId;
     }
@@ -219,6 +320,12 @@ public final class ScenarioData {
         return cityGrowthEnabled;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -240,6 +347,11 @@ public final class ScenarioData {
                 && clock.equals(other.clock);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(engines, cities, cargos, terrainTypes, trackTypes, sentiments,

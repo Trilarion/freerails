@@ -92,6 +92,10 @@ public class DialogueBoxController {
         @Serial
         private static final long serialVersionUID = 673348332616193928L;
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             closeContent();
@@ -103,6 +107,10 @@ public class DialogueBoxController {
         @Serial
         private static final long serialVersionUID = -5932587740749235632L;
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             showSelectWagons();
@@ -116,6 +124,10 @@ public class DialogueBoxController {
         @Serial
         private static final long serialVersionUID = -1672545312581874156L;
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             int engineId = selectEngine.getSelectedEngineId();
@@ -129,8 +141,10 @@ public class DialogueBoxController {
     };
 
     /**
-     * @param frame
-     * @param mr
+     * Creates a dialogue box controller instance.
+     *
+     * @param frame the frame parameter
+     * @param mr the mr parameter
      */
     public DialogueBoxController(JFrame frame, ModelRootImpl mr) {
         this.frame = frame;
@@ -145,6 +159,10 @@ public class DialogueBoxController {
 
         // We need to resize the glass panel when its parent resizes.
         frame.getLayeredPane().addComponentListener(new java.awt.event.ComponentAdapter() {
+            /**
+             * Component resized.
+             * @param e the e
+             */
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
                 glassPanel.setSize(glassPanel.getParent().getSize());
@@ -208,7 +226,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the save game.
      */
     public void showSaveGame() {
         SaveGamePanel saveGamePanel = new SaveGamePanel();
@@ -217,7 +235,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the select saved game2 load.
      */
     public void showSelectSavedGame2Load() {
         CommandToServer refreshGames = new RefreshListOfGamesCommandToServer();
@@ -228,7 +246,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the train orders.
      */
     public void showTrainOrders() {
         Collection<Train> trains = world.getTrains(modelRoot.getPlayer());
@@ -243,7 +261,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the select engine.
      */
     public void showSelectEngine() {
         if (world.getStations(modelRoot.getPlayer()).isEmpty()) {
@@ -292,14 +310,14 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the game controls.
      */
     public void showGameControls() {
         showContent(showControls);
     }
 
     /**
-     *
+     * Displays the income statement.
      */
     public void showIncomeStatement() {
         IncomeStatementHtmlPanel bs = new IncomeStatementHtmlPanel();
@@ -308,7 +326,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the balance sheet.
      */
     public void showBalanceSheet() {
         BalanceSheetHtmlPanel bs = new BalanceSheetHtmlPanel();
@@ -317,7 +335,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the broker screen.
      */
     public void showBrokerScreen() {
         // this is Creating a BrokerScreen Internal Frame in the Main Frame
@@ -331,7 +349,7 @@ public class DialogueBoxController {
     // Shows the Exit Dialog
 
     /**
-     *
+     * Displays the exit dialog.
      */
     public void showExitDialog() {
         ConfirmExitPanel bs = new ConfirmExitPanel();
@@ -340,21 +358,21 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the about.
      */
     public void showAbout() {
         showContent(about);
     }
 
     /**
-     *
+     * Displays the how2 play.
      */
     public void showHow2Play() {
         showContent(how2play);
     }
 
     /**
-     *
+     * Displays the select wagons.
      */
     public void showSelectWagons() {
         selectWagons.resetSelectedWagons();
@@ -363,7 +381,9 @@ public class DialogueBoxController {
     }
 
     /**
-     * @param terrainType
+     * Displays the terrain info.
+     *
+     * @param terrainType the terrain type parameter
      */
     public void showTerrainInfo(int terrainType) {
         terrainInfo.setTerrainType(terrainType);
@@ -371,7 +391,9 @@ public class DialogueBoxController {
     }
 
     /**
-     * @param p
+     * Displays the terrain info.
+     *
+     * @param p the map coordinate
      */
     private void showTerrainInfo(Vec2D p) {
         TerrainTile tile = world.getTile(p);
@@ -380,7 +402,9 @@ public class DialogueBoxController {
     }
 
     /**
-     * @param stationNumber
+     * Displays the station info.
+     *
+     * @param stationNumber the station number parameter
      */
     public void showStationInfo(int stationNumber) {
         try {
@@ -392,7 +416,9 @@ public class DialogueBoxController {
     }
 
     /**
-     * @param trainId
+     * Displays the train orders.
+     *
+     * @param trainId the train id parameter
      */
     public void showTrainOrders(int trainId) {
         closeContent();
@@ -404,7 +430,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the train list.
      */
     public void showTrainList() {
         if (!world.getTrains(modelRoot.getPlayer()).isEmpty()) {
@@ -422,7 +448,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the networth graph.
      */
     public void showNetworthGraph() {
 
@@ -432,7 +458,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Displays the leader board.
      */
     public void showLeaderBoard() {
 
@@ -442,7 +468,9 @@ public class DialogueBoxController {
     }
 
     /**
-     * @param component
+     * Displays the content.
+     *
+     * @param component the component parameter
      */
     public void showContent(JComponent component) {
         closeContent();
@@ -506,7 +534,7 @@ public class DialogueBoxController {
     }
 
     /**
-     *
+     * Performs the close content operation.
      */
     public void closeContent() {
         if (null != dialogueJInternalFrame) {
@@ -526,14 +554,18 @@ public class DialogueBoxController {
     }
 
     /**
-     * @param defaultFocusOwner
+     * Sets the default focus owner.
+     *
+     * @param defaultFocusOwner the default focus owner parameter
      */
     public void setDefaultFocusOwner(Component defaultFocusOwner) {
         this.defaultFocusOwner = defaultFocusOwner;
     }
 
     /**
-     * @param p
+     * Displays the station or terrain info.
+     *
+     * @param p the map coordinate
      */
     public void showStationOrTerrainInfo(Vec2D p) {
         int stationNumberAtLocation = StationUtils.getStationIdAtLocation(world, modelRoot.getPlayer(), p);
@@ -546,8 +578,10 @@ public class DialogueBoxController {
     }
 
     /**
-     * @param index
-     * @param player
+     * Performs the item added operation.
+     *
+     * @param index the index of the item
+     * @param player the player whose game state is used
      */
     public void itemAdded(int index, Player player) {
         /*

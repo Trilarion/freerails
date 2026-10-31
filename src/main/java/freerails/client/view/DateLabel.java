@@ -39,12 +39,16 @@ public class DateLabel extends JLabel implements View {
     private UnmodifiableWorld world;
 
     /**
-     *
+     * Creates a date label instance.
      */
     public DateLabel() {
         setText("          ");
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if (null != world) {
@@ -55,9 +59,11 @@ public class DateLabel extends JLabel implements View {
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {

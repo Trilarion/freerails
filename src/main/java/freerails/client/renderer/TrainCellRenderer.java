@@ -25,16 +25,32 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides the train cell renderer functionality.
+ */
 public class TrainCellRenderer implements ListCellRenderer<Engine> {
 
     private final RendererRoot rendererRoot;
     private final Map<String, JLabel> savesJLabels;
 
+    /**
+     * Creates a train cell renderer instance.
+     * @param rendererRoot the renderer root
+     */
     public TrainCellRenderer(RendererRoot rendererRoot) {
         this.rendererRoot = rendererRoot;
         savesJLabels = new HashMap<>();
     }
 
+    /**
+     * Returns the list cell renderer component.
+     * @param list the list
+     * @param engine the engine
+     * @param index the index
+     * @param isSelected the is selected
+     * @param cellHasFocus the cell has focus
+     * @return the list cell renderer component
+     */
     @Override
     public Component getListCellRendererComponent(JList<? extends Engine> list, Engine engine, // value to display
                                                   int index, // cell index

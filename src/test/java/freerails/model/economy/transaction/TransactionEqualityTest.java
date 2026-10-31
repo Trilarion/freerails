@@ -22,8 +22,14 @@ import freerails.model.economy.Money;
 import freerails.model.simulation.Time;
 import junit.framework.TestCase;
 
+/**
+ * Tests transaction equality behavior.
+ */
 public class TransactionEqualityTest extends TestCase {
 
+    /**
+     * Tests base transaction includes time in equality and hash code behavior.
+     */
     public void testBaseTransactionIncludesTimeInEqualityAndHashCode() {
         Transaction first = new Transaction(TransactionCategory.MISC_INCOME, new Money(12), Time.ZERO);
         Transaction same = new Transaction(TransactionCategory.MISC_INCOME, new Money(12), Time.ZERO);
@@ -35,6 +41,9 @@ public class TransactionEqualityTest extends TestCase {
         assertFalse(first.equals(differentTime));
     }
 
+    /**
+     * Tests item transaction includes item fields and concrete type behavior.
+     */
     public void testItemTransactionIncludesItemFieldsAndConcreteType() {
         ItemTransaction item = new ItemTransaction(
                 TransactionCategory.TRACK, new Money(-10), Time.ZERO, 2, 8);
@@ -51,6 +60,9 @@ public class TransactionEqualityTest extends TestCase {
         assertFalse(base.equals(item));
     }
 
+    /**
+     * Tests bond transaction includes rate behavior.
+     */
     public void testBondTransactionIncludesRate() {
         BondItemTransaction first = new BondItemTransaction(new Money(10), Time.ZERO, 1, 4.5);
         BondItemTransaction same = new BondItemTransaction(new Money(10), Time.ZERO, 1, 4.5);

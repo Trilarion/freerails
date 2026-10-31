@@ -35,6 +35,7 @@ public final class ImmutableCargoBatchBundle implements UnmodifiableCargoBatchBu
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /** Shared immutable empty cargo bundle. */
     public static final ImmutableCargoBatchBundle EMPTY = new ImmutableCargoBatchBundle(CargoBatchBundle.EMPTY);
 
     private final SortedMap<CargoBatch, Integer> cargoMap;
@@ -56,21 +57,44 @@ public final class ImmutableCargoBatchBundle implements UnmodifiableCargoBatchBu
         cargoMap = Collections.unmodifiableSortedMap(copy);
     }
 
+    /**
+     * Returns the cargo batches.
+     *
+     * @return the cargo batches
+     */
     @Override
     public Collection<CargoBatch> getCargoBatches() {
         return Collections.unmodifiableList(new ArrayList<>(cargoMap.keySet()));
     }
 
+    /**
+     * Returns whether contains.
+     *
+     * @param cargoBatch the cargo batch
+     * @return the contains
+     */
     @Override
     public boolean contains(CargoBatch cargoBatch) {
         return cargoMap.containsKey(cargoBatch);
     }
 
+    /**
+     * Returns the amount.
+     *
+     * @param cargoBatch the cargo batch
+     * @return the amount
+     */
     @Override
     public int getAmount(CargoBatch cargoBatch) {
         return cargoMap.getOrDefault(cargoBatch, 0);
     }
 
+    /**
+     * Returns the amount of type.
+     *
+     * @param cargoType the cargo type
+     * @return the amount of type
+     */
     @Override
     public int getAmountOfType(int cargoType) {
         int amount = 0;
@@ -82,11 +106,22 @@ public final class ImmutableCargoBatchBundle implements UnmodifiableCargoBatchBu
         return amount;
     }
 
+    /**
+     * Returns the number of distinct cargo batches in this bundle.
+     *
+     * @return the size
+     */
     @Override
     public int size() {
         return cargoMap.size();
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param other the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object other) {
         if (this == other) {
@@ -103,11 +138,21 @@ public final class ImmutableCargoBatchBundle implements UnmodifiableCargoBatchBu
         return true;
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return cargoMap.size();
     }
 
+    /**
+     * Returns a string representation of this object.
+     *
+     * @return the string
+     */
     @Override
     public String toString() {
         return new CargoBatchBundle(this).toString();

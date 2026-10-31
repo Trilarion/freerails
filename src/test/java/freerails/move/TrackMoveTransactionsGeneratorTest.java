@@ -57,7 +57,8 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
     private TrackMoveTransactionsGenerator transactionGenerator;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -68,7 +69,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests add track move behavior.
      */
     public void testAddTrackMove() {
         TrackPiece oldTrackPiece;
@@ -89,6 +90,10 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         assertNotNull(move);
     }
 
+    /**
+     * Tests terrain track cost is added to track price and not refunded behavior.
+     * @throws Exception if the test terrain track cost is added to track price and not refunded operation fails.
+     */
     public void testTerrainTrackCostIsAddedToTrackPriceAndNotRefunded() throws Exception {
         URL url = getClass().getResource("/freerails/data/scenario/track_types.json");
         SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(new File(url.toURI()));

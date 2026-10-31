@@ -60,9 +60,11 @@ public class TrackMoveProducer {
     private Time lastMoveTime;
 
     /**
-     * @param executor
-     * @param world
-     * @param modelRoot
+     * Creates a track move producer instance.
+     *
+     * @param executor the executor parameter
+     * @param world the game world being queried
+     * @param modelRoot the client model that provides current game state
      */
     public TrackMoveProducer(MoveExecutor executor, UnmodifiableWorld world, ModelRoot modelRoot) {
         this.executor = executor;
@@ -73,7 +75,9 @@ public class TrackMoveProducer {
     }
 
     /**
-     * @param modelRoot
+     * Creates a track move producer instance.
+     *
+     * @param modelRoot the client model that provides current game state
      */
     public TrackMoveProducer(ModelRoot modelRoot) {
         Utils.verifyNotNull(modelRoot);
@@ -88,11 +92,13 @@ public class TrackMoveProducer {
     }
 
     /**
-     * @param from
-     * @param direction
-     * @param world
-     * @param player
-     * @return
+     * Performs the generate build track move operation.
+     *
+     * @param from the map coordinate
+     * @param direction the direction parameter
+     * @param world the game world being queried
+     * @param player the player whose game state is used
+     * @return the build track move produced by this method
      */
     public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, Player player) {
         ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, typeA, world, player);
@@ -102,12 +108,14 @@ public class TrackMoveProducer {
     }
 
     /**
-     * @param from
-     * @param direction
-     * @param world
-     * @param player
-     * @return
-     * @throws Exception
+     * Performs the generate remove track move operation.
+     *
+     * @param from the map coordinate
+     * @param direction the direction parameter
+     * @param world the game world being queried
+     * @param player the player whose game state is used
+     * @return the remove track move produced by this method
+     * @throws Exception if the operation cannot be completed.
      */
     public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, UnmodifiableWorld world, Player player) throws Exception {
         TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, player);
@@ -118,6 +126,15 @@ public class TrackMoveProducer {
 
     // TODO put part of it in model
     // utility method.
+    /**
+     * Returns the build track change track piece move.
+     * @param p the p
+     * @param direction the direction
+     * @param trackType the track type
+     * @param world the world
+     * @param player the player
+     * @return the build track change track piece move
+     */
     private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
         TrackPiece oldTrackPiece = null;
         TrackPiece newTrackPiece;
@@ -140,6 +157,15 @@ public class TrackMoveProducer {
 
     // TODO put part of it in model
     // utility method.
+    /**
+     * Returns the remove track change track piece move.
+     * @param p the p
+     * @param direction the direction
+     * @param world the world
+     * @param player the player
+     * @return the remove track change track piece move
+     * @throws Exception if the operation cannot be completed
+     */
     private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
         TrackPiece oldTrackPiece = null;
         TrackPiece newTrackPiece;
@@ -207,9 +233,11 @@ public class TrackMoveProducer {
     }
 
     /**
-     * @param from
-     * @param path
-     * @return
+     * Builds the track.
+     *
+     * @param from the map coordinate
+     * @param path the path parameter
+     * @return the track produced by this method
      */
     public Status buildTrack(Vec2D from, TileTransition[] path) {
         Status returnValue = Status.OK;
@@ -228,9 +256,11 @@ public class TrackMoveProducer {
     }
 
     /**
-     * @param from
-     * @param trackVector
-     * @return
+     * Builds the track.
+     *
+     * @param from the map coordinate
+     * @param trackVector the track vector parameter
+     * @return the track produced by this method
      */
     public Status buildTrack(Vec2D from, TileTransition trackVector) {
 
@@ -314,6 +344,12 @@ public class TrackMoveProducer {
         }
     }
 
+    /**
+     * Creates and submits the move that upgrades track at the specified point.
+     * @param point the point
+     * @param trackRuleID the track rule id
+     * @return the status of the submitted upgrade move
+     */
     private Status upgradeTrack(Vec2D point, int trackRuleID) {
         UnmodifiableWorld world = executor.getWorld();
         TrackPiece before = world.getTile(point).trackPiece();
@@ -355,19 +391,28 @@ public class TrackMoveProducer {
     }
 
     /**
-     * @return
+     * Returns the track builder mode.
+     *
+     * @return the track builder mode produced by this method
      */
     public BuildMode getTrackBuilderMode() {
         return getBuildMode();
     }
 
     /**
-     * @param buildMode
+     * Sets the track builder mode.
+     *
+     * @param buildMode the build mode parameter
      */
     public void setTrackBuilderMode(BuildMode buildMode) {
         setBuildMode(buildMode);
     }
 
+    /**
+     * Submits a move and returns its execution status.
+     * @param move the move
+     * @return the move execution status
+     */
     private Status sendMove(Move move) {
         Status status = executor.applyMove(move);
 
@@ -379,12 +424,18 @@ public class TrackMoveProducer {
         return status;
     }
 
+    /**
+     * Returns the build track strategy.
+     * @return the build track strategy
+     */
     private BuildTrackStrategy getBuildTrackStrategy() {
         return (BuildTrackStrategy) modelRoot.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
     }
 
     /**
-     * @param buildTrackStrategy
+     * Sets the build track strategy.
+     *
+     * @param buildTrackStrategy the build track strategy parameter
      */
     public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
 
@@ -392,14 +443,18 @@ public class TrackMoveProducer {
     }
 
     /**
-     * @return
+     * Returns the build mode.
+     *
+     * @return the build mode produced by this method
      */
     private BuildMode getBuildMode() {
         return (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
     }
 
     /**
-     * @param buildMode
+     * Sets the build mode.
+     *
+     * @param buildMode the build mode parameter
      */
     private void setBuildMode(BuildMode buildMode) {
         modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, buildMode);

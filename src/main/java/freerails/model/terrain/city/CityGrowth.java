@@ -32,6 +32,8 @@ public class CityGrowth {
     private final CityTilePositioner tilePositioner;
 
     /**
+     * Creates a city-growth service for the supplied world.
+     *
      * @param world world whose cities may grow
      */
     public CityGrowth(World world) {

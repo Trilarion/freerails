@@ -29,15 +29,19 @@ import java.awt.*;
 public interface TileRenderer {
 
     /**
-     * @return
+     * Returns the default icon.
+     *
+     * @return the default icon produced by this method
      */
     Image getDefaultIcon();
 
     /**
-     * @param g
-     * @param renderLocation
-     * @param mapLocation
-     * @param world
+     * Performs the render operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param renderLocation the map coordinate
+     * @param mapLocation the map coordinate
+     * @param world the game world being queried
      */
     void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, UnmodifiableWorld world);
 

@@ -32,7 +32,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 /**
- *
+ * Provides the broker frame functionality.
  */
 class BrokerFrame extends JInternalFrame {
 
@@ -105,7 +105,9 @@ class BrokerFrame extends JInternalFrame {
     }
 
     /**
-     * @param url
+     * Creates a broker frame instance.
+     *
+     * @param url the url parameter
      */
     private BrokerFrame(URL url) {
         this();
@@ -113,8 +115,10 @@ class BrokerFrame extends JInternalFrame {
     }
 
     /**
-     * @param url
-     * @param context
+     * Creates a broker frame instance.
+     *
+     * @param url the url parameter
+     * @param context the context parameter
      */
     private BrokerFrame(URL url, HashMap context) {
         this();
@@ -124,7 +128,9 @@ class BrokerFrame extends JInternalFrame {
     }
 
     /**
-     * @param html
+     * Creates a broker frame instance.
+     *
+     * @param html the html parameter
      */
     private BrokerFrame(String html) {
         this();
@@ -151,9 +157,11 @@ class BrokerFrame extends JInternalFrame {
     }
 
     /**
-     * @param template
-     * @param context
-     * @return
+     * Performs the populate tokens operation.
+     *
+     * @param template the template parameter
+     * @param context the context parameter
+     * @return the populate tokens produced by this method
      */
     public static String populateTokens(String template, Object context) {
         StringTokenizer tokenizer = new StringTokenizer(template, "$");
@@ -182,14 +190,20 @@ class BrokerFrame extends JInternalFrame {
     }
 
     /**
-     * @param m
-     * @param vl
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param m the model parameter
+     * @param vl the vl parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
         done.setAction(closeAction);
     }
 
+    /**
+     * Sets the html.
+     * @param s the s
+     */
     void setHtml(String s) {
         htmlJLabel.setText(s);
     }

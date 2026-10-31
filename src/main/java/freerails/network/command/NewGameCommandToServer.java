@@ -32,15 +32,19 @@ public class NewGameCommandToServer implements CommandToServer {
     private final String mapName;
 
     /**
-     * @param s
+     * Creates a request to start a game using the named map.
+     *
+     * @param s map name understood by the server
      */
     public NewGameCommandToServer(String s) {
         mapName = s;
     }
 
     /**
-     * @param server
-     * @return
+     * Asks the server to create a game using the requested map.
+     *
+     * @param server server that creates the game
+     * @return successful status, or a failed status containing the error message
      */
     @Override
     public CommandStatus execute(ServerControlInterface server) {
@@ -53,6 +57,12 @@ public class NewGameCommandToServer implements CommandToServer {
         }
     }
 
+    /**
+     * Compares this request with another by map name.
+     *
+     * @param obj object to compare
+     * @return {@code true} if the other request has the same map name
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -61,6 +71,11 @@ public class NewGameCommandToServer implements CommandToServer {
         return mapName.equals(newGameMessageToServer.mapName);
     }
 
+    /**
+     * Returns a hash code based on the map name.
+     *
+     * @return this request's hash code
+     */
     @Override
     public int hashCode() {
         return mapName.hashCode();

@@ -69,6 +69,9 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     private LauncherClient client;
     private boolean nextIsStart = false;
 
+    /**
+     * Creates a launcher frame instance.
+     */
     private LauncherFrame() {
         GridBagConstraints gridBagConstraints;
 
@@ -81,6 +84,10 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
         setTitle("Freerails Launcher");
         addWindowListener(new WindowAdapter() {
+            /**
+             * Window closing.
+             * @param e the e
+             */
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -235,7 +242,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     }
 
     /**
-     *
+     * Performs the emergency stop operation.
      */
     public static void emergencyStop() {
         ScreenHandler.exitFullScreenMode();
@@ -271,6 +278,10 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         }
     }
 
+    /**
+     * Sets the next enabled.
+     * @param enabled the enabled
+     */
     @Override
     public void setNextEnabled(boolean enabled) {
         nextButton.setEnabled(enabled);
@@ -383,6 +394,9 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         }// End of switch statement
     }
 
+    /**
+     * Sets the server game model.
+     */
     private void setServerGameModel() {
 
         ClientOptionsPanel cop = (ClientOptionsPanel) wizardPages[2];
@@ -393,11 +407,18 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         }   // Do nothing since the server is already set up.
     }
 
+    /**
+     * Returns whether new game.
+     * @return whether is new game
+     */
     private boolean isNewGame() {
         SelectMapPanel msp2 = (SelectMapPanel) wizardPages[1];
         return msp2.getSelection() == MapSelection.NEW_GAME;
     }
 
+    /**
+     * Initializes the server.
+     */
     private void initServer() {
 
         server = new FreerailsGameServer(new FullSaveGameManager());
@@ -446,6 +467,10 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     }
 
 
+    /**
+     * Prev button action performed.
+     * @param evt the evt
+     */
     private void prevButtonActionPerformed(ActionEvent evt) {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         nextIsStart = false;
@@ -469,6 +494,10 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         }
     }
 
+    /**
+     * Next button action performed.
+     * @param evt the evt
+     */
     private void nextButtonActionPerformed(ActionEvent evt) {
         try {
             CardLayout cl = (CardLayout) jPanel1.getLayout();
@@ -593,8 +622,10 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
 
     /**
-     * @param text
-     * @param status
+     * Sets the info text.
+     *
+     * @param text the text parameter
+     * @param status the status parameter
      */
 
     @Override
@@ -619,7 +650,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     }
 
     /**
-     *
+     * Hides the all messages.
      */
     @Override
     public void hideAllMessages() {
@@ -629,7 +660,9 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     }
 
     /**
-     * @param b
+     * Sets the buttons visible.
+     *
+     * @param b the button or flag parameter
      */
     private void setButtonsVisible(boolean b) {
         nextButton.setVisible(b);
@@ -637,7 +670,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     }
 
     /**
-     *
+     * Hides the error messages.
      */
     @Override
     public void hideErrorMessages() {

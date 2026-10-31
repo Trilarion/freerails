@@ -51,6 +51,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Tests move equality contract behavior.
+ */
 public class MoveEqualityContractTest extends TestCase {
 
     private static final Player PLAYER = new Player(1, "One");
@@ -63,6 +66,9 @@ public class MoveEqualityContractTest extends TestCase {
     private static final TrackPiece TRACK_OTHER_OWNER = new TrackPiece(
             TrackConfiguration.getFlatInstance("000010000"), TRACK_TYPE, OTHER_PLAYER.getId());
 
+    /**
+     * Tests player and transaction moves compare every field behavior.
+     */
     public void testPlayerAndTransactionMovesCompareEveryField() {
         assertEqualMoves(new AddPlayerMove(new Player(1, "One")), new AddPlayerMove(new Player(1, "One")));
         assertDifferentMoves(new AddPlayerMove(PLAYER), new AddPlayerMove(new Player(2, "One")));
@@ -84,6 +90,9 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new ChangeGameSpeedMove(Speed.SLOW), new ChangeGameSpeedMove(Speed.FAST));
     }
 
+    /**
+     * Tests train moves compare every field behavior.
+     */
     public void testTrainMovesCompareEveryField() {
         Train train = new Train(4, 3);
         train.setConsist(List.of(5, 6));
@@ -125,6 +134,9 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(update, new UpdateTrainMove(PLAYER, 4, cargo, consist, otherSchedule));
     }
 
+    /**
+     * Tests station moves compare every field used by the move behavior.
+     */
     public void testStationMovesCompareEveryFieldUsedByTheMove() {
         Station station = station(10, new Vec2D(3, 4), "Central");
         assertEqualMoves(new AddStationMove(PLAYER, station),
@@ -194,6 +206,9 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(settingsMove, new UpdateStationCargoPolicyMove(PLAYER, differentDemand));
     }
 
+    /**
+     * Tests map and composite moves compare every field behavior.
+     */
     public void testMapAndCompositeMovesCompareEveryField() {
         TerrainTile tile = new TerrainTile(4);
         assertEqualMoves(new ChangeTileMove(new TerrainTile(4), new Vec2D(2, 3)),
@@ -254,24 +269,53 @@ public class MoveEqualityContractTest extends TestCase {
         assertEqualMoves(new GrowCitiesMove(), new GrowCitiesMove());
     }
 
+    /**
+     * Performs transaction.
+     * @param amount the amount to use in the test.
+     * @return the result of transaction.
+     */
     private static Transaction transaction(long amount) {
         return new Transaction(TransactionCategory.MISC_INCOME, new Money(amount), TIME);
     }
 
+    /**
+     * Performs transaction.
+     * @param category the category to use in the test.
+     * @param amount the amount to use in the test.
+     * @param time the time to use in the test.
+     * @return the result of transaction.
+     */
     private static Transaction transaction(TransactionCategory category, long amount, Time time) {
         return new Transaction(category, new Money(amount), time);
     }
 
+    /**
+     * Performs cargo.
+     * @param amount the amount to use in the test.
+     * @return the result of cargo.
+     */
     private static CargoBatchBundle cargo(int amount) {
         CargoBatchBundle bundle = new CargoBatchBundle();
         bundle.addCargo(new CargoBatch(1, Vec2D.ZERO, 42, 9), amount);
         return bundle;
     }
 
+    /**
+     * Performs station.
+     * @param id the id to use in the test.
+     * @param location the location to use in the test.
+     * @param name the name to use in the test.
+     * @return the result of station.
+     */
     private static Station station(int id, Vec2D location, String name) {
         return new Station(id, location, name, CargoBatchBundle.EMPTY);
     }
 
+    /**
+     * Asserts equal moves.
+     * @param first the first to use in the test.
+     * @param independent the independent to use in the test.
+     */
     private void assertEqualMoves(Move first, Move independent) {
         assertNotSame(first, independent);
         assertEquals(first, independent);
@@ -279,6 +323,11 @@ public class MoveEqualityContractTest extends TestCase {
         assertEquals(first.hashCode(), independent.hashCode());
     }
 
+    /**
+     * Asserts different moves.
+     * @param first the first to use in the test.
+     * @param different the different to use in the test.
+     */
     private void assertDifferentMoves(Move first, Move different) {
         assertFalse("Expected unequal moves: " + first + " and " + different, first.equals(different));
         assertFalse("Move equality must be symmetric", different.equals(first));

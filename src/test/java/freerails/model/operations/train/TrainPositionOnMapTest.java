@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 import java.util.Arrays;
 
 /**
- *
+ * Tests train position on map behavior.
  */
 public class TrainPositionOnMapTest extends TestCase {
 
@@ -56,7 +56,7 @@ public class TrainPositionOnMapTest extends TestCase {
     private final Vec2D p15 = new Vec2D(60, 66);
 
     /**
-     *
+     * Tests get length behavior.
      */
     public void testGetLength() {
         TrainPositionOnMap trainPositionOnMap = TrainPositionOnMap.createInstance(Arrays.asList(p1, p7, p9, p12));
@@ -64,7 +64,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get point behavior.
      */
     public void testGetPoint() {
         TrainPositionOnMap trainPositionOnMap = TrainPositionOnMap.createInstance(Arrays.asList(p1, p7));
@@ -74,7 +74,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Tests path behavior.
      */
     public void testPath() {
         TrainPositionOnMap trainPositionOnMap = TrainPositionOnMap.createInstance(Arrays.asList(p1, p7, p9, p12));
@@ -97,7 +97,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Tests reverse path behavior.
      */
     public void testReversePath() {
         TrainPositionOnMap trainPositionOnMap = TrainPositionOnMap.createInstance(Arrays.asList(p12, p9, p7, p1));
@@ -120,7 +120,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Tests add to head behavior.
      */
     public void testAddToHead() {
         TrainPositionOnMap a;
@@ -147,7 +147,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Verifies that a path can be joined at its head only when the endpoints are compatible.
      */
     public void testCanAddToHead() {
         TrainPositionOnMap a;
@@ -168,7 +168,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Tests add to tail behavior.
      */
     public void testAddToTail() {
         TrainPositionOnMap a;
@@ -194,7 +194,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Verifies that a path can be joined at its tail only when the endpoints are compatible.
      */
     public void testCanAddToTail() {
         TrainPositionOnMap a;
@@ -215,7 +215,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Verifies that a path can be shortened at its head only when the removed path matches.
      */
     public void testCanRemoveFromHead() {
         TrainPositionOnMap a;
@@ -236,7 +236,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Tests remove from tail behavior.
      */
     public void testRemoveFromTail() {
         TrainPositionOnMap a;
@@ -252,7 +252,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Verifies that a path can be shortened at its tail only when the removed path matches.
      */
     public void testCanRemoveFromTail() {
         TrainPositionOnMap a;
@@ -273,7 +273,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Tests equals behavior.
      */
     public void testEquals() {
         TrainPositionOnMap a;
@@ -308,7 +308,7 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     *
+     * Tests create in opposite direction to path behavior.
      */
     public void testCreateInOppositeDirectionToPath() {
         PathIterator path = new SimplePathIteratorImpl(Arrays.asList(p12, p9, p7, p1));

@@ -28,12 +28,12 @@ import freerails.model.MapFixtureFactory2;
 import freerails.util.Vec2D;
 
 /**
- *
+ * Tests change tile move behavior.
  */
 public class ChangeTileMoveTest extends AbstractMoveTestCase {
 
     /**
-     *
+     * Tests move behavior.
      */
     public void testMove() {
         Vec2D p = new Vec2D(10, 10);
@@ -49,7 +49,7 @@ public class ChangeTileMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move2 behavior.
      */
     public void testMove2() {
         Vec2D p = new Vec2D(10, 10);
@@ -58,7 +58,7 @@ public class ChangeTileMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Sets up world.
      */
     @Override
     protected void setupWorld() {

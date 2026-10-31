@@ -40,53 +40,71 @@ public class ActionRoot {
     private TrackMoveProducer trackMoveProducer;
 
     /**
-     * @param serverControls
+     * Creates a action root instance.
+     *
+     * @param serverControls the server controls parameter
      */
     public ActionRoot(ServerControlModel serverControls) {
         this.serverControls = serverControls;
     }
 
     /**
-     * @return
+     * Returns the build train dialog action.
+     *
+     * @return the build train dialog action produced by this method
      */
     public Action getBuildTrainDialogAction() {
         return new BuildTrainDialogAction(this);
     }
 
+    /**
+     * Returns the build engine shop action.
+     * @return the build engine shop action
+     */
     public Action getBuildEngineShopAction() {
         return new BuildEngineShopDialogAction(this);
     }
 
     /**
-     * @return
+     * Returns the dialogue box controller.
+     *
+     * @return the dialogue box controller produced by this method
      */
     public DialogueBoxController getDialogueBoxController() {
         return dialogueBoxController;
     }
 
     /**
-     * @param dialogueBoxController
+     * Sets the dialogue box controller.
+     *
+     * @param dialogueBoxController the dialogue box controller parameter
      */
     public void setDialogueBoxController(DialogueBoxController dialogueBoxController) {
         this.dialogueBoxController = dialogueBoxController;
     }
 
     /**
-     * @return
+     * Returns the server controls.
+     *
+     * @return the server controls produced by this method
      */
     public ServerControlModel getServerControls() {
         return serverControls;
     }
 
     /**
-     * @return
+     * Returns the station build model.
+     *
+     * @return the station build model produced by this method
      */
     public StationBuildModel getStationBuildModel() {
         return stationBuildModel;
     }
 
     /**
-     * @return
+     * Returns the track move producer.
+     *
+     * @return the track move producer produced by this method
      */
     public TrackMoveProducer getTrackMoveProducer() {
         return trackMoveProducer;

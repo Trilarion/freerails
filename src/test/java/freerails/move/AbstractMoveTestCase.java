@@ -43,18 +43,23 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected int validEngineId;
     private boolean hasSetupBeenCalled = false;
 
+    /**
+     * Creates a abstract move test case.
+     */
     public AbstractMoveTestCase() {
     }
 
     /**
-     * @param str
+     * Creates an instance of abstract move test case.
+     * @param str the str to use in the test.
      */
     public AbstractMoveTestCase(String str) {
         super(str);
     }
 
     /**
-     * @param move
+     * Asserts move apply fails.
+     * @param move the move under test.
      */
     void assertMoveApplyFails(Move move) {
         assertSetupHasBeenCalled();
@@ -65,7 +70,8 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param move
+     * Asserts move apply is ok.
+     * @param move the move under test.
      */
     protected void assertMoveApplyIsOk(Move move) {
         assertSetupHasBeenCalled();
@@ -96,7 +102,8 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param move
+     * Asserts ok and repeatable.
+     * @param move the move under test.
      */
     void assertOkAndRepeatable(Move move) {
         assertSetupHasBeenCalled();
@@ -113,7 +120,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * removed a piece of track, that piece of track is gone, so we cannot
      * remove it again.
      *
-     * @param move
+     * @param move the move whose repeatability is checked.
      */
     public void assertOkButNotRepeatable(Move move) {
         assertSetupHasBeenCalled();
@@ -124,13 +131,17 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertMoveApplyFails(move);
     }
 
+    /**
+     * Asserts setup has been called.
+     */
     private void assertSetupHasBeenCalled() {
         assertTrue("AbstractMoveTestCase.setUp has not been called!",
                 hasSetupBeenCalled());
     }
 
     /**
-     * @param move
+     * Asserts move not applicable.
+     * @param move the move under test.
      */
     public void assertMoveNotApplicable(Move move) {
         assertSetupHasBeenCalled();
@@ -141,7 +152,8 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param move
+     * Asserts move applicable.
+     * @param move the move under test.
      */
     public void assertMoveApplicable(Move move) {
         assertSetupHasBeenCalled();
@@ -155,34 +167,49 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!", Status.OK, status);
     }
 
+    /**
+     * Returns player.
+     * @return the result of get player.
+     */
     Player getPlayer() {
         return world.getPlayer(0);
     }
 
+    /**
+     * Returns world.
+     * @return the result of get world.
+     */
     public World getWorld() {
         return world;
     }
 
+    /**
+     * Sets world.
+     * @param world the world used by this test.
+     */
     public void setWorld(World world) {
         this.world = world;
     }
 
     /**
-     * @return
+     * Indicates whether setup been called is present.
+     * @return whether setup been called is present.
      */
     private boolean hasSetupBeenCalled() {
         return hasSetupBeenCalled;
     }
 
     /**
-     * @param hasSetupBeenCalled
+     * Sets has setup been called.
+     * @param hasSetupBeenCalled the has setup been called to use in the test.
      */
     public void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
         this.hasSetupBeenCalled = hasSetupBeenCalled;
     }
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -192,7 +219,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
+     * Sets up world.
      */
     protected void setupWorld() {
         world = WorldGenerator.defaultWorld();
@@ -205,8 +232,9 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param x
-     * @param y
+     * Asserts track here.
+     * @param x the x to use in the test.
+     * @param y the y to use in the test.
      */
     protected void assertTrackHere(int x, int y) {
 
@@ -215,7 +243,8 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param path
+     * Asserts track here.
+     * @param path the path to use in the test.
      */
     protected void assertTrackHere(PathOnTiles path) {
         Vec2D start = path.getStart();

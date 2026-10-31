@@ -38,7 +38,7 @@ import junit.framework.TestCase;
 import java.util.Arrays;
 
 /**
- *
+ * Tests track building behavior.
  */
 public class TrackBuildingTest extends TestCase {
 
@@ -49,7 +49,8 @@ public class TrackBuildingTest extends TestCase {
     private BuildTrackStrategy bts;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {

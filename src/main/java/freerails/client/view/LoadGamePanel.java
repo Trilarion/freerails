@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Presents saved games and sends the selected game to the server for loading.
  */
 public class LoadGamePanel extends JPanel implements View {
 
@@ -119,15 +120,27 @@ public class LoadGamePanel extends JPanel implements View {
     }
 
 
+    /**
+     * Refresh button action performed.
+     * @param evt the evt
+     */
     private void refreshButtonActionPerformed(ActionEvent evt) {
         CommandToServer refreshGames = new RefreshListOfGamesCommandToServer();
         modelRoot.sendCommand(refreshGames);
     }
 
+    /**
+     * Returns whether this object can cel button action performed.
+     * @param evt the evt
+     */
     private void cancelButtonActionPerformed(ActionEvent evt) {
         if (null != close) close.actionPerformed(evt);
     }
 
+    /**
+     * Ok button action performed.
+     * @param evt the evt
+     */
     private void okButtonActionPerformed(ActionEvent evt) {
         String filename = list1.getSelectedValue();
         CommandToServer message2 = new LoadGameCommandToServer(filename);
@@ -136,14 +149,20 @@ public class LoadGamePanel extends JPanel implements View {
         if (null != close) close.actionPerformed(evt);
     }
 
+    /**
+     * List1 value changed.
+     * @param evt the evt
+     */
     private void list1ValueChanged(ListSelectionEvent evt) {
         okButton.setEnabled(list1.getSelectedIndex() != -1);
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
@@ -152,6 +171,9 @@ public class LoadGamePanel extends JPanel implements View {
         updateListOfFiles();
     }
 
+    /**
+     * Updates the list of files.
+     */
     private void updateListOfFiles() {
         List<String> files = getSavedGames();
         String[] saves = new String[files.size()];
@@ -163,6 +185,10 @@ public class LoadGamePanel extends JPanel implements View {
         lastFiles = files;
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         List<String> files = getSavedGames();
@@ -172,6 +198,10 @@ public class LoadGamePanel extends JPanel implements View {
         super.paintComponent(g);
     }
 
+    /**
+     * Returns the saved games.
+     * @return the saved games
+     */
     private List<String> getSavedGames() {
         Object savedGames = modelRoot.getProperty(ModelRootProperty.SAVED_GAMES_LIST);
         if (!(savedGames instanceof List<?> values)) {

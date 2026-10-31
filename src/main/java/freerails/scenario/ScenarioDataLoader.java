@@ -39,6 +39,7 @@ public final class ScenarioDataLoader {
 
     private static final String SETTINGS_FILE = "scenario_settings.json";
 
+    /** Prevents instantiation of this utility class. */
     private ScenarioDataLoader() {}
 
     /**
@@ -94,6 +95,13 @@ public final class ScenarioDataLoader {
                         scenario.isCityGrowthEnabled()));
     }
 
+    /**
+     * Loads the settings file from the specified scenario directory.
+     *
+     * @param directory the directory containing the scenario settings
+     * @return the parsed scenario settings
+     * @throws IOException if the settings file cannot be read or parsed
+     */
     private static ScenarioSettings loadSettings(File directory) throws IOException {
         File settingsFile = file(directory, SETTINGS_FILE);
         if (!settingsFile.exists()) {
@@ -102,10 +110,24 @@ public final class ScenarioDataLoader {
         return GsonManager.load(settingsFile, ScenarioSettings.class);
     }
 
+    /**
+     * Creates a file reference for a named file in a scenario directory.
+     *
+     * @param directory the scenario directory
+     * @param name the file name within that directory
+     * @return the referenced file
+     */
     private static File file(File directory, String name) {
         return new File(directory, name);
     }
 
+    /**
+     * Stores optional clock, sentiment, and city-growth settings from a scenario file.
+     *
+     * @param clock the optional simulation clock settings
+     * @param currentSentimentId the identifier of the current public sentiment
+     * @param cityGrowthEnabled whether city growth is enabled, or {@code null} if unspecified
+     */
     private record ScenarioSettings(Clock clock, int currentSentimentId, Boolean cityGrowthEnabled) {
     }
 }

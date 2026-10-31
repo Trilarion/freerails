@@ -50,12 +50,25 @@ public class AddStationMoveGenerator implements MoveGenerator {
     private final int ruleNumber;
     private final Player player;
 
+    /**
+     * Creates an add station move generator from the supplied values.
+     *
+     * @param location the location
+     * @param trackRule the track rule
+     * @param player the player
+     */
     public AddStationMoveGenerator(Vec2D location, int trackRule, Player player) {
         this.location = location;
         ruleNumber = trackRule;
         this.player = player;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -66,6 +79,11 @@ public class AddStationMoveGenerator implements MoveGenerator {
         return player.equals(addStationPreMove.player);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         int result;
@@ -77,8 +95,8 @@ public class AddStationMoveGenerator implements MoveGenerator {
 
     // TODO how often is this called (seems to be called every single time the mouse is over a tile)
     /**
-     * @param world
-     * @return
+     * @param world the game world used by this operation
+     * @return the move that adds the station to the world
      */
     @Override
     public Move generate(UnmodifiableWorld world) {

@@ -30,12 +30,16 @@ import java.io.Serializable;
 public interface Motion extends Serializable {
 
     /**
-     * @return total duration of this motion
+     * Returns the total duration of this motion.
+     *
+     * @return the total duration
      */
     double getTotalTime();
 
     /**
-     * @return total distance traveled
+     * Returns the total distance traveled by this motion.
+     *
+     * @return the total distance
      */
     double getTotalDistance();
 

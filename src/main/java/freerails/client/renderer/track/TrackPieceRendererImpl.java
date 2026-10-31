@@ -37,10 +37,12 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
     private final Image[] trackPieceIcons = new Image[512];
 
     /**
-     * @param world
-     * @param imageManager
-     * @param typeNumber
-     * @throws IOException
+     * Creates a track piece renderer impl instance.
+     *
+     * @param world the game world being queried
+     * @param imageManager the image manager parameter
+     * @param typeNumber the type number parameter
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public TrackPieceRendererImpl(UnmodifiableWorld world, ImageManager imageManager, int typeNumber) throws IOException {
         TrackType trackType = world.getTrackType(typeNumber);
@@ -55,9 +57,11 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     /**
-     * @param i
-     * @param trackTypeName
-     * @return
+     * Performs the generate filename operation.
+     *
+     * @param i the index of the item
+     * @param trackTypeName the track type name parameter
+     * @return the filename produced by this method
      */
     public static String generateFilename(int i, String trackTypeName) {
         String relativeFileNameBase = "track" + File.separator + trackTypeName;
@@ -67,10 +71,12 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     /**
-     * @param g
-     * @param trackTemplate
-     * @param tileLocation
-     * @param tileSize
+     * Draws the track piece icon.
+     *
+     * @param g the graphics context used for drawing
+     * @param trackTemplate the track template parameter
+     * @param tileLocation the map coordinate
+     * @param tileSize the map coordinate
      */
     @Override
     public void drawTrackPieceIcon(Graphics g, int trackTemplate, Vec2D tileLocation, Vec2D tileSize) {
@@ -85,8 +91,10 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     /**
-     * @param trackTemplate
-     * @return
+     * Returns the track piece icon.
+     *
+     * @param trackTemplate the track template parameter
+     * @return the track piece icon produced by this method
      */
     @Override
     public Image getTrackPieceIcon(int trackTemplate) {

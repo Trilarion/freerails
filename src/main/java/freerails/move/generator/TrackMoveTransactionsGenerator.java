@@ -80,8 +80,8 @@ public class TrackMoveTransactionsGenerator {
 
     // TODO we do not want to use transactions here, rather add them to the changetrackmoves
     /**
-     * @param move
-     * @return
+     * @param move the move to apply or process
+     * @return a composite move containing the track move and its associated transactions
      */
     public CompositeMove addTransactions(Move move) {
         // TODO this only takes track into account, not stations
@@ -152,6 +152,11 @@ public class TrackMoveTransactionsGenerator {
         return new CompositeMove(moves);
     }
 
+    /**
+     * Performs the unpack move operation.
+     *
+     * @param move the move
+     */
     private void unpackMove(Move move) {
         if (move instanceof ChangeTrackPieceMove tm) {
             // process move
@@ -225,6 +230,12 @@ public class TrackMoveTransactionsGenerator {
         }
     }
 
+    /**
+     * Adds the add terrain track cost to this track move transactions generator.
+     *
+     * @param move the move
+     * @param addedLength the added length
+     */
     private void addTerrainTrackCost(ChangeTrackPieceMove move, int addedLength) {
         Terrain terrain = world.getTerrain(world.getTile(move.location()).terrainTypeId());
         long weightedCost = Math.multiplyExact(

@@ -28,12 +28,12 @@ import junit.framework.TestCase;
 import java.util.Arrays;
 
 /**
- *
+ * Tests simple test path iterator behavior.
  */
 public class SimpleTestPathIteratorTest extends TestCase {
 
     /**
-     *
+     * Verifies that the iterator reports a segment before traversal and no segment after traversal.
      */
     public void testHasNext() {
         Vec2D[] points = {Vec2D.ZERO, new Vec2D(100, 0)};
@@ -44,7 +44,7 @@ public class SimpleTestPathIteratorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests next segment behavior.
      */
     public void testNextSegment() {
         Vec2D[] points = {new Vec2D(1, 4), new Vec2D(2, 5), new Vec2D(3, 6)};

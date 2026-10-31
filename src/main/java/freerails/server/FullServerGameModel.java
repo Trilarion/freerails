@@ -75,7 +75,7 @@ public class FullServerGameModel implements ServerGameModel {
     private transient MoveReceiver moveReceiver;
 
     /**
-     *
+     * Maintains and advances the authoritative game world on the server.
      */
     public FullServerGameModel() {
         nextModelUpdateDue = System.currentTimeMillis();
@@ -87,6 +87,9 @@ public class FullServerGameModel implements ServerGameModel {
      * <p>
      * Loops over the list of stations and adds cargo depending on what
      * the surrounding tiles supply.
+     *
+     * @param world the mutable world containing the stations and cargo
+     * @param moveReceiver the receiver used to apply each generated move
      */
     public static void cargoAtStationsUpdate(World world, MoveReceiver moveReceiver) {
         // for all players
@@ -138,6 +141,10 @@ public class FullServerGameModel implements ServerGameModel {
      * added.
      * <p>
      * Note: January is 0
+     *
+     * @param amountSuppliedPerYear the number of cargo units supplied over a year
+     * @param month the zero-based month for which to calculate the amount
+     * @return the cargo quantity to add during the specified month
      */
     public static int calculateAmountToAddPerMonth(int amountSuppliedPerYear, int month) {
         // This calculation actually delivers the requirement of rounding sometimes up and sometimes down.
@@ -149,7 +156,7 @@ public class FullServerGameModel implements ServerGameModel {
      * of outstanding bonds, then calculates the interest due.
      * <p>
      * Done on the server side
-     * @param world
+     * @param world the game world used by this operation
      */
     private static List<Move> generateBondIterestMoves(UnmodifiableWorld world) {
         // TODO generates multiple moves, good idea?
@@ -178,7 +185,7 @@ public class FullServerGameModel implements ServerGameModel {
      * Iterates over the entries in the BankAccount and counts the number
      * of trains, then calculates the cost of maintenance.
      *
-     * @param world
+     * @param world the game world used by this operation
      */
     private static void applyTrainMaintenanceMoves(UnmodifiableWorld world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
@@ -196,10 +203,10 @@ public class FullServerGameModel implements ServerGameModel {
      * Iterates over the entries in the BankAccount and counts the number
      * of units of each track type, then calculates the cost of maintenance.
      *
-     * @param world
-     * @param player
-     * @param category
-     * @return
+     * @param world the game world used by this operation
+     * @param player the player who owns or performs the operation
+     * @param category the financial transaction category to evaluate
+     * @return the maintenance move generated for track in this world, or {@code null} if none is needed
      */
     private static Move generateTrackMaintenanceMoves(World world, Player player, TransactionCategory category) {
         if (TransactionCategory.TRACK_MAINTENANCE != category && TransactionCategory.STATION_MAINTENANCE != category) {
@@ -231,7 +238,7 @@ public class FullServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @param world
+     * @param world the game world used by this operation
      */
     private static void applyTrackMaintenanceMoves(World world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
@@ -372,7 +379,7 @@ public class FullServerGameModel implements ServerGameModel {
 
     // TODO make this part of the constructor
     /**
-     * @param moveReceiver
+     * @param moveReceiver the receiver to which generated moves are submitted
      */
     @Override
     public void initialize(MoveReceiver moveReceiver) {
@@ -381,7 +388,7 @@ public class FullServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @return
+     * @return the authoritative world maintained by this server model
      */
     @Override
     public World getWorld() {
@@ -389,8 +396,8 @@ public class FullServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @param world
-     * @param passwords
+     * @param world the game world used by this operation
+     * @param passwords the player passwords associated with the world
      */
     @Override
     public void setWorld(World world, String[] passwords) {
@@ -399,7 +406,7 @@ public class FullServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @return
+     * @return the passwords associated with the players in the world
      */
     @Override
     public String[] getPasswords() {
@@ -435,6 +442,9 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * Loops through all of the known stations and recalculates the
      * cargoes that they supply, demand, and convert.
+     *
+     * @param world the mutable world containing stations and track
+     * @param moveReceiver the receiver used to apply each generated move
      */
     public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {

@@ -83,6 +83,11 @@ public class NetWorthGraphPanel extends JPanel implements View {
         // setAppropriateScale();
     }
 
+    /**
+     * Returns the y scale string.
+     * @param value the value
+     * @return the y scale string
+     */
     private static String getYScaleString(long value) {
         String abv;
         if (value >= 1000000000) {
@@ -165,6 +170,10 @@ public class NetWorthGraphPanel extends JPanel implements View {
         add(yAxisLabel3, null);
         add(yAxisLabel2, null);
         addMouseListener(new java.awt.event.MouseAdapter() {
+            /**
+             * Mouse clicked.
+             * @param e the e
+             */
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (null == submitButtonCallBack) {
@@ -177,6 +186,10 @@ public class NetWorthGraphPanel extends JPanel implements View {
         add(yAxisLabel4, null);
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -301,9 +314,11 @@ public class NetWorthGraphPanel extends JPanel implements View {
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {

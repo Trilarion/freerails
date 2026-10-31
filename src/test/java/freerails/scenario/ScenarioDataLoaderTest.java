@@ -33,8 +33,15 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Tests scenario data loader behavior.
+ */
 public class ScenarioDataLoaderTest extends TestCase {
 
+    /**
+     * Tests scenario data round trips and builds equivalent world configuration behavior.
+     * @throws Exception if the test scenario data round trips and builds equivalent world configuration operation fails.
+     */
     public void testScenarioDataRoundTripsAndBuildsEquivalentWorldConfiguration() throws Exception {
         ScenarioData original = ScenarioDataLoader.load(scenarioDirectory(), "small_south_america");
         ScenarioData configured = new ScenarioData(
@@ -82,6 +89,10 @@ public class ScenarioDataLoaderTest extends TestCase {
         }
     }
 
+    /**
+     * Tests missing scenario settings default city growth to enabled behavior.
+     * @throws Exception if the test missing scenario settings default city growth to enabled operation fails.
+     */
     public void testMissingScenarioSettingsDefaultCityGrowthToEnabled() throws Exception {
         ScenarioData scenario = ScenarioDataLoader.load(scenarioDirectory(), "small_south_america");
 
@@ -89,6 +100,11 @@ public class ScenarioDataLoaderTest extends TestCase {
         assertTrue(scenario.toWorldBuilder().build().isCityGrowthEnabled());
     }
 
+    /**
+     * Performs scenario directory.
+     * @return the result of scenario directory.
+     * @throws URISyntaxException if the scenario directory operation fails.
+     */
     private static File scenarioDirectory() throws URISyntaxException {
         return new File(ScenarioDataLoaderTest.class
                 .getResource("/freerails/data/scenario/")

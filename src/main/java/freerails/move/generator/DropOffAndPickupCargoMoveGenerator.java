@@ -56,11 +56,14 @@ public class DropOffAndPickupCargoMoveGenerator {
     private List<Integer> consist;
 
     /**
-     * Constructor.
+     * Creates a generator for transferring cargo between a train and station.
      *
      * @param trainId   ID of the train
      * @param stationId ID of the station
-     * @param world     The world object
+     * @param world     the world used to inspect the train and station
+     * @param player    the owner of the train and station
+     * @param waiting   whether the train waits until its requested load is full
+     * @param autoConsist whether the train consist may be updated automatically
      */
     public DropOffAndPickupCargoMoveGenerator(int trainId, int stationId, UnmodifiableWorld world, Player player, boolean waiting, boolean autoConsist) {
         this.player = player;
@@ -185,7 +188,9 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     /**
-     * @return
+     * Generates the moves needed to transfer cargo between the train and station.
+     *
+     * @return the cargo transfer move, or {@code null} if no transfer should occur
      */
     public Move generate() {
 

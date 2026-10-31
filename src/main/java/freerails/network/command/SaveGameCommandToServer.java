@@ -30,12 +30,20 @@ public class SaveGameCommandToServer implements CommandToServer {
     private final String filename;
 
     /**
-     * @param s
+     * Creates a request to save the current game under the given name.
+     *
+     * @param s saved-game name or path understood by the server
      */
     public SaveGameCommandToServer(String s) {
         filename = s;
     }
 
+    /**
+     * Compares this request with another by filename.
+     *
+     * @param obj object to compare
+     * @return {@code true} if the other request has the same filename
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -44,14 +52,21 @@ public class SaveGameCommandToServer implements CommandToServer {
         return filename.equals(saveGameMessageToServer.filename);
     }
 
+    /**
+     * Returns a hash code based on the filename.
+     *
+     * @return this request's hash code
+     */
     @Override
     public int hashCode() {
         return filename.hashCode();
     }
 
     /**
-     * @param server
-     * @return
+     * Asks the server to save the current game.
+     *
+     * @param server server that performs the save
+     * @return successful status, or a failed status containing the error message
      */
     @Override
     public CommandStatus execute(ServerControlInterface server) {

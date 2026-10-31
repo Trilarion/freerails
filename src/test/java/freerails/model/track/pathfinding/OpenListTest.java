@@ -24,12 +24,12 @@ package freerails.model.track.pathfinding;
 import junit.framework.TestCase;
 
 /**
- *
+ * Tests open list behavior.
  */
 public class OpenListTest extends TestCase {
 
     /**
-     *
+     * Tests contains behavior.
      */
     public void testContains() {
         OpenList openList = new OpenList();
@@ -42,7 +42,7 @@ public class OpenListTest extends TestCase {
     }
 
     /**
-     *
+     * Tests smallest f behavior.
      */
     public void testSmallestF() {
         OpenList openList = new OpenList();
@@ -59,7 +59,7 @@ public class OpenListTest extends TestCase {
     }
 
     /**
-     *
+     * Tests size behavior.
      */
     public void testSize() {
         OpenList openList = new OpenList();
@@ -71,7 +71,7 @@ public class OpenListTest extends TestCase {
     }
 
     /**
-     *
+     * Tests add behavior.
      */
     public void testAdd() {
         OpenList openList = new OpenList();

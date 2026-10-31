@@ -49,6 +49,9 @@ public class SelectEnginePanel extends JPanel implements View {
     private JButton okButton;
     private JComboBox<EngineShop> engineShopList;
 
+    /**
+     * Creates a select engine panel instance.
+     */
     public SelectEnginePanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -103,6 +106,10 @@ public class SelectEnginePanel extends JPanel implements View {
     }
 
 
+    /**
+     * List1 value changed.
+     * @param evt the evt
+     */
     private void list1ValueChanged(ListSelectionEvent evt) {
         // We need to disable the OK button if no engine type is selected.
 
@@ -111,9 +118,11 @@ public class SelectEnginePanel extends JPanel implements View {
 
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
 
     @Override

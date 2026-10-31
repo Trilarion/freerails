@@ -42,7 +42,9 @@ public class StationBuilder {
     private int ruleNumber;
 
     /**
-     * @param executor
+     * Creates a station builder instance.
+     *
+     * @param executor the executor parameter
      */
     public StationBuilder(MoveExecutor executor) {
         this.executor = executor;
@@ -57,8 +59,10 @@ public class StationBuilder {
     }
 
     /**
-     * @param location
-     * @return
+     * Performs the try building station operation.
+     *
+     * @param location the map coordinate
+     * @return the try building station produced by this method
      */
     public Status tryBuildingStation(Vec2D location) {
         // TODO under which circumstances would build a station fail (not enough funds, station already existing)
@@ -72,8 +76,10 @@ public class StationBuilder {
     }
 
     /**
-     * @param location
-     * @return
+     * Builds the station.
+     *
+     * @param location the map coordinate
+     * @return the station produced by this method
      */
     public Status buildStation(Vec2D location) {
         // Only build a station if there is track at the specified point.
@@ -90,12 +96,19 @@ public class StationBuilder {
     }
 
     /**
-     * @param ruleNumber
+     * Sets the station type.
+     *
+     * @param ruleNumber the rule number parameter
      */
     public void setStationType(int ruleNumber) {
         this.ruleNumber = ruleNumber;
     }
 
+    /**
+     * Returns the track type id.
+     * @param string the string
+     * @return the track type id
+     */
     public int getTrackTypeID(String string) {
         UnmodifiableWorld world = executor.getWorld();
         for (TrackType trackType: world.getTrackTypes()) {

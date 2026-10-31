@@ -54,9 +54,11 @@ class TrackRenderer {
     boolean tunnel = false;
 
     /**
-     * @param line
-     * @param shift
-     * @return
+     * Creates a parallel line offset from the supplied line.
+     *
+     * @param line the source line
+     * @param shift the perpendicular offset
+     * @return the parallel line
      */
     private static Line2D.Double createParallelLine(Line2D.Double line, double shift) {
         Line2D.Double returnValue = new Line2D.Double(line.getP1(), line.getP2());
@@ -72,10 +74,12 @@ class TrackRenderer {
     }
 
     /**
-     * @param c
-     * @param shift1
-     * @param shift2
-     * @return
+     * Creates an adjacent curve by offsetting each end of the source curve.
+     *
+     * @param c the source curve
+     * @param shift1 the offset at the first end
+     * @param shift2 the offset at the second end
+     * @return the adjacent curve
      */
     public static CubicCurve2D.Double createAdjacentCurve(CubicCurve2D.Double c, double shift1, double shift2) {
         Line2D.Double line1 = new Line2D.Double(c.getX1(), c.getY1(), c.getCtrlX1(), c.getCtrlY1());
@@ -116,6 +120,12 @@ class TrackRenderer {
         return new BasicStroke((float) sleeperLength, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, phase);
     }
 
+    /**
+     * Paints all track sections represented by a track configuration.
+     *
+     * @param g2 the graphics context used for painting
+     * @param conf the track configuration to render
+     */
     void paintTrackConf(Graphics2D g2, TrackConfiguration conf) {
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -170,6 +180,12 @@ class TrackRenderer {
         paintTrack(g2, sections);
     }
 
+    /**
+     * Creates a curve connecting a tile edge to its center.
+     *
+     * @param a the transition at the tile edge
+     * @return the curve for that transition
+     */
     private CubicCurve2D.Double toCurve(TileTransition a) {
         float halfTile = tileWidth / 2;
         Point2D.Double start, end, one;
@@ -183,6 +199,13 @@ class TrackRenderer {
         return returnValue;
     }
 
+    /**
+     * Creates a curve connecting two tile edges.
+     *
+     * @param a the transition at the first edge
+     * @param b the transition at the second edge
+     * @return the curve connecting the transitions
+     */
     private CubicCurve2D.Double toCurve(TileTransition a, TileTransition b) {
         float halfTile = tileWidth / 2;
         Point2D.Double start, end, one, two;
@@ -199,6 +222,12 @@ class TrackRenderer {
         return returnValue;
     }
 
+    /**
+     * Paints the supplied track sections with rails and sleepers.
+     *
+     * @param g the graphics context used for painting
+     * @param sections the track sections to render
+     */
     private void paintTrack(Graphics2D g, Iterable<Double> sections) {
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -227,6 +256,12 @@ class TrackRenderer {
         }
     }
 
+    /**
+     * Calculates a control point between the supplied point and tile center.
+     *
+     * @param from the point whose control point is calculated
+     * @return the calculated control point
+     */
     private Point2D.Double controlPoint(Point2D.Double from) {
         double weight = 0.3;
         double x = from.getX() * weight + tileWidth * (1 - weight);
@@ -234,6 +269,12 @@ class TrackRenderer {
         return new Point2D.Double(x, y);
     }
 
+    /**
+     * Loads the icon for a track type.
+     *
+     * @param typeName the track type name used to locate the icon
+     * @throws IllegalStateException if the icon cannot be loaded
+     */
     void setIcon(String typeName) {
         try {
 

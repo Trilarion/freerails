@@ -24,6 +24,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Stores the type and quantity of cargo in a wagon.
+
+ * @param quantity the number of units carried by this wagon load
+ * @param cargoType the identifier of the cargo carried by this wagon load
  */
 public record WagonLoad(int quantity, int cargoType) implements Comparable<WagonLoad> {
 

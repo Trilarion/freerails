@@ -33,9 +33,11 @@ import javax.swing.*;
 public interface View {
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
 
     void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction);

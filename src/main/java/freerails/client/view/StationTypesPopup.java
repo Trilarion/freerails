@@ -49,14 +49,16 @@ public class StationTypesPopup extends JPopupMenu {
     private ModelRoot modelRoot;
 
     /**
-     *
+     * Creates a station types popup instance.
      */
     public StationTypesPopup() {
     }
 
     /**
-     * @param p
-     * @return
+     * Returns whether this object can built station here.
+     *
+     * @param p the map coordinate
+     * @return {@code true} if built station here; otherwise, {@code false}
      */
     public boolean canBuiltStationHere(Vec2D p) {
         stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
@@ -65,9 +67,11 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     /**
-     * @param modelRoot
-     * @param actionRoot
-     * @param srr
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param actionRoot the root that supplies client actions
+     * @param srr the srr parameter
      */
     public void setup(ModelRoot modelRoot, ActionRoot actionRoot, StationRadiusRenderer srr) {
         this.modelRoot = modelRoot;
@@ -76,16 +80,28 @@ public class StationTypesPopup extends JPopupMenu {
         removeAll();
         removePopupMenuListener(popupMenuListener);
         popupMenuListener = new PopupMenuListener() {
+            /**
+             * Popup menu canceled.
+             * @param e the e
+             */
             @Override
             public void popupMenuCanceled(PopupMenuEvent e) {
             }
 
+            /**
+             * Popup menu will become invisible.
+             * @param e the e
+             */
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 stationRadiusRenderer.hide();
                 stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(StationTypesPopup.this, ActionEvent.ACTION_PERFORMED, ""));
             }
 
+            /**
+             * Popup menu will become visible.
+             * @param e the e
+             */
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 stationRadiusRenderer.setPosition(tileToBuildStationOn.x(), tileToBuildStationOn.y());
@@ -122,10 +138,12 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     /**
-     * @param invoker
-     * @param x
-     * @param y
-     * @param tile
+     * Displays the menu.
+     *
+     * @param invoker the invoker parameter
+     * @param x the horizontal coordinate
+     * @param y the vertical coordinate
+     * @param tile the map coordinate
      */
     public void showMenu(Component invoker, int x, int y, Vec2D tile) {
         tileToBuildStationOn = tile;
@@ -133,6 +151,10 @@ public class StationTypesPopup extends JPopupMenu {
         super.show(invoker, x, y);
     }
 
+    /**
+     * Sets the visible.
+     * @param b the b
+     */
     @Override
     public void setVisible(boolean b) {
         // If this popup is visible, we don't want the station's position to
@@ -141,12 +163,21 @@ public class StationTypesPopup extends JPopupMenu {
         super.setVisible(b);
     }
 
+    /**
+     * Provides the my change listener functionality.
+     */
     private static class MyChangeListener implements ChangeListener {
         private final StationBuildMenuItem rbMenuItem;
         private final Action[] stationChooseActions;
         private final int index;
         private boolean armed;
 
+        /**
+         * Creates a my change listener instance.
+         * @param rbMenuItem the rb menu item
+         * @param stationChooseActions the station choose actions
+         * @param index the index
+         */
         private MyChangeListener(StationBuildMenuItem rbMenuItem, Action[] stationChooseActions, int index) {
             this.rbMenuItem = rbMenuItem;
             this.stationChooseActions = stationChooseActions;
@@ -154,6 +185,10 @@ public class StationTypesPopup extends JPopupMenu {
             armed = false;
         }
 
+        /**
+         * State changed.
+         * @param e the e
+         */
         @Override
         public void stateChanged(ChangeEvent e) {
             if (rbMenuItem.isArmed() && rbMenuItem.isArmed() != armed) {
@@ -164,10 +199,17 @@ public class StationTypesPopup extends JPopupMenu {
         }
     }
 
+    /**
+     * Provides the station build menu item functionality.
+     */
     private static class StationBuildMenuItem extends JMenuItem {
         @Serial
         private static final long serialVersionUID = 3256721792751120946L;
 
+        /**
+         * Configure properties from action.
+         * @param a the a
+         */
         @Override
         public void configurePropertiesFromAction(Action a) {
             super.configurePropertiesFromAction(a);

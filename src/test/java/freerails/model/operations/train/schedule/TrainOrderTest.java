@@ -23,8 +23,14 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tests train order behavior.
+ */
 public class TrainOrderTest extends TestCase {
 
+    /**
+     * Tests consist is copied and cannot be mutated through getter behavior.
+     */
     public void testConsistIsCopiedAndCannotBeMutatedThroughGetter() {
         List<Integer> source = new ArrayList<>(List.of(2, 4));
         TrainOrder order = TrainOrder.specifiedConsist(10, source, true);
@@ -41,12 +47,18 @@ public class TrainOrderTest extends TestCase {
         }
     }
 
+    /**
+     * Tests wait until full only applies to a nonempty specified consist behavior.
+     */
     public void testWaitUntilFullOnlyAppliesToANonemptySpecifiedConsist() {
         assertFalse(TrainOrder.keepConsist(10).isWaitUntilFull());
         assertFalse(TrainOrder.specifiedConsist(10, List.of(), true).isWaitUntilFull());
         assertTrue(TrainOrder.specifiedConsist(10, List.of(2), true).isWaitUntilFull());
     }
 
+    /**
+     * Tests loading policies are mutually exclusive behavior.
+     */
     public void testLoadingPoliciesAreMutuallyExclusive() {
         TrainOrder keep = TrainOrder.keepConsist(10);
         TrainOrder specified = TrainOrder.specifiedConsist(10, List.of(2), false);
@@ -68,6 +80,9 @@ public class TrainOrderTest extends TestCase {
         }
     }
 
+    /**
+     * Tests explicitly empty consist is distinct from keeping consist behavior.
+     */
     public void testExplicitlyEmptyConsistIsDistinctFromKeepingConsist() {
         TrainOrder unchanged = TrainOrder.keepConsist(10);
         TrainOrder explicitlyEmpty = TrainOrder.specifiedConsist(10, List.of(), false);
@@ -79,6 +94,9 @@ public class TrainOrderTest extends TestCase {
         assertFalse(explicitlyEmpty.orderHasWagons());
     }
 
+    /**
+     * Tests station and policy updates preserve one shot marker behavior.
+     */
     public void testStationAndPolicyUpdatesPreserveOneShotMarker() {
         TrainOrder urgent = TrainOrder.specifiedConsist(10, List.of(2), true).asOneShot();
 
@@ -90,6 +108,10 @@ public class TrainOrderTest extends TestCase {
         assertTrue(moved.isOneShot());
     }
 
+    /**
+     * Tests order survives serialization behavior.
+     * @throws Exception if the test order survives serialization operation fails.
+     */
     public void testOrderSurvivesSerialization() throws Exception {
         TrainOrder order = TrainOrder.autoConsist(10).asOneShot();
         java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream();

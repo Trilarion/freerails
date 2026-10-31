@@ -38,7 +38,7 @@ public class PathWalkerImplTest extends TestCase {
     private PathWalker pathWalker;
 
     /**
-     *
+     * Sets up.
      */
     private void setup() {
         Vec2D[] points = {Vec2D.ZERO, new Vec2D(100, 0), new Vec2D(100, 100)};
@@ -48,6 +48,9 @@ public class PathWalkerImplTest extends TestCase {
 
     /*
      * Test for boolean canStepForward()
+     */
+    /**
+     * Verifies that stepping advances the path walker through the path.
      */
     public void testCanStepForward() {
         setup();
@@ -80,7 +83,7 @@ public class PathWalkerImplTest extends TestCase {
     }
 
     /**
-     *
+     * Verifies that the walker reports whether another path segment is available.
      */
     public void testHasNext() {
         Segment line = null;
@@ -125,6 +128,10 @@ public class PathWalkerImplTest extends TestCase {
         assertTrue(!pathWalker.hasNext());
     }
 
+    /**
+     * Asserts has next equals false.
+     * @param points the points to use in the test.
+     */
     private void assertHasNextEqualsFalse(ArrayList<Vec2D> points) {
         PathIterator pathIterator = TestPathIterator.forwardsIterator(points);
         assertTrue(!pathIterator.hasNext());

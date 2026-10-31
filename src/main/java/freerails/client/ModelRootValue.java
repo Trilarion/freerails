@@ -19,7 +19,7 @@
 package freerails.client;
 
 /**
- *
+ * Defines the available model root value values.
  */
 public enum ModelRootValue {
 

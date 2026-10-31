@@ -41,35 +41,45 @@ public class MoveChainFork implements MoveReceiver {
     private long lastTickTime = System.currentTimeMillis();
 
     /**
-     * @return
+     * Returns the last tick time.
+     *
+     * @return the last tick time produced by this method
      */
     public long getLastTickTime() {
         return lastTickTime;
     }
 
     /**
-     * @param moveReceiver
+     * Adds the complete move receiver.
+     *
+     * @param moveReceiver the move receiver parameter
      */
     public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
         moveReceivers.add(Utils.verifyNotNull(moveReceiver));
     }
 
     /**
-     * @param moveReceiver
+     * Adds the split move receiver.
+     *
+     * @param moveReceiver the move receiver parameter
      */
     public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
         splitMoveReceivers.add(Utils.verifyNotNull(moveReceiver));
     }
 
     /**
-     * @param listener
+     * Adds the map listener.
+     *
+     * @param listener the listener parameter
      */
     public void addMapListener(WorldMapListener listener) {
         mapListeners.add(Utils.verifyNotNull(listener));
     }
 
     /**
-     * @param move
+     * Performs the process operation.
+     *
+     * @param move the move parameter
      */
     @Override
     public void process(Move move) {
@@ -85,7 +95,7 @@ public class MoveChainFork implements MoveReceiver {
     /**
      * No CompositeMove, only single moves.
      *
-     * @param move
+     * @param move the move parameter
      */
     private void splitMove(Move move) {
 

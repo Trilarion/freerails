@@ -2,8 +2,14 @@ package freerails.util;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests array2 d behavior.
+ */
 public class Array2DTest extends TestCase {
 
+    /**
+     * Tests stores values by column and row and reports size behavior.
+     */
     public void testStoresValuesByColumnAndRowAndReportsSize() {
         Array2D array = new Array2D(3, 2);
 
@@ -18,6 +24,9 @@ public class Array2DTest extends TestCase {
         assertEquals(new Vec2D(3, 2), array.getSize());
     }
 
+    /**
+     * Tests equality and hash code include dimensions and contents behavior.
+     */
     public void testEqualityAndHashCodeIncludeDimensionsAndContents() {
         Array2D first = new Array2D(2, 2);
         Array2D equal = new Array2D(2, 2);
@@ -37,15 +46,24 @@ public class Array2DTest extends TestCase {
         assertFalse(first.equals("array"));
     }
 
+    /**
+     * Tests rejects negative dimensions behavior.
+     */
     public void testRejectsNegativeDimensions() {
         assertInvalidDimensions(-1, 2);
         assertInvalidDimensions(2, -1);
     }
 
+    /**
+     * Tests rejects dimensions whose product overflows behavior.
+     */
     public void testRejectsDimensionsWhoseProductOverflows() {
         assertInvalidDimensions(Integer.MAX_VALUE, 2);
     }
 
+    /**
+     * Tests zero sized dimension is allowed behavior.
+     */
     public void testZeroSizedDimensionIsAllowed() {
         Array2D array = new Array2D(0, 5);
 
@@ -53,6 +71,9 @@ public class Array2DTest extends TestCase {
         assertEquals(5, array.getHeight());
     }
 
+    /**
+     * Tests coordinates outside array are rejected behavior.
+     */
     public void testCoordinatesOutsideArrayAreRejected() {
         Array2D array = new Array2D(2, 2);
         assertInvalidCoordinate(array, -1, 0);
@@ -62,6 +83,11 @@ public class Array2DTest extends TestCase {
         assertInvalidSetCoordinate(array, -1, 0);
     }
 
+    /**
+     * Asserts invalid dimensions.
+     * @param width the width to use in the test.
+     * @param height the height to use in the test.
+     */
     private void assertInvalidDimensions(int width, int height) {
         try {
             new Array2D(width, height);
@@ -71,6 +97,12 @@ public class Array2DTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts invalid coordinate.
+     * @param array the array to use in the test.
+     * @param x the x to use in the test.
+     * @param y the y to use in the test.
+     */
     private void assertInvalidCoordinate(Array2D array, int x, int y) {
         try {
             array.get(x, y);
@@ -79,6 +111,12 @@ public class Array2DTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts invalid set coordinate.
+     * @param array the array to use in the test.
+     * @param x the x to use in the test.
+     * @param y the y to use in the test.
+     */
     private void assertInvalidSetCoordinate(Array2D array, int x, int y) {
         try {
             array.set(x, y, 1);

@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
+ * Replaces a player's train with its updated state.
  */
 public class UpdateTrainMove implements Move {
 
@@ -45,6 +45,15 @@ public class UpdateTrainMove implements Move {
     private final List<Integer> consist;
     private final UnmodifiableSchedule schedule;
 
+    /**
+     * Creates an update train move from the supplied values.
+     *
+     * @param player the player
+     * @param trainId the identifier to use
+     * @param cargoBatchBundle the cargo batch bundle
+     * @param consist the consist
+     * @param schedule the schedule
+     */
     public UpdateTrainMove(@NotNull Player player, int trainId, UnmodifiableCargoBatchBundle cargoBatchBundle, List<Integer> consist, UnmodifiableSchedule schedule) {
         if (cargoBatchBundle == null && consist == null && schedule == null) {
             throw new IllegalArgumentException("Not all parameters can be null.");
@@ -56,6 +65,12 @@ public class UpdateTrainMove implements Move {
         this.schedule = schedule == null ? null : new ScheduleState(schedule);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -71,11 +86,22 @@ public class UpdateTrainMove implements Move {
                 && Objects.equals(schedule, other.schedule);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(player, trainId, cargoBatchBundle, consist, schedule);
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @Override
     public @NotNull Status applicable(@NotNull UnmodifiableWorld world) {
         if (!Utils.containsId(trainId, world.getTrains(player))) {
@@ -84,6 +110,11 @@ public class UpdateTrainMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         Train train = world.getTrain(player, trainId);

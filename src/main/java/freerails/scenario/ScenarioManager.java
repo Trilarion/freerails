@@ -19,9 +19,12 @@
 package freerails.scenario;
 
 /**
- *
+ * Provides the scenario-related services used to configure new games.
  */
 public final class ScenarioManager {
 
+    /**
+     * Creates a scenario manager from the supplied values.
+     */
     private ScenarioManager() {}
 }

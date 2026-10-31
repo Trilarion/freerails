@@ -28,8 +28,14 @@ import junit.framework.TestCase;
 
 import java.util.List;
 
+/**
+ * Tests record custom behavior behavior.
+ */
 public class RecordCustomBehaviorTest extends TestCase {
 
+    /**
+     * Tests record generated equality uses all components behavior.
+     */
     public void testRecordGeneratedEqualityUsesAllComponents() {
         Rules rules = new Rules(true, false);
         assertEquals(rules, new Rules(true, false));
@@ -48,6 +54,9 @@ public class RecordCustomBehaviorTest extends TestCase {
         assertFalse(conversion.equals(new CargoConversion(2, 3, 2.5)));
     }
 
+    /**
+     * Tests cargo rates normalize negative zero behavior.
+     */
     public void testCargoRatesNormalizeNegativeZero() {
         CargoProductionOrConsumption production = new CargoProductionOrConsumption(2, -0.0);
         assertEquals(0L, Double.doubleToRawLongBits(production.rate()));
@@ -58,6 +67,9 @@ public class RecordCustomBehaviorTest extends TestCase {
         assertEquals(conversion, new CargoConversion(2, 3, 0.0));
     }
 
+    /**
+     * Tests domain specific string representations behavior.
+     */
     public void testDomainSpecificStringRepresentations() {
         assertEquals("42", new Time(42).toString());
         assertEquals("trackPiece=null and terrainType is 7", new TerrainTile(7).toString());

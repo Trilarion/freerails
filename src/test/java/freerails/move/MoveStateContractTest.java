@@ -41,6 +41,9 @@ import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
+/**
+ * Tests move state contract behavior.
+ */
 public class MoveStateContractTest extends TestCase {
 
     private static final Vec2D TILE_TO_CHANGE = new Vec2D(10, 10);
@@ -49,6 +52,9 @@ public class MoveStateContractTest extends TestCase {
     private Player otherPlayer;
     private World world;
 
+    /**
+     * Sets up.
+     */
     @Override
     protected void setUp() {
         world = MapFixtureFactory2.getCopy();
@@ -62,6 +68,9 @@ public class MoveStateContractTest extends TestCase {
         world.addTransaction(otherPlayer, transaction(50));
     }
 
+    /**
+     * Tests applicable is pure for accepted and rejected moves behavior.
+     */
     public void testApplicableIsPureForAcceptedAndRejectedMoves() {
         CargoBatchBundle cargo = cargo(3);
         ChangeTrackPieceMove outsideMap = new ChangeTrackPieceMove(null, null, new Vec2D(-1, 0));
@@ -84,6 +93,9 @@ public class MoveStateContractTest extends TestCase {
         assertApplicableWithoutMutation(disallowedTrack, false);
     }
 
+    /**
+     * Tests applying transaction changes only its players balance behavior.
+     */
     public void testApplyingTransactionChangesOnlyItsPlayersBalance() {
         Money playerBalance = world.getCurrentBalance(player);
         Money otherPlayerBalance = world.getCurrentBalance(otherPlayer);
@@ -98,6 +110,9 @@ public class MoveStateContractTest extends TestCase {
         assertEquals(otherTrain, world.getTrain(otherPlayer, 8));
     }
 
+    /**
+     * Tests applying tile move leaves other aggregates unchanged behavior.
+     */
     public void testApplyingTileMoveLeavesOtherAggregatesUnchanged() {
         TerrainTile tileBefore = world.getTile(TILE_TO_CHANGE);
         TerrainTile unrelatedTile = world.getTile(UNRELATED_TILE);
@@ -120,6 +135,9 @@ public class MoveStateContractTest extends TestCase {
         assertEquals(otherTrain, world.getTrain(otherPlayer, 8));
     }
 
+    /**
+     * Tests applying cargo move changes only the target station behavior.
+     */
     public void testApplyingCargoMoveChangesOnlyTheTargetStation() {
         CargoBatchBundle replacement = cargo(7);
         CargoBatchBundle otherStationCargo = cargo(9);
@@ -143,6 +161,9 @@ public class MoveStateContractTest extends TestCase {
         assertEquals(otherTrain, world.getTrain(otherPlayer, 8));
     }
 
+    /**
+     * Tests cargo move payloads snapshot caller bundles behavior.
+     */
     public void testCargoMovePayloadsSnapshotCallerBundles() {
         CargoBatchBundle stationCargo = cargo(7);
         ChangeCargoAtStationMove stationMove = new ChangeCargoAtStationMove(player, 10, stationCargo);
@@ -161,6 +182,9 @@ public class MoveStateContractTest extends TestCase {
         assertEquals(cargo(8), world.getTrain(player, 4).getCargoBatchBundle());
     }
 
+    /**
+     * Tests add station move snapshots station cargo behavior.
+     */
     public void testAddStationMoveSnapshotsStationCargo() {
         Station station = station(12, 5);
         station.setCargoBatchBundle(cargo(6));
@@ -172,6 +196,9 @@ public class MoveStateContractTest extends TestCase {
         assertEquals(cargo(6), world.getStation(player, 12).getCargoBatchBundle());
     }
 
+    /**
+     * Tests train and station publish immutable cargo snapshots behavior.
+     */
     public void testTrainAndStationPublishImmutableCargoSnapshots() {
         CargoBatchBundle replacement = cargo(5);
         Train train = world.getTrain(player, 4);
@@ -187,6 +214,9 @@ public class MoveStateContractTest extends TestCase {
         assertEquals(cargo(5), station.getCargoBatchBundle());
     }
 
+    /**
+     * Tests updating consist replaces configuration without changing runtime state behavior.
+     */
     public void testUpdatingConsistReplacesConfigurationWithoutChangingRuntimeState() {
         Train train = world.getTrain(player, 4);
         CargoBatchBundle trainCargo = cargo(6);
@@ -201,6 +231,9 @@ public class MoveStateContractTest extends TestCase {
         assertEquals(schedule, train.getSchedule());
     }
 
+    /**
+     * Tests rejected moves leave the world unchanged behavior.
+     */
     public void testRejectedMovesLeaveTheWorldUnchanged() {
         world.setRules(new Rules(false, false));
         TrackPiece before = new TrackPiece(
@@ -217,6 +250,11 @@ public class MoveStateContractTest extends TestCase {
         assertRejectedWithoutMutation(new ChangeTrackPieceMove(before, otherOwner, TILE_TO_CHANGE));
     }
 
+    /**
+     * Asserts applicable without mutation.
+     * @param move the move under test.
+     * @param expectedSuccess the expected success to use in the test.
+     */
     private void assertApplicableWithoutMutation(Move move, boolean expectedSuccess) {
         World before = copyWorld();
         int beforeHashCode = world.hashCode();
@@ -229,24 +267,48 @@ public class MoveStateContractTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts rejected without mutation.
+     * @param move the move under test.
+     */
     private void assertRejectedWithoutMutation(Move move) {
         assertApplicableWithoutMutation(move, false);
     }
 
+    /**
+     * Performs copy world.
+     * @return the result of copy world.
+     */
     private World copyWorld() {
         return (World) freerails.util.Utils.cloneBySerialisation(world);
     }
 
+    /**
+     * Performs transaction.
+     * @param amount the amount to use in the test.
+     * @return the result of transaction.
+     */
     private static Transaction transaction(long amount) {
         return new Transaction(TransactionCategory.MISC_INCOME, new Money(amount), new Time(42));
     }
 
+    /**
+     * Performs cargo.
+     * @param amount the amount to use in the test.
+     * @return the result of cargo.
+     */
     private static CargoBatchBundle cargo(int amount) {
         CargoBatchBundle cargo = new CargoBatchBundle();
         cargo.addCargo(new CargoBatch(1, Vec2D.ZERO, 42, 9), amount);
         return cargo;
     }
 
+    /**
+     * Performs station.
+     * @param id the id to use in the test.
+     * @param x the x to use in the test.
+     * @return the result of station.
+     */
     private static Station station(int id, int x) {
         return new Station(id, new Vec2D(x, 4), "Station " + id, CargoBatchBundle.EMPTY);
     }

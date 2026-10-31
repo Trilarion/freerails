@@ -203,6 +203,9 @@ public final class ClientConstants {
     public static final File OPTIONS_FILE = new File(FREERAILS_USER_FOLDER, "Freerails.options");
 
 
+    /**
+     * Creates a client constants instance.
+     */
     private ClientConstants() {
     }
 }

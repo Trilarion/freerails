@@ -29,8 +29,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+/**
+ * Tests schedule behavior.
+ */
 public class ScheduleTest extends TestCase {
 
+    /**
+     * Tests empty and cyclic schedule behavior.
+     */
     public void testEmptyAndCyclicSchedule() {
         ScheduleState schedule = new ScheduleState();
         assertEquals(0, schedule.getNumberOfOrders());
@@ -47,6 +53,9 @@ public class ScheduleTest extends TestCase {
         assertSelected(schedule, 0, 10);
     }
 
+    /**
+     * Tests schedule operations return independent snapshots behavior.
+     */
     public void testScheduleOperationsReturnIndependentSnapshots() {
         ScheduleState initial = scheduleWithOrders(10, 20);
         ScheduleState selected = initial.setOrderToGoto(1);
@@ -60,6 +69,9 @@ public class ScheduleTest extends TestCase {
         assertNotSame(initial, selected);
     }
 
+    /**
+     * Tests schedule defensively copies constructor array and hash includes orders behavior.
+     */
     public void testScheduleDefensivelyCopiesConstructorArrayAndHashIncludesOrders() {
         TrainOrder[] orders = {order(10), order(20)};
         ScheduleState schedule = new ScheduleState(orders, 0);
@@ -72,6 +84,10 @@ public class ScheduleTest extends TestCase {
         assertFalse(schedule.hashCode() == scheduleWithOrders(10, 30).hashCode());
     }
 
+    /**
+     * Tests schedule serialization restores immutable snapshot behavior.
+     * @throws Exception if the test schedule serialization restores immutable snapshot operation fails.
+     */
     public void testScheduleSerializationRestoresImmutableSnapshot() throws Exception {
         ScheduleState original = scheduleWithOrders(10, 20).setOrderToGoto(1);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -90,6 +106,9 @@ public class ScheduleTest extends TestCase {
         assertSelected(restored, 1, 20);
     }
 
+    /**
+     * Tests adding removing and moving stops preserves selected stop behavior.
+     */
     public void testAddingRemovingAndMovingStopsPreservesSelectedStop() {
         ScheduleState schedule = scheduleWithOrders(10, 20, 30);
         schedule = schedule.setOrderToGoto(1);
@@ -110,6 +129,9 @@ public class ScheduleTest extends TestCase {
         assertSelected(schedule, 2, 30);
     }
 
+    /**
+     * Tests urgent stop is inserted before and consumed then route resumes behavior.
+     */
     public void testUrgentStopIsInsertedBeforeAndConsumedThenRouteResumes() {
         ScheduleState schedule = scheduleWithOrders(10, 20, 30, 40).setOrderToGoto(2);
 
@@ -127,6 +149,9 @@ public class ScheduleTest extends TestCase {
         assertSelected(schedule.gotoNextStation(), 3, 40);
     }
 
+    /**
+     * Tests urgent stop can be consumed from an otherwise empty schedule behavior.
+     */
     public void testUrgentStopCanBeConsumedFromAnOtherwiseEmptySchedule() {
         ScheduleState schedule = new ScheduleState().addUrgentOrder(order(90));
         assertSelected(schedule, 0, 90);
@@ -137,6 +162,9 @@ public class ScheduleTest extends TestCase {
         assertEquals(-1, schedule.getNextStationId());
     }
 
+    /**
+     * Tests urgent stop can be edited without losing one shot marker behavior.
+     */
     public void testUrgentStopCanBeEditedWithoutLosingOneShotMarker() {
         ScheduleState schedule = scheduleWithOrders(10, 20).addUrgentOrder(order(90));
         schedule = schedule.setOrder(0, order(91));
@@ -148,6 +176,9 @@ public class ScheduleTest extends TestCase {
         assertFalse(schedule.getOrder(schedule.getCurrentOrderIndex()).isOneShot());
     }
 
+    /**
+     * Tests invalid movement indexes are rejected behavior.
+     */
     public void testInvalidMovementIndexesAreRejected() {
         ScheduleState schedule = scheduleWithOrders(10, 20);
         assertFalse(schedule.canPullUp(-1));
@@ -156,6 +187,9 @@ public class ScheduleTest extends TestCase {
         assertFalse(schedule.canPushDown(schedule.getNumberOfOrders()));
     }
 
+    /**
+     * Tests removing all stops at station keeps current index valid behavior.
+     */
     public void testRemovingAllStopsAtStationKeepsCurrentIndexValid() {
         ScheduleState schedule = scheduleWithOrders(20, 10, 30, 10).setOrderToGoto(2);
         schedule = schedule.addUrgentOrder(order(10));
@@ -173,6 +207,9 @@ public class ScheduleTest extends TestCase {
         assertEquals(-1, schedule.getNextStationId());
     }
 
+    /**
+     * Tests order limit allows six ordinary stops and one urgent stop behavior.
+     */
     public void testOrderLimitAllowsSixOrdinaryStopsAndOneUrgentStop() {
         ScheduleState schedule = new ScheduleState();
         for (int i = 0; i < UnmodifiableSchedule.MAXIMUM_NUMBER_OF_STOPS; i++) {
@@ -193,10 +230,20 @@ public class ScheduleTest extends TestCase {
         assertTrue(schedule.canAddUrgentOrder());
     }
 
+    /**
+     * Performs order.
+     * @param stationId the station identifier.
+     * @return the train order for the specified station.
+     */
     private static TrainOrder order(int stationId) {
         return TrainOrder.keepConsist(stationId);
     }
 
+    /**
+     * Performs order.
+     * @param stationId the station identifier.
+     * @return the train order for the specified station.
+     */
     private static ScheduleState scheduleWithOrders(int... stationIds) {
         ScheduleState schedule = new ScheduleState();
         for (int stationId : stationIds) {
@@ -205,6 +252,12 @@ public class ScheduleTest extends TestCase {
         return schedule;
     }
 
+    /**
+     * Asserts selected.
+     * @param schedule the train schedule under test.
+     * @param index the index of the entry to check.
+     * @param stationId the station identifier.
+     */
     private static void assertSelected(ScheduleState schedule, int index, int stationId) {
         assertEquals(index, schedule.getCurrentOrderIndex());
         assertEquals(stationId, schedule.getNextStationId());

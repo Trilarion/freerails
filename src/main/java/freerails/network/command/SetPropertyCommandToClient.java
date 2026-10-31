@@ -35,14 +35,23 @@ public class SetPropertyCommandToClient implements CommandToClient {
     private final Serializable value;
 
     /**
-     * @param key
-     * @param value
+     * Creates a command that assigns a value to a client property.
+     *
+     * @param key property to update
+     * @param value serializable value to assign
+     * @throws NullPointerException if either argument is null
      */
     public SetPropertyCommandToClient(ClientProperty key, Serializable value) {
         this.key = Utils.verifyNotNull(key);
         this.value = Utils.verifyNotNull(value);
     }
 
+    /**
+     * Compares this command by property key and value.
+     *
+     * @param obj object to compare
+     * @return {@code true} if both commands carry the same key and value
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -52,6 +61,12 @@ public class SetPropertyCommandToClient implements CommandToClient {
         return value.equals(setPropertyMessageToClient.value);
     }
 
+    /**
+     * Applies the property update to a client.
+     *
+     * @param client client receiving the update
+     * @return successful status after the property is set
+     */
     @Override
     public CommandStatus execute(ClientControlInterface client) {
         client.setProperty(key, value);
@@ -59,6 +74,11 @@ public class SetPropertyCommandToClient implements CommandToClient {
         return new CommandStatus(true);
     }
 
+    /**
+     * Returns a hash code based on the property key and value.
+     *
+     * @return this command's hash code
+     */
     @Override
     public int hashCode() {
         int result;

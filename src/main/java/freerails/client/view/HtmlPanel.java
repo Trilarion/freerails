@@ -47,6 +47,9 @@ public class HtmlPanel extends JPanel implements View {
     private JButton done;
     private JLabel htmlJLabel;
 
+    /**
+     * Creates a html panel instance.
+     */
     HtmlPanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -78,11 +81,20 @@ public class HtmlPanel extends JPanel implements View {
         add(done, gridBagConstraints);
     }
 
+    /**
+     * Creates a html panel instance.
+     * @param url the url
+     */
     public HtmlPanel(URL url) {
         this();
         setHtml(loadText(url));
     }
 
+    /**
+     * Creates a html panel instance.
+     * @param url the url
+     * @param context the context
+     */
     private HtmlPanel(URL url, HashMap context) {
         this();
         String template = loadText(url);
@@ -90,11 +102,21 @@ public class HtmlPanel extends JPanel implements View {
         setHtml(populatedTemplate);
     }
 
+    /**
+     * Creates a html panel instance.
+     * @param html the html
+     */
     public HtmlPanel(String html) {
         this();
         setHtml(html);
     }
 
+    /**
+     * Replaces template tokens with values from the supplied context.
+     * @param template the template
+     * @param context the context
+     * @return the populated HTML
+     */
     static String populateTokens(String template, Object context) {
         StringTokenizer tokenizer = new StringTokenizer(template, "$");
         StringBuilder output = new StringBuilder();
@@ -148,11 +170,21 @@ public class HtmlPanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         done.setAction(closeAction);
     }
 
+    /**
+     * Sets the html.
+     * @param s the s
+     */
     void setHtml(String s) {
         htmlJLabel.setText(s);
     }

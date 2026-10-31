@@ -26,8 +26,10 @@ import java.io.Serializable;
 public interface CommandToServer extends Serializable {
 
     /**
-     * @param server
-     * @return
+     * Executes this command on the server.
+     *
+     * @param server server control interface receiving the command
+     * @return status describing whether execution succeeded
      */
     CommandStatus execute(ServerControlInterface server);
 }

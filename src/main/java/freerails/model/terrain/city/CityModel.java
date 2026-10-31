@@ -158,33 +158,55 @@ public class CityModel {
         getResourceCityTiles().forEach(f);
     }
 
-    /** Returns the mutable map of urban tile locations to terrain identifiers. */
+    /**
+     * Returns the mutable map of urban tile locations to terrain identifiers.
+     *
+     * @return urban tile locations mapped to terrain identifiers
+     */
     public Map<Vec2D, Integer> getUrbanCityTiles() {
         return urbanCityTiles;
     }
 
-    /** Returns the mutable map of industry tile locations to terrain identifiers. */
+    /**
+     * Returns the mutable map of industry tile locations to terrain identifiers.
+     *
+     * @return industry tile locations mapped to terrain identifiers
+     */
     public Map<Vec2D, Integer> getIndustryCityTiles() {
         return industryCityTiles;
     }
 
-    /** Returns the mutable list of industry types not currently placed here. */
+    /**
+     * Returns the mutable list of industry types not currently placed here.
+     *
+     * @return industry terrain types not placed in the city
+     */
     public List<Terrain> getIndustriesNotAtCity() {
         return industriesNotAtCity;
     }
 
-    /** Returns the mutable map of resource tile locations to terrain identifiers. */
+    /**
+     * Returns the mutable map of resource tile locations to terrain identifiers.
+     *
+     * @return resource tile locations mapped to terrain identifiers
+     */
     public Map<Vec2D, Integer> getResourceCityTiles() {
         return resourceCityTiles;
     }
 
-    /** Returns the mutable list of clear locations available for city growth. */
+    /**
+     * Returns the mutable list of clear locations available for city growth.
+     *
+     * @return clear map locations available for development
+     */
     public List<Vec2D> getClearTiles() {
         return clearTiles;
     }
 
     /**
-     * The number of stations within this city's bounds.
+     * Returns the number of stations within this city's bounds.
+     *
+     * @return the number of stations
      */
     public int getStations() {
         return stations;

@@ -29,8 +29,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Tests station behavior.
+ */
 public class StationTest extends TestCase {
 
+    /**
+     * Tests cargo policies are copied from inputs behavior.
+     */
     public void testCargoPoliciesAreCopiedFromInputs() {
         Map<Integer, Integer> supplyValues = new HashMap<>(Map.of(42, 3, 17, 5));
         Set<Integer> demandValues = new HashSet<>(Set.of(42));
@@ -46,6 +52,10 @@ public class StationTest extends TestCase {
         assertTrue(station.getDemandForCargo().isCargoDemanded(42));
     }
 
+    /**
+     * Asserts immutable.
+     * @param values the values to use in the test.
+     */
     private void assertImmutable(Set<Integer> values) {
         try {
             values.clear();
@@ -55,6 +65,10 @@ public class StationTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts immutable.
+     * @param values the values to use in the test.
+     */
     private void assertImmutable(Map<Integer, Integer> values) {
         try {
             values.clear();
@@ -64,6 +78,9 @@ public class StationTest extends TestCase {
         }
     }
 
+    /**
+     * Tests cargo policy record components are immutable copies behavior.
+     */
     public void testCargoPolicyRecordComponentsAreImmutableCopies() {
         Map<Integer, Integer> supplyValues = new HashMap<>(Map.of(42, 3, 17, 5));
         Set<Integer> demandValues = new HashSet<>(Set.of(42));
@@ -80,6 +97,9 @@ public class StationTest extends TestCase {
         assertImmutable(demand.demandedCargoIds());
     }
 
+    /**
+     * Tests cargo policies stay associated with ids when catalogue order changes behavior.
+     */
     public void testCargoPoliciesStayAssociatedWithIdsWhenCatalogueOrderChanges() {
         StationSupply supply = new StationSupply(Map.of(42, 3, 17, 5));
         StationDemand demand = new StationDemand(Set.of(42));
@@ -94,6 +114,9 @@ public class StationTest extends TestCase {
         }
     }
 
+    /**
+     * Tests station cargo policies survive serialization behavior.
+     */
     public void testStationCargoPoliciesSurviveSerialization() {
         Station station = new Station(1, Vec2D.ZERO, "Central", CargoBatchBundle.EMPTY);
         station.setSupply(new StationSupply(Map.of(42, 3)));

@@ -69,6 +69,9 @@ public class TrainSchedulePanel extends JPanel implements View {
     private ModelRoot modelRoot;
     private RendererRoot vl;
 
+    /**
+     * Creates a train schedule panel instance.
+     */
     public TrainSchedulePanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -201,12 +204,20 @@ public class TrainSchedulePanel extends JPanel implements View {
         orders.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         orders.setCellRenderer(trainOrderPanel1);
         orders.addKeyListener(new KeyAdapter() {
+            /**
+             * Key pressed.
+             * @param e the e
+             */
             @Override
             public void keyPressed(KeyEvent e) {
                 ordersKeyPressed(e);
             }
         });
         orders.addMouseListener(new MouseAdapter() {
+            /**
+             * Mouse clicked.
+             * @param e the e
+             */
             @Override
             public void mouseClicked(MouseEvent e) {
                 ordersMouseClicked(e);
@@ -226,6 +237,10 @@ public class TrainSchedulePanel extends JPanel implements View {
     }
 
 
+    /**
+     * Orders key pressed.
+     * @param evt the evt
+     */
     private void ordersKeyPressed(KeyEvent evt) {
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_O: {
@@ -290,39 +305,75 @@ public class TrainSchedulePanel extends JPanel implements View {
         listModel.fireRefresh();
     }
 
+    /**
+     * Auto consist j menu item action performed.
+     * @param evt the evt
+     */
     private void autoConsistJMenuItemActionPerformed(ActionEvent evt) {
         setAutoConsist();
     }
 
+    /**
+     * Change station action performed.
+     * @param evt the evt
+     */
     private void changeStationActionPerformed(ActionEvent evt) {
         int orderNumber = orders.getSelectedIndex();
         showSelectStation(getSchedule(), orderNumber);
     }
 
+    /**
+     * Removes the all j menu item action performed.
+     * @param evt the evt
+     */
     private void removeAllJMenuItemActionPerformed(ActionEvent evt) {
         removeAllWagons();
     }
 
+    /**
+     * Removes the last j menu item action performed.
+     * @param evt the evt
+     */
     private void removeLastJMenuItemActionPerformed(ActionEvent evt) {
         removeLastWagon();
     }
 
+    /**
+     * Wait until full j menu item action performed.
+     * @param evt the evt
+     */
     private void waitUntilFullJMenuItemActionPerformed(ActionEvent evt) {
         setWaitUntilFull(true);
     }
 
+    /**
+     * Dont wait j menu item action performed.
+     * @param evt the evt
+     */
     private void dontWaitJMenuItemActionPerformed(ActionEvent evt) {
         setWaitUntilFull(false);
     }
 
+    /**
+     * Engine only j menu item action performed.
+     * @param evt the evt
+     */
     private void engineOnlyJMenuItemActionPerformed(ActionEvent evt) {
         removeAllWagons();
     }
 
+    /**
+     * No change j menu item action performed.
+     * @param evt the evt
+     */
     private void noChangeJMenuItemActionPerformed(ActionEvent evt) {
         noChange();
     }
 
+    /**
+     * Urgent stop j button action performed.
+     * @param evt the evt
+     */
     private void urgentStopJButtonActionPerformed(ActionEvent evt) {
         ScheduleState schedule = getSchedule();
         if (!schedule.canAddUrgentOrder()) {
@@ -336,6 +387,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Adds the station j button action performed.
+     * @param evt the evt
+     */
     private void addStationJButtonActionPerformed(ActionEvent evt) {
         ScheduleState schedule = getSchedule();
         try {
@@ -347,6 +402,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Removes the station j menu item action performed.
+     * @param evt the evt
+     */
     private void removeStationJMenuItemActionPerformed(ActionEvent evt) {
         ScheduleState schedule = getSchedule();
         int i = orders.getSelectedIndex();
@@ -354,6 +413,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         sendUpdateMove(schedule);
     }
 
+    /**
+     * Goto station j menu item action performed.
+     * @param evt the evt
+     */
     private void gotoStationJMenuItemActionPerformed(ActionEvent evt) {
         ScheduleState schedule = getSchedule();
         int i = orders.getSelectedIndex();
@@ -361,6 +424,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         sendUpdateMove(schedule);
     }
 
+    /**
+     * Push down j menu item action performed.
+     * @param evt the evt
+     */
     private void pushDownJMenuItemActionPerformed(ActionEvent evt) {
         ScheduleState schedule = getSchedule();
         int i = orders.getSelectedIndex();
@@ -369,6 +436,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         orders.setSelectedIndex(i + 1);
     }
 
+    /**
+     * Orders mouse clicked.
+     * @param evt the evt
+     */
     private void ordersMouseClicked(MouseEvent evt) {
         int i = orders.getSelectedIndex();
         ScheduleState schedule = getSchedule();
@@ -391,6 +462,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         }
     }
 
+    /**
+     * Pull up j menu item action performed.
+     * @param evt the evt
+     */
     private void pullUpJMenuItemActionPerformed(ActionEvent evt) {
         ScheduleState schedule = getSchedule();
         int i = orders.getSelectedIndex();
@@ -399,6 +474,12 @@ public class TrainSchedulePanel extends JPanel implements View {
         orders.setSelectedIndex(i - 1);
     }
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         trainOrderPanel1.setup(modelRoot, rendererRoot, null);
@@ -412,6 +493,10 @@ public class TrainSchedulePanel extends JPanel implements View {
             @Serial
             private static final long serialVersionUID = -2096909872676721636L;
 
+            /**
+             * Handles the specified action event.
+             * @param e the e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 sendUpdateMove(selectStationPanel1.generateNewSchedule());
@@ -423,6 +508,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         selectStationPanel1.setup(modelRoot, rendererRoot, action);
     }
 
+    /**
+     * Display.
+     * @param newTrainNumber the new train number
+     */
     public void display(int newTrainNumber) {
         trainId = newTrainNumber;
         Player player = modelRoot.getPlayer();
@@ -435,6 +524,9 @@ public class TrainSchedulePanel extends JPanel implements View {
         enableButtons();
     }
 
+    /**
+     * Enable buttons.
+     */
     private void enableButtons() {
         ScheduleState schedule = getSchedule();
         addStationJButton.setEnabled(schedule.canAddOrder());
@@ -442,6 +534,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         urgentStopJButton.setEnabled(schedule.canAddUrgentOrder());
     }
 
+    /**
+     * Returns the schedule.
+     * @return the schedule
+     */
     private ScheduleState getSchedule() {
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
@@ -463,6 +559,9 @@ public class TrainSchedulePanel extends JPanel implements View {
         return stations.iterator().next().getId();
     }
 
+    /**
+     * Sets the up wagons popup.
+     */
     private void setupWagonsPopup() {
         addWagonJMenu.removeAll(); // Remove existing menu items.
 
@@ -481,6 +580,9 @@ public class TrainSchedulePanel extends JPanel implements View {
         }
     }
 
+    /**
+     * No change.
+     */
     private void noChange() {
         TrainOrder oldOrders, newOrders;
         ScheduleState schedule = getSchedule();
@@ -491,6 +593,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         sendUpdateMove(schedule);
     }
 
+    /**
+     * Sets the wait until full.
+     * @param b the b
+     */
     private void setWaitUntilFull(boolean b) {
         TrainOrder oldOrders, newOrders;
         ScheduleState schedule = getSchedule();
@@ -504,6 +610,9 @@ public class TrainSchedulePanel extends JPanel implements View {
         sendUpdateMove(schedule);
     }
 
+    /**
+     * Sets the auto consist.
+     */
     private void setAutoConsist() {
         TrainOrder oldOrders, newOrders;
         ScheduleState schedule = getSchedule();
@@ -514,6 +623,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         sendUpdateMove(schedule);
     }
 
+    /**
+     * Adds the wagon.
+     * @param wagonTypeNumber the wagon type number
+     */
     private void addWagon(int wagonTypeNumber) {
         TrainOrder oldOrders, newOrders;
         ScheduleState schedule = getSchedule();
@@ -538,6 +651,9 @@ public class TrainSchedulePanel extends JPanel implements View {
         sendUpdateMove(schedule);
     }
 
+    /**
+     * Removes the all wagons.
+     */
     private void removeAllWagons() {
         TrainOrder oldOrders, newOrders;
         ScheduleState schedule = getSchedule();
@@ -548,6 +664,9 @@ public class TrainSchedulePanel extends JPanel implements View {
         sendUpdateMove(schedule);
     }
 
+    /**
+     * Removes the last wagon.
+     */
     private void removeLastWagon() {
         // TODO should the code be in the model
         TrainOrder oldOrders, newOrders;
@@ -572,6 +691,10 @@ public class TrainSchedulePanel extends JPanel implements View {
         sendUpdateMove(schedule);
     }
 
+    /**
+     * Send update move.
+     * @param schedule the schedule
+     */
     private void sendUpdateMove(ScheduleState schedule) {
         Move move = new UpdateTrainMove(modelRoot.getPlayer(), trainId, null, null, schedule);
         modelRoot.applyMove(move);

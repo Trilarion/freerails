@@ -28,11 +28,14 @@ import java.io.Serializable;
  */
 public final class TestUtils {
 
+    /**
+     * Creates a test utils.
+     */
     private TestUtils() {}
 
     /**
-     *
-     * @param serializable
+     * Asserts clone by serialization behaves well.
+     * @param serializable the serializable to use in the test.
      */
     public static void assertCloneBySerializationBehavesWell(Serializable serializable) {
         Assert.assertEquals(serializable, serializable);
@@ -44,9 +47,9 @@ public final class TestUtils {
     }
 
     /**
-     *
-     * @param a
-     * @param b
+     * Asserts unequal and no hashcode collision.
+     * @param a the a to use in the test.
+     * @param b the b to use in the test.
      */
     public static void assertUnequalAndNoHashcodeCollision(Object a, Object b) {
         Assert.assertNotEquals(a, b);
@@ -54,8 +57,8 @@ public final class TestUtils {
     }
 
     /**
-     *
-     * @param action
+     * Asserts throws.
+     * @param action the action to use in the test.
      */
     public static void assertThrows(FailingRunnable action) {
         try {
@@ -67,11 +70,23 @@ public final class TestUtils {
         Assert.fail();
     }
 
+    /**
+     * Asserts line segment equals.
+     * @param a the a to use in the test.
+     * @param b the b to use in the test.
+     * @param segment the segment to use in the test.
+     */
     public static void assertLineSegmentEquals(Vec2D a, Vec2D b, Segment segment) {
         Assert.assertEquals(segment, new Segment(a, b));
     }
 
+    /**
+     * Provides test support for failing runnable.
+     */
     public @FunctionalInterface interface FailingRunnable {
+        /**
+         * Provides test support for failing runnable.
+         */
         void run() throws Exception;
     }
 }

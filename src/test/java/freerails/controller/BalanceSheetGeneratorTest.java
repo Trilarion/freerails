@@ -41,7 +41,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
     private World world;
 
     /**
-     *
+     * Tests bonds figure behavior.
      */
     public void testBondsFigure() {
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player);
@@ -50,7 +50,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests stock holder equity figure behavior.
      */
     public void testStockHolderEquityFigure() {
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player);
@@ -58,7 +58,8 @@ public class BalanceSheetGeneratorTest extends TestCase {
     }
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {

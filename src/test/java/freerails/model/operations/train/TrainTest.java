@@ -26,8 +26,14 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tests train behavior.
+ */
 public class TrainTest extends TestCase {
 
+    /**
+     * Tests configuration copies and protects wagon types behavior.
+     */
     public void testConfigurationCopiesAndProtectsWagonTypes() {
         List<Integer> wagonTypes = new ArrayList<>(List.of(2, 3));
         TrainConfiguration configuration = new TrainConfiguration(1, wagonTypes);
@@ -42,6 +48,9 @@ public class TrainTest extends TestCase {
         }
     }
 
+    /**
+     * Tests replacing configuration preserves runtime state behavior.
+     */
     public void testReplacingConfigurationPreservesRuntimeState() {
         Train train = new Train(1, new TrainConfiguration(2, List.of(3)));
         TrainRuntimeState runtimeState = train.getRuntimeState();
@@ -55,6 +64,9 @@ public class TrainTest extends TestCase {
         assertEquals(ScheduleState.EMPTY, train.getSchedule());
     }
 
+    /**
+     * Tests activities start no earlier than previous completion behavior.
+     */
     public void testActivitiesStartNoEarlierThanPreviousCompletion() {
         Train train = new Train(1, 1);
         TrainMotion first = TestTrainMotion.of(10, 5);

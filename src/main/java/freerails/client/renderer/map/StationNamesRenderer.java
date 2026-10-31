@@ -49,8 +49,10 @@ public class StationNamesRenderer implements Painter {
     private final Font font = new Font("Arial", Font.PLAIN, fontSize);
 
     /**
-     * @param world
-     * @param modelRoot
+     * Creates a station names renderer instance.
+     *
+     * @param world the game world being queried
+     * @param modelRoot the client model that provides current game state
      */
     public StationNamesRenderer(UnmodifiableWorld world, ModelRoot modelRoot) {
         this.world = world;
@@ -58,8 +60,10 @@ public class StationNamesRenderer implements Painter {
     }
 
     /**
-     * @param g
-     * @param newVisibleRectangle
+     * Performs the paint operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param newVisibleRectangle the new visible rectangle parameter
      */
     @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {

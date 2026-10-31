@@ -27,12 +27,12 @@ import freerails.model.economy.transaction.TransactionCategory;
 import freerails.util.WorldGenerator;
 
 /**
- *
+ * Tests add transaction move behavior.
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
 
     /**
-     *
+     * Tests move behavior.
      */
     public void testMove() {
         Money currentBalance = getWorld().getCurrentBalance(WorldGenerator.TEST_PLAYER);
@@ -48,7 +48,7 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests constrained move behavior.
      */
     public void testConstrainedMove() {
         Money currentBalance = getWorld().getCurrentBalance(WorldGenerator.TEST_PLAYER);

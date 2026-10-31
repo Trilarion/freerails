@@ -48,7 +48,8 @@ public class FlatTrackExplorerTest extends TestCase {
     private World world;
 
     /**
-     *
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -85,7 +86,8 @@ public class FlatTrackExplorerTest extends TestCase {
     }
 
     /**
-     * @throws NoTrackException
+     * Tests get first vector to try behavior.
+     * @throws NoTrackException if the test get first vector to try operation fails.
      */
     public void testGetFirstVectorToTry() throws NoTrackException {
         PositionOnTrack p = new PositionOnTrack(new Vec2D(10, 10), TileTransition.SOUTH_WEST);
@@ -165,7 +167,8 @@ public class FlatTrackExplorerTest extends TestCase {
     }
 
     /**
-     * @throws NoTrackException
+     * Verifies that the explorer reports an available edge when track continues from its starting position.
+     * @throws NoTrackException if the test has next operation fails.
      */
     public void testHasNext() throws NoTrackException {
         FlatTrackExplorer explorer = new FlatTrackExplorer(world, new PositionOnTrack(new Vec2D(10, 10), TileTransition.EAST));
@@ -173,7 +176,7 @@ public class FlatTrackExplorerTest extends TestCase {
     }
 
     /**
-     *
+     * Tests no track behavior.
      */
     public void testNoTrack() {
         try {
@@ -186,7 +189,7 @@ public class FlatTrackExplorerTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get possible positions behavior.
      */
     public void testGetPossiblePositions() {
         PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(world, new Vec2D(10, 10));

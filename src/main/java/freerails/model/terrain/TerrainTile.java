@@ -26,6 +26,9 @@ import java.io.Serializable;
 
 /**
  * A map tile containing a terrain type and, optionally, a track piece.
+
+ * @param trackPiece the track piece on the tile, or {@code null} if there is none
+ * @param terrainTypeId the identifier of the tile?s terrain type
  */
 public record TerrainTile(TrackPiece trackPiece, int terrainTypeId) implements Serializable {
 

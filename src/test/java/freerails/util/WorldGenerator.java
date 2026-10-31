@@ -41,6 +41,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Provides test support for world generator.
+ */
 public final class WorldGenerator {
 
     /**
@@ -48,16 +51,24 @@ public final class WorldGenerator {
      */
     public static final Player TEST_PLAYER = new Player(0, "test player");
 
+    /**
+     * Creates a world generator.
+     */
     private WorldGenerator() {}
 
     /**
-     * Get a minimal world for basic testing.
-     * @return
+     * Performs minimal world.
+     * @return the result of minimal world.
      */
     public static World minimalWorld() {
         return minimalWorld(new Vec2D(20, 20));
     }
 
+    /**
+     * Performs minimal world.
+     * @param mapSize the map size to use in the test.
+     * @return the result of minimal world.
+     */
     public static World minimalWorld(Vec2D mapSize) {
         World.Builder builder = new World.Builder();
         try {
@@ -71,8 +82,8 @@ public final class WorldGenerator {
     }
 
     /**
-     * Resembles a real used world.
-     * @return
+     * Performs default world.
+     * @return the result of default world.
      */
     public static World defaultWorld() {
         World.Builder builder = new World.Builder();
@@ -91,13 +102,20 @@ public final class WorldGenerator {
     }
 
     /**
-     * Get a customized world for testing.
-     * @return
+     * Tests world behavior.
+     * @param useDefaultRules the use default rules to use in the test.
+     * @return the result of test world.
      */
     public static World testWorld(boolean useDefaultRules) {
         return testWorld(useDefaultRules, new TreeSet<>());
     }
 
+    /**
+     * Tests world behavior.
+     * @param useDefaultRules the use default rules to use in the test.
+     * @param cities the cities to use in the test.
+     * @return the result of test world.
+     */
     public static World testWorld(boolean useDefaultRules, SortedSet<City> cities) {
         World.Builder builder = new World.Builder();
         try {
@@ -117,14 +135,30 @@ public final class WorldGenerator {
         return builder.build();
     }
 
+    /**
+     * Returns default rules.
+     * @return the result of get default rules.
+     * @throws Exception if the operation fails.
+     */
     private static Rules getDefaultRules()  throws Exception {
         return getRules("/freerails/data/scenario/rules.json");
     }
 
+    /**
+     * Returns unrestricted rules.
+     * @return the result of get unrestricted rules.
+     * @throws Exception if the operation fails.
+     */
     private static Rules getUnrestrictedRules() throws Exception {
         return getRules("/rules.without_restrictions.json");
     }
 
+    /**
+     * Returns rules.
+     * @param location the location used by this test.
+     * @return the result of get rules.
+     * @throws Exception if the operation fails.
+     */
     private static Rules getRules(String location) throws Exception {
         // load rules
         URL url = WorldGenerator.class.getResource(location);
@@ -133,6 +167,11 @@ public final class WorldGenerator {
         return GsonManager.load(file, Rules.class);
     }
 
+    /**
+     * Returns engines.
+     * @return the result of get engines.
+     * @throws Exception if the operation fails.
+     */
     private static SortedSet<Engine> getEngines() throws Exception {
         // load engines
         URL url = WorldGenerator.class.getResource("/freerails/data/scenario/engines.json");
@@ -141,6 +180,11 @@ public final class WorldGenerator {
         return GsonManager.loadEngines(file);
     }
 
+    /**
+     * Returns cargos.
+     * @return the result of get cargos.
+     * @throws Exception if the operation fails.
+     */
     private static SortedSet<Cargo> getCargos() throws Exception {
         // load cargo types
         URL url = WorldGenerator.class.getResource("/freerails/data/scenario/cargo_types.json");
@@ -149,6 +193,11 @@ public final class WorldGenerator {
         return GsonManager.loadCargoTypes(file);
     }
 
+    /**
+     * Returns terrain types.
+     * @return the result of get terrain types.
+     * @throws Exception if the operation fails.
+     */
     private static SortedSet<Terrain> getTerrainTypes() throws Exception {
         // load terrain types
         URL url = WorldGenerator.class.getResource("/freerails/data/scenario/terrain_types.json");
@@ -157,6 +206,11 @@ public final class WorldGenerator {
         return GsonManager.loadTerrainTypes(file);
     }
 
+    /**
+     * Returns track types.
+     * @return the result of get track types.
+     * @throws Exception if the operation fails.
+     */
     private static SortedSet<TrackType> getTrackTypes() throws Exception {
         // load track types
         URL url = WorldGenerator.class.getResource("/freerails/data/scenario/track_types.json");
@@ -165,6 +219,11 @@ public final class WorldGenerator {
         return GsonManager.loadTrackTypes(file);
     }
 
+    /**
+     * Returns sentiments.
+     * @return the result of get sentiments.
+     * @throws Exception if the operation fails.
+     */
     private static SortedSet<Sentiment> getSentiments() throws Exception {
         // load sentiments
         URL url = MapCreator.class.getResource("/freerails/data/scenario/sentiments.json");
@@ -173,6 +232,8 @@ public final class WorldGenerator {
     }
 
     /**
+     * Tests track types behavior.
+     * @return the result of test track types.
      */
     public static SortedSet<TrackType> testTrackTypes() {
         SortedSet<TrackType> trackTypes = new TreeSet<>();
@@ -218,6 +279,10 @@ public final class WorldGenerator {
         return terrainTypes;
     }
 
+    /**
+     * Tests cargos behavior.
+     * @return the result of test cargos.
+     */
     private static SortedSet<Cargo> testCargos() {
         SortedSet<Cargo> cargos = new TreeSet<>();
         cargos.add(new Cargo(0, "Mail", CargoCategory.MAIL, 1));

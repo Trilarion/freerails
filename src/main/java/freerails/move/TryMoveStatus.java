@@ -32,21 +32,26 @@ public class TryMoveStatus implements Serializable {
     private static final long serialVersionUID = 3978145456646009140L;
     public final Status status;
 
+    /**
+     * Creates a try move status from the supplied values.
+     *
+     * @param status the status
+     */
     private TryMoveStatus(Status status) {
         this.status = status;
     }
 
     /**
-     * @param reason
-     * @return
+     * @param reason the explanation for the failed move attempt
+     * @return a failed move status containing the supplied reason
      */
     public static TryMoveStatus failed(String reason) {
         return new TryMoveStatus(Status.fail(reason));
     }
 
     /**
-     * @param status
-     * @return
+     * @param status the move status to convert to a serializable result
+     * @return a serializable representation of the supplied move status
      */
     public static Serializable fromMoveStatus(Status status) {
         if (status.isSuccess()) {
@@ -55,6 +60,12 @@ public class TryMoveStatus implements Serializable {
         return new TryMoveStatus(status);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -63,6 +74,11 @@ public class TryMoveStatus implements Serializable {
         return status.equals(tryMoveStatus.status);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return status.hashCode();

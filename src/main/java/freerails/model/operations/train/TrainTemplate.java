@@ -28,6 +28,9 @@ import java.util.List;
 
 /**
  * Immutable blueprint specifying an engine type and wagon types for production.
+
+ * @param engineId the identifier of the train engine
+ * @param wagonTypes the wagon type identifiers in the train consist
  */
 public record TrainTemplate(int engineId, List<Integer> wagonTypes) implements Serializable {
 

@@ -19,7 +19,7 @@
 package freerails.client.launcher;
 
 /**
- *
+ * Defines the available map selection values.
  */
 public enum MapSelection {
 

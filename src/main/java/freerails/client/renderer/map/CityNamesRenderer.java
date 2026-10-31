@@ -40,15 +40,19 @@ public class CityNamesRenderer implements Painter {
     private final UnmodifiableWorld world;
 
     /**
-     * @param world
+     * Creates a city names renderer instance.
+     *
+     * @param world the game world being queried
      */
     public CityNamesRenderer(UnmodifiableWorld world) {
         this.world = world;
     }
 
     /**
-     * @param g
-     * @param newVisibleRectangle
+     * Performs the paint operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param newVisibleRectangle the new visible rectangle parameter
      */
     @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {

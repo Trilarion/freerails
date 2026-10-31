@@ -26,8 +26,14 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tests engine shop behavior.
+ */
 public class EngineShopTest extends TestCase {
 
+    /**
+     * Tests production queue is copied and unmodifiable behavior.
+     */
     public void testProductionQueueIsCopiedAndUnmodifiable() {
         List<TrainTemplate> templates = new ArrayList<>(List.of(new TrainTemplate(4, List.of(7))));
         EngineShop shop = new EngineShop(2, Vec2D.ZERO);
@@ -43,6 +49,9 @@ public class EngineShopTest extends TestCase {
         }
     }
 
+    /**
+     * Tests engine shop survives serialization behavior.
+     */
     public void testEngineShopSurvivesSerialization() {
         EngineShop shop = new EngineShop(2, new Vec2D(3, 4));
         shop.setProduction(List.of(new TrainTemplate(4, List.of(7, 8))));

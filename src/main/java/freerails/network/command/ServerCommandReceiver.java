@@ -27,7 +27,9 @@ package freerails.network.command;
 public interface ServerCommandReceiver {
 
     /**
-     * @param message
+     * Queues or transmits a command for execution by the server.
+     *
+     * @param message command to send
      */
     void sendCommand(CommandToServer message);
 }

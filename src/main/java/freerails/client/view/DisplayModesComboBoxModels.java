@@ -40,7 +40,7 @@ public class DisplayModesComboBoxModels implements ComboBoxModel<Vec2D> {
     private Vec2D selection;
 
     /**
-     *
+     * Creates a display modes combo box models instance.
      */
     public DisplayModesComboBoxModels() {
         GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
@@ -74,30 +74,55 @@ public class DisplayModesComboBoxModels implements ComboBoxModel<Vec2D> {
         }
     }
 
+    /**
+     * Returns the selected item.
+     * @return the selected item
+     */
     @Override
     public Vec2D getSelectedItem() {
         return selection;
     }
 
+    /**
+     * Sets the selected item.
+     * @param anItem the an item
+     */
     @Override
     public void setSelectedItem(Object anItem) {
         selection = (Vec2D) anItem;
     }
 
+    /**
+     * Adds the list data listener.
+     * @param l the l
+     */
     @Override
     public void addListDataListener(ListDataListener l) {
     }
 
+    /**
+     * Returns the element at.
+     * @param index the index
+     * @return the element at
+     */
     @Override
     public Vec2D getElementAt(int index) {
         return modes.get(index);
     }
 
+    /**
+     * Returns the size.
+     * @return the size
+     */
     @Override
     public int getSize() {
         return modes.size();
     }
 
+    /**
+     * Removes the list data listener.
+     * @param l the l
+     */
     @Override
     public void removeListDataListener(ListDataListener l) {
     }

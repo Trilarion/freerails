@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 public class CargoAtStationsUpdaterTest extends TestCase {
 
     /**
-     *
+     * Tests calculate amount to add behavior.
      */
     public void testCalculateAmountToAdd() {
 

@@ -29,18 +29,30 @@ import java.util.Objects;
 
 // TODO try, undo ...
 /**
- *
+ * Adds a station owned by the specified player to the world.
  */
 public class AddStationMove implements Move {
 
     private final Player player;
     private final Station station;
 
+    /**
+     * Creates an add station move from the supplied values.
+     *
+     * @param player the player
+     * @param station the station
+     */
     public AddStationMove(@NotNull Player player, @NotNull Station station) {
         this.player = player;
         this.station = new Station(station);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param o the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,12 +67,23 @@ public class AddStationMove implements Move {
                 && Objects.equals(station.getCargoBatchBundle(), other.station.getCargoBatchBundle());
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(player, station.getId(), station.getLocation(), station.getStationName(),
                 station.getSupply(), station.getDemandForCargo(), station.getCargoBatchBundle());
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -73,6 +96,11 @@ public class AddStationMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         if (Utils.containsId(station.getId(), world.getStations(player))) {

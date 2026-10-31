@@ -34,8 +34,9 @@ public class TestServerGameModel implements ServerGameModel {
     private String[] passwords;
 
     /**
-     * @param world
-     * @param passwords
+     * Sets world.
+     * @param world the world state used by the test.
+     * @param passwords the passwords to use in the test.
      */
     @Override
     public void setWorld(World world, String[] passwords) {
@@ -44,7 +45,8 @@ public class TestServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @return
+     * Returns the world.
+     * @return the world.
      */
     @Override
     public World getWorld() {
@@ -52,19 +54,20 @@ public class TestServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @param moveReceiver
+     * Performs initialize.
+     * @param moveReceiver the move receiver to use in the test.
      */
     @Override
     public void initialize(MoveReceiver moveReceiver) {}
 
     /**
-     *
+     * Performs update.
      */
     @Override
     public void update() {}
 
     /**
-     * @return
+     * Performs update.
      */
     @Override
     public String[] getPasswords() {

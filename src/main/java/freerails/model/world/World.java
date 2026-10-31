@@ -436,6 +436,9 @@ public class World implements UnmodifiableWorld {
         initializeIndexes();
     }
 
+    /**
+     * Performs the migrate legacy engine shop production operation.
+     */
     private void migrateLegacyEngineShopProduction() {
         if (engineShops == null) {
             engineShops = new HashMap<>();
@@ -568,6 +571,13 @@ public class World implements UnmodifiableWorld {
         return getTrainIndex(playerId, trainId);
     }
 
+    /**
+     * Returns the train index.
+     *
+     * @param playerId the identifier to use
+     * @param trainId the identifier to use
+     * @return the train index
+     */
     private int getTrainIndex(int playerId, int trainId) {
         Integer index = trainIndexByIdByPlayer.get(playerId).get(trainId);
         if (index == null) {
@@ -982,6 +992,13 @@ public class World implements UnmodifiableWorld {
                 + Arrays.hashCode(map);
     }
 
+    /**
+     * Returns whether engine shops equal.
+     *
+     * @param first the first
+     * @param second the second
+     * @return the engine shops equal
+     */
     private static boolean engineShopsEqual(Map<Integer, SortedSet<EngineShop>> first,
                                             Map<Integer, SortedSet<EngineShop>> second) {
         if (!first.keySet().equals(second.keySet())) {
@@ -1008,6 +1025,12 @@ public class World implements UnmodifiableWorld {
         return true;
     }
 
+    /**
+     * Calculates a hash code for the engine shops grouped by player.
+     *
+     * @param shopsByPlayer the shops by player
+     * @return the engine shops hash code
+     */
     private static int engineShopsHashCode(Map<Integer, SortedSet<EngineShop>> shopsByPlayer) {
         int result = 0;
         for (Map.Entry<Integer, SortedSet<EngineShop>> entry : shopsByPlayer.entrySet()) {

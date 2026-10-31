@@ -48,38 +48,70 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
     private static final LongAdder numRepaintRequests = new LongAdder();
     private static final LongAdder numDirtyRequests = new LongAdder();
 
+    /**
+     * Creates the singleton repaint manager.
+     */
     private RepaintManagerForActiveRendering() {
     }
 
     /**
-     *
+     * Installs this manager as Swing's current repaint manager.
      */
     public static void setAsCurrentManager() {
         RepaintManager.setCurrentManager(instance);
     }
 
     /**
-     * @param f
+     * Registers a frame that is painted by the active-rendering game loop.
+     *
+     * @param f actively rendered frame
      */
     public static void addJFrame(JFrame f) {
         activelyRenderedComponents.add(f);
     }
 
+    /**
+     * Unregisters a frame from active rendering.
+     *
+     * @param f frame to remove
+     */
     public static void removeJFrame(JFrame f) {
         activelyRenderedComponents.remove(f);
     }
 
+    /**
+     * Checks whether a component belongs to a top-level window outside active
+     * rendering.
+     *
+     * @param aComponent component to inspect
+     * @return {@code true} if its top-level ancestor is not actively rendered
+     */
     private static boolean hasDifferentAncestor(JComponent aComponent) {
         Container topLevelAncestor = aComponent.getTopLevelAncestor();
 
         return null != topLevelAncestor && !activelyRenderedComponents.contains(topLevelAncestor);
     }
 
+    /**
+     * Reports that Swing double buffering is disabled for active rendering.
+     *
+     * @return always {@code false}
+     */
     @Override
     public boolean isDoubleBufferingEnabled() {
         return false;
     }
 
+    /**
+     * Processes repaint requests only for components outside actively rendered
+     * frames.
+     *
+     * @param c component whose region is dirty
+     * @param x dirty region's x coordinate
+     * @param y dirty region's y coordinate
+     * @param w dirty region's width
+     * @param h dirty region's height
+     */
     @Override
     public synchronized void addDirtyRegion(JComponent c, int x, int y, int w, int h) {
         if (hasDifferentAncestor(c)) {
@@ -90,6 +122,12 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
         }
     }
 
+    /**
+     * Processes invalidation only for components outside actively rendered
+     * frames.
+     *
+     * @param invalidComponent component requiring validation
+     */
     @Override
     public synchronized void addInvalidComponent(JComponent invalidComponent) {
         if (hasDifferentAncestor(invalidComponent)) {
@@ -100,6 +138,12 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
         }
     }
 
+    /**
+     * Marks a component clean only when it is outside an actively rendered
+     * frame.
+     *
+     * @param aComponent component to mark clean
+     */
     @Override
     public void markCompletelyClean(JComponent aComponent) {
         if (hasDifferentAncestor(aComponent)) {
@@ -110,6 +154,12 @@ public class RepaintManagerForActiveRendering extends RepaintManager {
         }
     }
 
+    /**
+     * Marks a component dirty only when it is outside an actively rendered
+     * frame.
+     *
+     * @param aComponent component to mark dirty
+     */
     @Override
     public void markCompletelyDirty(JComponent aComponent) {
         if (hasDifferentAncestor(aComponent)) {

@@ -2,8 +2,14 @@ package freerails.util.ui;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests my abstract list model behavior.
+ */
 public class MyAbstractListModelTest extends TestCase {
 
+    /**
+     * Tests contains message when no players are logged on behavior.
+     */
     public void testContainsMessageWhenNoPlayersAreLoggedOn() {
         MyAbstractListModel model = new MyAbstractListModel();
 
@@ -11,6 +17,9 @@ public class MyAbstractListModelTest extends TestCase {
         assertEquals("No players are logged on!", model.getElementAt(0));
     }
 
+    /**
+     * Tests rejects index outside model behavior.
+     */
     public void testRejectsIndexOutsideModel() {
         MyAbstractListModel model = new MyAbstractListModel();
 

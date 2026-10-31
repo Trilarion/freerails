@@ -25,13 +25,31 @@ import freerails.io.ARGBColor;
 
 import java.io.IOException;
 
+/**
+ * Serializes ARGB colors as hexadecimal JSON strings.
+ */
 public class ColorAdapter extends TypeAdapter<ARGBColor> {
 
+    /**
+     * Writes a color as a hash-prefixed hexadecimal string.
+     *
+     * @param out JSON writer
+     * @param value color to write
+     * @throws IOException if writing to the JSON stream fails
+     */
     @Override
     public void write(JsonWriter out, ARGBColor value) throws IOException {
         out.value(ARGBColor.toHexString(value));
     }
 
+    /**
+     * Reads a hexadecimal color string from the JSON stream.
+     *
+     * @param in JSON reader
+     * @return the parsed color
+     * @throws IOException if reading from the JSON stream fails
+     * @throws IllegalArgumentException if the string is not a valid color
+     */
     @Override
     public ARGBColor read(JsonReader in) throws IOException {
         return ARGBColor.fromHexString(in.nextString());

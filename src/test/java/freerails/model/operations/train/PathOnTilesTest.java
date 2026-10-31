@@ -40,7 +40,7 @@ import java.util.List;
 public class PathOnTilesTest extends TestCase {
 
     /**
-     *
+     * Tests path on tiles behavior.
      */
     public void testPathOnTiles() {
         final Vec2D p1 = null;
@@ -59,7 +59,7 @@ public class PathOnTilesTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get step index behavior.
      */
     public void testGetStepIndex() {
         Vec2D p1 = Vec2D.ZERO;
@@ -73,7 +73,7 @@ public class PathOnTilesTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get length behavior.
      */
     public void testGetLength() {
         Vec2D p1 = Vec2D.ZERO;
@@ -83,7 +83,7 @@ public class PathOnTilesTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get point behavior.
      */
     public void testGetPoint() {
         Vec2D p1 = Vec2D.ZERO;
@@ -108,7 +108,7 @@ public class PathOnTilesTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get point pair behavior.
      */
     public void testGetPointPair() {
         Vec2D p1 = new Vec2D();
@@ -131,7 +131,7 @@ public class PathOnTilesTest extends TestCase {
     }
 
     /**
-     *
+     * Tests sub path behavior.
      */
     public void testSubPath() {
         Vec2D p1 = new Vec2D();
@@ -186,6 +186,11 @@ public class PathOnTilesTest extends TestCase {
         checkPath(pathIt.a(), expected);
     }
 
+    /**
+     * Checks path.
+     * @param pathIterator the path iterator to use in the test.
+     * @param expected the expected value.
+     */
     private void checkPath(PathIterator pathIterator, Vec2D[] expected) {
         Segment segment = null;
         for (int i = 0; i < expected.length - 1; i++) {
@@ -198,7 +203,7 @@ public class PathOnTilesTest extends TestCase {
     }
 
     /**
-     *
+     * Tests tiles behavior.
      */
     public void testTiles() {
         Vec2D p1 = new Vec2D(5,5);
@@ -211,6 +216,9 @@ public class PathOnTilesTest extends TestCase {
         assertFalse(it.hasNext());
     }
 
+    /**
+     * Tests mutable transition input cannot change path value behavior.
+     */
     public void testMutableTransitionInputCannotChangePathValue() {
         List<TileTransition> transitions =
                 new ArrayList<>(List.of(TileTransition.EAST, TileTransition.SOUTH));

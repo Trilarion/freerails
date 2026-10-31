@@ -32,6 +32,13 @@ import java.io.IOException;
  */
 public class MoneyAdapter extends TypeAdapter<Money> {
 
+    /**
+     * Writes a money amount as a JSON number, or JSON null for a null value.
+     *
+     * @param out JSON writer
+     * @param value money value to write
+     * @throws IOException if writing to the JSON stream fails
+     */
     @Override
     public void write(JsonWriter out, @Nullable Money value) throws IOException {
         if (value == null) {
@@ -41,6 +48,13 @@ public class MoneyAdapter extends TypeAdapter<Money> {
         }
     }
 
+    /**
+     * Reads a JSON number as a money amount, preserving JSON null as null.
+     *
+     * @param in JSON reader
+     * @return parsed money value, or null for a JSON null token
+     * @throws IOException if reading from the JSON stream fails
+     */
     @Override
     public @Nullable Money read(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {

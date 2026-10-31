@@ -28,10 +28,14 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- *
+ * Tests server socket acceptor behavior.
  */
 public class ServerSocketAcceptorTest extends TestCase {
 
+    /**
+     * Tests it behavior.
+     * @throws IOException if the test it operation fails.
+     */
     public void testIt() throws IOException {
         // the connected sockets on the server side
         BlockingQueue<Socket> sockets = new LinkedBlockingQueue<>(2);
@@ -66,6 +70,10 @@ public class ServerSocketAcceptorTest extends TestCase {
         assertFalse(acceptor.isOpen());
     }
 
+    /**
+     * Tests full queue closes excess connection without stopping acceptor behavior.
+     * @throws IOException if the test full queue closes excess connection without stopping acceptor operation fails.
+     */
     public void testFullQueueClosesExcessConnectionWithoutStoppingAcceptor() throws IOException {
         BlockingQueue<Socket> sockets = new LinkedBlockingQueue<>(1);
         InetSocketAddress address = new InetSocketAddress(InetAddress.getLoopbackAddress(), 0);

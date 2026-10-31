@@ -58,6 +58,10 @@ public class CityModelTest extends TestCase {
         assertEquals("A city is a 7*7 area", 49, cityModel.getClearTiles().size());
     }
 
+    /**
+     * Tests initialize cities adds initial urban tiles behavior.
+     * @throws IOException if the test initialize cities adds initial urban tiles operation fails.
+     */
     public void testInitializeCitiesAddsInitialUrbanTiles() throws IOException {
         World world = worldWithClearCity();
 
@@ -69,6 +73,10 @@ public class CityModelTest extends TestCase {
         assertTrue(cityModel.getUrbanCityTiles().size() <= 4);
     }
 
+    /**
+     * Tests initial footprints are initialized when growth is disabled behavior.
+     * @throws IOException if the test initial footprints are initialized when growth is disabled operation fails.
+     */
     public void testInitialFootprintsAreInitializedWhenGrowthIsDisabled() throws IOException {
         World world = worldWithClearCity(false);
 
@@ -80,6 +88,10 @@ public class CityModelTest extends TestCase {
         assertTrue(cityModel.getUrbanCityTiles().size() <= 4);
     }
 
+    /**
+     * Tests growth does not add tiles without station behavior.
+     * @throws IOException if the test growth does not add tiles without station operation fails.
+     */
     public void testGrowthDoesNotAddTilesWithoutStation() throws IOException {
         World world = worldWithClearCity();
 
@@ -92,6 +104,10 @@ public class CityModelTest extends TestCase {
         assertEquals(0, cityModel.getResourceCityTiles().size());
     }
 
+    /**
+     * Tests grow cities move does not grow when disabled behavior.
+     * @throws IOException if the test grow cities move does not grow when disabled operation fails.
+     */
     public void testGrowCitiesMoveDoesNotGrowWhenDisabled() throws IOException {
         World world = worldWithClearCity(false);
         Vec2D cityCenter = world.getCity(1).getLocation();
@@ -113,10 +129,21 @@ public class CityModelTest extends TestCase {
         assertEquals(0, cityModel.getResourceCityTiles().size());
     }
 
+    /**
+     * Performs world with clear city.
+     * @return the result of world with clear city.
+     * @throws IOException if the world with clear city operation fails.
+     */
     private World worldWithClearCity() throws IOException {
         return worldWithClearCity(true);
     }
 
+    /**
+     * Performs world with clear city.
+     * @param cityGrowthEnabled the city growth enabled to use in the test.
+     * @return the result of world with clear city.
+     * @throws IOException if the world with clear city operation fails.
+     */
     private World worldWithClearCity(boolean cityGrowthEnabled) throws IOException {
         City city = new City(1,"New York", new Vec2D(5, 5));
         TreeSet<City> cities = new TreeSet<>();

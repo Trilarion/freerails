@@ -66,6 +66,11 @@ public class OverviewMapRenderer implements MapRenderer {
     private boolean isDirty = true;
     private Map<Integer, ARGBColor> terrainColors;
 
+    /**
+     * Creates a overview map renderer instance.
+     * @param world the world
+     * @param imageSize the image size
+     */
     private OverviewMapRenderer(UnmodifiableWorld world, Vec2D imageSize) {
         this.world = world;
         mapSize = world.getMapSize();
@@ -87,9 +92,11 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     /**
-     * @param world
-     * @param maxSize
-     * @return
+     * Returns the instance.
+     *
+     * @param world the game world being queried
+     * @param maxSize the max size parameter
+     * @return the instance produced by this method
      */
     public static MapRenderer getInstance(UnmodifiableWorld world, Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
@@ -111,7 +118,9 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     /**
-     * @return
+     * Performs the scale operation.
+     *
+     * @return the scale produced by this method
      */
     @Override
     public float scale() {
@@ -119,8 +128,10 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     /**
-     * @param g
-     * @param visibleRect
+     * Performs the paint rect operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
@@ -129,6 +140,9 @@ public class OverviewMapRenderer implements MapRenderer {
         g.drawImage(mapImage, 0, 0, null);
     }
 
+    /**
+     * Renders the off screen image.
+     */
     private void renderOffScreenImage() {
         if (isDirty) {
             Graphics2D mapGraphics = mapImage.createGraphics();
@@ -142,6 +156,10 @@ public class OverviewMapRenderer implements MapRenderer {
         }
     }
 
+    /**
+     * Refresh tile.
+     * @param tileLocation the tile location
+     */
     @Override
     public void refreshTile(Vec2D tileLocation) {
         TerrainTile terrainTile = world.getTile(tileLocation);
@@ -195,7 +213,9 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     /**
-     * @return
+     * Returns the map size in pixels.
+     *
+     * @return the map size in pixels produced by this method
      */
     @Override
     public Vec2D getMapSizeInPixels() {
@@ -203,8 +223,10 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     /**
-     * @param g
-     * @param tileLocation
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param tileLocation the map coordinate
      */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
@@ -212,7 +234,7 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     /**
-     *
+     * Performs the refresh all operation.
      */
     @Override
     public void refreshAll() {

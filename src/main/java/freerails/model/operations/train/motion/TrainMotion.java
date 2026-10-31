@@ -137,6 +137,12 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         this.duration = duration;
     }
 
+    /**
+     * Creates a train motion from the supplied values.
+     *
+     * @param activity the activity
+     * @param startTime the start time
+     */
     private TrainMotion(TrainMotion activity, double startTime) {
         super(startTime);
         duration = activity.duration;
@@ -149,6 +155,18 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         modelUnitsPerTile = ModelConstants.MODEL_UNITS_PER_TILE;
     }
 
+    /**
+     * Creates a train motion from the supplied values.
+     *
+     * @param duration the duration
+     * @param distanceEngineWillTravel the distance engine will travel
+     * @param initialPosition the initial position
+     * @param path the path to use
+     * @param speeds the speeds
+     * @param trainLength the train length
+     * @param trainState the train state
+     * @param startTime the start time
+     */
     private TrainMotion(double duration, double distanceEngineWillTravel, double initialPosition,
                         PathOnTiles path, Motion speeds, int trainLength, TrainState trainState, double startTime) {
         super(startTime);
@@ -162,6 +180,12 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         modelUnitsPerTile = ModelConstants.MODEL_UNITS_PER_TILE;
     }
 
+    /**
+     * Returns the canonical form of this object after deserialization.
+     *
+     * @return the read resolve
+     * @throws ObjectStreamException if the operation cannot be completed
+     */
     @Serial
     private Object readResolve() throws ObjectStreamException {
         if (modelUnitsPerTile == ModelConstants.MODEL_UNITS_PER_TILE) {
@@ -177,6 +201,12 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
                 (int) Math.round(trainLength * conversionFactor), trainState, getStartTime());
     }
 
+    /**
+     * Returns this train motion with with start time replaced.
+     *
+     * @param startTime the start time
+     * @return the with start time
+     */
     @Override
     public TrainMotion withStartTime(double startTime) {
         return new TrainMotion(this, startTime);
@@ -355,6 +385,9 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         return initialPosition;
     }
 
+    /**
+     * Represents a distance scaled motion in the game.
+     */
     private static class DistanceScaledMotion implements Motion {
 
         @Serial
@@ -362,41 +395,87 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         private final Motion motion;
         private final double scale;
 
+        /**
+         * Creates a distance scaled motion from the supplied values.
+         *
+         * @param motion the motion
+         * @param scale the scale
+         */
         private DistanceScaledMotion(Motion motion, double scale) {
             this.motion = motion;
             this.scale = scale;
         }
 
+        /**
+         * Returns the total time.
+         *
+         * @return the total time
+         */
         @Override
         public double getTotalTime() {
             return motion.getTotalTime();
         }
 
+        /**
+         * Returns the total distance.
+         *
+         * @return the total distance
+         */
         @Override
         public double getTotalDistance() {
             return motion.getTotalDistance() * scale;
         }
 
+        /**
+         * Returns the distance at time.
+         *
+         * @param time the time
+         * @return the distance at time
+         */
         @Override
         public double calculateDistanceAtTime(double time) {
             return motion.calculateDistanceAtTime(time) * scale;
         }
 
+        /**
+         * Returns the time at distance.
+         *
+         * @param distance the distance
+         * @return the time at distance
+         */
         @Override
         public double calculateTimeAtDistance(double distance) {
             return motion.calculateTimeAtDistance(distance / scale);
         }
 
+        /**
+         * Returns the speed at time.
+         *
+         * @param time the time
+         * @return the speed at time
+         */
         @Override
         public double calculateSpeedAtTime(double time) {
             return motion.calculateSpeedAtTime(time) * scale;
         }
 
+        /**
+         * Returns the acceleration at time.
+         *
+         * @param time the time
+         * @return the acceleration at time
+         */
         @Override
         public double calculateAccelerationAtTime(double time) {
             return motion.calculateAccelerationAtTime(time) * scale;
         }
 
+        /**
+         * Returns whether this object is equal to the specified object.
+         *
+         * @param obj the object to compare with this object
+         * @return true if this object is equal to the specified object, otherwise false
+         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) return true;
@@ -404,6 +483,11 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
             return Double.compare(scale, other.scale) == 0 && motion.equals(other.motion);
         }
 
+        /**
+         * Returns a hash code for this object.
+         *
+         * @return the hash code for this object
+         */
         @Override
         public int hashCode() {
             return 31 * motion.hashCode() + Double.hashCode(scale);

@@ -30,14 +30,18 @@ import freerails.server.MoveReceiver;
 public interface UntriedMoveReceiver extends MoveReceiver {
 
     /**
-     * @param move
-     * @return
+     * Performs the applicable operation.
+     *
+     * @param move the move parameter
+     * @return the applicable produced by this method
      */
     Status applicable(Move move);
 
     // TODO why is this method needed?
     /**
-     * @param moveGenerator
+     * Performs the process move generator operation.
+     *
+     * @param moveGenerator the move generator parameter
      */
     void processMoveGenerator(MoveGenerator moveGenerator);
 }

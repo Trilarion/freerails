@@ -37,12 +37,12 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 
 /**
- *
+ * Tests train motion behavior.
  */
 public class TrainMotionTest extends TestCase {
 
     /**
-     *
+     * Tests 4 bug1266695 behavior.
      */
     public void test4Bug1266695() {
         double modelScale = ModelConstants.MODEL_UNITS_PER_TILE / 30.0d;
@@ -86,6 +86,9 @@ public class TrainMotionTest extends TestCase {
         motion.getStateAtTime(actualDuration);
     }
 
+    /**
+     * Tests state at time includes start and end but rejects outside interval behavior.
+     */
     public void testStateAtTimeIncludesStartAndEndButRejectsOutsideInterval() {
         PathOnTiles path = new PathOnTiles(Vec2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
         Motion speeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(
@@ -104,6 +107,10 @@ public class TrainMotionTest extends TestCase {
         assertThrowsIllegalArgument(() -> motion.getStateAtTime(duration + 0.001));
     }
 
+    /**
+     * Tests legacy serialized motion is scaled to current model units behavior.
+     * @throws Exception if the test legacy serialized motion is scaled to current model units operation fails.
+     */
     public void testLegacySerializedMotionIsScaledToCurrentModelUnits() throws Exception {
         PathOnTiles path = new PathOnTiles(Vec2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
         TrainMotion legacyMotion = new TrainMotion(path, 80, 6, freerails.model.operations.train.TrainState.READY);
@@ -128,12 +135,23 @@ public class TrainMotionTest extends TestCase {
         assertEquals(200.0, migrated.getDistance(6.0), 0.0);
     }
 
+    /**
+     * Sets field.
+     * @param target the target used by this test.
+     * @param name the name used by this test.
+     * @param value the value used by this test.
+     * @throws Exception if the operation fails.
+     */
     private static void setField(Object target, String name, Object value) throws Exception {
         Field field = target.getClass().getDeclaredField(name);
         field.setAccessible(true);
         field.set(target, value);
     }
 
+    /**
+     * Asserts throws illegal argument.
+     * @param action the action to use in the test.
+     */
     private static void assertThrowsIllegalArgument(Runnable action) {
         try {
             action.run();

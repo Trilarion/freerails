@@ -29,16 +29,19 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- *
+ * Loads and saves complete server game models in the configured save-game directory.
  */
 public class FullSaveGameManager implements SaveGamesManager {
 
     // TODO meaningful version string that actually changes if the savegame structure changes
+    /** Format version stored with each save-game file. */
     public static final String VERSION = "CVS";
     private static final Logger logger = Logger.getLogger(FullSaveGameManager.class.getName());
 
     /**
-     * @return
+     * Returns the names of save-game files in the configured directory.
+     *
+     * @return the available save-game names, or {@code null} if listing fails
      */
     @Override
     public String[] getSaveGameNames() {
@@ -49,9 +52,11 @@ public class FullSaveGameManager implements SaveGamesManager {
     }
 
     /**
-     * @param path
-     * @param serializable
-     * @throws IOException
+     * Serializes a game object to a compressed save-game file.
+     *
+     * @param path the path of the save-game file
+     * @param serializable the object to serialize to the save-game file
+     * @throws IOException if the operation cannot complete because of an input/output error
      */
     @Override
     public void saveGame(String path, Serializable serializable) throws IOException {
@@ -75,9 +80,11 @@ public class FullSaveGameManager implements SaveGamesManager {
 
     // check that load game really works
     /**
-     * @param path
-     * @return
-     * @throws IOException
+     * Loads and decompresses a server game model from a save-game file.
+     *
+     * @param path the path of the save-game file
+     * @return the loaded server game model
+     * @throws IOException if the operation cannot complete because of an input/output error
      */
     @Override
     public ServerGameModel loadGame(String path) throws IOException {

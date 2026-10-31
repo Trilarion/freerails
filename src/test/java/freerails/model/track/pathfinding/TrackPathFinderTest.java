@@ -52,7 +52,8 @@ public class TrackPathFinderTest extends TestCase {
     private World world;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -74,7 +75,7 @@ public class TrackPathFinderTest extends TestCase {
     }
 
     /**
-     *
+     * Tests generate path behavior.
      */
     public void testGeneratePath() {
         try {
@@ -95,6 +96,9 @@ public class TrackPathFinderTest extends TestCase {
         }
     }
 
+    /**
+     * Tests repeated queries return the same route and tie break behavior.
+     */
     public void testRepeatedQueriesReturnTheSameRouteAndTieBreak() {
         BuildTrackStrategy strategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
         TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer);

@@ -22,6 +22,10 @@ import java.io.Serializable;
 
 /**
  * Immutable description of the track configuration, type, and owner on a tile.
+
+ * @param trackConfiguration the configuration of the track piece
+ * @param trackType the type of track piece
+ * @param playerId the identifier of the player who owns the track piece
  */
 public record TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int playerId) implements Serializable {
 

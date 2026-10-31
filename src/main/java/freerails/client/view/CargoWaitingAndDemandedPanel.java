@@ -57,7 +57,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
     private JTable waitingJTable;
 
     /**
-     *
+     * Creates a cargo waiting and demanded panel instance.
      */
     public CargoWaitingAndDemandedPanel() {
         GridBagConstraints gridBagConstraints;
@@ -149,9 +149,11 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
 
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
@@ -160,7 +162,9 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
     }
 
     /**
-     * @param newStationID
+     * Performs the display operation.
+     *
+     * @param newStationID the new station id parameter
      */
     public void display(int newStationID) {
         Station station = world.getStation(player, newStationID);
@@ -199,6 +203,9 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
     }
 
 
+    /**
+     * Provides the my abstract table model functionality.
+     */
     private static class MyAbstractTableModel extends AbstractTableModel {
 
         @Serial
@@ -206,21 +213,40 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         private final List<String> typeWaiting;
         private final List<Integer> quantityWaiting;
 
+        /**
+         * Creates a my abstract table model instance.
+         * @param typeWaiting the type waiting
+         * @param quantityWaiting the quantity waiting
+         */
         private MyAbstractTableModel(List<String> typeWaiting, List<Integer> quantityWaiting) {
             this.typeWaiting = typeWaiting;
             this.quantityWaiting = quantityWaiting;
         }
 
+        /**
+         * Returns the row count.
+         * @return the row count
+         */
         @Override
         public int getRowCount() {
             return typeWaiting.size();
         }
 
+        /**
+         * Returns the column count.
+         * @return the column count
+         */
         @Override
         public int getColumnCount() {
             return 2;
         }
 
+        /**
+         * Returns the value at.
+         * @param rowIndex the row index
+         * @param columnIndex the column index
+         * @return the value at
+         */
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (0 == columnIndex) {

@@ -23,8 +23,14 @@ import junit.framework.TestCase;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * Tests identifiable behavior.
+ */
 public class IdentifiableTest extends TestCase {
 
+    /**
+     * Tests equality hashing and ordering use identifier behavior.
+     */
     public void testEqualityHashingAndOrderingUseIdentifier() {
         Identifiable first = new Identifiable(3);
         Identifiable sameId = new Identifiable(3);
@@ -40,10 +46,16 @@ public class IdentifiableTest extends TestCase {
         assertEquals(0, first.compareTo(sameId));
     }
 
+    /**
+     * Tests default constructor uses deserialization identifier behavior.
+     */
     public void testDefaultConstructorUsesDeserializationIdentifier() {
         assertEquals(-1, new Identifiable().getId());
     }
 
+    /**
+     * Tests get by id returns first match or null behavior.
+     */
     public void testGetByIdReturnsFirstMatchOrNull() {
         Identifiable first = new Identifiable(5);
         Identifiable second = new Identifiable(5);

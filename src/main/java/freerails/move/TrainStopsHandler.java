@@ -59,9 +59,9 @@ public class TrainStopsHandler implements Serializable {
     private final UnmodifiableWorld unmodifiableWorld;
 
     /**
-     * @param id
-     * @param player
-     * @param unmodifiableWorld
+     * @param id the identifier of the train to inspect
+     * @param player the player who owns or performs the operation
+     * @param unmodifiableWorld the read-only game world used to inspect the train and its stops
      */
     public TrainStopsHandler(int id, Player player, UnmodifiableWorld unmodifiableWorld) {
         trainId = id;
@@ -114,7 +114,7 @@ public class TrainStopsHandler implements Serializable {
     /**
      * Returns all accumulated moves.
      *
-     * @return
+     * @return the moves generated for the train at its current stop
      */
     public List<Move> getMoves() {
         List<Move> currentMoves = new ArrayList<>(moves);
@@ -126,12 +126,19 @@ public class TrainStopsHandler implements Serializable {
 
     // TODO this has to remain here until the code is simplified, because it works on the updated train
     /**
-     * @return
+     * @return the train length in wagon units
      */
     public int getTrainLength() {
         return world.getTrain(player, trainId).getLength();
     }
 
+    /**
+     * Loads load and unload cargo from the configured source.
+     *
+     * @param stationId the identifier to use
+     * @param waiting the waiting
+     * @param autoConsist the auto consist
+     */
     private void loadAndUnloadCargo(int stationId, boolean waiting, boolean autoConsist) {
 
         // train is at a station so do the cargo processing
@@ -146,7 +153,7 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     * @return
+     * @return true if the train is still waiting for a full load, otherwise false
      */
     public boolean refreshWaitingForFullLoad() {
 
@@ -202,6 +209,9 @@ public class TrainStopsHandler implements Serializable {
         return true;
     }
 
+    /**
+     * Updates the update schedule using the supplied values.
+     */
     private void updateSchedule() {
         Train train =  world.getTrain(player, trainId);
         ScheduleState schedule = new ScheduleState(train.getSchedule());

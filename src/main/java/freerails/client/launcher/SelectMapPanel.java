@@ -55,6 +55,10 @@ class SelectMapPanel extends JPanel {
     private JList<String> savedmapsJList;
     private JTextField serverPort;
 
+    /**
+     * Creates a select map panel instance.
+     * @param owner the owner
+     */
     SelectMapPanel(LauncherInterface owner) {
         this.owner = owner;
 
@@ -155,16 +159,28 @@ class SelectMapPanel extends JPanel {
 
         // Listen for changes in the server port text box.
         serverPort.getDocument().addDocumentListener(new DocumentListener() {
+            /**
+             * Insert update.
+             * @param e the e
+             */
             @Override
             public void insertUpdate(DocumentEvent e) {
                 validateInput();
             }
 
+            /**
+             * Removes the update.
+             * @param e the e
+             */
             @Override
             public void removeUpdate(DocumentEvent e) {
                 validateInput();
             }
 
+            /**
+             * Changed update.
+             * @param e the e
+             */
             @Override
             public void changedUpdate(DocumentEvent e) {
                 validateInput();
@@ -172,6 +188,10 @@ class SelectMapPanel extends JPanel {
         });
     }
 
+    /**
+     * Returns the selection.
+     * @return the selection
+     */
     MapSelection getSelection() {
         if (newmapsJList.getSelectedIndex() != -1) {
             savedmapsJList.setSelectedIndex(-1);
@@ -184,31 +204,45 @@ class SelectMapPanel extends JPanel {
         return MapSelection.NONE;
     }
 
+    /**
+     * Sets the server port panel visible.
+     * @param b the b
+     */
     void setServerPortPanelVisible(boolean b) {
         jPanel3.setVisible(b);
     }
 
     /**
-     * @return
+     * Returns the new map name.
+     *
+     * @return the new map name produced by this method
      */
     public String getNewMapName() {
         return newmapsJList.getSelectedValue();
     }
 
     /**
-     * @return
+     * Returns the save game name.
+     *
+     * @return the save game name produced by this method
      */
     public String getSaveGameName() {
         return savedmapsJList.getSelectedValue();
     }
 
+    /**
+     * Returns the server port.
+     * @return the server port
+     */
     int getServerPort() {
         String s = serverPort.getText();
         return Integer.parseInt(s);
     }
 
     /**
-     * @return
+     * Performs the validate input operation.
+     *
+     * @return {@code true} if validate input; otherwise, {@code false}
      */
     public boolean validateInput() {
         // Validate map selection.
@@ -236,12 +270,20 @@ class SelectMapPanel extends JPanel {
     }
 
 
+    /**
+     * Saves the dmaps j list value changed.
+     * @param evt the evt
+     */
     private void savedmapsJListValueChanged(ListSelectionEvent evt) {
         if (savedmapsJList.getSelectedIndex() != -1) newmapsJList.clearSelection();
 
         validateInput();
     }
 
+    /**
+     * Newmaps j list value changed.
+     * @param evt the evt
+     */
     private void newmapsJListValueChanged(ListSelectionEvent evt) {
         if (newmapsJList.getSelectedIndex() != -1) savedmapsJList.clearSelection();
         validateInput();

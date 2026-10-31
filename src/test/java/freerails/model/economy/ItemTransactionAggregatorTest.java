@@ -39,7 +39,8 @@ public class ItemTransactionAggregatorTest extends TestCase {
     private World world;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -49,7 +50,7 @@ public class ItemTransactionAggregatorTest extends TestCase {
     }
 
     /**
-     *
+     * Tests calculate number of each track type behavior.
      */
     public void testCalculateNumberOfEachTrackType() {
         int[] actual;
@@ -76,6 +77,9 @@ public class ItemTransactionAggregatorTest extends TestCase {
         assertTrue(Arrays.equals(expected, actual));
     }
 
+    /**
+     * Tests finance intervals include start exclude end and keep zero periods behavior.
+     */
     public void testFinanceIntervalsIncludeStartExcludeEndAndKeepZeroPeriods() {
         addTransaction(4, TransactionCategory.TRACK, 100, 10, 0);
         addTransaction(5, TransactionCategory.TRACK, 10, 1, 0);
@@ -102,6 +106,9 @@ public class ItemTransactionAggregatorTest extends TestCase {
         assertTrue(Arrays.equals(expectedTrainValues, trainAggregator.getValues()));
     }
 
+    /**
+     * Tests out of order history is kept in insertion order and aggregated by timestamp behavior.
+     */
     public void testOutOfOrderHistoryIsKeptInInsertionOrderAndAggregatedByTimestamp() {
         ItemTransaction later = itemTransaction(8, 10, 0);
         ItemTransaction earlier = itemTransaction(2, 20, 0);
@@ -128,8 +135,8 @@ public class ItemTransactionAggregatorTest extends TestCase {
     }
 
     /**
-     *
-     * @return
+     * Calculates num of each track type.
+     * @return the calculated num of each track type.
      */
     private int[] calculateNumOfEachTrackType() {
         int[] actual;
@@ -155,11 +162,26 @@ public class ItemTransactionAggregatorTest extends TestCase {
         world.addTransaction(WorldGenerator.TEST_PLAYER, transaction);
     }
 
+    /**
+     * Adds transaction.
+     * @param time the time used by this test.
+     * @param category the category used by this test.
+     * @param amount the amount used by this test.
+     * @param quantity the quantity used by this test.
+     * @param id the id used by this test.
+     */
     private void addTransaction(int time, TransactionCategory category, long amount, int quantity, int id) {
         world.addTransaction(WorldGenerator.TEST_PLAYER,
                 new ItemTransaction(category, new Money(amount), new Time(time), quantity, id));
     }
 
+    /**
+     * Performs item transaction.
+     * @param time the time to use in the test.
+     * @param amount the amount to use in the test.
+     * @param id the id to use in the test.
+     * @return the result of item transaction.
+     */
     private static ItemTransaction itemTransaction(int time, long amount, int id) {
         return new ItemTransaction(TransactionCategory.TRACK, new Money(amount), new Time(time), 1, id);
     }

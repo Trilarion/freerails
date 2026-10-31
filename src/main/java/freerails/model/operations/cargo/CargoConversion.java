@@ -22,6 +22,10 @@ import java.io.Serializable;
 
 /**
  * Describes the conversion of one cargo type into another at a stated rate.
+
+ * @param sourceCargoId the identifier of the cargo consumed during conversion
+ * @param productCargoId the identifier of the cargo produced during conversion
+ * @param conversionRate the quantity of product produced per unit of source cargo
  */
 public record CargoConversion(int sourceCargoId, int productCargoId, double conversionRate) implements Serializable {
 

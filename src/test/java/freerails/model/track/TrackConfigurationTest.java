@@ -30,12 +30,12 @@ import junit.framework.TestCase;
 import java.util.HashSet;
 
 /**
- *
+ * Tests track configuration behavior.
  */
 public class TrackConfigurationTest extends TestCase {
 
     /**
-     *
+     * Tests add behavior.
      */
     public void testAdd() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("000010000");
@@ -45,7 +45,7 @@ public class TrackConfigurationTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get8 and9bit template behavior.
      */
     public void testGet8And9bitTemplate() {
         for (int i = 0; i < 512; i++) {
@@ -63,7 +63,7 @@ public class TrackConfigurationTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get length behavior.
      */
     public void testGetLength() {
         TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("010010000");
@@ -73,7 +73,7 @@ public class TrackConfigurationTest extends TestCase {
     }
 
     /**
-     *
+     * Tests subtract behavior.
      */
     public void testSubtract() {
         TrackConfiguration trackConfiguration1 = TrackConfiguration.getFlatInstance("100010000");
@@ -81,6 +81,9 @@ public class TrackConfigurationTest extends TestCase {
         assertEquals(TrackConfiguration.getFlatInstance("000010000"), trackConfiguration2);
     }
 
+    /**
+     * Tests rotations preserve directional connections and return after full cycle behavior.
+     */
     public void testRotationsPreserveDirectionalConnectionsAndReturnAfterFullCycle() {
         int[] pieces = {
                 0x10 | TileTransition.NORTH.get9bitTemplate(),
@@ -101,6 +104,11 @@ public class TrackConfigurationTest extends TestCase {
         }
     }
 
+    /**
+     * Performs rotate clockwise.
+     * @param configuration the configuration to use in the test.
+     * @return the result of rotate clockwise.
+     */
     private static int rotateClockwise(int configuration) {
         int rotated = configuration & 0x10;
         for (TileTransition direction : TileTransition.getTransitions()) {
@@ -113,7 +121,7 @@ public class TrackConfigurationTest extends TestCase {
     }
 
     /**
-     *
+     * Tests to string behavior.
      */
     public void testToString() {
         TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("100010000");

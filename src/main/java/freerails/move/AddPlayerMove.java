@@ -39,10 +39,21 @@ public class AddPlayerMove implements Move {
     private static final long serialVersionUID = 3977580277537322804L;
     private final Player player;
 
+    /**
+     * Creates an add player move from the supplied values.
+     *
+     * @param player the player
+     */
     public AddPlayerMove(@NotNull Player player) {
         this.player = player;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param o the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,11 +63,22 @@ public class AddPlayerMove implements Move {
                 && Objects.equals(player.getName(), addPlayerMove.player.getName());
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(player, player.getName());
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -66,6 +88,11 @@ public class AddPlayerMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         Status status = applicable(world);

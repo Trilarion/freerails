@@ -35,15 +35,17 @@ public class TestMoveReceiver implements UntriedMoveReceiver {
     private final World world;
 
     /**
-     * @param world
+     * Creates an instance of test move receiver.
+     * @param world the world state used by the test.
      */
     public TestMoveReceiver(World world) {
         this.world = Utils.verifyNotNull(world);
     }
 
     /**
-     * @param move
-     * @return
+     * Performs applicable.
+     * @param move the move under test.
+     * @return the result of applicable.
      */
     @Override
     public Status applicable(Move move) {
@@ -51,7 +53,8 @@ public class TestMoveReceiver implements UntriedMoveReceiver {
     }
 
     /**
-     * @param move
+     * Performs process.
+     * @param move the move under test.
      */
     @Override
     public void process(Move move) {
@@ -59,7 +62,8 @@ public class TestMoveReceiver implements UntriedMoveReceiver {
     }
 
     /**
-     * @param moveGenerator
+     * Performs process move generator.
+     * @param moveGenerator the move generator to use in the test.
      */
     @Override
     public void processMoveGenerator(MoveGenerator moveGenerator) {

@@ -40,10 +40,12 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
     private static final Vec2D SHIFT_RIGHT = new Vec2D(1, 0);
 
     /**
-     * @param imageManager
-     * @param typesTreatedAsSame
-     * @param tileModel
-     * @throws IOException
+     * Creates a forest style tile renderer instance.
+     *
+     * @param imageManager the image manager parameter
+     * @param typesTreatedAsSame the types treated as same parameter
+     * @param tileModel the tile model parameter
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public ForestStyleTileRenderer(ImageManager imageManager, List<Integer> typesTreatedAsSame, Terrain tileModel) throws IOException {
         super(tileModel, typesTreatedAsSame, 4);
@@ -55,9 +57,11 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * @param mapLocation
-     * @param world
-     * @return
+     * Selects the tile icon index.
+     *
+     * @param mapLocation the map coordinate
+     * @param world the game world being queried
+     * @return the tile icon index produced by this method
      */
     @Override
     public int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world) {
@@ -74,8 +78,10 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * @param i
-     * @return
+     * Performs the generate file name number operation.
+     *
+     * @param i the index of the item
+     * @return the file name number produced by this method
      */
     @Override
     protected String generateFileNameNumber(int i) {

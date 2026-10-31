@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 /**
- *
+ * Replaces the cargo batches stored at one of a player's stations.
  */
 public class ChangeCargoAtStationMove implements Move {
 
@@ -38,12 +38,25 @@ public class ChangeCargoAtStationMove implements Move {
     private final int stationId;
     private final UnmodifiableCargoBatchBundle cargoBatchBundle;
 
+    /**
+     * Creates a change cargo at station move from the supplied values.
+     *
+     * @param player the player
+     * @param stationId the identifier to use
+     * @param cargoBatchBundle the cargo batch bundle
+     */
     public ChangeCargoAtStationMove(@NotNull Player player, int stationId, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
         this.player = player;
         this.stationId = stationId;
         this.cargoBatchBundle = new ImmutableCargoBatchBundle(cargoBatchBundle);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -57,11 +70,22 @@ public class ChangeCargoAtStationMove implements Move {
                 && Objects.equals(cargoBatchBundle, other.cargoBatchBundle);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(player, stationId, cargoBatchBundle);
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -71,6 +95,11 @@ public class ChangeCargoAtStationMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         Station station = world.getStation(player, stationId);

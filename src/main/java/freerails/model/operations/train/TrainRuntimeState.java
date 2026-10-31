@@ -128,6 +128,12 @@ public final class TrainRuntimeState implements Serializable {
         return previous;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -141,6 +147,11 @@ public final class TrainRuntimeState implements Serializable {
                 && Objects.equals(activities, other.activities);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(cargoBatchBundle, schedule, activities);

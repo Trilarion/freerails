@@ -76,6 +76,10 @@ public class LeaderBoardPanel extends JPanel implements View {
     private void initialize() {
         add(getPlayersList(), null);
         MouseListener mouseAdapter = new java.awt.event.MouseAdapter() {
+            /**
+             * Mouse clicked.
+             * @param e the e
+             */
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (null == submitButtonCallBack) {
@@ -102,6 +106,15 @@ public class LeaderBoardPanel extends JPanel implements View {
                 @Serial
                 private static final long serialVersionUID = 1L;
 
+                /**
+                 * Returns the list cell renderer component.
+                 * @param list the list
+                 * @param value the value
+                 * @param index the index
+                 * @param isSelected the is selected
+                 * @param cellHasFocus the cell has focus
+                 * @return the list cell renderer component
+                 */
                 @Override
                 public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                               boolean isSelected, boolean cellHasFocus) {
@@ -126,9 +139,11 @@ public class LeaderBoardPanel extends JPanel implements View {
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {

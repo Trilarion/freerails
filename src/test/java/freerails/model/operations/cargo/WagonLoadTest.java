@@ -20,8 +20,14 @@ package freerails.model.operations.cargo;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests wagon load behavior.
+ */
 public class WagonLoadTest extends TestCase {
 
+    /**
+     * Tests getters and comparison by quantity behavior.
+     */
     public void testGettersAndComparisonByQuantity() {
         WagonLoad smaller = new WagonLoad(5, 2);
         WagonLoad larger = new WagonLoad(8, 1);

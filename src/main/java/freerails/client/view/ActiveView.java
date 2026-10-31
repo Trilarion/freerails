@@ -31,8 +31,10 @@ import freerails.client.ModelRoot;
 interface ActiveView {
 
     /**
-     * @param modelRoot
-     * @param actionRoot
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param actionRoot the root that supplies client actions
      */
     void setup(ModelRoot modelRoot, ActionRoot actionRoot);
 }

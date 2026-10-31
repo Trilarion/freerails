@@ -41,20 +41,26 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     private MapRenderer mapRenderer;
 
     /**
-     *
+     * Creates a detail map view component instance.
      */
     public DetailMapViewComponent() {
         setAutoscrolls(true);
     }
 
     /**
-     * @return
+     * Performs the scale operation.
+     *
+     * @return the scale produced by this method
      */
     @Override
     public float scale() {
         return mapRenderer.scale();
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -62,16 +68,34 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
         mapRenderer.paintRect(g2, r);
     }
 
+    /**
+     * Returns the scrollable unit increment.
+     * @param visibleRect the visible rect
+     * @param orientation the orientation
+     * @param direction the direction
+     * @return the scrollable unit increment
+     */
     @Override
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
         return (int) mapRenderer.scale();
     }
 
+    /**
+     * Returns the scrollable tracks viewport width.
+     * @return the scrollable tracks viewport width
+     */
     @Override
     public boolean getScrollableTracksViewportWidth() {
         return false;
     }
 
+    /**
+     * Returns the scrollable block increment.
+     * @param visibleRect the visible rect
+     * @param orientation the orientation
+     * @param direction the direction
+     * @return the scrollable block increment
+     */
     @Override
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         if (SwingConstants.VERTICAL == orientation) {
@@ -114,7 +138,9 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     }
 
     /**
-     * @param tile
+     * Performs the center on tile operation.
+     *
+     * @param tile the map coordinate
      */
     public void centerOnTile(Vec2D tile) {
         float scale = mapRenderer.scale();
@@ -125,22 +151,36 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     }
 
     /**
-     * @return
+     * Returns the map size in pixels.
+     *
+     * @return the map size in pixels produced by this method
      */
     @Override
     public Vec2D getMapSizeInPixels() {
         return mapRenderer.getMapSizeInPixels();
     }
 
+    /**
+     * Returns the preferred size.
+     * @return the preferred size
+     */
     @Override
     public Dimension getPreferredSize() {
         return Vec2D.toDimension(getMapSizeInPixels());
     }
 
+    /**
+     * Returns the map renderer.
+     * @return the map renderer
+     */
     public MapRenderer getMapRenderer() {
         return mapRenderer;
     }
 
+    /**
+     * Sets the map renderer.
+     * @param mapRenderer the map renderer
+     */
     public void setMapRenderer(MapRenderer mapRenderer) {
         this.mapRenderer = mapRenderer;
     }

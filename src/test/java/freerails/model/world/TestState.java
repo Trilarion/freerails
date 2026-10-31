@@ -21,24 +21,28 @@ package freerails.model.world;
 import java.io.Serializable;
 
 /**
- *
+ * Provides test support for state.
  */
 public class TestState implements Serializable {
 
     private static final long serialVersionUID = 5122023949873919060L;
 
-    /**
-     *
-     */
+    /** The value used to test world-state serialization and equality. */
     private final int x;
 
     /**
-     * @param x
+     * Creates an instance of test state.
+     * @param x the x to use in the test.
      */
     public TestState(int x) {
         this.x = x;
     }
 
+    /**
+     * Performs equals.
+     * @param obj the obj to use in the test.
+     * @return the result of equals.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -51,6 +55,10 @@ public class TestState implements Serializable {
         return x == testState.x;
     }
 
+    /**
+     * Indicates whether h code is present.
+     * @return whether h code is present.
+     */
     @Override
     public int hashCode() {
         return x;

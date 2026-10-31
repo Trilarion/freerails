@@ -46,7 +46,10 @@ public class ImageManagerImpl implements ImageManager {
     private final String pathToReadFrom;
 
     /**
-     * @param readPath
+     * Creates an image manager that reads resources beneath the given path.
+     *
+     * @param readPath resource path prefix
+     * @throws NullPointerException if {@code readPath} is null
      */
     public ImageManagerImpl(String readPath) {
         pathToReadFrom = Objects.requireNonNull(readPath, "readPath");
@@ -61,8 +64,11 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param s
-     * @return
+     * Tests whether a filename is a safe relative resource path.
+     *
+     * @param s path to validate
+     * @return {@code true} if the path is non-empty, relative, and contains
+     * no parent-directory component or NUL character
      */
     public static boolean isValid(CharSequence s) {
         return s != null && !s.isEmpty() && s.charAt(0) != '/'
@@ -70,6 +76,12 @@ public class ImageManagerImpl implements ImageManager {
                 && !hasParentDirectory(s);
     }
 
+    /**
+     * Detects parent-directory components in a slash-normalized path.
+     *
+     * @param path path to inspect
+     * @return {@code true} if a component is exactly {@code ..}
+     */
     private static boolean hasParentDirectory(CharSequence path) {
         String normalized = path.toString().replace('\\', '/');
         for (String part : normalized.split("/")) {
@@ -80,6 +92,14 @@ public class ImageManagerImpl implements ImageManager {
         return false;
     }
 
+    /**
+     * Normalizes and validates a resource filename for cache and lookup use.
+     *
+     * @param filename filename supplied by the caller
+     * @return validated filename with normalized separators
+     * @throws NullPointerException if {@code filename} is null
+     * @throws IllegalArgumentException if the filename is not a safe relative path
+     */
     private static String normalizeFilename(String filename) {
         Objects.requireNonNull(filename, "relativeFilename");
         String normalized = filename.replace(' ', '_').replace('\\', '/');
@@ -90,9 +110,11 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param relativeFilename
-     * @return
-     * @throws IOException
+     * Loads and caches an image from the configured classpath resource path.
+     *
+     * @param relativeFilename relative resource filename
+     * @return loaded image
+     * @throws IOException if the resource is missing or cannot be decoded
      */
     @Override
     public Image getImage(String relativeFilename) throws IOException {
@@ -136,6 +158,12 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * Returns the specified image scaled so that its height is equal to the
      * specified height.
+     *
+     * @param relativeFilename relative resource filename
+     * @param height target image height in pixels
+     * @return scaled image preserving the source aspect ratio
+     * @throws IOException if the source resource cannot be found or read
+     * @throws IllegalArgumentException if {@code height} is not positive
      */
     @Override
     public Image getScaledImage(String relativeFilename, int height) throws IOException {
@@ -169,9 +197,13 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param height
-     * @param width
-     * @return
+     * Creates a blank translucent image.
+     *
+     * @param height image height in pixels
+     * @param width image width in pixels
+     * @return blank image compatible with the current graphics configuration,
+     * or an ARGB image in headless mode
+     * @throws IllegalArgumentException if either dimension is not positive
      */
     @Override
     public Image newBlankImage(int height, int width) {
@@ -184,8 +216,12 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param relativeFilename
-     * @param i
+     * Stores an image in the cache and invalidates its scaled variants.
+     *
+     * @param relativeFilename relative resource filename
+     * @param i image to cache
+     * @throws NullPointerException if either argument is null
+     * @throws IllegalArgumentException if the image has non-positive dimensions
      */
     @Override
     public void setImage(String relativeFilename, Image i) {
@@ -198,6 +234,12 @@ public class ImageManagerImpl implements ImageManager {
         scaledImagesHashMap.keySet().removeIf(scaledKey -> scaledKey.filename.equals(key));
     }
 
+    /**
+     * Cache key identifying a source image and target scaled height.
+     *
+     * @param filename normalized source filename
+     * @param height target image height
+     */
     private record ScaledImageKey(String filename, int height) {
     }
 }

@@ -24,17 +24,23 @@ import java.awt.*;
 
 /**
  * Used for testing the Map view components without setting up any map data. Also used in the overview map.
+ *
+ * @param scale scale factor applied to the map dimensions
  */
 public record BlankMapRenderer(float scale) implements MapRenderer {
 
     /**
-     * @param scale
+     * Creates a blank map renderer instance.
+     *
+     * @param scale the scale parameter
      */
     public BlankMapRenderer {
     }
 
     /**
-     * @return
+     * Performs the scale operation.
+     *
+     * @return the scale produced by this method
      */
     @Override
     public float scale() {
@@ -42,7 +48,9 @@ public record BlankMapRenderer(float scale) implements MapRenderer {
     }
 
     /**
-     * @return
+     * Returns the map size in pixels.
+     *
+     * @return the map size in pixels produced by this method
      */
     @Override
     public Vec2D getMapSizeInPixels() {
@@ -53,8 +61,10 @@ public record BlankMapRenderer(float scale) implements MapRenderer {
     }
 
     /**
-     * @param g
-     * @param tileLocation
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param tileLocation the map coordinate
      */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
@@ -62,15 +72,19 @@ public record BlankMapRenderer(float scale) implements MapRenderer {
     }
 
     /**
-     * @param tileLocation
+     * Performs the refresh tile operation.
+     *
+     * @param tileLocation the map coordinate
      */
     @Override
     public void refreshTile(Vec2D tileLocation) {
     }
 
     /**
-     * @param g
-     * @param visibleRect
+     * Performs the paint rect operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
@@ -87,7 +101,7 @@ public record BlankMapRenderer(float scale) implements MapRenderer {
     }
 
     /**
-     *
+     * Performs the refresh all operation.
      */
     @Override
     public void refreshAll() {

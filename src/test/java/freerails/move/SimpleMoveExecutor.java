@@ -33,8 +33,9 @@ public class SimpleMoveExecutor implements MoveExecutor {
     private final Player player;
 
     /**
-     * @param world
-     * @param player
+     * Creates an instance of simple move executor.
+     * @param world the world state used by the test.
+     * @param player the player to use in the test.
      */
     // TODO we really need player here, have it as argument instead of playerID
     public SimpleMoveExecutor(World world, Player player) {
@@ -43,8 +44,9 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     * @param move
-     * @return
+     * Performs apply move.
+     * @param move the move under test.
+     * @return the result of apply move.
      */
     @Override
     public Status applyMove(Move move) {
@@ -56,8 +58,9 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     * @param moveGenerator
-     * @return
+     * Performs do pre move.
+     * @param moveGenerator the move generator to use in the test.
+     * @return the result of do pre move.
      */
     @Override
     public Status doPreMove(MoveGenerator moveGenerator) {
@@ -70,8 +73,9 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     * @param move
-     * @return
+     * Performs try move.
+     * @param move the move under test.
+     * @return the result of try move.
      */
     @Override
     public Status tryMove(Move move) {
@@ -79,7 +83,8 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     * @return
+     * Returns the world.
+     * @return the world.
      */
     @Override
     public UnmodifiableWorld getWorld() {
@@ -87,7 +92,8 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     * @return
+     * Returns the player.
+     * @return the player.
      */
     @Override
     public Player getPlayer() {

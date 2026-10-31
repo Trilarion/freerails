@@ -77,9 +77,11 @@ public class StationBuildModel {
     private boolean positionFollowsMouse = true;
 
     /**
-     * @param stationBuilder
-     * @param rendererRoot
-     * @param modelRoot
+     * Creates a station build model instance.
+     *
+     * @param stationBuilder the station builder parameter
+     * @param rendererRoot the renderer root parameter
+     * @param modelRoot the client model that provides current game state
      */
     public StationBuildModel(StationBuilder stationBuilder, RendererRoot rendererRoot, ModelRoot modelRoot) {
         this.stationBuilder = stationBuilder;
@@ -106,22 +108,28 @@ public class StationBuildModel {
     }
 
     /**
-     * @param ruleID
-     * @return
+     * Returns the station choose action.
+     *
+     * @param ruleID the rule id parameter
+     * @return the station choose action produced by this method
      */
     public Action getStationChooseAction(Integer ruleID) {
         return idToAction.get(ruleID);
     }
 
     /**
-     * @return
+     * Returns the station choose actions.
+     *
+     * @return the station choose actions produced by this method
      */
     public Action[] getStationChooseActions() {
         return stationChooseActions.toArray(new Action[0]);
     }
 
     /**
-     * @return
+     * Returns whether this object can build station here.
+     *
+     * @return {@code true} if build station here; otherwise, {@code false}
      */
     public boolean canBuildStationHere() {
         java.awt.Point p = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
@@ -130,43 +138,62 @@ public class StationBuildModel {
     }
 
     /**
-     * @return
+     * Returns the station cancel action.
+     *
+     * @return the station cancel action produced by this method
      */
     public ActionListener getStationCancelAction() {
         return stationCancelAction;
     }
 
     /**
-     * @return
+     * Returns the station build action.
+     *
+     * @return the station build action produced by this method
      */
     public StationBuildAction getStationBuildAction() {
         return stationBuildAction;
     }
 
     /**
-     * @return
+     * Returns whether position follows mouse.
+     *
+     * @return {@code true} if position follows mouse; otherwise, {@code false}
      */
     public boolean isPositionFollowsMouse() {
         return positionFollowsMouse;
     }
 
     /**
-     * @param positionFollowsMouse
+     * Sets the position follows mouse.
+     *
+     * @param positionFollowsMouse the position follows mouse parameter
      */
     public void setPositionFollowsMouse(boolean positionFollowsMouse) {
         this.positionFollowsMouse = positionFollowsMouse;
     }
 
+    /**
+     * Provides the station choose action functionality.
+     */
     private class StationChooseAction extends AbstractAction {
         @Serial
         private static final long serialVersionUID = 3257290240279458098L;
 
         private final int actionId;
 
+        /**
+         * Creates a station choose action instance.
+         * @param actionId the action id
+         */
         private StationChooseAction(int actionId) {
             this.actionId = actionId;
         }
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             stationBuilder.setStationType(actionId);
@@ -179,10 +206,17 @@ public class StationBuildModel {
         }
     }
 
+    /**
+     * Provides the station cancel action functionality.
+     */
     private class StationCancelAction extends AbstractAction {
         @Serial
         private static final long serialVersionUID = 3256441421581203252L;
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -207,10 +241,17 @@ public class StationBuildModel {
         @Serial
         private static final long serialVersionUID = 3905236827739926833L;
 
+        /**
+         * Creates a station build action instance.
+         */
         private StationBuildAction() {
             setEnabled(false);
         }
 
+        /**
+         * Handles the specified action event.
+         * @param e the e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             java.awt.Point value = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);

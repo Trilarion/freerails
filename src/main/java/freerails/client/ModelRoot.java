@@ -30,19 +30,25 @@ import freerails.network.command.CommandToServer;
 public interface ModelRoot extends MoveExecutor {
 
     /**
-     * @param message
+     * Performs the send command operation.
+     *
+     * @param message the message parameter
      */
     void sendCommand(CommandToServer message);
 
     /**
-     * @param property
-     * @param value
+     * Sets the property.
+     *
+     * @param property the client property to access
+     * @param value the value to use
      */
     void setProperty(ModelRootProperty property, Object value);
 
     /**
-     * @param property
-     * @return
+     * Returns the property.
+     *
+     * @param property the client property to access
+     * @return the property produced by this method
      */
     Object getProperty(ModelRootProperty property);
 

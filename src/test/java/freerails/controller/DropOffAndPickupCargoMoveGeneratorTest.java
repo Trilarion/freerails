@@ -60,7 +60,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private World world;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -274,6 +275,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
     }
 
+    /**
+     * Tests delivery removes cargo and records payment only once behavior.
+     */
     public void testDeliveryRemovesCargoAndRecordsPaymentOnlyOnce() {
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         station.setDemandForCargo(new StationDemand(Set.of(0)));
@@ -306,6 +310,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         assertEquals(cargoDelivery.getAmount(), world.getCurrentBalance(WorldGenerator.TEST_PLAYER));
     }
 
+    /**
+     * Tests delivery converts cargo by cargo id behavior.
+     */
     public void testDeliveryConvertsCargoByCargoId() {
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         Terrain conversionTerrain = world.getTerrains().stream()
@@ -357,15 +364,25 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         assertEquals(expectedAtStation, getCargoAtStation());
     }
 
+    /**
+     * Removes all wagons from train.
+     */
     private void removeAllWagonsFromTrain() {
         setWagons(new ArrayList<>());
     }
 
+    /**
+     * Sets wagons.
+     * @param wagons the wagons used by this test.
+     */
     private void setWagons(List<Integer> wagons) {
         Train train = world.getTrain(WorldGenerator.TEST_PLAYER, 0);
         train.setConsist(wagons);
     }
 
+    /**
+     * Performs stop at station.
+     */
     private void stopAtStation() {
         DropOffAndPickupCargoMoveGenerator moveGenerator = new DropOffAndPickupCargoMoveGenerator(
                 0, 0, world, WorldGenerator.TEST_PLAYER, false, false);
@@ -395,6 +412,11 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         return train.getCargoBatchBundle();
     }
 
+    /**
+     * Sets cargo at station.
+     * @param cargoBatch the cargo batch used by this test.
+     * @param amount the amount used by this test.
+     */
     private void setCargoAtStation(CargoBatch cargoBatch, int amount) {
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle(getCargoAtStation());
@@ -402,6 +424,11 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         station.setCargoBatchBundle(cargoBatchBundle);
     }
 
+    /**
+     * Sets cargo on train.
+     * @param cargoBatch the cargo batch used by this test.
+     * @param amount the amount used by this test.
+     */
     private void setCargoOnTrain(CargoBatch cargoBatch, int amount) {
         Train train = world.getTrain(WorldGenerator.TEST_PLAYER, 0);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle(getCargoOnTrain());

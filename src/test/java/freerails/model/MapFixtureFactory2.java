@@ -35,6 +35,9 @@ public class MapFixtureFactory2 {
 
     private static World world;
 
+    /**
+     * Creates a map fixture factory2.
+     */
     private MapFixtureFactory2() {}
 
     /**

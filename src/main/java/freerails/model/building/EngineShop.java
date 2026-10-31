@@ -60,7 +60,11 @@ public class EngineShop extends Identifiable {
         production.addAll(other.production);
     }
 
-    /** Returns the shop's map location. */
+    /**
+     * Returns the shop's map location.
+     *
+     * @return the shop location
+     */
     public Vec2D getLocation() {
         return location;
     }

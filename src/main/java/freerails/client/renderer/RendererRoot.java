@@ -32,38 +32,53 @@ import java.io.IOException;
 public interface RendererRoot extends TileRendererList {
 
     /**
-     * @param i
-     * @return
+     * Returns the track piece view.
+     *
+     * @param i the index of the item
+     * @return the track piece view produced by this method
      */
     TrackPieceRenderer getTrackPieceView(int i);
 
     /**
-     * @param cargoTypeId
-     * @return
+     * Returns the wagon images.
+     *
+     * @param cargoTypeId the cargo type id parameter
+     * @return the wagon images produced by this method
      */
     TrainImages getWagonImages(int cargoTypeId);
 
     /**
-     * @param type
-     * @return
+     * Returns the engine images.
+     *
+     * @param type the type parameter
+     * @return the engine images produced by this method
      */
     TrainImages getEngineImages(int type);
 
+    /**
+     * Returns whether validate.
+     * @param world the world
+     * @return whether validate
+     */
     @Override
     boolean validate(UnmodifiableWorld world);
 
     /**
-     * @param relativeFilename
-     * @return
-     * @throws IOException
+     * Returns the image.
+     *
+     * @param relativeFilename the relative filename parameter
+     * @return the image produced by this method
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     Image getImage(String relativeFilename) throws IOException;
 
     /**
-     * @param relativeFilename
-     * @param height
-     * @return
-     * @throws IOException
+     * Returns the scaled image.
+     *
+     * @param relativeFilename the relative filename parameter
+     * @param height the height parameter
+     * @return the scaled image produced by this method
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     Image getScaledImage(String relativeFilename, int height) throws IOException;
 }

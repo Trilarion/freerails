@@ -26,7 +26,9 @@ import freerails.move.Move;
 public interface MoveReceiver {
 
     /**
-     * @param move
+     * Processes the supplied move.
+     *
+     * @param move the move to apply or process
      */
     void process(Move move);
 }

@@ -49,6 +49,8 @@ public record Pair<A, B>(A a, B b) implements Serializable {
     }
 
     /**
+     * Returns a representation containing both values.
+     *
      * @return Combines the toString() methods of both elements.
      */
     @Override

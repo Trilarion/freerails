@@ -45,13 +45,22 @@ public class ChangeTileMove implements MapUpdateMove {
     private final TerrainTile after;
 
     /**
-     * @param location
+     * Creates a move to replace a map tile at the specified location.
+     *
+     * @param after the terrain tile to place at the location
+     * @param location the map location of the tile
      */
     public ChangeTileMove(@NotNull TerrainTile after, @NotNull Vec2D location) {
         this.location = location;
         this.after = after;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -62,6 +71,11 @@ public class ChangeTileMove implements MapUpdateMove {
         return true;
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         int result;
@@ -70,6 +84,12 @@ public class ChangeTileMove implements MapUpdateMove {
         return result;
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -82,6 +102,11 @@ public class ChangeTileMove implements MapUpdateMove {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         Status status = applicable(world);
@@ -92,7 +117,7 @@ public class ChangeTileMove implements MapUpdateMove {
     }
 
     /**
-     * @return
+     * @return the bounds of the tile updated by this move
      */
     @Override
     public Rectangle getUpdatedTiles() {

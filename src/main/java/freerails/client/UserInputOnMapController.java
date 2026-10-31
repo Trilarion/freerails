@@ -66,8 +66,10 @@ public class UserInputOnMapController extends KeyAdapter {
     private boolean ignoreDragging = false;
 
     /**
-     * @param modelRoot
-     * @param ar
+     * Creates a user input on map controller instance.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param ar the ar parameter
      */
     public UserInputOnMapController(ModelRoot modelRoot, ActionRoot ar) {
         this.modelRoot = modelRoot;
@@ -75,12 +77,14 @@ public class UserInputOnMapController extends KeyAdapter {
     }
 
     /**
-     * @param mv
-     * @param trackBuilder
-     * @param stPopup
-     * @param modelRoot
-     * @param dbc
-     * @param buildTrackController
+     * Sets the up.
+     *
+     * @param mv the mv parameter
+     * @param trackBuilder the track builder parameter
+     * @param stPopup the st popup parameter
+     * @param modelRoot the client model that provides current game state
+     * @param dbc the dbc parameter
+     * @param buildTrackController the build track controller parameter
      */
     public void setup(DetailMapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot modelRoot, DialogueBoxController dbc, BuildTrackController buildTrackController) {
         dialogueBoxController = dbc;
@@ -102,6 +106,10 @@ public class UserInputOnMapController extends KeyAdapter {
         mapView.addKeyListener(this);
     }
 
+    /**
+     * Key pressed.
+     * @param e the e
+     */
     @Override
     public void keyPressed(KeyEvent e) {
 
@@ -249,6 +257,11 @@ public class UserInputOnMapController extends KeyAdapter {
         } // End switch
     }
 
+    /**
+     * Cursor one tile move.
+     * @param oldPosition the old position
+     * @param vector the vector
+     */
     private void cursorOneTileMove(Vec2D oldPosition, TileTransition vector) {
         boolean b = modelRoot.getProperty(ModelRootProperty.CURSOR_MODE) == ModelRootValue.BUILD_TRACK_CURSOR_MODE;
 
@@ -267,6 +280,10 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
+    /**
+     * Move cursor jump.
+     * @param tryThisPoint the try this point
+     */
     private void moveCursorJump(Vec2D tryThisPoint) {
         setCursorMessage("");
 
@@ -277,6 +294,10 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
+    /**
+     * Move cursor one tile.
+     * @param v the v
+     */
     private void moveCursorOneTile(TileTransition v) {
         setCursorMessage(null);
 
@@ -292,6 +313,9 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
+    /**
+     * Returns whether this object can cel proposed build.
+     */
     private void cancelProposedBuild() {
         ignoreDragging = true;
         buildTrackController.hide();
@@ -300,6 +324,9 @@ public class UserInputOnMapController extends KeyAdapter {
         setIgnoreKeyEvents(false);
     }
 
+    /**
+     * Play appropriate sound.
+     */
     private void playAppropriateSound() {
         switch (trackMoveProducer.getTrackBuilderMode()) {
             case BUILD_TRACK:
@@ -313,6 +340,10 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
+    /**
+     * Returns the bts.
+     * @return the bts
+     */
     private BuildTrackStrategy getBts() {
         BuildTrackStrategy bts = (BuildTrackStrategy) modelRoot.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
         return Utils.verifyNotNull(bts);
@@ -331,6 +362,10 @@ public class UserInputOnMapController extends KeyAdapter {
         return legalRectangle.contains(Vec2D.toPoint(tryThisPoint));
     }
 
+    /**
+     * Returns the cursor position.
+     * @return the cursor position
+     */
     private Vec2D getCursorPosition() {
         Vec2D point = (Vec2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
         // Check for null
@@ -338,27 +373,50 @@ public class UserInputOnMapController extends KeyAdapter {
         return point;
     }
 
+    /**
+     * Sets the cursor position.
+     * @param location the location
+     */
     private void setCursorPosition(Vec2D location) {
         // Make a defensive copy.
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, location);
     }
 
+    /**
+     * Sets the cursor message.
+     * @param message the message
+     */
     private void setCursorMessage(String message) {
         modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, message);
     }
 
+    /**
+     * Returns whether ignore key events.
+     * @return whether is ignore key events
+     */
     private boolean isIgnoreKeyEvents() {
         return (Boolean) modelRoot.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);
     }
 
+    /**
+     * Sets the ignore key events.
+     * @param ignoreKeyEvents the ignore key events
+     */
     private void setIgnoreKeyEvents(boolean ignoreKeyEvents) {
         modelRoot.setProperty(ModelRootProperty.IGNORE_KEY_EVENTS, ignoreKeyEvents);
     }
 
+    /**
+     * Provides the cursor mouse adapter functionality.
+     */
     private class CursorMouseAdapter extends MouseInputAdapter {
 
         private boolean pressedInside = false;
 
+        /**
+         * Mouse pressed.
+         * @param e the e
+         */
         @Override
         public void mousePressed(MouseEvent e) {
             logger.debug("Mouse pressed");
@@ -391,6 +449,10 @@ public class UserInputOnMapController extends KeyAdapter {
             }
         }
 
+        /**
+         * Mouse released.
+         * @param e the e
+         */
         @Override
         public void mouseReleased(MouseEvent e) {
 
@@ -422,6 +484,10 @@ public class UserInputOnMapController extends KeyAdapter {
             }
         }
 
+        /**
+         * Mouse dragged.
+         * @param e the e
+         */
         @Override
         public void mouseDragged(MouseEvent e) {
 

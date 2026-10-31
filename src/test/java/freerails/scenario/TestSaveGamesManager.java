@@ -34,7 +34,8 @@ public class TestSaveGamesManager implements SaveGamesManager {
     private final Map<String, Serializable> savedGames = new HashMap<>();
 
     /**
-     * @return
+     * Returns the save game names.
+     * @return the save game names.
      */
     @Override
     public String[] getSaveGameNames() {
@@ -42,9 +43,9 @@ public class TestSaveGamesManager implements SaveGamesManager {
     }
 
     /**
-     * @param path
-     * @param serializable
-     * @throws IOException
+     * Performs save game.
+     * @param path the path to use in the test.
+     * @param serializable the serializable to use in the test.
      */
     @Override
     public void saveGame(String path, Serializable serializable) {
@@ -54,9 +55,9 @@ public class TestSaveGamesManager implements SaveGamesManager {
     }
 
     /**
-     * @param path
-     * @return
-     * @throws IOException
+     * Performs load game.
+     * @param path the path to use in the test.
+     * @return the result of load game.
      */
     @Override
     public ServerGameModel loadGame(String path) {

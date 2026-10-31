@@ -28,13 +28,27 @@ import freerails.util.Vec2D;
 /** Factory for simple train motions in tests. */
 public final class TestTrainMotion {
 
+    /**
+     * Creates a test train motion.
+     */
     private TestTrainMotion() {
     }
 
+    /**
+     * Performs of.
+     * @param duration the duration to use in the test.
+     * @return the result of of.
+     */
     public static TrainMotion of(double duration) {
         return of(Double.MIN_VALUE, duration);
     }
 
+    /**
+     * Performs of.
+     * @param startTime the start time to use in the test.
+     * @param duration the duration to use in the test.
+     * @return the result of of.
+     */
     public static TrainMotion of(double startTime, double duration) {
         PathOnTiles path = new PathOnTiles(new Vec2D((int) duration, 0), TileTransition.EAST);
         TrainMotion motion = new TrainMotion(path, ModelConstants.WAGON_LENGTH, duration, TrainState.READY);

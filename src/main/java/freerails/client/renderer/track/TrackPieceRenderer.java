@@ -28,16 +28,20 @@ import java.awt.*;
 public interface TrackPieceRenderer {
 
     /**
-     * @param trackTemplate
-     * @return
+     * Returns the track piece icon.
+     *
+     * @param trackTemplate the track template parameter
+     * @return the track piece icon produced by this method
      */
     Image getTrackPieceIcon(int trackTemplate);
 
     /**
-     * @param g
-     * @param trackTemplate
-     * @param tileLocation
-     * @param tileSize
+     * Draws the track piece icon.
+     *
+     * @param g the graphics context used for drawing
+     * @param trackTemplate the track template parameter
+     * @param tileLocation the map coordinate
+     * @param tileSize the map coordinate
      */
     void drawTrackPieceIcon(Graphics g, int trackTemplate, Vec2D tileLocation, Vec2D tileSize);
 }

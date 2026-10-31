@@ -28,7 +28,7 @@ import java.awt.*;
 import java.io.Serial;
 
 /**
- *
+ * Provides the train order panel single functionality.
  */
 public class TrainOrderPanelSingle extends JPanel implements View {
 
@@ -41,6 +41,10 @@ public class TrainOrderPanelSingle extends JPanel implements View {
     public JLabel ordersJLabel;
     public JLabel stationNameJLabel;
 
+    /**
+     * Creates a train order panel single instance.
+     * @param trainOrderPanel the train order panel
+     */
     TrainOrderPanelSingle(TrainOrderPanel trainOrderPanel) {
         this.trainOrderPanel = trainOrderPanel;
         GridBagConstraints gridBagConstraints;
@@ -96,6 +100,12 @@ public class TrainOrderPanelSingle extends JPanel implements View {
     }
 
 
+    /**
+     * Sets the up.
+     * @param modelRoot the model root
+     * @param rendererRoot the renderer root
+     * @param closeAction the close action
+     */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         trainOrderPanel.world = modelRoot.getWorld();

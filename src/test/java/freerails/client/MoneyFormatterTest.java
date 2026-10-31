@@ -23,8 +23,14 @@ import junit.framework.TestCase;
 
 import java.util.Locale;
 
+/**
+ * Tests money formatter behavior.
+ */
 public class MoneyFormatterTest extends TestCase {
 
+    /**
+     * Tests formats usd with locale specific grouping behavior.
+     */
     public void testFormatsUsdWithLocaleSpecificGrouping() {
         assertEquals("$1,234", MoneyFormatter.format(new Money(1_234), Locale.US));
 
@@ -34,6 +40,9 @@ public class MoneyFormatterTest extends TestCase {
         assertFalse(german, german.contains(","));
     }
 
+    /**
+     * Tests formats negative and long amounts behavior.
+     */
     public void testFormatsNegativeAndLongAmounts() {
         assertEquals("-$1,234", MoneyFormatter.format(new Money(-1_234), Locale.US));
         assertEquals("$9,223,372,036,854,775,807",

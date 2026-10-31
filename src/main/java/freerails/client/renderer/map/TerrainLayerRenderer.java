@@ -40,8 +40,10 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     private final Vec2D mapSize;
 
     /**
-     * @param world
-     * @param tiles
+     * Creates a terrain layer renderer instance.
+     *
+     * @param world the game world being queried
+     * @param tiles the tiles parameter
      */
     TerrainLayerRenderer(UnmodifiableWorld world, TileRendererList tiles) {
         this.world = world;
@@ -50,8 +52,10 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     }
 
     /**
-     * @param g
-     * @param tileLocation
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param tileLocation the map coordinate
      */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
@@ -86,26 +90,38 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     }
 
     /**
-     * @param g
-     * @param visibleRect
+     * Performs the paint rect operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         throw new UnsupportedOperationException("Method not yet implemented.");
     }
 
+    /**
+     * Paint rectangle of tiles.
+     * @param g the g
+     * @param x the x
+     * @param y the y
+     * @param width the width
+     * @param height the height
+     */
     void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
         paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
     }
 
     /**
-     * @param tileLocation
+     * Performs the refresh tile operation.
+     *
+     * @param tileLocation the map coordinate
      */
     @Override
     public void refreshTile(Vec2D tileLocation) {}
 
     /**
-     *
+     * Performs the refresh all operation.
      */
     @Override
     public void refreshAll() {}

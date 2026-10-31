@@ -48,9 +48,11 @@ public class OverHeadTrainView implements Painter {
     private final ModelRoot modelRoot;
 
     /**
-     * @param world
-     * @param rendererRoot
-     * @param modelRoot
+     * Creates a over head train view instance.
+     *
+     * @param world the game world being queried
+     * @param rendererRoot the renderer root parameter
+     * @param modelRoot the client model that provides current game state
      */
     public OverHeadTrainView(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         this.world = world;
@@ -59,8 +61,10 @@ public class OverHeadTrainView implements Painter {
     }
 
     /**
-     * @param g
-     * @param newVisibleRectangle
+     * Performs the paint operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param newVisibleRectangle the new visible rectangle parameter
      */
     @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
@@ -87,9 +91,11 @@ public class OverHeadTrainView implements Painter {
 
 
     /**
-     * @param time
-     * @param view
-     * @return
+     * Performs the find position operation.
+     *
+     * @param time the time parameter
+     * @param view the view parameter
+     * @return the position produced by this method
      */
     public static TrainPositionOnMap findPosition(double time, Rectangle view, UnmodifiableWorld world, Player player, int trainId) {
         BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, trainId).getActivities();

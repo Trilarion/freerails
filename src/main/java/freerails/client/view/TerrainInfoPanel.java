@@ -48,6 +48,9 @@ class TerrainInfoPanel extends JPanel {
     private JLabel terrainImage;
     private JLabel terrainName;
 
+    /**
+     * Creates a terrain info panel instance.
+     */
     public TerrainInfoPanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -86,11 +89,20 @@ class TerrainInfoPanel extends JPanel {
         add(terrainDescription, gridBagConstraints);
     }
 
+    /**
+     * Sets the up.
+     * @param world the world
+     * @param vl the vl
+     */
     public void setup(UnmodifiableWorld world, RendererRoot vl) {
         this.world = world;
         rendererRoot = vl;
     }
 
+    /**
+     * Sets the terrain type.
+     * @param terrainId the terrain id
+     */
     public void setTerrainType(int terrainId) {
 
         Terrain type = world.getTerrain(terrainId);

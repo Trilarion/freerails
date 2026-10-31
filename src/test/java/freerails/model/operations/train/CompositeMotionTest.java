@@ -29,12 +29,12 @@ import junit.framework.TestCase;
 import java.util.Random;
 
 /**
- *
+ * Tests composite motion behavior.
  */
 public class CompositeMotionTest extends TestCase {
 
     /**
-     *
+     * Tests bounds behavior.
      */
     public void testBounds() {
         Motion sat = ConstantAccelerationMotion.fromSpeedAccelerationDistance(10, 2, 400.0d);
@@ -49,7 +49,7 @@ public class CompositeMotionTest extends TestCase {
     }
 
     /**
-     *
+     * Tests contract behavior.
      */
     public void testContract() {
         Random r = new Random(123);

@@ -40,7 +40,8 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     private List<Integer> wagons = new ArrayList<>();
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -53,7 +54,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests move behavior.
      */
     public void testMove() {
         ChangeProductionAtEngineShopMove m;
@@ -73,7 +74,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
+     * Tests production at engine shop equals behavior.
      */
     public void testProductionAtEngineShopEquals() {
         TrainTemplate b = new TrainTemplate(engineType, wagons);

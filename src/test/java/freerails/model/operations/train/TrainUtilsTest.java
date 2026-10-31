@@ -32,8 +32,14 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * Tests train utils behavior.
+ */
 public class TrainUtilsTest extends TestCase {
 
+    /**
+     * Tests space available uses cargo indices not stable ids behavior.
+     */
     public void testSpaceAvailableUsesCargoIndicesNotStableIds() {
         World base = WorldGenerator.minimalWorld();
         SortedSet<Cargo> cargos = new TreeSet<>();

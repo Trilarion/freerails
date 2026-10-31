@@ -24,8 +24,6 @@ package freerails.server;
  */
 public interface GameModel {
 
-    /**
-     *
-     */
+    /** Advances or refreshes the game model by one update cycle. */
     void update();
 }

@@ -49,7 +49,8 @@ public class BuildTrackControllerTest extends TestCase {
     private int doubleTrackRuleID = -1;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -78,7 +79,7 @@ public class BuildTrackControllerTest extends TestCase {
     }
 
     /**
-     *
+     * Tests build track behavior.
      */
     public void testBuildTrack() {
         Vec2D from = new Vec2D(10, 10);
@@ -99,7 +100,7 @@ public class BuildTrackControllerTest extends TestCase {
     }
 
     /**
-     *
+     * Tests upgrade track behavior.
      */
     public void testUpgradeTrack() {
         // Build the track.
@@ -133,7 +134,7 @@ public class BuildTrackControllerTest extends TestCase {
     }
 
     /**
-     *
+     * Tests remove track behavior.
      */
     public void testRemoveTrack() {
         // Build the track.

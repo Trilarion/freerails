@@ -140,7 +140,14 @@ public class ClientFrame extends JFrame {
     }
 
 
+    /**
+     * Provides the my window adapter functionality.
+     */
     private static class MyWindowAdapter extends WindowAdapter {
+        /**
+         * Window closing.
+         * @param e the e
+         */
         @Override
         public void windowClosing(WindowEvent e) {
             // Exit the application

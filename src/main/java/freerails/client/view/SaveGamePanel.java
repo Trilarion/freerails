@@ -36,7 +36,7 @@ import java.awt.event.ActionListener;
 import java.io.Serial;
 
 /**
- * 
+ * Provides the save game panel functionality.
  */
 public class SaveGamePanel extends JPanel implements View {
 
@@ -101,6 +101,10 @@ public class SaveGamePanel extends JPanel implements View {
     }
 
 
+    /**
+     * O k button action performed.
+     * @param evt the evt
+     */
     private void oKButtonActionPerformed(ActionEvent evt) {
 
         String filename = fileNameTextField.getText();
@@ -112,14 +116,20 @@ public class SaveGamePanel extends JPanel implements View {
         close.actionPerformed(evt);
     }
 
+    /**
+     * Returns whether this object can cel button action performed.
+     * @param evt the evt
+     */
     private void cancelButtonActionPerformed(ActionEvent evt) {
         close.actionPerformed(evt);
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {

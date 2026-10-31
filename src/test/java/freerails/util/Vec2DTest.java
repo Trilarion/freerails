@@ -2,8 +2,14 @@ package freerails.util;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests vec2 d behavior.
+ */
 public class Vec2DTest extends TestCase {
 
+    /**
+     * Tests constructors and equality behavior.
+     */
     public void testConstructorsAndEquality() {
         Vec2D zero = new Vec2D();
         Vec2D vector = new Vec2D(3, 4);
@@ -17,6 +23,9 @@ public class Vec2DTest extends TestCase {
         assertFalse(vector.equals("vector"));
     }
 
+    /**
+     * Tests arithmetic and pointwise extrema behavior.
+     */
     public void testArithmeticAndPointwiseExtrema() {
         Vec2D first = new Vec2D(8, -6);
         Vec2D second = new Vec2D(2, 3);
@@ -31,6 +40,9 @@ public class Vec2DTest extends TestCase {
         assertEquals(new Vec2D(2, -6), Vec2D.min(first, second));
     }
 
+    /**
+     * Tests coordinate comparisons and awt conversions behavior.
+     */
     public void testCoordinateComparisonsAndAwtConversions() {
         Vec2D vector = new Vec2D(3, 4);
 
@@ -46,6 +58,9 @@ public class Vec2DTest extends TestCase {
         assertEquals(new java.awt.Dimension(3, 4), Vec2D.toDimension(vector));
     }
 
+    /**
+     * Tests compare to uses y then x behavior.
+     */
     public void testCompareToUsesYThenX() {
         Vec2D sameYLowerX = new Vec2D(1, 3);
         Vec2D sameYHigherX = new Vec2D(2, 3);
@@ -56,12 +71,18 @@ public class Vec2DTest extends TestCase {
         assertTrue(higherYLowerX.compareTo(sameYHigherX) > 0);
     }
 
+    /**
+     * Tests norm does not overflow behavior.
+     */
     public void testNormDoesNotOverflow() {
         Vec2D vector = new Vec2D(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
         assertEquals(Math.hypot(Integer.MAX_VALUE, Integer.MAX_VALUE), vector.norm(), 0.001);
     }
 
+    /**
+     * Tests compare to does not overflow at integer extremes behavior.
+     */
     public void testCompareToDoesNotOverflowAtIntegerExtremes() {
         Vec2D smallest = new Vec2D(Integer.MIN_VALUE, Integer.MIN_VALUE);
         Vec2D largest = new Vec2D(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -71,6 +92,9 @@ public class Vec2DTest extends TestCase {
         assertEquals(0, smallest.compareTo(new Vec2D(Integer.MIN_VALUE, Integer.MIN_VALUE)));
     }
 
+    /**
+     * Tests divide by zero is rejected behavior.
+     */
     public void testDivideByZeroIsRejected() {
         try {
             Vec2D.divide(new Vec2D(1, 2), 0);

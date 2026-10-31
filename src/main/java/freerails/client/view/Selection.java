@@ -20,7 +20,7 @@ package freerails.client.view;
 
 // TODO what is this used for?
 /**
- *
+ * Defines the available selection values.
  */
 enum Selection {
     select, selectNoFocus, unselect

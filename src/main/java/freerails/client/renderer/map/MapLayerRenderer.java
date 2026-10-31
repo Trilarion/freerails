@@ -32,24 +32,30 @@ import java.awt.*;
 public interface MapLayerRenderer {
 
     /**
-     * @param g
-     * @param tileLocation
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param tileLocation the map coordinate
      */
     void paintTile(Graphics g, Vec2D tileLocation);
 
     /**
-     * @param tileLocation
+     * Performs the refresh tile operation.
+     *
+     * @param tileLocation the map coordinate
      */
     void refreshTile(Vec2D tileLocation);
 
     /**
-     *
+     * Performs the refresh all operation.
      */
     void refreshAll();
 
     /**
-     * @param g
-     * @param visibleRect
+     * Performs the paint rect operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
      */
     void paintRect(Graphics g, Rectangle visibleRect);
 }

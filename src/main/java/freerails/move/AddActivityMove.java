@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 /**
- *
+ * Adds a train activity to the world for the specified player and train.
  */
 public class AddActivityMove implements Move {
 
@@ -36,23 +36,47 @@ public class AddActivityMove implements Move {
     private final TrainMotion activity;
 
 
+    /**
+     * Creates an add activity move from the supplied values.
+     *
+     * @param player the player
+     * @param trainId the identifier to use
+     * @param activity the activity
+     */
     public AddActivityMove(@NotNull Player player, int trainId, @NotNull TrainMotion activity) {
         this.player = player;
         this.trainId = trainId;
         this.activity = activity;
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         world.addActivity(player, trainId, activity);
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -64,6 +88,11 @@ public class AddActivityMove implements Move {
         return Objects.equals(player, o.player) && trainId == o.trainId && Objects.equals(activity, o.activity);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(player, trainId, activity);

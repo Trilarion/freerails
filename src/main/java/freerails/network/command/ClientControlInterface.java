@@ -31,12 +31,17 @@ import java.io.Serializable;
 public interface ClientControlInterface {
 
     /**
-     * Called when a new game is started or a game is loaded.
+     * Replaces the client's game model after a new game starts or is loaded.
+     *
+     * @param world game world to install
      */
     void setGameModel(World world);
 
     /**
-     * Sets a property, for example, the list of saved games.
+     * Updates a client-side property, such as the list of saved games.
+     *
+     * @param propertyName property to update
+     * @param value value assigned to the property
      */
     void setProperty(ClientProperty propertyName, Serializable value);
 

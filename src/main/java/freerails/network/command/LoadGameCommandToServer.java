@@ -30,12 +30,20 @@ public class LoadGameCommandToServer implements CommandToServer {
     private final String filename;
 
     /**
-     * @param filename
+     * Creates a request to load the named saved game.
+     *
+     * @param filename saved-game name or path understood by the server
      */
     public LoadGameCommandToServer(String filename) {
         this.filename = filename;
     }
 
+    /**
+     * Compares this request with another by filename.
+     *
+     * @param obj object to compare
+     * @return {@code true} if the other request has the same filename
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -44,14 +52,21 @@ public class LoadGameCommandToServer implements CommandToServer {
         return filename.equals(loadGameMessageToServer.filename);
     }
 
+    /**
+     * Returns a hash code based on the filename.
+     *
+     * @return this request's hash code
+     */
     @Override
     public int hashCode() {
         return filename.hashCode();
     }
 
     /**
-     * @param server
-     * @return
+     * Asks the server to load the requested saved game.
+     *
+     * @param server server that performs the load
+     * @return successful status, or a failed status containing the error message
      */
     @Override
     public CommandStatus execute(ServerControlInterface server) {

@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 import java.awt.*;
 
 /**
- *
+ * Tests square city tile background renderer behavior.
  */
 public class SquareCityTileBackgroundRendererTest extends TestCase {
 

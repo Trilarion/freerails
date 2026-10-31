@@ -19,7 +19,10 @@
 package freerails.network.command;
 
 /**
- * Used by CommandToClient or ClientControlInterface
+ * Identifies client properties that can be updated by server commands.
+ *
+ * @see CommandToClient
+ * @see ClientControlInterface
  */
 public enum ClientProperty {
 

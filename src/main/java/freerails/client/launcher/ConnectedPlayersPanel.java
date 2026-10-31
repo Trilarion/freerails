@@ -72,6 +72,9 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
     }
 
 
+    /**
+     * Updates the list of players.
+     */
     void updateListOfPlayers() {
         if (null != server) {
             String[] playerNames = server.getPlayerNames();
@@ -80,6 +83,10 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
         }
     }
 
+    /**
+     * Sets the list of players.
+     * @param players the players
+     */
     void setListOfPlayers(String[] players) {
         list1.setListData(players);
     }

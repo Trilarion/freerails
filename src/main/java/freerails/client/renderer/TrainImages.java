@@ -38,9 +38,11 @@ public class TrainImages {
     private final Image[] overheadImages = new Image[8];
 
     /**
-     * @param imageManager
-     * @param name
-     * @throws IOException
+     * Creates a train images instance.
+     *
+     * @param imageManager the image manager parameter
+     * @param name the name parameter
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public TrainImages(ImageManager imageManager, String name) throws IOException {
         sideOnFileName = "trains" + File.separator + "sideon" + File.separator + name + ".png";
@@ -54,15 +56,19 @@ public class TrainImages {
     }
 
     /**
-     * @return
+     * Returns the side on image.
+     *
+     * @return the side on image produced by this method
      */
     public Image getSideOnImage() {
         return sideOnImage;
     }
 
     /**
-     * @param direction
-     * @return
+     * Returns the overhead image.
+     *
+     * @param direction the direction parameter
+     * @return the overhead image produced by this method
      */
     public Image getOverheadImage(int direction) {
         return overheadImages[direction];

@@ -35,7 +35,7 @@ import freerails.model.player.Player;
 import java.text.DecimalFormat;
 
 /**
- *
+ * Provides the broker screen generator functionality.
  */
 class BrokerScreenGenerator {
 

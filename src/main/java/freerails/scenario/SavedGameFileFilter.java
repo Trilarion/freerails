@@ -27,6 +27,13 @@ import java.io.FilenameFilter;
  */
 public class SavedGameFileFilter implements FilenameFilter {
 
+    /**
+     * Returns whether accept.
+     *
+     * @param dir the dir
+     * @param name the name to use
+     * @return the accept
+     */
     @Override
     public boolean accept(File dir, String name) {
         return name.endsWith(".sav");

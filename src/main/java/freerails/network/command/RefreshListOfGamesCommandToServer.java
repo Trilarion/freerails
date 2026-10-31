@@ -33,14 +33,17 @@ public class RefreshListOfGamesCommandToServer implements CommandToServer {
     private static final long serialVersionUID = -8745171955732354168L;
 
     /**
+     * Creates a request to refresh the server's available-game lists.
      */
     public RefreshListOfGamesCommandToServer() {
         super();
     }
 
     /**
-     * @param server
-     * @return
+     * Refreshes the server's saved-game list.
+     *
+     * @param server server whose game list is refreshed
+     * @return successful status
      */
     @Override
     public CommandStatus execute(ServerControlInterface server) {
@@ -48,11 +51,22 @@ public class RefreshListOfGamesCommandToServer implements CommandToServer {
         return new CommandStatus(true);
     }
 
+    /**
+     * Returns the constant hash code for this stateless command.
+     *
+     * @return a constant hash code
+     */
     @Override
     public int hashCode() {
         return 31;
     }
 
+    /**
+     * Compares this stateless command with another instance of the same class.
+     *
+     * @param obj object to compare
+     * @return {@code true} if {@code obj} is a refresh command
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

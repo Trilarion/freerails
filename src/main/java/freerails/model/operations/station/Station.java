@@ -171,6 +171,13 @@ public class Station extends Identifiable {
         return result;
     }
 
+    /**
+     * Performs the read object operation.
+     *
+     * @param input the input
+     * @throws IOException if the operation cannot be completed
+     * @throws ClassNotFoundException if the operation cannot be completed
+     */
     @Serial
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
         input.defaultReadObject();

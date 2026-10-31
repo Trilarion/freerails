@@ -8,8 +8,15 @@ import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.awt.image.BufferedImage;
 
+/**
+ * Tests image manager impl behavior.
+ */
 public class ImageManagerImplTest extends TestCase {
 
+    /**
+     * Tests normalized cache and replacement invalidation behavior.
+     * @throws Exception if the test normalized cache and replacement invalidation operation fails.
+     */
     public void testNormalizedCacheAndReplacementInvalidation() throws Exception {
         ImageManagerImpl manager = new ImageManagerImpl("");
         Image first = new BufferedImage(4, 4, BufferedImage.TYPE_INT_ARGB);
@@ -25,6 +32,10 @@ public class ImageManagerImplTest extends TestCase {
         assertSame(replacement, manager.getScaledImage("a picture.png", 2));
     }
 
+    /**
+     * Tests rejects parent directory and invalid scale behavior.
+     * @throws Exception if the test rejects parent directory and invalid scale operation fails.
+     */
     public void testRejectsParentDirectoryAndInvalidScale() throws Exception {
         ImageManagerImpl manager = new ImageManagerImpl("");
 
@@ -43,6 +54,10 @@ public class ImageManagerImplTest extends TestCase {
         }
     }
 
+    /**
+     * Tests loads and caches image and scaled variants behavior.
+     * @throws Exception if the test loads and caches image and scaled variants operation fails.
+     */
     public void testLoadsAndCachesImageAndScaledVariants() throws Exception {
         ImageManagerImpl manager = new ImageManagerImpl("/freerails/client/graphics/");
 
@@ -60,6 +75,10 @@ public class ImageManagerImplTest extends TestCase {
         assertSame(scaled, manager.getScaledImage("icons/error.gif", scaledHeight));
     }
 
+    /**
+     * Tests rejects missing images and invalid image arguments behavior.
+     * @throws Exception if the test rejects missing images and invalid image arguments operation fails.
+     */
     public void testRejectsMissingImagesAndInvalidImageArguments() throws Exception {
         ImageManagerImpl manager = new ImageManagerImpl("/freerails/client/graphics/");
 
@@ -92,6 +111,11 @@ public class ImageManagerImplTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts invalid image path.
+     * @param manager the manager to use in the test.
+     * @param path the path to use in the test.
+     */
     private void assertInvalidImagePath(ImageManagerImpl manager, String path) {
         try {
             manager.getImage(path);
@@ -103,6 +127,12 @@ public class ImageManagerImplTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts invalid blank image dimensions.
+     * @param manager the manager to use in the test.
+     * @param height the height to use in the test.
+     * @param width the width to use in the test.
+     */
     private void assertInvalidBlankImageDimensions(ImageManagerImpl manager, int height, int width) {
         try {
             manager.newBlankImage(height, width);
@@ -112,27 +142,52 @@ public class ImageManagerImplTest extends TestCase {
         }
     }
 
+    /**
+     * Provides test support for zero sized image.
+     */
     private static final class ZeroSizedImage extends Image {
+        /**
+         * Provides test support for zero sized image.
+         */
         @Override
         public int getWidth(ImageObserver observer) {
             return 0;
         }
 
+        /**
+         * Returns height.
+         * @param observer the observer used by this test.
+         * @return the result of get height.
+         */
         @Override
         public int getHeight(ImageObserver observer) {
             return 0;
         }
 
+        /**
+         * Returns source.
+         * @return the result of get source.
+         */
         @Override
         public ImageProducer getSource() {
             return null;
         }
 
+        /**
+         * Returns graphics.
+         * @return the result of get graphics.
+         */
         @Override
         public Graphics getGraphics() {
             return null;
         }
 
+        /**
+         * Returns property.
+         * @param name the name used by this test.
+         * @param observer the observer used by this test.
+         * @return the result of get property.
+         */
         @Override
         public Object getProperty(String name, ImageObserver observer) {
             return UndefinedProperty;

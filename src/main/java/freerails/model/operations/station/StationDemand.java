@@ -24,9 +24,16 @@ import java.util.Set;
 
 /**
  * Represents the demand for cargo at a station.
+
+ * @param demandedCargoIds the cargo identifiers demanded by this station
  */
 public record StationDemand(Set<Integer> demandedCargoIds) implements Serializable {
 
+    /**
+     * Creates a station demand from the supplied values.
+     *
+     * @param demandedCargoIds the demanded cargo ids
+     */
     public StationDemand {
         demandedCargoIds = Set.copyOf(demandedCargoIds);
     }

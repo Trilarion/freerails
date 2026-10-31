@@ -21,18 +21,21 @@ package freerails.util;
 import junit.framework.TestCase;
 
 /**
- *
+ * Tests segment behavior.
  */
 public class SegmentTest extends TestCase {
 
     /**
-     *
+     * Tests get length behavior.
      */
     public void testGetLength() {
         Segment line = new Segment(Vec2D.ZERO, new Vec2D(100, 0));
         assertEquals(100, line.getLength(), 0.1);
     }
 
+    /**
+     * Tests length does not overflow for extreme coordinates behavior.
+     */
     public void testLengthDoesNotOverflowForExtremeCoordinates() {
         Segment line = new Segment(new Vec2D(Integer.MIN_VALUE, Integer.MIN_VALUE),
                 new Vec2D(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -40,6 +43,9 @@ public class SegmentTest extends TestCase {
         assertEquals(6_074_000_998.537885, line.getLength(), 0.001);
     }
 
+    /**
+     * Tests endpoints must not be null behavior.
+     */
     public void testEndpointsMustNotBeNull() {
         try {
             new Segment(null, Vec2D.ZERO);
@@ -53,6 +59,9 @@ public class SegmentTest extends TestCase {
         }
     }
 
+    /**
+     * Tests equality hash code and endpoint accessors behavior.
+     */
     public void testEqualityHashCodeAndEndpointAccessors() {
         Vec2D start = new Vec2D(1, 2);
         Vec2D end = new Vec2D(4, 6);

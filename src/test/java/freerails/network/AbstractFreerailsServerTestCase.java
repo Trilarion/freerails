@@ -43,7 +43,8 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     private ServerSocketAcceptor acceptor;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected synchronized void setUp() throws Exception {
@@ -89,7 +90,8 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     }
 
     /**
-     * @throws Exception
+     * Releases resources after each test.
+     * @throws Exception if the tear down operation fails.
      */
     @Override
     protected synchronized void tearDown() throws Exception {
@@ -97,10 +99,18 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
         acceptor.close();
     }
 
+    /**
+     * Returns port.
+     * @return the result of get port.
+     */
     public int getPort() {
         return PORT;
     }
 
+    /**
+     * Returns ip address.
+     * @return the result of get ip address.
+     */
     public String getIpAddress() {
         return "127.0.0.1";
     }

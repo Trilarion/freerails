@@ -50,7 +50,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
     private ModelRoot modelRoot;
 
     /**
-     *
+     * Creates a rhs tab pane instance.
      */
     public RHSTabPane() {
         /*
@@ -110,9 +110,11 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
     }
 
     /**
-     * @param actionRoot
-     * @param vl
-     * @param modelRoot
+     * Sets the up.
+     *
+     * @param actionRoot the root that supplies client actions
+     * @param vl the vl parameter
+     * @param modelRoot the client model that provides current game state
      */
     public void setup(final ActionRoot actionRoot, RendererRoot vl, final ModelRootImpl modelRoot) {
 
@@ -162,14 +164,18 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
     }
 
     /**
-     * @param enabled
+     * Sets the train tab enabled.
+     *
+     * @param enabled whether the control is enabled
      */
     public void setTrainTabEnabled(boolean enabled) {
         setEnabledAt(trainListIndex, enabled);
     }
 
     /**
-     * @param enabled
+     * Sets the station tab enabled.
+     *
+     * @param enabled whether the control is enabled
      */
     public void setStationTabEnabled(boolean enabled) {
         setEnabledAt(stationInfoIndex, enabled);

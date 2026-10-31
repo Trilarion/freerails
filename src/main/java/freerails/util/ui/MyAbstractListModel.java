@@ -22,7 +22,8 @@ import javax.swing.*;
 import java.io.Serial;
 
 /**
- *
+ * List model exposing the fixed informational message used when no players
+ * are logged on.
  */
 public class MyAbstractListModel extends AbstractListModel<String> {
 
@@ -30,11 +31,23 @@ public class MyAbstractListModel extends AbstractListModel<String> {
     private static final long serialVersionUID = -7077093078891444168L;
     private final String[] strings = {"No players are logged on!"};
 
+    /**
+     * Returns the number of entries in this model.
+     *
+     * @return the fixed list size
+     */
     @Override
     public int getSize() {
         return strings.length;
     }
 
+    /**
+     * Returns the message at the requested list index.
+     *
+     * @param index entry index
+     * @return the informational message
+     * @throws ArrayIndexOutOfBoundsException if the index is outside the model
+     */
     @Override
     public String getElementAt(int index) {
         return strings[index];

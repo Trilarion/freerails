@@ -22,6 +22,9 @@ import freerails.util.Vec2D;
 
 /**
  * Associates a map location with the identifier of its terrain type.
+
+ * @param location the map location of the terrain
+ * @param terrainType the identifier of the terrain type at the location
  */
 public record TerrainAtLocation(Vec2D location, int terrainType) {
 

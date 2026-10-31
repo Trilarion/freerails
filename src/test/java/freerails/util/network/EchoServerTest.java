@@ -26,10 +26,14 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 /**
- *
+ * Tests echo server behavior.
  */
 public class EchoServerTest extends TestCase {
 
+    /**
+     * Tests it behavior.
+     * @throws IOException if the test it operation fails.
+     */
     public void testIt() throws IOException {
 
         InetSocketAddress address = new InetSocketAddress(InetAddress.getLoopbackAddress(), 0);
@@ -60,6 +64,11 @@ public class EchoServerTest extends TestCase {
         assertTrue(!server.isRunning());
     }
 
+    /**
+     * Performs await active connections.
+     * @param server the server to use in the test.
+     * @param expected the expected value.
+     */
     private static void awaitActiveConnections(EchoServer server, int expected) {
         long deadline = System.currentTimeMillis() + 2_000;
         while (server.getNumberActiveConnections() != expected

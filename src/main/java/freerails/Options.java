@@ -61,7 +61,7 @@ public final class Options {
     }
 
     /**
-     * Sets to default values
+     * Restores all options to their startup defaults.
      */
     public static void reset() {
         NAME = System.getProperty("user.name");
@@ -73,8 +73,11 @@ public final class Options {
     }
 
     /**
+     * Loads option values from a JSON file.
      *
-     * @param file
+     * @param file JSON file to read
+     * @throws NullPointerException if {@code file} is null
+     * @throws RuntimeException if the file cannot be read
      */
     public static void load(final File file) {
         Utils.verifyNotNull(file);
@@ -97,8 +100,11 @@ public final class Options {
     }
 
     /**
+     * Writes the current option values to a JSON file.
      *
-     * @param file
+     * @param file destination JSON file
+     * @throws NullPointerException if {@code file} is null
+     * @throws RuntimeException if the file cannot be written
      */
     public static void save(final File file) {
         Utils.verifyNotNull(file);

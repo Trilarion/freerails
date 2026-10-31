@@ -59,9 +59,11 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     private Rectangle clipRectangle = new Rectangle();
 
     /**
-     * @param world
-     * @param rendererRoot
-     * @param modelRoot
+     * Creates a map background renderer instance.
+     *
+     * @param world the game world being queried
+     * @param rendererRoot the renderer root parameter
+     * @param modelRoot the client model that provides current game state
      */
     public MapBackgroundRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trackLayer = new TrackLayerRenderer(world, rendererRoot);
@@ -71,8 +73,10 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     }
 
     /**
-     * @param g
-     * @param tileLocation
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param tileLocation the map coordinate
      */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
@@ -85,8 +89,8 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     /**
      * A portion of the map has changed, redraw the map.
      *
-     * @param g
-     * @param visibleRect
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
@@ -108,13 +112,15 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     }
 
     /**
-     * @param tileLocation
+     * Performs the refresh tile operation.
+     *
+     * @param tileLocation the map coordinate
      */
     @Override
     public void refreshTile(Vec2D tileLocation) {}
 
     /**
-     *
+     * Performs the refresh all operation.
      */
     @Override
     public void refreshAll() {}

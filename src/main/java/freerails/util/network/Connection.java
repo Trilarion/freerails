@@ -57,6 +57,13 @@ public class Connection implements AutoCloseable {
     private volatile boolean open;
     private volatile IOException readerFailure;
 
+    /**
+     * Initializes object streams and starts the inbound reader for a connected socket.
+     *
+     * @param socket connected socket to wrap
+     * @throws IOException if the streams cannot be initialized
+     * @throws IllegalArgumentException if the socket is not open and connected
+     */
     private Connection(Socket socket) throws IOException {
         Utils.verifyNotNull(socket);
         if (!socket.isConnected() || socket.isClosed()) {
@@ -87,6 +94,13 @@ public class Connection implements AutoCloseable {
         readerThread.start();
     }
 
+    /**
+     * Applies size and complexity limits, then allows only protocol and
+     * standard value/container classes during deserialization.
+     *
+     * @param info metadata for the object currently being read
+     * @return the filter decision for the object
+     */
     private static ObjectInputFilter.Status filterInput(ObjectInputFilter.FilterInfo info) {
         if (info.depth() > MAX_DEPTH || info.references() > MAX_REFERENCES
                 || info.streamBytes() > MAX_STREAM_BYTES
@@ -103,6 +117,13 @@ public class Connection implements AutoCloseable {
                 : ObjectInputFilter.Status.REJECTED;
     }
 
+    /**
+     * Determines whether a serialized class belongs to the supported protocol
+     * type set.
+     *
+     * @param type class being checked
+     * @return {@code true} if the class is permitted by the input filter
+     */
     private static boolean isAllowedProtocolClass(Class<?> type) {
         if (type.isArray()) {
             Class<?> component = type.getComponentType();
@@ -142,6 +163,10 @@ public class Connection implements AutoCloseable {
                 || name.equals("java.util.TreeMap$Entry");
     }
 
+    /**
+     * Reads serialized objects until the connection closes and places them
+     * on the inbound queue.
+     */
     private void readMessages() {
         try {
             while (open) {
@@ -174,6 +199,12 @@ public class Connection implements AutoCloseable {
         }
     }
 
+    /**
+     * Adds an inbound message to the bounded queue, waiting while it is full.
+     *
+     * @param message serializable message to queue
+     * @throws IOException if waiting is interrupted
+     */
     private void queueMessage(Serializable message) throws IOException {
         while (open) {
             try {
@@ -187,11 +218,28 @@ public class Connection implements AutoCloseable {
         }
     }
 
+    /**
+     * Wraps an already connected socket in a message connection.
+     *
+     * @param socket connected socket
+     * @return connection using the socket
+     * @throws IOException if stream setup fails
+     * @throws NullPointerException if {@code socket} is null
+     * @throws IllegalArgumentException if the socket is not open and connected
+     */
     public static Connection make(Socket socket) throws IOException {
         Utils.verifyNotNull(socket);
         return new Connection(socket);
     }
 
+    /**
+     * Connects to an address and creates a message connection.
+     *
+     * @param address remote socket address
+     * @return connected message connection
+     * @throws IOException if connecting or stream setup fails
+     * @throws NullPointerException if {@code address} is null
+     */
     public static Connection make(InetSocketAddress address) throws IOException {
         Utils.verifyNotNull(address);
         Socket socket = new Socket();
@@ -210,6 +258,8 @@ public class Connection implements AutoCloseable {
 
     /**
      * Removes and returns all messages currently queued by the reader thread.
+     *
+     * @return messages available at the time of the call, in receive order
      */
     public List<Serializable> getReceivedObjects() {
         List<Serializable> objects = new ArrayList<>();
@@ -244,6 +294,14 @@ public class Connection implements AutoCloseable {
         }
     }
 
+    /**
+     * Sends one serializable object over the connection.
+     *
+     * @param object message to send
+     * @throws IOException if writing to the socket fails
+     * @throws NullPointerException if {@code object} is null
+     * @throws IllegalStateException if the connection is closed
+     */
     public synchronized void sendObject(Serializable object) throws IOException {
         Utils.verifyNotNull(object, "object");
         if (!open) {
@@ -254,17 +312,30 @@ public class Connection implements AutoCloseable {
         out.flush();
     }
 
+    /**
+     * Indicates whether the socket connection is still open.
+     *
+     * @return {@code true} while the connection remains open
+     */
     public boolean isOpen() {
         return open;
     }
 
     /**
      * Returns an unexpected reader failure, or {@code null} if none occurred.
+     *
+     * @return recorded reader failure, if any
      */
     public IOException getReaderFailure() {
         return readerFailure;
     }
 
+    /**
+     * Closes the socket and waits for the inbound reader thread to finish.
+     *
+     * @throws IllegalStateException if closing fails or the caller is
+     * interrupted while waiting
+     */
     @Override
     public void close() {
         open = false;

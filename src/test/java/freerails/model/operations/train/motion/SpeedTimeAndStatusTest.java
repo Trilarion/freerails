@@ -21,8 +21,14 @@ package freerails.model.operations.train.motion;
 import freerails.model.operations.train.TrainState;
 import junit.framework.TestCase;
 
+/**
+ * Tests speed time and status behavior.
+ */
 public class SpeedTimeAndStatusTest extends TestCase {
 
+    /**
+     * Tests equality and hash code include all sample values behavior.
+     */
     public void testEqualityAndHashCodeIncludeAllSampleValues() {
         SpeedTimeAndStatus sample = new SpeedTimeAndStatus(12.5, 0.5, 30, 2, TrainState.READY);
         SpeedTimeAndStatus equalSample = new SpeedTimeAndStatus(12.5, 0.5, 30, 2, TrainState.READY);
@@ -41,6 +47,9 @@ public class SpeedTimeAndStatusTest extends TestCase {
         assertFalse(sample.equals("sample"));
     }
 
+    /**
+     * Tests constructor rejects negative time and null state behavior.
+     */
     public void testConstructorRejectsNegativeTimeAndNullState() {
         try {
             new SpeedTimeAndStatus(0, 0, 0, -1, TrainState.READY);
@@ -57,6 +66,11 @@ public class SpeedTimeAndStatusTest extends TestCase {
         }
     }
 
+    /**
+     * Asserts not equal.
+     * @param first the first to use in the test.
+     * @param second the second to use in the test.
+     */
     private void assertNotEqual(SpeedTimeAndStatus first, SpeedTimeAndStatus second) {
         assertFalse(first.equals(second));
         assertFalse(second.equals(first));

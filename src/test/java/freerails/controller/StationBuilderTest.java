@@ -41,7 +41,8 @@ public class StationBuilderTest extends TestCase {
     private StationBuilder stationBuilder;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -54,7 +55,7 @@ public class StationBuilderTest extends TestCase {
     }
 
     /**
-     *
+     * Tests build station behavior.
      */
     public void testBuildStation() {
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));

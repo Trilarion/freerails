@@ -22,13 +22,16 @@
 package freerails.client;
 
 /**
+ * Receives notifications when a property of the client model root changes.
  */
 public interface ModelRootListener {
 
     /**
-     * @param modelRootProperty
-     * @param oldValue
-     * @param newValue
+     * Performs the property change operation.
+     *
+     * @param modelRootProperty the model root property parameter
+     * @param oldValue the old value parameter
+     * @param newValue the new value parameter
      */
     void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue);
 

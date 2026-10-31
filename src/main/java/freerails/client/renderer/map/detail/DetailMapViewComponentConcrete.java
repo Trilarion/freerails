@@ -61,7 +61,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     private FreerailsCursor mapCursor;
 
     /**
-     *
+     * Creates a detail map view component concrete instance.
      */
     public DetailMapViewComponentConcrete() {
         super();
@@ -71,6 +71,10 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
         addMouseMotionListener(mouseAdapter);
     }
 
+    /**
+     * Paints this component.
+     * @param g the g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         // TODO without this the map is blank the first time (why?)
@@ -105,10 +109,12 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     }
 
     /**
-     * @param mapRenderer
-     * @param modelRoot
-     * @param rendererRoot
-     * @throws IOException
+     * Sets the up.
+     *
+     * @param mapRenderer the map renderer parameter
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public void setup(MapRenderer mapRenderer, ModelRootImpl modelRoot, RendererRoot rendererRoot) throws IOException {
         super.setMapRenderer(mapRenderer);
@@ -121,7 +127,9 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     }
 
     /**
-     * @param g
+     * Performs the paint tile operation.
+     *
+     * @param g the graphics context used for drawing
      */
     @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
@@ -129,7 +137,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     }
 
     /**
-     *
+     * Performs the refresh tile operation.
      */
     @Override
     public void refreshTile(Vec2D tileLocation) {
@@ -137,7 +145,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     }
 
     /**
-     *
+     * Performs the refresh all operation.
      */
     @Override
     public void refreshAll() {
@@ -145,8 +153,10 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     }
 
     /**
-     * @param g
-     * @param visibleRect
+     * Performs the paint rect operation.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {

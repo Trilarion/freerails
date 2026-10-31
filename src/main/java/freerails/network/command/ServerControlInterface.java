@@ -28,23 +28,29 @@ import java.io.IOException;
 public interface ServerControlInterface {
 
     /**
-     * @param saveGameName
-     * @throws IOException
+     * Loads a saved game and makes it the server's current game.
+     *
+     * @param saveGameName saved-game name or path
+     * @throws IOException if the saved game cannot be read
      */
     void loadGame(String saveGameName) throws IOException;
 
     /**
-     * @param saveGameName
+     * Saves the current game using the supplied name.
+     *
+     * @param saveGameName destination saved-game name
      */
     void saveGame(String saveGameName);
 
     /**
-     *
+     * Refreshes the list of saved games available from the server.
      */
     void refreshSavedGames();
 
     /**
-     * @param mapName
+     * Starts a new game using the named map.
+     *
+     * @param mapName map name understood by the server
      */
     void newGame(String mapName);
 }

@@ -41,6 +41,9 @@ public class LauncherPanel extends JPanel {
     private final ButtonModel[] buttonModels = new ButtonModel[3];
     private final ButtonGroup buttonGroup1;
 
+    /**
+     * Creates a launcher panel instance.
+     */
     public LauncherPanel() {
         GridBagConstraints gridBagConstraints;
 
@@ -90,6 +93,10 @@ public class LauncherPanel extends JPanel {
         buttonModels[ClientConstants.MODE_SERVER_ONLY] = serverOnlyButton.getModel();
     }
 
+    /**
+     * Returns the mode.
+     * @return the mode
+     */
     int getMode() {
         for (int i = 0; i < buttonModels.length; i++) {
             if (buttonGroup1.getSelection() == buttonModels[i]) {

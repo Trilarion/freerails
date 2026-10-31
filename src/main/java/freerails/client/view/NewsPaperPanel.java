@@ -43,7 +43,7 @@ public class NewsPaperPanel extends JPanel implements View {
     private ActionListener callBack;
 
     /**
-     *
+     * Creates a news paper panel instance.
      */
     public NewsPaperPanel() {
         JLabel headline = new JLabel();
@@ -55,6 +55,10 @@ public class NewsPaperPanel extends JPanel implements View {
         setMaximumSize(new Dimension(640, 400));
         setOpaque(false);
         addKeyListener(new java.awt.event.KeyAdapter() {
+            /**
+             * Key pressed.
+             * @param e the e
+             */
             @Override
             public void keyPressed(java.awt.event.KeyEvent e) {
                 formKeyPressed(e);
@@ -92,6 +96,10 @@ public class NewsPaperPanel extends JPanel implements View {
 
         g.drawImage(tempImage, 0, 0, null);
         addMouseListener(new java.awt.event.MouseAdapter() {
+            /**
+             * Mouse pressed.
+             * @param e the e
+             */
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
                 callBack.actionPerformed(new ActionEvent(this, 0, null));
@@ -100,12 +108,20 @@ public class NewsPaperPanel extends JPanel implements View {
     }
 
 
+    /**
+     * Form key pressed.
+     * @param evt the evt
+     */
     private void formKeyPressed(java.awt.event.KeyEvent evt) {
         // Add your handling code here:
         setVerifyInputWhenFocusTarget(false);
     }
 
 
+    /**
+     * Paint.
+     * @param g the g
+     */
     @Override
     public void paint(Graphics g) {
         g.drawImage(pieceOfNewspaper, 0, 0, null);
@@ -113,9 +129,11 @@ public class NewsPaperPanel extends JPanel implements View {
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {

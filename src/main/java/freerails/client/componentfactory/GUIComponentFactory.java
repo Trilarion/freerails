@@ -26,57 +26,79 @@ import javax.swing.*;
 public interface GUIComponentFactory {
 
     /**
-     * @return
+     * Creates the overview map.
+     *
+     * @return the overview map produced by this method
      */
     JPanel createOverviewMap();
 
     /**
-     * @return
+     * Creates the trains j tab pane.
+     *
+     * @return the trains jtab pane produced by this method
      */
     JTabbedPane createTrainsJTabPane();
 
     /**
-     * @return
+     * Creates the main map.
+     *
+     * @return the main map produced by this method
      */
     JScrollPane createMainMap();
 
     /**
-     * @return
+     * Creates the cash j label.
+     *
+     * @return the cash jlabel produced by this method
      */
     JLabel createCashJLabel();
 
     /**
-     * @return
+     * Creates the date j label.
+     *
+     * @return the date jlabel produced by this method
      */
     JLabel createDateJLabel();
 
     /**
-     * @return
+     * Creates the build menu.
+     *
+     * @return the build menu produced by this method
      */
     JMenu createBuildMenu();
 
     /**
-     * @return
+     * Creates the reports menu.
+     *
+     * @return the reports menu produced by this method
      */
     JMenu createReportsMenu();
 
     /**
-     * @return
+     * Creates the game menu.
+     *
+     * @return the game menu produced by this method
      */
     JMenu createGameMenu();
 
     /**
-     * @return
+     * Creates the display menu.
+     *
+     * @return the display menu produced by this method
      */
     JMenu createDisplayMenu();
 
     /**
-     * @return
+     * Creates the help menu.
+     *
+     * @return the help menu produced by this method
      */
     JMenu createHelpMenu();
 
     /**
-     * @return
+     * Creates the broker menu.
+     *
+     * @return the broker menu produced by this method
      */
     JMenu createBrokerMenu();
 }

@@ -48,7 +48,7 @@ class TrackTilesGenerator extends JPanel {
     private final TrackRenderer tr;
 
     /**
-     *
+     * Loads the track types and generates their tile images.
      */
     private TrackTilesGenerator() {
         Point2D.Double start, end, one, two;
@@ -78,7 +78,9 @@ class TrackTilesGenerator extends JPanel {
     }
 
     /**
-     * @param args
+     * Opens a window displaying generated track tiles.
+     *
+     * @param args command-line arguments, which are unused
      */
     public static void main(String[] args) {
 
@@ -94,6 +96,13 @@ class TrackTilesGenerator extends JPanel {
         frame.setVisible(true);
     }
 
+    /**
+     * Calculates a control point between the supplied point and the tile
+     * center.
+     *
+     * @param from the point whose control point is calculated
+     * @return the calculated control point
+     */
     private static Point2D.Double controlPoint(Point2D.Double from) {
         double weight = 0.3;
         double x = from.getX() * weight + 300 * (1 - weight);
@@ -101,6 +110,9 @@ class TrackTilesGenerator extends JPanel {
         return new Point2D.Double(x, y);
     }
 
+    /**
+     * Generates and writes tile images for every legal track configuration.
+     */
     private void generateTiles() {
 
         for (TrackType rule : rules) {
@@ -143,6 +155,11 @@ class TrackTilesGenerator extends JPanel {
         }
     }
 
+    /**
+     * Calculates the preferred display size from the available track rules.
+     *
+     * @return the preferred display dimensions
+     */
     private Dimension getSize4Panel() {
         int height = 90 * rules.size();
         int width = 0;
@@ -155,6 +172,11 @@ class TrackTilesGenerator extends JPanel {
         return new Dimension(width, height);
     }
 
+    /**
+     * Paints each track rule and its legal configurations.
+     *
+     * @param g the graphics context used for painting
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

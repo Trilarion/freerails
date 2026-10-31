@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 public class TrackSectionTest extends TestCase {
 
     /**
-     *
+     * Tests equals behavior.
      */
     public void testEquals() {
         TrackSection sectionA = new TrackSection(TileTransition.EAST, new Vec2D(10, 5));

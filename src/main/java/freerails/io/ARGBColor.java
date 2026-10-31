@@ -25,18 +25,43 @@ public class ARGBColor {
 
     private int argb;
 
+    /**
+     * Creates a color from its packed alpha-red-green-blue integer value.
+     *
+     * @param argb packed ARGB value
+     */
     public ARGBColor(int argb) {
         this.argb = argb;
     }
 
+    /**
+     * Returns this color's packed ARGB value.
+     *
+     * @return packed ARGB value
+     */
     public int getARGB() {
         return argb;
     }
 
+    /**
+     * Formats a color as a hash-prefixed hexadecimal string.
+     *
+     * @param color color to format
+     * @return hexadecimal representation of the packed ARGB value
+     */
     public static String toHexString(ARGBColor color) {
         return String.format("#%s", Integer.toHexString(color.getARGB()));
     }
 
+    /**
+     * Parses a hash-prefixed hexadecimal ARGB value.
+     *
+     * @param hexString string to parse
+     * @return the represented color
+     * @throws IllegalArgumentException if the string lacks the {@code #}
+     * prefix or contains an invalid hexadecimal value
+     * @throws NullPointerException if {@code hexString} is null
+     */
     public static ARGBColor fromHexString(String hexString) {
         if (!(hexString.charAt(0) == '#')) {
             throw new IllegalArgumentException();

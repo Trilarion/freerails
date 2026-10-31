@@ -24,6 +24,8 @@ import java.io.Serializable;
 
 /**
  * An immutable non-negative count of elapsed simulation ticks.
+
+ * @param ticks the number of simulation ticks represented by this time value
  */
 public record Time(int ticks) implements Comparable<Time>, Serializable {
 

@@ -41,6 +41,11 @@ public class CompanyDetails {
      */
     public final String name;
 
+    /**
+     * Creates a company details instance.
+     * @param n the n
+     * @param c the c
+     */
     public CompanyDetails(String n, Color c) {
 
         color = c;

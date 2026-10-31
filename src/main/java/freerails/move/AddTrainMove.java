@@ -35,11 +35,23 @@ public class AddTrainMove implements Move {
     private final Player player;
     private final Train train;
 
+    /**
+     * Creates an add train move from the supplied values.
+     *
+     * @param player the player
+     * @param train the train
+     */
     public AddTrainMove(@NotNull Player player, @NotNull Train train) {
         this.player = player;
         this.train = train;
     }
 
+    /**
+     * Returns whether this object is equal to the specified object.
+     *
+     * @param obj the object to compare with this object
+     * @return true if this object is equal to the specified object, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -51,11 +63,22 @@ public class AddTrainMove implements Move {
         return Objects.equals(player, o.player) && Objects.equals(train, o.train);
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(player, train);
     }
 
+    /**
+     * Checks whether this move can be applied to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     * @return a status indicating whether the move can be applied
+     */
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
@@ -65,6 +88,11 @@ public class AddTrainMove implements Move {
         return Status.OK;
     }
 
+    /**
+     * Applies this move to the supplied world.
+     *
+     * @param world the world whose state is used or updated
+     */
     @Override
     public void apply(@NotNull World world) {
         world.addTrain(player, train);

@@ -28,30 +28,30 @@ import freerails.model.player.Player;
 public interface MoveExecutor {
 
     /**
-     * @param move
-     * @return
+     * @param move the move to apply or process
+     * @return a status describing whether the move was applied
      */
     Status applyMove(Move move);
 
     /**
-     * @param moveGenerator
-     * @return
+     * @param moveGenerator the generator associated with or used to create the move
+     * @return the status returned by pre-move processing
      */
     Status doPreMove(MoveGenerator moveGenerator);
 
     /**
-     * @param move
-     * @return
+     * @param move the move to apply or process
+     * @return the result of validating the move before application
      */
     Status tryMove(Move move);
 
     /**
-     * @return
+     * @return the read-only game world managed by this executor
      */
     UnmodifiableWorld getWorld();
 
     /**
-     * @return
+     * @return the player associated with this executor
      */
     Player getPlayer();
 }

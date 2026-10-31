@@ -41,9 +41,11 @@ public class TrackPieceRendererList {
     private final TrackPieceRenderer[] trackPieceViewArray;
 
     /**
-     * @param world
-     * @param imageManager
-     * @throws IOException
+     * Creates a track piece renderer list instance.
+     *
+     * @param world the game world being queried
+     * @param imageManager the image manager parameter
+     * @throws IOException if the requested I/O operation cannot be completed.
      */
     public TrackPieceRendererList(UnmodifiableWorld world, ImageManager imageManager) throws IOException {
         this.world = world;
@@ -57,8 +59,10 @@ public class TrackPieceRendererList {
     }
 
     /**
+     * Returns the track piece view.
+     *
      * @param trackTypeId stable ID of the track type
-     * @return
+     * @return the track piece view produced by this method
      */
     public TrackPieceRenderer getTrackPieceView(int trackTypeId) {
         return trackPieceViewArray[world.getTrackTypeIndex(trackTypeId)];
@@ -66,8 +70,10 @@ public class TrackPieceRendererList {
 
     // TODO this should be a test, in the application we would just fail (no difference anyway)
     /**
-     * @param world
-     * @return
+     * Performs the validate operation.
+     *
+     * @param world the game world being queried
+     * @return {@code true} if validate; otherwise, {@code false}
      */
     public boolean validate(UnmodifiableWorld world) {
         boolean okSoFar = true;

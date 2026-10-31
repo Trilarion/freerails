@@ -51,12 +51,20 @@ public class Clock implements Serializable {
         this.currentTime = currentTime;
     }
 
-    /** Returns the calendar year assigned to tick zero. */
+    /**
+     * Returns the calendar year assigned to tick zero.
+     *
+     * @return the start calendar year
+     */
     public int getStartYear() {
         return startYear;
     }
 
-    /** Returns the current elapsed simulation time. */
+    /**
+     * Returns the current elapsed simulation time.
+     *
+     * @return the current simulation time
+     */
     public Time getCurrentTime() {
         return currentTime;
     }
@@ -125,7 +133,11 @@ public class Clock implements Serializable {
         return getTimeAtStartOfYear(getCurrentYear());
     }
 
-    /** @return {@code true} if the current tick is the final tick of its year */
+    /**
+     * Checks whether the current tick is the final tick of its year.
+     *
+     * @return {@code true} if this is the year's final tick
+     */
     public boolean isLastTickOfYear() {
         return currentTime.ticks() % ticksPerYear == ticksPerYear - 1;
     }
@@ -183,7 +195,11 @@ public class Clock implements Serializable {
         return String.format("%s %s", MONTHS[getMonth(time)], getYear(time));
     }
 
-    /** Returns the number of simulation ticks per calendar year. */
+    /**
+     * Returns the number of simulation ticks per calendar year.
+     *
+     * @return the number of ticks per year
+     */
     public int getTicksPerYear() {
         return ticksPerYear;
     }

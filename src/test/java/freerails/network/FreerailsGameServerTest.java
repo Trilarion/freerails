@@ -30,7 +30,8 @@ public class FreerailsGameServerTest extends TestCase {
     private FreerailsGameServer server;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -39,7 +40,7 @@ public class FreerailsGameServerTest extends TestCase {
     }
 
     /**
-     *
+     * Tests logon behavior.
      */
     public void testLogon() {
         LogOnResponse response;

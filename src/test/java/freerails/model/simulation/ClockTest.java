@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 public class ClockTest extends TestCase {
 
     /**
-     *
+     * Tests get year behavior.
      */
     public void testGetYear() {
         Clock clock = new Clock(1900, 10, Time.ZERO);
@@ -40,7 +40,7 @@ public class ClockTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get year and month behavior.
      */
     public void testGetYearAndMonth() {
         Clock clock = new Clock(1900, 12, Time.ZERO);
@@ -50,6 +50,9 @@ public class ClockTest extends TestCase {
         assertEquals("Mar 1901", clock.getDateAsString(new Time(14)));
     }
 
+    /**
+     * Tests advance time behavior.
+     */
     public void testAdvanceTime() {
         Clock clock = new Clock(1900, 100, Time.ZERO);
         Time newTime = new Time(clock.getCurrentTime(), 100);

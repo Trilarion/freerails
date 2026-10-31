@@ -281,6 +281,15 @@ public class PathOnTiles implements Serializable {
         return new PathOnTiles(start, Arrays.asList(newPath));
     }
 
+    /**
+     * Calculates the map position at a distance along the specified track transition.
+     *
+     * @param tileX the tile x
+     * @param tileY the tile y
+     * @param transition the transition
+     * @param distanceToEnd the distance to end
+     * @return the point within transition
+     */
     private static Vec2D pointWithinTransition(int tileX, int tileY, TileTransition transition, double distanceToEnd) {
         double excess = ModelConstants.MODEL_UNITS_PER_TILE * distanceToEnd / transition.getLength();
         return new Vec2D(

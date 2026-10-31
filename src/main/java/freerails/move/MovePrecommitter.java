@@ -58,10 +58,20 @@ public class MovePrecommitter {
      */
     public boolean blocked = false;
 
+    /**
+     * Creates a move precommitter from the supplied values.
+     *
+     * @param world the world whose state is used or updated
+     */
     public MovePrecommitter(World world) {
         this.world = world;
     }
 
+    /**
+     * Performs the from server operation.
+     *
+     * @param move the move
+     */
     public void fromServer(Move move) {
         move.apply(world);
     }
@@ -95,6 +105,12 @@ public class MovePrecommitter {
         }
     }
 
+    /**
+     * Generates a move from the current world and passes it through server-move precommit handling.
+     *
+     * @param moveGenerator the move generator
+     * @return the from server
+     */
     public Move fromServer(MoveGenerator moveGenerator) {
         Move generatedMove = moveGenerator.generate(world);
         fromServer(generatedMove);
@@ -102,6 +118,11 @@ public class MovePrecommitter {
         return generatedMove;
     }
 
+    /**
+     * Performs the from server operation.
+     *
+     * @param tryMoveStatus the try move status
+     */
     public void fromServer(TryMoveStatus tryMoveStatus) {
 
         // TODO somehow uncommitted is empty
@@ -127,6 +148,9 @@ public class MovePrecommitter {
         precommitMoves();
     }
 
+    /**
+     * Performs the precommit moves operation.
+     */
     public void precommitMoves() {
         blocked = false;
 
@@ -160,11 +184,22 @@ public class MovePrecommitter {
         }
     }
 
+    /**
+     * Returns the server.
+     *
+     * @param m the m
+     */
     public void toServer(Serializable m) {
         uncomitted.addLast(m);
         precommitMoves();
     }
 
+    /**
+     * Returns the server.
+     *
+     * @param moveGenerator the move generator
+     * @return the server
+     */
     public Move toServer(MoveGenerator moveGenerator) {
         uncomitted.addLast(moveGenerator);
         precommitMoves();

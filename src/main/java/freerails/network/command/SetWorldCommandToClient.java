@@ -35,7 +35,9 @@ public class SetWorldCommandToClient implements CommandToClient {
 
     // TODO why a defensive copy (actually some things do not work otherwise), maybe because in local connection, nothing is serialized
     /**
-     * Note, makes a defensive copy of the world object passed to it.
+     * Creates a command containing a defensive copy of the supplied world.
+     *
+     * @param world world to copy for delivery to the client
      */
     public SetWorldCommandToClient(World world) {
         /**
@@ -46,6 +48,12 @@ public class SetWorldCommandToClient implements CommandToClient {
         // this.world = world;
     }
 
+    /**
+     * Installs a defensive copy of the world on the client.
+     *
+     * @param client client receiving the world
+     * @return successful status after the world is installed
+     */
     @Override
     public CommandStatus execute(ClientControlInterface client) {
         /**
@@ -57,6 +65,12 @@ public class SetWorldCommandToClient implements CommandToClient {
         return new CommandStatus(true);
     }
 
+    /**
+     * Compares this command with another by world contents.
+     *
+     * @param obj object to compare
+     * @return {@code true} if the other command contains an equal world
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -65,6 +79,11 @@ public class SetWorldCommandToClient implements CommandToClient {
         return world.equals(setWorldMessageToClient.world);
     }
 
+    /**
+     * Returns a hash code based on the world.
+     *
+     * @return this command's hash code
+     */
     @Override
     public int hashCode() {
         return world.hashCode();

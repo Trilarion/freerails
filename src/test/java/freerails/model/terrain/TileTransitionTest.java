@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 public class TileTransitionTest extends TestCase {
 
     /**
-     *
+     * Tests get direction behavior.
      */
     public void testGetDirection() {
         double d = 0;
@@ -36,7 +36,7 @@ public class TileTransitionTest extends TestCase {
     }
 
     /**
-     *
+     * Tests get nearest vector behavior.
      */
     public void testGetNearestVector() {
         // Each vector should be the nearest to itself!
@@ -58,13 +58,19 @@ public class TileTransitionTest extends TestCase {
         assertNearest(TileTransition.NORTH_EAST, 10, -6);
     }
 
+    /**
+     * Asserts nearest.
+     * @param v the v to use in the test.
+     * @param dx the dx to use in the test.
+     * @param dy the dy to use in the test.
+     */
     private void assertNearest(TileTransition v, int dx, int dy) {
         TileTransition v2 = TileTransition.getNearestVector(dx, dy);
         assertEquals(v, v2);
     }
 
     /**
-     *
+     * Tests get new template number behavior.
      */
     public void testGetNewTemplateNumber() {
         assertEquals(TileTransition.NORTH.get8bitTemplate(), 1);

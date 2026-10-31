@@ -29,14 +29,15 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 
 /**
- *
+ * Tests track piece behavior.
  */
 public class TrackPieceTest extends TestCase {
 
     private World world;
 
     /**
-     * @throws Exception
+     * Initializes the fixture before each test.
+     * @throws Exception if the set up operation fails.
      */
     @Override
     protected void setUp() throws Exception {
@@ -45,7 +46,7 @@ public class TrackPieceTest extends TestCase {
     }
 
     /**
-     *
+     * Tests equals object behavior.
      */
     public void testEqualsObject() {
         TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(TileTransition.NORTH);

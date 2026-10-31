@@ -52,16 +52,20 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
     private Vec2D location;
 
     /**
-     * @param p
+     * Sets the cursor location.
+     *
+     * @param p the map coordinate
      */
     public void setCursorLocation(Vec2D p) {
         location = p;
     }
 
     /**
-     * @param modelRoot
-     * @param rendererRoot
-     * @param closeAction
+     * Sets the up.
+     *
+     * @param modelRoot the client model that provides current game state
+     * @param rendererRoot the renderer root parameter
+     * @param closeAction the action invoked when the panel is closed
      */
     @Override
     public void setup(final ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
@@ -75,6 +79,10 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
                 item.addActionListener(new ActionListener() {
                     private final int terrainId = terrain.getId();
 
+                    /**
+                     * Handles the specified action event.
+                     * @param e the e
+                     */
                     @Override
                     public void actionPerformed(ActionEvent e) {
 

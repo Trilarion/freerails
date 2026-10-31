@@ -38,7 +38,9 @@ public class GameLoop implements Runnable {
     private final GameModel gameModel;
 
     /**
-     * @param screenHandler
+     * Creates a game loop instance.
+     *
+     * @param screenHandler the screen handler parameter
      */
     public GameLoop(ScreenHandler screenHandler) {
         this.screenHandler = screenHandler;
@@ -46,14 +48,19 @@ public class GameLoop implements Runnable {
     }
 
     /**
-     * @param screenHandler
-     * @param gameModel
+     * Creates a game loop instance.
+     *
+     * @param screenHandler the screen handler parameter
+     * @param gameModel the game model parameter
      */
     public GameLoop(ScreenHandler screenHandler, GameModel gameModel) {
         this.screenHandler = screenHandler;
         this.gameModel = Utils.verifyNotNull(gameModel);
     }
 
+    /**
+     * Runs this task.
+     */
     @Override
     public void run() {
         try {

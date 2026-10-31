@@ -25,6 +25,9 @@ import java.io.Serializable;
  * have two independent rules: whether a player may connect to another player's
  * track, and whether the player's new track must stay connected to their own
  * existing track.
+
+ * @param canConnectToOtherPlayersTracks whether players may connect track to another player?s track
+ * @param mustStayConnectedToExistingTrack whether new track must remain connected to existing track
  */
 public record Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConnectedToExistingTrack) implements Serializable {
 

@@ -7,8 +7,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
+/**
+ * Tests my glass panel behavior.
+ */
 public class MyGlassPanelTest extends TestCase {
 
+    /**
+     * Tests creates transparent panel with sized content behavior.
+     */
     public void testCreatesTransparentPanelWithSizedContent() {
         MyGlassPanel panel = new MyGlassPanel();
 

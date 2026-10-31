@@ -34,8 +34,10 @@ import java.io.Serializable;
 public interface MoveGenerator extends Serializable {
 
     /**
-     * @param world
-     * @return
+     * Generates a move using the supplied read-only world state.
+     *
+     * @param world the game world whose state is used to generate the move
+     * @return a move generated from the current world state
      */
     Move generate(UnmodifiableWorld world);
 }

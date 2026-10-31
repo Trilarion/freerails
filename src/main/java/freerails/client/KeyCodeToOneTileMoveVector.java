@@ -55,6 +55,9 @@ public class KeyCodeToOneTileMoveVector {
         keycode2vector.put(KeyEvent.VK_PAGE_UP, TileTransition.NORTH_EAST);
     }
 
+    /**
+     * Creates a key code to one tile move vector instance.
+     */
     private KeyCodeToOneTileMoveVector() {
     }
 

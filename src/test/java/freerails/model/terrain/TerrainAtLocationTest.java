@@ -21,8 +21,14 @@ package freerails.model.terrain;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
+/**
+ * Tests terrain at location behavior.
+ */
 public class TerrainAtLocationTest extends TestCase {
 
+    /**
+     * Tests stores location and terrain type behavior.
+     */
     public void testStoresLocationAndTerrainType() {
         Vec2D location = new Vec2D(12, 7);
         TerrainAtLocation terrain = new TerrainAtLocation(location, 4);

@@ -50,9 +50,11 @@ public class ScreenHandler {
     private boolean isMinimised = false;
 
     /**
-     * @param f
-     * @param mode
-     * @param displayMode
+     * Creates a screen handler instance.
+     *
+     * @param f the f parameter
+     * @param mode the mode parameter
+     * @param displayMode the map coordinate
      */
     public ScreenHandler(JFrame f, int mode, Vec2D displayMode) {
         this.displayMode = displayMode;
@@ -61,14 +63,20 @@ public class ScreenHandler {
     }
 
     /**
-     * @param f
-     * @param mode
+     * Creates a screen handler instance.
+     *
+     * @param f the f parameter
+     * @param mode the mode parameter
      */
     public ScreenHandler(JFrame f, int mode) {
         frame = f;
         this.mode = mode;
     }
 
+    /**
+     * Sets the repaint off and disable double buffering.
+     * @param c the c
+     */
     private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
         c.setIgnoreRepaint(true);
 
@@ -87,6 +95,10 @@ public class ScreenHandler {
         }
     }
 
+    /**
+     * Returns the best display mode.
+     * @return the best display mode
+     */
     private static Vec2D getBestDisplayMode() {
         for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
             DisplayMode[] modes = device.getDisplayModes();
@@ -102,14 +114,14 @@ public class ScreenHandler {
     }
 
     /**
-     *
+     * Performs the exit full screen mode operation.
      */
     public static synchronized void exitFullScreenMode() {
         device.setFullScreenWindow(null);
     }
 
     /**
-     *
+     * Performs the apply operation.
      */
     public synchronized void apply() {
         switch (mode) {
@@ -159,6 +171,10 @@ public class ScreenHandler {
         createBufferStrategy();
 
         frame.addComponentListener(new ComponentAdapter() {
+            /**
+             * Component resized.
+             * @param e the e
+             */
             @Override
             public void componentResized(ComponentEvent e) {
                 createBufferStrategy();
@@ -166,11 +182,19 @@ public class ScreenHandler {
         });
 
         frame.addWindowListener(new WindowAdapter() {
+            /**
+             * Window iconified.
+             * @param e the e
+             */
             @Override
             public void windowIconified(WindowEvent e) {
                 isMinimised = true;
             }
 
+            /**
+             * Window deiconified.
+             * @param e the e
+             */
             @Override
             public void windowDeiconified(WindowEvent e) {
                 isMinimised = false;
@@ -180,6 +204,9 @@ public class ScreenHandler {
         isInUse = true;
     }
 
+    /**
+     * Creates the buffer strategy.
+     */
     private synchronized void createBufferStrategy() {
         // Use 2 back buffers to avoid using too much VRAM.
         frame.createBufferStrategy(2);
@@ -188,14 +215,16 @@ public class ScreenHandler {
     }
 
     /**
-     * @return
+     * Returns the draw graphics.
+     *
+     * @return the draw graphics produced by this method
      */
     public synchronized Graphics getDrawGraphics() {
         return bufferStrategy.getDrawGraphics();
     }
 
     /**
-     *
+     * Performs the swap screens operation.
      */
     public synchronized void swapScreens() {
         if (!bufferStrategy.contentsLost()) {
@@ -204,21 +233,27 @@ public class ScreenHandler {
     }
 
     /**
-     * @return
+     * Returns whether minimised.
+     *
+     * @return {@code true} if minimised; otherwise, {@code false}
      */
     public synchronized boolean isMinimised() {
         return isMinimised;
     }
 
     /**
-     * @return
+     * Returns whether in use.
+     *
+     * @return {@code true} if in use; otherwise, {@code false}
      */
     public synchronized boolean isInUse() {
         return isInUse;
     }
 
     /**
-     * @return
+     * Performs the contents restored operation.
+     *
+     * @return {@code true} if contents restored; otherwise, {@code false}
      */
     public boolean contentsRestored() {
         return bufferStrategy.contentsRestored();
