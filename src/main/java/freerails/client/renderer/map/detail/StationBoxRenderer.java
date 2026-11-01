@@ -25,7 +25,6 @@ import freerails.model.operations.cargo.*;
 import freerails.model.world.*;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
-import freerails.model.*;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
 

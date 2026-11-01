@@ -75,7 +75,6 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     /**
      * Creates a moving train activity along a tile path.
      *
-     * @param path        the path the train will take.
      * @param path complete route available to the train
      * @param engineStep number of transitions from the path start to the engine
      * @param trainLength train length in map-distance units
@@ -386,112 +385,108 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     }
 
     /**
-     * Represents a distance scaled motion in the game.
-     */
-    private static class DistanceScaledMotion implements Motion {
+         * Represents a distance scaled motion in the game.
+         */
+        private record DistanceScaledMotion(Motion motion, double scale) implements Motion {
 
-        @Serial
-        private static final long serialVersionUID = 1L;
-        private final Motion motion;
-        private final double scale;
+            @Serial
+            private static final long serialVersionUID = 1L;
 
         /**
          * Creates a distance scaled motion from the supplied values.
          *
          * @param motion the motion
-         * @param scale the scale
+         * @param scale  the scale
          */
-        private DistanceScaledMotion(Motion motion, double scale) {
-            this.motion = motion;
-            this.scale = scale;
+        private DistanceScaledMotion {
         }
 
-        /**
-         * Returns the total time.
-         *
-         * @return the total time
-         */
-        @Override
-        public double getTotalTime() {
-            return motion.getTotalTime();
-        }
+            /**
+             * Returns the total time.
+             *
+             * @return the total time
+             */
+            @Override
+            public double getTotalTime() {
+                return motion.getTotalTime();
+            }
 
-        /**
-         * Returns the total distance.
-         *
-         * @return the total distance
-         */
-        @Override
-        public double getTotalDistance() {
-            return motion.getTotalDistance() * scale;
-        }
+            /**
+             * Returns the total distance.
+             *
+             * @return the total distance
+             */
+            @Override
+            public double getTotalDistance() {
+                return motion.getTotalDistance() * scale;
+            }
 
-        /**
-         * Returns the distance at time.
-         *
-         * @param time the time
-         * @return the distance at time
-         */
-        @Override
-        public double calculateDistanceAtTime(double time) {
-            return motion.calculateDistanceAtTime(time) * scale;
-        }
+            /**
+             * Returns the distance at time.
+             *
+             * @param time the time
+             * @return the distance at time
+             */
+            @Override
+            public double calculateDistanceAtTime(double time) {
+                return motion.calculateDistanceAtTime(time) * scale;
+            }
 
-        /**
-         * Returns the time at distance.
-         *
-         * @param distance the distance
-         * @return the time at distance
-         */
-        @Override
-        public double calculateTimeAtDistance(double distance) {
-            return motion.calculateTimeAtDistance(distance / scale);
-        }
+            /**
+             * Returns the time at distance.
+             *
+             * @param distance the distance
+             * @return the time at distance
+             */
+            @Override
+            public double calculateTimeAtDistance(double distance) {
+                return motion.calculateTimeAtDistance(distance / scale);
+            }
 
-        /**
-         * Returns the speed at time.
-         *
-         * @param time the time
-         * @return the speed at time
-         */
-        @Override
-        public double calculateSpeedAtTime(double time) {
-            return motion.calculateSpeedAtTime(time) * scale;
-        }
+            /**
+             * Returns the speed at time.
+             *
+             * @param time the time
+             * @return the speed at time
+             */
+            @Override
+            public double calculateSpeedAtTime(double time) {
+                return motion.calculateSpeedAtTime(time) * scale;
+            }
 
-        /**
-         * Returns the acceleration at time.
-         *
-         * @param time the time
-         * @return the acceleration at time
-         */
-        @Override
-        public double calculateAccelerationAtTime(double time) {
-            return motion.calculateAccelerationAtTime(time) * scale;
-        }
+            /**
+             * Returns the acceleration at time.
+             *
+             * @param time the time
+             * @return the acceleration at time
+             */
+            @Override
+            public double calculateAccelerationAtTime(double time) {
+                return motion.calculateAccelerationAtTime(time) * scale;
+            }
 
-        /**
-         * Returns whether this object is equal to the specified object.
-         *
-         * @param obj the object to compare with this object
-         * @return true if this object is equal to the specified object, otherwise false
-         */
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (!(obj instanceof DistanceScaledMotion other)) return false;
-            return Double.compare(scale, other.scale) == 0 && motion.equals(other.motion);
-        }
+            /**
+             * Returns whether this object is equal to the specified object.
+             *
+             * @param obj the object to compare with this object
+             * @return true if this object is equal to the specified object, otherwise false
+             */
+            @Override
+            public boolean equals(Object obj) {
+                if (this == obj) return true;
+                if (!(obj instanceof DistanceScaledMotion other)) return false;
+                return Double.compare(scale, other.scale) == 0 && motion.equals(other.motion);
+            }
 
-        /**
-         * Returns a hash code for this object.
-         *
-         * @return the hash code for this object
-         */
-        @Override
-        public int hashCode() {
-            return 31 * motion.hashCode() + Double.hashCode(scale);
+            /**
+             * Returns a hash code for this object.
+             *
+             * @return the hash code for this object
+             */
+            @Override
+            public int hashCode() {
+                return 31 * motion.hashCode() + Double.hashCode(scale);
+            }
         }
-    }
 
 }

@@ -18,6 +18,7 @@
 
 package freerails.model.game;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -31,6 +32,7 @@ import java.io.Serializable;
  */
 public record Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConnectedToExistingTrack) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3258125847557978416L;
 
     /**

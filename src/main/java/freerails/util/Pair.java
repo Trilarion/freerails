@@ -30,7 +30,7 @@ import java.io.Serializable;
  * <p>
  * Should be HashMap/Comparable/Iterable save.
  * <p>
- * Inspired by https://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-c-pairl-r-in-java
+ * Inspired by <a href="https://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-c-pairl-r-in-java">this</a>
  *
  * @param <A> Type of first element.
  * @param <B> Type of second element.

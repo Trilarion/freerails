@@ -45,14 +45,14 @@ public class ScenarioDataLoaderTest extends TestCase {
     public void testScenarioDataRoundTripsAndBuildsEquivalentWorldConfiguration() throws Exception {
         ScenarioData original = ScenarioDataLoader.load(scenarioDirectory(), "small_south_america");
         ScenarioData configured = new ScenarioData(
-                original.getEngines(),
-                original.getCities(),
-                original.getCargos(),
-                original.getTerrainTypes(),
-                original.getTrackTypes(),
-                original.getSentiments(),
-                original.getRules(),
-                original.getTerrainMap(),
+                original.engines(),
+                original.cities(),
+                original.cargos(),
+                original.terrainTypes(),
+                original.trackTypes(),
+                original.sentiments(),
+                original.rules(),
+                original.terrainMap(),
                 new Clock(1900, 100, new Time(15)),
                 4,
                 false);
@@ -63,12 +63,12 @@ public class ScenarioDataLoaderTest extends TestCase {
             ScenarioData loaded = ScenarioDataLoader.load(temporaryDirectory.toFile(), "small_south_america");
 
             assertEquals(configured, loaded);
-            assertEquals(configured.getRules(), loaded.getRules());
-            assertFalse(loaded.isCityGrowthEnabled());
+            assertEquals(configured.rules(), loaded.rules());
+            assertFalse(loaded.cityGrowthEnabled());
 
             World world = loaded.toWorldBuilder().build();
             assertFalse(world.isCityGrowthEnabled());
-            var terrainMap = loaded.getTerrainMap();
+            var terrainMap = loaded.terrainMap();
             for (int x = 0; x < terrainMap.getWidth(); x++) {
                 for (int y = 0; y < terrainMap.getHeight(); y++) {
                     world.setTile(new Vector2D(x, y), new TerrainTile(terrainMap.get(x, y)));
@@ -83,7 +83,7 @@ public class ScenarioDataLoaderTest extends TestCase {
             Files.writeString(settingsPath, legacySettings.toString());
             ScenarioData loadedLegacySettings =
                     ScenarioDataLoader.load(temporaryDirectory.toFile(), "small_south_america");
-            assertTrue(loadedLegacySettings.isCityGrowthEnabled());
+            assertTrue(loadedLegacySettings.cityGrowthEnabled());
         } finally {
             FileUtils.deleteDirectory(temporaryDirectory.toFile());
         }
@@ -96,7 +96,7 @@ public class ScenarioDataLoaderTest extends TestCase {
     public void testMissingScenarioSettingsDefaultCityGrowthToEnabled() throws Exception {
         ScenarioData scenario = ScenarioDataLoader.load(scenarioDirectory(), "small_south_america");
 
-        assertTrue(scenario.isCityGrowthEnabled());
+        assertTrue(scenario.cityGrowthEnabled());
         assertTrue(scenario.toWorldBuilder().build().isCityGrowthEnabled());
     }
 

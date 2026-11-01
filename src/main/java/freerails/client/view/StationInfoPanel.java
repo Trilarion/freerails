@@ -155,8 +155,6 @@ public class StationInfoPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void previousStationActionPerformed(ActionEvent evt) {
-
-        /**
         // Add your handling code here:
         if (worldIterator.previous()) {
             Vector2D p = ((Station) worldIterator.getElement()).getLocation();
@@ -166,7 +164,6 @@ public class StationInfoPanel extends JPanel implements View {
         } else {
             throw new IllegalStateException();
         }
-         <*/
     }
 
     /**
@@ -214,7 +211,6 @@ public class StationInfoPanel extends JPanel implements View {
      * Display.
      */
     private void display() {
-/*
         if (worldIterator.getRowID() > 0) {
             previousStation.setEnabled(true);
         } else {
@@ -280,7 +276,6 @@ public class StationInfoPanel extends JPanel implements View {
         }
         label1.setText(label);
         repaint();
-        */
     }
 
     /**
@@ -317,8 +312,6 @@ public class StationInfoPanel extends JPanel implements View {
             return;
         }
 
-        // TODO enable this again
-        /*
         int currentIndex = worldIterator.getIndex();
         if (playerKey == PlayerKey.CargoBundles) {
             if (changedIndex == cargoBundleIndex) {
@@ -344,7 +337,6 @@ public class StationInfoPanel extends JPanel implements View {
                 display();
             }
         }
-        */
     }
 
     /**

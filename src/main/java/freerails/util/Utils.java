@@ -273,7 +273,7 @@ public final class Utils {
         if (values.isEmpty()) {
             throw new IndexOutOfBoundsException("List is empty");
         }
-        values.remove(values.size() - 1);
+        values.removeLast();
         return values;
     }
 
@@ -304,7 +304,7 @@ public final class Utils {
         if (list.isEmpty()) {
             throw new IndexOutOfBoundsException("List is empty");
         }
-        list.remove(list.size() - 1);
+        list.removeLast();
     }
 
     /**

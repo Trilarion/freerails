@@ -123,12 +123,10 @@ public class AddStationMoveGenerator implements MoveGenerator {
         }
 
         // check the terrain to see if we can build a station on it...
-        /**
-         * This {@link CompositeMove}adds a station to the station list and adds a
-         * cargo bundle (to store the cargo waiting at the station) to the cargo bundle
-         * list.
-         */
-        // TODO maybe a better way to get an id
+        // This {@link CompositeMove}adds a station to the station list and adds a
+        // cargo bundle (to store the cargo waiting at the station) to the cargo bundle
+        // list.
+        // TODO maybe there is a better way to get an id
         int id = world.getStations(player).size();
         Station station = new Station(id, location, stationName, CargoBatchBundle.EMPTY);
         station = StationUtils.calculateCargoSupplyRateAtStation(world, ruleNumber, station);

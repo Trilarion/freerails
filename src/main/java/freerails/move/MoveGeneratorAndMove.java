@@ -20,6 +20,7 @@ package freerails.move;
 
 import freerails.move.generator.MoveGenerator;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 // TODO remove this, only used in MovePrecommitter
@@ -32,6 +33,7 @@ import java.io.Serializable;
  */
 public record MoveGeneratorAndMove(Move move, MoveGenerator moveGenerator) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3256443607635342897L;
 
     /**

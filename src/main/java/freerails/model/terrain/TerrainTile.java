@@ -20,6 +20,7 @@ package freerails.model.terrain;
 
 import freerails.model.track.TrackPiece;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 // TODO find better name for what it really is
@@ -32,6 +33,7 @@ import java.io.Serializable;
  */
 public record TerrainTile(TrackPiece trackPiece, int terrainTypeId) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3617574907538847544L;
 
     /**

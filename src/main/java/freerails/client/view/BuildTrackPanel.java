@@ -367,18 +367,20 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         setFocusableFalse(buildModeButtonGroup);
 
         // Add button click
-        // buildTrackJPanel.addKeyListener(new KeyListener(){
-        // public void keyPressed(KeyEvent e){
-        // System.out.println(e.getKeyCode());
-        // viewMode.doClick();
-        // }
-        // public void keyReleased(KeyEvent e){
-        //
-        // }
-        // public void keyTyped(KeyEvent e){
-        //
-        // }
-        // });
+        buildTrackJPanel.addKeyListener(new KeyListener() {
+            public void keyPressed(KeyEvent e) {
+                System.out.println(e.getKeyCode());
+                viewMode.doClick();
+            }
+
+            public void keyReleased(KeyEvent e) {
+
+            }
+
+            public void keyTyped(KeyEvent e) {
+
+            }
+        });
     }
 
     /**

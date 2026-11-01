@@ -258,7 +258,7 @@ public class FullServerGameModel implements ServerGameModel {
         for (Player player: world.getPlayers()) {
             for (EngineShop engineShop : world.getEngineShops(player)) {
                 List<TrainTemplate> production = engineShop.getProduction();
-                if (production.size() > 0) {
+                if (!production.isEmpty()) {
 
                     for (TrainTemplate trainTemplate : production) {
                         // build train
@@ -266,7 +266,7 @@ public class FullServerGameModel implements ServerGameModel {
                         List<Integer> wagonTypes = trainTemplate.wagonTypes();
 
                         // If there are no wagons, setup an automatic schedule.
-                        boolean autoSchedule = 0 == wagonTypes.size();
+                        boolean autoSchedule = wagonTypes.isEmpty();
 
                         // generate initial schedule
                         ScheduleState schedule = new ScheduleState();

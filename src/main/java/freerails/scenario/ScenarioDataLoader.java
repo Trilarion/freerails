@@ -82,17 +82,17 @@ public final class ScenarioDataLoader {
         if (!directory.isDirectory() && !directory.mkdirs()) {
             throw new IOException("Could not create scenario directory: " + directory);
         }
-        GsonManager.save(file(directory, "engines.json"), scenario.getEngines());
-        GsonManager.save(file(directory, mapName + "_cities.json"), scenario.getCities());
-        GsonManager.save(file(directory, "cargo_types.json"), scenario.getCargos());
-        GsonManager.save(file(directory, "terrain_types.json"), scenario.getTerrainTypes());
-        GsonManager.save(file(directory, "track_types.json"), scenario.getTrackTypes());
-        GsonManager.save(file(directory, "rules.json"), scenario.getRules());
-        GsonManager.save(file(directory, "sentiments.json"), scenario.getSentiments());
-        GsonManager.saveCompact(file(directory, mapName + "_map.json"), scenario.getTerrainMap());
+        GsonManager.save(file(directory, "engines.json"), scenario.engines());
+        GsonManager.save(file(directory, mapName + "_cities.json"), scenario.cities());
+        GsonManager.save(file(directory, "cargo_types.json"), scenario.cargos());
+        GsonManager.save(file(directory, "terrain_types.json"), scenario.terrainTypes());
+        GsonManager.save(file(directory, "track_types.json"), scenario.trackTypes());
+        GsonManager.save(file(directory, "rules.json"), scenario.rules());
+        GsonManager.save(file(directory, "sentiments.json"), scenario.sentiments());
+        GsonManager.saveCompact(file(directory, mapName + "_map.json"), scenario.terrainMap());
         GsonManager.save(file(directory, SETTINGS_FILE),
-                new ScenarioSettings(scenario.getClock(), scenario.getCurrentSentimentId(),
-                        scenario.isCityGrowthEnabled()));
+                new ScenarioSettings(scenario.clock(), scenario.currentSentimentId(),
+                        scenario.cityGrowthEnabled()));
     }
 
     /**

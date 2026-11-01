@@ -40,35 +40,25 @@ import java.util.*;
  * contains terrain type IDs; generated track and player state are not part of
  * scenario configuration.
  */
-public final class ScenarioData {
+public record ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, SortedSet<Cargo> cargos, SortedSet<Terrain> terrainTypes,
+                           SortedSet<TrackType> trackTypes, SortedSet<Sentiment> sentiments, Rules rules, Array2D terrainMap, Clock clock,
+                           int currentSentimentId, boolean cityGrowthEnabled) {
 
     private static final Clock DEFAULT_CLOCK = new Clock(1840, 1200, new Time(0));
     private static final int DEFAULT_SENTIMENT_ID = 2;
 
-    private final SortedSet<Engine> engines;
-    private final SortedSet<City> cities;
-    private final SortedSet<Cargo> cargos;
-    private final SortedSet<Terrain> terrainTypes;
-    private final SortedSet<TrackType> trackTypes;
-    private final SortedSet<Sentiment> sentiments;
-    private final Rules rules;
-    private final Array2D terrainMap;
-    private final Clock clock;
-    private final int currentSentimentId;
-    private final boolean cityGrowthEnabled;
-
     /**
      * Creates a scenario data from the supplied values.
      *
-     * @param engines the engines
-     * @param cities the cities
-     * @param cargos the cargos
-     * @param terrainTypes the terrain types
-     * @param trackTypes the track types
-     * @param sentiments the sentiments
-     * @param rules the rules
-     * @param terrainMap the terrain map
-     * @param clock the clock
+     * @param engines            the engines
+     * @param cities             the cities
+     * @param cargos             the cargos
+     * @param terrainTypes       the terrain types
+     * @param trackTypes         the track types
+     * @param sentiments         the sentiments
+     * @param rules              the rules
+     * @param terrainMap         the terrain map
+     * @param clock              the clock
      * @param currentSentimentId the identifier to use
      */
     public ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, SortedSet<Cargo> cargos,
@@ -82,17 +72,17 @@ public final class ScenarioData {
     /**
      * Creates a scenario data from the supplied values.
      *
-     * @param engines the engines
-     * @param cities the cities
-     * @param cargos the cargos
-     * @param terrainTypes the terrain types
-     * @param trackTypes the track types
-     * @param sentiments the sentiments
-     * @param rules the rules
-     * @param terrainMap the terrain map
-     * @param clock the clock
+     * @param engines            the engines
+     * @param cities             the cities
+     * @param cargos             the cargos
+     * @param terrainTypes       the terrain types
+     * @param trackTypes         the track types
+     * @param sentiments         the sentiments
+     * @param rules              the rules
+     * @param terrainMap         the terrain map
+     * @param clock              the clock
      * @param currentSentimentId the identifier to use
-     * @param cityGrowthEnabled the city growth enabled
+     * @param cityGrowthEnabled  the city growth enabled
      */
     public ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, SortedSet<Cargo> cargos,
                         SortedSet<Terrain> terrainTypes, SortedSet<TrackType> trackTypes,
@@ -119,12 +109,12 @@ public final class ScenarioData {
      */
     public World.Builder toWorldBuilder() {
         return new World.Builder()
-                .setEngines(getEngines())
-                .setCities(getCities())
-                .setCargos(getCargos())
-                .setTerrainTypes(getTerrainTypes())
-                .setTrackTypes(getTrackTypes())
-                .setSentiments(getSentiments())
+                .setEngines(engines())
+                .setCities(cities())
+                .setCargos(cargos())
+                .setTerrainTypes(terrainTypes())
+                .setTrackTypes(trackTypes())
+                .setSentiments(sentiments())
                 .setRules(rules)
                 .setMapSize(terrainMap.getSize())
                 .setClock(clock)
@@ -132,7 +122,9 @@ public final class ScenarioData {
                 .setCityGrowthEnabled(cityGrowthEnabled);
     }
 
-    /** Captures scenario configuration and terrain IDs from an existing world. */
+    /**
+     * Captures scenario configuration and terrain IDs from an existing world.
+     */
     public static ScenarioData fromWorld(UnmodifiableWorld world) {
         Objects.requireNonNull(world, "world");
         Vector2D size = world.getMapSize();
@@ -189,7 +181,7 @@ public final class ScenarioData {
     /**
      * Returns the set.
      *
-     * @param <T> the type parameter
+     * @param <T>    the type parameter
      * @param values the values to use
      * @return the set
      */
@@ -230,7 +222,8 @@ public final class ScenarioData {
      *
      * @return the engines
      */
-    public SortedSet<Engine> getEngines() {
+    @Override
+    public SortedSet<Engine> engines() {
         return copySet(engines);
     }
 
@@ -239,7 +232,8 @@ public final class ScenarioData {
      *
      * @return the cities
      */
-    public SortedSet<City> getCities() {
+    @Override
+    public SortedSet<City> cities() {
         return copySet(cities);
     }
 
@@ -248,7 +242,8 @@ public final class ScenarioData {
      *
      * @return the cargos
      */
-    public SortedSet<Cargo> getCargos() {
+    @Override
+    public SortedSet<Cargo> cargos() {
         return copySet(cargos);
     }
 
@@ -257,7 +252,8 @@ public final class ScenarioData {
      *
      * @return the terrain types
      */
-    public SortedSet<Terrain> getTerrainTypes() {
+    @Override
+    public SortedSet<Terrain> terrainTypes() {
         return copySet(terrainTypes);
     }
 
@@ -266,7 +262,8 @@ public final class ScenarioData {
      *
      * @return the track types
      */
-    public SortedSet<TrackType> getTrackTypes() {
+    @Override
+    public SortedSet<TrackType> trackTypes() {
         return copySet(trackTypes);
     }
 
@@ -275,7 +272,8 @@ public final class ScenarioData {
      *
      * @return the sentiments
      */
-    public SortedSet<Sentiment> getSentiments() {
+    @Override
+    public SortedSet<Sentiment> sentiments() {
         return copySet(sentiments);
     }
 
@@ -284,7 +282,8 @@ public final class ScenarioData {
      *
      * @return the rules
      */
-    public Rules getRules() {
+    @Override
+    public Rules rules() {
         return rules;
     }
 
@@ -293,7 +292,8 @@ public final class ScenarioData {
      *
      * @return the terrain map
      */
-    public Array2D getTerrainMap() {
+    @Override
+    public Array2D terrainMap() {
         return copyArray(terrainMap);
     }
 
@@ -302,7 +302,8 @@ public final class ScenarioData {
      *
      * @return the clock
      */
-    public Clock getClock() {
+    @Override
+    public Clock clock() {
         return copyClock(clock);
     }
 
@@ -311,12 +312,16 @@ public final class ScenarioData {
      *
      * @return the current sentiment id
      */
-    public int getCurrentSentimentId() {
+    @Override
+    public int currentSentimentId() {
         return currentSentimentId;
     }
 
-    /** Returns whether cities expand at the end of each year in this scenario. */
-    public boolean isCityGrowthEnabled() {
+    /**
+     * Returns whether cities expand at the end of each year in this scenario.
+     */
+    @Override
+    public boolean cityGrowthEnabled() {
         return cityGrowthEnabled;
     }
 
@@ -347,14 +352,4 @@ public final class ScenarioData {
                 && clock.equals(other.clock);
     }
 
-    /**
-     * Returns a hash code for this object.
-     *
-     * @return the hash code for this object
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(engines, cities, cargos, terrainTypes, trackTypes, sentiments,
-                rules, terrainMap, clock, currentSentimentId, cityGrowthEnabled);
-    }
 }

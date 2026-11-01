@@ -295,7 +295,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     /**
      * Single player local games start here.
      */
-    private void startGame() throws IOException {
+    private void startGame() {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "4");
 

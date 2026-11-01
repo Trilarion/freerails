@@ -118,7 +118,7 @@ public class ActionRoot {
 
         UnmodifiableWorld world = modelRoot.getWorld();
 
-        if (world.getTrackTypes().size() > 0) {
+        if (!world.getTrackTypes().isEmpty()) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
             stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), rendererRoot, modelRoot);
         }

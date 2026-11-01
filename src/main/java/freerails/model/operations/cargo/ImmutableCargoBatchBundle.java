@@ -64,7 +64,7 @@ public final class ImmutableCargoBatchBundle implements UnmodifiableCargoBatchBu
      */
     @Override
     public Collection<CargoBatch> getCargoBatches() {
-        return Collections.unmodifiableList(new ArrayList<>(cargoMap.keySet()));
+        return java.util.List.copyOf(cargoMap.keySet());
     }
 
     /**

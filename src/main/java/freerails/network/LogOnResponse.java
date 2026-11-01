@@ -18,6 +18,7 @@
 
 package freerails.network;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -29,6 +30,7 @@ import java.io.Serializable;
  */
 public record LogOnResponse(boolean success, int id, String message) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3690479099844311344L;
 
     /**

@@ -18,6 +18,7 @@
 
 package freerails.model.economy;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -27,6 +28,7 @@ import java.io.Serializable;
  */
 public record Money(long amount) implements Serializable, Comparable<Money> {
 
+    @Serial
     private static final long serialVersionUID = 3258697615163338805L;
     public static final Money ZERO = new Money(0);
 

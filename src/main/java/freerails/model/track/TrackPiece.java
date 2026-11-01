@@ -18,6 +18,7 @@
 
 package freerails.model.track;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -29,6 +30,7 @@ import java.io.Serializable;
  */
 public record TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int playerId) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 4049080423458027569L;
 
     /**

@@ -107,13 +107,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         // TODO only split move receiver so far
         this.modelRoot.addSplitMoveReceiver(move -> {
-            if (move instanceof ChangeGameSpeedMove speedMove) {
+            if (move instanceof ChangeGameSpeedMove(freerails.model.simulation.Speed speed)) {
 
                 // TODO this loop does not loop!
                 for (Action action: speedActions.getActions()) {
                     String actionName = (String) action.getValue(Action.NAME);
 
-                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speedMove.speed().getTicksPerSecond()))) {
+                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speed.getTicksPerSecond()))) {
                         speedActions.setSelectedItem(actionName);
                     }
 
@@ -130,7 +130,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * Count stations.
      */
     private void countStations() {
-        boolean enabled = world.getStations(modelRoot.getPlayer()).size() > 0;
+        boolean enabled = !world.getStations(modelRoot.getPlayer()).isEmpty();
 
         trainsJTabPane.setStationTabEnabled(enabled);
         stationInfoJMenuItem.setEnabled(enabled);

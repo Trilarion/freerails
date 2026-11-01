@@ -39,9 +39,9 @@ public class TrainTest extends TestCase {
         TrainConfiguration configuration = new TrainConfiguration(1, wagonTypes);
 
         wagonTypes.set(0, 9);
-        assertEquals(List.of(2, 3), configuration.getWagonTypes());
+        assertEquals(List.of(2, 3), configuration.wagonTypes());
         try {
-            configuration.getWagonTypes().add(4);
+            configuration.wagonTypes().add(4);
             fail("Expected immutable wagon types");
         } catch (UnsupportedOperationException expected) {
             // Expected.

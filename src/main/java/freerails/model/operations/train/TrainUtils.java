@@ -76,8 +76,6 @@ public final class TrainUtils {
     }
 
     /**
-     * @return the location of the station the train is currently heading
-     * towards.
      * @param world world containing the train and stations
      * @param player owner of the train
      * @param trainId train identifier
@@ -273,8 +271,7 @@ public final class TrainUtils {
             return !keepWaiting(world, player, trainId);
         }
 
-        boolean hasFinishedLastActivity = Math.floor(finishTime) <= (double) currentTime.ticks();
-        return hasFinishedLastActivity;
+        return Math.floor(finishTime) <= (double) currentTime.ticks();
     }
 
     /**

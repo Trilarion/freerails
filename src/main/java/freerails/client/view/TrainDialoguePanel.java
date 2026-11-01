@@ -123,15 +123,12 @@ public class TrainDialoguePanel extends JPanel implements View {
      * @param evt the evt
      */
     private void previousJButtonActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
         // TODO need bidirectional iterator over trains
-        /*
         if (worldIterator.previous()) {
             display(worldIterator.getIndex());
         } else {
             logger.warn("Couldn't get previous");
         }
-        */
     }
 
     /**
@@ -139,15 +136,12 @@ public class TrainDialoguePanel extends JPanel implements View {
      * @param evt the evt
      */
     private void nextJButtonActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
         // TODO need bidirectional iterator over trains
-        /*
         if (worldIterator.next()) {
             display(worldIterator.getIndex());
         } else {
             logger.warn("Couldn't get next");
         }
-        */
     }
 
     /**

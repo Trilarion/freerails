@@ -31,6 +31,7 @@ import freerails.model.track.TrackPiece;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -42,6 +43,7 @@ import java.util.Objects;
  */
 public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece trackPieceAfter, Vector2D location) implements TrackMove {
 
+    @Serial
     private static final long serialVersionUID = 4120849958418591801L;
 
     /**

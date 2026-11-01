@@ -19,7 +19,6 @@
 package freerails.scenario;
 
 import freerails.model.terrain.*;
-import freerails.model.terrain.city.City;
 import freerails.model.terrain.city.CityInitializer;
 import freerails.model.world.World;
 import freerails.util.Array2D;
@@ -108,7 +107,7 @@ public class MapCreator {
         GsonManager.saveCompact(file, map);
         */
 
-        Array2D map = scenario.getTerrainMap();
+        Array2D map = scenario.terrainMap();
         World world = scenario.toWorldBuilder().build();
 
         // TODO what is the purpose of the following section (randomization)

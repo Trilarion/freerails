@@ -23,6 +23,8 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+
 /**
  * Changes the game speed item on the world object.
 
@@ -30,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public record ChangeGameSpeedMove(Speed speed) implements Move {
 
+    @Serial
     private static final long serialVersionUID = 3545794368956086071L;
 
     /**

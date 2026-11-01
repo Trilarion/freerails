@@ -23,6 +23,7 @@ package freerails.model.operations.train;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import java.util.List;
  */
 public record TrainTemplate(int engineId, List<Integer> wagonTypes) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3545515106038592057L;
 
     /**

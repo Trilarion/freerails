@@ -40,7 +40,7 @@ public record CargoProductionOrConsumption(int cargoId, double rate) implements 
             throw new IllegalArgumentException("rate must be finite and non-negative.");
         }
         this.cargoId = cargoId;
-        this.rate = rate == 0 ? 0 : rate;
+        this.rate = rate;
     }
 
 }

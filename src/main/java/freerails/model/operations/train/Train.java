@@ -114,7 +114,7 @@ public class Train extends Identifiable {
 
     /** Returns the engine type identifier. */
     public int getEngine() {
-        return configuration.getEngineId();
+        return configuration.engineId();
     }
 
     /**
@@ -175,7 +175,7 @@ public class Train extends Identifiable {
 
     /** Returns an immutable snapshot of the wagon type identifiers. */
     public List<Integer> getConsist() {
-        return configuration.getWagonTypes();
+        return configuration.wagonTypes();
     }
 
     /**

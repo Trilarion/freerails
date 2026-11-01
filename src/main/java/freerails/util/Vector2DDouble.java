@@ -18,6 +18,7 @@
 
 package freerails.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -29,6 +30,7 @@ import java.io.Serializable;
  */
 public record Vector2DDouble(double x, double y) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

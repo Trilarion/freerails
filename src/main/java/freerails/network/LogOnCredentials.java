@@ -23,6 +23,7 @@ package freerails.network;
 
 import freerails.util.Utils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -33,6 +34,7 @@ import java.io.Serializable;
  */
 public record LogOnCredentials(String username, String password) implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3258409551740155956L;
 
     /**

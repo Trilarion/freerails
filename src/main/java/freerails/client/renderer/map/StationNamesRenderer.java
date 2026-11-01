@@ -22,7 +22,6 @@ import freerails.client.ModelRootProperty;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.model.*;
 import freerails.client.ClientConstants;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;

@@ -174,10 +174,8 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
 
         // ie. load train / pickup cargo
-        /**
-         * Transfer cargo from the station to the train subject to the space
-         * available on the train.
-         */
+        // Transfer cargo from the station to the train subject to the space
+        // available on the train.
         List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, trainAfter, consist);
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);

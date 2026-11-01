@@ -19,6 +19,7 @@
 package freerails.util;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -32,6 +33,7 @@ import java.io.Serializable;
  */
 public record Vector2D(int x, int y) implements Serializable, Comparable<Vector2D> {
 
+    @Serial
     private static final long serialVersionUID = -3053020239886388576L;
     /**
      * Static zero vector.

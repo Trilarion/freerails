@@ -24,21 +24,19 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
-/** Immutable engine and wagon configuration for a train. */
-public final class TrainConfiguration implements Serializable {
+/**
+ * Immutable engine and wagon configuration for a train.
+ */
+public record TrainConfiguration(int engineId, List<Integer> wagonTypes) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final int engineId;
-    private final List<Integer> wagonTypes;
-
     /**
      * Creates a configuration with the specified engine and ordered wagon types.
      *
-     * @param engineId engine type identifier
+     * @param engineId   engine type identifier
      * @param wagonTypes wagon type identifiers in consist order
      */
     public TrainConfiguration(int engineId, @NotNull List<Integer> wagonTypes) {
@@ -46,17 +44,25 @@ public final class TrainConfiguration implements Serializable {
         this.wagonTypes = List.copyOf(wagonTypes);
     }
 
-    /** Returns the engine type identifier. */
-    public int getEngineId() {
+    /**
+     * Returns the engine type identifier.
+     */
+    @Override
+    public int engineId() {
         return engineId;
     }
 
-    /** Returns an immutable snapshot of the wagon type identifiers. */
-    public List<Integer> getWagonTypes() {
+    /**
+     * Returns an immutable snapshot of the wagon type identifiers.
+     */
+    @Override
+    public List<Integer> wagonTypes() {
         return wagonTypes;
     }
 
-    /** Returns the number of wagons in the consist. */
+    /**
+     * Returns the number of wagons in the consist.
+     */
     public int getNumberOfWagons() {
         return wagonTypes.size();
     }
@@ -72,17 +78,23 @@ public final class TrainConfiguration implements Serializable {
         return wagonTypes.get(position);
     }
 
-    /** Returns the train length in map-distance units, including its engine. */
+    /**
+     * Returns the train length in map-distance units, including its engine.
+     */
     public int getLength() {
         return (1 + wagonTypes.size()) * ModelConstants.WAGON_LENGTH;
     }
 
-    /** Returns a configuration with a different engine and the same wagons. */
+    /**
+     * Returns a configuration with a different engine and the same wagons.
+     */
     public TrainConfiguration withEngineId(int newEngineId) {
         return new TrainConfiguration(newEngineId, wagonTypes);
     }
 
-    /** Returns a configuration with different wagons and the same engine. */
+    /**
+     * Returns a configuration with different wagons and the same engine.
+     */
     public TrainConfiguration withWagonTypes(@NotNull List<Integer> newWagonTypes) {
         return new TrainConfiguration(engineId, newWagonTypes);
     }
@@ -104,13 +116,4 @@ public final class TrainConfiguration implements Serializable {
         return engineId == other.engineId && wagonTypes.equals(other.wagonTypes);
     }
 
-    /**
-     * Returns a hash code for this object.
-     *
-     * @return the hash code for this object
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(engineId, wagonTypes);
-    }
 }
