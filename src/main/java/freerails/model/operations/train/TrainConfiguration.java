@@ -110,10 +110,10 @@ public record TrainConfiguration(int engineId, List<Integer> wagonTypes) impleme
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof TrainConfiguration other)) {
+        if (!(obj instanceof TrainConfiguration(int id, List<Integer> types))) {
             return false;
         }
-        return engineId == other.engineId && wagonTypes.equals(other.wagonTypes);
+        return engineId == id && wagonTypes.equals(types);
     }
 
 }

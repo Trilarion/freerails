@@ -27,7 +27,7 @@ import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
@@ -120,7 +120,7 @@ class BrokerFrame extends JInternalFrame {
      * @param url the url parameter
      * @param context the context parameter
      */
-    private BrokerFrame(URL url, HashMap context) {
+    private BrokerFrame(URL url, Map<String, ?> context) {
         this();
         String template = loadText(url);
         String populatedTemplate = populateTokens(template, context);
@@ -172,8 +172,8 @@ class BrokerFrame extends JInternalFrame {
             if (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
                 String value;
-                if (context instanceof HashMap) {
-                    value = (String) ((HashMap) context).get(token);
+                if (context instanceof Map<?, ?> map) {
+                    value = String.valueOf(map.get(token));
                 } else {
                     try {
                         Field field = context.getClass().getField(token);

@@ -474,8 +474,8 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
             @Override
             public boolean equals(Object obj) {
                 if (this == obj) return true;
-                if (!(obj instanceof DistanceScaledMotion other)) return false;
-                return Double.compare(scale, other.scale) == 0 && motion.equals(other.motion);
+                if (!(obj instanceof DistanceScaledMotion(Motion motion1, double scale1))) return false;
+                return Double.compare(scale, scale1) == 0 && motion.equals(motion1);
             }
 
             /**

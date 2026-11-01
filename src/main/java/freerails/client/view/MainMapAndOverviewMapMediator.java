@@ -144,21 +144,11 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
     @Override
     public void mouseDragged(MouseEvent e) {
         if (draggingAndStartedInside) {
-            /*
-             * Rectangle r= overviewMapJPanel.mainMapVisibleRect;
-             * r.x+=evt.getX()-lastMouseLocation.x;
-             * r.y+=evt.getY()-lastMouseLocation.y;
-             * lastMouseLocation.x=evt.getX(); lastMouseLocation.y=evt.getY();
-             *
-             * updateInside(evt); overviewMapJPanel.repaint();
-             */
             int deltaX = e.getX() - lastMouseLocation.x;
             int deltaY = e.getY() - lastMouseLocation.y;
             lastMouseLocation.x = e.getX();
             lastMouseLocation.y = e.getY();
 
-            // float overviewScale=overviewMapJPanel.getScale();
-            // float mainMapScale=mainMap.getScale();
             int overviewScale = overviewMapJPanel.getPreferredSize().width;
             int mainMapScale = mainMap.getWidth();
 

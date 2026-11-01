@@ -27,9 +27,12 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.world.*;
-import freerails.util.Vector2D;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
+import freerails.model.ModelConstants;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -39,8 +42,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.Serial;
-import java.io.Serializable;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO with the demise of the NonNullWorldIterator this is broken completely, need a bidirectional iterator over stations
 /**
@@ -53,12 +56,8 @@ public class StationInfoPanel extends JPanel implements View {
     private static final long serialVersionUID = 4050759377680150585L;
     private UnmodifiableWorld world;
     private ModelRoot modelRoot;
-    private Iterator<Station> worldIterator;
-
-    /**
-     * The index of the cargoBundle associated with this station.
-     */
-    private Serializable lastCargoBundle = null;
+    private final List<Station> stations = new ArrayList<>();
+    private int stationIndex = -1;
     private JButton close;
     private JLabel label1;
     private JButton nextStation;
@@ -155,14 +154,10 @@ public class StationInfoPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void previousStationActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
-        if (worldIterator.previous()) {
-            Vector2D p = ((Station) worldIterator.getElement()).getLocation();
-            modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
-
+        if (stationIndex > 0) {
+            stationIndex--;
+            modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, stations.get(stationIndex).getLocation());
             display();
-        } else {
-            throw new IllegalStateException();
         }
     }
 
@@ -171,14 +166,10 @@ public class StationInfoPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void nextStationActionPerformed(ActionEvent evt) {
-
-        // Add your handling code here:
-        if (worldIterator.hasNext()) {
-            Vector2D p = worldIterator.next().getLocation();
-            modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
+        if (stationIndex >= 0 && stationIndex < stations.size() - 1) {
+            stationIndex++;
+            modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, stations.get(stationIndex).getLocation());
             display();
-        } else {
-            throw new IllegalStateException();
         }
     }
 
@@ -190,10 +181,12 @@ public class StationInfoPanel extends JPanel implements View {
      */
     @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
-        worldIterator = modelRoot.getWorld().getStations(modelRoot.getPlayer()).iterator();
-        addComponentListener(componentListener);
-        world = modelRoot.getWorld();
         this.modelRoot = modelRoot;
+        this.world = modelRoot.getWorld();
+        this.stations.clear();
+        this.stations.addAll(this.world.getStations(modelRoot.getPlayer()));
+        this.stationIndex = this.stations.isEmpty() ? -1 : 0;
+        addComponentListener(componentListener);
         close.addActionListener(closeAction);
     }
 
@@ -202,8 +195,11 @@ public class StationInfoPanel extends JPanel implements View {
      * @param stationNumber the station number
      */
     public void setStation(int stationNumber) {
-        // TODO broken with the demise of the NonNullWorldIterator
-        //worldIterator.gotoIndex(stationNumber);
+        if (stations.isEmpty()) {
+            stationIndex = -1;
+            return;
+        }
+        stationIndex = Math.clamp(stationNumber, 0, stations.size() - 1);
         display();
     }
 
@@ -211,53 +207,34 @@ public class StationInfoPanel extends JPanel implements View {
      * Display.
      */
     private void display() {
-        if (worldIterator.getRowID() > 0) {
-            previousStation.setEnabled(true);
-        } else {
-            previousStation.setEnabled(false);
-        }
+        previousStation.setEnabled(stationIndex > 0);
+        nextStation.setEnabled(stationIndex >= 0 && stationIndex < stations.size() - 1);
 
-        if (worldIterator.getRowID() < (worldIterator.size() - 1)) {
-            nextStation.setEnabled(true);
-        } else {
-            nextStation.setEnabled(false);
-        }
-
-
-        int stationNumber = worldIterator.getIndex();
         String label;
-        if (stationNumber != WorldIterator.BEFORE_FIRST) {
-            Station station = world.getStation(modelRoot.getPlayer(), stationNumber);
-            TerrainTile tile = (TerrainTile) world.getTile(station.location);
-            String stationTypeName = tile.getTrackPiece().getTrackType().getName();
-            cargoBundleIndex = station.getCargoBatchBundle();
-            CargoBatchBundle cargoWaiting = (UnmodifiableCargoBatchBundle) world.get(modelRoot.getPlayer(), PlayerKey.CargoBundles, station.getCargoBatchBundle());
+        if (stationIndex >= 0 && stationIndex < stations.size()) {
+            Station station = stations.get(stationIndex);
+            TerrainTile tile = world.getTile(station.getLocation());
+            String stationTypeName = tile.trackPiece().trackType().getName();
+            UnmodifiableCargoBatchBundle cargoWaiting = station.getCargoBatchBundle();
 
             StringBuilder table1 = new StringBuilder();
-
             table1.append("<html>");
-
             table1.append("<h2 align=\"center\">");
             table1.append(station.getStationName());
             table1.append(" (");
             table1.append(stationTypeName);
             table1.append(")</h2>");
-
             table1.append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Demand</td>\n    <td>Supplies<br/>(cars/year)</td><td>Ready<br />(loads)</td>  </tr>");
 
             for (Cargo cargo : world.getCargos()) {
                 int id = cargo.getId();
-
-                String demanded = (station.getDemandForCargo().isCargoDemanded(id) ? "Yes" : "No");
-
+                String demanded = station.getDemandForCargo().isCargoDemanded(id) ? "Yes" : "No";
                 int amountSupplied = station.getSupply().getSupply(id);
-                boolean isSupplied = (amountSupplied > 0);
+                boolean isSupplied = amountSupplied > 0;
                 String supply = isSupplied ? String.valueOf(amountSupplied / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
-
                 int amountWaiting = cargoWaiting.getAmountOfType(id);
-                String waiting = (amountWaiting > 0) ? String.valueOf(amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
+                String waiting = amountWaiting > 0 ? String.valueOf(amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
-                // build the html
                 if (station.getDemandForCargo().isCargoDemanded(id) || isSupplied) {
                     table1.append("<tr>");
                     table1.append("<td>").append(cargo.getName()).append("</td>");
@@ -271,7 +248,6 @@ public class StationInfoPanel extends JPanel implements View {
             table1.append("</html>");
             label = table1.toString();
         } else {
-            cargoBundleIndex = WorldIterator.BEFORE_FIRST;
             label = "<html><h2 align=\"center\">No Station " + "Selected</h2></html>";
         }
         label1.setText(label);
@@ -287,56 +263,7 @@ public class StationInfoPanel extends JPanel implements View {
         // We need to update if the cargo bundle has changed.
         Player playerPlayer = modelRoot.getPlayer();
 
-        /*
-         * Avoid a array out of bounds exception when there are no stations and
-         * the stations tab is visible.
-         */
-        // TODO unclear how cargoBundleIndex ever got set to anything meaningful?
-        /**
-            Serializable currentCargoBundle = world.get(playerPlayer, PlayerKey.CargoBundles, cargoBundleIndex);
-            if (lastCargoBundle != currentCargoBundle) {
-                display();
-                lastCargoBundle = currentCargoBundle;
-            }
-         */
         super.paintComponent(g);
-    }
-
-    /**
-     * React to update.
-     * @param changedIndex the changed index
-     * @param isAddition the is addition
-     */
-    private void reactToUpdate(int changedIndex, boolean isAddition) {
-        if (!isVisible()) {
-            return;
-        }
-
-        int currentIndex = worldIterator.getIndex();
-        if (playerKey == PlayerKey.CargoBundles) {
-            if (changedIndex == cargoBundleIndex) {
-                // update our cargo bundle
-                display();
-            }
-        } else if (playerKey == PlayerKey.Stations) {
-            worldIterator.reset();
-            if (currentIndex != WorldIterator.BEFORE_FIRST) {
-                if (currentIndex < worldIterator.size()) {
-                    worldIterator.gotoIndex(currentIndex);
-                } else {
-                    currentIndex = WorldIterator.BEFORE_FIRST;
-                }
-            }
-            if (isAddition && worldIterator.getIndex() == WorldIterator.BEFORE_FIRST) {
-                if (worldIterator.next()) {
-                    display();
-                }
-            }
-
-            if (currentIndex == changedIndex || currentIndex == WorldIterator.BEFORE_FIRST) {
-                display();
-            }
-        }
     }
 
     /**

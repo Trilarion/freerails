@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
  */
 public class PathWalkerImpl implements PathWalker {
 
-    private static final long serialVersionUID = 4050204158701155639L;
     private final PathIterator it;
 
     /**

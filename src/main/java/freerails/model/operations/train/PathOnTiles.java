@@ -428,7 +428,6 @@ public class PathOnTiles implements Serializable {
     /** Path iterator backed by an ordered list of points. */
     private static class MyPathIterator implements PathIterator {
 
-        private static final long serialVersionUID = -4128415959622019625L;
         private final LinkedList<Vector2D> points;
         private int index;
 

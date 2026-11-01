@@ -40,7 +40,7 @@ public class ActionRoot {
     private TrackMoveProducer trackMoveProducer;
 
     /**
-     * Creates a action root instance.
+     * Creates an action root instance.
      *
      * @param serverControls the server controls parameter
      */

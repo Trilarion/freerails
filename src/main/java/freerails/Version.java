@@ -2,10 +2,10 @@
 package freerails;
 
 /**
- * Build-generated version metadata for the application.
+ * Holds build-time version information for the application.
  */
 public final class Version {
     public static final String VERSION = "0.4.1";
-    public static final String GIT_REVISION = "9c18dfb2-M";
-    public static final String CREATION_DATE = "2026-10-29 21:37:11";
+    public static final String GIT_REVISION = "8acf1f84-M";
+    public static final String CREATION_DATE = "2026-11-01 01:19:42";
 }

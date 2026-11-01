@@ -68,45 +68,7 @@ public class MapCreator {
         File directory = new File(url.toURI());
         ScenarioData scenario = ScenarioDataLoader.load(directory, mapName);
 
-        /*
         // Load the terrain map
-        URL map_url = MapCreator.class.getResource("/freerails/data/" + mapName + ".png");
-
-        // converts an image file into a map.
-        // Implemented Terrain Randomisation to randomly position the terrain types for each tile on the map.
-
-        Image mapImage = (new ImageIcon(map_url)).getImage();
-        Rectangle mapRect = new Rectangle(0, 0, mapImage.getWidth(null), mapImage.getHeight(null));
-        BufferedImage mapBufferedImage = new BufferedImage(mapRect.width, mapRect.height, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = mapBufferedImage.getGraphics();
-        g.drawImage(mapImage, 0, 0, null);
-
-        Map<Integer, Integer> rgb2TerrainType = new HashMap<>();
-
-        for (int i = 0; i < world.getTerrains().size(); i++) {
-            TerrainType terrainType = (TerrainType) world.get(SharedKey.TrackRules, i);
-            rgb2TerrainType.put(terrainType.getRGB(), i);
-        }
-        */
-
-
-        // Load the terrain map
-
-        /*
-        // special code to store terrain type from map in json
-        final int width = mapImage.getWidth(null);
-        final int height = mapImage.getHeight(null);
-        Array2D map = new Array2D(width, height);
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                int rgb = mapBufferedImage.getRGB(j, i);
-                map.set(j, i, rgb2TerrainType.get(rgb));
-            }
-        }
-        file = new File(mapName + "_map.json");
-        GsonManager.saveCompact(file, map);
-        */
-
         Array2D map = scenario.terrainMap();
         World world = scenario.toWorldBuilder().build();
 

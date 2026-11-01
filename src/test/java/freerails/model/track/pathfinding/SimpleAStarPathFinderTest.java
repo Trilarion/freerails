@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  */
 public class SimpleAStarPathFinderTest extends TestCase {
 
-    private Map map;
+    private TestMap map;
     private SimpleAStarPathFinder pathFinder;
 
     /**
@@ -38,7 +38,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        map = new Map();
+        map = new TestMap();
         pathFinder = new SimpleAStarPathFinder();
     }
 
@@ -101,7 +101,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
     /**
      * Provides test support for map.
      */
-    private static class Map implements GraphExplorer {
+    private static class TestMap implements GraphExplorer {
         // Look at SimpleAStarPathFinderTest.svg to see it
         private final Node[] nodes = new Node[]{
                 new Node(new int[]{1}, new int[]{11}), // 0

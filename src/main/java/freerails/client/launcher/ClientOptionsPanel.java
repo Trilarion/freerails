@@ -25,18 +25,14 @@ package freerails.client.launcher;
 
 import freerails.Options;
 import freerails.client.ClientConstants;
-import freerails.client.view.DisplayModesComboBoxModels;
-import freerails.util.Vector2D;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -44,8 +40,7 @@ import java.io.Serial;
 import java.net.InetSocketAddress;
 
 /**
- * The Launcher panel that lets you choose fullscreen or windowed mode and the
- * screen resolution etc.
+ * The Launcher panel that lets you choose fullscreen or windowed mode.
  */
 public class ClientOptionsPanel extends JPanel {
 
@@ -55,7 +50,6 @@ public class ClientOptionsPanel extends JPanel {
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
     private JRadioButton fullScreenButton;
-    private JList<Vector2D> list1;
     private JPanel jPanel4;
     private JTextField playerName;
     private JComboBox<String> playerNames;
@@ -84,8 +78,6 @@ public class ClientOptionsPanel extends JPanel {
         remotePort = new JTextField();
         JPanel spacer = new JPanel();
         JPanel jPanel1 = new JPanel();
-        JScrollPane jScrollPane1 = new JScrollPane();
-        list1 = new JList<>();
         JPanel jPanel2 = new JPanel();
         windowedButton = new JRadioButton();
         fullScreenButton = new JRadioButton();
@@ -163,26 +155,10 @@ public class ClientOptionsPanel extends JPanel {
         gridBagConstraints.weightx = 1.0;
         add(jPanel4, gridBagConstraints);
 
-        jPanel1.setLayout(new BorderLayout());
+        jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
+        jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "Screen Mode"));
 
-        jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "Select Display Mode"));
-        jScrollPane1.setBorder(new BevelBorder(BevelBorder.LOWERED));
-
-        Vector2D displayMode = Options.DISPLAY_MODE;
-        Boolean fullscreenProp = Options.MAINWINDOW_FULLSCREEN;
-        boolean fullscreen = false;
-        if (displayMode != null) {
-            fullscreen = fullscreenProp;
-        }
-
-        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list1.setEnabled(fullscreen);
-
-        list1.addListSelectionListener(this::list1ValueChanged);
-
-        jScrollPane1.setViewportView(list1);
-
-        jPanel1.add(jScrollPane1, BorderLayout.CENTER);
+        boolean fullscreen = Boolean.TRUE.equals(Options.MAINWINDOW_FULLSCREEN);
 
         jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.Y_AXIS));
 
@@ -202,7 +178,7 @@ public class ClientOptionsPanel extends JPanel {
 
         jPanel2.add(fullScreenButton);
 
-        jPanel1.add(jPanel2, BorderLayout.NORTH);
+        jPanel1.add(jPanel2);
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -212,18 +188,6 @@ public class ClientOptionsPanel extends JPanel {
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
 
-        DisplayModesComboBoxModels listModel = new DisplayModesComboBoxModels();
-        listModel.removeDisplayModesBelow(640, 480, 16);
-        list1.setModel(listModel);
-        int pos = 0;
-        for (int i = 0; i < listModel.getSize(); i++) {
-            if (listModel.getElementAt(i).toString().equals(displayMode)) {
-                pos = i;
-                break;
-            }
-        }
-        list1.setSelectedIndex(pos);
-        list1.ensureIndexIsVisible(list1.getSelectedIndex());
         validateInput();
         // Listen for changes in the server port text box.
         DocumentListener documentListener = new DocumentListener() {
@@ -300,18 +264,6 @@ public class ClientOptionsPanel extends JPanel {
     }
 
     /**
-     * Returns the display mode.
-     * @return the display mode
-     */
-    Vector2D getDisplayMode() {
-        if (fullScreenButton.isSelected()) {
-            // TODO readout list1
-            return new Vector2D(800, 600);
-        }
-        return null;
-    }
-
-    /**
      * Returns the remote server address.
      * @return the remote server address
      */
@@ -332,12 +284,6 @@ public class ClientOptionsPanel extends JPanel {
         } catch (IllegalArgumentException e) {
             return null;
         }
-        /*
-         * cut and pasted InetSocketAddress isa = getRemoteServerAddress(); if
-         * (isa == null) { infoText = "Please enter a valid remote server
-         * address"; } else if (isa.isUnresolved()) { infoText = "Couldn't
-         * resolve remote server address"; } else { isValid = true; }
-         */
         return address;
     }
 
@@ -369,16 +315,6 @@ public class ClientOptionsPanel extends JPanel {
             return;
         }
 
-        /*
-         * Validate display-mode selection. Note, on some systems the display
-         * mode can't be changed, in which case the list of selectable display
-         * modes will have length 0.
-         */
-        if (fullScreenButton.isSelected() && list1.getModel().getSize() > 0 && list1.getSelectedIndex() == -1) {
-            owner.setInfoText("Select a display-mode.", InfoMessageType.ERROR);
-            return;
-        }
-
         // Everything is success.
         owner.hideErrorMessages();
 
@@ -386,9 +322,6 @@ public class ClientOptionsPanel extends JPanel {
         Options.NAME = playerName.getText();
         Options.IP = remoteIP.getText();
         Options.MAINWINDOW_FULLSCREEN = fullScreenButton.isSelected();
-        if (getDisplayMode() != null) {
-            Options.DISPLAY_MODE = getDisplayMode();
-        }
     }
 
     /**
@@ -412,9 +345,6 @@ public class ClientOptionsPanel extends JPanel {
     public void setControlsEnabled(boolean enabled) {
         windowedButton.setEnabled(enabled);
         fullScreenButton.setEnabled(enabled);
-        if (fullScreenButton.isSelected()) {
-            list1.setEnabled(enabled);
-        }
     }
 
     /**
@@ -423,14 +353,6 @@ public class ClientOptionsPanel extends JPanel {
      */
     void setRemoteServerPanelVisible(boolean b) {
         jPanel4.setVisible(b);
-    }
-
-    /**
-     * List1 value changed.
-     * @param evt the evt
-     */
-    private void list1ValueChanged(ListSelectionEvent evt) {
-        validateInput();
     }
 
     /**
@@ -446,7 +368,6 @@ public class ClientOptionsPanel extends JPanel {
      * @param evt the evt
      */
     private void fullScreenButtonStateChanged(ChangeEvent evt) {
-        list1.setEnabled(fullScreenButton.isSelected());
         validateInput();
     }
 }

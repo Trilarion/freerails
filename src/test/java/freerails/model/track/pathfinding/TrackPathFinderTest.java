@@ -82,14 +82,14 @@ public class TrackPathFinderTest extends TestCase {
             BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
 
             TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer);
-            List l = pathFinder.generatePath(Vector2D.ZERO, new Vector2D(0,5), buildTrackStrategy);
-            assertEquals(5, l.size());
+            List<Vector2D> path = pathFinder.generatePath(Vector2D.ZERO, new Vector2D(0,5), buildTrackStrategy);
+            assertEquals(5, path.size());
 
-            List list2 = pathFinder.generatePath(new Vector2D(5, 5),new Vector2D(5, 10), buildTrackStrategy);
-            assertEquals(5, list2.size());
+            List<Vector2D> path2 = pathFinder.generatePath(new Vector2D(5, 5),new Vector2D(5, 10), buildTrackStrategy);
+            assertEquals(5, path2.size());
 
-            list2 = pathFinder.generatePath(new Vector2D(5, 10), new Vector2D(5,5), buildTrackStrategy);
-            assertEquals(5, list2.size());
+            path2 = pathFinder.generatePath(new Vector2D(5, 10), new Vector2D(5,5), buildTrackStrategy);
+            assertEquals(5, path2.size());
         } catch (PathNotFoundException e) {
             e.printStackTrace();
             fail();

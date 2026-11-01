@@ -25,9 +25,13 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.model.operations.train.Train;
 import freerails.model.player.Player;
 import freerails.model.world.*;
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,6 +56,8 @@ public class TrainDialoguePanel extends JPanel implements View {
     private JButton trainListJButton;
     private UnmodifiableWorld world;
     private Player player;
+    private final List<Train> trains = new ArrayList<>();
+    private int currentTrainIndex = -1;
 
     /**
      * Creates a train dialogue panel instance.
@@ -123,9 +129,9 @@ public class TrainDialoguePanel extends JPanel implements View {
      * @param evt the evt
      */
     private void previousJButtonActionPerformed(ActionEvent evt) {
-        // TODO need bidirectional iterator over trains
-        if (worldIterator.previous()) {
-            display(worldIterator.getIndex());
+        if (currentTrainIndex > 0) {
+            currentTrainIndex--;
+            display(trains.get(currentTrainIndex).getId());
         } else {
             logger.warn("Couldn't get previous");
         }
@@ -136,9 +142,9 @@ public class TrainDialoguePanel extends JPanel implements View {
      * @param evt the evt
      */
     private void nextJButtonActionPerformed(ActionEvent evt) {
-        // TODO need bidirectional iterator over trains
-        if (worldIterator.next()) {
-            display(worldIterator.getIndex());
+        if (currentTrainIndex >= 0 && currentTrainIndex < trains.size() - 1) {
+            currentTrainIndex++;
+            display(trains.get(currentTrainIndex).getId());
         } else {
             logger.warn("Couldn't get next");
         }
@@ -157,6 +163,9 @@ public class TrainDialoguePanel extends JPanel implements View {
         setCancelButtonActionListener(closeAction);
         player = modelRoot.getPlayer();
         world = modelRoot.getWorld();
+        trains.clear();
+        trains.addAll(world.getTrains(player));
+        currentTrainIndex = trains.isEmpty() ? -1 : 0;
     }
 
     /**
@@ -164,23 +173,6 @@ public class TrainDialoguePanel extends JPanel implements View {
      * @param trainNumber the train number
      */
     public void display(int trainNumber) {
-        // TODO this enables and disables the next/previous buttons, we need to re-implement this
-        /*
-        worldIterator = new NonNullElementWorldIterator(PlayerKey.Trains, world, player);
-        worldIterator.gotoIndex(trainNumber);
-        if (worldIterator.getRowID() > 0) {
-            previousJButton.setEnabled(true);
-        } else {
-            previousJButton.setEnabled(false);
-        }
-
-        if (worldIterator.getRowID() < (worldIterator.size() - 1)) {
-            nextJButton.setEnabled(true);
-        } else {
-            nextJButton.setEnabled(false);
-        }
-        */
-
         newTrainSchedulePanel1.display(trainNumber);
         trainDetailsJPanel1.displayTrain(trainNumber);
     }

@@ -32,7 +32,7 @@ import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
@@ -95,7 +95,7 @@ public class HtmlPanel extends JPanel implements View {
      * @param url the url
      * @param context the context
      */
-    private HtmlPanel(URL url, HashMap context) {
+    private HtmlPanel(URL url, Map<String, ?> context) {
         this();
         String template = loadText(url);
         String populatedTemplate = populateTokens(template, context);
@@ -128,8 +128,8 @@ public class HtmlPanel extends JPanel implements View {
             if (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
                 String value;
-                if (context instanceof HashMap) {
-                    value = (String) ((HashMap) context).get(token);
+                if (context instanceof Map<?, ?> map) {
+                    value = String.valueOf(map.get(token));
                 } else {
                     try {
                         StringTokenizer t2 = new StringTokenizer(token, ".");

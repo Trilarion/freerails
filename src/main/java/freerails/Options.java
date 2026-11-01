@@ -21,7 +21,6 @@ package freerails;
 import com.google.gson.*;
 import freerails.model.ModelConstants;
 import freerails.util.Utils;
-import freerails.util.Vector2D;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -40,9 +39,6 @@ public final class Options {
 
     // main window
     public static Boolean MAINWINDOW_FULLSCREEN;
-
-    // window resolution
-    public static Vector2D DISPLAY_MODE;
 
     // sound
     public static Boolean SOUNDTRACK_MUTE;
@@ -66,7 +62,6 @@ public final class Options {
     public static void reset() {
         NAME = System.getProperty("user.name");
         MAINWINDOW_FULLSCREEN = false;
-        DISPLAY_MODE = Vector2D.ZERO;
         SOUNDTRACK_MUTE = false;
         IP = "127.0.0.1";
         PORT = 55000;

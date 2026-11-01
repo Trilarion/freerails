@@ -43,7 +43,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     // TODO if only mapSize is needed, do not send the full world here
     /**
-     * Creates a abstract tile renderer instance.
+     * Creates an abstract tile renderer instance.
      * @param terrainType the terrain type
      * @param typesTreatedAsSame the types treated as same
      * @param numberTileIcons the number tile icons

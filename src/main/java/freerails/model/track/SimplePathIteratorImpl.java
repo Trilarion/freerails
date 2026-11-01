@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
  */
 public class SimplePathIteratorImpl implements PathIterator {
 
-    private static final long serialVersionUID = 3618420406261003576L;
     private final List<Vector2D> points;
     private int position = 0;
 

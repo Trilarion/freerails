@@ -43,7 +43,7 @@ public record CargoConversion(int sourceCargoId, int productCargoId, double conv
         }
         this.sourceCargoId = sourceCargoId;
         this.productCargoId = productCargoId;
-        this.conversionRate = conversionRate;
+        this.conversionRate = (conversionRate == 0.0d) ? 0.0d : conversionRate;
     }
 
 }

@@ -31,7 +31,6 @@ import freerails.model.simulation.Speed;
 import freerails.model.simulation.Time;
 import freerails.model.player.Player;
 import freerails.network.command.ClientProperty;
-import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 
@@ -56,9 +55,8 @@ public class LauncherClient extends FreerailsClient {
      *
      * @param name the name parameter
      * @param screenMode the screen mode parameter
-     * @param displayMode the map coordinate
      */
-    public LauncherClient(String name, int screenMode, Vector2D displayMode) {
+    public LauncherClient(String name, int screenMode) {
         this.name = name;
         // Set up model root and action root.
         modelRoot = new ModelRootImpl();
@@ -70,7 +68,7 @@ public class LauncherClient extends FreerailsClient {
         // Create GUI components
         factory = new GUIComponentFactoryImpl(modelRoot, actionRoot);
         JFrame createClientJFrame = factory.createClientJFrame(name);
-        screenHandler = new ScreenHandler(createClientJFrame, screenMode, displayMode);
+        screenHandler = new ScreenHandler(createClientJFrame, screenMode);
     }
 
     /**

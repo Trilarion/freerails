@@ -96,7 +96,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
         jPanel1.setLayout(new CardLayout());
 
-        jPanel1.setPreferredSize(new Dimension(400, 300));
+        jPanel1.setPreferredSize(new Dimension(600, 450));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -235,6 +235,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
         // show new launcher frame
         LauncherFrame launcherFrame = new LauncherFrame();
+        launcherFrame.setLocationByPlatform(true);
         launcherFrame.setVisible(true);
 
         // save options
@@ -345,7 +346,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                         throw new NullPointerException("Couldn't resolve hostname.");
                     }
                     String playerName = clientOptionsPanel.getPlayerName();
-                    client = new LauncherClient(playerName, mode, clientOptionsPanel.getDisplayMode());
+                    client = new LauncherClient(playerName, mode);
 
                     String hostname = serverInetAddress.getHostName();
                     int port = serverInetAddress.getPort();
@@ -575,7 +576,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                             int mode = cop.getScreenMode();
 
                             prepareToHostNetworkGame(msp.getServerPort());
-                            client = new LauncherClient(cop.getPlayerName(), mode, cop.getDisplayMode());
+                            client = new LauncherClient(cop.getPlayerName(), mode);
                             client.connect(cop.getPlayerName(), "password");
                         }
                     } else {

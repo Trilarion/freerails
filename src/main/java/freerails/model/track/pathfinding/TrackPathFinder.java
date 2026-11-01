@@ -127,7 +127,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @return route as tile coordinates in traversal order
      * @throws PathNotFoundException if no route can be found
      */
-    public List generatePath(Vector2D start, Vector2D targetPoint, BuildTrackStrategy buildTrackStrategy) throws PathNotFoundException {
+    public List<Vector2D> generatePath(Vector2D start, Vector2D targetPoint, BuildTrackStrategy buildTrackStrategy) throws PathNotFoundException {
         setupSearch(start, targetPoint, buildTrackStrategy);
         pathFinder.search(-1);
 

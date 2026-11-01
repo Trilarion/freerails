@@ -83,7 +83,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         CommandToClient commandToClient = (CommandToClient) client.read();
         commandToClient.execute(client);
 
-        List<String> actualPlayerNames = (List<String>) client.getProperty(ClientProperty.CONNECTED_CLIENTS);
+        List<?> actualPlayerNames = (List<?>) client.getProperty(ClientProperty.CONNECTED_CLIENTS);
         assertNotNull(actualPlayerNames);
         assertEquals(expectedPlayerNames, actualPlayerNames);
     }

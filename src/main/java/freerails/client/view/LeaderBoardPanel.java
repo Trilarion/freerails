@@ -99,7 +99,7 @@ public class LeaderBoardPanel extends JPanel implements View {
      *
      * @return javax.swing.JList
      */
-    private JList getPlayersList() {
+    private JList<PlayerDetails> getPlayersList() {
         if (playersList == null) {
             playersList = new JList<>();
             playersList.setCellRenderer(new DefaultListCellRenderer() {

@@ -20,7 +20,6 @@ package freerails.model.operations.cargo;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;

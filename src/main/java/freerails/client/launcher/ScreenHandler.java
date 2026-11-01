@@ -19,8 +19,6 @@
 package freerails.client.launcher;
 
 import freerails.client.ClientConstants;
-import freerails.util.Vector2D;
-import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,31 +34,15 @@ import java.awt.image.BufferStrategy;
 public class ScreenHandler {
 
     private static final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    private static final Logger logger = Logger.getLogger(ScreenHandler.class.getName());
-    private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{new DisplayMode(640, 400, 8, 60), new DisplayMode(800, 600, 16, 60), new DisplayMode(1024, 768, 8, 60), new DisplayMode(1024, 768, 16, 60),};
 
     public final JFrame frame;
     private final int mode;
     private BufferStrategy bufferStrategy;
-    private Vector2D displayMode;
     private boolean isInUse = false;
     /**
      * Whether the window is minimised.
      */
     private boolean isMinimised = false;
-
-    /**
-     * Creates a screen handler instance.
-     *
-     * @param f the f parameter
-     * @param mode the mode parameter
-     * @param displayMode the map coordinate
-     */
-    public ScreenHandler(JFrame f, int mode, Vector2D displayMode) {
-        this.displayMode = displayMode;
-        frame = f;
-        this.mode = mode;
-    }
 
     /**
      * Creates a screen handler instance.
@@ -96,24 +78,6 @@ public class ScreenHandler {
     }
 
     /**
-     * Returns the best display mode.
-     * @return the best display mode
-     */
-    private static Vector2D getBestDisplayMode() {
-        for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
-            DisplayMode[] modes = device.getDisplayModes();
-
-            for (DisplayMode mode1 : modes) {
-                if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth() && mode1.getHeight() == BEST_DISPLAY_MODE.getHeight() && mode1.getBitDepth() == BEST_DISPLAY_MODE.getBitDepth()) {
-                    return new Vector2D(BEST_DISPLAY_MODE.getWidth(), BEST_DISPLAY_MODE.getHeight());
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Performs the exit full screen mode operation.
      */
     public static synchronized void exitFullScreenMode() {
@@ -126,8 +90,6 @@ public class ScreenHandler {
     public synchronized void apply() {
         switch (mode) {
             case ClientConstants.FULL_SCREEN: {
-                Vector2D displayMode1 = displayMode;
-
                 setRepaintOffAndDisableDoubleBuffering(frame);
 
                 /*
@@ -141,24 +103,27 @@ public class ScreenHandler {
 
                 frame.setUndecorated(true);
                 device.setFullScreenWindow(frame);
-
-                if (device.isDisplayChangeSupported()) {
-                    if (null == displayMode1) {
-                        displayMode1 = getBestDisplayMode();
-                    }
-
-                    logger.info("Setting display mode to:  " + displayMode1.toString());
-                    device.setDisplayMode(new DisplayMode(displayMode1.x(), displayMode.y(), DisplayMode.BIT_DEPTH_MULTI, DisplayMode.REFRESH_RATE_UNKNOWN));
-                }
-
                 frame.validate();
 
                 break;
             }
 
             case ClientConstants.WINDOWED_MODE: {
-                frame.setMinimumSize(new Dimension(640, 480));
-                frame.setSize(640, 480);
+                GraphicsConfiguration configuration = device.getDefaultConfiguration();
+                Rectangle screenBounds = configuration.getBounds();
+                Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(configuration);
+                int screenX = screenBounds.x + screenInsets.left;
+                int screenY = screenBounds.y + screenInsets.top;
+                int screenWidth = Math.max(1, screenBounds.width - screenInsets.left - screenInsets.right);
+                int screenHeight = Math.max(1, screenBounds.height - screenInsets.top - screenInsets.bottom);
+                int minimumWidth = Math.min(640, screenWidth);
+                int minimumHeight = Math.min(480, screenHeight);
+                int width = Math.clamp(minimumWidth, (int) (screenWidth * 0.7), screenWidth);
+                int height = Math.clamp(minimumHeight, (int) (screenHeight * 0.7), screenHeight);
+
+                frame.setMinimumSize(new Dimension(minimumWidth, minimumHeight));
+                frame.setSize(width, height);
+                frame.setLocation(screenX + (screenWidth - width) / 2, screenY + (screenHeight - height) / 2);
                 frame.setVisible(true);
 
                 break;
