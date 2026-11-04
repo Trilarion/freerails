@@ -92,8 +92,9 @@ model independent of Swing and put game rules in model- or server-facing code, n
 views or renderers.
 - Add or update tests for behavior changes, especially game rules, moves,
 serialization, and scenario loading.
-- Use the project logger for diagnostics. Avoid `System.out`, `System.err`,
-and swallowed errors.
+- Production source under `src/main/java` must not write directly to the
+console. Use the project logger for diagnostics, which are writtento the
+log file. Avoid swallowed errors.
 - Document public types and important behavior with concise Javadoc, and
 update relevant pages under `docs/` when behavior or architecture changes.
 - Keep Markdown prose wrapped to roughly 80-100 characters so the source stays

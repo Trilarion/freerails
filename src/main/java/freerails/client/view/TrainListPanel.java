@@ -195,7 +195,7 @@ public class TrainListPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void list1MouseClicked(MouseEvent evt) {
-        // Add your handling code here:
+        
         if (evt.getClickCount() == 2) {
             showTrainDetails.actionPerformed(null);
         }
@@ -206,7 +206,7 @@ public class TrainListPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void list1KeyPressed(KeyEvent evt) {
-        // Add your handling code here:
+        
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             showTrainDetails.actionPerformed(null);
         }

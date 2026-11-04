@@ -43,7 +43,8 @@ import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
 import freerails.model.operations.train.TrainTemplate;
 import freerails.model.terrain.TerrainTile;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +65,7 @@ import java.util.List;
  */
 public class DialogueBoxController {
 
-    private static final Logger logger = Logger.getLogger(DialogueBoxController.class.getName());
+    private static final TaggedLogger logger = Logger.tag("DialogueBoxController");
     private final JButton closeButton = new JButton("Close");
     private final SelectEnginePanel selectEngine;
     private final MyGlassPanel glassPanel;

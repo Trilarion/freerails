@@ -34,7 +34,8 @@ import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.BidirectionalIterator;
 import freerails.util.Vector2D;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +44,7 @@ import java.util.List;
 /** Utility operations for train capacity, placement, routing, and updates. */
 public final class TrainUtils {
 
-    private static final Logger logger = Logger.getLogger(TrainUtils.class.getName());
+    private static final TaggedLogger logger = Logger.tag("TrainUtils");
 
 
     /** Prevents construction of this utility class. */

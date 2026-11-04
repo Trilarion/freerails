@@ -28,7 +28,8 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.operations.train.PositionOnTrack;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ import java.util.List;
  */
 public class PathOnTrackFinder implements IncrementalPathFinder {
 
-    private static final Logger logger = Logger.getLogger(PathOnTrackFinder.class.getName());
+    private static final TaggedLogger logger = Logger.tag("PathOnTrackFinder");
 
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final UnmodifiableWorld world;

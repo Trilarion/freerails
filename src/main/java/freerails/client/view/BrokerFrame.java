@@ -20,7 +20,8 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +39,7 @@ class BrokerFrame extends JInternalFrame {
 
     @Serial
     private static final long serialVersionUID = 4121409622587815475L;
-    private static final Logger logger = Logger.getLogger(BrokerFrame.class.getName());
+    private static final TaggedLogger logger = Logger.tag("BrokerFrame");
     private JButton done;
     private JLabel htmlJLabel;
     JMenuItem issueBond;

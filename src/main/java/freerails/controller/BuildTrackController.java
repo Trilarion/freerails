@@ -38,7 +38,8 @@ import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackPiece;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ import java.util.Map;
  */
 public class BuildTrackController implements GameModel {
 
-    private static final Logger logger = Logger.getLogger(BuildTrackController.class.getName());
+    private static final TaggedLogger logger = Logger.tag("BuildTrackController");
     private final ModelRoot modelRoot;
     private final TrackPathFinder trackPathFinder;
     private final PathOnTrackFinder pathOnTrackFinder;
@@ -433,7 +434,7 @@ public class BuildTrackController implements GameModel {
 
                                     break;
                                 } catch (Exception e1) {
-                                    e1.printStackTrace();
+                                    logger.error(e1, "Could not generate track removal move.");
                                     break attemptMove;
                                 }
 

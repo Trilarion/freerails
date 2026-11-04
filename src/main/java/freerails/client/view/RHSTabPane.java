@@ -23,7 +23,8 @@ import freerails.client.renderer.RendererRoot;
 import freerails.model.operations.station.StationUtils;
 import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +39,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
     @Serial
     private static final long serialVersionUID = 3906926798502965297L;
-    private static final Logger logger = Logger.getLogger(RHSTabPane.class.getName());
+    private static final TaggedLogger logger = Logger.tag("RHSTabPane");
     private final TerrainInfoPanel terrainInfoPanel;
     private final StationInfoPanel stationInfoPanel;
     private final TrainListPanel trainListPanel;

@@ -26,7 +26,8 @@ import freerails.model.terrain.Terrain;
 import freerails.util.Vector2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.awt.*;
 import java.io.File;
@@ -38,7 +39,7 @@ import java.util.List;
  */
 public class SpecialTileRenderer extends AbstractTileRenderer {
 
-    private static final Logger logger = Logger.getLogger(SpecialTileRenderer.class.getName());
+    private static final TaggedLogger logger = Logger.tag("SpecialTileRenderer");
     private final TileRenderer parentTileView;
 
     /**

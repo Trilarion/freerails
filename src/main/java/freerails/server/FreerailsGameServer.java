@@ -31,7 +31,8 @@ import freerails.scenario.SaveGamesManager;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.util.network.Connection;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -48,7 +49,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class FreerailsGameServer implements ServerControlInterface, GameServer, GameModel, Runnable {
 
-    private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
+    private static final TaggedLogger logger = Logger.tag("FreerailsGameServer");
     /**
      * Used as a property name for property change events.
      */
@@ -127,7 +128,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 connection.close();
             }
         } catch (IOException e) {
-            logger.warn("Could not complete client login.", e);
+            logger.warn(e, "Could not complete client login.");
             connection.close();
         } catch (IllegalStateException e) {
             logger.debug("Client disconnected before completing login.", e);
@@ -353,7 +354,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         try {
             saveGamesManager.saveGame(saveGameName, serverGameModel);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e, "Could not save game as " + saveGameName);
         }
         Serializable request = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ArrayList<>(Arrays.asList(saveGamesManager.getSaveGameNames())));
         sendToAll(request);
@@ -492,14 +493,14 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 } else {
                     IOException readerFailure = connection.getReaderFailure();
                     if (readerFailure != null) {
-                        logger.warn("Client connection closed after a reader failure.", readerFailure);
+                        logger.warn(readerFailure, "Client connection closed after a reader failure.");
                     }
                     // Remove connection.
                     removeConnection(credentials);
                 }
             }
         } catch (IOException e) {
-            logger.warn("Could not process client connection.", e);
+            logger.warn(e, "Could not process client connection.");
         }
     }
 

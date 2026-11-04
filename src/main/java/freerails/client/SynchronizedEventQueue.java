@@ -19,6 +19,8 @@
 package freerails.client;
 
 import freerails.client.launcher.LauncherFrame;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.awt.*;
 import java.util.LinkedHashMap;
@@ -33,6 +35,7 @@ import java.util.Map;
  */
 public class SynchronizedEventQueue extends EventQueue {
 
+    private static final TaggedLogger logger = Logger.tag("SynchronizedEventQueue");
     public static final Object MUTEX = new Object();
     private static final SynchronizedEventQueue instance = new SynchronizedEventQueue();
     private static boolean alreadyInUse = false;
@@ -107,7 +110,7 @@ public class SynchronizedEventQueue extends EventQueue {
                  * If something goes wrong, lets kill the game straight away to
                  * avoid hard-to-track-down bugs.
                  */
-                e.printStackTrace();
+                logger.error(e, "Unexpected exception while dispatching an event.");
                 LauncherFrame.emergencyStop();
             }
         }

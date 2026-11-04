@@ -28,7 +28,8 @@ import freerails.client.ModelRoot;
 import freerails.model.operations.train.Train;
 import freerails.model.player.Player;
 import freerails.model.world.*;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class TrainDialoguePanel extends JPanel implements View {
 
     @Serial
     private static final long serialVersionUID = 3257005466801157938L;
-    private static final Logger logger = Logger.getLogger(TrainDialoguePanel.class.getName());
+    private static final TaggedLogger logger = Logger.tag("TrainDialoguePanel");
     private JButton closeJButton;
     private TrainSchedulePanel newTrainSchedulePanel1;
     private JButton nextJButton;

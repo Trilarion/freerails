@@ -34,6 +34,8 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldMapListener;
 import freerails.model.player.Player;
 import freerails.util.ui.SoundManager;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.util.*;
 
@@ -43,6 +45,7 @@ import java.util.*;
  */
 public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
 
+    private static final TaggedLogger logger = Logger.tag("ModelRootImpl");
     private final Map<ModelRootProperty, Object> properties = new HashMap<>();
     private final Collection<ModelRootListener> listeners = new ArrayList<>();
     private MoveChainFork moveFork = new MoveChainFork();
@@ -180,7 +183,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         if (null != serverCommandReceiver) {
             serverCommandReceiver.sendCommand(message);
         } else {
-            System.err.println(message.toString());
+            logger.warn("Cannot send server command because no receiver is configured: " + message);
         }
     }
 

@@ -113,7 +113,7 @@ public class NewsPaperPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void formKeyPressed(java.awt.event.KeyEvent evt) {
-        // Add your handling code here:
+        
         setVerifyInputWhenFocusTarget(false);
     }
 

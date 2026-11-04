@@ -32,7 +32,8 @@ import freerails.model.operations.train.*;
 import freerails.model.operations.train.schedule.ScheduleState;
 import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.move.UpdateTrainMove;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -50,7 +51,7 @@ public class TrainSchedulePanel extends JPanel implements View {
 
     @Serial
     private static final long serialVersionUID = 3762248626113884214L;
-    private static final Logger logger = Logger.getLogger(TrainSchedulePanel.class.getName());
+    private static final TaggedLogger logger = Logger.tag("TrainSchedulePanel");
     private JButton addStationJButton;
     private JMenu addWagonJMenu;
     private JPopupMenu editOrderJPopupMenu;

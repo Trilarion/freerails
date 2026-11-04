@@ -227,12 +227,6 @@ public final class StationUtils {
         Rectangle mapRect = new Rectangle(0, 0, mapSize.x(), mapSize.y());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
 
-        /*
-        logger.debug("stationRadiusRect=" + stationRadiusRect);
-        logger.debug("mapRect=" + mapRect);
-        logger.debug("tiles2scan=" + tiles2scan); */
-
-
         // Look at the terrain type of each tile and retrieve the cargo supplied.
         // The station radius determines how many tiles each side we look at.
         for (int i1 = tiles2scan.x; i1 < tiles2scan.x + tiles2scan.width; i1++) {

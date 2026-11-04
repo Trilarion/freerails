@@ -170,13 +170,6 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        /*
-         * Rectangle r= overviewMapJPanel.mainMapVisibleRect;
-         * r.x=evt.getX()-r.width/2; r.y=evt.getY()-r.width/2;
-         */
-
-        // float overviewScale=overviewMapJPanel.getScale();
-        // float mainMapScale=mainMap.getScale();
         int overviewScale = overviewMapJPanel.getPreferredSize().width;
         int mainMapScale = mainMap.getWidth();
 

@@ -32,7 +32,8 @@ import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.economy.transaction.aggregator.TransactionAggregator;
 import freerails.model.economy.Money;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +51,7 @@ public class NetWorthGraphPanel extends JPanel implements View {
     @Serial
     private static final long serialVersionUID = 3618703010813980982L;
 
-    private static final Logger logger = Logger.getLogger(NetWorthGraphPanel.class.getName());
+    private static final TaggedLogger logger = Logger.tag("NetWorthGraphPanel");
     private final Font FONT;
     private final Rectangle graphRect = new Rectangle(44, 50, 380, 245);
     private ActionListener submitButtonCallBack = null;
@@ -68,19 +69,9 @@ public class NetWorthGraphPanel extends JPanel implements View {
      * This method initializes
      */
     public NetWorthGraphPanel() {
-
         super();
         FONT = new java.awt.Font("Bookman Old Style", java.awt.Font.BOLD, 10);
         initialize();
-        // companies.add(new CompanyDetails("Player 1", Color.BLUE));
-        // companies.add(new CompanyDetails("Player 2", Color.GREEN));
-        // companies.add(new CompanyDetails("Player 3", Color.CYAN));
-        // for(int i = 0; i < companies.size(); i++){
-        // CompanyDetails cd = (CompanyDetails)companies.get(i);
-        // cd.fillWithRandomData();
-        // }
-        //
-        // setAppropriateScale();
     }
 
     /**
@@ -176,9 +167,7 @@ public class NetWorthGraphPanel extends JPanel implements View {
              */
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (null == submitButtonCallBack) {
-                    System.err.println("mouseClicked");
-                } else {
+                if (submitButtonCallBack != null) {
                     submitButtonCallBack.actionPerformed(new ActionEvent(this, 0, null));
                 }
             }

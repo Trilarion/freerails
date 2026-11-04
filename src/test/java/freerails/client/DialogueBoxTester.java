@@ -295,7 +295,7 @@ class DialogueBoxTester extends JFrame {
      */
     private void showCargoWaitingAndDemandActionPerformed(
             ActionEvent evt) {
-        // Add your handling code here:
+        
         CargoWaitingAndDemandedPanel panel = new CargoWaitingAndDemandedPanel();
         panel.setup(modelRoot, vl, closeCurrentDialogue);
         int newStationID = 0;
@@ -308,7 +308,7 @@ class DialogueBoxTester extends JFrame {
      * @param evt the evt to use in the test.
      */
     private void showTrainListActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         dialogueBoxController.showTrainList();
     }
 
@@ -317,7 +317,7 @@ class DialogueBoxTester extends JFrame {
      * @param evt the evt to use in the test.
      */
     private void showStationInfoActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         int stationNumber = 0;
         dialogueBoxController.showStationInfo(stationNumber);
     }
@@ -327,7 +327,7 @@ class DialogueBoxTester extends JFrame {
      * @param evt the evt to use in the test.
      */
     private void showTerrainInfoActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         int terrainType = 0;
         dialogueBoxController.showTerrainInfo(terrainType);
     }
@@ -337,7 +337,7 @@ class DialogueBoxTester extends JFrame {
      * @param evt the evt to use in the test.
      */
     private void showControlsActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         dialogueBoxController.showGameControls();
     }
 
@@ -346,7 +346,7 @@ class DialogueBoxTester extends JFrame {
      * @param evt the evt to use in the test.
      */
     private void selectTrainOrdersActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         trainDialoguePanel.setup(modelRoot, vl, closeCurrentDialogue);
         trainDialoguePanel.display(0);
         dialogueBoxController.showContent(trainDialoguePanel);
@@ -357,7 +357,7 @@ class DialogueBoxTester extends JFrame {
      * @param evt the evt to use in the test.
      */
     private void selectWagonsActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         dialogueBoxController.showSelectWagons();
     }
 
@@ -366,7 +366,7 @@ class DialogueBoxTester extends JFrame {
      * @param evt the evt to use in the test.
      */
     private void selectEngineActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         dialogueBoxController.showSelectEngine();
     }
 
@@ -375,7 +375,7 @@ class DialogueBoxTester extends JFrame {
      * @param evt the evt to use in the test.
      */
     private void newspaperActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         dialogueBoxController.showBrokerScreen();
         // dialogueBoxController.showNewspaper("New headline!");
     }

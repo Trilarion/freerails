@@ -19,7 +19,8 @@
 package freerails.model.track.pathfinding;
 
 import freerails.model.track.explorer.GraphExplorer;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -33,7 +34,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
 
     @Serial
     private static final long serialVersionUID = 3257565105200576310L;
-    private static final Logger logger = Logger.getLogger(SimpleAStarPathFinder.class.getName());
+    private static final TaggedLogger logger = Logger.tag("SimpleAStarPathFinder");
     private final OpenList openList = new OpenList();
     private final Collection<Integer> startingPositions = new HashSet<>();
     private final HashMap<Integer, Integer> closedList = new HashMap<>();

@@ -25,7 +25,8 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +44,7 @@ public class HtmlPanel extends JPanel implements View {
 
     @Serial
     private static final long serialVersionUID = 4120848850266371126L;
-    private static final Logger logger = Logger.getLogger(HtmlPanel.class.getName());
+    private static final TaggedLogger logger = Logger.tag("HtmlPanel");
     private JButton done;
     private JLabel htmlJLabel;
 

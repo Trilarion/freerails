@@ -26,7 +26,8 @@ import freerails.model.track.TrackType;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.track.TrackConfiguration;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.awt.*;
 import java.io.IOException;
@@ -36,7 +37,7 @@ import java.io.IOException;
  */
 public class TrackPieceRendererList {
 
-    private static final Logger logger = Logger.getLogger(TrackPieceRendererList.class.getName());
+    private static final TaggedLogger logger = Logger.tag("TrackPieceRendererList");
     private final UnmodifiableWorld world;
     private final TrackPieceRenderer[] trackPieceViewArray;
 

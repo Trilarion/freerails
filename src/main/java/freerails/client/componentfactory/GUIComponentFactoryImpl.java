@@ -33,7 +33,8 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.util.Vector2D;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -50,7 +51,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * Whether to show certain 'cheat' menus used for testing.
      */
-    private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
+    private static final TaggedLogger logger = Logger.tag("GUIComponentFactoryImpl");
     private final ActionRoot actionRoot;
     private final JMenu buildMenu; // let's you select a track type
     private final CashLabel cashlabel;

@@ -149,14 +149,6 @@ public class ServerControlModel implements ModelRootListener {
      */
     @Override
     public void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue) {
-        // switch (p) {
-        // case SAVED_GAMES_LIST:
-        // updateLoadGameAction();
-        // break;
-        //
-        // default:
-        // break;
-        // }
     }
 
     /**

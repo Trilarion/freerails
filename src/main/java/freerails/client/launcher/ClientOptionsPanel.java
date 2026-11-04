@@ -25,7 +25,8 @@ package freerails.client.launcher;
 
 import freerails.Options;
 import freerails.client.ClientConstants;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -46,7 +47,7 @@ public class ClientOptionsPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = 3256721779883325748L;
-    private static final Logger logger = Logger.getLogger(ClientOptionsPanel.class.getName());
+    private static final TaggedLogger logger = Logger.tag("ClientOptionsPanel");
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
     private JRadioButton fullScreenButton;

@@ -23,7 +23,8 @@ package freerails.move;
 
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.World;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -40,7 +41,7 @@ import java.util.LinkedList;
  */
 public class MovePrecommitter {
 
-    private static final Logger logger = Logger.getLogger(MovePrecommitter.class.getName());
+    private static final TaggedLogger logger = Logger.tag("MovePrecommitter");
     /**
      * List of moves and premoves that have been sent to the server and executed
      * on the local world object.

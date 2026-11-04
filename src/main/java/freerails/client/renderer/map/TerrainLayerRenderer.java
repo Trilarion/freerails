@@ -24,7 +24,8 @@ import freerails.client.renderer.tile.TileRendererList;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Vector2D;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.awt.*;
 
@@ -33,7 +34,7 @@ import java.awt.*;
  */
 public final class TerrainLayerRenderer implements MapLayerRenderer {
 
-    private static final Logger logger = Logger.getLogger(TerrainLayerRenderer.class.getName());
+    private static final TaggedLogger logger = Logger.tag("TerrainLayerRenderer");
 
     private final TileRendererList tiles;
     private final UnmodifiableWorld world;

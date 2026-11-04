@@ -130,21 +130,12 @@ class TrackRenderer {
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Draw title
-        // String title = BinaryNumberFormatter.formatWithLowBitOnLeft(conf
-        // .get9bitTemplate(), 9);
-        // g.setColor(Color.BLACK);
-        // g.setFont(font);
-        //
-        // g.drawString(title, 10, 10);
-
         TileTransition[] directions = TileTransition.getTransitions();
         Collection<Double> sections = new ArrayList<>();
         int matches = 0;
         for (int i = 0; i < directions.length - 2; i++) {
 
             if (conf.contains(directions[i])) {
-                // System.out.println("\n"+directions[i]+" to ..");
                 int maxJ = Math.min(i + 7, directions.length);
 
                 for (int j = i + 2; j < maxJ; j++) {

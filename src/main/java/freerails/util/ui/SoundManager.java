@@ -18,7 +18,8 @@
 
 package freerails.util.ui;
 
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -35,7 +36,7 @@ import java.util.Map;
  */
 public class SoundManager implements LineListener {
 
-    private static final Logger logger = Logger.getLogger(SoundManager.class.getName());
+    private static final TaggedLogger logger = Logger.tag("SoundManager");
     private static final SoundManager INSTANCE = new SoundManager();
     private final Map<String, AudioSample> samples = new HashMap<>();
     private final Deque<Clip> voices = new LinkedList<>();
@@ -135,7 +136,7 @@ public class SoundManager implements LineListener {
             }
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException
                  | IllegalArgumentException e) {
-            logger.warn("Could not play sound " + s, e);
+            logger.warn(e, "Could not play sound " + s);
         }
     }
 

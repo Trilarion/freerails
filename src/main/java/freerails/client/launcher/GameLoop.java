@@ -23,7 +23,8 @@ import freerails.client.SynchronizedEventQueue;
 import freerails.util.ui.RepaintManagerForActiveRendering;
 import freerails.util.Utils;
 import freerails.server.GameModel;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.awt.*;
 
@@ -32,7 +33,7 @@ import java.awt.*;
  */
 public class GameLoop implements Runnable {
 
-    private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
+    private static final TaggedLogger logger = Logger.tag("GameLoop");
 
     private final ScreenHandler screenHandler;
     private final GameModel gameModel;
@@ -122,7 +123,7 @@ public class GameLoop implements Runnable {
                                      * the game straight away to avoid
                                      * hard-to-track-down bugs.
                                      */
-                                    re.printStackTrace();
+                                    logger.error(re, "Unexpected exception while painting the game window.");
                                     LauncherFrame.emergencyStop();
                                 } finally {
                                     g.dispose();
@@ -170,7 +171,7 @@ public class GameLoop implements Runnable {
                 loopMonitor.notify();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e, "Unexpected exception in the game loop.");
             LauncherFrame.emergencyStop();
         } finally {
             RepaintManagerForActiveRendering.removeJFrame(screenHandler.frame);

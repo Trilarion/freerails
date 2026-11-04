@@ -26,7 +26,8 @@ import freerails.move.generator.AddStationMoveGenerator;
 import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.util.NoSuchElementException;
 
@@ -37,7 +38,7 @@ import java.util.NoSuchElementException;
  */
 public class StationBuilder {
 
-    private static final Logger logger = Logger.getLogger(StationBuilder.class.getName());
+    private static final TaggedLogger logger = Logger.tag("StationBuilder");
     private final MoveExecutor executor;
     private int ruleNumber;
 

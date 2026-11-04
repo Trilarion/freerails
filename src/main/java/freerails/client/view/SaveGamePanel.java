@@ -67,10 +67,6 @@ public class SaveGamePanel extends JPanel implements View {
         add(label1, gridBagConstraints);
 
         fileNameTextField.setText("savegame");
-        fileNameTextField.addActionListener(evt -> {
-            // TODO add your handling code here:
-            System.out.println("fileNameTextFieldActionPerformed" + evt.toString());
-        });
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;

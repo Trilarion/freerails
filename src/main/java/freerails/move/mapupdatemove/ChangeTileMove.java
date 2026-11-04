@@ -67,8 +67,7 @@ public class ChangeTileMove implements MapUpdateMove {
         if (!(obj instanceof ChangeTileMove changeTileMove)) return false;
 
         if (!location.equals(changeTileMove.location)) return false;
-        if (!after.equals(changeTileMove.after)) return false;
-        return true;
+        return after.equals(changeTileMove.after);
     }
 
     /**

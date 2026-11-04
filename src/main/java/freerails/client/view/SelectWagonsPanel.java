@@ -171,7 +171,7 @@ public class SelectWagonsPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void wagonTypesJListMouseClicked(MouseEvent evt) {
-        // Add your handling code here:
+        
         addwagon();
     }
 
@@ -180,7 +180,7 @@ public class SelectWagonsPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void wagonTypesJListKeyTyped(KeyEvent evt) {
-        // Add your handling code here:
+        
         if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
             addwagon();
         }
@@ -216,7 +216,7 @@ public class SelectWagonsPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void Button1ActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
+        
         wagons.clear();
         label1.setText("");
         repaint();

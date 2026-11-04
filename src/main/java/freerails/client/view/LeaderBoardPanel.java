@@ -82,9 +82,7 @@ public class LeaderBoardPanel extends JPanel implements View {
              */
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (null == submitButtonCallBack) {
-                    System.err.println("mouseClicked");
-                } else {
+                if (submitButtonCallBack != null) {
                     submitButtonCallBack.actionPerformed(new ActionEvent(this, 0, null));
                 }
             }

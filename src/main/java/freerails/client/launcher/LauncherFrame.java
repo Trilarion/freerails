@@ -32,7 +32,8 @@ import freerails.server.FullServerGameModel;
 import freerails.server.GameModel;
 import freerails.util.network.Connection;
 import freerails.util.network.ServerSocketAcceptor;
-import org.apache.log4j.*;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,7 +54,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class LauncherFrame extends JFrame implements LauncherInterface {
 
-    private static final Logger logger = Logger.getLogger(LauncherFrame.class.getName());
+    private static final TaggedLogger logger = Logger.tag("LauncherFrame");
     @Serial
     private static final long serialVersionUID = -8224003315973977661L;
     private final Component[] wizardPages = new Component[4];
@@ -179,7 +180,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
             Thread t = new Thread(run, "Client main loop");
             t.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e, "Could not start client thread.");
             emergencyStop();
         }
     }
@@ -207,7 +208,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
             Thread t = new Thread(r, "FreerailsGameServer");
             t.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e, "Could not start server thread.");
             emergencyStop();
         }
     }
@@ -219,12 +220,6 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
         // TODO Let the user know if we are using a custom logging config.
 
-        // Configure logger and short message
-        PatternLayout patternLayout = new PatternLayout("%r [%t] %-5p %m -- at %l%n");
-        Appender consoleAppender = new ConsoleAppender(patternLayout);
-        Logger rootLogger = LogManager.getRootLogger();
-        rootLogger.addAppender(consoleAppender);
-        rootLogger.setLevel(Level.INFO);
         logger.debug("Started launcher.");
 
         // load options
@@ -274,7 +269,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
             Thread t = new Thread(run, "Client main loop");
             t.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e, "Could not start client thread.");
             emergencyStop();
         }
     }
@@ -602,7 +597,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                         setButtonsVisible(false);
                         setNextEnabled(false);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.error(e, "Could not start the selected game.");
                         setInfoText(e.getMessage(), InfoMessageType.WARNING);
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);
@@ -616,7 +611,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     throw new IllegalArgumentException(String.valueOf(currentPage));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e, "Unexpected error while handling launcher action.");
             emergencyStop();
         }
     }

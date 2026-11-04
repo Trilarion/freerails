@@ -33,7 +33,8 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
 import freerails.model.ModelConstants;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +52,7 @@ import java.util.List;
  */
 public class StationInfoPanel extends JPanel implements View {
 
-    private static final Logger logger = Logger.getLogger(StationInfoPanel.class.getName());
+    private static final TaggedLogger logger = Logger.tag("StationInfoPanel");
     @Serial
     private static final long serialVersionUID = 4050759377680150585L;
     private UnmodifiableWorld world;

@@ -33,6 +33,8 @@ import freerails.model.player.Player;
 import freerails.network.command.ClientProperty;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 
 import javax.swing.*;
@@ -43,6 +45,7 @@ import java.io.Serializable;
  */
 public class LauncherClient extends FreerailsClient {
 
+    private static final TaggedLogger logger = Logger.tag("LauncherClient");
     private final ActionRoot actionRoot;
     private final GUIComponentFactoryImpl factory;
     private final ModelRootImpl modelRoot;
@@ -129,7 +132,7 @@ public class LauncherClient extends FreerailsClient {
 
             factory.setup(rendererRoot, world);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e, "Could not initialize the client for the new world.");
             LauncherFrame.emergencyStop();
         }
     }

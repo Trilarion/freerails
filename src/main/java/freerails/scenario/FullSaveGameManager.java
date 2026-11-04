@@ -22,7 +22,8 @@
 package freerails.scenario;
 
 import freerails.server.ServerGameModel;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
@@ -36,7 +37,7 @@ public class FullSaveGameManager implements SaveGamesManager {
     // TODO meaningful version string that actually changes if the savegame structure changes
     /** Format version stored with each save-game file. */
     public static final String VERSION = "CVS";
-    private static final Logger logger = Logger.getLogger(FullSaveGameManager.class.getName());
+    private static final TaggedLogger logger = Logger.tag("FullSaveGameManager");
 
     /**
      * Returns the names of save-game files in the configured directory.

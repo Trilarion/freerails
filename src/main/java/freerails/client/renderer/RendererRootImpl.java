@@ -30,6 +30,8 @@ import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.renderer.track.TrackPieceRendererList;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainCategory;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
@@ -45,6 +47,7 @@ import java.util.Map;
  */
 public class RendererRootImpl implements RendererRoot {
 
+    private static final TaggedLogger logger = Logger.tag("RendererRootImpl");
     private final TileRendererList tileRendererList;
     private final TrackPieceRendererList trackPieceViewList;
     private final ImageManager imageManager;
@@ -73,7 +76,7 @@ public class RendererRootImpl implements RendererRoot {
             try {
                 sm.addClip(soundsFile);
             } catch (IOException | UnsupportedAudioFileException e) {
-                e.printStackTrace();
+                logger.warn(e, "Could not load sound " + soundsFile);
             }
         }
     }

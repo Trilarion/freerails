@@ -31,7 +31,8 @@ import freerails.client.receiver.UntriedMoveReceiver;
 import freerails.model.world.World;
 import freerails.server.GameModel;
 import freerails.util.network.Connection;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -46,7 +47,7 @@ import java.util.Map;
  */
 public class FreerailsClient implements ClientControlInterface, GameModel, UntriedMoveReceiver, ServerCommandReceiver {
 
-    private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
+    private static final TaggedLogger logger = Logger.tag("FreerailsClient");
     private final Map<ClientProperty, Serializable> properties = new HashMap<>();
     private final MoveChainFork moveChainFork = new MoveChainFork();
     protected Connection connectionToServer;
@@ -188,12 +189,12 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
             IOException readerFailure = connectionToServer.getReaderFailure();
             if (readerFailure != null && !readerFailureReported) {
                 readerFailureReported = true;
-                logger.warn("Connection to server closed after a reader failure.", readerFailure);
+                logger.warn(readerFailure, "Connection to server closed after a reader failure.");
             }
 
             clientUpdates();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e, "Could not update client from server.");
             LauncherFrame.emergencyStop();
         }
     }

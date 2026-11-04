@@ -32,7 +32,8 @@ import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TileTransition;
 import freerails.util.ui.SoundManager;
-import org.apache.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -48,7 +49,7 @@ import java.awt.event.MouseEvent;
  */
 public class UserInputOnMapController extends KeyAdapter {
 
-    private static final Logger logger = Logger.getLogger(UserInputOnMapController.class.getName());
+    private static final TaggedLogger logger = Logger.tag("UserInputOnMapController");
     private final ModelRoot modelRoot;
     private final ActionRoot actionRoot;
     private final BuildIndustryPopupMenu buildIndustryPopupMenu = new BuildIndustryPopupMenu();
@@ -250,7 +251,6 @@ public class UserInputOnMapController extends KeyAdapter {
             }
 
             case KeyEvent.VK_F12: {
-                System.out.println("Disable keyboard input!");
                 setIgnoreKeyEvents(true);
                 break;
             }

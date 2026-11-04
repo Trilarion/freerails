@@ -202,7 +202,7 @@ public class SelectStationPanel extends JPanel implements View {
      * @param evt the evt
      */
     private void formMouseMoved(MouseEvent evt) {
-        // Add your handling code here:
+        
         double x = evt.getX();
         x = x / scale + visableMapTiles.x;
         double y = evt.getY();
