@@ -18,6 +18,8 @@
 
 package freerails.model.economy;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -112,7 +114,7 @@ public record Money(long amount) implements Serializable, Comparable<Money> {
      * @return the amount without grouping separators or a currency symbol
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return Long.toString(amount);
     }
 

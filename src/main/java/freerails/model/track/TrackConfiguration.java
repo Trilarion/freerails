@@ -60,7 +60,7 @@ public class TrackConfiguration implements TrackConfigurations {
         TileTransition[] vectors = TileTransition.getTransitions();
         for (TileTransition vector : vectors) {
             if (contains(vector.get9bitTemplate())) {
-                tempLength += vector.getLength();
+                tempLength = (int) (tempLength + vector.getLength());
             }
         }
 

@@ -19,6 +19,7 @@
 package freerails.model.terrain;
 
 import freerails.model.track.TrackPiece;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -59,7 +60,7 @@ public record TerrainTile(TrackPiece trackPiece, int terrainTypeId) implements S
      * Returns a readable representation of the track and terrain identifier.
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "trackPiece=" + trackPiece + " and terrainType is " + terrainTypeId;
     }
 

@@ -18,6 +18,8 @@
 
 package freerails.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -54,7 +56,7 @@ public record Pair<A, B>(A a, B b) implements Serializable {
      * @return Combines the toString() methods of both elements.
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "Pair(" + a + ", " + b + ")";
     }
 }

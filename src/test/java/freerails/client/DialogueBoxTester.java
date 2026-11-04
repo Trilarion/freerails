@@ -44,7 +44,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -276,7 +275,7 @@ class DialogueBoxTester extends JFrame {
      * @param args the args to use in the test.
      */
     private void showNetworthGraphActionPerformed(ActionEvent evt) {
-        dialogueBoxController.showNetworthGraph();
+        dialogueBoxController.showNetWorthGraph();
     }
 
     /**

@@ -111,7 +111,7 @@ public class StockPriceCalculator {
         return netWorthAggregator.getValues()[0];
     }
 
-    // TODO make this a static function of FinanceUtils
+    // TODO consider extracting this if it gains other callers.
     /**
      * Sums the player's non-item transaction amounts during the previous game
      * year.

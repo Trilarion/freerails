@@ -91,10 +91,10 @@ public class CargoUtils {
         if (0 == amountToTransfer) {
             return;
         }
-        int amountTransferedSoFar = 0;
+        int amountTransferredSoFar = 0;
 
         for (CargoBatch cb: from.getCargoBatches()) {
-            if (amountTransferedSoFar > amountToTransfer) {
+            if (amountTransferredSoFar > amountToTransfer) {
                 break;
             }
 
@@ -102,16 +102,16 @@ public class CargoUtils {
                 int amount = from.getAmount(cb);
                 int amountOfThisBatchToTransfer;
 
-                if (amount < amountToTransfer - amountTransferedSoFar) {
+                if (amount < amountToTransfer - amountTransferredSoFar) {
                     amountOfThisBatchToTransfer = amount;
                     from.setAmount(cb, 0);
                 } else {
-                    amountOfThisBatchToTransfer = amountToTransfer - amountTransferedSoFar;
+                    amountOfThisBatchToTransfer = amountToTransfer - amountTransferredSoFar;
                     from.addCargo(cb, -amountOfThisBatchToTransfer);
                 }
 
                 to.addCargo(cb, amountOfThisBatchToTransfer);
-                amountTransferedSoFar += amountOfThisBatchToTransfer;
+                amountTransferredSoFar += amountOfThisBatchToTransfer;
             }
         }
     }

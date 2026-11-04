@@ -85,11 +85,10 @@ public class FreerailsCursor {
         int y = cursorMapPosition.y() * tileSize.height;
 
         Image cursor = switch (buildMode) {
-            case BUILD_TRACK -> buildTrack;
+            case BUILD_TRACK, BUILD_STATION -> buildTrack;
             case REMOVE_TRACK -> removeTrack;
             case UPGRADE_TRACK -> upgradeTrack;
             case IGNORE_TRACK -> infoMode;
-            case BUILD_STATION -> buildTrack;
         };
 
         Boolean b = (Boolean) modelRoot.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);
@@ -104,13 +103,13 @@ public class FreerailsCursor {
 
         if (null != message && !message.isEmpty()) {
             int fontSize = 12;
-            Font font = new Font("Arial", 0, fontSize);
+            Font font = new Font("Arial", Font.PLAIN, fontSize);
             FontRenderContext frc = g2.getFontRenderContext();
             TextLayout layout = new TextLayout(message, font, frc);
 
             // We want the message to be centered below the cursor.
             float visibleAdvance = layout.getVisibleAdvance();
-            float textX = x + tileSize.width / 2 - visibleAdvance / 2;
+            float textX = x + (float) tileSize.width / 2 - visibleAdvance / 2;
             float textY = y + tileSize.height + fontSize + 5;
             g.setColor(java.awt.Color.white);
             layout.draw(g2, textX, textY);

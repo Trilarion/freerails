@@ -31,6 +31,7 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.SortedSet;
@@ -40,6 +41,7 @@ import java.util.SortedSet;
  */
 class TrackTilesGenerator extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 3618982273966487859L;
     private final ImageManagerImpl imageManager = new ImageManagerImpl("/freerails/", "/freerails/");
 

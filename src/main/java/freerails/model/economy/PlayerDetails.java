@@ -30,7 +30,6 @@ public class PlayerDetails implements Comparable<PlayerDetails> {
     private Money networth = Money.ZERO;
     private int stations = 0;
 
-    /** Returns this entry as a concise leaderboard description. */
     /**
      * Returns this entry as a concise leaderboard description.
      *

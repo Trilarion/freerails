@@ -261,12 +261,12 @@ public class BuildTrackExplorer implements GraphExplorer {
             // TODO use Money arithmetic
             long priceA = ruleA.getPurchasingPrice().amount();
             long priceB = ruleB.getPurchasingPrice().amount();
-            cost += length * (priceA + priceB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT;
+            cost = (int) (cost + length * (priceA + priceB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
             long terrainCostA = world.getTerrain(world.getTile(new Vector2D(x[0], y[0])).terrainTypeId())
                     .getTrackConstructionCostPerMile().amount();
             long terrainCostB = world.getTerrain(world.getTile(new Vector2D(x[1], y[1])).terrainTypeId())
                     .getTrackConstructionCostPerMile().amount();
-            cost += length * (terrainCostA + terrainCostB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT;
+            cost = (int) (cost + length * (terrainCostA + terrainCostB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
             // Add fixed cost if tile b does not have the desired track type.
             TerrainTile a = world.getTile(new Vector2D(x[0], y[0]));
             TrackPiece trackPiece = a.trackPiece();
@@ -275,8 +275,8 @@ public class BuildTrackExplorer implements GraphExplorer {
                 if (!currentRuleA.equals(ruleA)) {
                     assert !currentRuleA.isStation(); // We shouldn't be upgrading a station.
                     // TODO was getFixedCost(), meaning?,
-                    cost += ruleA.getYearlyMaintenance().amount() * ModelConstants.MODEL_UNITS_PER_TILE
-                            * ModelConstants.TRACK_COST_PER_MODEL_UNIT;
+                    cost = (int) (cost + ruleA.getYearlyMaintenance().amount() * ModelConstants.MODEL_UNITS_PER_TILE
+                            * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
                 }
             }
         }

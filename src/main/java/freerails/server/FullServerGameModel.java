@@ -59,7 +59,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-// TODO why does it have to be saved and not only the world during loading and saveing? Is there some internal state that should be part of the world?
+// TODO why does it have to be saved and not only the world during loading and saving? Is there some internal state that should be part of the world?
 /**
  * A ServerGameModel that contains the automations used in the actual game. This is serialized during loading and
  * saving of games.
@@ -158,7 +158,7 @@ public class FullServerGameModel implements ServerGameModel {
      * Done on the server side
      * @param world the game world used by this operation
      */
-    private static List<Move> generateBondIterestMoves(UnmodifiableWorld world) {
+    private static List<Move> generateBondInterestMoves(UnmodifiableWorld world) {
         // TODO generates multiple moves, good idea?
         List<Move> moves = new ArrayList<>();
         for (Player player: world.getPlayers()) {
@@ -191,7 +191,7 @@ public class FullServerGameModel implements ServerGameModel {
         for (Player player: world.getPlayers()) {
             int numberOfTrains = world.getTrains(player).size();
             // TODO hardcoded constant, move to constants
-            long amount = numberOfTrains * 5000;
+            long amount = numberOfTrains * 5000L;
             Transaction transaction = new Transaction(TransactionCategory.TRAIN_MAINTENANCE, new Money(-amount), world.getClock().getCurrentTime());
 
             Move move = new AddTransactionMove(player, transaction);
@@ -265,7 +265,7 @@ public class FullServerGameModel implements ServerGameModel {
                         int engineId = trainTemplate.engineId();
                         List<Integer> wagonTypes = trainTemplate.wagonTypes();
 
-                        // If there are no wagons, setup an automatic schedule.
+                        // If there are no wagons, set up an automatic schedule.
                         boolean autoSchedule = wagonTypes.isEmpty();
 
                         // generate initial schedule
@@ -356,14 +356,14 @@ public class FullServerGameModel implements ServerGameModel {
                 // now do the other updates like moving the trains
                 moveTrains(world, moveReceiver);
 
-                // Check whether we are about to start a new year..
+                // Check whether we are about to start a new year...
                 Clock clock = world.getClock();
 
                 if (clock.isLastTickOfYear()) {
                     yearEnd();
                 }
 
-                // And a new month..
+                // And a new month...
                 if (clock.isLastTickOfMonth()) {
                     monthEnd();
                 }
@@ -421,7 +421,7 @@ public class FullServerGameModel implements ServerGameModel {
         applyTrackMaintenanceMoves(world, moveReceiver);
         applyTrainMaintenanceMoves(world, moveReceiver);
 
-        for (Move move: generateBondIterestMoves(world)) {
+        for (Move move: generateBondInterestMoves(world)) {
             moveReceiver.process(move);
         }
 

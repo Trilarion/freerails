@@ -227,7 +227,7 @@ public class ClientOptionsPanel extends JPanel {
     /**
      * If the user has opted to load a game, we need to limit the list of
      * players to participants in the game we are loading. Otherwise, any player
-     * name is OK. Either, pass in a array of names or null if any name is OK.
+     * name is OK. Either, pass in an array of names or null if any name is OK.
      */
     void limitPlayerNames(String[] n) {
         names = n;

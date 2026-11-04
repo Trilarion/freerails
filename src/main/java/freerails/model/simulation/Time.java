@@ -80,7 +80,7 @@ public record Time(int ticks) implements Comparable<Time>, Serializable {
      * Returns the elapsed tick count as a decimal string.
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return String.valueOf(ticks);
     }
 }

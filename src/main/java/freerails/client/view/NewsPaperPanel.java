@@ -71,13 +71,13 @@ public class NewsPaperPanel extends JPanel implements View {
         headline.setForeground(Color.black);
         headline.setBackground(Color.white);
         headline.setHorizontalAlignment(SwingConstants.CENTER);
-        headline.setFont(new Font("Lucida Bright", 1, 36));
+        headline.setFont(new Font("Lucida Bright", Font.BOLD, 36));
         headline.setMaximumSize(new Dimension(620, 110));
 
         add(headline);
         headline.setBounds(10, 70, 620, 110);
 
-        jPanel1.setBorder(new BevelBorder(0));
+        jPanel1.setBorder(new BevelBorder(BevelBorder.RAISED));
 
         anyKeyToContinueJLabel.setText("Click to continue");
         anyKeyToContinueJLabel.setForeground(Color.black);

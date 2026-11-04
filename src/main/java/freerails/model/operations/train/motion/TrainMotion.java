@@ -201,7 +201,7 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
     }
 
     /**
-     * Returns this train motion with with start time replaced.
+     * Returns this train motion with start time replaced.
      *
      * @param startTime the start time
      * @return the with start time
@@ -211,11 +211,6 @@ public class TrainMotion extends Activity<TrainPositionOnMap> {
         return new TrainMotion(this, startTime);
     }
 
-    /**
-     * Checks we are not creating an object with an inconsistent state. That is,
-     * at the time stored in the field duration, the engine must not have gone
-     * off the end of the path.
-     */
     /**
      * Verifies that the train remains on the path at the activity's end.
      *

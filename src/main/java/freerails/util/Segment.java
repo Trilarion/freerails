@@ -18,6 +18,8 @@
 
 package freerails.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -61,7 +63,7 @@ public record Segment(Vector2D a, Vector2D b) implements Serializable {
      * @return this segment's textual representation
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "(" + a + ", " + b + ')';
     }
 

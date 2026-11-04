@@ -46,7 +46,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     private static final long serialVersionUID = 3834868087706236208L;
     /**
      * The length of the array is the number of lines. This is necessary since
-     * Graphics.drawString(..) doesn't know about newline characters
+     * Graphics.drawString(...) doesn't know about newline characters
      */
     private String[] quickMessage = new String[0];
     /**
@@ -225,7 +225,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
                     // Display the message for 5 seconds.
                     displayMessageUntil = System.currentTimeMillis() + 1000 * 5;
                 } else {
-                    // Its null, so stop displaying whatever we where displaying.
+                    // Its null, so stop displaying whatever we were displaying.
                     displayMessageUntil = Long.MIN_VALUE;
                 }
                 break;

@@ -449,9 +449,9 @@ public class DialogueBoxController {
     }
 
     /**
-     * Displays the networth graph.
+     * Displays the net worth graph.
      */
-    public void showNetworthGraph() {
+    public void showNetWorthGraph() {
 
         final NetWorthGraphPanel worthGraph = new NetWorthGraphPanel();
         worthGraph.setup(modelRoot, vl, closeCurrentDialogue);

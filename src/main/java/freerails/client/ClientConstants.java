@@ -195,8 +195,8 @@ public final class ClientConstants {
      * -2 := invert mouse, scroll twice as fast
      */
     public static final int MAP_SCROLL_SPEED = 2;
-    public static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
-    public static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
+    public static final Font USER_MESSAGE_FONT = new Font("Arial", Font.PLAIN, 12);
+    public static final Font LARGE_MESSAGE_FONT = new Font("Arial", Font.PLAIN, 24);
 
     public static final File USER_HOME_FOLDER = new File(System.getProperty("user.home"));
     public static final File FREERAILS_USER_FOLDER = new File(USER_HOME_FOLDER, "Freerails user data");

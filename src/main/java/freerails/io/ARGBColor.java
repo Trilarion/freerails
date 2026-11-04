@@ -19,7 +19,7 @@
 package freerails.io;
 
 /**
- * ARGB value in an int. Needs its own class, so gson can convert to/from hex value in json de/serialization.
+ * ARGB value in an int. Needs its own class, so gson can convert to/from hex value in JSON de/serialization.
  */
 public class ARGBColor {
 

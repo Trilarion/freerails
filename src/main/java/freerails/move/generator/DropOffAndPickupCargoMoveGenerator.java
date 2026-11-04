@@ -88,14 +88,14 @@ public class DropOffAndPickupCargoMoveGenerator {
         // Unload the cargo that the station demands
         for (CargoBatch cargoBatch : trainAfter.getCargoBatches()) {
             int cargoTypeId = cargoBatch.getCargoTypeId();
-            // if the cargo is demanded and its not from this station originally...
+            // if cargo is demanded and it's not from this station originally...
             StationDemand stationDemand = station.getDemandForCargo();
 
             if (stationDemand.isCargoDemanded(cargoTypeId) && stationId != cargoBatch.getOriginalStationId()) {
                 int amount = trainAfter.getAmount(cargoBatch);
                 cargoDroppedOff.addCargo(cargoBatch, amount);
 
-                // Now perform any conversions..
+                // Now perform any conversions...
                 OptionalInt productCargoId = StationUtils.cargoConversionAtStation(world, station, cargoTypeId);
                 if (productCargoId.isPresent()) {
                     int newCargoType = productCargoId.getAsInt();
@@ -173,7 +173,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             }
         }
 
-        // ie. load train / pickup cargo
+        // i.e. load train / pickup cargo
         // Transfer cargo from the station to the train subject to the space
         // available on the train.
         List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, trainAfter, consist);
@@ -192,7 +192,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      */
     public Move generate() {
 
-        // Only generate a move if there is some cargo to add..
+        // Only generate a move if there is some cargo to add...
         if (!autoConsist && waitingForFullLoad && trainAfter.equals(trainBefore)) {
             return null;
         }

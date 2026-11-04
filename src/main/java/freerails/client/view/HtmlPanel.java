@@ -49,7 +49,7 @@ public class HtmlPanel extends JPanel implements View {
     private JLabel htmlJLabel;
 
     /**
-     * Creates a html panel instance.
+     * Creates a HTML panel instance.
      */
     HtmlPanel() {
         GridBagConstraints gridBagConstraints;
@@ -62,7 +62,7 @@ public class HtmlPanel extends JPanel implements View {
 
         setMinimumSize(new Dimension(400, 300));
         jScrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        htmlJLabel.setFont(new Font("Dialog", 0, 12));
+        htmlJLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
         htmlJLabel.setVerticalTextPosition(SwingConstants.TOP);
         jScrollPane1.setViewportView(htmlJLabel);
 
@@ -83,7 +83,7 @@ public class HtmlPanel extends JPanel implements View {
     }
 
     /**
-     * Creates a html panel instance.
+     * Creates a HTML panel instance.
      * @param url the url
      */
     public HtmlPanel(URL url) {
@@ -92,7 +92,7 @@ public class HtmlPanel extends JPanel implements View {
     }
 
     /**
-     * Creates a html panel instance.
+     * Creates a HTML panel instance.
      * @param url the url
      * @param context the context
      */
@@ -104,8 +104,8 @@ public class HtmlPanel extends JPanel implements View {
     }
 
     /**
-     * Creates a html panel instance.
-     * @param html the html
+     * Creates a HTML panel instance.
+     * @param html the HTML
      */
     public HtmlPanel(String html) {
         this();
@@ -183,7 +183,7 @@ public class HtmlPanel extends JPanel implements View {
     }
 
     /**
-     * Sets the html.
+     * Sets the HTML.
      * @param s the s
      */
     void setHtml(String s) {

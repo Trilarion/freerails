@@ -41,7 +41,7 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
     private ModelRoot modelRoot;
 
     /**
-     * Creates a income statement html panel instance.
+     * Creates a income statement HTML panel instance.
      */
     public IncomeStatementHtmlPanel() {
         super();
@@ -65,7 +65,7 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
     }
 
     /**
-     * Updates the html.
+     * Updates the HTML.
      */
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();

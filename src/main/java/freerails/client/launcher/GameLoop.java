@@ -153,7 +153,7 @@ public class GameLoop implements Runnable {
                         deltatime = System.currentTimeMillis() - frameStartTime;
                     }
                 }
-                // remove all events from a event queue (max 5ms)
+                // remove all events from an event queue (max 5ms)
                 long startEventWaitTime = System.currentTimeMillis() + 4;
                 while (SynchronizedEventQueue.getInstance().peekEvent() != null) {
                     // we have events

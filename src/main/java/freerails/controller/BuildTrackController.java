@@ -251,7 +251,7 @@ public class BuildTrackController implements GameModel {
     }
 
     /**
-     * Cancels any proposed track and resets the path finder.
+     * Cancels any proposed track and resets the pathfinder.
      */
     private void reset() {
         proposedTrack.clear();

@@ -36,7 +36,7 @@ public class DetailMapRenderer implements MapRenderer {
 
     private final MapLayerRenderer background;
     private final Vector2D mapSizeInPixels;
-    private final OverHeadTrainView trainsview;
+    private final OverHeadTrainView trainsView;
     private final StationRadiusRenderer stationRadius;
     private final BuildTrackRenderer buildTrackRenderer;
     private final Painter stationBoxes;
@@ -49,7 +49,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @param modelRoot the client model that provides current game state
      */
     public DetailMapRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
-        trainsview = new OverHeadTrainView(world, rendererRoot, modelRoot);
+        trainsView = new OverHeadTrainView(world, rendererRoot, modelRoot);
 
         MapBackgroundRenderer mapBackgroundRenderer = new MapBackgroundRenderer(world, rendererRoot, modelRoot);
         background = new SquareTileBackgroundRenderer(mapBackgroundRenderer);
@@ -99,7 +99,7 @@ public class DetailMapRenderer implements MapRenderer {
     @Override
     public void paintTile(Graphics g, Vector2D tileLocation) {
         background.paintTile(g, tileLocation);
-        trainsview.paint((Graphics2D) g, null);
+        trainsView.paint((Graphics2D) g, null);
         stationRadius.paint((Graphics2D) g, null);
         stationBoxes.paint((Graphics2D) g, null);
 
@@ -125,7 +125,7 @@ public class DetailMapRenderer implements MapRenderer {
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         background.paintRect(g, visibleRect);
-        trainsview.paint((Graphics2D) g, visibleRect);
+        trainsView.paint((Graphics2D) g, visibleRect);
         stationRadius.paint((Graphics2D) g, null);
         stationBoxes.paint((Graphics2D) g, visibleRect);
         buildTrackRenderer.paint((Graphics2D) g, null);

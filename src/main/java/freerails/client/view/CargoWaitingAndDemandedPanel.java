@@ -94,7 +94,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         jPanel1.add(waiting, gridBagConstraints);
 
         waitingJTable.setBackground(UIManager.getDefaults().getColor("Button.background"));
-        waitingJTable.setFont(new Font("Dialog", 0, 10));
+        waitingJTable.setFont(new Font("Dialog", Font.PLAIN, 10));
         waitingJTable.setModel(new DefaultTableModel(new Object[][]{{"Mail", "4"}, {"Passengers", null}}, new String[]{"Title 1", "Title 2"}));
         waitingJTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         waitingJTable.setFocusable(false);
@@ -118,7 +118,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         jPanel1.add(demands, gridBagConstraints);
 
         demandsJList.setBackground(UIManager.getDefaults().getColor("Button.background"));
-        demandsJList.setFont(new Font("Dialog", 0, 10));
+        demandsJList.setFont(new Font("Dialog", Font.PLAIN, 10));
         demandsJList.setFocusable(false);
         demandsJList.setRequestFocusEnabled(false);
         gridBagConstraints = new GridBagConstraints();
@@ -214,7 +214,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         private final List<Integer> quantityWaiting;
 
         /**
-         * Creates a my abstract table model instance.
+         * Creates an abstract table model instance.
          * @param typeWaiting the type waiting
          * @param quantityWaiting the quantity waiting
          */

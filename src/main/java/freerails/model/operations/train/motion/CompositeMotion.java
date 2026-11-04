@@ -69,7 +69,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
     }
 
     /**
-     * Returns this composite motion with with start time replaced.
+     * Returns this composite motion with start time replaced.
      *
      * @param startTime the start time
      * @return the with start time

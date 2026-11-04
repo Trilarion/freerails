@@ -67,8 +67,8 @@ class BrokerFrame extends JInternalFrame {
         jScrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jPanel1.setLayout(new BorderLayout());
 
-        htmlJLabel.setFont(new Font("Dialog", 0, 12));
-        htmlJLabel.setText("sdfa");
+        htmlJLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
+        htmlJLabel.setText("");
         htmlJLabel.setVerticalAlignment(SwingConstants.TOP);
         htmlJLabel.setVerticalTextPosition(SwingConstants.TOP);
         jPanel1.add(htmlJLabel, BorderLayout.CENTER);
@@ -131,7 +131,7 @@ class BrokerFrame extends JInternalFrame {
     /**
      * Creates a broker frame instance.
      *
-     * @param html the html parameter
+     * @param html the HTML parameter
      */
     private BrokerFrame(String html) {
         this();
@@ -202,7 +202,7 @@ class BrokerFrame extends JInternalFrame {
     }
 
     /**
-     * Sets the html.
+     * Sets the HTML.
      * @param s the s
      */
     void setHtml(String s) {

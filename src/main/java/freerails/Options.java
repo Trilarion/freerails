@@ -108,7 +108,7 @@ public final class Options {
         GsonBuilder builder = new GsonBuilder().serializeNulls().setPrettyPrinting().excludeFieldsWithModifiers(Modifier.TRANSIENT);
         Gson gson = builder.create();
 
-        // serialize to json
+        // serialize to JSON
         String json = gson.toJson(new Options());
 
         // write to file

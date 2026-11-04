@@ -5,7 +5,7 @@
 The original [FreeRails](https://sourceforge.net/projects/freerails/)
 project was registered on Sourceforge on 2000-08-09 with the aim to create a fun game
 based off the RailRoad Tycoon and RailRoad Tycoon II games. It was described as a real
-time multi player strategy game where players compete to build the most powerful railroad
+time multi-player strategy game where players compete to build the most powerful railroad
 empire.
 
 The introductory [news message](https://sourceforge.net/p/freerails/news/2000/08/freerails-sister-project-of-freeciv/)
@@ -89,8 +89,7 @@ Sourceforge as a fork from the inactive Freerails2 project. The code was
 stored in a [GIT repository](https://sourceforge.net/p/freerails3/code/ci/master/tree/)
 and the history FreeRails2 was imported. Within a few weeks some issues were fixed and a
 new release was made with the version number 0.0.4 (smaller than the version of FreeRails
-before). Finally the code was
-also placed on [Github](https://github.com/lukeyj13/freerails3).
+before). Finally, the code was also placed on [GitHub](https://github.com/lukeyj13/freerails3).
 
 -  Last binary release: [FreeRails3 0.0.4](https://sourceforge.net/projects/freerails3/files/release-0.0.4/)
 -  Authors: Those of FreeRails2 and LukeYJ
@@ -107,4 +106,4 @@ including the last releases of each of the previous projects.
 
 No release has yet been made.
 
-_The journey continues.._
+_The journey continues..._

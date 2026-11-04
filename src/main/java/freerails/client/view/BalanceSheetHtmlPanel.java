@@ -65,7 +65,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
     }
 
     /**
-     * Updates the html.
+     * Updates the HTML.
      */
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();

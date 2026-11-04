@@ -66,7 +66,7 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
 
         setBorder(new TitledBorder("Current Details"));
         setPreferredSize(new Dimension(250, 97));
-        label1.setFont(new Font("Dialog", 0, 12));
+        label1.setFont(new Font("Dialog", Font.PLAIN, 12));
         label1.setText("<html><head></head><body>Trains X: 20 passengers, 15 tons of mfg goods, 12 sacks of mail, and 7 tons of livestock.</body></html>");
         label1.setMinimumSize(new Dimension(250, 17));
         label1.setHorizontalTextPosition(SwingConstants.LEADING);

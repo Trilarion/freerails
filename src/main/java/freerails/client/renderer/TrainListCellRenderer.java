@@ -115,8 +115,6 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      */
     private void display(int engine, List<Integer> wagons) {
         images = new Image[1 + wagons.size()];
-        // images[0] = vl.getTrainImages().getSideOnEngineImage(
-        // train.getEngineId(), height);
         String engineFilename = vl.getEngineImages(engine).sideOnFileName;
         try {
             images[0] = vl.getScaledImage(engineFilename, height);
@@ -124,8 +122,6 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
             throw new IllegalArgumentException(engineFilename);
         }
         for (int i = 0; i < wagons.size(); i++) {
-            // images[i + 1] = vl.getTrainImages().getSideOnWagonImage(
-            // order.consist.get(i), height);
             int wagonType = wagons.get(i);
             String wagonFilename = vl.getWagonImages(wagonType).sideOnFileName;
             try {

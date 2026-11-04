@@ -96,7 +96,7 @@ public class StationInfoPanel extends JPanel implements View {
         setLayout(new GridBagLayout());
 
         setMinimumSize(new Dimension(250, 177));
-        label1.setFont(new Font("Dialog", 0, 10));
+        label1.setFont(new Font("Dialog", Font.PLAIN, 10));
         label1.setText("<html>\n<h4 align=\"center\">Supply and Demand at stationName</h4>\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n  <tr>\n    <td>&nbsp;</td>\n    <td>Will pay<br>for</td>\n    <td>Supplies<br>(cars per year)</td>\n    <td>Waiting for pickup<br>(car loads)</td>\n  </tr>\n   <tr>\n    <td>Mail</td>\n    <td>Yes</td>\n    <td>&nbsp;</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Passengers</td>\n    <td>No</td>\n    <td>3</td>\n    <td>2.5</td>\n  </tr>\n \n</table>\n\n</html>");
         label1.setVerticalAlignment(SwingConstants.TOP);
         label1.setAlignmentY(0.0F);

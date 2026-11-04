@@ -51,7 +51,7 @@ public record TrainTemplate(int engineId, List<Integer> wagonTypes) implements S
      * Returns a concise description of this production template.
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "engine type: " + engineId + ", with " + wagonTypes.size() + " wagons";
     }
 }

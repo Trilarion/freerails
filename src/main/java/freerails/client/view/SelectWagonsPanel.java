@@ -129,7 +129,7 @@ public class SelectWagonsPanel extends JPanel implements View {
         gridBagConstraints.anchor = GridBagConstraints.WEST;
         jPanel1.add(clearButton, gridBagConstraints);
 
-        label1.setFont(new Font("Dialog", 0, 10));
+        label1.setFont(new Font("Dialog", Font.PLAIN, 10));
         label1.setText("The maximum train length is 6 wagons");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;

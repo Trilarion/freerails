@@ -153,9 +153,9 @@ public class LeaderBoardPanel extends JPanel implements View {
             PlayerDetails details = new PlayerDetails();
             details.setName(player.getName());
             details.setStations(world.getStations(player).size());
-            TransactionAggregator networth = new NetWorthAggregator(world, player, times);
-            networth.aggregate();
-            details.setNetworth(networth.getValues()[0]);
+            TransactionAggregator netWorth = new NetWorthAggregator(world, player, times);
+            netWorth.aggregate();
+            details.setNetworth(netWorth.getValues()[0]);
             values.add(details);
         }
         Collections.sort(values);

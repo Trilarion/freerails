@@ -65,7 +65,7 @@ class TerrainInfoPanel extends JPanel {
         gridBagConstraints.insets = new Insets(8, 8, 4, 4);
         add(terrainImage, gridBagConstraints);
 
-        terrainName.setFont(new Font("Dialog", 1, 14));
+        terrainName.setFont(new Font("Dialog", Font.BOLD, 14));
         terrainName.setText("City");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -75,7 +75,7 @@ class TerrainInfoPanel extends JPanel {
         gridBagConstraints.insets = new Insets(4, 4, 4, 8);
         add(terrainName, gridBagConstraints);
 
-        terrainDescription.setFont(new Font("Dialog", 0, 12));
+        terrainDescription.setFont(new Font("Dialog", Font.PLAIN, 12));
         terrainDescription.setText("<html>\n<p>Right-of-Way costs X per mile. </p>\n<table width=\"75%\" >\n  <tr> \n    <td><strong>Supplies:</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail </td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td> <strong>Demands</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td><strong>Converts</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Livestock to Food</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Steel to Goods</td>\n    <td>&nbsp;</td>\n  </tr>\n</table>\n</html>");
         terrainDescription.setVerticalAlignment(SwingConstants.TOP);
         gridBagConstraints = new GridBagConstraints();

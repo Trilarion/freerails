@@ -254,7 +254,7 @@ public class Train extends Identifiable {
         if (!(obj instanceof Train o)) {
             return false;
         }
-        // TODO there is a problem with the equality test on the sorted sets, only the id is tested (see https://docs.oracle.com/javase/7/docs/api/java/util/Set.html#equals(java.lang.Object))
+        // TODO there is a problem with the equality test on the sorted sets, only the id is tested (see https://docs.oracle.com/javase/7/docs/api/java/util/Set.HTML#equals(java.lang.Object))
         return getId() == o.getId()
                 && Objects.equals(configuration, o.configuration)
                 && Objects.equals(runtimeState, o.runtimeState);

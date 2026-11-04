@@ -232,7 +232,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     }
 
     /**
-     * Updates the html.
+     * Updates the HTML.
      */
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();

@@ -361,7 +361,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * Performs the send to all operation.
+     * Performs send to all operation.
      *
      * @param message the message
      */
@@ -372,12 +372,12 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     /**
      * Sends the specified message to all connections except the specified one.
      */
-    private void sendToAllExcept(Connection dontSend2, Serializable message) {
+    private void sendToAllExcept(Connection donotSend2, Serializable message) {
 
         for (LogOnCredentials p : acceptedConnections.keySet()) {
             Connection connection = acceptedConnections.get(p);
 
-            if (dontSend2 != connection) {
+            if (donotSend2 != connection) {
                 try {
                     connection.sendObject(message);
                 } catch (Exception e) {

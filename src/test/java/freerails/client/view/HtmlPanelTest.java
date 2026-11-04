@@ -70,7 +70,7 @@ public class HtmlPanelTest extends TestCase {
     }
 
     /**
-     * Provides test support for html panel person.
+     * Provides test support for HTML panel person.
      */
     static public class HtmlPanelPerson {
 
@@ -78,7 +78,7 @@ public class HtmlPanelTest extends TestCase {
         public final String name;
 
         /**
-         * Creates an instance of html panel person.
+         * Creates an instance of HTML panel person.
          * @param name the name to use in the test.
          */
         HtmlPanelPerson(String name) {

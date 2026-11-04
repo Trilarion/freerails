@@ -29,7 +29,7 @@ import java.util.Collections;
 // TODO some orthogonality checks in the constructor, maybe with instanceof in something like MoveUtils.isOrthogonal(Move a, Move b) for all kind of combinations
 /**
  * Combines a number of orthogonal moves. Orthogonal moves are moves that can be applied in any order (are not
- * dependent on each other). The validity of the composite move is determined by combining the validities of
+ * dependent on each other). The validity of the composite move is determined by combining the validations of
  * each move.
  * <p>
  * Must contain at least two moves.

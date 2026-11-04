@@ -53,7 +53,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      */
     private static final TaggedLogger logger = Logger.tag("GUIComponentFactoryImpl");
     private final ActionRoot actionRoot;
-    private final JMenu buildMenu; // let's you select a track type
+    private final JMenu buildMenu; // lets you select a track type
     private final CashLabel cashlabel;
     private final ClientFrame clientFrame;
     private final DateLabel datelabel;
@@ -394,7 +394,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * Creates the reports menu.
+     * Creates the report menu.
      *
      * @return the reports menu produced by this method
      */
@@ -410,8 +410,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         JMenuItem leaderBoardJMenuItem = new JMenuItem("Leaderboard");
         leaderBoardJMenuItem.addActionListener(e -> dialogueBoxController.showLeaderBoard());
 
-        JMenuItem networthGraphJMenuItem = new JMenuItem("Networth Graph");
-        networthGraphJMenuItem.addActionListener(e -> dialogueBoxController.showNetworthGraph());
+        JMenuItem networthGraphJMenuItem = new JMenuItem("Net Worth Graph");
+        networthGraphJMenuItem.addActionListener(e -> dialogueBoxController.showNetWorthGraph());
 
         reportsMenu.add(balanceSheetJMenuItem);
         reportsMenu.add(incomeStatementJMenuItem);
@@ -481,7 +481,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         mapViewJComponent.setup(mainMap, modelRoot, rendererRoot);
 
-        // setup the the main and overview map JComponents
+        // set up the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
         userInputOnMapController.setup(mapViewJComponent, actionRoot.getTrackMoveProducer(), stationTypesPopup, modelRoot, dialogueBoxController, buildTrackController);

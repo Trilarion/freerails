@@ -47,11 +47,11 @@ class BrokerScreenGenerator {
      */
     public BrokerScreenGenerator(UnmodifiableWorld world, Player player) {
         int playerIndex = world.getPlayerIndex(player.getId());
-        String playername = player.getName();
+        String playerName = player.getName();
 
         Clock clock = world.getClock();
-        final int startyear = clock.getCurrentYear();
-        String year = String.valueOf(startyear);
+        final int startYear = clock.getCurrentYear();
+        String year = String.valueOf(startYear);
         Money cash = world.getCurrentBalance(player);
 
         Time[] times = {Time.ZERO, clock.getCurrentTime()};

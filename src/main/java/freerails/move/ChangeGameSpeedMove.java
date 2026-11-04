@@ -72,7 +72,7 @@ public record ChangeGameSpeedMove(Speed speed) implements Move {
      * @return the string
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "ChangeGameSpeedMove: => " + speed;
     }
 }

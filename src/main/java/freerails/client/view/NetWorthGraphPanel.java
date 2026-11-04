@@ -211,12 +211,12 @@ public class NetWorthGraphPanel extends JPanel implements View {
             g2.setColor(company.color);
             for (int year = 1; year < 100; year++) {
                 if (company.value[year] != Integer.MIN_VALUE && company.value[year - 1] != Integer.MIN_VALUE) {
-                    long x1 = year * graphRect.width / 100 + graphRect.x;
+                    long x1 = (long) year * graphRect.width / 100 + graphRect.x;
                     long y1 = company.value[year] * graphRect.height / scaleMax;
                     y1 = Math.max(1, y1);
                     y1 = graphRect.y + graphRect.height - y1;
 
-                    long x2 = (year - 1) * graphRect.width / 100 + graphRect.x;
+                    long x2 = (long) (year - 1) * graphRect.width / 100 + graphRect.x;
                     long y2 = company.value[year - 1] * graphRect.height / scaleMax;
                     y2 = Math.max(1, y2);
                     y2 = graphRect.y + graphRect.height - y2;

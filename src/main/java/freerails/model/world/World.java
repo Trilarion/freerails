@@ -726,15 +726,6 @@ public class World implements UnmodifiableWorld {
         stationsById.remove(id);
     }
 
-    /**
-     * Finds an object by stable identifier in a collection.
-     *
-     * @param id identifier to find
-     * @param c collection to search
-     * @param <E> identifiable object type
-     * @return the matching object
-     * @throws IllegalArgumentException if no matching object is present
-     */
     /** Returns the sentiment currently selected by this world. */
     @Override
     public Sentiment getSentiment() {
@@ -1041,30 +1032,6 @@ public class World implements UnmodifiableWorld {
             result += Objects.hash(entry.getKey(), shopsHash);
         }
         return result;
-    }
-
-    /**
-     * Placeholder for removing the most recently added player; removal is not
-     * currently supported.
-     *
-     * @return the removed player
-     * @throws UnsupportedOperationException always, because this operation is
-     *         not implemented
-     */
-    public Player removeLastPlayer() {
-
-        // TODO this does not work, because we should indicate which player we want to remove
-        /*
-        int playerID = bankAccounts.removeLastD1();
-        while (lists.sizeD2(playerID) > 0) lists.removeLastD2(playerID);
-
-        lists.removeLastD1();
-        currentBalance.remove(currentBalance.size() - 1);
-        activityLists.removeLastD1();
-
-        return players.remove(players.size() - 1);
-        */
-        throw new UnsupportedOperationException();
     }
 
     // TODO remove this, when undoing moves is eliminated

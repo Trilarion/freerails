@@ -58,23 +58,23 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * Creates an image manager that reads from the supplied classpath path.
      *
-     * @param readpath the classpath prefix used to load images
+     * @param readPath the classpath prefix used to load images
      */
-    private ImageManagerImpl(String readpath) {
-        this(readpath, null);
+    private ImageManagerImpl(String readPath) {
+        this(readPath, null);
     }
 
     /**
      * Creates an image manager with paths for reading and writing images.
      *
-     * @param readpath the classpath prefix used to load images
+     * @param readPath the classpath prefix used to load images
      * @param writePath the directory used to write images, or {@code null} if
      *        writing is disabled
      */
-    public ImageManagerImpl(String readpath, String writePath) {
-        pathToReadFrom = readpath;
+    public ImageManagerImpl(String readPath, String writePath) {
+        pathToReadFrom = readPath;
         pathToWriteTo = writePath;
-        // Attempt to increase quality..
+        // Attempt to increase quality...
         renderingHints = new RenderingHints(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);

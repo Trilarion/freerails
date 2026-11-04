@@ -180,7 +180,7 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     private static <E> E load(File file, TypeToken<E> typeToken) throws IOException {
-        // load json
+        // load JSON
         String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
 
         // deserialize
@@ -197,10 +197,10 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static <E> E load(File file, Type type) throws IOException {
-        // load json
+        // load JSON
         String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
 
-        // deserialize json
+        // deserialize JSON
         return gson.fromJson(json, type);
     }
 
@@ -215,10 +215,10 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     private static <K, V> Map<K, V> loadAsMap(File file, Type type) throws IOException {
-        // load json
+        // load JSON
         String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
 
-        // deserialize json
+        // deserialize JSON
         return gson.fromJson(json, type);
     }
 
@@ -233,10 +233,10 @@ public final class GsonManager {
      * @throws IllegalArgumentException if identifiers are duplicated
      */
     private static <T extends Identifiable> SortedSet<T> loadAsSortedSet(File file, Type type) throws IOException {
-        // load json
+        // load JSON
         String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
 
-        // deserialize json
+        // deserialize JSON
         List<T> list = gson.fromJson(json, type);
 
         // check for uniqueness
@@ -273,10 +273,10 @@ public final class GsonManager {
      * @throws IOException if the file cannot be written
      */
     public static void save(File file, Object object) throws IOException {
-        // serialize to json
+        // serialize to JSON
         String json = gson.toJson(object);
 
-        // write json
+        // write JSON
         FileUtils.writeStringToFile(file, json, ModelConstants.defaultCharset);
     }
 
@@ -288,10 +288,10 @@ public final class GsonManager {
      * @throws IOException if the file cannot be written
      */
     public static void saveCompact(File file, Object object) throws IOException {
-        // serialize to json
+        // serialize to JSON
         String json = compact_gson.toJson(object);
 
-        // write json
+        // write JSON
         FileUtils.writeStringToFile(file, json, ModelConstants.defaultCharset);
     }
 

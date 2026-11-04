@@ -18,6 +18,8 @@
 
 package freerails.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -200,7 +202,7 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @return this vector's textual representation
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "(" + x + ", " + y + ")";
     }
 }

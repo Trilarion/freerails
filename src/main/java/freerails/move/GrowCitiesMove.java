@@ -24,7 +24,7 @@ import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Grows the cities (at the end of the year). This move cannot be undone
+ * Grows the cities (at the end of the year). This move cannot be undone,
  * and it should always be possible to perform it.
  */
 public class GrowCitiesMove implements Move {

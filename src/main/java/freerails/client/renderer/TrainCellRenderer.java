@@ -62,7 +62,7 @@ public class TrainCellRenderer implements ListCellRenderer<Engine> {
         JLabel label = savesJLabels.get(text);
         if (label == null) {
             label = new JLabel(text);
-            label.setFont(new Font("Dialog", 0, 12));
+            label.setFont(new Font("Dialog", Font.PLAIN, 12));
             Image image = rendererRoot.getEngineImages(engine.getId()).getSideOnImage();
             int height = image.getHeight(null);
             int width = image.getWidth(null);

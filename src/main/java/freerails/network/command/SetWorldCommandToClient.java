@@ -40,12 +40,7 @@ public class SetWorldCommandToClient implements CommandToClient {
      * @param world world to copy for delivery to the client
      */
     public SetWorldCommandToClient(World world) {
-        /**
-         * Returns a copy of this world object - making changes to this copy will
-         * not change this object.
-         */
         this.world = (World) Utils.cloneBySerialisation(world);
-        // this.world = world;
     }
 
     /**
@@ -56,12 +51,7 @@ public class SetWorldCommandToClient implements CommandToClient {
      */
     @Override
     public CommandStatus execute(ClientControlInterface client) {
-        /**
-         * Returns a copy of this world object - making changes to this copy will
-         * not change this object.
-         */
         client.setGameModel((World) Utils.cloneBySerialisation(world));
-
         return new CommandStatus(true);
     }
 

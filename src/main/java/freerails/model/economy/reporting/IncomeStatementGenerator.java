@@ -33,7 +33,7 @@ public class IncomeStatementGenerator {
 
     private final UnmodifiableWorld world;
     private final Player player;
-    private final int startyear;
+    private final int startYear;
 
     /** Total income from mail carried by the player's trains. */
     public Money mailTotal;
@@ -48,7 +48,7 @@ public class IncomeStatementGenerator {
     public IncomeStatementGenerator(UnmodifiableWorld world, Player player) {
         this.world = world;
         this.player = player;
-        startyear = world.getClock().getCurrentYear();
+        startYear = world.getClock().getCurrentYear();
     }
 
     /** Calculates the income and maintenance totals from the player's transactions. */
@@ -81,31 +81,31 @@ public class IncomeStatementGenerator {
                 switch (cargo.getCategory()) {
                     case BULK_FREIGHT:
                         bulkFreightTotal += cargoDeliveryTransaction.getAmount().amount();
-                        if (transactionYear >= startyear) {
+                        if (transactionYear >= startYear) {
                             bulkFreightYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                     case FAST_FREIGHT:
                         fastFreightTotal += cargoDeliveryTransaction.getAmount().amount();
-                        if (transactionYear >= startyear) {
+                        if (transactionYear >= startYear) {
                             fastFreightYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                     case MAIL:
                         mailTotal += cargoDeliveryTransaction.getAmount().amount();
-                        if (transactionYear >= startyear) {
+                        if (transactionYear >= startYear) {
                             mailYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                     case PASSENGER:
                         passengersTotal += cargoDeliveryTransaction.getAmount().amount();
-                        if (transactionYear >= startyear) {
+                        if (transactionYear >= startYear) {
                             passengersYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
                     case SLOW_FREIGHT:
                         slowFreightTotal += cargoDeliveryTransaction.getAmount().amount();
-                        if (transactionYear >= startyear) {
+                        if (transactionYear >= startYear) {
                             slowFreightYtd += cargoDeliveryTransaction.getAmount().amount();
                         }
                         break;
@@ -114,25 +114,25 @@ public class IncomeStatementGenerator {
             switch (transaction.getCategory()) {
                 case INTEREST_CHARGE:
                     interestTotal += transaction.getAmount().amount();
-                    if (transactionYear >= startyear) {
+                    if (transactionYear >= startYear) {
                         interestYtd += transaction.getAmount().amount();
                     }
                     break;
                 case TRAIN_MAINTENANCE:
                     trainMaintenanceTotal += transaction.getAmount().amount();
-                    if (transactionYear >= startyear) {
+                    if (transactionYear >= startYear) {
                         trainMaintenanceYtd += transaction.getAmount().amount();
                     }
                     break;
                 case TRACK_MAINTENANCE:
                     trackMaintenanceTotal += transaction.getAmount().amount();
-                    if (transactionYear >= startyear) {
+                    if (transactionYear >= startYear) {
                         trackMaintenanceYtd += transaction.getAmount().amount();
                     }
                     break;
                 case STATION_MAINTENANCE:
                     stationMaintenanceTotal += transaction.getAmount().amount();
-                    if (transactionYear >= startyear) {
+                    if (transactionYear >= startYear) {
                         stationMaintenanceYtd += transaction.getAmount().amount();
                     }
                     break;
@@ -175,7 +175,7 @@ public class IncomeStatementGenerator {
 
         for (Transaction transaction: world.getTransactions(player)) {
             int transactionYear = world.getClock().getYear(transaction.getTime());
-            if (transaction instanceof CargoDeliveryTransaction cargoDeliveryTransaction && transactionYear >= startyear) {
+            if (transaction instanceof CargoDeliveryTransaction cargoDeliveryTransaction && transactionYear >= startYear) {
                 int trainId = cargoDeliveryTransaction.getTrainId();
                 int trainIndex = world.getTrainIndex(player, trainId);
                 amount[trainIndex] += cargoDeliveryTransaction.getAmount().amount();

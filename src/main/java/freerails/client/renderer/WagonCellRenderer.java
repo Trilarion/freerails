@@ -40,7 +40,7 @@ public class WagonCellRenderer implements ListCellRenderer<Cargo> {
         labels = new Component[listModel.getSize()];
         for (int i = 0; i < listModel.getSize(); i++) {
             JLabel label = new JLabel();
-            label.setFont(new Font("Dialog", 0, 12));
+            label.setFont(new Font("Dialog", Font.PLAIN, 12));
             Cargo cargo = listModel.getElementAt(i);
             Image image = rendererRoot.getWagonImages(cargo.getId()).getSideOnImage();
             int height = image.getHeight(null);

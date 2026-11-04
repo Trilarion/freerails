@@ -70,7 +70,7 @@ public class TerrainTypeTest extends TestCase {
     }
 
     /**
-     * Tests legacy terrain cost json keys remain readable behavior.
+     * Tests legacy terrain cost JSON keys remain readable behavior.
      * @throws Exception if the test legacy terrain cost json keys remain readable operation fails.
      */
     public void testLegacyTerrainCostJsonKeysRemainReadable() throws Exception {

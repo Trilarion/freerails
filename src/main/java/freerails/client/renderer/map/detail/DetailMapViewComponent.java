@@ -145,8 +145,8 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     public void centerOnTile(Vector2D tile) {
         float scale = mapRenderer.scale();
         Rectangle visRect = new Rectangle(getVisibleRect());
-        visRect.x = (int) (tile.x() * scale - visRect.width / 2);
-        visRect.y = (int) (tile.y() * scale - visRect.height / 2);
+        visRect.x = (int) (tile.x() * scale - (float) visRect.width / 2);
+        visRect.y = (int) (tile.y() * scale - (float) visRect.height / 2);
         scrollRectToVisible(visRect);
     }
 

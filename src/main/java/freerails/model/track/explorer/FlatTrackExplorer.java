@@ -157,8 +157,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
             if (8 < loopCounter) {
                 throw new IllegalStateException();
-                // This should never happen.. ..but it does happen when you
-                // removed the track from under a train.
+                // This should never happen... but it does happen when you removed the track from under a train.
             }
         }
 

@@ -79,14 +79,14 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
              * has just been resized, we need to create a new backgroundBuffer.
              */
             if (backgroundBuffer == null || visibleRect.height != bufferRect.height || visibleRect.width != bufferRect.width) {
-                setbackgroundBuffer(visibleRect.width, visibleRect.height);
+                setBackgroundBuffer(visibleRect.width, visibleRect.height);
             }
 
             // Test if image is lost and restore it.
             int valCode = backgroundBuffer.validate(defaultConfig);
 
             if (valCode == VolatileImage.IMAGE_INCOMPATIBLE) {
-                setbackgroundBuffer(visibleRect.width, visibleRect.height);
+                setBackgroundBuffer(visibleRect.width, visibleRect.height);
             } else if (valCode == VolatileImage.IMAGE_RESTORED) {
                 refreshBackground();
             }
@@ -97,7 +97,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
             if (bufferRect.x != visibleRect.x || bufferRect.y != visibleRect.y) {
                 int dx = bufferRect.x - visibleRect.x;
                 int dy = bufferRect.y - visibleRect.y;
-                scrollbackgroundBuffer(dx, dy);
+                scrollBackgroundBuffer(dx, dy);
                 bufferRect.setBounds(visibleRect);
             }
 
@@ -131,7 +131,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
      * @param w the w
      * @param h the h
      */
-    private void setbackgroundBuffer(int w, int h) {
+    private void setBackgroundBuffer(int w, int h) {
         // Releases VRAM used by backgroundBuffer.
         if (backgroundBuffer != null) {
             backgroundBuffer.flush();
@@ -169,11 +169,11 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
     protected abstract void paintBufferRectangle(int x, int y, int width, int height);
 
     /**
-     * Scrollbackground buffer.
+     * Scroll background buffer.
      * @param dx the dx
      * @param dy the dy
      */
-    private void scrollbackgroundBuffer(int dx, int dy) {
+    private void scrollBackgroundBuffer(int dx, int dy) {
         int copyWidth = bufferRect.width;
         int copyHeight = bufferRect.height;
         int copySourceX = 0;

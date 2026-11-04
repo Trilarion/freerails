@@ -22,6 +22,7 @@
 package freerails.network;
 
 import freerails.util.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -55,7 +56,7 @@ public record LogOnCredentials(String username, String password) implements Seri
      * @return the username
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return username;
     }
 }

@@ -87,6 +87,29 @@ public class TrainMotionTest extends TestCase {
     }
 
     /**
+     * Tests that the activity duration is capped before the engine runs off the path.
+     */
+    public void testDurationStopsEngineAtPathEndWhenMotionProfileIsLonger() {
+        PathOnTiles path = new PathOnTiles(Vector2D.ZERO,
+                TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
+        int engineStep = 1;
+        double remainingPathDistance = path.getTotalDistance() - path.getDistance(engineStep);
+        Motion speeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(
+                ModelConstants.MODEL_UNITS_PER_TILE / 3.0d, 0.0d, 9.0d);
+
+        assertTrue(speeds.getTotalDistance() > remainingPathDistance);
+
+        TrainMotion motion = new TrainMotion(path, engineStep, 80, speeds);
+        double duration = motion.getDuration();
+        double enginePositionAtEnd = motion.getInitialPosition() + motion.getDistance(duration);
+
+        assertTrue(duration < speeds.getTotalTime());
+        assertEquals(remainingPathDistance, motion.getDistance(duration), 0.000001d);
+        assertTrue(enginePositionAtEnd <= path.getTotalDistance());
+        motion.getStateAtTime(duration);
+    }
+
+    /**
      * Tests state at time includes start and end but rejects outside interval behavior.
      */
     public void testStateAtTimeIncludesStartAndEndButRejectsOutsideInterval() {
