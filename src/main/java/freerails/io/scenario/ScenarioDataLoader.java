@@ -16,9 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.scenario;
+package freerails.io.scenario;
 
 import freerails.io.GsonManager;
+import freerails.model.scenario.ScenarioData;
 import freerails.model.operations.cargo.Cargo;
 import freerails.model.simulation.Clock;
 import freerails.model.game.Rules;

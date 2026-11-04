@@ -16,10 +16,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Provides classes for creating maps and loading, saving, and selecting scenarios
- * and saved games.
- *
- * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
- */
-package freerails.scenario;
+/** Persists complete server game models. */
+package freerails.io.savegame;

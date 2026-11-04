@@ -25,24 +25,29 @@ independent of the client, controller, server, and move layers.
 - `freerails.move` represents player actions as moves that can be checked and
 applied to the world.
 - `freerails.controller` translates user intent into game actions.
-- `freerails.server` processes game actions and maintains the authoritative
-game state.
+- `freerails.server` processes game actions, maintains the authoritative game
+state, and owns game-start orchestration through injected scenario and save-game
+interfaces.
 - `freerails.client` coordinates the desktop application, user interaction,
 Swing views, and rendering.
-- `freerails.scenario` and `freerails.io` handle scenarios, saved games, and
-serialization. `freerails.network` contains communication-level types; shared utilities
-live in `freerails.util`.
+- `freerails.io` contains serialization and file/resource adapters, including
+scenario and save-game persistence. `freerails.network` contains
+communication-level types; shared utilities live in `freerails.util`.
 
 Keep dependencies moving toward these responsibilities. In particular, avoid introducing
 dependencies from the game model to application layers or creating new package cycles.
 Some existing code does not yet satisfy every boundary; do not treat those exceptions as a
 pattern for new code.
 
-Scenario configuration is represented by `freerails.scenario.ScenarioData`. It aggregates
-the definition files and terrain map, and converts explicitly to and from `World.Builder`
-and a world's terrain-only configuration. `ScenarioDataLoader` owns the existing JSON file
-layout; player-specific live state remains outside scenario configuration and is handled by
-game setup or save-game persistence.
+Scenario configuration is represented by `freerails.model.scenario.ScenarioData`. It aggregates
+the definition data and terrain map, and converts explicitly to and from `World.Builder`
+and a world's terrain-only configuration. `freerails.model.scenario.ScenarioWorldInitializer`
+builds the initial world from that data. Scenario JSON layout and classpath resource access
+belong to `freerails.io.scenario`; the server requests scenarios through its `ScenarioSource`
+interface, implemented by the I/O layer and wired by the launcher. Save-game persistence
+implementations belong to `freerails.io.savegame`, while the server-facing `SaveGamesManager`
+contract remains in `freerails.server`. Player-specific live state remains outside scenario
+configuration and is handled by game setup or save-game persistence.
 
 Economic value types, account and transaction state, and transaction aggregation belong
 under `freerails.model.economy`. Financial report generators belong in its

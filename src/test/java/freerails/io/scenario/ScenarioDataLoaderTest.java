@@ -16,12 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.scenario;
+package freerails.io.scenario;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import freerails.model.scenario.ScenarioData;
 import freerails.model.simulation.Clock;
 import freerails.model.simulation.Time;
+import freerails.model.scenario.ScenarioWorldInitializer;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.World;
 import freerails.util.Vector2D;
@@ -98,6 +100,23 @@ public class ScenarioDataLoaderTest extends TestCase {
 
         assertTrue(scenario.cityGrowthEnabled());
         assertTrue(scenario.toWorldBuilder().build().isCityGrowthEnabled());
+    }
+
+    /**
+     * Tests that the classpath scenario source supplies and initializes built-in scenarios.
+     * @throws Exception if a built-in scenario cannot be loaded.
+     */
+    public void testClasspathScenarioSourceLoadsAndInitializesScenario() throws Exception {
+        ClasspathScenarioSource source = new ClasspathScenarioSource();
+
+        assertEquals("South America", source.getAvailableScenarioNames()[0]);
+        assertEquals("Small South America", source.getAvailableScenarioNames()[1]);
+
+        ScenarioData scenario = source.loadScenario("Small South America");
+        World world = ScenarioWorldInitializer.createWorld(scenario);
+
+        assertEquals(scenario.terrainMap().getWidth(), world.getMapSize().x());
+        assertEquals(scenario.terrainMap().getHeight(), world.getMapSize().y());
     }
 
     /**

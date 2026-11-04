@@ -35,7 +35,7 @@ import freerails.model.track.TrackProperty;
 import freerails.model.track.TrackType;
 import freerails.model.operations.train.Engine;
 import freerails.model.world.World;
-import freerails.scenario.MapCreator;
+import freerails.io.scenario.ClasspathScenarioSource;
 
 import java.io.File;
 import java.net.URL;
@@ -226,7 +226,7 @@ public final class WorldGenerator {
      */
     private static SortedSet<Sentiment> getSentiments() throws Exception {
         // load sentiments
-        URL url = MapCreator.class.getResource("/freerails/data/scenario/sentiments.json");
+        URL url = ClasspathScenarioSource.class.getResource("/freerails/data/scenario/sentiments.json");
         File file = new File(url.toURI());
         return GsonManager.loadSentiments(file);
     }

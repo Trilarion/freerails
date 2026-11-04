@@ -16,26 +16,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.scenario;
-
-import java.io.File;
-import java.io.FilenameFilter;
-
-/**
- * A SaveGamesManager reads and writes gzipped saved games to the working
- * directory.
- */
-public class SavedGameFileFilter implements FilenameFilter {
-
-    /**
-     * Returns whether accept.
-     *
-     * @param dir the dir
-     * @param name the name to use
-     * @return the accept
-     */
-    @Override
-    public boolean accept(File dir, String name) {
-        return name.endsWith(".sav");
-    }
-}
+/** Scenario configuration and its conversion into initial world state. */
+package freerails.model.scenario;

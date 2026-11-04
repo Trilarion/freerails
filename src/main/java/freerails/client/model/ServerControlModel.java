@@ -20,7 +20,7 @@ package freerails.client.model;
 
 import freerails.model.simulation.Speed;
 import freerails.network.command.NewGameCommandToServer;
-import freerails.scenario.MapCreator;
+import freerails.io.scenario.ClasspathScenarioSource;
 import freerails.util.ui.ActionAdapter;
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootListener;
@@ -176,7 +176,7 @@ public class ServerControlModel implements ModelRootListener {
             action.setEnabled(true);
         }
 
-        String[] mapNames = MapCreator.getAvailableMapNames();
+        String[] mapNames = new ClasspathScenarioSource().getAvailableScenarioNames();
         Action[] actions = new Action[mapNames.length];
 
         for (int j = 0; j < actions.length; j++) {

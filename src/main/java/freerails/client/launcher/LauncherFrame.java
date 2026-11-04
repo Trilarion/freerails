@@ -27,7 +27,8 @@ import freerails.Options;
 import freerails.client.ClientConstants;
 import freerails.server.FreerailsGameServer;
 import freerails.network.LogOnResponse;
-import freerails.scenario.FullSaveGameManager;
+import freerails.io.savegame.FullSaveGameManager;
+import freerails.io.scenario.ClasspathScenarioSource;
 import freerails.server.FullServerGameModel;
 import freerails.server.GameModel;
 import freerails.util.network.Connection;
@@ -417,7 +418,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
      */
     private void initServer() {
 
-        server = new FreerailsGameServer(new FullSaveGameManager());
+        server = new FreerailsGameServer(new ClasspathScenarioSource(), new FullSaveGameManager());
         server.setServerGameModel(new FullServerGameModel());
         /*
          * Set the server field on the connected players panel so that it can

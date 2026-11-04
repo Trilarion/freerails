@@ -17,8 +17,9 @@
  */
 
 /**
- * Provides server-side game processing and server game models. Client/server
- * commands and connection-level data are defined in the network packages.
+ * Provides server-side game processing, game models, and ports for scenario
+ * and save-game access. Client/server commands and connection-level data are
+ * defined in the network packages.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

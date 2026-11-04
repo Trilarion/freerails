@@ -16,17 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.scenario;
+package freerails.server;
 
 import freerails.server.ServerGameModel;
 
 import java.io.IOException;
 import java.io.Serializable;
 
-// TODO move newMap out of SaveGamesManager, not the task!
 /**
- * Defines methods that let the server load and save game states, and get blank
- * maps for new games.
+ * Defines methods that let the server list, load, and save game states.
  */
 public interface SaveGamesManager {
 

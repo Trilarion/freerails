@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.scenario;
+package freerails.model.scenario;
 
 import freerails.model.operations.cargo.Cargo;
 import freerails.model.simulation.Clock;

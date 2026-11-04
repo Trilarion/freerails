@@ -16,9 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.scenario;
+package freerails.server;
 
-import freerails.server.ServerGameModel;
 import freerails.util.Utils;
 
 import java.io.IOException;

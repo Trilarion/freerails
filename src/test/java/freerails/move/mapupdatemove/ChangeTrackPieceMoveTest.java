@@ -29,7 +29,7 @@ import freerails.model.track.TrackType;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.Status;
-import freerails.scenario.MapCreator;
+import freerails.io.scenario.ClasspathScenarioSource;
 import freerails.util.Vector2D;
 import freerails.model.world.World;
 import freerails.model.game.Rules;
@@ -55,7 +55,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         super.setUp();
         setHasSetupBeenCalled(true);
         // load terrain types
-        URL url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
+        URL url = ClasspathScenarioSource.class.getResource("/freerails/data/scenario/terrain_types.json");
         File file = new File(url.toURI());
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 

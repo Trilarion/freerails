@@ -23,13 +23,12 @@ import freerails.move.Move;
 import freerails.move.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
+import freerails.model.player.Player;
+import freerails.model.scenario.ScenarioData;
+import freerails.model.scenario.ScenarioWorldInitializer;
+import freerails.model.world.World;
 import freerails.network.*;
 import freerails.network.command.*;
-import freerails.scenario.MapCreator;
-import freerails.scenario.SaveGamesManager;
-
-import freerails.model.world.World;
-import freerails.model.player.Player;
 import freerails.util.network.Connection;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
@@ -38,7 +37,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.URISyntaxException;
+import java.io.UncheckedIOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
@@ -60,6 +59,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     private final Collection<LogOnCredentials> currentlyLoggedOn = new HashSet<>();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final SaveGamesManager saveGamesManager;
+    private final ScenarioSource scenarioSource;
     private final CountDownLatch status = new CountDownLatch(1);
     // TODO new players allowed used meaningfully
     private boolean newPlayersAllowed = true;
@@ -67,12 +67,14 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     private ServerGameModel serverGameModel;
 
     /**
-     * Creates a server that uses the supplied save-game manager.
+     * Creates a server that uses the supplied scenario source and save-game manager.
      *
+     * @param scenarioSource the source used to list and load scenarios
      * @param saveGamesManager the manager used to load and save games
      */
-    public FreerailsGameServer(SaveGamesManager saveGamesManager) {
-        this.saveGamesManager = saveGamesManager;
+    public FreerailsGameServer(ScenarioSource scenarioSource, SaveGamesManager saveGamesManager) {
+        this.scenarioSource = Objects.requireNonNull(scenarioSource, "scenarioSource");
+        this.saveGamesManager = Objects.requireNonNull(saveGamesManager, "saveGamesManager");
     }
 
     /**
@@ -101,7 +103,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 }
 
                 // Just send to the new client.
-                Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(MapCreator.getAvailableMapNames())));
+                Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(scenarioSource.getAvailableScenarioNames())));
                 Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ArrayList<>(Arrays.asList(saveGamesManager.getSaveGameNames())));
 
                 connection.sendObject(setMaps);
@@ -283,11 +285,12 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     public void newGame(String mapName) {
         newPlayersAllowed = false;
 
-        World world = null;
+        World world;
         try {
-            world = MapCreator.newMap(mapName);
-        } catch (URISyntaxException | IOException e) {
-            throw new RuntimeException(e);
+            ScenarioData scenario = scenarioSource.loadScenario(mapName);
+            world = ScenarioWorldInitializer.createWorld(scenario);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Could not load scenario: " + mapName, e);
         }
 
         String[] passwords = new String[players.size()];
@@ -509,7 +512,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      */
     @Override
     public void refreshSavedGames() {
-        Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(MapCreator.getAvailableMapNames())));
+        Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(scenarioSource.getAvailableScenarioNames())));
         Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ArrayList<>(Arrays.asList(saveGamesManager.getSaveGameNames())));
         sendToAll(setMaps);
         sendToAll(setSaveGames);

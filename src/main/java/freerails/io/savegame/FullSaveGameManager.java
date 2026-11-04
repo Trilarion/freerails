@@ -19,8 +19,9 @@
 /*
  *
  */
-package freerails.scenario;
+package freerails.io.savegame;
 
+import freerails.server.SaveGamesManager;
 import freerails.server.ServerGameModel;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;

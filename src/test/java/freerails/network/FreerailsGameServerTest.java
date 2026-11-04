@@ -19,7 +19,8 @@
 package freerails.network;
 
 import freerails.server.FreerailsGameServer;
-import freerails.scenario.TestSaveGamesManager;
+import freerails.io.scenario.ClasspathScenarioSource;
+import freerails.server.TestSaveGamesManager;
 import junit.framework.TestCase;
 
 /**
@@ -36,7 +37,7 @@ public class FreerailsGameServerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        server = new FreerailsGameServer(new TestSaveGamesManager());
+        server = new FreerailsGameServer(new ClasspathScenarioSource(), new TestSaveGamesManager());
     }
 
     /**

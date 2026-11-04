@@ -19,7 +19,8 @@
 package freerails.network;
 
 import freerails.server.FreerailsGameServer;
-import freerails.scenario.TestSaveGamesManager;
+import freerails.io.scenario.ClasspathScenarioSource;
+import freerails.server.TestSaveGamesManager;
 import freerails.util.network.Connection;
 import freerails.util.network.ServerSocketAcceptor;
 import junit.framework.TestCase;
@@ -51,7 +52,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
         super.setUp();
 
         FreerailsGameServer result;
-        FreerailsGameServer server1 = new FreerailsGameServer(new TestSaveGamesManager());
+        FreerailsGameServer server1 = new FreerailsGameServer(new ClasspathScenarioSource(), new TestSaveGamesManager());
         Thread t = new Thread(server1);
         t.start();
 
