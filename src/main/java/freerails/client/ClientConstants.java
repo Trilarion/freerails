@@ -106,21 +106,6 @@ public final class ClientConstants {
     /**
      *
      */
-    public static final String VIEW_GAME_CONTROLS = PATH_VIEWS + "game_controls.html";
-
-    /**
-     *
-     */
-    public static final String VIEW_ABOUT = PATH_VIEWS + "about.htm";
-
-    /**
-     *
-     */
-    public static final String VIEW_HOW_TO_PLAY = PATH_VIEWS + "how_to_play.htm";
-
-    /**
-     *
-     */
     public static final String ICON_FILE_EXTENSION = ".png";
 
     // Icon file locations

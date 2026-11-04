@@ -347,32 +347,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         return gameMenu;
     }
 
-    // TODO the whole help menu is pretty dead, needs redesign
-    /**
-     * Creates the help menu.
-     *
-     * @return the help menu produced by this method
-     */
-    @Override
-    public JMenu createHelpMenu() {
-        JMenu helpMenu = new JMenu("Help");
-
-        JMenuItem about = new JMenuItem("About");
-        about.addActionListener(e -> dialogueBoxController.showAbout());
-
-        JMenuItem how2play = new JMenuItem("Getting started");
-        how2play.addActionListener(e -> dialogueBoxController.showHow2Play());
-
-        JMenuItem showControls = new JMenuItem("Show game controls");
-        showControls.addActionListener(e -> dialogueBoxController.showGameControls());
-
-        helpMenu.add(showControls);
-        helpMenu.add(how2play);
-        helpMenu.add(about);
-
-        return helpMenu;
-    }
-
     /**
      * Creates the main map.
      *

@@ -80,9 +80,9 @@ public class FullSaveGameManager implements SaveGamesManager {
         logger.info("done, " + (finishTime - startTime));
     }
 
-    // check that load game really works
     /**
      * Loads and decompresses a server game model from a save-game file.
+     * TODO check that load game really works
      *
      * @param path the path of the save-game file
      * @return the loaded server game model

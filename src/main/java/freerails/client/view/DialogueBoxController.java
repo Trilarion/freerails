@@ -71,9 +71,6 @@ public class DialogueBoxController {
     private final MyGlassPanel glassPanel;
     private final NewsPaperPanel newspaper;
     private final SelectWagonsPanel selectWagons;
-    private final HtmlPanel showControls;
-    private final HtmlPanel about;
-    private final HtmlPanel how2play;
     private final TerrainInfoPanel terrainInfo;
     private final StationInfoPanel stationInfo;
     private final TrainDialoguePanel trainDialoguePanel;
@@ -173,10 +170,6 @@ public class DialogueBoxController {
 
         closeButton.addActionListener(closeCurrentDialogue);
 
-        showControls = new HtmlPanel(DialogueBoxController.class.getResource(ClientConstants.VIEW_GAME_CONTROLS));
-        about = new HtmlPanel(DialogueBoxController.class.getResource(ClientConstants.VIEW_ABOUT));
-        how2play = new HtmlPanel(DialogueBoxController.class.getResource(ClientConstants.VIEW_HOW_TO_PLAY));
-
         terrainInfo = new TerrainInfoPanel();
         stationInfo = new StationInfoPanel();
         newspaper = new NewsPaperPanel();
@@ -208,11 +201,6 @@ public class DialogueBoxController {
 
         // setup the supply and demand at station dialogue.
         stationInfo.setup(modelRoot, vl, closeCurrentDialogue);
-        // setup the 'show controls' dialogue
-        showControls.setup(modelRoot, vl, closeCurrentDialogue);
-        about.setup(modelRoot, vl, closeCurrentDialogue);
-        how2play.setup(modelRoot, vl, closeCurrentDialogue);
-
         // Set up select engine dialogue.
         selectEngine.setCancelButtonActionListener(closeCurrentDialogue);
         selectEngine.setup(modelRoot, vl, selectEngineAction);
@@ -311,13 +299,6 @@ public class DialogueBoxController {
     }
 
     /**
-     * Displays the game controls.
-     */
-    public void showGameControls() {
-        showContent(showControls);
-    }
-
-    /**
      * Displays the income statement.
      */
     public void showIncomeStatement() {
@@ -356,20 +337,6 @@ public class DialogueBoxController {
         ConfirmExitPanel bs = new ConfirmExitPanel();
         bs.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(bs);
-    }
-
-    /**
-     * Displays the about.
-     */
-    public void showAbout() {
-        showContent(about);
-    }
-
-    /**
-     * Displays the how2 play.
-     */
-    public void showHow2Play() {
-        showContent(how2play);
     }
 
     /**

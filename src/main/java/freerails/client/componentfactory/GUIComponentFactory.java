@@ -89,13 +89,6 @@ public interface GUIComponentFactory {
     JMenu createDisplayMenu();
 
     /**
-     * Creates the help menu.
-     *
-     * @return the help menu produced by this method
-     */
-    JMenu createHelpMenu();
-
-    /**
      * Creates the broker menu.
      *
      * @return the broker menu produced by this method

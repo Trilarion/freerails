@@ -4,6 +4,10 @@ This guide describes the architecture and working conventions for developing Fre
 The implementation and tests are the source of truth when older design notes differ from
 the current behavior.
 
+This document is the authoritative source for FreeRails architecture, design
+principles, development and code style, repository layout, and build guidance.
+`AGENTS.md` points here rather than duplicating that guidance.
+
 ## Repository layout
 
 - `src/main/java/freerails/` — Java application code, organized into packages for the
@@ -15,7 +19,7 @@ the current behavior.
 - `build.gradle`, `settings.gradle`, and `gradle/` — Gradle build configuration and the Gradle wrapper.
 - `docs/history.md` — project history.
 
-## Architecture
+## Architecture and design principles
 
 FreeRails separates game state and rules from interaction, presentation, and
 infrastructure:
@@ -48,25 +52,27 @@ dependencies from the game model to application layers or creating new package c
 Some existing code does not yet satisfy every boundary; do not treat those exceptions as a
 pattern for new code.
 
-Scenario configuration is represented by `freerails.model.scenario.ScenarioData`. It aggregates
-the definition data and terrain map, and converts explicitly to and from `World.Builder`
-and a world's terrain-only configuration. `freerails.model.scenario.ScenarioWorldInitializer`
-builds the initial world from that data. Scenario JSON layout and classpath resource access
-belong to `freerails.io.scenario`; the server requests scenarios through its `ScenarioSource`
+Scenario configuration is represented by `freerails.model.scenario.ScenarioData`. It
+aggregates the definition data and terrain map, and converts explicitly to and from
+`World.Builder` and a world's terrain-only configuration.
+`freerails.model.scenario.ScenarioWorldInitializer` builds the initial world from that
+data. Scenario JSON layout and classpath resource access belong to
+`freerails.io.scenario`; the server requests scenarios through its `ScenarioSource`
 interface, implemented by the I/O layer and wired by the launcher. Save-game persistence
 implementations belong to `freerails.io.savegame`, while the server-facing `SaveGamesManager`
-contract remains in `freerails.server`. Player-specific live state remains outside scenario
-configuration and is handled by game setup or save-game persistence.
+contract remains in `freerails.server`. Player-specific live state remains outside
+scenario configuration and is handled by game setup or save-game persistence.
 
 Economic value types, account and transaction state, and transaction aggregation belong
 under `freerails.model.economy`. Financial report generators belong in its
 `reporting` subpackage.
 
 Simulation-wide time primitives (`Clock`, `Time`, and `Speed`) belong to
-`freerails.model.simulation`, rather than the gameplay-specific `freerails.model.game`
-package. Train activities and motion remain under `freerails.model.operations.train`; their time
-offsets and durations use simulation ticks and may be fractional for smooth interpolation.
-`Time` represents whole tick boundaries.
+`freerails.model.simulation`, rather than the gameplay-specific
+`freerails.model.game` package. Train activities and motion remain under
+`freerails.model.operations.train`; their time offsets and durations use simulation
+ticks and may be fractional for smooth interpolation. `Time` represents whole tick
+boundaries.
 
 Transport model state is grouped under `freerails.model.operations`: train consists,
 schedules, activities and motion, station cargo queues, and cargo handling. Its `train`,
@@ -74,13 +80,15 @@ schedules, activities and motion, station cargo queues, and cargo handling. Its 
 change this state stay in `freerails.move`; cargo delivery transactions remain in
 `freerails.model.economy.transaction` as accounting records.
 
-## Savegame compatibility during development
+## Persistence and game-state contracts
+
+### Savegame compatibility
 
 FreeRails is currently in active development. Changes to persisted game state do not need
 to support pre-existing savegames; development should always assume that no pre-existing
 savegames need to be loaded.
 
-## Game-state and move contracts
+### Moves and world state
 
 Treat a `Move` as one coherent game action. Moves cross the client/server boundary, so
 they should be serializable, immutable, logically comparable, and refer to world objects
@@ -99,22 +107,35 @@ track operations rather than changing one side alone. Consider scenario loading 
 changing persisted data, and serialization compatibility for data transmitted between
 clients and servers.
 
-## Development practices
+## Development and code style
 
-- Use the existing package structure and nearby code conventions. Keep the
-model independent of Swing and put game rules in model- or server-facing code, not in
-views or renderers.
+### Code and tests
+
+- Follow the existing package structure and nearby code conventions, preserving the
+  architecture and package boundaries described above.
 - Add or update tests for behavior changes, especially game rules, moves,
-serialization, and scenario loading.
+  serialization, and scenario loading.
+
+### Diagnostics and errors
+
 - Production source under `src/main/java` must not write directly to the
-console. Use the project logger for diagnostics, which are writtento the
-log file. Avoid swallowed errors.
-- Document public types and important behavior with concise Javadoc, and
-update relevant pages under `docs/` when behavior or architecture changes.
+  console. Use the project logger for diagnostics, which are written to the
+  log file. Avoid swallowed errors.
+
+### Documentation
+
+- Add concise Javadoc to every class and every method, including private
+  classes and methods, in newly written or generated Java code. Add a brief
+  one-line comment before longer logical code sections when their purpose is
+  not obvious. Update relevant pages under `docs/` when behavior or
+  architecture changes.
 - Keep Markdown prose wrapped to roughly 80-100 characters so the source stays
-readable in editors, reviews, and git diffs.
+  readable in editors, reviews, and git diffs.
+
+### Scope
+
 - Keep changes focused and preserve existing behavior unless a change is
-intentional.
+  intentional.
 
 ## Build and run
 

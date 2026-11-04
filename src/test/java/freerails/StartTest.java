@@ -22,25 +22,30 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/** Tests parsing of application roles from command-line arguments. */
 public class StartTest {
 
+    /** Checks that an omitted role and {@code --both} select both application roles. */
     @Test
     public void defaultsToBothRoles() {
         assertEquals(Start.Role.BOTH, Start.parseRole(new String[0]));
         assertEquals(Start.Role.BOTH, Start.parseRole(new String[]{"--both"}));
     }
 
+    /** Checks that the client-only and server-only arguments select their respective roles. */
     @Test
     public void parsesSingleRoleArguments() {
         assertEquals(Start.Role.CLIENT, Start.parseRole(new String[]{"--client"}));
         assertEquals(Start.Role.SERVER, Start.parseRole(new String[]{"--server"}));
     }
 
+    /** Checks that an unsupported argument is rejected. */
     @Test(expected = IllegalArgumentException.class)
     public void rejectsUnknownArguments() {
         Start.parseRole(new String[]{"--unknown"});
     }
 
+    /** Checks that multiple role arguments are rejected. */
     @Test(expected = IllegalArgumentException.class)
     public void rejectsConflictingRoles() {
         Start.parseRole(new String[]{"--client", "--server"});

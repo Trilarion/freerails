@@ -340,6 +340,10 @@ public class FullServerGameModel implements ServerGameModel {
      */
     @Override
     public synchronized void update() {
+        if (world == null || moveReceiver == null) {
+            return;
+        }
+
         long frameStartTime = System.currentTimeMillis();
 
         while (nextModelUpdateDue <= frameStartTime) {
@@ -382,7 +386,7 @@ public class FullServerGameModel implements ServerGameModel {
      * @param moveReceiver the receiver to which generated moves are submitted
      */
     @Override
-    public void initialize(MoveReceiver moveReceiver) {
+    public synchronized void initialize(MoveReceiver moveReceiver) {
         this.moveReceiver = moveReceiver;
         nextModelUpdateDue = System.currentTimeMillis();
     }
@@ -400,9 +404,10 @@ public class FullServerGameModel implements ServerGameModel {
      * @param passwords the player passwords associated with the world
      */
     @Override
-    public void setWorld(World world, String[] passwords) {
+    public synchronized void setWorld(World world, String[] passwords) {
         this.world = world;
         this.passwords = passwords.clone();
+        nextModelUpdateDue = System.currentTimeMillis();
     }
 
     /**

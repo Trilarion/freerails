@@ -79,11 +79,13 @@ public class LauncherPanel extends JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
-        add(serverOnlyButton, gridBagConstraints);
+        if (allowServerOnly) {
+            add(serverOnlyButton, gridBagConstraints);
+        }
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = allowServerOnly ? 4 : 3;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -91,7 +93,6 @@ public class LauncherPanel extends JPanel {
         buttonModels[ClientConstants.MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
         buttonModels[ClientConstants.MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
         buttonModels[ClientConstants.MODE_SERVER_ONLY] = serverOnlyButton.getModel();
-        serverOnlyButton.setEnabled(allowServerOnly);
         if (forcedMode != null) {
             if (forcedMode < 0 || forcedMode >= buttonModels.length) {
                 throw new IllegalArgumentException("Unknown launcher mode: " + forcedMode);

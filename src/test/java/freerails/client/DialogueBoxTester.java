@@ -156,7 +156,6 @@ class DialogueBoxTester extends JFrame {
         JMenuItem selectEngine = new JMenuItem();
         JMenuItem selectWagons = new JMenuItem();
         JMenuItem selectTrainOrders = new JMenuItem();
-        JMenuItem showControls = new JMenuItem();
         JMenuItem showTerrainInfo = new JMenuItem();
         JMenuItem showStationInfo = new JMenuItem();
         JMenuItem showTrainList = new JMenuItem();
@@ -213,11 +212,6 @@ class DialogueBoxTester extends JFrame {
                 .addActionListener(this::selectTrainOrdersActionPerformed);
 
         show.add(selectTrainOrders);
-
-        showControls.setText("Show game controls");
-        showControls.addActionListener(this::showControlsActionPerformed);
-
-        show.add(showControls);
 
         showTerrainInfo.setText("Show Terrain Info");
         showTerrainInfo.addActionListener(this::showTerrainInfoActionPerformed);
@@ -329,15 +323,6 @@ class DialogueBoxTester extends JFrame {
         
         int terrainType = 0;
         dialogueBoxController.showTerrainInfo(terrainType);
-    }
-
-    /**
-     * Performs show terrain info action performed.
-     * @param evt the evt to use in the test.
-     */
-    private void showControlsActionPerformed(ActionEvent evt) {
-        
-        dialogueBoxController.showGameControls();
     }
 
     /**

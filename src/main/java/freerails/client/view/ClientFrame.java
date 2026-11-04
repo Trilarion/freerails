@@ -60,7 +60,6 @@ public class ClientFrame extends JFrame {
         JMenu brokerMenu1 = guiComponentFactory.createBrokerMenu();
         JMenu displayMenu = guiComponentFactory.createDisplayMenu();
         JMenu reportsMenu = guiComponentFactory.createReportsMenu();
-        JMenu helpMenu = guiComponentFactory.createHelpMenu();
 
         getContentPane().setLayout(new GridBagLayout());
 
@@ -129,9 +128,6 @@ public class ClientFrame extends JFrame {
 
         reportsMenu.setText("Reports");
         jMenuBar1.add(reportsMenu);
-
-        helpMenu.setText("Help");
-        jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
 
