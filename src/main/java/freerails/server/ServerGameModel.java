@@ -22,6 +22,7 @@
 package freerails.server;
 
 import freerails.model.world.World;
+import freerails.move.MoveReceiver;
 
 import java.io.Serializable;
 

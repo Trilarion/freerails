@@ -44,7 +44,7 @@ public class LauncherPanel extends JPanel {
     /**
      * Creates a launcher panel instance.
      */
-    public LauncherPanel() {
+    public LauncherPanel(Integer forcedMode, boolean allowServerOnly) {
         GridBagConstraints gridBagConstraints;
 
         buttonGroup1 = new ButtonGroup();
@@ -91,6 +91,16 @@ public class LauncherPanel extends JPanel {
         buttonModels[ClientConstants.MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
         buttonModels[ClientConstants.MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
         buttonModels[ClientConstants.MODE_SERVER_ONLY] = serverOnlyButton.getModel();
+        serverOnlyButton.setEnabled(allowServerOnly);
+        if (forcedMode != null) {
+            if (forcedMode < 0 || forcedMode >= buttonModels.length) {
+                throw new IllegalArgumentException("Unknown launcher mode: " + forcedMode);
+            }
+            buttonModels[forcedMode].setSelected(true);
+            startNetworkButton.setEnabled(forcedMode == ClientConstants.MODE_START_NETWORK_GAME);
+            joinNetworkButton.setEnabled(forcedMode == ClientConstants.MODE_JOIN_NETWORK_GAME);
+            serverOnlyButton.setEnabled(forcedMode == ClientConstants.MODE_SERVER_ONLY);
+        }
     }
 
     /**

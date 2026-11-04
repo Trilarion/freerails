@@ -18,12 +18,7 @@
 
 package freerails.server;
 
-// TODO is used in the client, controller, network.gameserver and server (maybe with different intentions?)
 /**
- * Defines a standard method to update the game world.
+ * Server-side alias for the shared updateable game model contract.
  */
-public interface GameModel {
-
-    /** Advances or refreshes the game model by one update cycle. */
-    void update();
-}
+public interface GameModel extends freerails.model.GameModel {}

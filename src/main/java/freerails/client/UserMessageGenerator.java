@@ -19,7 +19,6 @@
 package freerails.client;
 
 import freerails.move.*;
-import freerails.server.MoveReceiver;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 

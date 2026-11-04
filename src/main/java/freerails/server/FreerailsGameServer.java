@@ -20,6 +20,7 @@ package freerails.server;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
+import freerails.move.MoveReceiver;
 import freerails.move.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;

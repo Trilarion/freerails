@@ -21,7 +21,8 @@ FreeRails separates game state and rules from interaction, presentation, and
 infrastructure:
 
 - `freerails.model` contains the game domain and world state. It should remain
-independent of the client, controller, server, and move layers.
+independent of the client, controller, server, and move layers. The shared
+`freerails.model.GameModel` update contract is used by clients and servers.
 - `freerails.move` represents player actions as moves that can be checked and
 applied to the world.
 - `freerails.controller` translates user intent into game actions.
@@ -29,7 +30,15 @@ applied to the world.
 state, and owns game-start orchestration through injected scenario and save-game
 interfaces.
 - `freerails.client` coordinates the desktop application, user interaction,
-Swing views, and rendering.
+Swing views, and rendering. It does not depend on `freerails.server`; the
+launcher requests host operations through `LauncherServices`.
+- `freerails.Start` composes the desktop client and optional local server. Run
+with no arguments or `--both` for the local server and interactive client
+launcher (the default local-game option connects the client to that server,
+while the client can also join another server), `--client` to launch only the
+remote-client setup, or `--server` to launch the server-only GUI. The
+server-only GUI lets the user choose a scenario or saved game and listening
+port.
 - `freerails.io` contains serialization and file/resource adapters, including
 scenario and save-game persistence. `freerails.network` contains
 communication-level types; shared utilities live in `freerails.util`.

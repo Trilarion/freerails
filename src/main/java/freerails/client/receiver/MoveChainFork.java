@@ -20,7 +20,6 @@ package freerails.client.receiver;
 
 import freerails.move.*;
 import freerails.move.mapupdatemove.MapUpdateMove;
-import freerails.server.MoveReceiver;
 import freerails.util.Utils;
 import freerails.model.world.WorldMapListener;
 

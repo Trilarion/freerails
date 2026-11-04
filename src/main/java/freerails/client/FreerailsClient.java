@@ -29,7 +29,7 @@ import freerails.network.command.*;
 import freerails.client.receiver.MoveChainFork;
 import freerails.client.receiver.UntriedMoveReceiver;
 import freerails.model.world.World;
-import freerails.server.GameModel;
+import freerails.model.GameModel;
 import freerails.util.network.Connection;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;

@@ -23,23 +23,19 @@
 
 package freerails.client.launcher;
 
-import freerails.server.FreerailsGameServer;
 import freerails.util.ui.MyAbstractListModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.Serial;
 
 /**
  * Shows the players currently logged in to the server.
  */
-public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
+public class ConnectedPlayersPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = 4049080453489111344L;
-    FreerailsGameServer server = null;
     private JList<String> list1;
 
     /**
@@ -73,36 +69,15 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
 
 
     /**
-     * Updates the list of players.
-     */
-    void updateListOfPlayers() {
-        if (null != server) {
-            String[] playerNames = server.getPlayerNames();
-            playerNames = playerNames.length == 0 ? new String[]{"No players are logged on!"} : playerNames;
-            setListOfPlayers(playerNames);
-        }
-    }
-
-    /**
      * Sets the list of players.
      * @param players the players
      */
     void setListOfPlayers(String[] players) {
-        list1.setListData(players);
-    }
-
-    /**
-     * Called by the server when a player is added or removed.
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(FreerailsGameServer.CONNECTED_PLAYERS)) {
-            if (EventQueue.isDispatchThread()) {
-                updateListOfPlayers();
-            } else {
-                EventQueue.invokeLater(this::updateListOfPlayers);
-            }
+        String[] displayedPlayers = players.length == 0 ? new String[]{"No players are logged on!"} : players;
+        if (EventQueue.isDispatchThread()) {
+            list1.setListData(displayedPlayers);
+        } else {
+            EventQueue.invokeLater(() -> list1.setListData(displayedPlayers));
         }
     }
-
 }

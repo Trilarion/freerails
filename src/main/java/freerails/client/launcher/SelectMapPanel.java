@@ -26,7 +26,6 @@ package freerails.client.launcher;
 import freerails.Options;
 import freerails.io.savegame.FullSaveGameManager;
 import freerails.io.scenario.ClasspathScenarioSource;
-import freerails.server.SaveGamesManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -147,9 +146,10 @@ class SelectMapPanel extends JPanel {
 
         // initialise the map list
         newmapsJList.setListData(new ClasspathScenarioSource().getAvailableScenarioNames());
-        SaveGamesManager sgm = new FullSaveGameManager();
-        savedmapsJList.setListData(sgm.getSaveGameNames());
-        if (sgm.getSaveGameNames().length > 0) {
+        FullSaveGameManager sgm = new FullSaveGameManager();
+        String[] saveGameNames = sgm.getSaveGameNames();
+        savedmapsJList.setListData(saveGameNames);
+        if (saveGameNames.length > 0) {
             savedmapsJList.setSelectedIndex(0);
         } else {
             newmapsJList.setSelectedIndex(0);

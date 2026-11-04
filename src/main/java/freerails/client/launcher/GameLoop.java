@@ -22,7 +22,7 @@ import freerails.client.ClientConstants;
 import freerails.client.SynchronizedEventQueue;
 import freerails.util.ui.RepaintManagerForActiveRendering;
 import freerails.util.Utils;
-import freerails.server.GameModel;
+import freerails.model.GameModel;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 

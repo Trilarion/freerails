@@ -33,7 +33,7 @@ import freerails.move.Status;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.server.GameModel;
+import freerails.model.GameModel;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;

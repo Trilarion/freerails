@@ -16,19 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
-
-import freerails.move.Move;
+package freerails.model;
 
 /**
- * Accepts a Move without the caller knowing where its going.
+ * A model that can be advanced by one update cycle.
  */
-public interface MoveReceiver {
+public interface GameModel {
 
-    /**
-     * Processes the supplied move.
-     *
-     * @param move the move to apply or process
-     */
-    void process(Move move);
+    /** Advances or refreshes the model by one update cycle. */
+    void update();
 }

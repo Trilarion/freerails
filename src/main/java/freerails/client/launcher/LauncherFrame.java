@@ -23,16 +23,9 @@
 
 package freerails.client.launcher;
 
-import freerails.Options;
 import freerails.client.ClientConstants;
-import freerails.server.FreerailsGameServer;
 import freerails.network.LogOnResponse;
-import freerails.io.savegame.FullSaveGameManager;
-import freerails.io.scenario.ClasspathScenarioSource;
-import freerails.server.FullServerGameModel;
-import freerails.server.GameModel;
-import freerails.util.network.Connection;
-import freerails.util.network.ServerSocketAcceptor;
+import freerails.network.command.NewGameCommandToServer;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
@@ -45,9 +38,6 @@ import java.io.IOException;
 import java.io.Serial;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 // TODO The code in the switch statements needs reviewing.
 /**
@@ -67,14 +57,15 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     private JButton nextButton;
     private JButton prevButton;
     private int currentPage = 0;
-    private FreerailsGameServer server;
+    private final LauncherServices launcherServices;
     private LauncherClient client;
     private boolean nextIsStart = false;
 
     /**
      * Creates a launcher frame instance.
      */
-    private LauncherFrame() {
+    public LauncherFrame(LauncherServices launcherServices, Integer forcedMode, boolean allowServerOnly) {
+        this.launcherServices = launcherServices;
         GridBagConstraints gridBagConstraints;
 
         jPanel1 = new JPanel();
@@ -147,10 +138,14 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
         pack();
 
-        wizardPages[0] = new LauncherPanel();
+        wizardPages[0] = new LauncherPanel(forcedMode, allowServerOnly);
         wizardPages[1] = new SelectMapPanel(this);
         wizardPages[2] = new ClientOptionsPanel(this);
         wizardPages[3] = new ConnectedPlayersPanel();
+        if (launcherServices != null) {
+            launcherServices.addConnectedPlayersListener(
+                    ((ConnectedPlayersPanel) wizardPages[3])::setListOfPlayers);
+        }
 
         jPanel1.add(wizardPages[0], "0");
         jPanel1.add(wizardPages[1], "1");
@@ -158,84 +153,6 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         jPanel1.add(wizardPages[3], "3");
         pack();
         hideAllMessages();
-    }
-
-    /**
-     * Starts the client and server in the same thread.
-     */
-    private static void startThread(final GameModel server, final LauncherClient client) {
-        startThread(server);
-        try {
-            Runnable run = () -> {
-                while (null == client.getWorld()) {
-                    client.update();
-                    server.update();
-                }
-
-                ScreenHandler screenHandler = client.getScreenHandler();
-                Runnable gameLoop = new GameLoop(screenHandler, client);
-                // screenHandler.apply();
-                gameLoop.run();
-            };
-
-            Thread t = new Thread(run, "Client main loop");
-            t.start();
-        } catch (Exception e) {
-            logger.error(e, "Could not start client thread.");
-            emergencyStop();
-        }
-    }
-
-    /**
-     * Starts the server in a new thread.
-     */
-    private static void startThread(final GameModel server) {
-        try {
-            Runnable r = () -> {
-
-                // TODO do this without while(true)
-                while (true) {
-                    long startTime = System.currentTimeMillis();
-                    server.update();
-                    long deltatime = System.currentTimeMillis() - startTime;
-                    if (deltatime < ClientConstants.SERVERUPDATE) {
-                        try {
-                            Thread.sleep(ClientConstants.SERVERUPDATE - deltatime);
-                        } catch (InterruptedException e) {}
-                    }
-                }
-            };
-
-            Thread t = new Thread(r, "FreerailsGameServer");
-            t.start();
-        } catch (Exception e) {
-            logger.error(e, "Could not start server thread.");
-            emergencyStop();
-        }
-    }
-
-    /**
-     * Starts the game.
-     */
-    public static void main(String[] args) {
-
-        // TODO Let the user know if we are using a custom logging config.
-
-        logger.debug("Started launcher.");
-
-        // load options
-        ClientConstants.USER_HOME_FOLDER.mkdirs();
-        if (ClientConstants.OPTIONS_FILE.exists()) {
-            Options.load(ClientConstants.OPTIONS_FILE);
-        }
-
-        // show new launcher frame
-        LauncherFrame launcherFrame = new LauncherFrame();
-        launcherFrame.setLocationByPlatform(true);
-        launcherFrame.setVisible(true);
-
-        // save options
-        Options.save(ClientConstants.OPTIONS_FILE);
     }
 
     /**
@@ -260,6 +177,8 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     try {
                         Thread.sleep(20);
                     } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return;
                     }
                 }
                 ScreenHandler screenHandler = launcherClient.getScreenHandler();
@@ -303,15 +222,13 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         ConnectedPlayersPanel connectedPlayersPanel = (ConnectedPlayersPanel) wizardPages[3];
 
         boolean recover = false;
-        int mode;
 
         switch (launcherPanel.getMode()) {
             case ClientConstants.MODE_START_NETWORK_GAME:
-                // LL: I don't think this code ever executes now that there is a connected players screen.
                 try {
                     setServerGameModel();
                     currentPage = 3;
-                    String[] playerNames = server.getPlayerNames();
+                    String[] playerNames = launcherServices.getPlayerNames();
                     playerNames = playerNames.length == 0 ? new String[]{"No players are connected."} : playerNames;
                     connectedPlayersPanel.setListOfPlayers(playerNames);
                     cl.show(jPanel1, "3");
@@ -334,7 +251,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
                 break;
             case ClientConstants.MODE_JOIN_NETWORK_GAME:
-                mode = clientOptionsPanel.getScreenMode();
+                int mode = clientOptionsPanel.getScreenMode();
                 try {
 
                     InetSocketAddress serverInetAddress = clientOptionsPanel.getRemoteServerAddress();
@@ -371,10 +288,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                 break;
             case ClientConstants.MODE_SERVER_ONLY:
                 if (selectMapPanel.validateInput()) {
-                    initServer();
                     try {
-                        setServerGameModel();
-
                         prepareToHostNetworkGame(selectMapPanel.getServerPort());
                         setNextEnabled(true);
                     } catch (NullPointerException e) {
@@ -395,13 +309,14 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
      * Sets the server game model.
      */
     private void setServerGameModel() {
-
-        ClientOptionsPanel cop = (ClientOptionsPanel) wizardPages[2];
         if (isNewGame()) {
             SelectMapPanel msp2 = (SelectMapPanel) wizardPages[1];
-            server.newGame(msp2.getNewMapName());
-            cop.limitPlayerNames(null);
-        }   // Do nothing since the server is already set up.
+            if (client == null) {
+                launcherServices.startServerGame(msp2.getNewMapName());
+            } else {
+                client.sendCommand(new NewGameCommandToServer(msp2.getNewMapName()));
+            }
+        }
     }
 
     /**
@@ -414,53 +329,20 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     }
 
     /**
-     * Initializes the server.
-     */
-    private void initServer() {
-
-        server = new FreerailsGameServer(new ClasspathScenarioSource(), new FullSaveGameManager());
-        server.setServerGameModel(new FullServerGameModel());
-        /*
-         * Set the server field on the connected players panel so that it can
-         * keep track of who is connected.
-         */
-        ConnectedPlayersPanel connectedPlayersPanel = (ConnectedPlayersPanel) wizardPages[3];
-        connectedPlayersPanel.server = server;
-        server.addPropertyChangeListener(connectedPlayersPanel);
-        connectedPlayersPanel.updateListOfPlayers();
-    }
-
-    /**
      * Starts a thread listening for new connections.
      */
-    private void prepareToHostNetworkGame(int port) {
-        if (isNewGame()) {
-            initServer();
+    private int prepareToHostNetworkGame(int port) {
+        int listeningPort;
+        try {
+            listeningPort = launcherServices.startHosting(port);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not start hosting on port " + port + ".", e);
         }
-
-        Thread thread = new Thread(() -> {
-            BlockingQueue<Socket> sockets = new LinkedBlockingQueue<>();
-            InetSocketAddress address = new InetSocketAddress(InetAddress.getLoopbackAddress(), port);
-            try {
-                ServerSocketAcceptor acceptor = new ServerSocketAcceptor(address, sockets);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            while (true) {
-                try {
-                    Socket socket = sockets.take();
-                    Connection connection = Connection.make(socket);
-                    server.addConnection(connection);
-                } catch (IOException | InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, "Server Connection Acceptor");
-        thread.start();
 
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "3");
         currentPage = 3;
+        return listeningPort;
     }
 
 
@@ -505,8 +387,10 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
 
             switch (currentPage) {
                 case 0:
-                    msp.validateInput();
                     // Initial game selection page
+                    if (panel.getMode() != ClientConstants.MODE_JOIN_NETWORK_GAME) {
+                        msp.validateInput();
+                    }
                     switch (panel.getMode()) {
                         case ClientConstants.MODE_SERVER_ONLY:
                             // go to map selection screen
@@ -540,8 +424,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                         if (msp.validateInput()) {
                             prevButton.setEnabled(false);
                             if (!isNewGame()) {
-                                initServer();
-                                server.loadGame("freerails.sav");
+                                launcherServices.loadGame(msp.getSaveGameName());
                             }
                             prepareToHostNetworkGame(msp.getServerPort());
 
@@ -550,9 +433,8 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                         if (isNewGame()) {
                             cop.limitPlayerNames(null);
                         } else {
-                            initServer();
-                            server.loadGame(msp.getSaveGameName());
-                            String[] playerNames = server.getPlayerNames();
+                            launcherServices.loadGame(msp.getSaveGameName());
+                            String[] playerNames = launcherServices.getPlayerNames();
                             cop.limitPlayerNames(playerNames);
                         }
 
@@ -571,9 +453,17 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                             prevButton.setEnabled(false);
                             int mode = cop.getScreenMode();
 
-                            prepareToHostNetworkGame(msp.getServerPort());
+                            int localPort = prepareToHostNetworkGame(msp.getServerPort());
                             client = new LauncherClient(cop.getPlayerName(), mode);
-                            client.connect(cop.getPlayerName(), "password");
+                            LogOnResponse response = client.connect(
+                                    InetAddress.getLoopbackAddress().getHostAddress(),
+                                    localPort, cop.getPlayerName(), "password");
+                            if (!response.success()) {
+                                setInfoText("Could not connect to the local server: " + response.message(),
+                                        InfoMessageType.WARNING);
+                                prevButton.setEnabled(true);
+                                return;
+                            }
                         }
                     } else {
 
@@ -586,13 +476,14 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     try {
                         // Connection success screen
                         prevButton.setEnabled(false);
-                        setServerGameModel();// TODO catch exception
                         if (panel.getMode() == ClientConstants.MODE_START_NETWORK_GAME) {
-                            startThread(server, client);
+                            setServerGameModel();
+                            startThread(client);
                             cl.show(jPanel1, "4");
                         } else {
-                            // Start a stand alone server.
-                            startThread(server);
+                            if (isNewGame()) {
+                                setServerGameModel();
+                            }
                             setVisible(false);
                         }
                         setButtonsVisible(false);
@@ -613,6 +504,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
             }
         } catch (Exception e) {
             logger.error(e, "Unexpected error while handling launcher action.");
+            setInfoText(e.getMessage(), InfoMessageType.WARNING);
             emergencyStop();
         }
     }
