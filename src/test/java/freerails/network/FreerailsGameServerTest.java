@@ -21,7 +21,17 @@ package freerails.network;
 import freerails.server.FreerailsGameServer;
 import freerails.io.scenario.ClasspathScenarioSource;
 import freerails.server.TestSaveGamesManager;
+import freerails.util.network.Connection;
 import junit.framework.TestCase;
+
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Test for FreerailsGameServer - tests logging on.
@@ -88,5 +98,47 @@ public class FreerailsGameServerTest extends TestCase {
         LogOnCredentials request6 = new LogOnCredentials("Name", "batman");
         response = server.logon(request6);
         assertFalse("Player 0 has logged off, but the password is wrong.", response.success());
+    }
+
+    /**
+     * Tests that a disconnected client is removed and not processed repeatedly.
+     * @throws Exception if the connection test fails.
+     */
+    public void testDisconnectedClientIsRemovedAfterUpdate() throws Exception {
+        try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future<Connection> serverConnectionFuture = executor.submit(() ->
+                    Connection.make(listener.accept()));
+            Connection clientConnection = Connection.make(new InetSocketAddress(
+                    InetAddress.getLoopbackAddress(), listener.getLocalPort()));
+            Connection serverConnection = serverConnectionFuture.get(2, TimeUnit.SECONDS);
+            AtomicInteger connectionChangeEvents = new AtomicInteger();
+            server.addPropertyChangeListener(event -> connectionChangeEvents.incrementAndGet());
+
+            try {
+                clientConnection.sendObject(new LogOnCredentials("Name", "password"));
+                server.addConnection(serverConnection);
+                connectionChangeEvents.set(0);
+
+                clientConnection.close();
+                long deadline = System.currentTimeMillis() + 2_000;
+                while (serverConnection.isOpen() && System.currentTimeMillis() < deadline) {
+                    Thread.sleep(10);
+                }
+                assertFalse("Server connection should close after the client disconnects.",
+                        serverConnection.isOpen());
+
+                server.update();
+                server.update();
+
+                assertEquals("Disconnected clients should only be removed once.",
+                        1, connectionChangeEvents.get());
+            } finally {
+                clientConnection.close();
+                serverConnection.close();
+                executor.shutdownNow();
+            }
+        }
+
     }
 }

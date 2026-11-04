@@ -20,6 +20,7 @@ package freerails.util.network;
 
 import freerails.util.Utils;
 
+import java.awt.Rectangle;
 import java.io.*;
 import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
@@ -143,7 +144,8 @@ public class Connection implements AutoCloseable {
         if (type == String.class || type == Boolean.class || type == Byte.class
                 || type == Short.class || type == Integer.class || type == Long.class
                 || type == Float.class || type == Double.class || type == Character.class
-                || type == Enum.class || type == Number.class || type == BigInteger.class
+                || type == Enum.class || type == Number.class || type == Rectangle.class
+                || type == BigInteger.class
                 || type == BigDecimal.class) {
             return true;
         }

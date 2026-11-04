@@ -1,7 +1,13 @@
 package freerails.util.network;
 
 import freerails.network.LogOnCredentials;
+import freerails.model.player.Player;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackPiece;
 import freerails.model.world.World;
+import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
+import freerails.move.mapupdatemove.ChangeTrackPieceMove;
+import freerails.util.Vector2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -146,6 +152,41 @@ public class ConnectionTest extends TestCase {
                     return;
                 }
                 assertEquals(world, received);
+            } finally {
+                client.close();
+                serverConnection.close();
+                executor.shutdownNow();
+            }
+        }
+    }
+
+    /**
+     * Tests composite track moves pass deserialization filtering.
+     * @throws Exception if the composite track move cannot be sent.
+     */
+    public void testCompositeTrackMovePassesDeserializationFilter() throws Exception {
+        try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future<Connection> serverConnectionFuture = executor.submit(() ->
+                    Connection.make(listener.accept()));
+            Connection client = Connection.make(new InetSocketAddress(
+                    InetAddress.getLoopbackAddress(), listener.getLocalPort()));
+            Connection serverConnection = serverConnectionFuture.get(2, TimeUnit.SECONDS);
+            Player player = new Player(3, "Test player");
+            TrackPiece trackPiece = new TrackPiece(
+                    TrackConfiguration.getFlatInstance("000010000"),
+                    WorldGenerator.testTrackTypes().first(),
+                    player.getId());
+            ChangeTrackPieceCompositeMove move = new ChangeTrackPieceCompositeMove(
+                    new ChangeTrackPieceMove(null, trackPiece, new Vector2D(2, 3)),
+                    new ChangeTrackPieceMove(null, trackPiece, new Vector2D(3, 3)),
+                    player);
+
+            try {
+                client.sendObject(move);
+                assertEquals(move, serverConnection.receiveObject());
+                assertTrue(serverConnection.isOpen());
+                assertNull(serverConnection.getReaderFailure());
             } finally {
                 client.close();
                 serverConnection.close();

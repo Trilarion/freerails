@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -55,7 +56,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      */
     public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
     // TODO give new connections an ID and use it as identification
-    private final Map<LogOnCredentials, Connection> acceptedConnections = new HashMap<>();
+    private final Map<LogOnCredentials, Connection> acceptedConnections = new ConcurrentHashMap<>();
     // Contains the user names of the players who are currently logged on.
     private final Collection<LogOnCredentials> currentlyLoggedOn = new HashSet<>();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -311,7 +312,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         setServerGameModel(serverGameModel);
 
         sendWorldUpdatedCommand();
-        logger.debug("newGame");
+        logger.info("Started scenario: " + mapName);
     }
 
     /**
@@ -321,7 +322,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      */
     private void removeConnection(LogOnCredentials p) {
         String[] before = getPlayerNames();
-        Connection connection = acceptedConnections.get(p);
+        Connection connection = acceptedConnections.remove(p);
+        if (connection == null) {
+            return;
+        }
 
         /*
          * Fix for bug 1047439 Shutting down remote client crashes server We get

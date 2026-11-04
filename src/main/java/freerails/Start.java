@@ -28,9 +28,9 @@ import freerails.server.FullServerGameModel;
 import freerails.util.network.Connection;
 import freerails.util.network.ServerSocketAcceptor;
 import org.tinylog.Logger;
-import org.tinylog.TaggedLogger;
 
 import java.awt.EventQueue;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -45,8 +45,6 @@ import java.util.function.Consumer;
  * Composes the desktop client and optional local game server.
  */
 public final class Start {
-
-    private static final TaggedLogger logger = Logger.tag("Start");
 
     /** Selects which application roles are started. */
     enum Role {
@@ -71,6 +69,8 @@ public final class Start {
             throw new IllegalStateException("Could not create user data folder: "
                     + ClientConstants.FREERAILS_USER_FOLDER);
         }
+        System.setProperty("tinylog.writerFile.file",
+                new File(ClientConstants.FREERAILS_USER_FOLDER, "freerails.log").getAbsolutePath());
         if (ClientConstants.OPTIONS_FILE.exists()) {
             Options.load(ClientConstants.OPTIONS_FILE);
         }
@@ -82,6 +82,14 @@ public final class Start {
                 throw new IllegalStateException("Could not start the local server.", e);
             }
         }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (role != Role.CLIENT) {
+                Logger.tag("Start").info("Server stopped.");
+            }
+            if (role != Role.SERVER) {
+                Logger.tag("Start").info("Client stopped.");
+            }
+        }, "FreeRails shutdown logger"));
 
         // Build and show the launcher on Swing's event-dispatch thread.
         LauncherServices finalServices = services;
@@ -94,6 +102,9 @@ public final class Start {
             LauncherFrame frame = new LauncherFrame(finalServices, forcedMode, role == Role.SERVER);
             frame.setLocationByPlatform(true);
             frame.setVisible(true);
+            if (role != Role.SERVER) {
+                Logger.tag("Start").info("Client started.");
+            }
             Options.save(ClientConstants.OPTIONS_FILE);
         });
     }
@@ -172,7 +183,7 @@ public final class Start {
                         try {
                             server.addConnection(Connection.make(socket));
                         } catch (IOException e) {
-                            logger.warn(e, "Could not establish an accepted client connection.");
+                            Logger.tag("Start").warn(e, "Could not establish an accepted client connection.");
                         }
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
@@ -201,7 +212,9 @@ public final class Start {
             acceptor = new ServerSocketAcceptor(
                     new InetSocketAddress(InetAddress.getLoopbackAddress(), port), sockets);
             listeningPort = port;
-            return acceptor.getLocalPort();
+            int actualPort = acceptor.getLocalPort();
+            Logger.tag("Start").info("Server started on port " + actualPort + ".");
+            return actualPort;
         }
 
         /**

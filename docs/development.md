@@ -119,8 +119,12 @@ clients and servers.
 ### Diagnostics and errors
 
 - Production source under `src/main/java` must not write directly to the
-  console. Use the project logger for diagnostics, which are written to the
-  log file. Avoid swallowed errors.
+  console. Use the project logger for diagnostics, which are written to
+  `freerails.log` in the user's `FreeRails User Data` folder. Avoid swallowed
+  errors. Logged exception traces omit frames from configured Java runtime and
+  dependency package prefixes while keeping application frames, exception
+  messages, causes, and suppressed exceptions. The configured prefixes are
+  explicit; frames from other third-party packages remain in the trace.
 
 ### Documentation
 
