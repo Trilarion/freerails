@@ -38,7 +38,7 @@ import java.util.Map;
 /**
  * Provides the broker screen generator functionality.
  */
-class BrokerScreenGenerator {
+public class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
     private final Map<String, String> templateValues;

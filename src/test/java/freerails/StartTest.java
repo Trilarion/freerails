@@ -20,7 +20,10 @@ package freerails;
 
 import org.junit.Test;
 
+import java.net.InetSocketAddress;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /** Tests parsing of application roles from command-line arguments. */
 public class StartTest {
@@ -52,6 +55,16 @@ public class StartTest {
                 Start.parseArguments(new String[]{"--server", "--javafx"}));
         assertEquals(new Start.Arguments(Start.Role.BOTH, Start.Ui.SWING),
                 Start.parseArguments(new String[]{"--both"}));
+    }
+
+    /** Keeps ordinary hosted games local and exposes the standalone server to remote clients. */
+    @Test
+    public void selectsServerBindAddressForRole() {
+        InetSocketAddress localGame = Start.serverSocketAddress(Start.Role.BOTH, 0);
+        InetSocketAddress standaloneServer = Start.serverSocketAddress(Start.Role.SERVER, 0);
+
+        assertTrue(localGame.getAddress().isLoopbackAddress());
+        assertTrue(standaloneServer.getAddress().isAnyLocalAddress());
     }
 
     /** Checks that an unsupported argument is rejected. */

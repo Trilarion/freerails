@@ -6,6 +6,6 @@ package freerails;
  */
 public final class Version {
     public static final String VERSION = "0.4.1";
-    public static final String GIT_REVISION = "8acf1f84-M";
-    public static final String CREATION_DATE = "2026-11-01 01:19:42";
+    public static final String GIT_REVISION = "c65d5934";
+    public static final String CREATION_DATE = "2026-11-06 15:32:26";
 }

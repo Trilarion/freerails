@@ -49,6 +49,13 @@ public class ActionRoot {
     }
 
     /**
+     * Creates an action root for toolkit-specific clients without Swing controls.
+     */
+    public ActionRoot() {
+        this(null);
+    }
+
+    /**
      * Returns the build train dialog action.
      *
      * @return the build train dialog action produced by this method
@@ -89,6 +96,9 @@ public class ActionRoot {
      * @return the server controls produced by this method
      */
     public ServerControlModel getServerControls() {
+        if (serverControls == null) {
+            throw new IllegalStateException("Server controls are not configured for this client.");
+        }
         return serverControls;
     }
 
@@ -114,7 +124,9 @@ public class ActionRoot {
      * Call this method when a new game is started or a game is loaded.
      */
     public void setup(ModelRootImpl modelRoot, RendererRoot rendererRoot) {
-        serverControls.setup(modelRoot, dialogueBoxController);
+        if (serverControls != null) {
+            serverControls.setup(modelRoot, dialogueBoxController);
+        }
 
         UnmodifiableWorld world = modelRoot.getWorld();
 

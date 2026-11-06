@@ -578,7 +578,14 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         }
         if (event.getButton() == MouseButton.PRIMARY && dragStart != null) {
             synchronized (updateLock) {
-                if (buildTrackController.isBuilding()
+                TrackMoveProducer producer = actionRoot.getTrackMoveProducer();
+                var stationBuildModel = actionRoot.getStationBuildModel();
+                if (producer != null && producer.getTrackBuilderMode() == BuildMode.BUILD_STATION
+                        && stationBuildModel != null
+                        && stationBuildModel.isStationTypeSelected()) {
+                    Vector2D destination = mapPoint(event.getX(), event.getY());
+                    stationBuildModel.buildStationAt(destination);
+                } else if (buildTrackController.isBuilding()
                         && buildTrackController.isBuildTrackSuccessful()) {
                     Vector2D result = buildTrackController.updateWorld(actionRoot.getTrackMoveProducer());
                     modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, result);

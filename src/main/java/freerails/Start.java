@@ -88,7 +88,7 @@ public final class Start {
         LauncherServices services = null;
         if (role != Role.CLIENT) {
             try {
-                services = new LocalServerServices();
+                services = new LocalServerServices(role);
             } catch (IOException e) {
                 throw new IllegalStateException("Could not start the local server.", e);
             }
@@ -199,9 +199,23 @@ public final class Start {
         return "Usage: freerails [--javafx] [--both|--client|--server]";
     }
 
+    /**
+     * Selects the interface address used by the local server for the application role.
+     *
+     * @param role application role
+     * @param port requested listening port
+     * @return loopback for local-host games, or a wildcard address for server-only games
+     */
+    static InetSocketAddress serverSocketAddress(Role role, int port) {
+        return role == Role.SERVER
+                ? new InetSocketAddress(port)
+                : new InetSocketAddress(InetAddress.getLoopbackAddress(), port);
+    }
+
     /** Provides the local server operations used by the launcher. */
     private static final class LocalServerServices implements LauncherServices {
 
+        private final Role role;
         private final FreerailsGameServer server;
         private final CopyOnWriteArrayList<Consumer<String[]>> playerListeners = new CopyOnWriteArrayList<>();
         private final BlockingQueue<Socket> sockets = new LinkedBlockingQueue<>();
@@ -213,7 +227,8 @@ public final class Start {
          *
          * @throws IOException if the local server cannot bind its listening socket
          */
-        private LocalServerServices() throws IOException {
+        private LocalServerServices(Role role) throws IOException {
+            this.role = Objects.requireNonNull(role, "role");
             server = new FreerailsGameServer(new ClasspathScenarioSource(), new FullSaveGameManager());
             server.setServerGameModel(new FullServerGameModel());
             server.addPropertyChangeListener(event -> notifyPlayerListeners());
@@ -277,8 +292,7 @@ public final class Start {
             if (acceptor != null) {
                 acceptor.close();
             }
-            acceptor = new ServerSocketAcceptor(
-                    new InetSocketAddress(InetAddress.getLoopbackAddress(), port), sockets);
+            acceptor = new ServerSocketAcceptor(serverSocketAddress(role, port), sockets);
             listeningPort = port;
             int actualPort = acceptor.getLocalPort();
             Logger.tag("Start").info("Server started on port " + actualPort + ".");

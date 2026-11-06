@@ -39,14 +39,22 @@ updates the game model and drives custom Swing/Java2D painting.
 Milestones 1, 2, and 3 are implemented: JavaFX is selectable without changing
 the Swing default, the JavaFX launcher supports game setup, and its gameplay
 path provides the main map, overview, train list, status area, and map
-selection/scroll/build input. The JavaFX menus and remaining gameplay panels,
-dialogs, popups, and reports are still pending milestone 4. Milestone 5 will
-switch the default only after parity is verified.
+selection/scroll/build input. Milestone 4 now supplies JavaFX gameplay menus,
+terrain and station details, track/station/industry building, train production
+and schedule editing, save/load and exit flows, broker transactions, and
+financial reports. The JavaFX path uses existing game moves and report
+generators without constructing Swing components. Visual parity and complete
+local-host, remote-client, server-only, and Swing-fallback smoke checks remain
+required before milestone 4 is accepted. Milestone 5 will switch the default
+only after parity is verified.
 
 The Gradle build targets JDK 21. JavaFX is supplied through platform-aware
-Gradle runtime dependencies and included in the executable fat JAR. JavaFX
-native runtime artifacts are platform-specific, so the fat JAR must be built
-on each supported operating system to include the matching runtime.
+Gradle runtime dependencies and included in the executable fat JAR. The
+controls and WebView modules are used by the JavaFX launcher and HTML reports.
+JavaFX native runtime artifacts are platform-specific, so the fat JAR must be
+built on each supported operating system to include the matching runtime.
+Local-host mode listens on loopback; the standalone server role listens on all
+network interfaces so remote clients can connect.
 
 ## Migration strategy
 

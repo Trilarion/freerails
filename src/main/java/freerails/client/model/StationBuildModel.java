@@ -118,6 +118,57 @@ public class StationBuildModel {
     }
 
     /**
+     * Selects a station type without requiring a toolkit-specific action event.
+     *
+     * @param ruleId station track-type identifier
+     * @throws IllegalArgumentException if the world has no such station type
+     */
+    public void chooseStationType(int ruleId) {
+        Action action = idToAction.get(ruleId);
+        if (action == null) {
+            throw new IllegalArgumentException("Unknown station track type: " + ruleId);
+        }
+        action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "choose"));
+    }
+
+    /**
+     * Builds a station at the supplied map location using the selected type.
+     *
+     * @param location target map tile
+     * @return the station build status
+     */
+    public Status buildStationAt(Vector2D location) {
+        if (!stationBuildAction.isEnabled()) {
+            return Status.fail("Select a station type before building a station.");
+        }
+        Status status = stationBuilder.buildStation(location);
+        String message = null;
+        if (status.isSuccess()) {
+            stationBuildAction.setEnabled(false);
+        } else {
+            message = status.getMessage();
+        }
+        modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, message);
+        return status;
+    }
+
+    /**
+     * Cancels station placement and clears its active build state.
+     */
+    public void cancelStationPlacement() {
+        stationBuildAction.setEnabled(false);
+    }
+
+    /**
+     * Returns whether a station type is currently selected for placement.
+     *
+     * @return whether the station build action is enabled
+     */
+    public boolean isStationTypeSelected() {
+        return stationBuildAction.isEnabled();
+    }
+
+    /**
      * Returns the station choose actions.
      *
      * @return the station choose actions produced by this method
@@ -197,10 +248,7 @@ public class StationBuildModel {
         @Override
         public void actionPerformed(ActionEvent e) {
             stationBuilder.setStationType(actionId);
-
             TrackType trackRule = modelRoot.getWorld().getTrackType(actionId);
-
-            // Show the relevant station radius when the station type's menu item gets focus.
             stationBuildAction.putValue(StationBuildAction.STATION_RADIUS_KEY, trackRule.getStationRadius());
             stationBuildAction.setEnabled(true);
         }
@@ -219,8 +267,7 @@ public class StationBuildModel {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            stationBuildAction.setEnabled(false);
+            cancelStationPlacement();
         }
     }
 
@@ -255,16 +302,7 @@ public class StationBuildModel {
         @Override
         public void actionPerformed(ActionEvent e) {
             java.awt.Point value = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
-            Status status = stationBuilder.buildStation(new Vector2D(value.x, value.y));
-            String message = null;
-
-            if (status.isSuccess()) {
-                stationBuildAction.setEnabled(false);
-            } else {
-                message = status.getMessage();
-            }
-
-            modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, message);
+            buildStationAt(new Vector2D(value.x, value.y));
         }
     }
 }

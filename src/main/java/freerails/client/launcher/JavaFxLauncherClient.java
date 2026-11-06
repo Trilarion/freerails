@@ -23,7 +23,6 @@ import freerails.client.FreerailsClient;
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootProperty;
 import freerails.client.UserMessageGenerator;
-import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.client.renderer.map.detail.DetailMapRenderer;
@@ -54,7 +53,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
     private final AtomicBoolean running = new AtomicBoolean();
     private final AtomicBoolean closed = new AtomicBoolean();
     private final ModelRootImpl modelRoot = new ModelRootImpl();
-    private final ActionRoot actionRoot = new ActionRoot(new ServerControlModel(modelRoot));
+    private final ActionRoot actionRoot = new ActionRoot();
     private volatile JavaFxGameplayWindow gameplayWindow;
     private volatile RendererRoot rendererRoot;
     private volatile BuildTrackController buildTrackController;
@@ -67,6 +66,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
      */
     public JavaFxLauncherClient(String playerName) {
         this.playerName = Objects.requireNonNull(playerName, "playerName");
+        modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, Boolean.FALSE);
         modelRoot.setMoveFork(getMoveFork());
         modelRoot.setMoveReceiver(this);
         modelRoot.setServerCommandReceiver(this);
