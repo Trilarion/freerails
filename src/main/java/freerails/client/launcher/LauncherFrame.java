@@ -169,7 +169,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     /**
      * Starts the client in a new thread.
      */
-    private static void startThread(final LauncherClient launcherClient) {
+    static void startThread(final LauncherClient launcherClient) {
         try {
             Runnable run = () -> {
                 while (null == launcherClient.getWorld()) {

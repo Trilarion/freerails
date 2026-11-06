@@ -111,6 +111,9 @@ public final class Start {
         boolean allowServerOnly = role == Role.SERVER;
         if (arguments.ui() == Ui.JAVAFX) {
             JavaFxLauncher.launch(
+                    finalServices,
+                    forcedMode,
+                    allowServerOnly,
                     () -> EventQueue.invokeLater(() -> {
                         showSwingLauncher(finalServices, forcedMode, allowServerOnly);
                         Options.save(ClientConstants.OPTIONS_FILE);

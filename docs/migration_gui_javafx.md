@@ -22,14 +22,22 @@ Swing-specific boundaries allow it.
 
 ## Current starting point
 
-`freerails.Start` composes the client and optional local server, handles the
-`--both`, `--client` and `--server` roles, and opens the Swing launcher on the
-AWT event-dispatch thread. `LauncherFrame` hosts the setup wizard;
-`ClientFrame` is the main gameplay window. `GUIComponentFactory` and many
-classes under `freerails.client.view` and `freerails.client.renderer` expose
-Swing or AWT types. `GameLoop` currently updates the game model and drives
-custom Swing/Java2D painting. `LauncherServices` is a useful boundary between
-the launcher and host operations.
+`freerails.Start` composes the client and optional local server and handles
+the `--both`, `--client` and `--server` roles. Swing remains the default UI.
+With `--javafx`, `JavaFxLauncher` provides the setup wizard for game type,
+scenario or save-game selection, client options, and connected players. It
+uses `LauncherServices` for hosting and loading; successful local and remote
+client setup hands gameplay off to the existing Swing game window. The JavaFX
+wizard offers the Swing launcher as a fallback. `LauncherFrame` remains the
+Swing setup fallback; `ClientFrame` is the main gameplay window.
+`GUIComponentFactory` and many classes under `freerails.client.view` and
+`freerails.client.renderer` expose Swing or AWT types. `GameLoop` currently
+updates the game model and drives custom Swing/Java2D painting.
+
+Milestones 1 and 2 are implemented: JavaFX is selectable without changing the
+Swing default, and the JavaFX path now supports launcher setup while retaining
+the Swing gameplay handoff. The remaining milestones migrate gameplay,
+complete screen parity, and then switch the default UI.
 
 The Gradle build targets JDK 21. JavaFX is supplied through platform-aware
 Gradle runtime dependencies and included in the executable fat JAR. JavaFX

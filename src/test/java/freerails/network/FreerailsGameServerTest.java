@@ -18,15 +18,22 @@
 
 package freerails.network;
 
-import freerails.server.FreerailsGameServer;
 import freerails.io.scenario.ClasspathScenarioSource;
+import freerails.model.scenario.ScenarioData;
+import freerails.model.world.World;
+import freerails.move.MoveReceiver;
+import freerails.server.FreerailsGameServer;
+import freerails.server.ScenarioSource;
+import freerails.server.ServerGameModel;
 import freerails.server.TestSaveGamesManager;
 import freerails.util.network.Connection;
 import junit.framework.TestCase;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -139,6 +146,107 @@ public class FreerailsGameServerTest extends TestCase {
                 executor.shutdownNow();
             }
         }
+    }
 
+    /**
+     * Ensures server updates cannot send game moves before a new game's world is installed.
+     *
+     * @throws Exception if the concurrency test fails.
+     */
+    public void testNewGameBlocksServerUpdatesUntilWorldIsInstalled() throws Exception {
+        CountDownLatch scenarioLoadStarted = new CountDownLatch(1);
+        CountDownLatch allowScenarioLoad = new CountDownLatch(1);
+        CountDownLatch updateAttempted = new CountDownLatch(1);
+        ClasspathScenarioSource scenarioSource = new ClasspathScenarioSource();
+        ScenarioSource blockingScenarioSource = new ScenarioSource() {
+            /** Returns the scenarios available from the classpath source. */
+            @Override
+            public String[] getAvailableScenarioNames() {
+                return scenarioSource.getAvailableScenarioNames();
+            }
+
+            /** Waits until the test permits scenario loading to complete. */
+            @Override
+            public ScenarioData loadScenario(String scenarioName) throws IOException {
+                scenarioLoadStarted.countDown();
+                try {
+                    if (!allowScenarioLoad.await(2, TimeUnit.SECONDS)) {
+                        throw new IOException("Timed out waiting to release scenario loading.");
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException("Interrupted while waiting to load the scenario.", e);
+                }
+                return scenarioSource.loadScenario(scenarioName);
+            }
+        };
+        TrackingServerGameModel gameModel = new TrackingServerGameModel();
+        FreerailsGameServer concurrentServer =
+                new FreerailsGameServer(blockingScenarioSource, new TestSaveGamesManager());
+        concurrentServer.setServerGameModel(gameModel);
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        try {
+            Future<?> newGame = executor.submit(() -> concurrentServer.newGame(
+                    scenarioSource.getAvailableScenarioNames()[0]));
+            assertTrue("New-game setup should start loading the scenario.",
+                    scenarioLoadStarted.await(2, TimeUnit.SECONDS));
+
+            Future<?> update = executor.submit(() -> {
+                updateAttempted.countDown();
+                concurrentServer.update();
+            });
+            assertTrue("The server update should attempt to run.",
+                    updateAttempted.await(2, TimeUnit.SECONDS));
+            assertEquals("Server updates must wait for the initial world broadcast.",
+                    0, gameModel.updateCount.get());
+
+            allowScenarioLoad.countDown();
+            newGame.get(5, TimeUnit.SECONDS);
+            update.get(5, TimeUnit.SECONDS);
+
+            assertNotNull("New-game setup should install its world.", gameModel.getWorld());
+            assertEquals("The waiting server update should run after game setup.", 1,
+                    gameModel.updateCount.get());
+        } finally {
+            allowScenarioLoad.countDown();
+            executor.shutdownNow();
+        }
+    }
+
+    /** Tracks whether an update overlaps server game creation. */
+    private static final class TrackingServerGameModel implements ServerGameModel {
+
+        private World world;
+        private String[] passwords = new String[0];
+        private final AtomicInteger updateCount = new AtomicInteger();
+
+        /** Records server model updates. */
+        @Override
+        public void update() {
+            updateCount.incrementAndGet();
+        }
+
+        /** Replaces the tracked game world and credentials. */
+        @Override
+        public void setWorld(World world, String[] passwords) {
+            this.world = world;
+            this.passwords = passwords.clone();
+        }
+
+        /** Returns the installed world. */
+        @Override
+        public World getWorld() {
+            return world;
+        }
+
+        /** Returns the tracked player credentials. */
+        @Override
+        public String[] getPasswords() {
+            return passwords.clone();
+        }
+
+        /** Accepts the receiver without scheduling game updates. */
+        @Override
+        public void initialize(MoveReceiver moveReceiver) {}
     }
 }

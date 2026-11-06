@@ -211,7 +211,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * @throws IOException if the operation cannot complete because of an input/output error
      */
     @Override
-    public void loadGame(String saveGameName) throws IOException {
+    public synchronized void loadGame(String saveGameName) throws IOException {
         logger.info("load game " + saveGameName);
         newPlayersAllowed = false;
 
@@ -284,7 +284,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * @param mapName the name of the scenario map to load
      */
     @Override
-    public void newGame(String mapName) {
+    public synchronized void newGame(String mapName) {
         newPlayersAllowed = false;
 
         World world;
