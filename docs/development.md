@@ -43,11 +43,12 @@ while the client can also join another server), `--client` to launch only the
 remote-client setup, or `--server` to launch the server-only GUI. The
 server-only GUI lets the user choose a scenario or saved game and listening
 port. Add `--javafx` to any of these role selections to open the JavaFX setup
-wizard; Swing remains the default, and gameplay is
-handed off to the existing Swing game window until it is migrated. The
-JavaFX wizard also offers the Swing launcher as a fallback. Build the
-executable JAR separately on each supported platform so it includes that
-platform's JavaFX runtime.
+wizard; Swing remains the default. The JavaFX path now opens a JavaFX gameplay
+shell with JavaFX map, overview, and map-input views; remaining gameplay
+panels, menus, dialogs, popups, and reports are pending migration. The JavaFX
+wizard also offers the complete Swing launcher and gameplay path as a fallback.
+Build the executable JAR separately on each supported platform so it includes
+that platform's JavaFX runtime.
 - `freerails.io` contains serialization and file/resource adapters, including
 scenario and save-game persistence. `freerails.network` contains
 communication-level types; shared utilities live in `freerails.util`.

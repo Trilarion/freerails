@@ -76,6 +76,15 @@ public class MoveChainFork implements MoveReceiver {
     }
 
     /**
+     * Removes a map listener.
+     *
+     * @param listener listener to remove
+     */
+    public void removeMapListener(WorldMapListener listener) {
+        mapListeners.remove(listener);
+    }
+
+    /**
      * Performs the process operation.
      *
      * @param move the move parameter

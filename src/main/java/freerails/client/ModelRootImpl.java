@@ -96,12 +96,30 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
+     * Removes a map listener.
+     *
+     * @param listener listener to remove
+     */
+    public void removeMapListener(WorldMapListener listener) {
+        moveFork.removeMapListener(listener);
+    }
+
+    /**
      * Adds the property change listener.
      *
      * @param listener the listener parameter
      */
     public void addPropertyChangeListener(ModelRootListener listener) {
         listeners.add(listener);
+    }
+
+    /**
+     * Removes a property-change listener.
+     *
+     * @param listener listener to remove
+     */
+    public void removePropertyChangeListener(ModelRootListener listener) {
+        listeners.remove(listener);
     }
 
     /**

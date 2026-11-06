@@ -45,15 +45,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.tinylog.Logger;
 
-import java.awt.EventQueue;
-import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Hosts the JavaFX setup wizard and hands completed games to the existing Swing gameplay window.
+ * Hosts the JavaFX setup wizard and hands completed games to the JavaFX gameplay window.
  */
 public final class JavaFxLauncher extends Application {
 
@@ -94,7 +92,8 @@ public final class JavaFxLauncher extends Application {
     private VBox remoteServerBox;
     private Step currentStep = Step.GAME_TYPE;
     private String[] allowedPlayerNames;
-    private LauncherClient client;
+    private JavaFxLauncherClient client;
+    private JavaFxGameplayWindow gameplayWindow;
     private boolean busy;
     private boolean serverOnlyReady;
     private boolean serverRunning;
@@ -184,6 +183,9 @@ public final class JavaFxLauncher extends Application {
     @Override
     public void stop() {
         backgroundExecutor.shutdownNow();
+        if (client != null) {
+            client.stop();
+        }
         if (launchRequest != null) {
             launchRequest.onStopped().run();
         }
@@ -544,7 +546,8 @@ public final class JavaFxLauncher extends Application {
             }
             return null;
         }, ignored -> {
-            LauncherFrame.startThread(client);
+            client.start();
+            gameplayWindow.show(client);
             stage.close();
         });
     }
@@ -573,7 +576,7 @@ public final class JavaFxLauncher extends Application {
     }
 
     /**
-     * Starts the local server and connects a Swing gameplay client to it.
+     * Starts the local server and connects a JavaFX gameplay client to it.
      *
      * @param playerName the player name
      * @param requestedPort the requested server port
@@ -582,23 +585,25 @@ public final class JavaFxLauncher extends Application {
     private void startLocalClient(String playerName, int requestedPort, int screenMode) {
         runOperation("Starting local game...", () -> {
             int port = requireServices().startHosting(requestedPort);
-            LauncherClient newClient = createLauncherClient(playerName, screenMode);
+            JavaFxLauncherClient newClient = createLauncherClient(playerName);
             LogOnResponse response = newClient.connect(
                     InetAddress.getLoopbackAddress().getHostAddress(), port, playerName, "password");
             if (!response.success()) {
-                disposeClientWindow(newClient);
+                newClient.disconnect();
                 throw new IllegalStateException("Could not connect to the local server: " + response.message());
             }
             return newClient;
         }, connectedClient -> {
             client = connectedClient;
+            gameplayWindow = new JavaFxGameplayWindow(screenMode);
+            connectedClient.attachGameplayWindow(gameplayWindow);
             showStep(Step.CONNECTED_PLAYERS);
             showStatus("Connected to the local server. Start when ready.", MessageKind.INFO);
         });
     }
 
     /**
-     * Connects to a remote server and hands the client to the Swing gameplay loop.
+     * Connects to a remote server and hands the client to the JavaFX gameplay window.
      *
      * @param playerName the player name
      * @param host the remote server host
@@ -607,49 +612,32 @@ public final class JavaFxLauncher extends Application {
      */
     private void startRemoteClient(String playerName, String host, int port, int screenMode) {
         runOperation("Connecting to server...", () -> {
-            LauncherClient newClient = createLauncherClient(playerName, screenMode);
+            JavaFxLauncherClient newClient = createLauncherClient(playerName);
             LogOnResponse response = newClient.connect(host, port, playerName, "password");
             if (!response.success()) {
-                disposeClientWindow(newClient);
+                newClient.disconnect();
                 throw new IllegalStateException(response.message());
             }
             return newClient;
         }, connectedClient -> {
             client = connectedClient;
+            gameplayWindow = new JavaFxGameplayWindow(screenMode);
+            connectedClient.attachGameplayWindow(gameplayWindow);
+            connectedClient.start();
+            gameplayWindow.show(connectedClient);
             showStatus("Logged on and waiting for the game to start.", MessageKind.INFO);
-            LauncherFrame.startThread(connectedClient);
             stage.close();
         });
     }
 
     /**
-     * Creates the Swing gameplay client on the Swing event-dispatch thread.
+     * Creates a JavaFX gameplay client without constructing Swing components.
      *
      * @param playerName the player name
-     * @param screenMode the selected display mode
      * @return the initialized launcher client
-     * @throws IllegalStateException if Swing initialization fails
      */
-    private static LauncherClient createLauncherClient(String playerName, int screenMode) {
-        LauncherClient[] result = new LauncherClient[1];
-        try {
-            EventQueue.invokeAndWait(() -> result[0] = new LauncherClient(playerName, screenMode));
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Interrupted while creating the gameplay window.", e);
-        } catch (InvocationTargetException e) {
-            throw new IllegalStateException("Could not create the gameplay window.", e.getCause());
-        }
-        return result[0];
-    }
-
-    /**
-     * Disposes of a gameplay frame when server login fails.
-     *
-     * @param failedClient the client whose connection failed
-     */
-    private static void disposeClientWindow(LauncherClient failedClient) {
-        EventQueue.invokeLater(() -> failedClient.getScreenHandler().frame.dispose());
+    private static JavaFxLauncherClient createLauncherClient(String playerName) {
+        return new JavaFxLauncherClient(playerName);
     }
 
     /**

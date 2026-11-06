@@ -27,17 +27,21 @@ the `--both`, `--client` and `--server` roles. Swing remains the default UI.
 With `--javafx`, `JavaFxLauncher` provides the setup wizard for game type,
 scenario or save-game selection, client options, and connected players. It
 uses `LauncherServices` for hosting and loading; successful local and remote
-client setup hands gameplay off to the existing Swing game window. The JavaFX
-wizard offers the Swing launcher as a fallback. `LauncherFrame` remains the
-Swing setup fallback; `ClientFrame` is the main gameplay window.
+client setup now opens the JavaFX gameplay shell. The JavaFX wizard offers the
+Swing launcher as a fallback. `LauncherFrame` and `ClientFrame` remain the
+complete Swing fallback. `JavaFxLauncherClient` runs the JavaFX game's network
+and model updates away from the JavaFX application thread, while
+`JavaFxMapView` bridges the existing Java2D map renderers into JavaFX images.
 `GUIComponentFactory` and many classes under `freerails.client.view` and
 `freerails.client.renderer` expose Swing or AWT types. `GameLoop` currently
 updates the game model and drives custom Swing/Java2D painting.
 
-Milestones 1 and 2 are implemented: JavaFX is selectable without changing the
-Swing default, and the JavaFX path now supports launcher setup while retaining
-the Swing gameplay handoff. The remaining milestones migrate gameplay,
-complete screen parity, and then switch the default UI.
+Milestones 1, 2, and 3 are implemented: JavaFX is selectable without changing
+the Swing default, the JavaFX launcher supports game setup, and its gameplay
+path provides the main map, overview, train list, status area, and map
+selection/scroll/build input. The JavaFX menus and remaining gameplay panels,
+dialogs, popups, and reports are still pending milestone 4. Milestone 5 will
+switch the default only after parity is verified.
 
 The Gradle build targets JDK 21. JavaFX is supplied through platform-aware
 Gradle runtime dependencies and included in the executable fat JAR. JavaFX
@@ -49,9 +53,8 @@ on each supported operating system to include the matching runtime.
 Keep the Swing UI and JavaFX UI as separate implementations during the
 transition. Add an explicit `--javafx` way to select the JavaFX UI while
 retaining the existing command-line role selection and a fully supported
-Swing path. Do not embed Swing controls in JavaFX scenes. During intermediate
-milestones, the JavaFX launcher may hand off to the existing Swing gameplay
-window until the gameplay migration is complete.
+Swing path. Do not embed Swing controls in JavaFX scenes. Keep Swing as a
+separate end-to-end fallback while each JavaFX gameplay surface is migrated.
 
 Each milestone should be independently runnable. The Swing path is the
 end-to-end control case until cutover; the JavaFX path is exercised for every
@@ -83,8 +86,8 @@ platform.
   selection, and connected-player display with JavaFX controls.
 - Reuse `LauncherServices` for hosting, loading, and connected-player updates;
   extract any remaining service contract from Swing-specific components.
-- Keep the Swing launcher available as a fallback. Until the gameplay UI is
-  migrated, the JavaFX launcher can hand off to the existing Swing game window.
+- Keep the Swing launcher available as a separate fallback during gameplay
+  migration.
 
 **Runnable checks:** In both UI selections, exercise server-only startup, local
 hosting, remote-client setup, scenario selection, save-game loading, and

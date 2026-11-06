@@ -114,7 +114,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * Disconnect the client from the server.
      */
     public final void disconnect() {
-        connectionToServer.close();
+        if (connectionToServer != null) {
+            connectionToServer.close();
+        }
     }
 
     /**
@@ -194,9 +196,18 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
             clientUpdates();
         } catch (IOException e) {
-            logger.error(e, "Could not update client from server.");
-            LauncherFrame.emergencyStop();
+            onUpdateFailure(e);
         }
+    }
+
+    /**
+     * Handles a failure while reading or processing server updates.
+     *
+     * @param exception update failure
+     */
+    protected void onUpdateFailure(IOException exception) {
+        logger.error(exception, "Could not update client from server.");
+        LauncherFrame.emergencyStop();
     }
 
     /**
