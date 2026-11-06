@@ -42,7 +42,10 @@ launcher (the default local-game option connects the client to that server,
 while the client can also join another server), `--client` to launch only the
 remote-client setup, or `--server` to launch the server-only GUI. The
 server-only GUI lets the user choose a scenario or saved game and listening
-port.
+port. Add `--javafx` to any of these role selections to open the JavaFX
+preview shell; Swing remains the default, and the shell can hand off to the
+current Swing launcher. Build the executable JAR separately on each supported
+platform so it includes that platform's JavaFX runtime.
 - `freerails.io` contains serialization and file/resource adapters, including
 scenario and save-game persistence. `freerails.network` contains
 communication-level types; shared utilities live in `freerails.util`.
@@ -153,6 +156,7 @@ from the repository root:
 .\gradlew.bat test
 .\gradlew.bat check
 .\gradlew.bat run
+.\gradlew.bat run --args="--javafx --client"
 ```
 
 On Unix-like systems, use `./gradlew` instead of `.\gradlew.bat`.

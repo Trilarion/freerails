@@ -39,6 +39,21 @@ public class StartTest {
         assertEquals(Start.Role.SERVER, Start.parseRole(new String[]{"--server"}));
     }
 
+    /** Checks that JavaFX selection composes with the default and explicit roles. */
+    @Test
+    public void parsesUiSelectionAlongsideRoles() {
+        assertEquals(new Start.Arguments(Start.Role.BOTH, Start.Ui.SWING),
+                Start.parseArguments(new String[0]));
+        assertEquals(new Start.Arguments(Start.Role.BOTH, Start.Ui.JAVAFX),
+                Start.parseArguments(new String[]{"--javafx"}));
+        assertEquals(new Start.Arguments(Start.Role.CLIENT, Start.Ui.JAVAFX),
+                Start.parseArguments(new String[]{"--javafx", "--client"}));
+        assertEquals(new Start.Arguments(Start.Role.SERVER, Start.Ui.JAVAFX),
+                Start.parseArguments(new String[]{"--server", "--javafx"}));
+        assertEquals(new Start.Arguments(Start.Role.BOTH, Start.Ui.SWING),
+                Start.parseArguments(new String[]{"--both"}));
+    }
+
     /** Checks that an unsupported argument is rejected. */
     @Test(expected = IllegalArgumentException.class)
     public void rejectsUnknownArguments() {
@@ -49,5 +64,11 @@ public class StartTest {
     @Test(expected = IllegalArgumentException.class)
     public void rejectsConflictingRoles() {
         Start.parseRole(new String[]{"--client", "--server"});
+    }
+
+    /** Checks that duplicate JavaFX selection is rejected. */
+    @Test(expected = IllegalArgumentException.class)
+    public void rejectsDuplicateUiSelection() {
+        Start.parseArguments(new String[]{"--javafx", "--javafx"});
     }
 }

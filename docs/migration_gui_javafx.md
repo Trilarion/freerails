@@ -31,20 +31,19 @@ Swing or AWT types. `GameLoop` currently updates the game model and drives
 custom Swing/Java2D painting. `LauncherServices` is a useful boundary between
 the launcher and host operations.
 
-The Gradle build targets JDK 21 and currently has no JavaFX dependencies.
-JavaFX must therefore be supplied as build/runtime dependencies and included
-in the application's supported distribution. Its native runtime artifacts
-are platform-specific; the dependency and packaging approach must be checked
-for every supported operating system.
+The Gradle build targets JDK 21. JavaFX is supplied through platform-aware
+Gradle runtime dependencies and included in the executable fat JAR. JavaFX
+native runtime artifacts are platform-specific, so the fat JAR must be built
+on each supported operating system to include the matching runtime.
 
 ## Migration strategy
 
 Keep the Swing UI and JavaFX UI as separate implementations during the
-transition. Add an explicit way to select the JavaFX UI while retaining the
-existing command-line role selection and a fully supported Swing path. Do not
-embed Swing controls in JavaFX scenes. During intermediate milestones, the
-JavaFX launcher may hand off to the existing Swing gameplay window until the
-gameplay migration is complete.
+transition. Add an explicit `--javafx` way to select the JavaFX UI while
+retaining the existing command-line role selection and a fully supported
+Swing path. Do not embed Swing controls in JavaFX scenes. During intermediate
+milestones, the JavaFX launcher may hand off to the existing Swing gameplay
+window until the gameplay migration is complete.
 
 Each milestone should be independently runnable. The Swing path is the
 end-to-end control case until cutover; the JavaFX path is exercised for every
@@ -60,13 +59,15 @@ the existing layout.
 - Add JavaFX dependencies and platform-aware runtime packaging to Gradle.
 - Introduce JavaFX startup and shutdown lifecycle handling without changing
   the current Swing default or its role arguments.
-- Add an explicit JavaFX selection path and a minimal JavaFX launcher shell.
+- Add an explicit `--javafx` selection path and a minimal JavaFX launcher shell
+  with a handoff to the current Swing launcher.
 - Keep server composition and launcher services independent of either toolkit.
 
 **Runnable checks:** Build and run the existing Swing application in all
 supported roles. Start the JavaFX shell, close it cleanly, and verify that
-selecting JavaFX does not change `--both`, `--client` or `--server` semantics.
-Verify that the packaged JavaFX runtime starts on each supported platform.
+`--javafx` composes with `--both`, `--client` and `--server` without changing
+their role semantics. Verify the platform-resolved fat JAR on each supported
+platform.
 
 ### 2. Migrate the launcher and setup flow
 

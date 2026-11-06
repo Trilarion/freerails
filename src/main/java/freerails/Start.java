@@ -19,6 +19,7 @@
 package freerails;
 
 import freerails.client.ClientConstants;
+import freerails.client.launcher.JavaFxLauncher;
 import freerails.client.launcher.LauncherFrame;
 import freerails.client.launcher.LauncherServices;
 import freerails.io.savegame.FullSaveGameManager;
@@ -53,16 +54,26 @@ public final class Start {
         SERVER
     }
 
+    /** Selects which desktop UI implementation is started. */
+    enum Ui {
+        SWING,
+        JAVAFX
+    }
+
+    /** Holds the parsed application role and UI selection. */
+    record Arguments(Role role, Ui ui) {}
+
     /** Prevents construction of this application entry point. */
     private Start() {}
 
     /**
      * Starts the selected application roles and displays the launcher.
      *
-     * @param args command-line role selection
+     * @param args command-line role and UI selection
      */
     public static void main(String[] args) {
-        Role role = parseRole(args);
+        Arguments arguments = parseArguments(args);
+        Role role = arguments.role();
         // Prepare the user's settings before starting the selected services.
         if (!ClientConstants.FREERAILS_USER_FOLDER.exists()
                 && !ClientConstants.FREERAILS_USER_FOLDER.mkdirs()) {
@@ -91,17 +102,30 @@ public final class Start {
             }
         }, "FreeRails shutdown logger"));
 
-        // Build and show the launcher on Swing's event-dispatch thread.
         LauncherServices finalServices = services;
+        Integer forcedMode = switch (role) {
+            case BOTH -> null;
+            case CLIENT -> ClientConstants.MODE_JOIN_NETWORK_GAME;
+            case SERVER -> ClientConstants.MODE_SERVER_ONLY;
+        };
+        boolean allowServerOnly = role == Role.SERVER;
+        if (arguments.ui() == Ui.JAVAFX) {
+            JavaFxLauncher.launch(
+                    () -> EventQueue.invokeLater(() -> {
+                        showSwingLauncher(finalServices, forcedMode, allowServerOnly);
+                        Options.save(ClientConstants.OPTIONS_FILE);
+                    }),
+                    () -> {
+                        if (role != Role.SERVER) {
+                            Logger.tag("Start").info("Client started.");
+                        }
+                        Options.save(ClientConstants.OPTIONS_FILE);
+                    },
+                    () -> Options.save(ClientConstants.OPTIONS_FILE));
+            return;
+        }
         EventQueue.invokeLater(() -> {
-            Integer forcedMode = switch (role) {
-                case BOTH -> null;
-                case CLIENT -> ClientConstants.MODE_JOIN_NETWORK_GAME;
-                case SERVER -> ClientConstants.MODE_SERVER_ONLY;
-            };
-            LauncherFrame frame = new LauncherFrame(finalServices, forcedMode, role == Role.SERVER);
-            frame.setLocationByPlatform(true);
-            frame.setVisible(true);
+            showSwingLauncher(finalServices, forcedMode, allowServerOnly);
             if (role != Role.SERVER) {
                 Logger.tag("Start").info("Client started.");
             }
@@ -110,25 +134,66 @@ public final class Start {
     }
 
     /**
-     * Parses the command-line application role.
+     * Creates and displays the existing Swing launcher.
+     *
+     * @param services application services supplied to the launcher
+     * @param forcedMode the launcher mode required by the selected role, or {@code null}
+     * @param allowServerOnly whether the server-only launcher mode is available
+     */
+    private static void showSwingLauncher(
+            LauncherServices services, Integer forcedMode, boolean allowServerOnly) {
+        LauncherFrame frame = new LauncherFrame(services, forcedMode, allowServerOnly);
+        frame.setLocationByPlatform(true);
+        frame.setVisible(true);
+    }
+
+    /**
+     * Parses the command-line application role and UI selection.
+     *
+     * @param args command-line arguments
+     * @return the selected application role and UI
+     * @throws NullPointerException if {@code args} is null
+     * @throws IllegalArgumentException if an argument is unknown or roles conflict
+     */
+    static Arguments parseArguments(String[] args) {
+        Objects.requireNonNull(args, "args");
+        Role role = null;
+        Ui ui = Ui.SWING;
+        for (String arg : args) {
+            if ("--javafx".equals(arg)) {
+                if (ui == Ui.JAVAFX) {
+                    throw new IllegalArgumentException(usage());
+                }
+                ui = Ui.JAVAFX;
+                continue;
+            }
+            Role requestedRole = switch (arg) {
+                case "--both" -> Role.BOTH;
+                case "--client" -> Role.CLIENT;
+                case "--server" -> Role.SERVER;
+                default -> throw new IllegalArgumentException(usage());
+            };
+            if (role != null) {
+                throw new IllegalArgumentException(usage());
+            }
+            role = requestedRole;
+        }
+        return new Arguments(role == null ? Role.BOTH : role, ui);
+    }
+
+    /**
+     * Parses the command-line application role, retaining the legacy role-only helper.
      *
      * @param args command-line arguments
      * @return the selected application role
-     * @throws NullPointerException if {@code args} is null
-     * @throws IllegalArgumentException if the arguments do not select one role
      */
     static Role parseRole(String[] args) {
-        Objects.requireNonNull(args, "args");
-        if (args.length == 0 || (args.length == 1 && "--both".equals(args[0]))) {
-            return Role.BOTH;
-        }
-        if (args.length == 1 && "--client".equals(args[0])) {
-            return Role.CLIENT;
-        }
-        if (args.length == 1 && "--server".equals(args[0])) {
-            return Role.SERVER;
-        }
-        throw new IllegalArgumentException("Usage: freerails [--both|--client|--server]");
+        return parseArguments(args).role();
+    }
+
+    /** Returns the command-line usage string. */
+    private static String usage() {
+        return "Usage: freerails [--javafx] [--both|--client|--server]";
     }
 
     /** Provides the local server operations used by the launcher. */
