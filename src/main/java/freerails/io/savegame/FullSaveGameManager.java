@@ -21,12 +21,15 @@
  */
 package freerails.io.savegame;
 
+import freerails.UserData;
 import freerails.server.SaveGamesManager;
 import freerails.server.ServerGameModel;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
 import java.io.*;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -39,24 +42,46 @@ public class FullSaveGameManager implements SaveGamesManager {
     /** Format version stored with each save-game file. */
     public static final String VERSION = "CVS";
     private static final TaggedLogger logger = Logger.tag("FullSaveGameManager");
+    private final File saveGameDirectory;
+
+    /**
+     * Creates a manager that stores save games in the user's FreeRails data folder.
+     */
+    public FullSaveGameManager() {
+        this(UserData.FREERAILS_USER_FOLDER);
+    }
+
+    /**
+     * Creates a manager for the specified save-game directory.
+     *
+     * @param saveGameDirectory directory used for save-game files
+     */
+    FullSaveGameManager(File saveGameDirectory) {
+        this.saveGameDirectory = saveGameDirectory;
+    }
 
     /**
      * Returns the names of save-game files in the configured directory.
      *
-     * @return the available save-game names, or {@code null} if listing fails
+     * @return the available save-game names
      */
     @Override
     public String[] getSaveGameNames() {
-        // TODO default location for save games, anyway use different file open dialogs
-        java.io.File dir = new File("./");
         FilenameFilter filter = new SavedGameFileFilter();
-        return dir.list(filter);
+        if (!saveGameDirectory.exists()) {
+            return new String[0];
+        }
+        String[] saveGameNames = saveGameDirectory.list(filter);
+        if (saveGameNames == null) {
+            throw new IllegalStateException("Could not list save games in " + saveGameDirectory);
+        }
+        return saveGameNames;
     }
 
     /**
      * Serializes a game object to a compressed save-game file.
      *
-     * @param path the path of the save-game file
+     * @param path the save-game filename
      * @param serializable the object to serialize to the save-game file
      * @throws IOException if the operation cannot complete because of an input/output error
      */
@@ -65,16 +90,15 @@ public class FullSaveGameManager implements SaveGamesManager {
         long startTime = System.currentTimeMillis();
         logger.info("Saving game..  " + path);
 
-        FileOutputStream fileOutputStream = new FileOutputStream(path);
-        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fileOutputStream);
-        ObjectOutput objectOutputStream = new ObjectOutputStream(gzipOutputStream);
-
-        objectOutputStream.writeObject(VERSION);
-        objectOutputStream.writeObject(serializable);
-
-        objectOutputStream.flush();
-        objectOutputStream.close();
-        fileOutputStream.close();
+        File saveGameFile = saveGameFile(path);
+        if (!saveGameDirectory.isDirectory() && !saveGameDirectory.mkdirs()) {
+            throw new IOException("Could not create save-game directory: " + saveGameDirectory);
+        }
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                new GZIPOutputStream(new FileOutputStream(saveGameFile)))) {
+            objectOutputStream.writeObject(VERSION);
+            objectOutputStream.writeObject(serializable);
+        }
 
         long finishTime = System.currentTimeMillis();
         logger.info("done, " + (finishTime - startTime));
@@ -93,11 +117,8 @@ public class FullSaveGameManager implements SaveGamesManager {
         long startTime = System.currentTimeMillis();
         logger.info("Loading game..  " + path);
 
-        FileInputStream fileInputStream = new FileInputStream(path);
-        GZIPInputStream gzipInputStream = new GZIPInputStream(fileInputStream);
-        ObjectInputStream objectInputStream = new ObjectInputStream(gzipInputStream);
-
-        try {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(
+                new GZIPInputStream(new FileInputStream(saveGameFile(path))))) {
             String version = (String) objectInputStream.readObject();
 
             if (!VERSION.equals(version)) {
@@ -112,6 +133,26 @@ public class FullSaveGameManager implements SaveGamesManager {
             return serverGameModel;
         } catch (ClassNotFoundException | InvalidClassException e) {
             throw new IOException(e);
+        }
+    }
+
+    /**
+     * Resolves a save-game filename inside the configured directory.
+     *
+     * @param name save-game filename
+     * @return the save-game file
+     * @throws IOException if the value is not a filename
+     */
+    private File saveGameFile(String name) throws IOException {
+        try {
+            Path fileName = Path.of(name);
+            if (name.isEmpty() || fileName.isAbsolute() || fileName.getNameCount() != 1
+                    || ".".equals(name) || "..".equals(name)) {
+                throw new IOException("Save-game name must be a filename: " + name);
+            }
+            return saveGameDirectory.toPath().resolve(fileName).toFile();
+        } catch (InvalidPathException e) {
+            throw new IOException("Invalid save-game name: " + name, e);
         }
     }
 

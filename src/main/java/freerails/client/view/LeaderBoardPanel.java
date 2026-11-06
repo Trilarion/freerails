@@ -34,9 +34,7 @@ import freerails.model.world.UnmodifiableWorld;
 
 import javax.swing.*;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,20 +73,13 @@ public class LeaderBoardPanel extends JPanel implements View {
      */
     private void initialize() {
         add(getPlayersList(), null);
-        MouseListener mouseAdapter = new java.awt.event.MouseAdapter() {
-            /**
-             * Mouse clicked.
-             * @param e the e
-             */
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (submitButtonCallBack != null) {
-                    submitButtonCallBack.actionPerformed(new ActionEvent(this, 0, null));
-                }
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(event -> {
+            if (submitButtonCallBack != null) {
+                submitButtonCallBack.actionPerformed(event);
             }
-        };
-        addMouseListener(mouseAdapter);
-        playersList.addMouseListener(mouseAdapter);
+        });
+        add(closeButton);
         setSize(getPreferredSize());
     }
 

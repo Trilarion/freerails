@@ -114,7 +114,7 @@ public class TransactionUtils {
      * @return total value of the player's track holdings
      */
     public static Money calculateTrackTotal(UnmodifiableWorld world, Player player, Time startTime) {
-        Time[] times = new Time[]{startTime, world.getClock().getCurrentTime()};
+        Time[] times = new Time[]{startTime, world.getClock().getCurrentTime().advance()};
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player, times);
         aggregator.setCategory(TransactionCategory.TRACK);
         long amount = 0;

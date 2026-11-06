@@ -22,8 +22,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 /**
- * A save-game manager reads and writes gzipped saved games to the working
- * directory.
+ * Identifies gzipped save-game files in the configured save-game directory.
  */
 public class SavedGameFileFilter implements FilenameFilter {
 

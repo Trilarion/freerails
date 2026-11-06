@@ -1,0 +1,32 @@
+/*
+ * FreeRails
+ * Copyright (C) 2000-2026 The FreeRails Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package freerails;
+
+import java.io.File;
+
+/** Defines the shared location for FreeRails user-specific files. */
+public final class UserData {
+
+    /** Directory containing FreeRails user-specific data. */
+    public static final File FREERAILS_USER_FOLDER =
+            new File(System.getProperty("user.home"), "FreeRails User Data");
+
+    /** Prevents construction of this utility class. */
+    private UserData() {}
+}

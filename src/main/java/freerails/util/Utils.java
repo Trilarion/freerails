@@ -21,8 +21,6 @@ package freerails.util;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -128,35 +126,6 @@ public final class Utils {
         }
 
         return byteArrayOutputStream.toByteArray();
-    }
-
-    /**
-     * Finds the name of the first public static field whose value equals the
-     * supplied object.
-     *
-     * @param o object to match against public static fields of its class
-     * @return the matching field name, or {@code null} if there is no match
-     * @throws NullPointerException if {@code o} is null
-     * @throws IllegalStateException if a matching field cannot be accessed
-     */
-    public static String findConstantFieldName(Object o) {
-        Field[] fields = o.getClass().getFields();
-        for (Field field : fields) {
-            int modifiers = field.getModifiers();
-
-            try {
-                if (Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers)) {
-                    Object value = field.get(null);
-                    if (Objects.equals(value, o)) {
-                        return field.getName();
-                    }
-                }
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException("Could not read public field " + field.getName(), e);
-            }
-        }
-
-        return null;
     }
 
     /**

@@ -26,17 +26,18 @@ import org.tinylog.TaggedLogger;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Provides the broker frame functionality.
  */
 class BrokerFrame extends JInternalFrame {
 
+    private static final Pattern TEMPLATE_TOKEN = Pattern.compile("\\$([^$]+)\\$");
     @Serial
     private static final long serialVersionUID = 4121409622587815475L;
     private static final TaggedLogger logger = Logger.tag("BrokerFrame");
@@ -164,29 +165,18 @@ class BrokerFrame extends JInternalFrame {
      * @param context the context parameter
      * @return the populate tokens produced by this method
      */
-    public static String populateTokens(String template, Object context) {
-        StringTokenizer tokenizer = new StringTokenizer(template, "$");
-        StringBuilder output = new StringBuilder();
+    public static String populateTokens(String template, Map<String, ?> context) {
+        Matcher matcher = TEMPLATE_TOKEN.matcher(template);
+        StringBuffer output = new StringBuffer();
 
-        while (tokenizer.hasMoreTokens()) {
-            output.append(tokenizer.nextToken());
-            if (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-                String value;
-                if (context instanceof Map<?, ?> map) {
-                    value = String.valueOf(map.get(token));
-                } else {
-                    try {
-                        Field field = context.getClass().getField(token);
-                        value = field.get(context).toString();
-                    } catch (Exception e) {
-                        throw new NoSuchElementException(token);
-                    }
-                }
-                output.append(value);
+        while (matcher.find()) {
+            String token = matcher.group(1);
+            if (!context.containsKey(token)) {
+                throw new NoSuchElementException(token);
             }
+            matcher.appendReplacement(output, Matcher.quoteReplacement(String.valueOf(context.get(token))));
         }
-
+        matcher.appendTail(output);
         return output.toString();
     }
 

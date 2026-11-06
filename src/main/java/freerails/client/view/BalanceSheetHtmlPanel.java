@@ -71,7 +71,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
         UnmodifiableWorld world = modelRoot.getWorld();
         Player playerPlayer = modelRoot.getPlayer();
         BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(world, playerPlayer);
-        String populatedTemplate = populateTokens(template, balanceSheetGenerator);
+        String populatedTemplate = populateTokens(template, balanceSheetGenerator.getTemplateValues());
         setHtml(populatedTemplate);
     }
 

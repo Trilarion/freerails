@@ -18,6 +18,7 @@
 
 package freerails.client;
 
+import freerails.UserData;
 import freerails.util.Vector2D;
 
 import java.awt.*;
@@ -184,7 +185,7 @@ public final class ClientConstants {
     public static final Font LARGE_MESSAGE_FONT = new Font("Arial", Font.PLAIN, 24);
 
     public static final File USER_HOME_FOLDER = new File(System.getProperty("user.home"));
-    public static final File FREERAILS_USER_FOLDER = new File(USER_HOME_FOLDER, "FreeRails User Data");
+    public static final File FREERAILS_USER_FOLDER = UserData.FREERAILS_USER_FOLDER;
     public static final File OPTIONS_FILE = new File(FREERAILS_USER_FOLDER, "Freerails.options");
 
 

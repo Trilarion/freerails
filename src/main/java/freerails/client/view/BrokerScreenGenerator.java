@@ -33,6 +33,7 @@ import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.player.Player;
 
 import java.text.DecimalFormat;
+import java.util.Map;
 
 /**
  * Provides the broker screen generator functionality.
@@ -40,18 +41,20 @@ import java.text.DecimalFormat;
 class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
+    private final Map<String, String> templateValues;
 
     // TODO is the code here ever really used? move it to model.economy
     /**
-     * Creates a new instance of BrokerScreenGenerator
+     * Creates broker-screen values for the specified player.
+     *
+     * @param world the game world
+     * @param player the player whose financial details are shown
      */
     public BrokerScreenGenerator(UnmodifiableWorld world, Player player) {
         int playerIndex = world.getPlayerIndex(player.getId());
         String playerName = player.getName();
 
         Clock clock = world.getClock();
-        final int startYear = clock.getCurrentYear();
-        String year = String.valueOf(startYear);
         Money cash = world.getCurrentBalance(player);
 
         Time[] times = {Time.ZERO, clock.getCurrentTime()};
@@ -84,5 +87,24 @@ class BrokerScreenGenerator {
             }
         }
         String othersRRsStockRows = otherRRsStakes.toString();
+
+        templateValues = Map.of(
+                "playername", playerName,
+                "netWorth", netWorth.toString(),
+                "pricePerShare", pricePerShare.toString(),
+                "cash", cash.toString(),
+                "publicShares", publicShares,
+                "loansTotal", loansTotal.toString(),
+                "treasuryStock", treasuryStock,
+                "othersRRsStockRows", othersRRsStockRows);
+    }
+
+    /**
+     * Returns the values used to populate the broker HTML template.
+     *
+     * @return broker template tokens and their rendered values
+     */
+    public Map<String, String> getTemplateValues() {
+        return templateValues;
     }
 }

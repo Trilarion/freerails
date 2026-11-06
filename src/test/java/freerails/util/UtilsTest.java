@@ -136,11 +136,9 @@ public class UtilsTest extends TestCase {
     }
 
     /**
-     * Tests find constant field name and equal behavior.
+     * Tests equal behavior.
      */
-    public void testFindConstantFieldNameAndEqual() {
-        assertEquals("MATCH", Utils.findConstantFieldName(ConstantHolder.MATCH));
-        assertNull(Utils.findConstantFieldName(new ConstantHolder()));
+    public void testEqual() {
         assertTrue(Utils.equal(null, null));
         assertFalse(Utils.equal(null, "value"));
         assertFalse(Utils.equal("value", null));
@@ -220,15 +218,6 @@ public class UtilsTest extends TestCase {
         } catch (UnsupportedOperationException expected) {
             // expected
         }
-    }
-
-    /**
-     * Provides test support for constant holder.
-     */
-    public static final class ConstantHolder {
-        public static final ConstantHolder MATCH = new ConstantHolder();
-        public final String INSTANCE = "match";
-        private static final String PRIVATE = "match";
     }
 
 }

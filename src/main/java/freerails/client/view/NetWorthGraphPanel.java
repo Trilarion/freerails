@@ -37,7 +37,6 @@ import org.tinylog.TaggedLogger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serial;
 import java.util.ArrayList;
@@ -112,7 +111,8 @@ public class NetWorthGraphPanel extends JPanel implements View {
 
         setLayout(null);
         setBackground(java.awt.Color.white);
-        setSize(444, 315);
+        setPreferredSize(new Dimension(444, 355));
+        setSize(444, 355);
         title.setText("Net Worth");
         title.setFont(new java.awt.Font("Bookman Old Style", java.awt.Font.PLAIN, 24));
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -160,18 +160,14 @@ public class NetWorthGraphPanel extends JPanel implements View {
         add(yAxisLabel1, null);
         add(yAxisLabel3, null);
         add(yAxisLabel2, null);
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            /**
-             * Mouse clicked.
-             * @param e the e
-             */
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (submitButtonCallBack != null) {
-                    submitButtonCallBack.actionPerformed(new ActionEvent(this, 0, null));
-                }
+        JButton closeButton = new JButton("Close");
+        closeButton.setBounds(184, 322, 76, 25);
+        closeButton.addActionListener(event -> {
+            if (submitButtonCallBack != null) {
+                submitButtonCallBack.actionPerformed(event);
             }
         });
+        add(closeButton, null);
         add(yAxisLabel4, null);
     }
 

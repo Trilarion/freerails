@@ -54,6 +54,9 @@ public class IncomeStatementGeneratorTest extends TestCase {
         balanceSheetGenerator.calculateAll();
         money = balanceSheetGenerator.mailTotal;
         assertEquals(amount, money);
+        assertEquals("100", balanceSheetGenerator.getTemplateValues().get("mailTotal"));
+        assertEquals("100", balanceSheetGenerator.getTemplateValues().get("passengersTotal"));
+        assertEquals("200", balanceSheetGenerator.getTemplateValues().get("profitTotal"));
     }
 
     /**

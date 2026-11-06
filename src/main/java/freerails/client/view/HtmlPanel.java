@@ -31,11 +31,11 @@ import org.tinylog.TaggedLogger;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Displays a HTML document read from a URL.
@@ -44,6 +44,7 @@ public class HtmlPanel extends JPanel implements View {
 
     @Serial
     private static final long serialVersionUID = 4120848850266371126L;
+    private static final Pattern TEMPLATE_TOKEN = Pattern.compile("\\$([^$]+)\\$");
     private static final TaggedLogger logger = Logger.tag("HtmlPanel");
     private JButton done;
     private JLabel htmlJLabel;
@@ -118,37 +119,18 @@ public class HtmlPanel extends JPanel implements View {
      * @param context the context
      * @return the populated HTML
      */
-    static String populateTokens(String template, Object context) {
-        StringTokenizer tokenizer = new StringTokenizer(template, "$");
-        StringBuilder output = new StringBuilder();
+    static String populateTokens(String template, Map<String, ?> context) {
+        Matcher matcher = TEMPLATE_TOKEN.matcher(template);
+        StringBuffer output = new StringBuffer();
 
-        while (tokenizer.hasMoreTokens()) {
-
-            output.append(tokenizer.nextToken());
-
-            if (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-                String value;
-                if (context instanceof Map<?, ?> map) {
-                    value = String.valueOf(map.get(token));
-                } else {
-                    try {
-                        StringTokenizer t2 = new StringTokenizer(token, ".");
-                        Object o = context;
-                        while (t2.hasMoreTokens()) {
-                            String subToken = t2.nextToken();
-                            Field field = o.getClass().getField(subToken);
-                            o = field.get(o);
-                        }
-                        value = o.toString();
-                    } catch (Exception e) {
-                        throw new NoSuchElementException(token);
-                    }
-                }
-                output.append(value);
+        while (matcher.find()) {
+            String token = matcher.group(1);
+            if (!context.containsKey(token)) {
+                throw new NoSuchElementException(token);
             }
+            matcher.appendReplacement(output, Matcher.quoteReplacement(String.valueOf(context.get(token))));
         }
-
+        matcher.appendTail(output);
         return output.toString();
     }
 

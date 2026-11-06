@@ -244,12 +244,12 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
         StringBuilder populatedTemplate = new StringBuilder();
         populatedTemplate.append("<html>");
-        populatedTemplate.append(populateTokens(template, brokerScreenGenerator));
+        populatedTemplate.append(populateTokens(template, brokerScreenGenerator.getTemplateValues()));
 
         for (Player otherPlayer: world.getPlayers()) {
             if (!otherPlayer.equals(player)) {
                 BrokerScreenGenerator temp = new BrokerScreenGenerator(world, otherPlayer);
-                populatedTemplate.append(populateTokens(template, temp));
+                populatedTemplate.append(populateTokens(template, temp.getTemplateValues()));
             }
         }
 

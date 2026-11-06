@@ -70,9 +70,9 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();
         Player playerPlayer = modelRoot.getPlayer();
-        IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(world, playerPlayer);
-        balanceSheetGenerator.calculateAll();
-        String populatedTemplate = populateTokens(template, balanceSheetGenerator);
+        IncomeStatementGenerator incomeStatementGenerator = new IncomeStatementGenerator(world, playerPlayer);
+        incomeStatementGenerator.calculateAll();
+        String populatedTemplate = populateTokens(template, incomeStatementGenerator.getTemplateValues());
         setHtml(populatedTemplate);
     }
 

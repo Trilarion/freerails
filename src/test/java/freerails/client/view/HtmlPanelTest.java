@@ -18,9 +18,19 @@
 
 package freerails.client.view;
 
+import freerails.client.ClientConstants;
+import freerails.model.economy.reporting.BalanceSheetGenerator;
+import freerails.model.economy.reporting.IncomeStatementGenerator;
+import freerails.model.player.Player;
+import freerails.model.world.World;
+import freerails.move.AddPlayerMove;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Tests the populateTokens method on HtmlPanel.
@@ -44,12 +54,9 @@ public class HtmlPanelTest extends TestCase {
         output = HtmlPanel.populateTokens(template, context);
         assertEquals(expectedOutput, output);
 
-        Object objectContext = new Object() {
-            public String name = "Luke";
-            public String question = "how are you?";
-        };
-
-        output = HtmlPanel.populateTokens(template, objectContext);
+        output = HtmlPanel.populateTokens(template, Map.of(
+                "name", "Luke",
+                "question", "how are you?"));
         assertEquals(expectedOutput, output);
     }
 
@@ -60,30 +67,58 @@ public class HtmlPanelTest extends TestCase {
         String template = "Hey $a.name$ I would like you to meet $b.name$";
         String expectedOutput = "Hey Tom I would like you to meet Claire";
 
-        Object objectContext = new Object() {
-            public HtmlPanelPerson a = new HtmlPanelPerson("Tom");
-            public HtmlPanelPerson b = new HtmlPanelPerson("Claire");
-        };
-
-        String output = HtmlPanel.populateTokens(template, objectContext);
+        Map<String, String> context = Map.of("a.name", "Tom", "b.name", "Claire");
+        String output = HtmlPanel.populateTokens(template, context);
         assertEquals(expectedOutput, output);
     }
 
     /**
-     * Provides test support for HTML panel person.
+     * Tests that a missing token is reported instead of rendered as a null value.
      */
-    static public class HtmlPanelPerson {
-
-        /** The name exposed to HtmlPanel token substitution. */
-        public final String name;
-
-        /**
-         * Creates an instance of HTML panel person.
-         * @param name the name to use in the test.
-         */
-        HtmlPanelPerson(String name) {
-            this.name = name;
+    public void testMissingToken() {
+        try {
+            HtmlPanel.populateTokens("$missing$", Map.of());
+            fail("Expected a missing token to be reported.");
+        } catch (NoSuchElementException expected) {
+            assertEquals("missing", expected.getMessage());
         }
+    }
+
+    /**
+     * Tests that both financial report templates render with complete token maps.
+     */
+    public void testFinancialReportsRender() {
+        World world = WorldGenerator.minimalWorld();
+        Player player = WorldGenerator.TEST_PLAYER;
+        new AddPlayerMove(player).apply(world);
+
+        BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(world, player);
+        String balanceSheet = renderTemplate(
+                BalanceSheetHtmlPanel.class.getResource(ClientConstants.VIEW_BALANCE_SHEET),
+                balanceSheetGenerator.getTemplateValues());
+        assertTrue(balanceSheet.startsWith("<html>"));
+        assertTrue(balanceSheet.contains("Balance Sheet: " + world.getClock().getCurrentYear()));
+        assertFalse(balanceSheet.contains("$"));
+
+        IncomeStatementGenerator incomeStatementGenerator = new IncomeStatementGenerator(world, player);
+        incomeStatementGenerator.calculateAll();
+        String incomeStatement = renderTemplate(
+                IncomeStatementHtmlPanel.class.getResource(ClientConstants.VIEW_INCOME_STATEMENT),
+                incomeStatementGenerator.getTemplateValues());
+        assertTrue(incomeStatement.startsWith("<html>"));
+        assertTrue(incomeStatement.contains("Income Statement: " + world.getClock().getCurrentYear()));
+        assertFalse(incomeStatement.contains("$"));
+    }
+
+    /**
+     * Loads and populates an HTML template using the supplied token values.
+     *
+     * @param url template resource URL
+     * @param values token values
+     * @return rendered HTML
+     */
+    private static String renderTemplate(URL url, Map<String, ?> values) {
+        return HtmlPanel.populateTokens(HtmlPanel.loadText(url), values);
     }
 
 }

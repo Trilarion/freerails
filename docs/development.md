@@ -82,6 +82,9 @@ change this state stay in `freerails.move`; cargo delivery transactions remain i
 
 ## Persistence and game-state contracts
 
+The default on-disk save-game manager lists, loads, and writes `.sav` files in
+the user's `FreeRails User Data` folder.
+
 ### Savegame compatibility
 
 FreeRails is currently in active development. Changes to persisted game state do not need
