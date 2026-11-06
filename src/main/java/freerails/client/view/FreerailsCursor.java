@@ -95,7 +95,7 @@ public class FreerailsCursor {
         long time = System.currentTimeMillis() - timeArrived;
         boolean show = (time / 500) % 2 == 0;
         if (show && !b) {
-            g.drawImage(cursor, x, y, null);
+            g.drawImage(cursor, x, y, tileSize.width, tileSize.height, null);
         }
 
         // Second, draw a message below the cursor if appropriate.

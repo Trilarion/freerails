@@ -53,15 +53,6 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
      */
     public VolatileImage backgroundBuffer;
     /**
-     * Used to draw on the back buffer. It is translated so that to its users, it
-     * appears they are drawing on the actual map, not a buffered region of the
-     * map.
-     * <p>
-     * translatedBg equals bg.translate(-bufferRect.x , -bufferRect.y);
-     */
-    private Graphics translatedBg;
-
-    /**
      * Updates the back buffer as necessary, then draws it on to the Graphics
      * object passed.
      *
@@ -74,35 +65,41 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
     public void paintRect(Graphics g, Rectangle visibleRect) {
         boolean contentsLost;
         do {
+            boolean repaintBuffer = false;
             /*
              * If this is the first call to the paint method or the component
              * has just been resized, we need to create a new backgroundBuffer.
              */
             if (backgroundBuffer == null || visibleRect.height != bufferRect.height || visibleRect.width != bufferRect.width) {
-                setBackgroundBuffer(visibleRect.width, visibleRect.height);
+                setBackgroundBuffer(visibleRect);
+                repaintBuffer = true;
             }
 
             // Test if image is lost and restore it.
             int valCode = backgroundBuffer.validate(defaultConfig);
 
             if (valCode == VolatileImage.IMAGE_INCOMPATIBLE) {
-                setBackgroundBuffer(visibleRect.width, visibleRect.height);
+                setBackgroundBuffer(visibleRect);
+                repaintBuffer = true;
             } else if (valCode == VolatileImage.IMAGE_RESTORED) {
-                refreshBackground();
+                bufferRect.setLocation(visibleRect.x, visibleRect.y);
+                repaintBuffer = true;
             }
 
-            /*
-             * Has the VisibleRectangle moved since the last paint?
-             */
-            if (bufferRect.x != visibleRect.x || bufferRect.y != visibleRect.y) {
+            if (!repaintBuffer && (bufferRect.x != visibleRect.x || bufferRect.y != visibleRect.y)) {
                 int dx = bufferRect.x - visibleRect.x;
                 int dy = bufferRect.y - visibleRect.y;
-                scrollBackgroundBuffer(dx, dy);
-                bufferRect.setBounds(visibleRect);
+                if (Math.abs((long) dx) >= bufferRect.width
+                        || Math.abs((long) dy) >= bufferRect.height) {
+                    bufferRect.setLocation(visibleRect.x, visibleRect.y);
+                    repaintBuffer = true;
+                } else {
+                    scrollBackgroundBuffer(dx, dy);
+                }
             }
 
-            if (bufferRect.width != visibleRect.width && bufferRect.height != visibleRect.height) {
-                paintBufferRectangle(visibleRect.x - bufferRect.x, visibleRect.y - bufferRect.y, visibleRect.width, visibleRect.height);
+            if (repaintBuffer) {
+                refreshBackground();
             }
 
             g.drawImage(backgroundBuffer, visibleRect.x, visibleRect.y, null);
@@ -128,34 +125,26 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
 
     /**
      * Sets the background buffer.
-     * @param w the w
-     * @param h the h
+     * @param visibleRect the map bounds to buffer
      */
-    private void setBackgroundBuffer(int w, int h) {
+    private void setBackgroundBuffer(Rectangle visibleRect) {
         // Releases VRAM used by backgroundBuffer.
         if (backgroundBuffer != null) {
             backgroundBuffer.flush();
         }
 
         // Create new backgroundBuffer.
-        backgroundBuffer = defaultConfig.createCompatibleVolatileImage(w, h);
-        bufferRect.height = backgroundBuffer.getHeight(null);
-        bufferRect.width = backgroundBuffer.getWidth(null);
+        backgroundBuffer = defaultConfig.createCompatibleVolatileImage(
+                visibleRect.width, visibleRect.height);
+        bufferRect.setBounds(visibleRect.x, visibleRect.y,
+                backgroundBuffer.getWidth(null), backgroundBuffer.getHeight(null));
 
         if (bg != null) {
             bg.dispose();
         }
 
         bg = backgroundBuffer.getGraphics();
-
-        if (translatedBg != null) {
-            translatedBg.dispose();
-        }
-
-        translatedBg = bg.create();
-        translatedBg.translate(-bufferRect.x, -bufferRect.y);
-        bg.clearRect(0, 0, w, h);
-        refreshBackground();
+        bg.clearRect(0, 0, bufferRect.width, bufferRect.height);
     }
 
     /**

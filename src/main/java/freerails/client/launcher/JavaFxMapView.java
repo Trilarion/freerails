@@ -23,12 +23,16 @@ import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootListener;
 import freerails.client.ModelRootProperty;
 import freerails.client.ActionRoot;
+import freerails.client.renderer.map.MapCoordinateAdapter;
 import freerails.client.renderer.map.MapRenderer;
 import freerails.client.view.FreerailsCursor;
 import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackController;
 import freerails.controller.TrackMoveProducer;
 import freerails.model.track.BuildTrackStrategy;
+import freerails.model.operations.station.Station;
+import freerails.model.player.Player;
+import freerails.model.terrain.city.City;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.WorldMapListener;
 import freerails.util.Vector2D;
@@ -38,6 +42,7 @@ import javafx.application.Platform;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
@@ -46,13 +51,18 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,6 +76,7 @@ import java.util.function.Consumer;
 final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCloseable {
 
     private static final TaggedLogger LOGGER = Logger.tag("JavaFxMapView");
+    private static final int BACKGROUND_OVERSCAN = 768;
     private final ModelRootImpl modelRoot;
     private final MapRenderer mainRenderer;
     private final MapRenderer overviewRenderer;
@@ -82,10 +93,15 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     private final AtomicBoolean renderRequested = new AtomicBoolean();
     private final AtomicBoolean failed = new AtomicBoolean();
     private final AtomicBoolean closed = new AtomicBoolean();
+    private final AtomicBoolean backgroundDirty = new AtomicBoolean(true);
+    private final AtomicBoolean overviewDirty = new AtomicBoolean(true);
     private final AtomicLong renderVersion = new AtomicLong();
     private final ScrollPane scrollPane = new ScrollPane();
     private final Pane mapContent = new Pane();
+    private final ImageView backgroundImage = new ImageView();
     private final ImageView mapImage = new ImageView();
+    private final Pane cityLabels = new Pane();
+    private final Pane stationLabels = new Pane();
     private final Pane overviewPane = new Pane();
     private final ImageView overviewImage = new ImageView();
     private final javafx.scene.shape.Rectangle overviewViewport = new javafx.scene.shape.Rectangle();
@@ -95,6 +111,8 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     private int mapHeight;
     private double visibleX;
     private double visibleY;
+    private double retainedViewportX;
+    private double retainedViewportY;
     private Vector2D dragStart;
     private double panStartScreenX;
     private double panStartScreenY;
@@ -103,6 +121,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     private boolean panning;
     private volatile RenderViewport renderViewport = new RenderViewport(1, 1, 0, 0);
     private volatile long quickMessageExpiresAt;
+    private Rectangle cachedBackgroundBounds;
 
     /**
      * Creates JavaFX controls for the detailed and overview maps.
@@ -140,7 +159,13 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         mapContent.setMinSize(mapWidth, mapHeight);
         mapContent.setPrefSize(mapWidth, mapHeight);
         mapContent.setMaxSize(mapWidth, mapHeight);
-        mapContent.getChildren().add(mapImage);
+        mapContent.setStyle("-fx-background-color: #303030;");
+        backgroundImage.setMouseTransparent(true);
+        mapImage.setMouseTransparent(false);
+        mapImage.setPickOnBounds(true);
+        cityLabels.setMouseTransparent(true);
+        stationLabels.setMouseTransparent(true);
+        mapContent.getChildren().setAll(backgroundImage, mapImage, cityLabels, stationLabels);
         scrollPane.setContent(mapContent);
         scrollPane.setPannable(false);
         scrollPane.setFitToWidth(false);
@@ -175,6 +200,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
 
         modelRoot.addPropertyChangeListener(this);
         modelRoot.addMapListener(this);
+        refreshMapLabels();
         animation = new Timeline(new KeyFrame(Duration.millis(40), event -> requestRender()));
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.play();
@@ -241,6 +267,9 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
                 }
             }
         }
+        backgroundDirty.set(true);
+        overviewDirty.set(true);
+        Platform.runLater(this::refreshMapLabels);
         requestRender();
     }
 
@@ -255,6 +284,10 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     public void propertyChange(ModelRootProperty property, Object oldValue, Object newValue) {
         if (property == ModelRootProperty.QUICK_MESSAGE) {
             quickMessageExpiresAt = newValue == null ? 0 : System.currentTimeMillis() + 5_000;
+        }
+        if (property == ModelRootProperty.SHOW_STATION_NAMES) {
+            Platform.runLater(() ->
+                    stationLabels.setVisible(Boolean.TRUE.equals(newValue)));
         }
         switch (property) {
             case CURSOR_POSITION, CURSOR_MESSAGE, PERMANENT_MESSAGE, QUICK_MESSAGE,
@@ -307,9 +340,85 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         double horizontalValue = scrollPane.getHvalue();
         double verticalValue = scrollPane.getVvalue();
         renderViewport = new RenderViewport(width, height, horizontalValue, verticalValue);
-        visibleX = Math.round(horizontalValue * Math.max(0, mapWidth - width));
-        visibleY = Math.round(verticalValue * Math.max(0, mapHeight - height));
+        int visibleWidth = (int) Math.ceil(width);
+        int visibleHeight = (int) Math.ceil(height);
+        visibleX = Math.max(0, Math.min(
+                Math.round(horizontalValue * Math.max(0, mapWidth - width)),
+                Math.max(0, mapWidth - visibleWidth)));
+        visibleY = Math.max(0, Math.min(
+                Math.round(verticalValue * Math.max(0, mapHeight - height)),
+                Math.max(0, mapHeight - visibleHeight)));
+        retainDisplayedFrame(visibleX, visibleY);
         requestRender();
+    }
+
+    private void retainDisplayedFrame(double x, double y) {
+        double deltaX = x - retainedViewportX;
+        double deltaY = y - retainedViewportY;
+        for (ImageView image : new ImageView[]{backgroundImage, mapImage}) {
+            image.setTranslateX(image.getTranslateX() + deltaX);
+            image.setTranslateY(image.getTranslateY() + deltaY);
+        }
+        cityLabels.setTranslateX(cityLabels.getTranslateX() + deltaX);
+        cityLabels.setTranslateY(cityLabels.getTranslateY() + deltaY);
+        stationLabels.setTranslateX(stationLabels.getTranslateX() + deltaX);
+        stationLabels.setTranslateY(stationLabels.getTranslateY() + deltaY);
+        retainedViewportX = x;
+        retainedViewportY = y;
+    }
+
+    /**
+     * Rebuilds city and station labels as scene-graph text instead of bitmap text.
+     */
+    private void refreshMapLabels() {
+        if (!Platform.isFxApplicationThread()) {
+            Platform.runLater(this::refreshMapLabels);
+            return;
+        }
+
+        List<Node> cities = new ArrayList<>();
+        List<Node> stations = new ArrayList<>();
+        synchronized (updateLock) {
+            for (City city : modelRoot.getWorld().getCities()) {
+                Vector2D tileOrigin = MapCoordinateAdapter.tileOrigin(city.getLocation());
+                Text label = new Text(city.getName());
+                label.setFont(Font.font("Arial", 20));
+                label.setFill(Color.WHITE);
+                label.setX(tileOrigin.x());
+                label.setY(tileOrigin.y() + 10);
+                cities.add(label);
+            }
+
+            for (Player player : modelRoot.getWorld().getPlayers()) {
+                for (Station station : modelRoot.getWorld().getStations(player)) {
+                    Vector2D tileOrigin = MapCoordinateAdapter.tileOrigin(station.getLocation());
+                    int fontSize = 12;
+                    Text measurement = new Text(station.getStationName());
+                    measurement.setFont(Font.font("Arial", fontSize));
+                    double textWidth = measurement.getLayoutBounds().getWidth();
+                    double positionX = tileOrigin.x() + ClientConstants.TILE_PIXEL_SIZE / 2.0;
+                    double positionY = tileOrigin.y() + ClientConstants.TILE_PIXEL_SIZE;
+                    javafx.scene.shape.Rectangle background = new javafx.scene.shape.Rectangle(
+                            positionX - textWidth * 0.6, positionY,
+                            textWidth * 1.2, fontSize * 1.5);
+                    background.setFill(Color.BLACK);
+                    background.setStroke(Color.WHITE);
+
+                    Text label = new Text(station.getStationName());
+                    label.setFont(Font.font("Arial", fontSize));
+                    label.setFill(Color.WHITE);
+                    label.setX(positionX - textWidth / 2);
+                    label.setY(positionY + fontSize + 1);
+                    Group stationLabel = new Group(background, label);
+                    stationLabel.setManaged(false);
+                    stations.add(stationLabel);
+                }
+            }
+        }
+        cityLabels.getChildren().setAll(cities);
+        stationLabels.getChildren().setAll(stations);
+        stationLabels.setVisible(Boolean.TRUE.equals(
+                modelRoot.getProperty(ModelRootProperty.SHOW_STATION_NAMES)));
     }
 
     /**
@@ -350,14 +459,47 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         int y = (int) Math.round(viewport.verticalValue() * maxY);
         x = Math.max(0, Math.min(x, Math.max(0, mapWidth - width)));
         y = Math.max(0, Math.min(y, Math.max(0, mapHeight - height)));
-        java.awt.Rectangle visible = new java.awt.Rectangle(x, y, width, height);
+        Rectangle visible = new Rectangle(x, y, width, height);
 
         synchronized (updateLock) {
-            BufferedImage mainImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = mainImage.createGraphics();
+            int backgroundX = 0;
+            int backgroundY = 0;
+            int backgroundWidth = 0;
+            int backgroundHeight = 0;
+            int[] backgroundPixels = null;
+            boolean rebuildBackground = backgroundDirty.getAndSet(false)
+                    || cachedBackgroundBounds == null
+                    || !cachedBackgroundBounds.contains(visible);
+            if (rebuildBackground) {
+                int marginX = Math.max(BACKGROUND_OVERSCAN, width / 2);
+                int marginY = Math.max(BACKGROUND_OVERSCAN, height / 2);
+                backgroundX = Math.max(0, x - marginX);
+                backgroundY = Math.max(0, y - marginY);
+                int right = Math.min(mapWidth, x + width + marginX);
+                int bottom = Math.min(mapHeight, y + height + marginY);
+                backgroundWidth = Math.max(1, right - backgroundX);
+                backgroundHeight = Math.max(1, bottom - backgroundY);
+                Rectangle backgroundBounds = new Rectangle(
+                        backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+                BufferedImage background = new BufferedImage(
+                        backgroundWidth, backgroundHeight, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D backgroundGraphics = background.createGraphics();
+                try {
+                    backgroundGraphics.translate(-backgroundX, -backgroundY);
+                    mainRenderer.paintBackgroundRect(backgroundGraphics, backgroundBounds);
+                } finally {
+                    backgroundGraphics.dispose();
+                }
+                backgroundPixels = background.getRGB(
+                        0, 0, backgroundWidth, backgroundHeight, null, 0, backgroundWidth);
+                cachedBackgroundBounds = backgroundBounds;
+            }
+
+            BufferedImage dynamicImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics = dynamicImage.createGraphics();
             try {
                 graphics.translate(-x, -y);
-                mainRenderer.paintRect(graphics, visible);
+                mainRenderer.paintDynamicRect(graphics, visible);
                 cursor.paintCursor(graphics,
                         new Dimension(ClientConstants.TILE_PIXEL_SIZE, ClientConstants.TILE_PIXEL_SIZE));
                 paintMessages(graphics, visible);
@@ -368,22 +510,28 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
             freerails.util.Vector2D overviewSize = overviewRenderer.getMapSizeInPixels();
             int overviewWidth = Math.max(1, overviewSize.x());
             int overviewHeight = Math.max(1, overviewSize.y());
-            BufferedImage overview = new BufferedImage(
-                    overviewWidth, overviewHeight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D overviewGraphics = overview.createGraphics();
-            try {
-                overviewRenderer.paintRect(
-                        overviewGraphics, new java.awt.Rectangle(0, 0, overviewWidth, overviewHeight));
-            } finally {
-                overviewGraphics.dispose();
+            int[] overviewPixels = null;
+            if (overviewDirty.getAndSet(false)) {
+                BufferedImage overview = new BufferedImage(
+                        overviewWidth, overviewHeight, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D overviewGraphics = overview.createGraphics();
+                try {
+                    overviewRenderer.paintRect(
+                            overviewGraphics, new Rectangle(0, 0, overviewWidth, overviewHeight));
+                } finally {
+                    overviewGraphics.dispose();
+                }
+                overviewPixels = overview.getRGB(
+                        0, 0, overviewWidth, overviewHeight, null, 0, overviewWidth);
             }
 
             double scaleX = overviewWidth / (double) mapWidth;
             double scaleY = overviewHeight / (double) mapHeight;
             return new RenderedImages(
-                    x, y, width, height, mainImage.getRGB(0, 0, width, height, null, 0, width),
-                    overviewWidth, overviewHeight,
-                    overview.getRGB(0, 0, overviewWidth, overviewHeight, null, 0, overviewWidth),
+                    x, y, width, height,
+                    backgroundX, backgroundY, backgroundWidth, backgroundHeight, backgroundPixels,
+                    dynamicImage.getRGB(0, 0, width, height, null, 0, width),
+                    overviewWidth, overviewHeight, overviewPixels,
                     x * scaleX, y * scaleY, visible.getWidth() * scaleX, visible.getHeight() * scaleY);
         }
     }
@@ -395,27 +543,65 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      * @param version rendering generation
      */
     private void publish(RenderedImages images, long version) {
-        if (closed.get() || version != renderVersion.get()) {
+        if (closed.get()) {
             return;
         }
-        WritableImage detailed = new WritableImage(images.width(), images.height());
-        detailed.getPixelWriter().setPixels(0, 0, images.width(), images.height(),
-                PixelFormat.getIntArgbInstance(), images.mainPixels(), 0, images.width());
-        mapImage.setImage(detailed);
-        mapImage.relocate(images.x(), images.y());
+        boolean currentViewport = version == renderVersion.get()
+                && images.x() == visibleX && images.y() == visibleY;
+        boolean backgroundCoversViewport = images.backgroundPixels() != null
+                && new Rectangle(images.backgroundX(), images.backgroundY(),
+                        images.backgroundWidth(), images.backgroundHeight())
+                        .contains((int) visibleX, (int) visibleY,
+                                (int) Math.ceil(renderViewport.width()),
+                                (int) Math.ceil(renderViewport.height()));
+        if (backgroundCoversViewport) {
+            WritableImage background = new WritableImage(images.backgroundWidth(), images.backgroundHeight());
+            background.getPixelWriter().setPixels(0, 0,
+                    images.backgroundWidth(), images.backgroundHeight(),
+                    PixelFormat.getIntArgbInstance(), images.backgroundPixels(), 0, images.backgroundWidth());
+            backgroundImage.setImage(background);
+            backgroundImage.relocate(images.backgroundX(), images.backgroundY());
+            backgroundImage.setTranslateX(0);
+            backgroundImage.setTranslateY(0);
+            cityLabels.setTranslateX(0);
+            cityLabels.setTranslateY(0);
+            stationLabels.setTranslateX(0);
+            stationLabels.setTranslateY(0);
+        }
 
-        WritableImage overview = new WritableImage(images.overviewWidth(), images.overviewHeight());
-        overview.getPixelWriter().setPixels(0, 0, images.overviewWidth(), images.overviewHeight(),
-                PixelFormat.getIntArgbInstance(), images.overviewPixels(), 0, images.overviewWidth());
-        overviewImage.setImage(overview);
-        overviewImage.relocate(0, 0);
-        overviewViewport.setX(images.viewportX());
-        overviewViewport.setY(images.viewportY());
-        overviewViewport.setWidth(images.viewportWidth());
-        overviewViewport.setHeight(images.viewportHeight());
+        if (images.overviewPixels() != null) {
+            WritableImage overview = new WritableImage(images.overviewWidth(), images.overviewHeight());
+            overview.getPixelWriter().setPixels(0, 0, images.overviewWidth(), images.overviewHeight(),
+                    PixelFormat.getIntArgbInstance(), images.overviewPixels(), 0, images.overviewWidth());
+            overviewImage.setImage(overview);
+            overviewImage.relocate(0, 0);
+        }
 
-        visibleX = images.x();
-        visibleY = images.y();
+        if (currentViewport) {
+            backgroundImage.setTranslateX(0);
+            backgroundImage.setTranslateY(0);
+            cityLabels.setTranslateX(0);
+            cityLabels.setTranslateY(0);
+            stationLabels.setTranslateX(0);
+            stationLabels.setTranslateY(0);
+            WritableImage detailed = new WritableImage(images.width(), images.height());
+            detailed.getPixelWriter().setPixels(0, 0, images.width(), images.height(),
+                    PixelFormat.getIntArgbInstance(), images.dynamicPixels(), 0, images.width());
+            mapImage.setImage(detailed);
+            mapImage.relocate(images.x(), images.y());
+            mapImage.setTranslateX(0);
+            mapImage.setTranslateY(0);
+
+            overviewViewport.setX(images.viewportX());
+            overviewViewport.setY(images.viewportY());
+            overviewViewport.setWidth(images.viewportWidth());
+            overviewViewport.setHeight(images.viewportHeight());
+
+            visibleX = images.x();
+            visibleY = images.y();
+            retainedViewportX = images.x();
+            retainedViewportY = images.y();
+        }
     }
 
     /**
@@ -668,7 +854,12 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
             int y,
             int width,
             int height,
-            int[] mainPixels,
+            int backgroundX,
+            int backgroundY,
+            int backgroundWidth,
+            int backgroundHeight,
+            int[] backgroundPixels,
+            int[] dynamicPixels,
             int overviewWidth,
             int overviewHeight,
             int[] overviewPixels,

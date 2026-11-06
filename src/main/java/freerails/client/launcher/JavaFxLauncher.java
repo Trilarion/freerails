@@ -161,6 +161,11 @@ public final class JavaFxLauncher extends Application {
         stage.setScene(new Scene(root, 650, 500));
         showStep(Step.GAME_TYPE);
         stage.show();
+        Platform.runLater(() -> {
+            stage.toFront();
+            stage.requestFocus();
+            nextButton.requestFocus();
+        });
 
         if (request.services() != null) {
             request.services().addConnectedPlayersListener(
@@ -206,11 +211,9 @@ public final class JavaFxLauncher extends Application {
 
         scenarioList.getItems().setAll(new ClasspathScenarioSource().getAvailableScenarioNames());
         saveGameList.getItems().setAll(new FullSaveGameManager().getSaveGameNames());
-        if (saveGameList.getItems().isEmpty()) {
-            if (!scenarioList.getItems().isEmpty()) {
-                scenarioList.getSelectionModel().selectFirst();
-            }
-        } else {
+        if (!scenarioList.getItems().isEmpty()) {
+            scenarioList.getSelectionModel().selectFirst();
+        } else if (!saveGameList.getItems().isEmpty()) {
             saveGameList.getSelectionModel().selectFirst();
         }
         scenarioList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -759,6 +762,9 @@ public final class JavaFxLauncher extends Application {
             case CLIENT_OPTIONS -> clientOptionsPage;
             case CONNECTED_PLAYERS -> connectedPlayersPage;
         });
+        if (step == Step.MAP_SELECTION) {
+            Platform.runLater(() -> scenarioList.requestFocus());
+        }
         remoteServerBox.setVisible(step == Step.CLIENT_OPTIONS
                 && selectedMode() == ClientConstants.MODE_JOIN_NETWORK_GAME);
         remoteServerBox.setManaged(remoteServerBox.isVisible());

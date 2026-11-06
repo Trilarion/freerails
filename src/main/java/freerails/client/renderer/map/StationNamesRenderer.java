@@ -66,9 +66,38 @@ public class StationNamesRenderer implements Painter {
      */
     @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
+        paintStationNamesAndBorders(g, newVisibleRectangle, true);
+    }
 
-        Boolean showStationNames = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_NAMES);
+    /**
+     * Paints station influence borders without rasterizing station names.
+     *
+     * @param g the graphics context used for drawing
+     * @param newVisibleRectangle the visible area to render
+     */
+    public void paintStationBorders(Graphics2D g, Rectangle newVisibleRectangle) {
+        paintStationNamesAndBorders(g, newVisibleRectangle, false);
+    }
+
+    /**
+     * Paints visible station borders and optionally their Java2D labels.
+     *
+     * @param g the graphics context used for drawing
+     * @param newVisibleRectangle the visible area to render
+     * @param drawNames whether to draw station names
+     */
+    private void paintStationNamesAndBorders(
+            Graphics2D g, Rectangle newVisibleRectangle, boolean drawNames) {
         Boolean showStationBorders = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_BORDERS);
+        Boolean showStationNames = drawNames
+                ? (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_NAMES)
+                : Boolean.FALSE;
+        if (!Boolean.TRUE.equals(showStationBorders) && !Boolean.TRUE.equals(showStationNames)) {
+            return;
+        }
+
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
         // for all players
         for (Player player: world.getPlayers()) {
@@ -96,7 +125,7 @@ public class StationNamesRenderer implements Painter {
                 }
 
                 // Then draw the station name.
-                if (showStationNames) {
+                if (Boolean.TRUE.equals(showStationNames)) {
                     String stationName = station.getStationName();
 
                     int positionX = displayLocation.x() + tileSize / 2;

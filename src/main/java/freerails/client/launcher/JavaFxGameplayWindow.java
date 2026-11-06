@@ -19,6 +19,7 @@
 package freerails.client.launcher;
 
 import freerails.client.ActionRoot;
+import freerails.client.ClientConstants;
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootProperty;
 import freerails.client.ModelRootListener;
@@ -49,16 +50,23 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.util.Objects;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * JavaFX gameplay shell matching the current main-map and sidebar arrangement.
@@ -76,7 +84,8 @@ public final class JavaFxGameplayWindow {
     private final ListView<Train> trainList = new ListView<>();
     private final TextArea terrainInfo = createReadOnlyTextArea();
     private final TextArea stationInfo = createReadOnlyTextArea();
-    private final ComboBox<BuildMode> modeSelector = new ComboBox<>();
+    private final ToggleGroup modeToggleGroup = new ToggleGroup();
+    private final Map<BuildMode, ToggleButton> buildModeButtons = new EnumMap<>(BuildMode.class);
     private final ComboBox<TrackType> trackSelector = new ComboBox<>();
     private final ComboBox<TrackType> bridgeSelector = new ComboBox<>();
     private final ComboBox<TrackType> tunnelSelector = new ComboBox<>();
@@ -111,9 +120,18 @@ public final class JavaFxGameplayWindow {
         BorderPane shell = new BorderPane(root);
         shell.setBottom(status);
         stage.setTitle("Freerails");
-        stage.setMinWidth(900);
-        stage.setMinHeight(560);
         stage.setScene(new Scene(shell, 1100, 750));
+        if (screenMode != ClientConstants.FULL_SCREEN) {
+            var availableBounds = Screen.getPrimary().getVisualBounds();
+            double width = availableBounds.getWidth() * 0.9;
+            double height = availableBounds.getHeight() * 0.9;
+            stage.setMinWidth(Math.min(900, width));
+            stage.setMinHeight(Math.min(560, height));
+            stage.setWidth(width);
+            stage.setHeight(height);
+            stage.setX(availableBounds.getMinX() + (availableBounds.getWidth() - width) / 2);
+            stage.setY(availableBounds.getMinY() + (availableBounds.getHeight() - height) / 2);
+        }
         stage.setOnCloseRequest(event -> {
             event.consume();
             confirmExit();
@@ -264,6 +282,8 @@ public final class JavaFxGameplayWindow {
         });
         trainList.setOnMouseClicked(event -> centerSelectedTrain());
         Button trainOrders = new Button("Train orders");
+        trainOrders.setGraphic(createIcon("train_list.png"));
+        trainOrders.setTooltip(new Tooltip("Show orders for the selected train."));
         trainOrders.setMaxWidth(Double.MAX_VALUE);
         trainOrders.setOnAction(event -> showSelectedTrainOrders());
         VBox trainContent = new VBox(6, trainList, trainOrders);
@@ -295,38 +315,13 @@ public final class JavaFxGameplayWindow {
      * @return JavaFX tab for basic map build-mode selection
      */
     private Tab createBuildTrackTab() {
-        modeSelector.getItems().setAll(
-                BuildMode.BUILD_TRACK, BuildMode.UPGRADE_TRACK, BuildMode.REMOVE_TRACK,
-                BuildMode.BUILD_STATION, BuildMode.IGNORE_TRACK);
-        modeSelector.setValue(BuildMode.BUILD_TRACK);
-        modeSelector.setOnAction(event -> {
-            if (modelRoot != null && updateLock != null) {
-                BuildMode mode = modeSelector.getValue();
-                synchronized (updateLock) {
-                    modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);
-                    stationSelector.setDisable(mode != BuildMode.BUILD_STATION);
-                    trackSelector.setDisable(mode == BuildMode.BUILD_STATION
-                            || mode == BuildMode.IGNORE_TRACK);
-                    bridgeSelector.setDisable(mode == BuildMode.BUILD_STATION
-                            || mode == BuildMode.IGNORE_TRACK);
-                    tunnelSelector.setDisable(mode == BuildMode.BUILD_STATION
-                            || mode == BuildMode.IGNORE_TRACK);
-                    if (mode != BuildMode.BUILD_STATION) {
-                        var stationBuildModel = client == null
-                                ? null : client.getActionRoot().getStationBuildModel();
-                        if (stationBuildModel != null) {
-                            stationBuildModel.cancelStationPlacement();
-                        }
-                    }
-                    if (client != null) {
-                        var producer = client.getActionRoot().getTrackMoveProducer();
-                        if (producer != null) {
-                            producer.setTrackBuilderMode(mode);
-                        }
-                    }
-                }
-            }
-        });
+        HBox buildModes = new HBox(4,
+                createBuildModeButton(BuildMode.BUILD_TRACK, "build_track.png", "Build track"),
+                createBuildModeButton(BuildMode.UPGRADE_TRACK, "upgrade_track.png", "Upgrade track"),
+                createBuildModeButton(BuildMode.BUILD_STATION, "build_stations.png", "Build a station"),
+                createBuildModeButton(BuildMode.REMOVE_TRACK, "bulldozer.png", "Remove track"),
+                createBuildModeButton(BuildMode.IGNORE_TRACK, "eye.png", "Inspect the map without building"));
+        buildModeButtons.get(BuildMode.BUILD_TRACK).setSelected(true);
         stationSelector.setPromptText("Select station type");
         stationSelector.setOnAction(event -> {
             if (client != null && stationSelector.getValue() != null) {
@@ -347,6 +342,7 @@ public final class JavaFxGameplayWindow {
         tunnelSelector.setOnAction(event -> updateBuildTrackStrategy());
         Button buildTrain = new Button("Build train...");
         buildTrain.setMaxWidth(Double.MAX_VALUE);
+        buildTrain.setTooltip(new Tooltip("Choose a train to build at a station."));
         buildTrain.setOnAction(event -> {
             if (dialogs != null) {
                 dialogs.showBuildTrain();
@@ -354,12 +350,13 @@ public final class JavaFxGameplayWindow {
         });
         Button engineShop = new Button("Build engine shop...");
         engineShop.setMaxWidth(Double.MAX_VALUE);
+        engineShop.setTooltip(new Tooltip("Choose a station at which to build an engine shop."));
         engineShop.setOnAction(event -> {
             if (dialogs != null) {
                 dialogs.showBuildEngineShop();
             }
         });
-        VBox content = new VBox(8, new Label("Map action"), modeSelector,
+        VBox content = new VBox(8, new Label("Map action"), buildModes,
                 new Label("Track type"), trackSelector,
                 new Label("Bridge type"), bridgeSelector,
                 new Label("Tunnel type"), tunnelSelector,
@@ -371,6 +368,79 @@ public final class JavaFxGameplayWindow {
         Tab tab = new Tab("Build Track", content);
         tab.setClosable(false);
         return tab;
+    }
+
+    /**
+     * Creates an icon-only toggle for a map build mode.
+     *
+     * @param mode map build mode selected by the button
+     * @param iconName classpath icon file name
+     * @param tooltipText explanation of the action
+     * @return the configured build-mode button
+     */
+    private ToggleButton createBuildModeButton(BuildMode mode, String iconName, String tooltipText) {
+        ToggleButton button = new ToggleButton();
+        button.setGraphic(createIcon(iconName));
+        button.setTooltip(new Tooltip(tooltipText));
+        button.setAccessibleText(tooltipText);
+        button.setToggleGroup(modeToggleGroup);
+        button.setMinSize(36, 36);
+        button.setPrefSize(36, 36);
+        button.setOnAction(event -> applyBuildMode(mode));
+        buildModeButtons.put(mode, button);
+        return button;
+    }
+
+    /**
+     * Loads a gameplay icon from the shared graphics resources.
+     *
+     * @param iconName classpath icon file name
+     * @return a consistently sized image view
+     */
+    private ImageView createIcon(String iconName) {
+        String resource = ClientConstants.GRAPHICS_PATH + ClientConstants.ICONS_FOLDER_NAME
+                + '/' + iconName;
+        var imageUrl = Objects.requireNonNull(
+                JavaFxGameplayWindow.class.getResource(resource), "Missing gameplay icon: " + resource);
+        ImageView imageView = new ImageView(new Image(imageUrl.toExternalForm()));
+        imageView.setFitWidth(28);
+        imageView.setFitHeight(28);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+    /**
+     * Applies the selected map build mode to the game and its track selectors.
+     *
+     * @param mode map build mode
+     */
+    private void applyBuildMode(BuildMode mode) {
+        if (modelRoot == null || updateLock == null) {
+            return;
+        }
+        synchronized (updateLock) {
+            modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);
+            stationSelector.setDisable(mode != BuildMode.BUILD_STATION);
+            trackSelector.setDisable(mode == BuildMode.BUILD_STATION
+                    || mode == BuildMode.IGNORE_TRACK);
+            bridgeSelector.setDisable(mode == BuildMode.BUILD_STATION
+                    || mode == BuildMode.IGNORE_TRACK);
+            tunnelSelector.setDisable(mode == BuildMode.BUILD_STATION
+                    || mode == BuildMode.IGNORE_TRACK);
+            if (mode != BuildMode.BUILD_STATION) {
+                var stationBuildModel = client == null
+                        ? null : client.getActionRoot().getStationBuildModel();
+                if (stationBuildModel != null) {
+                    stationBuildModel.cancelStationPlacement();
+                }
+            }
+            if (client != null) {
+                var producer = client.getActionRoot().getTrackMoveProducer();
+                if (producer != null) {
+                    producer.setTrackBuilderMode(mode);
+                }
+            }
+        }
     }
 
     /**
@@ -584,7 +654,11 @@ public final class JavaFxGameplayWindow {
      */
     private void selectBuildMode(BuildMode mode) {
         gameplayTabs.getSelectionModel().select(2);
-        modeSelector.setValue(mode);
+        ToggleButton button = buildModeButtons.get(mode);
+        if (button != null) {
+            button.setSelected(true);
+            applyBuildMode(mode);
+        }
     }
 
     /**
@@ -789,7 +863,11 @@ public final class JavaFxGameplayWindow {
                 selector.setValue(type);
             }
         }
-        modeSelector.setValue(BuildMode.BUILD_TRACK);
+        ToggleButton buildTrack = buildModeButtons.get(BuildMode.BUILD_TRACK);
+        if (buildTrack != null) {
+            buildTrack.setSelected(true);
+        }
+        applyBuildMode(BuildMode.BUILD_TRACK);
         stationSelector.setDisable(true);
         updateBuildTrackStrategy();
     }

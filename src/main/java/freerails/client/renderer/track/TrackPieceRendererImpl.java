@@ -18,6 +18,7 @@
 
 package freerails.client.renderer.track;
 
+import freerails.client.ClientConstants;
 import freerails.model.track.TrackType;
 import freerails.util.BinaryNumberFormatter;
 import freerails.util.Vector2D;
@@ -51,7 +52,8 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
         for (int i = 0; i < 512; i++) {
             if (trackType.testTrackPieceLegality(i)) {
                 String fileName = generateFilename(i, typeName);
-                trackPieceIcons[i] = imageManager.getImage(fileName);
+                trackPieceIcons[i] = imageManager.getScaledImage(
+                        fileName, ClientConstants.TILE_PIXEL_SIZE * 2);
             }
         }
     }

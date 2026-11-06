@@ -36,6 +36,8 @@ interfaces.
 - `freerails.client` coordinates the desktop application, user interaction,
 JavaFX views, and rendering. It does not depend on `freerails.server`; the
 launcher requests host operations through `LauncherServices`.
+- **JavaFX is the production desktop UI framework.** Swing UI code has been
+removed; Java2D remains for shared map rendering and image processing.
 - `freerails.Start` composes the JavaFX desktop client and optional local server.
   Run with no arguments or `--both` for the local server and interactive client
   setup (the default local-game option connects the client to that server, while
@@ -43,10 +45,10 @@ launcher requests host operations through `LauncherServices`.
   setup, or `--server` to launch server-only setup. The server-only setup lets
   the user choose a scenario or saved game and listening port. The standalone
   server listens on all network interfaces for remote clients; a locally hosted
-  game remains bound to loopback. JavaFX is the only production desktop UI. The
-  JavaFX gameplay shell includes map, overview, terrain/station details, track
-  and station building, train production and schedule editing, save/load and
-  exit dialogs, broker transactions, and HTML-backed financial reports. The
+  game remains bound to loopback. The JavaFX gameplay shell includes the map,
+  overview, terrain and station details, track and station building, train
+  production and schedule editing, save/load and exit dialogs, broker
+  transactions, and HTML-backed financial reports. The
   map view adapts the existing Java2D renderers to JavaFX images. Build the
   executable JAR separately on each supported platform so it includes that
   platform's JavaFX runtime, including the WebView module used for HTML reports.

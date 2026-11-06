@@ -24,9 +24,7 @@
 package freerails.client.renderer.map;
 
 import freerails.client.renderer.track.TrackLayerRenderer;
-import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
-import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.client.ClientConstants;
@@ -49,9 +47,6 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * The track layer.
      */
     private final TrackLayerRenderer trackLayer;
-    private final Painter cityNames;
-    private final Painter stationNames;
-
     /*
      * Used to avoid having to create a new rectangle for each call to the paint
      * methods.
@@ -63,13 +58,10 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      *
      * @param world the game world being queried
      * @param rendererRoot the renderer root parameter
-     * @param modelRoot the client model that provides current game state
      */
-    public MapBackgroundRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
+    public MapBackgroundRenderer(UnmodifiableWorld world, RendererRoot rendererRoot) {
         trackLayer = new TrackLayerRenderer(world, rendererRoot);
         terrainLayer = new TerrainLayerRenderer(world, rendererRoot);
-        cityNames = new CityNamesRenderer(world);
-        stationNames = new StationNamesRenderer(world, modelRoot);
     }
 
     /**
@@ -82,8 +74,6 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     public void paintTile(Graphics g, Vector2D tileLocation) {
         terrainLayer.paintTile(g, tileLocation);
         trackLayer.paintTile(g, tileLocation);
-        cityNames.paint((Graphics2D) g, null);
-        stationNames.paint((Graphics2D) g, null);
     }
 
     /**
@@ -106,9 +96,6 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
 
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, new Vector2D(x, y), width, height);
-        Rectangle visibleRectangle = new Rectangle(x * tileWidth, y * tileHeight, width * tileWidth, height * tileHeight);
-        cityNames.paint((Graphics2D) g, visibleRectangle);
-        stationNames.paint((Graphics2D) g, visibleRectangle);
     }
 
     /**

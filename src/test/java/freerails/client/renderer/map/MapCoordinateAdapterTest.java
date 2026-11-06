@@ -32,7 +32,7 @@ public class MapCoordinateAdapterTest extends TestCase {
      * Tests bundled tile set metadata behavior.
      */
     public void testBundledTileSetMetadata() {
-        assertEquals(30, TileSetMetadata.loadDefault().tilePixelSize());
+        assertEquals(48, TileSetMetadata.loadDefault().tilePixelSize());
         assertEquals(TileSetMetadata.loadDefault().tilePixelSize(), ClientConstants.TILE_PIXEL_SIZE);
     }
 
@@ -40,8 +40,8 @@ public class MapCoordinateAdapterTest extends TestCase {
      * Tests converts tile and fixed point model coordinates to pixels behavior.
      */
     public void testConvertsTileAndFixedPointModelCoordinatesToPixels() {
-        assertEquals(new Vector2D(30, 60), MapCoordinateAdapter.tileOrigin(new Vector2D(1, 2)));
-        assertEquals(new Vector2D(15, 30), MapCoordinateAdapter.modelToPixel(new Vector2D(50, 100)));
-        assertEquals(24, MapCoordinateAdapter.modelDistanceToPixel(80));
+        assertEquals(new Vector2D(48, 96), MapCoordinateAdapter.tileOrigin(new Vector2D(1, 2)));
+        assertEquals(new Vector2D(24, 48), MapCoordinateAdapter.modelToPixel(new Vector2D(50, 100)));
+        assertEquals(38, MapCoordinateAdapter.modelDistanceToPixel(80));
     }
 }

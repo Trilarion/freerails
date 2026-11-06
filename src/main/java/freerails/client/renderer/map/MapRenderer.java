@@ -20,11 +20,34 @@ package freerails.client.renderer.map;
 
 import freerails.util.Vector2D;
 
+import java.awt.Graphics;
+import java.awt.Rectangle;
+
 // TODO these functions do not seem to be a good entity
 /**
  * Lets the GUI component that is displaying the map known the scale at which the map is being rendered.
  */
 public interface MapRenderer extends MapLayerRenderer {
+
+    /**
+     * Paints map imagery that remains stable while trains and cursor overlays
+     * are animated.
+     *
+     * @param g graphics context
+     * @param visibleRect visible map area
+     */
+    default void paintBackgroundRect(Graphics g, Rectangle visibleRect) {
+        paintRect(g, visibleRect);
+    }
+
+    /**
+     * Paints dynamic map overlays above the cached map background.
+     *
+     * @param g graphics context
+     * @param visibleRect visible map area
+     */
+    default void paintDynamicRect(Graphics g, Rectangle visibleRect) {
+    }
 
     /**
      * Performs the scale operation.

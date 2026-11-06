@@ -38,6 +38,7 @@ public class DetailMapRenderer implements MapRenderer {
     private final Vector2D mapSizeInPixels;
     private final OverHeadTrainView trainsView;
     private final StationRadiusRenderer stationRadius;
+    private final StationNamesRenderer stationNames;
     private final BuildTrackRenderer buildTrackRenderer;
     private final Painter stationBoxes;
 
@@ -51,13 +52,14 @@ public class DetailMapRenderer implements MapRenderer {
     public DetailMapRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trainsView = new OverHeadTrainView(world, rendererRoot, modelRoot);
 
-        MapBackgroundRenderer mapBackgroundRenderer = new MapBackgroundRenderer(world, rendererRoot, modelRoot);
+        MapBackgroundRenderer mapBackgroundRenderer = new MapBackgroundRenderer(world, rendererRoot);
         background = new SquareTileBackgroundRenderer(mapBackgroundRenderer);
 
         Vector2D mapSize = world.getMapSize();
         mapSizeInPixels = Vector2D.multiply(mapSize, ClientConstants.TILE_SIZE);
 
         stationRadius = new StationRadiusRenderer(modelRoot);
+        stationNames = new StationNamesRenderer(world, modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rendererRoot, modelRoot);
         stationBoxes = new StationBoxRenderer(world, rendererRoot, modelRoot);
     }
@@ -101,6 +103,7 @@ public class DetailMapRenderer implements MapRenderer {
         background.paintTile(g, tileLocation);
         trainsView.paint((Graphics2D) g, null);
         stationRadius.paint((Graphics2D) g, null);
+        stationNames.paintStationBorders((Graphics2D) g, null);
         stationBoxes.paint((Graphics2D) g, null);
 
         buildTrackRenderer.paint((Graphics2D) g, null);
@@ -124,9 +127,32 @@ public class DetailMapRenderer implements MapRenderer {
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
+        paintBackgroundRect(g, visibleRect);
+        paintDynamicRect(g, visibleRect);
+    }
+
+    /**
+     * Paints terrain and track imagery for the visible map region.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
+     */
+    @Override
+    public void paintBackgroundRect(Graphics g, Rectangle visibleRect) {
         background.paintRect(g, visibleRect);
+    }
+
+    /**
+     * Paints trains and other dynamic overlays for the visible map region.
+     *
+     * @param g the graphics context used for drawing
+     * @param visibleRect the visible area to render
+     */
+    @Override
+    public void paintDynamicRect(Graphics g, Rectangle visibleRect) {
         trainsView.paint((Graphics2D) g, visibleRect);
         stationRadius.paint((Graphics2D) g, null);
+        stationNames.paintStationBorders((Graphics2D) g, visibleRect);
         stationBoxes.paint((Graphics2D) g, visibleRect);
         buildTrackRenderer.paint((Graphics2D) g, null);
     }
