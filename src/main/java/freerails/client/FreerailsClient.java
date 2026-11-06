@@ -18,7 +18,6 @@
 
 package freerails.client;
 
-import freerails.client.launcher.LauncherFrame;
 import freerails.move.Move;
 import freerails.move.MovePrecommitter;
 import freerails.move.Status;
@@ -207,7 +206,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      */
     protected void onUpdateFailure(IOException exception) {
         logger.error(exception, "Could not update client from server.");
-        LauncherFrame.emergencyStop();
     }
 
     /**

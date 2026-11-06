@@ -17,7 +17,7 @@
  */
 
 /**
- * Implements the detailed map view, including its Swing component and map overlays.
+ * Provides Java2D renderers and overlays for detailed map content.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

@@ -17,8 +17,8 @@
  */
 
 /**
- * Provides client application coordination, client-side state, and user actions.
- * Swing views and rendering components are organized in subpackages.
+ * Provides JavaFX client application coordination, client-side state, game actions,
+ * and rendering support.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

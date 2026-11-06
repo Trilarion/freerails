@@ -19,6 +19,7 @@
 package freerails.client;
 
 import freerails.move.*;
+import freerails.model.simulation.Speed;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -35,16 +36,13 @@ public class UserMessageGenerator implements MoveReceiver {
     private final DecimalFormat formatter = new DecimalFormat("#,###,###");
     private final SoundManager soundManager = SoundManager.getInstance();
     private ModelRoot modelRoot;
-    private ActionRoot actionRoot;
 
     /**
      * Creates a user message generator instance.
      *
      * @param modelRoot the client model that provides current game state
-     * @param actionRoot the root that supplies client actions
      */
-    public UserMessageGenerator(ModelRoot modelRoot, ActionRoot actionRoot) {
-        this.actionRoot = Utils.verifyNotNull(actionRoot);
+    public UserMessageGenerator(ModelRoot modelRoot) {
         this.modelRoot = Utils.verifyNotNull(modelRoot);
     }
 
@@ -77,9 +75,9 @@ public class UserMessageGenerator implements MoveReceiver {
      */
     public void logSpeed() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        int gameSpeed = world.getSpeed().getTicksPerSecond();
+        Speed speed = world.getSpeed();
 
-        if (gameSpeed <= 0) {
+        if (speed == Speed.PAUSE) {
             modelRoot.setProperty(ModelRootProperty.PERMANENT_MESSAGE, "Game is paused.");
 
             /*
@@ -90,7 +88,12 @@ public class UserMessageGenerator implements MoveReceiver {
         } else {
             modelRoot.setProperty(ModelRootProperty.PERMANENT_MESSAGE, null);
 
-            String gameSpeedDesc = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
+            String gameSpeedDesc = switch (speed) {
+                case SLOW -> "Slow";
+                case MODERATE -> "Moderate";
+                case FAST -> "Fast";
+                case PAUSE -> throw new IllegalStateException("Paused speed was handled above.");
+            };
             modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Game speed: " + gameSpeedDesc);
         }
     }

@@ -19,7 +19,7 @@
 package freerails.util.ui;
 
 /**
- * Utility conversions used by Swing views.
+ * Utility conversions used by desktop views.
  */
 public final class UiUtils {
 

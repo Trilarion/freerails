@@ -17,9 +17,8 @@
  */
 
 /**
- * Provides train and other client renderers. Map, tile, and track renderers are
- * organized in subpackages. This package hierarchy is not uniformly independent
- * of the windowing toolkit: some renderer packages contain Swing components.
+ * Provides client renderers. Map, tile, and track renderers are organized in
+ * subpackages and use Java2D where the JavaFX client adapts existing renderers.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

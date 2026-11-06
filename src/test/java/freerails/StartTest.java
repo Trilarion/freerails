@@ -42,19 +42,13 @@ public class StartTest {
         assertEquals(Start.Role.SERVER, Start.parseRole(new String[]{"--server"}));
     }
 
-    /** Checks that JavaFX selection composes with the default and explicit roles. */
+    /** Checks that the default and explicit role arguments are supported. */
     @Test
-    public void parsesUiSelectionAlongsideRoles() {
-        assertEquals(new Start.Arguments(Start.Role.BOTH, Start.Ui.SWING),
-                Start.parseArguments(new String[0]));
-        assertEquals(new Start.Arguments(Start.Role.BOTH, Start.Ui.JAVAFX),
-                Start.parseArguments(new String[]{"--javafx"}));
-        assertEquals(new Start.Arguments(Start.Role.CLIENT, Start.Ui.JAVAFX),
-                Start.parseArguments(new String[]{"--javafx", "--client"}));
-        assertEquals(new Start.Arguments(Start.Role.SERVER, Start.Ui.JAVAFX),
-                Start.parseArguments(new String[]{"--server", "--javafx"}));
-        assertEquals(new Start.Arguments(Start.Role.BOTH, Start.Ui.SWING),
-                Start.parseArguments(new String[]{"--both"}));
+    public void parsesSupportedRoleArguments() {
+        assertEquals(Start.Role.BOTH, Start.parseRole(new String[0]));
+        assertEquals(Start.Role.BOTH, Start.parseRole(new String[]{"--both"}));
+        assertEquals(Start.Role.CLIENT, Start.parseRole(new String[]{"--client"}));
+        assertEquals(Start.Role.SERVER, Start.parseRole(new String[]{"--server"}));
     }
 
     /** Keeps ordinary hosted games local and exposes the standalone server to remote clients. */
@@ -79,9 +73,9 @@ public class StartTest {
         Start.parseRole(new String[]{"--client", "--server"});
     }
 
-    /** Checks that duplicate JavaFX selection is rejected. */
+    /** Checks that the removed JavaFX selection option is rejected. */
     @Test(expected = IllegalArgumentException.class)
-    public void rejectsDuplicateUiSelection() {
-        Start.parseArguments(new String[]{"--javafx", "--javafx"});
+    public void rejectsRemovedUiSelection() {
+        Start.parseRole(new String[]{"--javafx"});
     }
 }

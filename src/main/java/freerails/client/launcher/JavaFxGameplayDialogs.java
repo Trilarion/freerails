@@ -1122,7 +1122,7 @@ final class JavaFxGameplayDialogs {
      * @param values template tokens
      * @return populated HTML report
      */
-    private static String populateTemplate(String resource, Map<String, ?> values) {
+    static String populateTemplate(String resource, Map<String, ?> values) {
         URL url = JavaFxGameplayDialogs.class.getResource(resource);
         if (url == null) {
             throw new IllegalStateException("Could not find report template " + resource);

@@ -20,7 +20,6 @@ package freerails;
 
 import freerails.client.ClientConstants;
 import freerails.client.launcher.JavaFxLauncher;
-import freerails.client.launcher.LauncherFrame;
 import freerails.client.launcher.LauncherServices;
 import freerails.io.savegame.FullSaveGameManager;
 import freerails.io.scenario.ClasspathScenarioSource;
@@ -28,9 +27,9 @@ import freerails.server.FreerailsGameServer;
 import freerails.server.FullServerGameModel;
 import freerails.util.network.Connection;
 import freerails.util.network.ServerSocketAcceptor;
+import javafx.application.Platform;
 import org.tinylog.Logger;
 
-import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -54,26 +53,16 @@ public final class Start {
         SERVER
     }
 
-    /** Selects which desktop UI implementation is started. */
-    enum Ui {
-        SWING,
-        JAVAFX
-    }
-
-    /** Holds the parsed application role and UI selection. */
-    record Arguments(Role role, Ui ui) {}
-
     /** Prevents construction of this application entry point. */
     private Start() {}
 
     /**
-     * Starts the selected application roles and displays the launcher.
+     * Starts the selected application roles and displays the JavaFX launcher.
      *
-     * @param args command-line role and UI selection
+     * @param args command-line role selection
      */
     public static void main(String[] args) {
-        Arguments arguments = parseArguments(args);
-        Role role = arguments.role();
+        Role role = parseRole(args);
         // Prepare the user's settings before starting the selected services.
         if (!ClientConstants.FREERAILS_USER_FOLDER.exists()
                 && !ClientConstants.FREERAILS_USER_FOLDER.mkdirs()) {
@@ -109,67 +98,31 @@ public final class Start {
             case SERVER -> ClientConstants.MODE_SERVER_ONLY;
         };
         boolean allowServerOnly = role == Role.SERVER;
-        if (arguments.ui() == Ui.JAVAFX) {
-            JavaFxLauncher.launch(
-                    finalServices,
-                    forcedMode,
-                    allowServerOnly,
-                    () -> EventQueue.invokeLater(() -> {
-                        showSwingLauncher(finalServices, forcedMode, allowServerOnly);
-                        Options.save(ClientConstants.OPTIONS_FILE);
-                    }),
-                    () -> {
-                        if (role != Role.SERVER) {
-                            Logger.tag("Start").info("Client started.");
-                        }
-                        Options.save(ClientConstants.OPTIONS_FILE);
-                    },
-                    () -> Options.save(ClientConstants.OPTIONS_FILE));
-            return;
-        }
-        EventQueue.invokeLater(() -> {
-            showSwingLauncher(finalServices, forcedMode, allowServerOnly);
-            if (role != Role.SERVER) {
-                Logger.tag("Start").info("Client started.");
-            }
-            Options.save(ClientConstants.OPTIONS_FILE);
-        });
+        JavaFxLauncher.launch(
+                finalServices,
+                forcedMode,
+                allowServerOnly,
+                () -> {
+                    if (role != Role.SERVER) {
+                        Logger.tag("Start").info("Client started.");
+                    }
+                    Options.save(ClientConstants.OPTIONS_FILE);
+                },
+                () -> Options.save(ClientConstants.OPTIONS_FILE));
     }
 
     /**
-     * Creates and displays the existing Swing launcher.
-     *
-     * @param services application services supplied to the launcher
-     * @param forcedMode the launcher mode required by the selected role, or {@code null}
-     * @param allowServerOnly whether the server-only launcher mode is available
-     */
-    private static void showSwingLauncher(
-            LauncherServices services, Integer forcedMode, boolean allowServerOnly) {
-        LauncherFrame frame = new LauncherFrame(services, forcedMode, allowServerOnly);
-        frame.setLocationByPlatform(true);
-        frame.setVisible(true);
-    }
-
-    /**
-     * Parses the command-line application role and UI selection.
+     * Parses the command-line application role.
      *
      * @param args command-line arguments
-     * @return the selected application role and UI
+     * @return the selected application role
      * @throws NullPointerException if {@code args} is null
      * @throws IllegalArgumentException if an argument is unknown or roles conflict
      */
-    static Arguments parseArguments(String[] args) {
+    static Role parseRole(String[] args) {
         Objects.requireNonNull(args, "args");
         Role role = null;
-        Ui ui = Ui.SWING;
         for (String arg : args) {
-            if ("--javafx".equals(arg)) {
-                if (ui == Ui.JAVAFX) {
-                    throw new IllegalArgumentException(usage());
-                }
-                ui = Ui.JAVAFX;
-                continue;
-            }
             Role requestedRole = switch (arg) {
                 case "--both" -> Role.BOTH;
                 case "--client" -> Role.CLIENT;
@@ -181,22 +134,12 @@ public final class Start {
             }
             role = requestedRole;
         }
-        return new Arguments(role == null ? Role.BOTH : role, ui);
-    }
-
-    /**
-     * Parses the command-line application role, retaining the legacy role-only helper.
-     *
-     * @param args command-line arguments
-     * @return the selected application role
-     */
-    static Role parseRole(String[] args) {
-        return parseArguments(args).role();
+        return role == null ? Role.BOTH : role;
     }
 
     /** Returns the command-line usage string. */
     private static String usage() {
-        return "Usage: freerails [--javafx] [--both|--client|--server]";
+        return "Usage: freerails [--both|--client|--server]";
     }
 
     /**
@@ -343,11 +286,11 @@ public final class Start {
             listener.accept(getPlayerNames());
         }
 
-        /** Sends the current player names to registered listeners on the event queue. */
+        /** Sends the current player names to registered listeners on the JavaFX thread. */
         private void notifyPlayerListeners() {
             String[] playerNames = getPlayerNames();
             for (Consumer<String[]> listener : playerListeners) {
-                EventQueue.invokeLater(() -> listener.accept(playerNames));
+                Platform.runLater(() -> listener.accept(playerNames));
             }
         }
     }

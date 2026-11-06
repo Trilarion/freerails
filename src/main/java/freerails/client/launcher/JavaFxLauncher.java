@@ -69,7 +69,6 @@ public final class JavaFxLauncher extends Application {
     private final Label statusLabel = new Label();
     private final Button backButton = new Button("Back...");
     private final Button nextButton = new Button("Next...");
-    private final Button swingButton = new Button("Use Swing launcher");
     private final ToggleGroup gameTypeGroup = new ToggleGroup();
     private final RadioButton startNetworkButton = new RadioButton("Start a network game");
     private final RadioButton joinNetworkButton = new RadioButton("Join a network game");
@@ -108,7 +107,6 @@ public final class JavaFxLauncher extends Application {
      * @param services application services supplied to the launcher, or {@code null} for a client-only role
      * @param forcedMode the launcher mode required by the selected role, or {@code null}
      * @param allowServerOnly whether the server-only launcher mode is available
-     * @param swingFallback displays the Swing launcher when selected
      * @param onStarted runs after the JavaFX launcher is displayed
      * @param onStopped runs when the JavaFX application shuts down
      */
@@ -116,14 +114,12 @@ public final class JavaFxLauncher extends Application {
             LauncherServices services,
             Integer forcedMode,
             boolean allowServerOnly,
-            Runnable swingFallback,
             Runnable onStarted,
             Runnable onStopped) {
         launchRequest = new LaunchRequest(
                 services,
                 forcedMode,
                 allowServerOnly,
-                Objects.requireNonNull(swingFallback, "swingFallback"),
                 Objects.requireNonNull(onStarted, "onStarted"),
                 Objects.requireNonNull(onStopped, "onStopped"));
         Application.launch(JavaFxLauncher.class);
@@ -148,12 +144,8 @@ public final class JavaFxLauncher extends Application {
 
         backButton.setOnAction(event -> goBack());
         nextButton.setOnAction(event -> goNext());
-        swingButton.setOnAction(event -> {
-            request.swingFallback().run();
-            stage.close();
-        });
 
-        HBox navigation = new HBox(8, backButton, swingButton, nextButton);
+        HBox navigation = new HBox(8, backButton, nextButton);
         navigation.setAlignment(Pos.CENTER_RIGHT);
         BorderPane root = new BorderPane();
         root.setTop(statusLabel);
@@ -631,7 +623,7 @@ public final class JavaFxLauncher extends Application {
     }
 
     /**
-     * Creates a JavaFX gameplay client without constructing Swing components.
+     * Creates a JavaFX gameplay client for the selected player.
      *
      * @param playerName the player name
      * @return the initialized launcher client
@@ -794,7 +786,6 @@ public final class JavaFxLauncher extends Application {
         nextButton.setDisable(busy || (!serverRunning && !valid));
         backButton.setDisable(busy || currentStep == Step.GAME_TYPE
                 || currentStep == Step.CONNECTED_PLAYERS || serverRunning);
-        swingButton.setDisable(busy);
         if (!busy && !valid) {
             if (currentStatusKind != MessageKind.ERROR) {
                 showStatus(validationMessage(), MessageKind.ERROR);
@@ -1065,7 +1056,6 @@ public final class JavaFxLauncher extends Application {
      * @param services application services supplied to the launcher
      * @param forcedMode required launcher mode, if any
      * @param allowServerOnly whether server-only mode is available
-     * @param swingFallback displays the Swing launcher when selected
      * @param onStarted runs after the JavaFX launcher is displayed
      * @param onStopped runs when JavaFX shuts down
      */
@@ -1073,7 +1063,6 @@ public final class JavaFxLauncher extends Application {
             LauncherServices services,
             Integer forcedMode,
             boolean allowServerOnly,
-            Runnable swingFallback,
             Runnable onStarted,
             Runnable onStopped) {}
 

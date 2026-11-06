@@ -60,7 +60,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
     private volatile long lastStatusUpdate;
 
     /**
-     * Creates a JavaFX gameplay client without constructing any Swing controls.
+     * Creates a JavaFX gameplay client for the selected player.
      *
      * @param playerName player name used when identifying the local player
      */
@@ -70,7 +70,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
         modelRoot.setMoveFork(getMoveFork());
         modelRoot.setMoveReceiver(this);
         modelRoot.setServerCommandReceiver(this);
-        modelRoot.addCompleteMoveReceiver(new UserMessageGenerator(modelRoot, actionRoot));
+        modelRoot.addCompleteMoveReceiver(new UserMessageGenerator(modelRoot));
     }
 
     /**

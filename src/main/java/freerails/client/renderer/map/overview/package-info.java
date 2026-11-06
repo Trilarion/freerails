@@ -17,7 +17,7 @@
  */
 
 /**
- * Provides the overview-map renderer and its Swing component.
+ * Provides the Java2D overview-map renderer used by the JavaFX map view.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

@@ -17,8 +17,8 @@
  */
 
 /**
- * Provides reusable Swing and UI-support utilities, including image and sound
- * managers. Keep this package focused on UI support rather than game-domain rules.
+ * Provides reusable desktop presentation utilities, including image and sound
+ * managers. Keep this package focused on presentation rather than game-domain rules.
  *
  * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
  */

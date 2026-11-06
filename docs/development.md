@@ -34,27 +34,22 @@ applied to the world.
 state, and owns game-start orchestration through injected scenario and save-game
 interfaces.
 - `freerails.client` coordinates the desktop application, user interaction,
-Swing views, and rendering. It does not depend on `freerails.server`; the
+JavaFX views, and rendering. It does not depend on `freerails.server`; the
 launcher requests host operations through `LauncherServices`.
-- `freerails.Start` composes the desktop client and optional local server. Run
-with no arguments or `--both` for the local server and interactive client
-launcher (the default local-game option connects the client to that server,
-while the client can also join another server), `--client` to launch only the
-remote-client setup, or `--server` to launch the server-only GUI. The
-server-only GUI lets the user choose a scenario or saved game and listening
-port. The standalone server listens on all network interfaces for remote
-clients; a locally hosted game remains bound to loopback. Add `--javafx` to
-any of these role selections to open the JavaFX setup wizard; Swing remains
-the default. The JavaFX path now opens a JavaFX gameplay
-shell with JavaFX map, overview, and map-input views. Its gameplay surface
-includes terrain/station details, track and station building, train production
-and schedule editing, save/load and exit dialogs, broker transactions, and
-HTML-backed financial reports. Swing remains the end-to-end fallback, and
-JavaFX screen parity and role smoke checks remain part of migration acceptance.
-The JavaFX wizard also offers the complete Swing launcher and gameplay path as
-a fallback. Build the executable JAR separately on each supported platform so
-it includes that platform's JavaFX runtime, including the WebView module used
-for HTML reports.
+- `freerails.Start` composes the JavaFX desktop client and optional local server.
+  Run with no arguments or `--both` for the local server and interactive client
+  setup (the default local-game option connects the client to that server, while
+  the client can also join another server), `--client` to launch remote-client
+  setup, or `--server` to launch server-only setup. The server-only setup lets
+  the user choose a scenario or saved game and listening port. The standalone
+  server listens on all network interfaces for remote clients; a locally hosted
+  game remains bound to loopback. JavaFX is the only production desktop UI. The
+  JavaFX gameplay shell includes map, overview, terrain/station details, track
+  and station building, train production and schedule editing, save/load and
+  exit dialogs, broker transactions, and HTML-backed financial reports. The
+  map view adapts the existing Java2D renderers to JavaFX images. Build the
+  executable JAR separately on each supported platform so it includes that
+  platform's JavaFX runtime, including the WebView module used for HTML reports.
 - `freerails.io` contains serialization and file/resource adapters, including
 scenario and save-game persistence. `freerails.network` contains
 communication-level types; shared utilities live in `freerails.util`.
@@ -165,7 +160,7 @@ from the repository root:
 .\gradlew.bat test
 .\gradlew.bat check
 .\gradlew.bat run
-.\gradlew.bat run --args="--javafx --client"
+.\gradlew.bat run --args="--client"
 ```
 
 On Unix-like systems, use `./gradlew` instead of `.\gradlew.bat`.

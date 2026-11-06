@@ -33,9 +33,6 @@ import freerails.model.world.World;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
-import java.net.URL;
-import java.util.NoSuchElementException;
-
 /**
  * Tests broker screen generator behavior.
  */
@@ -86,33 +83,12 @@ public class BrokerScreenGeneratorTest extends TestCase {
         }
     }
 
-    /**
-     * Tests that all broker template tokens are populated from the generator's map.
-     */
-    public void testBrokerTemplateTokens() {
+    /** Tests that the broker generator supplies the player's report values. */
+    public void testBrokerTemplateValues() {
         BrokerScreenGenerator generator = new BrokerScreenGenerator(world, player);
-        URL templateUrl = BrokerScreenHtmlFrame.class.getResource(
-                freerails.client.ClientConstants.VIEW_BROKER);
-        String template = BrokerFrame.loadText(templateUrl);
-
-        String populatedTemplate = BrokerFrame.populateTokens(template, generator.getTemplateValues());
-
-        assertTrue(populatedTemplate.contains(player.getName()));
-        assertFalse(populatedTemplate.contains("$"));
-        assertEquals(player.getName(), BrokerFrame.populateTokens(
-                "$playername$", generator.getTemplateValues()));
-    }
-
-    /**
-     * Tests that a template token missing from the map is reported.
-     */
-    public void testMissingBrokerTemplateToken() {
-        try {
-            BrokerFrame.populateTokens("$missing$", java.util.Map.of());
-            fail("Expected a missing token to be reported.");
-        } catch (NoSuchElementException expected) {
-            assertEquals("missing", expected.getMessage());
-        }
+        assertEquals(player.getName(), generator.getTemplateValues().get("playername"));
+        assertNotNull(generator.getTemplateValues().get("netWorth"));
+        assertNotNull(generator.getTemplateValues().get("othersRRsStockRows"));
     }
 
 }

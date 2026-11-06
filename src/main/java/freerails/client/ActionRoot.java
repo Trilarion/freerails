@@ -18,89 +18,24 @@
 
 package freerails.client;
 
-import freerails.client.model.ServerControlModel;
 import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.RendererRoot;
-import freerails.client.view.DialogueBoxController;
 import freerails.controller.StationBuilder;
 import freerails.controller.TrackMoveProducer;
 import freerails.model.world.UnmodifiableWorld;
 
-import javax.swing.*;
-
-// TODO what is this good for, probably can move to somewhere else
 /**
- * Provides access to Actions change the game state and the GUI.
+ * Provides toolkit-independent access to game actions and build workflows.
  */
 public class ActionRoot {
 
-    private final ServerControlModel serverControls;
-    private DialogueBoxController dialogueBoxController;
     private StationBuildModel stationBuildModel;
     private TrackMoveProducer trackMoveProducer;
 
     /**
-     * Creates an action root instance.
-     *
-     * @param serverControls the server controls parameter
+     * Creates an action root for the active game client.
      */
-    public ActionRoot(ServerControlModel serverControls) {
-        this.serverControls = serverControls;
-    }
-
-    /**
-     * Creates an action root for toolkit-specific clients without Swing controls.
-     */
-    public ActionRoot() {
-        this(null);
-    }
-
-    /**
-     * Returns the build train dialog action.
-     *
-     * @return the build train dialog action produced by this method
-     */
-    public Action getBuildTrainDialogAction() {
-        return new BuildTrainDialogAction(this);
-    }
-
-    /**
-     * Returns the build engine shop action.
-     * @return the build engine shop action
-     */
-    public Action getBuildEngineShopAction() {
-        return new BuildEngineShopDialogAction(this);
-    }
-
-    /**
-     * Returns the dialogue box controller.
-     *
-     * @return the dialogue box controller produced by this method
-     */
-    public DialogueBoxController getDialogueBoxController() {
-        return dialogueBoxController;
-    }
-
-    /**
-     * Sets the dialogue box controller.
-     *
-     * @param dialogueBoxController the dialogue box controller parameter
-     */
-    public void setDialogueBoxController(DialogueBoxController dialogueBoxController) {
-        this.dialogueBoxController = dialogueBoxController;
-    }
-
-    /**
-     * Returns the server controls.
-     *
-     * @return the server controls produced by this method
-     */
-    public ServerControlModel getServerControls() {
-        if (serverControls == null) {
-            throw new IllegalStateException("Server controls are not configured for this client.");
-        }
-        return serverControls;
-    }
+    public ActionRoot() {}
 
     /**
      * Returns the station build model.
@@ -124,15 +59,11 @@ public class ActionRoot {
      * Call this method when a new game is started or a game is loaded.
      */
     public void setup(ModelRootImpl modelRoot, RendererRoot rendererRoot) {
-        if (serverControls != null) {
-            serverControls.setup(modelRoot, dialogueBoxController);
-        }
-
         UnmodifiableWorld world = modelRoot.getWorld();
 
         if (!world.getTrackTypes().isEmpty()) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
-            stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), rendererRoot, modelRoot);
+            stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), modelRoot);
         }
     }
 
