@@ -30,7 +30,7 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.model.track.TrackType;
 import freerails.util.Utils;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.World;
 import freerails.model.game.Rules;
 import freerails.util.WorldGenerator;
@@ -70,7 +70,7 @@ public class TrackPathFinderTest extends TestCase {
         File file = new File(url.toURI());
         Rules rules = GsonManager.load(file, Rules.class);
 
-        world = new World.Builder().setMapSize(new Vector2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
+        world = new World.Builder().setMapSize(new IntPoint2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
         world.addPlayer(testPlayer);
     }
 
@@ -82,13 +82,13 @@ public class TrackPathFinderTest extends TestCase {
             BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
 
             TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer);
-            List<Vector2D> path = pathFinder.generatePath(Vector2D.ZERO, new Vector2D(0,5), buildTrackStrategy);
+            List<IntPoint2D> path = pathFinder.generatePath(IntPoint2D.ZERO, new IntPoint2D(0,5), buildTrackStrategy);
             assertEquals(5, path.size());
 
-            List<Vector2D> path2 = pathFinder.generatePath(new Vector2D(5, 5),new Vector2D(5, 10), buildTrackStrategy);
+            List<IntPoint2D> path2 = pathFinder.generatePath(new IntPoint2D(5, 5),new IntPoint2D(5, 10), buildTrackStrategy);
             assertEquals(5, path2.size());
 
-            path2 = pathFinder.generatePath(new Vector2D(5, 10), new Vector2D(5,5), buildTrackStrategy);
+            path2 = pathFinder.generatePath(new IntPoint2D(5, 10), new IntPoint2D(5,5), buildTrackStrategy);
             assertEquals(5, path2.size());
         } catch (PathNotFoundException e) {
             e.printStackTrace();
@@ -103,20 +103,20 @@ public class TrackPathFinderTest extends TestCase {
         BuildTrackStrategy strategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
         TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer);
         try {
-            List<Vector2D> first = pathFinder.generatePath(new Vector2D(2, 2), new Vector2D(4, 3), strategy);
-            List<Vector2D> second = pathFinder.generatePath(new Vector2D(2, 2), new Vector2D(4, 3), strategy);
-            List<Vector2D> third = pathFinder.generatePath(new Vector2D(2, 2), new Vector2D(4, 3), strategy);
+            List<IntPoint2D> first = pathFinder.generatePath(new IntPoint2D(2, 2), new IntPoint2D(4, 3), strategy);
+            List<IntPoint2D> second = pathFinder.generatePath(new IntPoint2D(2, 2), new IntPoint2D(4, 3), strategy);
+            List<IntPoint2D> third = pathFinder.generatePath(new IntPoint2D(2, 2), new IntPoint2D(4, 3), strategy);
 
             assertEquals(first, second);
             assertEquals(second, third);
-            assertEquals(List.of(new Vector2D(3, 3), new Vector2D(4, 3)), first);
+            assertEquals(List.of(new IntPoint2D(3, 3), new IntPoint2D(4, 3)), first);
 
             TileTransition[] expectedTransitions = {TileTransition.SOUTH_EAST, TileTransition.EAST};
             assertEquals(expectedTransitions.length, first.size());
             for (int i = 0; i < expectedTransitions.length; i++) {
-                Vector2D from = i == 0 ? new Vector2D(2, 2) : first.get(i - 1);
-                Vector2D to = first.get(i);
-                assertEquals(expectedTransitions[i], TileTransition.getInstance(Vector2D.subtract(to, from)));
+                IntPoint2D from = i == 0 ? new IntPoint2D(2, 2) : first.get(i - 1);
+                IntPoint2D to = first.get(i);
+                assertEquals(expectedTransitions[i], TileTransition.getInstance(IntPoint2D.subtract(to, from)));
             }
         } catch (PathNotFoundException e) {
             fail("Expected the open-map route to be found: " + e.getMessage());

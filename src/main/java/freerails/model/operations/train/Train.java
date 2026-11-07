@@ -26,7 +26,7 @@ import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.operations.train.motion.TrainMotion;
 import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.util.BidirectionalIterator;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -220,12 +220,12 @@ public class Train extends Identifiable {
         TrainMotion trainMotion = findCurrentMotion(time.ticks());
         PathOnTiles path = trainMotion.getPath();
         HashSet<TrackSection> sections = new HashSet<>();
-        Vector2D start = path.getStart();
+        IntPoint2D start = path.getStart();
         int x = start.x();
         int y = start.y();
         for (int i = 0; i < path.steps(); i++) {
             TileTransition transition = path.getStep(i);
-            Vector2D tile = new Vector2D(x, y);
+            IntPoint2D tile = new IntPoint2D(x, y);
             x += transition.deltaX;
             y += transition.deltaY;
             sections.add(new TrackSection(transition, tile));
@@ -239,7 +239,7 @@ public class Train extends Identifiable {
      * @param time game time
      * @return train location in tile coordinates
      */
-    public @NotNull Vector2D getLocation(@NotNull Time time) {
+    public @NotNull IntPoint2D getLocation(@NotNull Time time) {
         TrainMotion trainMotion = findCurrentMotion(time.ticks());
         PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
         return positionOnTrack.getLocation();

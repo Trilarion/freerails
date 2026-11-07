@@ -30,8 +30,8 @@ import freerails.model.track.TrackType;
 import freerails.model.operations.train.Engine;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.util.Array2D;
-import freerails.util.Vector2D;
+import freerails.util.IntArray2D;
+import freerails.util.IntPoint2D;
 
 import java.util.*;
 
@@ -41,7 +41,7 @@ import java.util.*;
  * scenario configuration.
  */
 public record ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, SortedSet<Cargo> cargos, SortedSet<Terrain> terrainTypes,
-                           SortedSet<TrackType> trackTypes, SortedSet<Sentiment> sentiments, Rules rules, Array2D terrainMap, Clock clock,
+                           SortedSet<TrackType> trackTypes, SortedSet<Sentiment> sentiments, Rules rules, IntArray2D terrainMap, Clock clock,
                            int currentSentimentId, boolean cityGrowthEnabled) {
 
     private static final Clock DEFAULT_CLOCK = new Clock(1840, 1200, new Time(0));
@@ -63,7 +63,7 @@ public record ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, So
      */
     public ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, SortedSet<Cargo> cargos,
                         SortedSet<Terrain> terrainTypes, SortedSet<TrackType> trackTypes,
-                        SortedSet<Sentiment> sentiments, Rules rules, Array2D terrainMap,
+                        SortedSet<Sentiment> sentiments, Rules rules, IntArray2D terrainMap,
                         Clock clock, int currentSentimentId) {
         this(engines, cities, cargos, terrainTypes, trackTypes, sentiments, rules, terrainMap,
                 clock, currentSentimentId, true);
@@ -86,7 +86,7 @@ public record ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, So
      */
     public ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, SortedSet<Cargo> cargos,
                         SortedSet<Terrain> terrainTypes, SortedSet<TrackType> trackTypes,
-                        SortedSet<Sentiment> sentiments, Rules rules, Array2D terrainMap,
+                        SortedSet<Sentiment> sentiments, Rules rules, IntArray2D terrainMap,
                         Clock clock, int currentSentimentId, boolean cityGrowthEnabled) {
         this.engines = copySet(engines);
         this.cities = copySet(cities);
@@ -127,11 +127,11 @@ public record ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, So
      */
     public static ScenarioData fromWorld(UnmodifiableWorld world) {
         Objects.requireNonNull(world, "world");
-        Vector2D size = world.getMapSize();
-        Array2D map = new Array2D(size.x(), size.y());
+        IntPoint2D size = world.getMapSize();
+        IntArray2D map = new IntArray2D(size.x(), size.y());
         for (int x = 0; x < size.x(); x++) {
             for (int y = 0; y < size.y(); y++) {
-                TerrainTile tile = world.getTile(new Vector2D(x, y));
+                TerrainTile tile = world.getTile(new IntPoint2D(x, y));
                 map.set(x, y, tile.terrainTypeId());
             }
         }
@@ -195,9 +195,9 @@ public record ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, So
      * @param source the source value to copy
      * @return the array
      */
-    private static Array2D copyArray(Array2D source) {
+    private static IntArray2D copyArray(IntArray2D source) {
         Objects.requireNonNull(source, "terrainMap");
-        Array2D copy = new Array2D(source.getWidth(), source.getHeight());
+        IntArray2D copy = new IntArray2D(source.getWidth(), source.getHeight());
         for (int y = 0; y < source.getHeight(); y++) {
             for (int x = 0; x < source.getWidth(); x++) {
                 copy.set(x, y, source.get(x, y));
@@ -293,7 +293,7 @@ public record ScenarioData(SortedSet<Engine> engines, SortedSet<City> cities, So
      * @return the terrain map
      */
     @Override
-    public Array2D terrainMap() {
+    public IntArray2D terrainMap() {
         return copyArray(terrainMap);
     }
 

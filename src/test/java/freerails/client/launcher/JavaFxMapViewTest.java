@@ -18,7 +18,7 @@
 
 package freerails.client.launcher;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +29,7 @@ public class JavaFxMapViewTest {
     /** Checks that pointer coordinates include the current scrolled map origin. */
     @Test
     public void translatesViewportCoordinatesToMapTiles() {
-        assertEquals(new Vector2D(2, 4),
+        assertEquals(new IntPoint2D(2, 4),
                 JavaFxMapView.mapPointToTile(96, 144, 22, 72, 48));
     }
 

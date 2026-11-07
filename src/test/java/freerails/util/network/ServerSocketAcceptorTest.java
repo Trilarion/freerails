@@ -96,4 +96,27 @@ public class ServerSocketAcceptorTest extends TestCase {
             }
         }
     }
+
+    /**
+     * Tests that an interrupted close reports the interruption and restores the interrupt status.
+     * @throws IOException if the test cannot open the server socket.
+     */
+    public void testCloseInterruptedRestoresInterruptStatus() throws IOException {
+        InetSocketAddress address = new InetSocketAddress(InetAddress.getLoopbackAddress(), 0);
+        ServerSocketAcceptor acceptor = new ServerSocketAcceptor(address, new LinkedBlockingQueue<>());
+
+        Thread.currentThread().interrupt();
+        try {
+            try {
+                acceptor.close();
+                fail("Expected close to report interruption.");
+            } catch (IllegalStateException e) {
+                assertTrue(e.getCause() instanceof InterruptedException);
+            }
+            assertTrue(Thread.currentThread().isInterrupted());
+        } finally {
+            Thread.interrupted();
+            acceptor.close();
+        }
+    }
 }

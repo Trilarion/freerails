@@ -31,7 +31,7 @@ import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackProperty;
 import freerails.model.track.TrackType;
 import freerails.move.GrowCitiesMove;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
@@ -110,7 +110,7 @@ public class CityModelTest extends TestCase {
      */
     public void testGrowCitiesMoveDoesNotGrowWhenDisabled() throws IOException {
         World world = worldWithClearCity(false);
-        Vector2D cityCenter = world.getCity(1).getLocation();
+        IntPoint2D cityCenter = world.getCity(1).getLocation();
         TrackType stationType = new TrackType(100, "station", TrackCategory.STATION,
                 EnumSet.of(TrackProperty.SINGLE), Money.ZERO, Money.ZERO,
                 EnumSet.allOf(TerrainCategory.class), Set.of("000010000"));
@@ -145,7 +145,7 @@ public class CityModelTest extends TestCase {
      * @throws IOException if the world with clear city operation fails.
      */
     private World worldWithClearCity(boolean cityGrowthEnabled) throws IOException {
-        City city = new City(1,"New York", new Vector2D(5, 5));
+        City city = new City(1,"New York", new IntPoint2D(5, 5));
         TreeSet<City> cities = new TreeSet<>();
         cities.add(city);
         World template = WorldGenerator.testWorld(true, cities);
@@ -158,12 +158,12 @@ public class CityModelTest extends TestCase {
                 .setMapSize(template.getMapSize())
                 .setCityGrowthEnabled(cityGrowthEnabled)
                 .build();
-        Vector2D mapSize = world.getMapSize();
+        IntPoint2D mapSize = world.getMapSize();
 
         TerrainTile tile = new TerrainTile(0);
         for (int x = 0; x < mapSize.x(); x++) {
             for (int y = 0; y < mapSize.y(); y++) {
-                world.setTile(new Vector2D(x, y), tile);
+                world.setTile(new IntPoint2D(x, y), tile);
             }
         }
         return world;

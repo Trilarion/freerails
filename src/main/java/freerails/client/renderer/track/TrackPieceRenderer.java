@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.track;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 import java.awt.*;
 
@@ -43,5 +43,5 @@ public interface TrackPieceRenderer {
      * @param tileLocation the map coordinate
      * @param tileSize the map coordinate
      */
-    void drawTrackPieceIcon(Graphics g, int trackTemplate, Vector2D tileLocation, Vector2D tileSize);
+    void drawTrackPieceIcon(Graphics g, int trackTemplate, IntPoint2D tileLocation, IntPoint2D tileSize);
 }

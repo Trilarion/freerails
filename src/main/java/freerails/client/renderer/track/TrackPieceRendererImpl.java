@@ -21,7 +21,7 @@ package freerails.client.renderer.track;
 import freerails.client.ClientConstants;
 import freerails.model.track.TrackType;
 import freerails.util.BinaryNumberFormatter;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.track.TrackConfiguration;
@@ -81,13 +81,13 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
      * @param tileSize the map coordinate
      */
     @Override
-    public void drawTrackPieceIcon(Graphics g, int trackTemplate, Vector2D tileLocation, Vector2D tileSize) {
+    public void drawTrackPieceIcon(Graphics g, int trackTemplate, IntPoint2D tileLocation, IntPoint2D tileSize) {
         if (trackTemplate > 511 || trackTemplate < 0) {
             throw new java.lang.IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
         }
 
         if (trackPieceIcons[trackTemplate] != null) {
-            Vector2D drawLocation = Vector2D.subtract(Vector2D.multiply(tileLocation, tileSize), Vector2D.divide(tileSize, 2));
+            IntPoint2D drawLocation = IntPoint2D.subtract(IntPoint2D.multiply(tileLocation, tileSize), IntPoint2D.divide(tileSize, 2));
             g.drawImage(trackPieceIcons[trackTemplate], drawLocation.x(), drawLocation.y(), null);
         }
     }

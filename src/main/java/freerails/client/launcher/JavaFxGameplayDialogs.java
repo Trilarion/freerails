@@ -58,7 +58,7 @@ import freerails.model.operations.cargo.Cargo;
 import freerails.model.operations.station.Station;
 import freerails.client.ClientConstants;
 import freerails.client.view.BrokerScreenGenerator;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -273,7 +273,7 @@ final class JavaFxGameplayDialogs {
             String validationError = null;
             Status status = null;
             synchronized (updateLock) {
-                Vector2D location = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+                IntPoint2D location = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
                 UnmodifiableWorld world = modelRoot.getWorld();
                 if (location == null || !world.boundsContain(location)) {
                     validationError = "Select a valid map tile before building an industry.";
@@ -541,9 +541,7 @@ final class JavaFxGameplayDialogs {
                 netWorth.aggregate();
                 netWorths.put(player, netWorth.getValues()[0]);
             }
-            players.sort((first, second) -> {
-                return Long.compare(netWorths.get(second).amount(), netWorths.get(first).amount());
-            });
+            players.sort((first, second) -> Long.compare(netWorths.get(second).amount(), netWorths.get(first).amount()));
             for (Player player : players) {
                 report.append(player.getName()).append(" — ")
                         .append(MoneyFormatter.format(netWorths.get(player)))
@@ -1145,7 +1143,7 @@ final class JavaFxGameplayDialogs {
      */
     static String replaceTemplateTokens(String template, Map<String, ?> values) {
         Matcher matcher = TEMPLATE_TOKEN.matcher(template);
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
         while (matcher.find()) {
             String token = matcher.group(1);
             if (!values.containsKey(token)) {
@@ -1251,7 +1249,7 @@ final class JavaFxGameplayDialogs {
      * @return station label
      */
     private String stationLabel(Station station) {
-        Vector2D location = station.getLocation();
+        IntPoint2D location = station.getLocation();
         return station.getStationName() + " (" + location.x() + ", " + location.y() + ")";
     }
 }

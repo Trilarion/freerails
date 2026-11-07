@@ -154,6 +154,7 @@ class TrackTilesGenerator extends JPanel {
         try {
             imageManager.writeAllImages();
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -201,6 +202,7 @@ class TrackTilesGenerator extends JPanel {
                         g2.drawImage(tile, 0, 0, null);
                         g2.translate(60, 0);
                     } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }

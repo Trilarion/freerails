@@ -55,8 +55,7 @@ public final class TrainRuntimeState implements Serializable {
     public void setActivities(BidirectionalIterator<TrainMotion> iterator) {
         activities.clear();
         while (iterator.hasNext()) {
-            iterator.next();
-            activities.add(iterator.get());
+            activities.add(iterator.next());
         }
     }
 

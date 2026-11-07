@@ -19,7 +19,7 @@
 package freerails.client.renderer;
 
 import freerails.client.renderer.map.MapLayerRenderer;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 import java.awt.*;
 
@@ -33,14 +33,14 @@ public class TestMapLayerRenderer implements MapLayerRenderer {
      * @param tileLocation the tile location to use in the test.
      */
     @Override
-    public void paintTile(Graphics g, Vector2D tileLocation) {}
+    public void paintTile(Graphics g, IntPoint2D tileLocation) {}
 
     /**
      * Performs refresh tile.
      * @param tileLocation the tile location to use in the test.
      */
     @Override
-    public void refreshTile(Vector2D tileLocation) {}
+    public void refreshTile(IntPoint2D tileLocation) {}
 
     /**
      * Performs refresh all.

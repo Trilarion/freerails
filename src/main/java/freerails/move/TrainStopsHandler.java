@@ -28,7 +28,7 @@ import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
@@ -74,8 +74,8 @@ public class TrainStopsHandler implements Serializable {
     /**
      * @param location the location at which the train has arrived
      */
-    public void arrivesAtPoint(Vector2D location) {
-        Vector2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
+    public void arrivesAtPoint(IntPoint2D location) {
+        IntPoint2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
 
         if (location.equals(targetPoint)) {
             /*

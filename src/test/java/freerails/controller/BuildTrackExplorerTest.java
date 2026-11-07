@@ -27,7 +27,7 @@ import freerails.model.track.TrackType;
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Status;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.game.Rules;
 import freerails.model.player.Player;
 import freerails.model.operations.train.PositionOnTrack;
@@ -68,7 +68,7 @@ public class BuildTrackExplorerTest extends TestCase {
         // generate track types
         SortedSet<TrackType> trackTypes = WorldGenerator.testTrackTypes();
 
-        world = new World.Builder().setMapSize(new Vector2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
+        world = new World.Builder().setMapSize(new IntPoint2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
         world.addPlayer(testPlayer);
         player = testPlayer;
     }
@@ -81,7 +81,7 @@ public class BuildTrackExplorerTest extends TestCase {
         PositionOnTrack start;
 
         // Test starting in the middle of the map.
-        start = new PositionOnTrack(new Vector2D(10, 10), TileTransition.NORTH);
+        start = new PositionOnTrack(new IntPoint2D(10, 10), TileTransition.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
@@ -95,7 +95,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         // Test starting in the top left of the map.
-        start = new PositionOnTrack(Vector2D.ZERO, TileTransition.SOUTH_EAST);
+        start = new PositionOnTrack(IntPoint2D.ZERO, TileTransition.SOUTH_EAST);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.EAST, 1, 0, explorer);
         assertNextVertexIs(TileTransition.SOUTH_EAST, 1, 1, explorer);
@@ -103,7 +103,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         // Test starting in the bottom right of the map.
-        start = new PositionOnTrack(new Vector2D(19, 19), TileTransition.NORTH_WEST);
+        start = new PositionOnTrack(new IntPoint2D(19, 19), TileTransition.NORTH_WEST);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 19, 18, explorer);
         assertNextVertexIs(TileTransition.WEST, 18, 19, explorer);
@@ -115,10 +115,10 @@ public class BuildTrackExplorerTest extends TestCase {
      * Tests terrain construction cost is included in edge estimate behavior.
      */
     public void testTerrainConstructionCostIsIncludedInEdgeEstimate() {
-        world.setTile(new Vector2D(10, 10), new TerrainTile(3));
+        world.setTile(new IntPoint2D(10, 10), new TerrainTile(3));
         assertEquals(1000, world.getTerrain(3).getTrackConstructionCostPerMile().amount());
         assertEquals(600000, world.getTerrain(3).getIndustryBuildCost().amount());
-        PositionOnTrack start = new PositionOnTrack(new Vector2D(10, 10), TileTransition.NORTH);
+        PositionOnTrack start = new PositionOnTrack(new IntPoint2D(10, 10), TileTransition.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
@@ -144,13 +144,13 @@ public class BuildTrackExplorerTest extends TestCase {
 
         // Place some ocean.
         TerrainTile tile = new TerrainTile(occeanTypeNumber);
-        world.setTile(new Vector2D(10, 9), tile);
-        world.setTile(new Vector2D(11, 10), tile);
+        world.setTile(new IntPoint2D(10, 9), tile);
+        world.setTile(new IntPoint2D(11, 10), tile);
 
         PositionOnTrack start;
 
         // Test starting in the middle of the map.
-        start = new PositionOnTrack(new Vector2D(10, 10), TileTransition.NORTH);
+        start = new PositionOnTrack(new IntPoint2D(10, 10), TileTransition.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
@@ -177,7 +177,7 @@ public class BuildTrackExplorerTest extends TestCase {
         }
 
         // If we enter 10, 10 from the south, we should be able to build track S & SW.
-        PositionOnTrack start = new PositionOnTrack(new Vector2D(10, 10), TileTransition.SOUTH);
+        PositionOnTrack start = new PositionOnTrack(new IntPoint2D(10, 10), TileTransition.SOUTH);
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
 
@@ -192,7 +192,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         // If we enter 10, 11 from the north, we should be able to build track N, E, W, & NW.
-        start = new PositionOnTrack(new Vector2D(10, 11), TileTransition.NORTH);
+        start = new PositionOnTrack(new IntPoint2D(10, 11), TileTransition.NORTH);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 10, 10, explorer);
         assertNextVertexIs(TileTransition.EAST, 11, 11, explorer);
@@ -202,7 +202,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
         // If we enter 10, 12 from the north, we also should be able to build
         // track N, E, W, & NW.
-        start = new PositionOnTrack(new Vector2D(10, 12), TileTransition.NORTH);
+        start = new PositionOnTrack(new IntPoint2D(10, 12), TileTransition.NORTH);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 10, 11, explorer);
         assertNextVertexIs(TileTransition.EAST, 11, 12, explorer);
@@ -222,7 +222,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertTrue(explorer.hasNextEdge());
         explorer.nextEdge();
         PositionOnTrack pos = new PositionOnTrack(explorer.getVertexConnectedByEdge());
-        PositionOnTrack pos2 = new PositionOnTrack(new Vector2D(x, y), oneTileMoveVector);
+        PositionOnTrack pos2 = new PositionOnTrack(new IntPoint2D(x, y), oneTileMoveVector);
         assertEquals(pos2, pos);
     }
 
@@ -234,7 +234,7 @@ public class BuildTrackExplorerTest extends TestCase {
      */
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackType trackType = world.getTrackType(0);
-        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(new Vector2D(x, y), direction, trackType, trackType, world, WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(new IntPoint2D(x, y), direction, trackType, trackType, world, WorldGenerator.TEST_PLAYER);
         Status status = move.applicable(world);
         assertTrue(status.isSuccess());
         move.apply(world);

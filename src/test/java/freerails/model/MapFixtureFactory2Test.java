@@ -24,7 +24,7 @@ import freerails.model.economy.transaction.Transaction;
 import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.world.World;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import junit.framework.TestCase;
 
 /**
@@ -71,7 +71,7 @@ public class MapFixtureFactory2Test extends TestCase {
      * Tests map behavior.
      */
     public void testMap() {
-        assertEquals(world.getMapSize(), new Vector2D(200, 200));
+        assertEquals(world.getMapSize(), new IntPoint2D(200, 200));
     }
 
     /**

@@ -36,7 +36,7 @@ import freerails.model.world.TestTrainMotion;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Utils;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -59,7 +59,7 @@ public class RepresentativeMoveSerializationTest extends TestCase {
                 WorldGenerator.testTrackTypes().first(),
                 player.getId());
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(1, new Vector2D(8, 9), 42, 9), 4);
+        cargo.addCargo(new CargoBatch(1, new IntPoint2D(8, 9), 42, 9), 4);
         ChangeCargoAtStationMove cargoMove = new ChangeCargoAtStationMove(player, 9, cargo);
 
         Train configuredTrain = new Train(7, new TrainConfiguration(2, List.of(4, 5)));
@@ -69,12 +69,12 @@ public class RepresentativeMoveSerializationTest extends TestCase {
 
         Move[] moves = {
                 new AddPlayerMove(player),
-                new ChangeTileMove(new TerrainTile(1), new Vector2D(2, 3)),
-                new ChangeTrackPieceMove(null, trackPiece, new Vector2D(2, 3)),
+                new ChangeTileMove(new TerrainTile(1), new IntPoint2D(2, 3)),
+                new ChangeTrackPieceMove(null, trackPiece, new IntPoint2D(2, 3)),
                 new AddTrainMove(player, configuredTrain),
                 new AddActivityMove(player, 7, TestTrainMotion.of(60)),
                 new AddStationMove(player,
-                        new Station(9, new Vector2D(4, 5), "Station", CargoBatchBundle.EMPTY)),
+                        new Station(9, new IntPoint2D(4, 5), "Station", CargoBatchBundle.EMPTY)),
                 cargoMove,
                 new AddTransactionMove(player, transaction),
                 new AddTransactionMove(player, transaction, true)
@@ -88,7 +88,7 @@ public class RepresentativeMoveSerializationTest extends TestCase {
         assertFalse(cargoMove.equals(new ChangeCargoAtStationMove(player, 10, cargo)));
 
         CargoBatchBundle differentCargo = new CargoBatchBundle();
-        differentCargo.addCargo(new CargoBatch(1, new Vector2D(8, 9), 42, 9), 5);
+        differentCargo.addCargo(new CargoBatch(1, new IntPoint2D(8, 9), 42, 9), 5);
         assertFalse(cargoMove.equals(new ChangeCargoAtStationMove(player, 9, differentCargo)));
     }
 

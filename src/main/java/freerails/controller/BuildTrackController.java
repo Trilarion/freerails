@@ -30,7 +30,7 @@ import freerails.model.track.BuildTrackStrategy;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.Status;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.GameModel;
@@ -59,13 +59,13 @@ public class BuildTrackController implements GameModel {
     private final Player player;
     private final UnmodifiableWorld unmodifiableWorld;
     private World world;
-    private final Map<Vector2D, TrackPiece> proposedTrack = new HashMap<>();
+    private final Map<IntPoint2D, TrackPiece> proposedTrack = new HashMap<>();
     private boolean buildNewTrack = true;
-    private List<Vector2D> builtTrack = new ArrayList<>();
+    private List<IntPoint2D> builtTrack = new ArrayList<>();
     private boolean isBuildTrackSuccessful = false;
     private TileTransition[] path;
-    private Vector2D startPoint;
-    private Vector2D targetPoint;
+    private IntPoint2D startPoint;
+    private IntPoint2D targetPoint;
     private boolean visible = false;
 
     /**
@@ -94,11 +94,11 @@ public class BuildTrackController implements GameModel {
     /**
      * Utility method that gets the cursor position from the model root.
      */
-    private Vector2D getCursorPosition() {
-        Vector2D point = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+    private IntPoint2D getCursorPosition() {
+        IntPoint2D point = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
 
         // Check for null & make a defensive copy
-        point = null == point ? new Vector2D() : point;
+        point = null == point ? new IntPoint2D() : point;
 
         if (!modelRoot.getWorld().boundsContain(point)) {
             throw new IllegalStateException(String.valueOf(point));
@@ -136,7 +136,7 @@ public class BuildTrackController implements GameModel {
     /**
      * Moves cursor which causes track to be built on the worldDiff object.
      */
-    private void moveCursorMoreTiles(List<Vector2D> track) {
+    private void moveCursorMoreTiles(List<IntPoint2D> track) {
         moveCursorMoreTiles(track, null);
     }
 
@@ -148,8 +148,8 @@ public class BuildTrackController implements GameModel {
      * @param track        List
      * @param trackBuilder TrackMoveProducer
      */
-    private Status moveCursorMoreTiles(List<Vector2D> track, TrackMoveProducer trackBuilder) {
-        Vector2D oldPosition = getCursorPosition();
+    private Status moveCursorMoreTiles(List<IntPoint2D> track, TrackMoveProducer trackBuilder) {
+        IntPoint2D oldPosition = getCursorPosition();
 
         if (!TileTransition.checkValidity(oldPosition, track.getFirst())) {
             throw new IllegalStateException(oldPosition + " and " + track.getFirst().toString());
@@ -162,7 +162,7 @@ public class BuildTrackController implements GameModel {
             trackBuilder.setBuildTrackStrategy(getBuildTrackStrategy());
         }
 
-        for (Vector2D point : track) {
+        for (IntPoint2D point : track) {
             logger.debug("point" + point);
             logger.debug("oldPosition" + oldPosition);
 
@@ -172,7 +172,7 @@ public class BuildTrackController implements GameModel {
                 continue;
             }
 
-            TileTransition vector = TileTransition.getInstance(Vector2D.subtract(point, oldPosition));
+            TileTransition vector = TileTransition.getInstance(IntPoint2D.subtract(point, oldPosition));
 
             // If there is already track between the two tiles, do nothing
             TerrainTile tile = unmodifiableWorld.getTile(oldPosition);
@@ -225,13 +225,13 @@ public class BuildTrackController implements GameModel {
      * Attempts to building track from the specified point in the specified
      * direction on the worldDiff object.
      */
-    private Status planBuildingTrack(Vector2D point, TileTransition tileTransition) {
+    private Status planBuildingTrack(IntPoint2D point, TileTransition tileTransition) {
         TerrainTile tileA = world.getTile(point);
         BuildTrackStrategy buildTrackStrategy = getBuildTrackStrategy();
         int trackTypeAID = buildTrackStrategy.getRule(tileA.terrainTypeId());
         TrackType trackTypeA = unmodifiableWorld.getTrackType(trackTypeAID);
 
-        TerrainTile tileB = world.getTile(Vector2D.add(point, tileTransition.getD()));
+        TerrainTile tileB = world.getTile(IntPoint2D.add(point, tileTransition.getD()));
         int trackTypeBID = buildTrackStrategy.getRule(tileB.terrainTypeId());
         TrackType trackTypeB = unmodifiableWorld.getTrackType(trackTypeBID);
 
@@ -283,9 +283,9 @@ public class BuildTrackController implements GameModel {
      * Sets the proposed track: from the current cursor position to the
      * specified point.
      */
-    public void setProposedTrack(Vector2D to, TrackMoveProducer trackBuilder) {
+    public void setProposedTrack(IntPoint2D to, TrackMoveProducer trackBuilder) {
 
-        Vector2D from = getCursorPosition();
+        IntPoint2D from = getCursorPosition();
 
         assert trackBuilder.getTrackBuilderMode() != BuildMode.IGNORE_TRACK;
         assert trackBuilder.getTrackBuilderMode() != BuildMode.BUILD_STATION;
@@ -342,7 +342,7 @@ public class BuildTrackController implements GameModel {
      *
      * @param newTargetPoint The m_targetPoint to set.
      */
-    private void setTargetPoint(Vector2D newTargetPoint) {
+    private void setTargetPoint(IntPoint2D newTargetPoint) {
         targetPoint = newTargetPoint;
         modelRoot.setProperty(ModelRootProperty.THINKING_POINT, newTargetPoint);
     }
@@ -415,7 +415,7 @@ public class BuildTrackController implements GameModel {
                 path = pathOnTrackFinder.pathAsVectors();
                 BuildMode mode = getBuildMode();
 
-                Vector2D location = new Vector2D(startPoint);
+                IntPoint2D location = new IntPoint2D(startPoint);
                 Player fp = modelRoot.getPlayer();
                 for (TileTransition v : path) {
                     Move move;
@@ -481,9 +481,9 @@ public class BuildTrackController implements GameModel {
                         okSoFar = status.isSuccess() && okSoFar;
                         move.apply(world);
                     }// end of attemptMove
-                    location = Vector2D.add(location, v.getD());
+                    location = IntPoint2D.add(location, v.getD());
                 }
-                startPoint = new Vector2D(location);
+                startPoint = new IntPoint2D(location);
                 isBuildTrackSuccessful = okSoFar;
                 if (okSoFar) {
                     setCursorMessage("");
@@ -506,8 +506,8 @@ public class BuildTrackController implements GameModel {
     /**
      * Saves track into real world
      */
-    public Vector2D updateWorld(TrackMoveProducer trackBuilder) {
-        Vector2D actPoint = getCursorPosition();
+    public IntPoint2D updateWorld(TrackMoveProducer trackBuilder) {
+        IntPoint2D actPoint = getCursorPosition();
 
         if (buildNewTrack) {
             if (!builtTrack.isEmpty()) {

@@ -7,7 +7,7 @@ import freerails.model.track.TrackPiece;
 import freerails.model.world.World;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -178,8 +178,8 @@ public class ConnectionTest extends TestCase {
                     WorldGenerator.testTrackTypes().first(),
                     player.getId());
             ChangeTrackPieceCompositeMove move = new ChangeTrackPieceCompositeMove(
-                    new ChangeTrackPieceMove(null, trackPiece, new Vector2D(2, 3)),
-                    new ChangeTrackPieceMove(null, trackPiece, new Vector2D(3, 3)),
+                    new ChangeTrackPieceMove(null, trackPiece, new IntPoint2D(2, 3)),
+                    new ChangeTrackPieceMove(null, trackPiece, new IntPoint2D(3, 3)),
                     player);
 
             try {

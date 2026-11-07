@@ -23,7 +23,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.model.terrain.Terrain;
 import freerails.move.Status;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.terrain.TerrainTile;
@@ -41,7 +41,7 @@ public class ChangeTileMove implements MapUpdateMove {
 
     @Serial
     private static final long serialVersionUID = 3256726169272662320L;
-    private final Vector2D location;
+    private final IntPoint2D location;
     private final TerrainTile after;
 
     /**
@@ -50,7 +50,7 @@ public class ChangeTileMove implements MapUpdateMove {
      * @param after the terrain tile to place at the location
      * @param location the map location of the tile
      */
-    public ChangeTileMove(@NotNull TerrainTile after, @NotNull Vector2D location) {
+    public ChangeTileMove(@NotNull TerrainTile after, @NotNull IntPoint2D location) {
         this.location = location;
         this.after = after;
     }

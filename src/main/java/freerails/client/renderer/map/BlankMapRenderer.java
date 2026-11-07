@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.map;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 import java.awt.*;
 
@@ -53,11 +53,11 @@ public record BlankMapRenderer(float scale) implements MapRenderer {
      * @return the map size in pixels produced by this method
      */
     @Override
-    public Vector2D getMapSizeInPixels() {
+    public IntPoint2D getMapSizeInPixels() {
         int height = (int) (400 * scale);
         int width = (int) (400 * scale);
 
-        return new Vector2D(width, height);
+        return new IntPoint2D(width, height);
     }
 
     /**
@@ -67,7 +67,7 @@ public record BlankMapRenderer(float scale) implements MapRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, IntPoint2D tileLocation) {
         paintRect(g, null);
     }
 
@@ -77,7 +77,7 @@ public record BlankMapRenderer(float scale) implements MapRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void refreshTile(Vector2D tileLocation) {
+    public void refreshTile(IntPoint2D tileLocation) {
     }
 
     /**

@@ -590,7 +590,7 @@ public final class JavaFxLauncher extends Application {
             return newClient;
         }, connectedClient -> {
             client = connectedClient;
-            gameplayWindow = new JavaFxGameplayWindow(screenMode);
+            gameplayWindow = new JavaFxGameplayWindow(screenMode, connectedClient.getSession());
             connectedClient.attachGameplayWindow(gameplayWindow);
             showStep(Step.CONNECTED_PLAYERS);
             showStatus("Connected to the local server. Start when ready.", MessageKind.INFO);
@@ -616,7 +616,7 @@ public final class JavaFxLauncher extends Application {
             return newClient;
         }, connectedClient -> {
             client = connectedClient;
-            gameplayWindow = new JavaFxGameplayWindow(screenMode);
+            gameplayWindow = new JavaFxGameplayWindow(screenMode, connectedClient.getSession());
             connectedClient.attachGameplayWindow(gameplayWindow);
             connectedClient.start();
             gameplayWindow.show(connectedClient);
@@ -763,7 +763,7 @@ public final class JavaFxLauncher extends Application {
             case CONNECTED_PLAYERS -> connectedPlayersPage;
         });
         if (step == Step.MAP_SELECTION) {
-            Platform.runLater(() -> scenarioList.requestFocus());
+            Platform.runLater(scenarioList::requestFocus);
         }
         remoteServerBox.setVisible(step == Step.CLIENT_OPTIONS
                 && selectedMode() == ClientConstants.MODE_JOIN_NETWORK_GAME);

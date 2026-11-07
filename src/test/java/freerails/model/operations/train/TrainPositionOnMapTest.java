@@ -23,7 +23,7 @@ import freerails.util.Segment;
 import freerails.util.TestUtils;
 import freerails.model.track.PathIterator;
 import freerails.model.track.SimplePathIteratorImpl;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -33,27 +33,27 @@ import java.util.Arrays;
  */
 public class TrainPositionOnMapTest extends TestCase {
 
-    private final Vector2D p1 = new Vector2D(10, 11);
-    private final Vector2D p2 = new Vector2D(10, 20);
-    private final Vector2D p3 = new Vector2D(10, 30);
+    private final IntPoint2D p1 = new IntPoint2D(10, 11);
+    private final IntPoint2D p2 = new IntPoint2D(10, 20);
+    private final IntPoint2D p3 = new IntPoint2D(10, 30);
 
-    private final Vector2D p4 = new Vector2D(11, 22);
-    private final Vector2D p5 = new Vector2D(11, 33);
+    private final IntPoint2D p4 = new IntPoint2D(11, 22);
+    private final IntPoint2D p5 = new IntPoint2D(11, 33);
 
-    private final Vector2D p6 = new Vector2D(20, 30);
-    private final Vector2D p7 = new Vector2D(20, 22);
+    private final IntPoint2D p6 = new IntPoint2D(20, 30);
+    private final IntPoint2D p7 = new IntPoint2D(20, 22);
 
-    private final Vector2D p8 = new Vector2D(22, 33);
+    private final IntPoint2D p8 = new IntPoint2D(22, 33);
 
-    private final Vector2D p9 = new Vector2D(30, 33);
-    private final Vector2D p10 = new Vector2D(30, 40);
-    private final Vector2D p11 = new Vector2D(33, 44);
+    private final IntPoint2D p9 = new IntPoint2D(30, 33);
+    private final IntPoint2D p10 = new IntPoint2D(30, 40);
+    private final IntPoint2D p11 = new IntPoint2D(33, 44);
 
-    private final Vector2D p12 = new Vector2D(40, 44);
-    private final Vector2D p13 = new Vector2D(48, 49);
+    private final IntPoint2D p12 = new IntPoint2D(40, 44);
+    private final IntPoint2D p13 = new IntPoint2D(48, 49);
 
-    private final Vector2D p14 = new Vector2D(50, 55);
-    private final Vector2D p15 = new Vector2D(60, 66);
+    private final IntPoint2D p14 = new IntPoint2D(50, 55);
+    private final IntPoint2D p15 = new IntPoint2D(60, 66);
 
     /**
      * Tests get length behavior.

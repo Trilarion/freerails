@@ -18,7 +18,7 @@
 
 package freerails.model.operations.cargo;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
@@ -34,7 +34,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     @Serial
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoTypeId;
-    private final Vector2D sourceP;
+    private final IntPoint2D sourceP;
     private final int originalStationId;
     // TODO creation time maybe as game time?
     private final long creationTime;
@@ -48,7 +48,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      * @param time batch creation time
      * @param origin identifier of the originating station
      */
-    public CargoBatch(int cargoTypeId, Vector2D p, long time, int origin) {
+    public CargoBatch(int cargoTypeId, IntPoint2D p, long time, int origin) {
         this.cargoTypeId = cargoTypeId;
         sourceP = p;
         creationTime = time;
@@ -78,7 +78,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      *
      * @return source tile position
      */
-    public Vector2D getSourceP() {
+    public IntPoint2D getSourceP() {
         return sourceP;
     }
 

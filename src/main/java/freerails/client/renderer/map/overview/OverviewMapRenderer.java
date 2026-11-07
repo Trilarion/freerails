@@ -36,7 +36,7 @@ package freerails.client.renderer.map.overview;
 import freerails.client.renderer.map.MapRenderer;
 import freerails.io.ARGBColor;
 import freerails.io.GsonManager;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
 
@@ -54,9 +54,9 @@ import java.util.Map;
  */
 public class OverviewMapRenderer implements MapRenderer {
 
-    private final Vector2D imageSize;
-    private final Vector2D mapSize;
-    private final Vector2D mapLocation = Vector2D.ZERO;
+    private final IntPoint2D imageSize;
+    private final IntPoint2D mapSize;
+    private final IntPoint2D mapLocation = IntPoint2D.ZERO;
     private final UnmodifiableWorld world;
     private final AffineTransform affineTransform;
     // TODO used many time, could be static
@@ -71,7 +71,7 @@ public class OverviewMapRenderer implements MapRenderer {
      * @param world the world
      * @param imageSize the image size
      */
-    private OverviewMapRenderer(UnmodifiableWorld world, Vector2D imageSize) {
+    private OverviewMapRenderer(UnmodifiableWorld world, IntPoint2D imageSize) {
         this.world = world;
         mapSize = world.getMapSize();
         this.imageSize = imageSize;
@@ -100,7 +100,7 @@ public class OverviewMapRenderer implements MapRenderer {
      */
     public static MapRenderer getInstance(UnmodifiableWorld world, Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
-        Vector2D mapSize = world.getMapSize();
+        IntPoint2D mapSize = world.getMapSize();
         double worldWidth = mapSize.x();
         double worldHeight = mapSize.y();
         double scale;
@@ -114,7 +114,7 @@ public class OverviewMapRenderer implements MapRenderer {
         double height = scale * worldHeight;
         double width = scale * worldWidth;
 
-        return new OverviewMapRenderer(world, new Vector2D((int) width, (int) height));
+        return new OverviewMapRenderer(world, new IntPoint2D((int) width, (int) height));
     }
 
     /**
@@ -161,7 +161,7 @@ public class OverviewMapRenderer implements MapRenderer {
      * @param tileLocation the tile location
      */
     @Override
-    public void refreshTile(Vector2D tileLocation) {
+    public void refreshTile(IntPoint2D tileLocation) {
         TerrainTile terrainTile = world.getTile(tileLocation);
 
         if (terrainTile.trackPiece() == null) {
@@ -197,7 +197,7 @@ public class OverviewMapRenderer implements MapRenderer {
 
         for (int tileX = mapLocation.x(); tileX < mapSize.x() + mapLocation.x(); tileX++) {
             for (int tileY = mapLocation.y(); tileY < mapSize.y() + mapLocation.y(); tileY++) {
-                TerrainTile terrainTile = world.getTile(new Vector2D(tileX, tileY));
+                TerrainTile terrainTile = world.getTile(new IntPoint2D(tileX, tileY));
 
                 if (terrainTile.trackPiece() == null) {
                     int terrainTypeId = terrainTile.terrainTypeId();
@@ -218,7 +218,7 @@ public class OverviewMapRenderer implements MapRenderer {
      * @return the map size in pixels produced by this method
      */
     @Override
-    public Vector2D getMapSizeInPixels() {
+    public IntPoint2D getMapSizeInPixels() {
         return imageSize;
     }
 
@@ -229,7 +229,7 @@ public class OverviewMapRenderer implements MapRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, IntPoint2D tileLocation) {
         g.drawImage(mapImage, 0, 0, null);
     }
 

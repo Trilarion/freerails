@@ -28,7 +28,7 @@ import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
@@ -46,7 +46,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
 
     @Serial
     private static final long serialVersionUID = 3258131349411148085L;
-    private final Vector2D location;
+    private final IntPoint2D location;
     private final int ruleNumber;
     private final Player player;
 
@@ -57,7 +57,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
      * @param trackRule the track rule
      * @param player the player
      */
-    public AddStationMoveGenerator(Vector2D location, int trackRule, Player player) {
+    public AddStationMoveGenerator(IntPoint2D location, int trackRule, Player player) {
         this.location = location;
         ruleNumber = trackRule;
         this.player = player;
@@ -129,7 +129,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
         // TODO maybe there is a better way to get an id
         int id = world.getStations(player).size();
         Station station = new Station(id, location, stationName, CargoBatchBundle.EMPTY);
-        station = StationUtils.calculateCargoSupplyRateAtStation(world, ruleNumber, station);
+        StationUtils.calculateCargoSupplyRateAtStation(world, ruleNumber, station);
 
         Move addStationMove = new AddStationMove(player, station);
 

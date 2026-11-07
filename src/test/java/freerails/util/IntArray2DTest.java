@@ -3,15 +3,15 @@ package freerails.util;
 import junit.framework.TestCase;
 
 /**
- * Tests array2 d behavior.
+ * Tests integer 2D array behavior.
  */
-public class Array2DTest extends TestCase {
+public class IntArray2DTest extends TestCase {
 
     /**
-     * Tests stores values by column and row and reports size behavior.
+     * Tests storing values by column and row and reporting size.
      */
     public void testStoresValuesByColumnAndRowAndReportsSize() {
-        Array2D array = new Array2D(3, 2);
+        IntArray2D array = new IntArray2D(3, 2);
 
         assertEquals(0, array.get(0, 0));
         array.set(2, 1, 17);
@@ -21,17 +21,17 @@ public class Array2DTest extends TestCase {
         assertEquals(-4, array.get(1, 0));
         assertEquals(3, array.getWidth());
         assertEquals(2, array.getHeight());
-        assertEquals(new Vector2D(3, 2), array.getSize());
+        assertEquals(new IntPoint2D(3, 2), array.getSize());
     }
 
     /**
-     * Tests equality and hash code include dimensions and contents behavior.
+     * Tests equality and hash code include dimensions and contents.
      */
     public void testEqualityAndHashCodeIncludeDimensionsAndContents() {
-        Array2D first = new Array2D(2, 2);
-        Array2D equal = new Array2D(2, 2);
-        Array2D differentContents = new Array2D(2, 2);
-        Array2D differentDimensions = new Array2D(1, 2);
+        IntArray2D first = new IntArray2D(2, 2);
+        IntArray2D equal = new IntArray2D(2, 2);
+        IntArray2D differentContents = new IntArray2D(2, 2);
+        IntArray2D differentDimensions = new IntArray2D(1, 2);
 
         first.set(1, 1, 9);
         equal.set(1, 1, 9);
@@ -47,7 +47,7 @@ public class Array2DTest extends TestCase {
     }
 
     /**
-     * Tests rejects negative dimensions behavior.
+     * Tests rejection of negative dimensions.
      */
     public void testRejectsNegativeDimensions() {
         assertInvalidDimensions(-1, 2);
@@ -55,27 +55,27 @@ public class Array2DTest extends TestCase {
     }
 
     /**
-     * Tests rejects dimensions whose product overflows behavior.
+     * Tests rejection of dimensions whose product overflows.
      */
     public void testRejectsDimensionsWhoseProductOverflows() {
         assertInvalidDimensions(Integer.MAX_VALUE, 2);
     }
 
     /**
-     * Tests zero sized dimension is allowed behavior.
+     * Tests that a zero-sized dimension is allowed.
      */
     public void testZeroSizedDimensionIsAllowed() {
-        Array2D array = new Array2D(0, 5);
+        IntArray2D array = new IntArray2D(0, 5);
 
         assertEquals(0, array.getWidth());
         assertEquals(5, array.getHeight());
     }
 
     /**
-     * Tests coordinates outside array are rejected behavior.
+     * Tests rejection of coordinates outside the array.
      */
     public void testCoordinatesOutsideArrayAreRejected() {
-        Array2D array = new Array2D(2, 2);
+        IntArray2D array = new IntArray2D(2, 2);
         assertInvalidCoordinate(array, -1, 0);
         assertInvalidCoordinate(array, 2, 0);
         assertInvalidCoordinate(array, 0, -1);
@@ -90,7 +90,7 @@ public class Array2DTest extends TestCase {
      */
     private void assertInvalidDimensions(int width, int height) {
         try {
-            new Array2D(width, height);
+            new IntArray2D(width, height);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException expected) {
             // expected
@@ -103,7 +103,7 @@ public class Array2DTest extends TestCase {
      * @param x the x to use in the test.
      * @param y the y to use in the test.
      */
-    private void assertInvalidCoordinate(Array2D array, int x, int y) {
+    private void assertInvalidCoordinate(IntArray2D array, int x, int y) {
         try {
             array.get(x, y);
             fail("Expected IndexOutOfBoundsException");
@@ -117,7 +117,7 @@ public class Array2DTest extends TestCase {
      * @param x the x to use in the test.
      * @param y the y to use in the test.
      */
-    private void assertInvalidSetCoordinate(Array2D array, int x, int y) {
+    private void assertInvalidSetCoordinate(IntArray2D array, int x, int y) {
         try {
             array.set(x, y, 1);
             fail("Expected IndexOutOfBoundsException");

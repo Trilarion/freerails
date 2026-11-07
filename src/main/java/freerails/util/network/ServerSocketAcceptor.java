@@ -123,17 +123,26 @@ public class ServerSocketAcceptor implements AutoCloseable {
     @Override
     public void close() {
         open = false;
+        IllegalStateException closeFailure = null;
         try {
             serverSocket.close();
         } catch (IOException e) {
-            throw new IllegalStateException("Could not close server socket.", e);
-        } finally {
-            try {
-                acceptThread.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException("Interrupted while closing server socket.", e);
+            closeFailure = new IllegalStateException("Could not close server socket.", e);
+        }
+        try {
+            acceptThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            IllegalStateException interruptedFailure =
+                    new IllegalStateException("Interrupted while closing server socket.", e);
+            if (closeFailure == null) {
+                closeFailure = interruptedFailure;
+            } else {
+                closeFailure.addSuppressed(interruptedFailure);
             }
+        }
+        if (closeFailure != null) {
+            throw closeFailure;
         }
     }
 }

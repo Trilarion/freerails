@@ -29,7 +29,7 @@ import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
 import freerails.move.Status;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.World;
 import freerails.model.operations.cargo.*;
 import freerails.model.operations.station.StationDemand;
@@ -54,9 +54,9 @@ import java.util.Set;
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
-    private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, Vector2D.ZERO,0, 2);
-    private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, Vector2D.ZERO,0, 2);
-    private final CargoBatch cargoType0FromStation0 = new CargoBatch(0,new Vector2D(0,0),0, 0);
+    private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, IntPoint2D.ZERO,0, 2);
+    private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, IntPoint2D.ZERO,0, 2);
+    private final CargoBatch cargoType0FromStation0 = new CargoBatch(0,new IntPoint2D(0,0),0, 0);
     private World world;
 
     /**
@@ -74,7 +74,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int x = 10;
         int y = 10;
         String stationName = "Station 1";
-        Station station = new Station(0, new Vector2D(x, y), stationName, CargoBatchBundle.EMPTY);
+        Station station = new Station(0, new IntPoint2D(x, y), stationName, CargoBatchBundle.EMPTY);
         world.addStation(WorldGenerator.TEST_PLAYER, station);
         TrackType stationTrackType = world.getTrackTypes().stream()
                 .filter(TrackType::isStation)
@@ -321,8 +321,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 .orElseThrow();
         CargoConversion conversion = conversionTerrain.getConversions().getFirst();
         station.setDemandForCargo(new StationDemand(Set.of(conversion.sourceCargoId())));
-        world.setTile(new Vector2D(11, 10), new TerrainTile(conversionTerrain.getId()));
-        CargoBatch sourceCargo = new CargoBatch(conversion.sourceCargoId(), Vector2D.ZERO, 0, 2);
+        world.setTile(new IntPoint2D(11, 10), new TerrainTile(conversionTerrain.getId()));
+        CargoBatch sourceCargo = new CargoBatch(conversion.sourceCargoId(), IntPoint2D.ZERO, 0, 2);
         setCargoOnTrain(sourceCargo, 50);
 
         stopAtStation();

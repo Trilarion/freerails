@@ -25,8 +25,8 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainUtils;
 import freerails.model.terrain.city.CityInitializer;
 import freerails.model.world.World;
-import freerails.util.Array2D;
-import freerails.util.Vector2D;
+import freerails.util.IntArray2D;
+import freerails.util.IntPoint2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public final class ScenarioWorldInitializer {
      * @return the initialized world
      */
     public static World createWorld(ScenarioData scenario) {
-        Array2D map = scenario.terrainMap();
+        IntArray2D map = scenario.terrainMap();
         World world = scenario.toWorldBuilder().build();
 
         List<Integer> countryTypes = new ArrayList<>();
@@ -67,7 +67,7 @@ public final class ScenarioWorldInitializer {
                 int type = map.get(x, y);
                 TerrainTile tile = new TerrainTile(
                         TerrainUtils.randomizeTerrain(type, countryTypes, nonCountryTypes));
-                Vector2D location = new Vector2D(x, y);
+                IntPoint2D location = new IntPoint2D(x, y);
                 if (countryTypes.contains(tile.terrainTypeId())) {
                     locations.add(new TerrainAtLocation(location, tile.terrainTypeId()));
                 }
@@ -77,15 +77,15 @@ public final class ScenarioWorldInitializer {
 
         for (TerrainAtLocation terrainAtLocation : locations) {
             TerrainTile tile = new TerrainTile(terrainAtLocation.terrainType());
-            Vector2D location = terrainAtLocation.location();
+            IntPoint2D location = terrainAtLocation.location();
             int radius = 3;
-            Vector2D offset = new Vector2D(radius, radius);
-            if (world.boundsContain(Vector2D.subtract(location, offset))
-                    && world.boundsContain(Vector2D.add(location, offset))) {
+            IntPoint2D offset = new IntPoint2D(radius, radius);
+            if (world.boundsContain(IntPoint2D.subtract(location, offset))
+                    && world.boundsContain(IntPoint2D.add(location, offset))) {
                 for (int x = location.x() - radius; x < location.x() + radius; x++) {
                     for (int y = location.y() - radius; y < location.y() + radius; y++) {
                         if (Math.random() > 0.75) {
-                            Vector2D point = new Vector2D(x, y);
+                            IntPoint2D point = new IntPoint2D(x, y);
                             if (!nonCountryTypes.contains(world.getTile(point).terrainTypeId())) {
                                 world.setTile(point, tile);
                             }

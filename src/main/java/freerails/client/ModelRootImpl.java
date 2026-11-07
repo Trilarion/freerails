@@ -28,7 +28,7 @@ import freerails.network.command.CommandToServer;
 import freerails.network.command.ServerCommandReceiver;
 import freerails.client.receiver.MoveChainFork;
 import freerails.client.receiver.UntriedMoveReceiver;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldMapListener;
@@ -58,7 +58,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * Creates a model root impl instance.
      */
     public ModelRootImpl() {
-        properties.put(ModelRootProperty.CURSOR_POSITION, new Vector2D());
+        properties.put(ModelRootProperty.CURSOR_POSITION, new IntPoint2D());
         properties.put(ModelRootProperty.SHOW_STATION_NAMES, Boolean.TRUE);
         properties.put(ModelRootProperty.SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
         properties.put(ModelRootProperty.SHOW_STATION_BORDERS, Boolean.TRUE);

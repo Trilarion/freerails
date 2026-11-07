@@ -26,7 +26,7 @@ import freerails.model.operations.train.motion.TrainMotion;
 import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.economy.transaction.ItemTransaction;
@@ -48,7 +48,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     private static final long serialVersionUID = 4050201951105069624L;
     private final int engineId;
     private final List<Integer> wagons;
-    private final Vector2D point;
+    private final IntPoint2D point;
     private final Player player;
     private final UnmodifiableSchedule schedule;
 
@@ -61,7 +61,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      * @param player the player who owns or performs the operation
      * @param schedule the stop schedule for the new train
      */
-    public AddTrainMoveGenerator(int engineId, List<Integer> wagons, Vector2D p, Player player, UnmodifiableSchedule schedule) {
+    public AddTrainMoveGenerator(int engineId, List<Integer> wagons, IntPoint2D p, Player player, UnmodifiableSchedule schedule) {
         this.engineId = engineId;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);

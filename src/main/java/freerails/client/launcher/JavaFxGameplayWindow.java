@@ -33,7 +33,7 @@ import freerails.model.track.TrackType;
 import freerails.model.operations.train.Train;
 import freerails.model.simulation.Speed;
 import freerails.move.ChangeGameSpeedMove;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -94,16 +94,18 @@ public final class JavaFxGameplayWindow {
     private JavaFxMapView mapView;
     private JavaFxLauncherClient client;
     private ModelRootImpl modelRoot;
-    private Object updateLock;
+    private final Object updateLock;
     private JavaFxGameplayDialogs dialogs;
 
     /**
      * Creates the JavaFX gameplay stage on the JavaFX application thread.
      *
      * @param screenMode selected windowed or full-screen mode
+     * @param session shared game session used for synchronization
      */
-    public JavaFxGameplayWindow(int screenMode) {
+    JavaFxGameplayWindow(int screenMode, JavaFxGameSession session) {
         this.screenMode = screenMode;
+        this.updateLock = Objects.requireNonNull(session, "session").updateLock();
         MenuBar menuBar = createMenuBar();
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
@@ -161,7 +163,6 @@ public final class JavaFxGameplayWindow {
      * @param cursor map cursor painter
      * @param actionRoot existing game action services
      * @param buildTrackController asynchronous track preview controller
-     * @param updateLock synchronizes game, render, and input access
      * @param title title for the player session
      */
     public void setup(
@@ -171,7 +172,6 @@ public final class JavaFxGameplayWindow {
             FreerailsCursor cursor,
             ActionRoot actionRoot,
             BuildTrackController buildTrackController,
-            Object updateLock,
             String title) {
         Objects.requireNonNull(newModelRoot, "modelRoot");
         Platform.runLater(() -> {
@@ -185,7 +185,6 @@ public final class JavaFxGameplayWindow {
                     modelRoot.removePropertyChangeListener(modelRootListener);
                 }
                 modelRoot = newModelRoot;
-                this.updateLock = updateLock;
                 modelRoot.addPropertyChangeListener(modelRootListener);
                 dialogs = new JavaFxGameplayDialogs(stage, modelRoot, updateLock, this::showError);
                 mapView = new JavaFxMapView(
@@ -224,7 +223,7 @@ public final class JavaFxGameplayWindow {
      */
     public void refreshTrainList() {
         Platform.runLater(() -> {
-            if (modelRoot == null || updateLock == null) {
+            if (modelRoot == null) {
                 return;
             }
             List<Train> trains;
@@ -415,7 +414,7 @@ public final class JavaFxGameplayWindow {
      * @param mode map build mode
      */
     private void applyBuildMode(BuildMode mode) {
-        if (modelRoot == null || updateLock == null) {
+        if (modelRoot == null) {
             return;
         }
         synchronized (updateLock) {
@@ -606,7 +605,7 @@ public final class JavaFxGameplayWindow {
      */
     private void populateSpeedMenu(Menu speedMenu) {
         speedMenu.getItems().clear();
-        if (modelRoot == null || updateLock == null) {
+        if (modelRoot == null) {
             return;
         }
         ToggleGroup group = new ToggleGroup();
@@ -638,7 +637,7 @@ public final class JavaFxGameplayWindow {
         CheckMenuItem item = new CheckMenuItem(text);
         item.setSelected(property != ModelRootProperty.PLAY_SOUNDS);
         item.setOnAction(event -> {
-            if (modelRoot != null && updateLock != null) {
+            if (modelRoot != null) {
                 synchronized (updateLock) {
                     modelRoot.setProperty(property, item.isSelected());
                 }
@@ -737,7 +736,7 @@ public final class JavaFxGameplayWindow {
      * Refreshes the contextual tabs while holding the game-state lock.
      */
     private void refreshContextTabs() {
-        if (modelRoot == null || updateLock == null) {
+        if (modelRoot == null) {
             return;
         }
         synchronized (updateLock) {
@@ -749,7 +748,7 @@ public final class JavaFxGameplayWindow {
      * Builds terrain and station information from one consistent world snapshot.
      */
     private void refreshContextTabsLocked() {
-        Vector2D position = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+        IntPoint2D position = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
         if (position == null || !modelRoot.getWorld().boundsContain(position)) {
             terrainInfo.setText("Move the map cursor over a tile to see terrain details.");
             stationInfo.setText("Move the map cursor over a station to see its cargo details.");

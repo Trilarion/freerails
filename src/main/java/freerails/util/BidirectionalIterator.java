@@ -20,28 +20,24 @@ package freerails.util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-// TODO to follow the iterator interface more closely make next and previous return the elements and not get (removes the need for current)
-// TODO implement Iterator interface
-// TODO if not has previous and hasNext is used at the same time, what about Iterator on standard reversed list?
 /**
- * Traverses a list forwards and backwards while exposing the current element.
+ * Traverses a list forwards and backwards using a cursor between elements.
  *
- * <p>The iterator starts on the first element (or has no current element for
- * an empty list). The list is retained rather than copied, so subsequent
- * changes to it may affect traversal.
+ * <p>The cursor starts before the first element, as with a standard iterator.
+ * The list is retained rather than copied, so subsequent changes to it may
+ * affect traversal. Traversal follows the order of the supplied list.
  *
  * @param <E> element type
  */
-public class BidirectionalIterator<E> {
+public class BidirectionalIterator<E> implements Iterator<E> {
 
     private final List<E> list;
-    private int currentIndex = -1;
-    private E current = null;
+    private int cursor;
 
-    // TODO defensive copy of list?
     /**
      * Creates an iterator over a list.
      *
@@ -50,73 +46,65 @@ public class BidirectionalIterator<E> {
      */
     public BidirectionalIterator(@NotNull List<E> list) {
         this.list = list;
-        if (!this.list.isEmpty()) {
-            currentIndex = 0;
-            current = list.get(currentIndex);
-        }
+        cursor = 0;
     }
 
     /**
-     * Returns the current element.
+     * Indicates whether there is an element after the cursor.
      *
-     * @return the current element, or {@code null} if the list is empty
+     * @return {@code true} if {@link #next()} can return another element
      */
-    public E get() {
-        return current;
-    }
-
-    /**
-     * Indicates whether there is an element after the current one.
-     *
-     * @return {@code true} if advancing would move to another element
-     */
+    @Override
     public boolean hasNext() {
-        return currentIndex + 1 < list.size();
+        return cursor < list.size();
     }
 
     /**
-     * Advances to the next element.
+     * Returns the next element and advances the cursor.
      *
+     * @return the next element
      * @throws NoSuchElementException if there is no next element
      */
-    public void next() {
+    @Override
+    public E next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        currentIndex++;
-        current = list.get(currentIndex);
+        return list.get(cursor++);
     }
 
     /**
-     * Moves directly to the last element.
+     * Moves the cursor after the last element.
      *
      * @throws IndexOutOfBoundsException if the list is empty
      */
     public void gotoLast() {
-        currentIndex = list.size() - 1;
-        current = list.get(currentIndex);
+        if (list.isEmpty()) {
+            throw new IndexOutOfBoundsException("Cannot move to the end of an empty list.");
+        }
+        cursor = list.size();
     }
 
     /**
-     * Indicates whether there is an element before the current one.
+     * Indicates whether there is an element before the cursor.
      *
-     * @return {@code true} if moving backwards would reach another element
+     * @return {@code true} if {@link #previous()} can return another element
      */
     public boolean hasPrevious() {
-        return currentIndex > 0;
+        return cursor > 0;
     }
 
     /**
-     * Moves to the previous element.
+     * Returns the previous element and moves the cursor backwards.
      *
+     * @return the previous element
      * @throws NoSuchElementException if there is no previous element
      */
-    public void previous() throws NoSuchElementException {
+    public E previous() throws NoSuchElementException {
         if (!hasPrevious()) {
             throw new NoSuchElementException();
         }
-        currentIndex--;
-        current = list.get(currentIndex);
+        return list.get(--cursor);
     }
 
 }

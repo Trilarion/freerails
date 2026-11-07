@@ -19,7 +19,7 @@
 package freerails.model.terrain.city;
 
 import freerails.util.Identifiable;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 // TODO Possible potential for expansion?? Initial size of city, growth rate etc.??? incorporate CityModel?
 /**
@@ -28,7 +28,7 @@ import freerails.util.Vector2D;
 public final class City extends Identifiable {
 
     private final String name;
-    private final Vector2D location;
+    private final IntPoint2D location;
 
     /**
      * Creates a city at the specified map location.
@@ -37,7 +37,7 @@ public final class City extends Identifiable {
      * @param name display name
      * @param location map coordinate of the city center
      */
-    public City(int id, String name, Vector2D location) {
+    public City(int id, String name, IntPoint2D location) {
         super(id);
         this.name = name;
         this.location = location;
@@ -57,7 +57,7 @@ public final class City extends Identifiable {
      *
      * @return the city center location
      */
-    public Vector2D getLocation() {
+    public IntPoint2D getLocation() {
         return location;
     }
 

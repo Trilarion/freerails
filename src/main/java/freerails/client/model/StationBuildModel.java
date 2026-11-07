@@ -24,7 +24,7 @@ import freerails.controller.StationBuilder;
 import freerails.model.track.TrackType;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.move.Status;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -76,7 +76,7 @@ public class StationBuildModel {
      * @param location target map tile
      * @return the station build status
      */
-    public Status buildStationAt(Vector2D location) {
+    public Status buildStationAt(IntPoint2D location) {
         if (!stationTypeSelected) {
             return Status.fail("Select a station type before building a station.");
         }

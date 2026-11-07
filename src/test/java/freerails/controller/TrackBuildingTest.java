@@ -28,7 +28,7 @@ import freerails.move.MoveExecutor;
 import freerails.move.Status;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import freerails.model.player.Player;
@@ -70,12 +70,12 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testBuildingStraight() {
 
-        Vector2D from = new Vector2D(5, 5);
-        Vector2D to = new Vector2D(10, 5);
+        IntPoint2D from = new IntPoint2D(5, 5);
+        IntPoint2D to = new IntPoint2D(10, 5);
         try {
             // Check there is no track before we build it.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece trackPiece = world.getTile(new Vector2D(x, 5)).trackPiece();
+                TrackPiece trackPiece = world.getTile(new IntPoint2D(x, 5)).trackPiece();
                 assertEquals(null, trackPiece);
             }
             pathFinder.setupSearch(from, to, bts);
@@ -90,7 +90,7 @@ public class TrackBuildingTest extends TestCase {
             assertTrue(status.getMessage(), status.isSuccess());
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = world.getTile(new Vector2D(x, 5)).trackPiece();
+                TrackPiece tp = world.getTile(new IntPoint2D(x, 5)).trackPiece();
                 assertEquals(0, tp.trackType().getId());
             }
         } catch (PathNotFoundException e) {
@@ -103,15 +103,15 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testBuildingOneTrackPiece() {
 
-        Vector2D from = new Vector2D(5, 5);
-        Vector2D to = new Vector2D(6, 5);
+        IntPoint2D from = new IntPoint2D(5, 5);
+        IntPoint2D to = new IntPoint2D(6, 5);
         try {
             // Check there is no track before we build it.
 
-            TrackPiece tp1 = world.getTile(new Vector2D(5, 5)).trackPiece();
+            TrackPiece tp1 = world.getTile(new IntPoint2D(5, 5)).trackPiece();
             assertEquals(null, tp1);
 
-            TrackPiece tp2 = world.getTile(new Vector2D(6, 5)).trackPiece();
+            TrackPiece tp2 = world.getTile(new IntPoint2D(6, 5)).trackPiece();
             assertEquals(null, tp2);
 
             pathFinder.setupSearch(from, to, bts);
@@ -125,10 +125,10 @@ public class TrackBuildingTest extends TestCase {
             Status status = producer.buildTrack(from, path);
             assertTrue(status.getMessage(), status.isSuccess());
             // Check track has been built.
-            tp1 = world.getTile(new Vector2D(5, 5)).trackPiece();
+            tp1 = world.getTile(new IntPoint2D(5, 5)).trackPiece();
             assertEquals(0, tp1.trackType().getId());
 
-            tp2 = world.getTile(new Vector2D(6, 5)).trackPiece();
+            tp2 = world.getTile(new IntPoint2D(6, 5)).trackPiece();
             assertEquals(0, tp2.trackType().getId());
         } catch (PathNotFoundException e) {
             fail();
@@ -142,15 +142,15 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testTerminalProblem() {
         try {
-            Vector2D from = new Vector2D(5, 5);
+            IntPoint2D from = new IntPoint2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
             Status status = producer.buildTrack(from, path);
             assertTrue(status.isSuccess());
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
             stationBuilder.setStationType(terminalStationType);
-            status = stationBuilder.buildStation(new Vector2D(8, 5));
+            status = stationBuilder.buildStation(new IntPoint2D(8, 5));
             assertTrue(status.isSuccess());
-            pathFinder.setupSearch(new Vector2D(7, 5), new Vector2D(9, 5), bts);
+            pathFinder.setupSearch(new IntPoint2D(7, 5), new IntPoint2D(9, 5), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);
@@ -173,9 +173,9 @@ public class TrackBuildingTest extends TestCase {
             int trackTypeID = stationBuilder.getTrackTypeID("double track");
             bts = BuildTrackStrategy.getSingleRuleInstance(trackTypeID, world);
             producer.setBuildTrackStrategy(bts);
-            Vector2D a = new Vector2D(5, 5);
-            Vector2D b = new Vector2D(6, 5);
-            Vector2D c = new Vector2D(7, 6);
+            IntPoint2D a = new IntPoint2D(5, 5);
+            IntPoint2D b = new IntPoint2D(6, 5);
+            IntPoint2D c = new IntPoint2D(7, 6);
 
             pathFinder.setupSearch(a, b, bts);
             pathFinder.search(-1);
@@ -206,11 +206,11 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testStartSearchOnSharpCurve() {
         try {
-            Vector2D from = new Vector2D(5, 5);
+            IntPoint2D from = new IntPoint2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.SOUTH};
             Status status = producer.buildTrack(from, path);
             assertTrue(status.isSuccess());
-            pathFinder.setupSearch(new Vector2D(6, 5), new Vector2D(6, 7), bts);
+            pathFinder.setupSearch(new IntPoint2D(6, 5), new IntPoint2D(6, 7), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);

@@ -20,7 +20,7 @@ package freerails.client.renderer.map;
 
 import freerails.client.ClientConstants;
 import freerails.client.TileSetMetadata;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import junit.framework.TestCase;
 
 /**
@@ -40,8 +40,8 @@ public class MapCoordinateAdapterTest extends TestCase {
      * Tests converts tile and fixed point model coordinates to pixels behavior.
      */
     public void testConvertsTileAndFixedPointModelCoordinatesToPixels() {
-        assertEquals(new Vector2D(48, 96), MapCoordinateAdapter.tileOrigin(new Vector2D(1, 2)));
-        assertEquals(new Vector2D(24, 48), MapCoordinateAdapter.modelToPixel(new Vector2D(50, 100)));
+        assertEquals(new IntPoint2D(48, 96), MapCoordinateAdapter.tileOrigin(new IntPoint2D(1, 2)));
+        assertEquals(new IntPoint2D(24, 48), MapCoordinateAdapter.modelToPixel(new IntPoint2D(50, 100)));
         assertEquals(38, MapCoordinateAdapter.modelDistanceToPixel(80));
     }
 }

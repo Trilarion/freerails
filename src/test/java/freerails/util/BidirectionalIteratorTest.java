@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -30,37 +31,36 @@ import java.util.NoSuchElementException;
 public class BidirectionalIteratorTest extends TestCase {
 
     /**
-     * Tests traverses forwards and backwards behavior.
+     * Tests forward and backward traversal around the cursor.
      */
     public void testTraversesForwardsAndBackwards() {
         BidirectionalIterator<String> iterator = new BidirectionalIterator<>(Arrays.asList("first", "second", "third"));
 
-        assertEquals("first", iterator.get());
-        assertFalse(iterator.hasPrevious());
-        assertTrue(iterator.hasNext());
-
-        iterator.next();
-        assertEquals("second", iterator.get());
+        Iterator<String> standardIterator = iterator;
+        assertTrue(standardIterator.hasNext());
+        assertEquals("first", standardIterator.next());
         assertTrue(iterator.hasPrevious());
 
-        iterator.gotoLast();
-        assertEquals("third", iterator.get());
-        assertFalse(iterator.hasNext());
+        assertEquals("first", iterator.previous());
+        assertFalse(iterator.hasPrevious());
 
-        iterator.previous();
-        assertEquals("second", iterator.get());
-        iterator.previous();
-        assertEquals("first", iterator.get());
+        assertEquals("first", iterator.next());
+        assertEquals("second", iterator.next());
+        iterator.gotoLast();
+        assertFalse(iterator.hasNext());
+        assertEquals("third", iterator.previous());
+
+        assertEquals("second", iterator.previous());
+        assertEquals("first", iterator.previous());
         assertFalse(iterator.hasPrevious());
     }
 
     /**
-     * Tests empty iterator has no current element or traversal behavior.
+     * Tests an empty iterator has no traversal behavior.
      */
     public void testEmptyIteratorHasNoCurrentElementOrTraversal() {
         BidirectionalIterator<String> iterator = new BidirectionalIterator<>(Collections.emptyList());
 
-        assertNull(iterator.get());
         assertFalse(iterator.hasNext());
         assertFalse(iterator.hasPrevious());
     }
@@ -78,12 +78,34 @@ public class BidirectionalIteratorTest extends TestCase {
             // expected
         }
 
+        assertEquals(Integer.valueOf(1), iterator.next());
         try {
             iterator.next();
             fail("Expected NoSuchElementException");
         } catch (NoSuchElementException expected) {
             // expected
         }
+
+        assertEquals(Integer.valueOf(1), iterator.previous());
+        try {
+            iterator.previous();
+            fail("Expected NoSuchElementException");
+        } catch (NoSuchElementException expected) {
+            // expected
+        }
+    }
+
+    /**
+     * Tests that a reversed list view is traversed in its own order.
+     */
+    public void testTraversesReversedListInItsOwnOrder() {
+        BidirectionalIterator<Integer> iterator = new BidirectionalIterator<>(
+                Arrays.asList(1, 2, 3).reversed());
+
+        assertEquals(Integer.valueOf(3), iterator.next());
+        assertEquals(Integer.valueOf(2), iterator.next());
+        assertEquals(Integer.valueOf(2), iterator.previous());
+        assertEquals(Integer.valueOf(2), iterator.next());
     }
 
     /**

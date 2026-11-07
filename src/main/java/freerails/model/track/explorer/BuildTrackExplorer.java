@@ -22,7 +22,7 @@
 package freerails.model.track.explorer;
 
 import freerails.model.track.*;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
@@ -40,8 +40,8 @@ import java.util.NoSuchElementException;
 public class BuildTrackExplorer implements GraphExplorer {
 
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance("000010000");
-    private final PositionOnTrack currentBranch = new PositionOnTrack(Vector2D.ZERO, TileTransition.NORTH);
-    private final PositionOnTrack currentPosition = new PositionOnTrack(Vector2D.ZERO, TileTransition.NORTH);
+    private final PositionOnTrack currentBranch = new PositionOnTrack(IntPoint2D.ZERO, TileTransition.NORTH);
+    private final PositionOnTrack currentPosition = new PositionOnTrack(IntPoint2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;
     private final Player player;
     private boolean beforeFirst = true;
@@ -67,7 +67,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param player player for whom track is being planned
      * @param start starting tile coordinate, or {@code null} for the default
      */
-    public BuildTrackExplorer(UnmodifiableWorld world, Player player, Vector2D start) {
+    public BuildTrackExplorer(UnmodifiableWorld world, Player player, IntPoint2D start) {
         this.world = world;
         this.player = player;
         PositionOnTrack pos;
@@ -97,7 +97,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     private boolean canBuildTrack() {
         // Check that we are not doubling back on ourselves.
         TileTransition opposite2current = currentPosition.getComingFrom().getOpposite();
-        Vector2D currentP = currentPosition.getLocation();
+        IntPoint2D currentP = currentPosition.getLocation();
         int directionWeCameFrom = opposite2current.getID();
         int directionWeCameFromPlus = (directionWeCameFrom + 1) % 8;
         int directionWeCameFromMinus = (directionWeCameFrom + 7) % 8;
@@ -108,7 +108,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check that we are not going off the map.
         TileTransition directionOfNextTile = TileTransition.getInstance(directionInt);
-        Vector2D newP = Vector2D.add(currentP, directionOfNextTile.getD());
+        IntPoint2D newP = IntPoint2D.add(currentP, directionOfNextTile.getD());
 
         if (!world.boundsContain(newP)) {
             return false;
@@ -168,13 +168,13 @@ public class BuildTrackExplorer implements GraphExplorer {
             int y2check = currentP.y() + directionOfNextTile.deltaY;
 
             // We did a bounds check above.
-            assert world.boundsContain(new Vector2D(currentP.x(), y2check));
+            assert world.boundsContain(new IntPoint2D(currentP.x(), y2check));
 
-            TerrainTile tileToCheck = world.getTile(new Vector2D(currentP.x(), y2check));
+            TerrainTile tileToCheck = world.getTile(new IntPoint2D(currentP.x(), y2check));
             TrackPiece trackPiece = tileToCheck.trackPiece();
             if (trackPiece != null) {
                 TrackConfiguration configToCheck = tileToCheck.trackPiece().trackConfiguration();
-                TileTransition vectorToCheck = TileTransition.getInstance(new Vector2D(directionOfNextTile.deltaX, -directionOfNextTile.deltaY));
+                TileTransition vectorToCheck = TileTransition.getInstance(new IntPoint2D(directionOfNextTile.deltaX, -directionOfNextTile.deltaY));
 
                 if (configToCheck.contains(vectorToCheck)) {
                     // then we have a diagonal conflict.
@@ -211,7 +211,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param p tile coordinate
      * @return applicable track type, or {@code null} if none can be built there
      */
-    private TrackType getAppropriateTrackType(Vector2D p) {
+    private TrackType getAppropriateTrackType(IntPoint2D p) {
         final TerrainTile tile = world.getTile(p);
         TrackType type;
         if (!tile.hasTrack()) {
@@ -248,11 +248,11 @@ public class BuildTrackExplorer implements GraphExplorer {
         int cost = (int) Math.round(DISTANCE_COST * length);
 
         if (!usingExistingTrack) {
-            Vector2D p = currentPosition.getLocation();
+            IntPoint2D p = currentPosition.getLocation();
             int[] x = {p.x(), p.x() + edgeDirection.deltaX};
             int[] y = {p.y(), p.y() + edgeDirection.deltaY};
-            TrackType ruleA = getAppropriateTrackType(new Vector2D(x[0], y[0]));
-            TrackType ruleB = getAppropriateTrackType(new Vector2D(x[1], y[1]));
+            TrackType ruleA = getAppropriateTrackType(new IntPoint2D(x[0], y[0]));
+            TrackType ruleB = getAppropriateTrackType(new IntPoint2D(x[1], y[1]));
             /*
              * If there is a station at either of the points, don't include its
              * price in the cost calculation since it has already been paid.
@@ -262,13 +262,13 @@ public class BuildTrackExplorer implements GraphExplorer {
             long priceA = ruleA.getPurchasingPrice().amount();
             long priceB = ruleB.getPurchasingPrice().amount();
             cost = (int) (cost + length * (priceA + priceB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
-            long terrainCostA = world.getTerrain(world.getTile(new Vector2D(x[0], y[0])).terrainTypeId())
+            long terrainCostA = world.getTerrain(world.getTile(new IntPoint2D(x[0], y[0])).terrainTypeId())
                     .getTrackConstructionCostPerMile().amount();
-            long terrainCostB = world.getTerrain(world.getTile(new Vector2D(x[1], y[1])).terrainTypeId())
+            long terrainCostB = world.getTerrain(world.getTile(new IntPoint2D(x[1], y[1])).terrainTypeId())
                     .getTrackConstructionCostPerMile().amount();
             cost = (int) (cost + length * (terrainCostA + terrainCostB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
             // Add fixed cost if tile b does not have the desired track type.
-            TerrainTile a = world.getTile(new Vector2D(x[0], y[0]));
+            TerrainTile a = world.getTile(new IntPoint2D(x[0], y[0]));
             TrackPiece trackPiece = a.trackPiece();
             if (trackPiece != null) {
                 TrackType currentRuleA = a.trackPiece().trackType();
@@ -362,7 +362,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         TileTransition direction = TileTransition.getInstance(directionInt);
 
         currentBranch.setComingFrom(direction);
-        currentBranch.setLocation(Vector2D.add(currentPosition.getLocation(), direction.getD()));
+        currentBranch.setLocation(IntPoint2D.add(currentPosition.getLocation(), direction.getD()));
 
         directionInt++;
         beforeFirst = false;

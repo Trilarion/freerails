@@ -20,7 +20,7 @@ package freerails.model.operations.train;
 
 import freerails.util.Segment;
 import freerails.model.track.PathIterator;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 import java.util.NoSuchElementException;
 
@@ -35,7 +35,7 @@ public class PathWalkerImpl implements PathWalker {
     /**
      * current segment of the path we are on.
      */
-    private Segment currentSegment = new Segment(Vector2D.ZERO, Vector2D.ZERO);
+    private Segment currentSegment = new Segment(IntPoint2D.ZERO, IntPoint2D.ZERO);
     private double distanceAlongCurrentSegment = 0;
     private double distanceOfThisStepRemaining = 0;
     private boolean beforeFirst = true;
@@ -88,7 +88,7 @@ public class PathWalkerImpl implements PathWalker {
             throw new NoSuchElementException();
         }
         // If we are at the end of the current segment, start a new one.
-        Vector2D start;
+        IntPoint2D start;
         if (currentSegment.getLength() <= distanceAlongCurrentSegment) {
             start = startNewSegment();
         } else {
@@ -97,7 +97,7 @@ public class PathWalkerImpl implements PathWalker {
 
         double remainingDistanceAlongCurrentSegment = currentSegment.getLength() - distanceAlongCurrentSegment;
 
-        Vector2D stop;
+        IntPoint2D stop;
         if (distanceOfThisStepRemaining > remainingDistanceAlongCurrentSegment) {
             stop = endAtSegmentEnd(remainingDistanceAlongCurrentSegment);
         } else {
@@ -127,31 +127,31 @@ public class PathWalkerImpl implements PathWalker {
     }
 
     /** Computes the endpoint when the pending advance ends within the current segment. */
-    private Vector2D endInMiddleOfSegment() {
+    private IntPoint2D endInMiddleOfSegment() {
         distanceAlongCurrentSegment += distanceOfThisStepRemaining;
         distanceOfThisStepRemaining = 0;
         int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.a().x(), currentSegment.b().x());
         int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.a().y(), currentSegment.b().y());
-        return new Vector2D(x, y);
+        return new IntPoint2D(x, y);
     }
 
     /** Returns the current segment endpoint and carries excess distance to the next segment. */
-    private Vector2D endAtSegmentEnd(double remainingDistanceAlongCurrentSegment) {
-        Vector2D stop = currentSegment.b();
+    private IntPoint2D endAtSegmentEnd(double remainingDistanceAlongCurrentSegment) {
+        IntPoint2D stop = currentSegment.b();
         distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
         distanceAlongCurrentSegment = currentSegment.getLength();
         return stop;
     }
 
     /** Computes the start point at the current offset within the active segment. */
-    private Vector2D startInMiddleOfSegment() {
+    private IntPoint2D startInMiddleOfSegment() {
         int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.a().x(), currentSegment.b().x());
         int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.a().y(), currentSegment.b().y());
-        return new Vector2D(x, y);
+        return new IntPoint2D(x, y);
     }
 
     /** Loads the next path segment and returns its starting point. */
-    private Vector2D startNewSegment() {
+    private IntPoint2D startNewSegment() {
         currentSegment = it.nextSegment();
         distanceAlongCurrentSegment = 0;
         return currentSegment.a();

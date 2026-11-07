@@ -22,7 +22,7 @@ import freerails.util.Segment;
 import freerails.util.TestUtils;
 import freerails.model.track.PathIterator;
 import freerails.model.track.SimplePathIteratorImpl;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class SimpleTestPathIteratorTest extends TestCase {
      * Verifies that the iterator reports a segment before traversal and no segment after traversal.
      */
     public void testHasNext() {
-        Vector2D[] points = {Vector2D.ZERO, new Vector2D(100, 0)};
+        IntPoint2D[] points = {IntPoint2D.ZERO, new IntPoint2D(100, 0)};
         PathIterator pathIterator = new SimplePathIteratorImpl(Arrays.asList(points));
         assertTrue(pathIterator.hasNext());
         pathIterator.nextSegment();
@@ -47,7 +47,7 @@ public class SimpleTestPathIteratorTest extends TestCase {
      * Tests next segment behavior.
      */
     public void testNextSegment() {
-        Vector2D[] points = {new Vector2D(1, 4), new Vector2D(2, 5), new Vector2D(3, 6)};
+        IntPoint2D[] points = {new IntPoint2D(1, 4), new IntPoint2D(2, 5), new IntPoint2D(3, 6)};
 
         PathIterator pathIterator = new SimplePathIteratorImpl(Arrays.asList(points));
         assertTrue(pathIterator.hasNext());

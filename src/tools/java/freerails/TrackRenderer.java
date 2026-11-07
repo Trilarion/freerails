@@ -41,7 +41,7 @@ class TrackRenderer {
     private static final double sleeperLength = 6;
     private static final float sleeperWidth = 2.0f;
     private static final float targetSleeperGap = 2.5f;
-    private static final float tileWidth = 30.0f;
+    private static final float tileSize = 30.0f;
     private static final float gauge = 3.0f;
     private static final float doubleTrackGap = 4.0f;
     private final Color sleepersColor = new Color(118, 54, 36);
@@ -178,13 +178,13 @@ class TrackRenderer {
      * @return the curve for that transition
      */
     private CubicCurve2D.Double toCurve(TileTransition a) {
-        float halfTile = tileWidth / 2;
+        float halfTile = tileSize / 2;
         Point2D.Double start, end, one;
         start = new Point2D.Double();
-        start.x = tileWidth + halfTile * a.deltaX;
-        start.y = tileWidth + halfTile * a.deltaY;
+        start.x = tileSize + halfTile * a.deltaX;
+        start.y = tileSize + halfTile * a.deltaY;
         one = controlPoint(start);
-        end = new Point2D.Double(tileWidth, tileWidth);
+        end = new Point2D.Double(tileSize, tileSize);
         CubicCurve2D.Double returnValue = new CubicCurve2D.Double();
         returnValue.setCurve(start, one, one, end);
         return returnValue;
@@ -198,15 +198,15 @@ class TrackRenderer {
      * @return the curve connecting the transitions
      */
     private CubicCurve2D.Double toCurve(TileTransition a, TileTransition b) {
-        float halfTile = tileWidth / 2;
+        float halfTile = tileSize / 2;
         Point2D.Double start, end, one, two;
         start = new Point2D.Double();
-        start.x = tileWidth + halfTile * a.deltaX;
-        start.y = tileWidth + halfTile * a.deltaY;
+        start.x = tileSize + halfTile * a.deltaX;
+        start.y = tileSize + halfTile * a.deltaY;
         one = controlPoint(start);
         end = new Point2D.Double();
-        end.x = tileWidth + halfTile * b.deltaX;
-        end.y = tileWidth + halfTile * b.deltaY;
+        end.x = tileSize + halfTile * b.deltaX;
+        end.y = tileSize + halfTile * b.deltaY;
         two = controlPoint(end);
         CubicCurve2D.Double returnValue = new CubicCurve2D.Double();
         returnValue.setCurve(start, one, two, end);
@@ -255,8 +255,8 @@ class TrackRenderer {
      */
     private Point2D.Double controlPoint(Point2D.Double from) {
         double weight = 0.3;
-        double x = from.getX() * weight + tileWidth * (1 - weight);
-        double y = from.getY() * weight + tileWidth * (1 - weight);
+        double x = from.getX() * weight + tileSize * (1 - weight);
+        double y = from.getY() * weight + tileSize * (1 - weight);
         return new Point2D.Double(x, y);
     }
 

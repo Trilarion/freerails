@@ -18,7 +18,7 @@
 
 package freerails.model.operations.train;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.terrain.TileTransition;
 
 /**
@@ -39,7 +39,7 @@ public class PositionOnTrack {
      * The direction from which we entered the tile.
      */
     private TileTransition comingFrom = TileTransition.NORTH;
-    private Vector2D location = Vector2D.ZERO;
+    private IntPoint2D location = IntPoint2D.ZERO;
 
     /** Creates a position at the origin facing north. */
     public PositionOnTrack() {}
@@ -60,7 +60,7 @@ public class PositionOnTrack {
      * @param comingFrom direction of entry
      * @throws IllegalArgumentException if either coordinate is outside the encodable range
      */
-    public PositionOnTrack(Vector2D location, TileTransition comingFrom) {
+    public PositionOnTrack(IntPoint2D location, TileTransition comingFrom) {
         if (location.x() > MAX_COORDINATE || location.x() < 0) {
             throw new IllegalArgumentException("x=" + location.x());
         }
@@ -102,12 +102,12 @@ public class PositionOnTrack {
     }
 
     /** Replaces the tile location. */
-    public void setLocation(Vector2D location) {
+    public void setLocation(IntPoint2D location) {
         this.location = location;
     }
 
     /** Returns the tile location. */
-    public Vector2D getLocation() {
+    public IntPoint2D getLocation() {
         return location;
     }
 
@@ -136,7 +136,7 @@ public class PositionOnTrack {
 
         int shiftedY = i & MAX_COORDINATE << BITS_FOR_COORDINATE;
         int y = shiftedY >> BITS_FOR_COORDINATE;
-        location = new Vector2D(x, y);
+        location = new IntPoint2D(x, y);
 
         int shiftedDirection = i & MAX_DIRECTION << 2 * BITS_FOR_COORDINATE;
         int directionAsInt = shiftedDirection >> 2 * BITS_FOR_COORDINATE;
@@ -149,7 +149,7 @@ public class PositionOnTrack {
      * @param tileTransition direction of travel
      */
     public void move(TileTransition tileTransition) {
-        location = new Vector2D(location.x() + tileTransition.deltaX, location.y() + tileTransition.deltaY);
+        location = new IntPoint2D(location.x() + tileTransition.deltaX, location.y() + tileTransition.deltaY);
         comingFrom = tileTransition.getOpposite();
     }
 

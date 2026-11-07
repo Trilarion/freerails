@@ -29,7 +29,7 @@ import freerails.model.track.BuildTrackStrategy;
 import freerails.model.track.TrackType;
 import freerails.move.MoveExecutor;
 import freerails.move.SimpleMoveExecutor;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
@@ -82,20 +82,20 @@ public class BuildTrackControllerTest extends TestCase {
      * Tests build track behavior.
      */
     public void testBuildTrack() {
-        Vector2D from = new Vector2D(10, 10);
+        IntPoint2D from = new IntPoint2D(10, 10);
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
-        Vector2D to = new Vector2D(20, 10);
+        IntPoint2D to = new IntPoint2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
         buildTrackController.updateUntilComplete();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         // See if any track has actually been built.
-        TerrainTile tile = world.getTile(new Vector2D(10, 10));
+        TerrainTile tile = world.getTile(new IntPoint2D(10, 10));
         assertFalse(tile.hasTrack());
         buildTrackController.updateWorld(trackBuilder);
-        tile = world.getTile(new Vector2D(10, 10));
+        tile = world.getTile(new IntPoint2D(10, 10));
         assertTrue(tile.hasTrack());
-        tile = world.getTile(new Vector2D(20, 10));
+        tile = world.getTile(new IntPoint2D(20, 10));
         assertTrue(tile.hasTrack());
     }
 
@@ -113,23 +113,23 @@ public class BuildTrackControllerTest extends TestCase {
         trackBuilder.setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
 
         // Upgrade part of the track.
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new Vector2D(15, 10));
-        buildTrackController.setProposedTrack(new Vector2D(20, 10), trackBuilder);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(15, 10));
+        buildTrackController.setProposedTrack(new IntPoint2D(20, 10), trackBuilder);
         buildTrackController.updateUntilComplete();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         buildTrackController.updateWorld(trackBuilder);
 
-        TerrainTile tile = world.getTile(new Vector2D(10, 10));
+        TerrainTile tile = world.getTile(new IntPoint2D(10, 10));
         assertEquals(singleTrackRuleID, tile.trackPiece().trackType().getId());
 
-        tile = world.getTile(new Vector2D(15, 10));
+        tile = world.getTile(new IntPoint2D(15, 10));
         assertEquals(doubleTrackRuleID, tile.trackPiece().trackType().getId());
 
-        tile = world.getTile(new Vector2D(17, 10));
+        tile = world.getTile(new IntPoint2D(17, 10));
         assertEquals(doubleTrackRuleID, tile.trackPiece().trackType().getId());
 
-        tile = world.getTile(new Vector2D(20, 10));
+        tile = world.getTile(new IntPoint2D(20, 10));
         assertEquals(doubleTrackRuleID, tile.trackPiece().trackType().getId());
     }
 
@@ -142,10 +142,10 @@ public class BuildTrackControllerTest extends TestCase {
 
         // Then remove some of it.
         trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
-        Vector2D from = new Vector2D(15, 10);
+        IntPoint2D from = new IntPoint2D(15, 10);
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
 
-        Vector2D to = new Vector2D(20, 10);
+        IntPoint2D to = new IntPoint2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
 
         buildTrackController.updateUntilComplete();

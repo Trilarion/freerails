@@ -61,7 +61,7 @@ public class World implements UnmodifiableWorld {
     private boolean cityGrowthEnabled = true;
     private Speed speed = Speed.MODERATE;
     private Rules rules;
-    private final Vector2D mapSize;
+    private final IntPoint2D mapSize;
     private final TerrainTile[] map;
     private final List<Player> players = new ArrayList<>();
 
@@ -114,7 +114,7 @@ public class World implements UnmodifiableWorld {
         private Map<Integer, SortedSet<Station>> stations = new HashMap<>();
         private Map<Integer, SortedSet<EngineShop>> engineShops = new HashMap<>();
         private Rules rules = null;
-        private Vector2D mapSize = null;
+        private IntPoint2D mapSize = null;
         private Clock clock = new Clock(1840, 1200, new Time(0));
         private int currentSentimentId = 2;
         private boolean cityGrowthEnabled = true;
@@ -181,8 +181,8 @@ public class World implements UnmodifiableWorld {
          *        within the configured map limits
          * @return this builder
          */
-        public Builder setMapSize(@NotNull Vector2D mapSize) {
-            this.mapSize = new Vector2D(Utils.verifyNotNull(mapSize));
+        public Builder setMapSize(@NotNull IntPoint2D mapSize) {
+            this.mapSize = new IntPoint2D(Utils.verifyNotNull(mapSize));
             return this;
         }
 
@@ -288,7 +288,7 @@ public class World implements UnmodifiableWorld {
         cityGrowthEnabled = builder.cityGrowthEnabled;
 
         // setup map
-        mapSize = new Vector2D(builder.mapSize);
+        mapSize = new IntPoint2D(builder.mapSize);
         map = new TerrainTile[Math.toIntExact((long) mapSize.x() * mapSize.y())];
 
         // TODO what is a good default initializer here or should we stay with null?
@@ -306,7 +306,7 @@ public class World implements UnmodifiableWorld {
      * @param mapSize dimensions to validate
      * @throws IllegalArgumentException if any dimension or the tile count is invalid
      */
-    private static void validateMapSize(Vector2D mapSize) {
+    private static void validateMapSize(IntPoint2D mapSize) {
         if (mapSize.x() <= 0 || mapSize.y() <= 0
                 || mapSize.x() > ModelConstants.MAX_MAP_DIMENSION
                 || mapSize.y() > ModelConstants.MAX_MAP_DIMENSION) {
@@ -832,9 +832,9 @@ public class World implements UnmodifiableWorld {
      * @return {@code true} if the coordinate is within the map boundaries
      */
     @Override
-    public boolean boundsContain(Vector2D location) {
+    public boolean boundsContain(IntPoint2D location) {
         // TODO use compareTo instead
-        Vector2D mapSize = getMapSize();
+        IntPoint2D mapSize = getMapSize();
         return location.x() >= 0 && location.x() < mapSize.x() && location.y() >= 0 && location.y() < mapSize.y();
     }
 
@@ -911,7 +911,7 @@ public class World implements UnmodifiableWorld {
 
     /** {@inheritDoc} */
     @Override
-    public Vector2D getMapSize() {
+    public IntPoint2D getMapSize() {
         return mapSize;
     }
 
@@ -939,7 +939,7 @@ public class World implements UnmodifiableWorld {
      * @return corresponding map array index
      * @throws IndexOutOfBoundsException if the coordinate is outside the map
      */
-    private int getMapIndex(Vector2D location) {
+    private int getMapIndex(IntPoint2D location) {
         if (location.x() < 0 || location.x() >= mapSize.x() || location.y() < 0 || location.y() >= mapSize.y()) {
             throw new IndexOutOfBoundsException();
         }
@@ -948,7 +948,7 @@ public class World implements UnmodifiableWorld {
 
     /** {@inheritDoc} */
     @Override
-    public TerrainTile getTile(Vector2D location) {
+    public TerrainTile getTile(IntPoint2D location) {
         return map[getMapIndex(location)];
     }
 
@@ -1089,7 +1089,7 @@ public class World implements UnmodifiableWorld {
      * @param tile replacement tile
      * @throws IndexOutOfBoundsException if the coordinate is outside the map
      */
-    public void setTile(Vector2D location, TerrainTile tile) {
+    public void setTile(IntPoint2D location, TerrainTile tile) {
         map[getMapIndex(location)] = tile;
     }
 }

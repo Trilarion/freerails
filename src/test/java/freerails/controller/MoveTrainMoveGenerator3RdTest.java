@@ -28,7 +28,7 @@ import freerails.move.MoveExecutor;
 import freerails.move.Status;
 import freerails.move.SimpleMoveExecutor;
 import freerails.model.MapFixtureFactory2;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.operations.train.PositionOnTrack;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
@@ -61,7 +61,7 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
         // Build track.
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
 
-        Vector2D stationA = new Vector2D(10, 10);
+        IntPoint2D stationA = new IntPoint2D(10, 10);
         Status status = trackBuilder.buildTrack(stationA, line1);
         assertTrue(status.isSuccess());
         status = trackBuilder.buildTrack(stationA, line2);
@@ -74,9 +74,9 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
      * Tests finding path behavior.
      */
     public void testFindingPath() {
-        findPath2Target(new Vector2D(14, 7), line1);
-        findPath2Target(new Vector2D(9, 13), line2);
-        findPath2Target(new Vector2D(9, 13), line2);
+        findPath2Target(new IntPoint2D(14, 7), line1);
+        findPath2Target(new IntPoint2D(9, 13), line2);
+        findPath2Target(new IntPoint2D(9, 13), line2);
     }
 
     /**
@@ -84,10 +84,10 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
      * @param target1 the target1 to use in the test.
      * @param expectedPath the expected path to use in the test.
      */
-    private void findPath2Target(Vector2D target1, TileTransition[] expectedPath) {
+    private void findPath2Target(IntPoint2D target1, TileTransition[] expectedPath) {
         TerrainTile tile = world.getTile(target1);
         assertTrue(tile.hasTrack());
-        PositionOnTrack positionOnTrack = new PositionOnTrack(new Vector2D(10, 10), TileTransition.EAST.getOpposite());
+        PositionOnTrack positionOnTrack = new PositionOnTrack(new IntPoint2D(10, 10), TileTransition.EAST.getOpposite());
         for (int i = 0; i < expectedPath.length; i++) {
             TileTransition expected = expectedPath[i];
             TileTransition actual = TrackUtils.findNextStep(world, positionOnTrack, target1);

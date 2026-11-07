@@ -24,13 +24,13 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Immutable vector with two double-precision coordinates and arithmetic
+ * Immutable point with two double-precision coordinates and arithmetic
  * convenience functions.
  *
  * @param x the horizontal coordinate
  * @param y the vertical coordinate
  */
-public record Vector2DDouble(double x, double y) implements Serializable {
+public record DoublePoint2D(double x, double y) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -38,7 +38,7 @@ public record Vector2DDouble(double x, double y) implements Serializable {
     /**
      * Static zero vector.
      */
-    public static final Vector2DDouble ZERO = new Vector2DDouble(0.0, 0.0);
+    public static final DoublePoint2D ZERO = new DoublePoint2D(0.0, 0.0);
 
     /**
      * Creates a copy of another vector.
@@ -46,7 +46,7 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param vector vector to copy
      * @throws NullPointerException if {@code vector} is null
      */
-    public Vector2DDouble(Vector2DDouble vector) {
+    public DoublePoint2D(DoublePoint2D vector) {
         this(vector.x, vector.y);
     }
 
@@ -66,8 +66,8 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param b second vector
      * @return the sum
      */
-    public static Vector2DDouble add(Vector2DDouble a, Vector2DDouble b) {
-        return new Vector2DDouble(a.x + b.x, a.y + b.y);
+    public static DoublePoint2D add(DoublePoint2D a, DoublePoint2D b) {
+        return new DoublePoint2D(a.x + b.x, a.y + b.y);
     }
 
     /**
@@ -77,8 +77,8 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param b vector to subtract
      * @return the difference
      */
-    public static Vector2DDouble subtract(Vector2DDouble a, Vector2DDouble b) {
-        return new Vector2DDouble(a.x - b.x, a.y - b.y);
+    public static DoublePoint2D subtract(DoublePoint2D a, DoublePoint2D b) {
+        return new DoublePoint2D(a.x - b.x, a.y - b.y);
     }
 
     /**
@@ -88,8 +88,8 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param b scalar to subtract from each coordinate
      * @return the resulting vector
      */
-    public static Vector2DDouble subtract(Vector2DDouble a, double b) {
-        return new Vector2DDouble(a.x - b, a.y - b);
+    public static DoublePoint2D subtract(DoublePoint2D a, double b) {
+        return new DoublePoint2D(a.x - b, a.y - b);
     }
 
     /**
@@ -99,8 +99,8 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param b second vector
      * @return the pointwise product
      */
-    public static Vector2DDouble multiply(Vector2DDouble a, Vector2DDouble b) {
-        return new Vector2DDouble(a.x * b.x, a.y * b.y);
+    public static DoublePoint2D multiply(DoublePoint2D a, DoublePoint2D b) {
+        return new DoublePoint2D(a.x * b.x, a.y * b.y);
     }
 
     /**
@@ -110,8 +110,8 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param b scalar multiplier
      * @return the resulting vector
      */
-    public static Vector2DDouble multiply(Vector2DDouble a, double b) {
-        return new Vector2DDouble(a.x * b, a.y * b);
+    public static DoublePoint2D multiply(DoublePoint2D a, double b) {
+        return new DoublePoint2D(a.x * b, a.y * b);
     }
 
     /**
@@ -122,8 +122,8 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param b divisor
      * @return the resulting vector
      */
-    public static Vector2DDouble divide(Vector2DDouble a, double b) {
-        return new Vector2DDouble(a.x / b, a.y / b);
+    public static DoublePoint2D divide(DoublePoint2D a, double b) {
+        return new DoublePoint2D(a.x / b, a.y / b);
     }
 
     /**
@@ -133,8 +133,8 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param b second vector
      * @return the vector containing the greater coordinate from each input
      */
-    public static Vector2DDouble max(Vector2DDouble a, Vector2DDouble b) {
-        return new Vector2DDouble(Math.max(a.x, b.x), Math.max(a.y, b.y));
+    public static DoublePoint2D max(DoublePoint2D a, DoublePoint2D b) {
+        return new DoublePoint2D(Math.max(a.x, b.x), Math.max(a.y, b.y));
     }
 
     /**
@@ -144,8 +144,8 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @param b second vector
      * @return the vector containing the lesser coordinate from each input
      */
-    public static Vector2DDouble min(Vector2DDouble a, Vector2DDouble b) {
-        return new Vector2DDouble(Math.min(a.x, b.x), Math.min(a.y, b.y));
+    public static DoublePoint2D min(DoublePoint2D a, DoublePoint2D b) {
+        return new DoublePoint2D(Math.min(a.x, b.x), Math.min(a.y, b.y));
     }
 
     /**
@@ -156,7 +156,7 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @return {@code true} if both coordinates are less than the corresponding
      * coordinates in {@code other}
      */
-    public boolean below(Vector2DDouble other) {
+    public boolean below(DoublePoint2D other) {
         return x < other.x && y < other.y;
     }
 
@@ -168,7 +168,7 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @return {@code true} if both coordinates are less than or equal to the
      * corresponding coordinates in {@code other}
      */
-    public boolean belowOrEqual(Vector2DDouble other) {
+    public boolean belowOrEqual(DoublePoint2D other) {
         return x <= other.x && y <= other.y;
     }
 
@@ -180,7 +180,7 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @return {@code true} if both coordinates are greater than the
      * corresponding coordinates in {@code other}
      */
-    public boolean above(Vector2DDouble other) {
+    public boolean above(DoublePoint2D other) {
         return x > other.x && y > other.y;
     }
 
@@ -192,7 +192,7 @@ public record Vector2DDouble(double x, double y) implements Serializable {
      * @return {@code true} if both coordinates are greater than or equal to
      * the corresponding coordinates in {@code other}
      */
-    public boolean aboveOrEqual(Vector2DDouble other) {
+    public boolean aboveOrEqual(DoublePoint2D other) {
         return x >= other.x && y >= other.y;
     }
 

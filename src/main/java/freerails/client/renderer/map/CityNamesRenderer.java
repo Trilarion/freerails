@@ -27,7 +27,7 @@ import freerails.model.terrain.city.City;
 import freerails.client.ClientConstants;
 import freerails.client.renderer.map.MapCoordinateAdapter;
 import freerails.util.ui.Painter;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
@@ -63,8 +63,8 @@ public class CityNamesRenderer implements Painter {
 
         // draw city names onto map
         for (City city: world.getCities()) {
-            Vector2D location = city.getLocation();
-            Vector2D tileOrigin = MapCoordinateAdapter.tileOrigin(location);
+            IntPoint2D location = city.getLocation();
+            IntPoint2D tileOrigin = MapCoordinateAdapter.tileOrigin(location);
             final int xpos = tileOrigin.x();
             final int ypos = tileOrigin.y() + 10;
             Rectangle cityNameBox = new Rectangle(xpos, ypos, ClientConstants.TILE_PIXEL_SIZE * 8, 20);

@@ -20,36 +20,35 @@ package freerails.util;
 
 import java.util.Arrays;
 
-// TODO what about double, boolean, objects
 /**
- * A fixed-size, row-major two-dimensional array of integers.
+ * A fixed-size, row-major two-dimensional array of boolean values.
  *
  * <p>Coordinates start at {@code (0, 0)}; the first coordinate is the column
  * and the second is the row.
  */
-public class Array2D {
+public class BooleanArray2D {
 
     private final int width;
     private final int height;
-    private final int[] values;
+    private final boolean[] values;
 
     /**
      * Creates an array with the given dimensions. All values initially equal
-     * zero.
+     * {@code false}.
      *
      * @param width number of columns
      * @param height number of rows
      * @throws IllegalArgumentException if either dimension is negative or the
      *                                  total number of cells overflows
      */
-    public Array2D(int width, int height) {
+    public BooleanArray2D(int width, int height) {
         if (width < 0 || height < 0) {
             throw new IllegalArgumentException("Width and height must be non-negative.");
         }
         this.width = width;
         this.height = height;
         try {
-            values = new int[Math.multiplyExact(width, height)];
+            values = new boolean[Math.multiplyExact(width, height)];
         } catch (ArithmeticException e) {
             throw new IllegalArgumentException("Array dimensions are too large.", e);
         }
@@ -60,11 +59,11 @@ public class Array2D {
      *
      * @param x column, from zero to {@code width - 1}
      * @param y row, from zero to {@code height - 1}
-     * @param v value to store
+     * @param value value to store
      * @throws IndexOutOfBoundsException if either coordinate is outside the array
      */
-    public void set(int x, int y, int v) {
-        values[index(x, y)] = v;
+    public void set(int x, int y, boolean value) {
+        values[index(x, y)] = value;
     }
 
     /**
@@ -75,7 +74,7 @@ public class Array2D {
      * @return the value at {@code (x, y)}
      * @throws IndexOutOfBoundsException if either coordinate is outside the array
      */
-    public int get(int x, int y) {
+    public boolean get(int x, int y) {
         return values[index(x, y)];
     }
 
@@ -113,27 +112,27 @@ public class Array2D {
     }
 
     /**
-     * Returns the dimensions as a vector whose {@code x} is the width and
+     * Returns the dimensions as a point whose {@code x} is the width and
      * {@code y} is the height.
      *
      * @return the array dimensions
      */
-    public Vector2D getSize() {
-        return new Vector2D(width, height);
+    public IntPoint2D getSize() {
+        return new IntPoint2D(width, height);
     }
 
     /**
      * Tests whether another object has the same dimensions and cell values.
      *
      * @param obj object to compare
-     * @return {@code true} if {@code obj} is an equal {@code Array2D}
+     * @return {@code true} if {@code obj} is an equal {@code BooleanArray2D}
      */
     @Override
     public final boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof Array2D other) {
+        if (obj instanceof BooleanArray2D other) {
             return width == other.width && height == other.height && Arrays.equals(values, other.values);
         }
         return false;

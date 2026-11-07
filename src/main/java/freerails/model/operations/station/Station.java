@@ -23,7 +23,7 @@ import freerails.model.operations.cargo.ImmutableCargoBatchBundle;
 import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.operations.train.TrainTemplate;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class Station extends Identifiable {
 
     @Serial
     private static final long serialVersionUID = 3256442503979874355L;
-    private final Vector2D location;
+    private final IntPoint2D location;
     private final String name;
     private StationSupply supply;
     private StationDemand demandForCargo;
@@ -59,7 +59,7 @@ public class Station extends Identifiable {
      * @param stationName display name
      * @param cargoBatchBundle initial waiting cargo, copied by this station
      */
-    public Station(int id, Vector2D location, String stationName, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
+    public Station(int id, IntPoint2D location, String stationName, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
         super(id);
         name = stationName;
         this.location = location;
@@ -97,7 +97,7 @@ public class Station extends Identifiable {
      *
      * @return station location
      */
-    public Vector2D getLocation() {
+    public IntPoint2D getLocation() {
         return location;
     }
 

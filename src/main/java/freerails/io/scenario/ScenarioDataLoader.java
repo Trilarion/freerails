@@ -29,7 +29,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.terrain.city.City;
 import freerails.model.track.TrackType;
 import freerails.model.operations.train.Engine;
-import freerails.util.Array2D;
+import freerails.util.IntArray2D;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +66,7 @@ public final class ScenarioDataLoader {
         SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(trackTypesFile);
         Rules rules = GsonManager.load(rulesFile, Rules.class);
         SortedSet<Sentiment> sentiments = GsonManager.loadSentiments(sentimentsFile);
-        Array2D map = GsonManager.loadArray2D(mapFile);
+        IntArray2D map = GsonManager.loadArray2D(mapFile);
         ScenarioSettings settings = loadSettings(directory);
 
         return new ScenarioData(engines, cities, cargos, terrainTypes, trackTypes, sentiments,

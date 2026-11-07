@@ -115,7 +115,7 @@ public class TrackConfiguration implements TrackConfigurations {
         // TODO do not do hack
         // Hack - so that result is as expected by earlier written code.
         StringBuffer strb = new StringBuffer(templateString);
-        strb = strb.reverse();
+        strb.reverse();
         templateString = strb.toString();
 
         // End of hack

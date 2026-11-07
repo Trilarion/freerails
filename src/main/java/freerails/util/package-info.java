@@ -19,7 +19,7 @@
 /**
  * Provides general-purpose data structures and helper methods shared across
  * the application. Utilities include collection and serialization helpers,
- * identified values, pairs, integer geometry types such as {@link Vector2D} and
+ * identified values, pairs, integer geometry types such as {@link IntPoint2D} and
  * {@link Segment}, and iterator support.
  *
  * <p>Code in this package should not depend on other FreeRails packages, so

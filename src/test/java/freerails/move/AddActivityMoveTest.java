@@ -65,21 +65,22 @@ public class AddActivityMoveTest extends AbstractMoveTestCase {
         assertEquals(currentTime, world.getClock().getCurrentTime());
         BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, 0).getActivities();
 
-        assertEquals(bidirectionalIterator.get(), act);
-        assertNotSame(act, bidirectionalIterator.get());
+        TrainMotion firstActivity = bidirectionalIterator.next();
+        assertEquals(firstActivity, act);
+        assertNotSame(act, firstActivity);
         assertEquals(Double.MIN_VALUE, act.getStartTime(), 0.00001);
-        assertEquals(bidirectionalIterator.get().getStartTime(), currentTime.ticks(), 0.00001);
-        assertEquals(50.0d, bidirectionalIterator.get().getDuration(), 0.00001);
-        assertEquals(50.0d, bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration(), 0.00001);
+        assertEquals(firstActivity.getStartTime(), currentTime.ticks(), 0.00001);
+        assertEquals(50.0d, firstActivity.getDuration(), 0.00001);
+        assertEquals(50.0d, firstActivity.getStartTime() + firstActivity.getDuration(), 0.00001);
 
         assertTrue(bidirectionalIterator.hasNext());
-        bidirectionalIterator.next();
-        assertEquals(bidirectionalIterator.get(), act2);
-        assertNotSame(act2, bidirectionalIterator.get());
+        TrainMotion secondActivity = bidirectionalIterator.next();
+        assertEquals(secondActivity, act2);
+        assertNotSame(act2, secondActivity);
         assertEquals(Double.MIN_VALUE, act2.getStartTime(), 0.00001);
-        assertEquals(50, bidirectionalIterator.get().getStartTime(), 0.00001);
-        assertEquals(60, bidirectionalIterator.get().getDuration(), 0.0001d);
-        assertEquals(110, bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration(), 0.00001);
+        assertEquals(50, secondActivity.getStartTime(), 0.00001);
+        assertEquals(60, secondActivity.getDuration(), 0.0001d);
+        assertEquals(110, secondActivity.getStartTime() + secondActivity.getDuration(), 0.00001);
     }
 
 }

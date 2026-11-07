@@ -20,7 +20,7 @@ package freerails.model.building;
 
 import freerails.model.operations.train.TrainTemplate;
 import freerails.util.Utils;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class EngineShopTest extends TestCase {
      */
     public void testProductionQueueIsCopiedAndUnmodifiable() {
         List<TrainTemplate> templates = new ArrayList<>(List.of(new TrainTemplate(4, List.of(7))));
-        EngineShop shop = new EngineShop(2, Vector2D.ZERO);
+        EngineShop shop = new EngineShop(2, IntPoint2D.ZERO);
         shop.setProduction(templates);
         templates.clear();
 
@@ -53,7 +53,7 @@ public class EngineShopTest extends TestCase {
      * Tests engine shop survives serialization behavior.
      */
     public void testEngineShopSurvivesSerialization() {
-        EngineShop shop = new EngineShop(2, new Vector2D(3, 4));
+        EngineShop shop = new EngineShop(2, new IntPoint2D(3, 4));
         shop.setProduction(List.of(new TrainTemplate(4, List.of(7, 8))));
 
         EngineShop copy = (EngineShop) Utils.cloneBySerialisation(shop);

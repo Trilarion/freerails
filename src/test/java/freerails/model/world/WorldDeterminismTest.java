@@ -34,7 +34,7 @@ import freerails.model.operations.train.motion.TrainMotion;
 import freerails.move.AddTransactionMove;
 import freerails.move.AdvanceClockMove;
 import freerails.util.Utils;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -94,7 +94,7 @@ public class WorldDeterminismTest extends TestCase {
 
         for (int query = 0; query < 5; query++) {
             assertEquals(TrainState.READY, train.findCurrentMotion(currentTime.ticks()).getTrainState());
-            assertEquals(new Vector2D(2, 0), train.getLocation(currentTime));
+            assertEquals(new IntPoint2D(2, 0), train.getLocation(currentTime));
             Set<?> sections = train.occupiedTrackSection(currentTime);
             assertEquals(expectedSections, sections);
             sections.clear();
@@ -123,10 +123,10 @@ public class WorldDeterminismTest extends TestCase {
         Train train = new Train(2, 0);
         train.setConsist(List.of(4));
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(3, Vector2D.ZERO, 0, 0), 4);
+        cargo.addCargo(new CargoBatch(3, IntPoint2D.ZERO, 0, 0), 4);
         train.setCargoBatchBundle(cargo);
         TrainMotion motion = new TrainMotion(
-                new PathOnTiles(Vector2D.ZERO, TileTransition.EAST, TileTransition.EAST),
+                new PathOnTiles(IntPoint2D.ZERO, TileTransition.EAST, TileTransition.EAST),
                 24, 20, TrainState.READY);
         world.addTrain(player, train);
         world.addActivity(player, train.getId(), motion);

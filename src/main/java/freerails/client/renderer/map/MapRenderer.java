@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.map;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -61,5 +61,5 @@ public interface MapRenderer extends MapLayerRenderer {
      *
      * @return the map size in pixels produced by this method
      */
-    Vector2D getMapSizeInPixels();
+    IntPoint2D getMapSizeInPixels();
 }

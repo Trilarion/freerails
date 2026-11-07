@@ -23,7 +23,7 @@ import freerails.model.terrain.Terrain;
 import freerails.move.AddPlayerMove;
 import freerails.move.Status;
 import freerails.util.Utils;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
@@ -68,10 +68,10 @@ public class MapFixtureFactory2 {
                 }
             }
             TerrainTile tile = new TerrainTile(clearTypeID);
-            Vector2D mapSize = world.getMapSize();
+            IntPoint2D mapSize = world.getMapSize();
             for (int x = 0; x < mapSize.x(); x++) {
                 for (int y = 0; y < mapSize.y(); y++) {
-                    world.setTile(new Vector2D(x, y), tile);
+                    world.setTile(new IntPoint2D(x, y), tile);
                 }
             }
         }

@@ -24,7 +24,7 @@ import freerails.model.MapFixtureFactory2;
 import freerails.model.track.TrackType;
 import freerails.model.world.World;
 import freerails.move.Status;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import junit.framework.TestCase;
 
 /** Tests toolkit-independent station selection and placement state. */
@@ -66,7 +66,7 @@ public class StationBuildModelTest extends TestCase {
 
     /** Reports a failed build when no station type has been selected. */
     public void testBuildRequiresSelectedStationType() {
-        Status status = stationBuildModel.buildStationAt(new Vector2D(0, 0));
+        Status status = stationBuildModel.buildStationAt(new IntPoint2D(0, 0));
         assertFalse(status.isSuccess());
         assertEquals("Select a station type before building a station.", status.getMessage());
     }

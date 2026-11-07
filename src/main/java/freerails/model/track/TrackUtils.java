@@ -29,7 +29,7 @@ import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.PathOnTrackFinder;
 import freerails.model.operations.train.PositionOnTrack;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +58,7 @@ public final class TrackUtils {
      * @param trackPiece proposed station track piece
      * @return success if the proposed station does not overlap another station
      */
-    public static TrackOverlapResult checkForOverlap(UnmodifiableWorld world, Vector2D location, TrackPiece trackPiece) {
+    public static TrackOverlapResult checkForOverlap(UnmodifiableWorld world, IntPoint2D location, TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.
@@ -85,7 +85,7 @@ public final class TrackUtils {
 
                 int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
                 int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
-                Vector2D delta = Vector2D.subtract(station.getLocation(), location);
+                IntPoint2D delta = IntPoint2D.subtract(station.getLocation(), location);
 
                 // Do radii overlap?
                 boolean xOverlap = sumOfRadiiSquared >= delta.x() * delta.x();
@@ -111,7 +111,7 @@ public final class TrackUtils {
      * @param world world containing neighboring track
      * @return {@code true} if no diagonal conflict is detected
      */
-    public static boolean noDiagonalTrackConflicts(Vector2D point, int trackTemplate, UnmodifiableWorld world) {
+    public static boolean noDiagonalTrackConflicts(IntPoint2D point, int trackTemplate, UnmodifiableWorld world) {
         /*
          * This method is needs replacing. It only deals with flat track pieces, and is rather hard to make sense of. LL
          */
@@ -129,12 +129,12 @@ public final class TrackUtils {
         int cornersTemplate = Integer.parseInt(templateString, 2);
         trackTemplate = trackTemplate & cornersTemplate;
 
-        Vector2D mapSize = world.getMapSize();
+        IntPoint2D mapSize = world.getMapSize();
 
         // Avoid array-out-of-bounds exceptions.
         trackTemplateAbove = 0;
         if (point.y() > 0) {
-            TerrainTile ft = world.getTile(new Vector2D(point.x(), point.y() - 1));
+            TerrainTile ft = world.getTile(new IntPoint2D(point.x(), point.y() - 1));
             TrackPiece tp = ft.trackPiece();
             if (tp != null) {
                 trackTemplateAbove = tp.getTrackGraphicID();
@@ -143,7 +143,7 @@ public final class TrackUtils {
 
         trackTemplateBelow = 0;
         if (point.y() + 1 < mapSize.y()) {
-            TerrainTile ft = world.getTile(new Vector2D(point.x(), point.y() + 1));
+            TerrainTile ft = world.getTile(new IntPoint2D(point.x(), point.y() + 1));
             TrackPiece tp = ft.trackPiece();
             if (tp != null) {
                 trackTemplateBelow = tp.getTrackGraphicID();
@@ -209,13 +209,13 @@ public final class TrackUtils {
      * @param path encoded path positions
      * @return tile coordinates in path order
      */
-    public static List<Vector2D> convertPathToPoints(List<Integer> path) {
+    public static List<IntPoint2D> convertPathToPoints(List<Integer> path) {
         PositionOnTrack positionOnTrack = new PositionOnTrack();
-        List<Vector2D> proposedTrack = new ArrayList<>();
+        List<IntPoint2D> proposedTrack = new ArrayList<>();
 
         for (Integer aPath : path) {
             positionOnTrack.setValuesFromInt(aPath);
-            Vector2D p = positionOnTrack.getLocation();
+            IntPoint2D p = positionOnTrack.getLocation();
             proposedTrack.add(p);
             // TrackPathFinder.logger.debug("Adding point " + p);
         }
@@ -248,7 +248,7 @@ public final class TrackUtils {
      * @return transition to follow from the current position
      * @throws NoTrackException if the current position has no usable track
      */
-    public static TileTransition findNextStep(UnmodifiableWorld world, PositionOnTrack currentPosition, Vector2D target) {
+    public static TileTransition findNextStep(UnmodifiableWorld world, PositionOnTrack currentPosition, IntPoint2D target) {
         HashMap<Integer, TileTransition> destPaths;
         TileTransition nextTileTransition;
         destPaths = new HashMap<>();

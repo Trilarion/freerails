@@ -25,7 +25,7 @@ package freerails.client.renderer.map;
 
 import freerails.client.renderer.track.TrackLayerRenderer;
 import freerails.client.renderer.*;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.client.ClientConstants;
 
@@ -71,7 +71,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, IntPoint2D tileLocation) {
         terrainLayer.paintTile(g, tileLocation);
         trackLayer.paintTile(g, tileLocation);
     }
@@ -95,7 +95,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
         int height = clipRectangle.height / tileHeight + 2;
 
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
-        trackLayer.paintRectangleOfTiles(g, new Vector2D(x, y), width, height);
+        trackLayer.paintRectangleOfTiles(g, new IntPoint2D(x, y), width, height);
     }
 
     /**
@@ -104,7 +104,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param tileLocation the map coordinate
      */
     @Override
-    public void refreshTile(Vector2D tileLocation) {}
+    public void refreshTile(IntPoint2D tileLocation) {}
 
     /**
      * Performs the refresh all operation.

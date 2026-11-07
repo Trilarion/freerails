@@ -21,7 +21,7 @@
  */
 package freerails.model.operations.cargo;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import junit.framework.TestCase;
 
@@ -40,8 +40,8 @@ public class CargoBatchBundleTest extends TestCase {
         CargoBatchBundle bundle1 = new CargoBatchBundle();
         CargoBatchBundle bundle2 = new CargoBatchBundle();
 
-        CargoBatch batch1 = new CargoBatch(1, new Vector2D(2, 3), 4, 5);
-        CargoBatch batch2 = new CargoBatch(4, new Vector2D(2, 3), 4, 5);
+        CargoBatch batch1 = new CargoBatch(1, new IntPoint2D(2, 3), 4, 5);
+        CargoBatch batch2 = new CargoBatch(4, new IntPoint2D(2, 3), 4, 5);
 
         // add some cargo to the bundle1
         int quantity1 = 10;
@@ -69,7 +69,7 @@ public class CargoBatchBundleTest extends TestCase {
      * Tests zero and negative quantities have defined behavior behavior.
      */
     public void testZeroAndNegativeQuantitiesHaveDefinedBehavior() {
-        CargoBatch batch = new CargoBatch(1, new Vector2D(2, 3), 4, 5);
+        CargoBatch batch = new CargoBatch(1, new IntPoint2D(2, 3), 4, 5);
         CargoBatchBundle bundle = new CargoBatchBundle();
 
         assertEquals(0, bundle.getAmount(batch));
@@ -95,9 +95,9 @@ public class CargoBatchBundleTest extends TestCase {
      * Tests copy and equality preserve batch identity and hash contract behavior.
      */
     public void testCopyAndEqualityPreserveBatchIdentityAndHashContract() {
-        CargoBatch firstBatch = new CargoBatch(1, new Vector2D(2, 3), 4, 5);
-        CargoBatch secondBatch = new CargoBatch(1, new Vector2D(7, 8), 9, 10);
-        CargoBatch otherType = new CargoBatch(2, new Vector2D(2, 3), 4, 5);
+        CargoBatch firstBatch = new CargoBatch(1, new IntPoint2D(2, 3), 4, 5);
+        CargoBatch secondBatch = new CargoBatch(1, new IntPoint2D(7, 8), 9, 10);
+        CargoBatch otherType = new CargoBatch(2, new IntPoint2D(2, 3), 4, 5);
 
         CargoBatchBundle source = new CargoBatchBundle();
         source.setAmount(firstBatch, 12);
@@ -113,7 +113,7 @@ public class CargoBatchBundleTest extends TestCase {
         assertEquals(source.hashCode(), reverseInsertionOrder.hashCode());
 
         CargoBatchBundle differentBatchIdentity = new CargoBatchBundle();
-        differentBatchIdentity.setAmount(new CargoBatch(1, new Vector2D(3, 4), 4, 5), 12);
+        differentBatchIdentity.setAmount(new CargoBatch(1, new IntPoint2D(3, 4), 4, 5), 12);
         differentBatchIdentity.setAmount(secondBatch, 30);
         differentBatchIdentity.setAmount(otherType, 4);
         assertFalse(source.equals(differentBatchIdentity));
@@ -136,9 +136,9 @@ public class CargoBatchBundleTest extends TestCase {
      */
     public void testAmountOfTypeSumsDistinctProductionBatches() {
         CargoBatchBundle bundle = new CargoBatchBundle();
-        CargoBatch firstBatch = new CargoBatch(1, new Vector2D(1, 2), 3, 4);
-        CargoBatch secondBatch = new CargoBatch(1, new Vector2D(5, 6), 7, 8);
-        CargoBatch thirdBatch = new CargoBatch(2, new Vector2D(1, 2), 3, 4);
+        CargoBatch firstBatch = new CargoBatch(1, new IntPoint2D(1, 2), 3, 4);
+        CargoBatch secondBatch = new CargoBatch(1, new IntPoint2D(5, 6), 7, 8);
+        CargoBatch thirdBatch = new CargoBatch(2, new IntPoint2D(1, 2), 3, 4);
         bundle.setAmount(firstBatch, 11);
         bundle.setAmount(secondBatch, 17);
         bundle.setAmount(thirdBatch, 23);
@@ -155,13 +155,13 @@ public class CargoBatchBundleTest extends TestCase {
      * Tests immutable snapshot is defensive and read only behavior.
      */
     public void testImmutableSnapshotIsDefensiveAndReadOnly() {
-        CargoBatch batch = new CargoBatch(1, new Vector2D(2, 3), 4, 5);
+        CargoBatch batch = new CargoBatch(1, new IntPoint2D(2, 3), 4, 5);
         CargoBatchBundle builder = new CargoBatchBundle();
         builder.setAmount(batch, 12);
 
         ImmutableCargoBatchBundle snapshot = new ImmutableCargoBatchBundle(builder);
         builder.setAmount(batch, 20);
-        builder.addCargo(new CargoBatch(2, new Vector2D(6, 7), 8, 9), 4);
+        builder.addCargo(new CargoBatch(2, new IntPoint2D(6, 7), 8, 9), 4);
 
         assertEquals(12, snapshot.getAmount(batch));
         assertEquals(1, snapshot.size());
@@ -179,7 +179,7 @@ public class CargoBatchBundleTest extends TestCase {
      * Tests immutable snapshot survives serialization behavior.
      */
     public void testImmutableSnapshotSurvivesSerialization() {
-        CargoBatch batch = new CargoBatch(1, new Vector2D(2, 3), 4, 5);
+        CargoBatch batch = new CargoBatch(1, new IntPoint2D(2, 3), 4, 5);
         CargoBatchBundle builder = new CargoBatchBundle();
         builder.setAmount(batch, 12);
 

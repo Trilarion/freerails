@@ -24,7 +24,7 @@ import freerails.client.renderer.track.BuildTrackRenderer;
 import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
@@ -35,7 +35,7 @@ import java.awt.*;
 public class DetailMapRenderer implements MapRenderer {
 
     private final MapLayerRenderer background;
-    private final Vector2D mapSizeInPixels;
+    private final IntPoint2D mapSizeInPixels;
     private final OverHeadTrainView trainsView;
     private final StationRadiusRenderer stationRadius;
     private final StationNamesRenderer stationNames;
@@ -55,8 +55,8 @@ public class DetailMapRenderer implements MapRenderer {
         MapBackgroundRenderer mapBackgroundRenderer = new MapBackgroundRenderer(world, rendererRoot);
         background = new SquareTileBackgroundRenderer(mapBackgroundRenderer);
 
-        Vector2D mapSize = world.getMapSize();
-        mapSizeInPixels = Vector2D.multiply(mapSize, ClientConstants.TILE_SIZE);
+        IntPoint2D mapSize = world.getMapSize();
+        mapSizeInPixels = IntPoint2D.multiply(mapSize, ClientConstants.TILE_SIZE);
 
         stationRadius = new StationRadiusRenderer(modelRoot);
         stationNames = new StationNamesRenderer(world, modelRoot);
@@ -89,7 +89,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @return the map size in pixels produced by this method
      */
     @Override
-    public Vector2D getMapSizeInPixels() {
+    public IntPoint2D getMapSizeInPixels() {
         return mapSizeInPixels;
     }
 
@@ -99,7 +99,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @param g the graphics context used for drawing
      */
     @Override
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, IntPoint2D tileLocation) {
         background.paintTile(g, tileLocation);
         trainsView.paint((Graphics2D) g, null);
         stationRadius.paint((Graphics2D) g, null);
@@ -115,7 +115,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @param tileLocation location of the tile to refresh
      */
     @Override
-    public void refreshTile(Vector2D tileLocation) {
+    public void refreshTile(IntPoint2D tileLocation) {
         background.refreshTile(tileLocation);
     }
 

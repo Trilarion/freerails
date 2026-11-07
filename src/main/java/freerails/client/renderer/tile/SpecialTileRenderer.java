@@ -23,7 +23,7 @@
 package freerails.client.renderer.tile;
 
 import freerails.model.terrain.Terrain;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 import org.tinylog.Logger;
@@ -66,7 +66,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      * @param world the game world being queried
      */
     @Override
-    public void render(Graphics g, Vector2D renderLocation, Vector2D mapLocation, UnmodifiableWorld world) {
+    public void render(Graphics g, IntPoint2D renderLocation, IntPoint2D mapLocation, UnmodifiableWorld world) {
         if (parentTileView != null) {
             parentTileView.render(g, renderLocation, mapLocation, world);
         } else {
@@ -90,7 +90,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      * @return the tile icon index produced by this method
      */
     @Override
-    public int selectTileIconIndex(Vector2D mapLocation, UnmodifiableWorld world) {
+    public int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
         return 0;
     }
 

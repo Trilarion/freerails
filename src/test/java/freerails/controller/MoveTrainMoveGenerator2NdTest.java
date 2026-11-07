@@ -34,7 +34,7 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 
 import freerails.util.Utils;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.*;
 import freerails.model.operations.cargo.*;
 import freerails.model.player.Player;
@@ -57,8 +57,8 @@ import java.util.Set;
 public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
     private Player player;
-    private Vector2D station1Location;
-    private Vector2D station2Location;
+    private IntPoint2D station1Location;
+    private IntPoint2D station2Location;
 
     /**
      * Performs increment time.
@@ -70,7 +70,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         while (bidirectionalIterator.hasNext())
             bidirectionalIterator.next();
 
-        double finishTime = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration();
+        TrainMotion lastMotion = bidirectionalIterator.previous();
+        double finishTime = lastMotion.getStartTime() + lastMotion.getDuration();
         Time fTime = new Time((int) Math.floor(finishTime));
         while (world.getClock().getCurrentTime().compareTo(fTime) < 0) {
             world.getClock().advanceTime();
@@ -110,7 +111,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         for (int i = 0; i < track.length; i++) {
             track[i] = TileTransition.EAST;
         }
-        Vector2D station0Location = new Vector2D(10, 10);
+        IntPoint2D station0Location = new IntPoint2D(10, 10);
 
         Status status1 = trackBuilder.buildTrack(station0Location, track);
         assertTrue(status1.isSuccess());
@@ -118,10 +119,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Build 2 stations.
         Status ms1 = stationBuilder.buildStation(station0Location);
         assertTrue(ms1.isSuccess());
-        station1Location = new Vector2D(20, 10);
+        station1Location = new IntPoint2D(20, 10);
         Status ms2 = stationBuilder.buildStation(station1Location);
         assertTrue(ms2.isSuccess());
-        station2Location = new Vector2D(28, 10);
+        station2Location = new IntPoint2D(28, 10);
         Status ms3 = stationBuilder.buildStation(station2Location);
         assertTrue(ms3.isSuccess());
 
@@ -131,7 +132,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         schedule = schedule.addOrder(order0);
         schedule = schedule.addOrder(order1);
 
-        Vector2D start = new Vector2D(10, 10);
+        IntPoint2D start = new IntPoint2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0),
                 start, player, schedule);
         Move move = preMove.generate(world);
@@ -245,7 +246,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      */
     private void addCargoAtStation(int stationId, int amount) {
 
-        CargoBatch cargoBatch = new CargoBatch(0, new Vector2D(6, 6), 0, stationId);
+        CargoBatch cargoBatch = new CargoBatch(0, new IntPoint2D(6, 6), 0, stationId);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
         cargoBatchBundle.addCargo(cargoBatch, amount);
         Station station = world.getStation(player, stationId);
@@ -421,7 +422,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         Station station0 = world.getStation(player, 1);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
         final int AMOUNT_OF_CARGO = 35;
-        cargoBatchBundle.addCargo(new CargoBatch(0, Vector2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
+        cargoBatchBundle.addCargo(new CargoBatch(0, IntPoint2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
         station0.setCargoBatchBundle(cargoBatchBundle);
 
         // Make station2 demand cargo #0;

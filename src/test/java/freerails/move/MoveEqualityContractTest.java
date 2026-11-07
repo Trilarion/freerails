@@ -43,7 +43,7 @@ import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.RemoveStationCompositeMove;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -138,26 +138,26 @@ public class MoveEqualityContractTest extends TestCase {
      * Tests station moves compare every field used by the move behavior.
      */
     public void testStationMovesCompareEveryFieldUsedByTheMove() {
-        Station station = station(10, new Vector2D(3, 4), "Central");
+        Station station = station(10, new IntPoint2D(3, 4), "Central");
         assertEqualMoves(new AddStationMove(PLAYER, station),
-                new AddStationMove(new Player(1, "One"), station(10, new Vector2D(3, 4), "Central")));
+                new AddStationMove(new Player(1, "One"), station(10, new IntPoint2D(3, 4), "Central")));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(new Player(2, "One"), station));
-        assertDifferentMoves(new AddStationMove(PLAYER, station), new AddStationMove(PLAYER, station(11, new Vector2D(3, 4), "Central")));
+        assertDifferentMoves(new AddStationMove(PLAYER, station), new AddStationMove(PLAYER, station(11, new IntPoint2D(3, 4), "Central")));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
-                new AddStationMove(PLAYER, station(10, new Vector2D(4, 4), "Central")));
+                new AddStationMove(PLAYER, station(10, new IntPoint2D(4, 4), "Central")));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
-                new AddStationMove(PLAYER, station(10, new Vector2D(3, 4), "Different name")));
+                new AddStationMove(PLAYER, station(10, new IntPoint2D(3, 4), "Different name")));
 
-        Station stationWithCargo = station(10, new Vector2D(3, 4), "Central");
+        Station stationWithCargo = station(10, new IntPoint2D(3, 4), "Central");
         stationWithCargo.setCargoBatchBundle(cargo(2));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithCargo));
-        Station stationWithSupply = station(10, new Vector2D(3, 4), "Central");
+        Station stationWithSupply = station(10, new IntPoint2D(3, 4), "Central");
         stationWithSupply.setSupply(new StationSupply(Map.of(1, 1)));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithSupply));
-        Station stationWithDemand = station(10, new Vector2D(3, 4), "Central");
+        Station stationWithDemand = station(10, new IntPoint2D(3, 4), "Central");
         stationWithDemand.setDemandForCargo(new StationDemand(Set.of(1)));
         assertDifferentMoves(new AddStationMove(PLAYER, station),
                 new AddStationMove(PLAYER, stationWithDemand));
@@ -186,8 +186,8 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(productionMove, new ChangeProductionAtEngineShopMove(
                 List.of(new TrainTemplate(3, List.of(6))), 10, PLAYER));
 
-        Station cargoSettings = station(10, Vector2D.ZERO, "Settings");
-        Station sameSettings = station(10, Vector2D.ZERO, "Different ignored name");
+        Station cargoSettings = station(10, IntPoint2D.ZERO, "Settings");
+        Station sameSettings = station(10, IntPoint2D.ZERO, "Different ignored name");
         UpdateStationCargoPolicyMove settingsMove =
                 new UpdateStationCargoPolicyMove(PLAYER, cargoSettings);
         assertEqualMoves(settingsMove,
@@ -195,13 +195,13 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(settingsMove,
                 new UpdateStationCargoPolicyMove(new Player(2, "One"), cargoSettings));
         assertDifferentMoves(settingsMove,
-                new UpdateStationCargoPolicyMove(PLAYER, station(11, Vector2D.ZERO, "Settings")));
+                new UpdateStationCargoPolicyMove(PLAYER, station(11, IntPoint2D.ZERO, "Settings")));
 
-        Station differentSupply = station(10, Vector2D.ZERO, "Settings");
+        Station differentSupply = station(10, IntPoint2D.ZERO, "Settings");
         differentSupply.setSupply(new StationSupply(Map.of(1, 1)));
         assertDifferentMoves(settingsMove, new UpdateStationCargoPolicyMove(PLAYER, differentSupply));
 
-        Station differentDemand = station(10, Vector2D.ZERO, "Settings");
+        Station differentDemand = station(10, IntPoint2D.ZERO, "Settings");
         differentDemand.setDemandForCargo(new StationDemand(Set.of(1)));
         assertDifferentMoves(settingsMove, new UpdateStationCargoPolicyMove(PLAYER, differentDemand));
     }
@@ -211,27 +211,27 @@ public class MoveEqualityContractTest extends TestCase {
      */
     public void testMapAndCompositeMovesCompareEveryField() {
         TerrainTile tile = new TerrainTile(4);
-        assertEqualMoves(new ChangeTileMove(new TerrainTile(4), new Vector2D(2, 3)),
-                new ChangeTileMove(new TerrainTile(4), new Vector2D(2, 3)));
-        assertDifferentMoves(new ChangeTileMove(tile, new Vector2D(2, 3)),
-                new ChangeTileMove(tile, new Vector2D(3, 3)));
-        assertDifferentMoves(new ChangeTileMove(tile, new Vector2D(2, 3)),
-                new ChangeTileMove(new TerrainTile(5), new Vector2D(2, 3)));
-        assertDifferentMoves(new ChangeTileMove(tile, new Vector2D(2, 3)),
-                new ChangeTileMove(new TerrainTile(4, TRACK_A), new Vector2D(2, 3)));
+        assertEqualMoves(new ChangeTileMove(new TerrainTile(4), new IntPoint2D(2, 3)),
+                new ChangeTileMove(new TerrainTile(4), new IntPoint2D(2, 3)));
+        assertDifferentMoves(new ChangeTileMove(tile, new IntPoint2D(2, 3)),
+                new ChangeTileMove(tile, new IntPoint2D(3, 3)));
+        assertDifferentMoves(new ChangeTileMove(tile, new IntPoint2D(2, 3)),
+                new ChangeTileMove(new TerrainTile(5), new IntPoint2D(2, 3)));
+        assertDifferentMoves(new ChangeTileMove(tile, new IntPoint2D(2, 3)),
+                new ChangeTileMove(new TerrainTile(4, TRACK_A), new IntPoint2D(2, 3)));
 
-        ChangeTrackPieceMove trackMove = new ChangeTrackPieceMove(null, TRACK_A, new Vector2D(2, 3));
-        assertEqualMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_A, new Vector2D(2, 3)));
-        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_OTHER_OWNER, new Vector2D(2, 3)));
+        ChangeTrackPieceMove trackMove = new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(2, 3));
+        assertEqualMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(2, 3)));
+        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_OTHER_OWNER, new IntPoint2D(2, 3)));
         assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null,
-                new TrackPiece(TRACK_A.trackConfiguration(), OTHER_TRACK_TYPE, PLAYER.getId()), new Vector2D(2, 3)));
+                new TrackPiece(TRACK_A.trackConfiguration(), OTHER_TRACK_TYPE, PLAYER.getId()), new IntPoint2D(2, 3)));
         assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null,
                 new TrackPiece(TrackConfiguration.getFlatInstance("010010000"), TRACK_TYPE, PLAYER.getId()),
-                new Vector2D(2, 3)));
-        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_A, new Vector2D(3, 3)));
-        assertDifferentMoves(new ChangeTrackPieceMove(TRACK_A, TRACK_A, new Vector2D(2, 3)), trackMove);
-        ChangeTrackPieceMove removal = new ChangeTrackPieceMove(TRACK_A, null, new Vector2D(2, 3));
-        assertEqualMoves(removal, new ChangeTrackPieceMove(TRACK_A, null, new Vector2D(2, 3)));
+                new IntPoint2D(2, 3)));
+        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(3, 3)));
+        assertDifferentMoves(new ChangeTrackPieceMove(TRACK_A, TRACK_A, new IntPoint2D(2, 3)), trackMove);
+        ChangeTrackPieceMove removal = new ChangeTrackPieceMove(TRACK_A, null, new IntPoint2D(2, 3));
+        assertEqualMoves(removal, new ChangeTrackPieceMove(TRACK_A, null, new IntPoint2D(2, 3)));
 
         Move speedSlow = new ChangeGameSpeedMove(Speed.SLOW);
         Move speedFast = new ChangeGameSpeedMove(Speed.FAST);
@@ -245,13 +245,13 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new CompostMove(List.of(speedSlow, speedFast)),
                 new CompostMove(List.of(speedSlow, new GrowCitiesMove())));
 
-        ChangeTrackPieceMove secondTrackMove = new ChangeTrackPieceMove(null, TRACK_A, new Vector2D(3, 3));
+        ChangeTrackPieceMove secondTrackMove = new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(3, 3));
         ChangeTrackPieceCompositeMove trackComposite =
                 new ChangeTrackPieceCompositeMove(trackMove, secondTrackMove, PLAYER);
         ChangeTrackPieceCompositeMove sameTrackComposite =
                 new ChangeTrackPieceCompositeMove(
-                        new ChangeTrackPieceMove(null, TRACK_A, new Vector2D(2, 3)),
-                        new ChangeTrackPieceMove(null, TRACK_A, new Vector2D(3, 3)),
+                        new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(2, 3)),
+                        new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(3, 3)),
                         new Player(1, "One"));
         assertEqualMoves(trackComposite, sameTrackComposite);
         assertDifferentMoves(trackComposite,
@@ -259,12 +259,12 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new CompositeMove(List.of(trackMove, secondTrackMove)), trackComposite);
 
         RemoveStationCompositeMove removeComposite = new RemoveStationCompositeMove(
-                List.of(new ChangeTileMove(tile, new Vector2D(2, 3)), new RemoveStationMove(PLAYER, 10)));
+                List.of(new ChangeTileMove(tile, new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 10)));
         RemoveStationCompositeMove differentRemoveComposite = new RemoveStationCompositeMove(
-                List.of(new ChangeTileMove(tile, new Vector2D(2, 3)), new RemoveStationMove(PLAYER, 11)));
+                List.of(new ChangeTileMove(tile, new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 11)));
         assertDifferentMoves(removeComposite, differentRemoveComposite);
         assertEqualMoves(removeComposite, new RemoveStationCompositeMove(
-                List.of(new ChangeTileMove(new TerrainTile(4), new Vector2D(2, 3)), new RemoveStationMove(PLAYER, 10))));
+                List.of(new ChangeTileMove(new TerrainTile(4), new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 10))));
 
         assertEqualMoves(new GrowCitiesMove(), new GrowCitiesMove());
     }
@@ -296,7 +296,7 @@ public class MoveEqualityContractTest extends TestCase {
      */
     private static CargoBatchBundle cargo(int amount) {
         CargoBatchBundle bundle = new CargoBatchBundle();
-        bundle.addCargo(new CargoBatch(1, Vector2D.ZERO, 42, 9), amount);
+        bundle.addCargo(new CargoBatch(1, IntPoint2D.ZERO, 42, 9), amount);
         return bundle;
     }
 
@@ -307,7 +307,7 @@ public class MoveEqualityContractTest extends TestCase {
      * @param name the name to use in the test.
      * @return the result of station.
      */
-    private static Station station(int id, Vector2D location, String name) {
+    private static Station station(int id, IntPoint2D location, String name) {
         return new Station(id, location, name, CargoBatchBundle.EMPTY);
     }
 

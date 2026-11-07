@@ -21,7 +21,7 @@ package freerails.client.renderer.map;
 import freerails.client.ModelRootProperty;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.client.ClientConstants;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
@@ -105,8 +105,8 @@ public class StationNamesRenderer implements Painter {
 
             // for all stations of this player
             for (Station station: world.getStations(player)) {
-                Vector2D location = station.getLocation();
-                Vector2D displayLocation = MapCoordinateAdapter.tileOrigin(location);
+                IntPoint2D location = station.getLocation();
+                IntPoint2D displayLocation = MapCoordinateAdapter.tileOrigin(location);
                 int tileSize = ClientConstants.TILE_PIXEL_SIZE;
                 Rectangle stationBox = new Rectangle(displayLocation.x() - tileSize * 3, displayLocation.y() - tileSize * 3, tileSize * 7, tileSize * 7);
                 if (newVisibleRectangle != null && !newVisibleRectangle.intersects(stationBox)) {

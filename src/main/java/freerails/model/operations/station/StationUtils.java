@@ -28,7 +28,7 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -64,14 +64,14 @@ public final class StationUtils {
      * @return nearest station identifier, or {@link #NOT_FOUND} if none is in
      *         range
      */
-    public static int findNearestStation(@NotNull UnmodifiableWorld world, @NotNull Player player, @NotNull Vector2D location) {
+    public static int findNearestStation(@NotNull UnmodifiableWorld world, @NotNull Player player, @NotNull IntPoint2D location) {
         // Find nearest station.
         int distanceToClosestSquared = Integer.MAX_VALUE;
 
         int nearestStation = StationUtils.NOT_FOUND;
 
         for (Station station: world.getStations(player)) {
-            Vector2D delta = Vector2D.subtract(location, station.getLocation());
+            IntPoint2D delta = IntPoint2D.subtract(location, station.getLocation());
             int distanceSquared = delta.x() * delta.x() + delta.y() * delta.y();
 
             if (distanceSquared < distanceToClosestSquared && StationUtils.MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
@@ -100,7 +100,7 @@ public final class StationUtils {
         int nearestStation = NOT_FOUND;
 
         for (Station station: world.getStations(player)) {
-            Vector2D delta = Vector2D.subtract(station.getLocation(), currentStation.getLocation());
+            IntPoint2D delta = IntPoint2D.subtract(station.getLocation(), currentStation.getLocation());
             int distanceSquared = delta.x() * delta.x() + delta.y() * delta.y();
             boolean closer = distanceSquared < distanceToClosestSquared;
             boolean notTheSameStation = startStation != station.getId();
@@ -125,7 +125,7 @@ public final class StationUtils {
      * @param delta displacement from the starting station
      * @return {@code true} when the displacement is in the direction's sector
      */
-    private static boolean isInRightDirection(TileTransition direction, Vector2D delta) {
+    private static boolean isInRightDirection(TileTransition direction, IntPoint2D delta) {
         boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
         boolean sameXDirection = direction.deltaX * delta.x() > 0;
         boolean sameYDirection = direction.deltaY * delta.y() > 0;
@@ -213,7 +213,7 @@ public final class StationUtils {
     public static Station calculateCargoSupplyRateAtStation(UnmodifiableWorld world, int trackRuleId, Station station) {
         TrackType trackType = world.getTrackType(trackRuleId);
         int stationRadius = trackType.getStationRadius();
-        Vector2D location = station.getLocation();
+        IntPoint2D location = station.getLocation();
 
         int numCargoTypes = world.getCargos().size();
         double[] supplies = new double[numCargoTypes];
@@ -223,7 +223,7 @@ public final class StationUtils {
         int stationDiameter = stationRadius * 2 + 1;
 
         Rectangle stationRadiusRect = new Rectangle(location.x() - stationRadius, location.y() - stationRadius, stationDiameter, stationDiameter);
-        Vector2D mapSize = world.getMapSize();
+        IntPoint2D mapSize = world.getMapSize();
         Rectangle mapRect = new Rectangle(0, 0, mapSize.x(), mapSize.y());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
 
@@ -232,7 +232,7 @@ public final class StationUtils {
         for (int i1 = tiles2scan.x; i1 < tiles2scan.x + tiles2scan.width; i1++) {
             for (int j = tiles2scan.y; j < tiles2scan.y + tiles2scan.height; j++) {
                 // increment supply and demand
-                int tileTypeNumber = world.getTile(new Vector2D(i1, j)).terrainTypeId();
+                int tileTypeNumber = world.getTile(new IntPoint2D(i1, j)).terrainTypeId();
 
                 Terrain terrainType = world.getTerrain(tileTypeNumber);
 
@@ -297,17 +297,17 @@ public final class StationUtils {
     public static OptionalInt cargoConversionAtStation(UnmodifiableWorld world, Station station, int sourceCargoId) {
         int trackTypeId = world.getTile(station.getLocation()).trackPiece().trackType().getId();
         int stationRadius = world.getTrackType(trackTypeId).getStationRadius();
-        Vector2D location = station.getLocation();
+        IntPoint2D location = station.getLocation();
         int stationDiameter = stationRadius * 2 + 1;
         Rectangle stationRadiusRect = new Rectangle(location.x() - stationRadius, location.y() - stationRadius,
                 stationDiameter, stationDiameter);
-        Vector2D mapSize = world.getMapSize();
+        IntPoint2D mapSize = world.getMapSize();
         Rectangle tilesToScan = stationRadiusRect.intersection(new Rectangle(0, 0, mapSize.x(), mapSize.y()));
         OptionalInt productCargoId = OptionalInt.empty();
 
         for (int x = tilesToScan.x; x < tilesToScan.x + tilesToScan.width; x++) {
             for (int y = tilesToScan.y; y < tilesToScan.y + tilesToScan.height; y++) {
-                Terrain terrain = world.getTerrain(world.getTile(new Vector2D(x, y)).terrainTypeId());
+                Terrain terrain = world.getTerrain(world.getTile(new IntPoint2D(x, y)).terrainTypeId());
                 for (CargoConversion conversion : terrain.getConversions()) {
                     if (conversion.sourceCargoId() == sourceCargoId) {
                         productCargoId = OptionalInt.of(conversion.productCargoId());
@@ -326,7 +326,7 @@ public final class StationUtils {
      * @param location tile coordinates to inspect
      * @return {@code true} if the tile's track type is a station type
      */
-    public static boolean isStationHere(UnmodifiableWorld world, Vector2D location) {
+    public static boolean isStationHere(UnmodifiableWorld world, IntPoint2D location) {
         TerrainTile tile = world.getTile(location);
         return tile.trackPiece().trackType().isStation();
     }
@@ -339,7 +339,7 @@ public final class StationUtils {
      * @param location map coordinates to match
      * @return station identifier, or {@code null} if none is present
      */
-    public static Integer getStationId(@NotNull UnmodifiableWorld world, @NotNull Player player, @NotNull Vector2D location) {
+    public static Integer getStationId(@NotNull UnmodifiableWorld world, @NotNull Player player, @NotNull IntPoint2D location) {
         // loop through all stations of a player to check if there is a station at the location
         for (Station station: world.getStations(player)) {
             if (location.equals(station.getLocation())) {
@@ -358,7 +358,7 @@ public final class StationUtils {
      * @param location map coordinates to inspect
      * @return station identifier, or {@code -1} if no matching station exists
      */
-    public static int getStationIdAtLocation(UnmodifiableWorld world, Player player, Vector2D location) {
+    public static int getStationIdAtLocation(UnmodifiableWorld world, Player player, IntPoint2D location) {
         TerrainTile tile = world.getTile(location);
         TrackPiece trackPiece = tile.trackPiece();
 

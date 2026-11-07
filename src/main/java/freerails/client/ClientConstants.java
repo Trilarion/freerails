@@ -19,7 +19,7 @@
 package freerails.client;
 
 import freerails.UserData;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 import java.awt.*;
 import java.io.File;
@@ -171,7 +171,7 @@ public final class ClientConstants {
     public static final int SERVERUPDATE = 50;
 
     public static final int TILE_PIXEL_SIZE = TileSetMetadata.loadDefault().tilePixelSize();
-    public static final Vector2D TILE_SIZE = new Vector2D(TILE_PIXEL_SIZE, TILE_PIXEL_SIZE);
+    public static final IntPoint2D TILE_SIZE = new IntPoint2D(TILE_PIXEL_SIZE, TILE_PIXEL_SIZE);
     /**
      * Affects scroll direction and scroll speed relative to the cursor.
      * Examples:

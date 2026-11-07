@@ -26,7 +26,7 @@ import freerails.model.simulation.Time;
 import freerails.model.scenario.ScenarioWorldInitializer;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.World;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 
@@ -73,7 +73,7 @@ public class ScenarioDataLoaderTest extends TestCase {
             var terrainMap = loaded.terrainMap();
             for (int x = 0; x < terrainMap.getWidth(); x++) {
                 for (int y = 0; y < terrainMap.getHeight(); y++) {
-                    world.setTile(new Vector2D(x, y), new TerrainTile(terrainMap.get(x, y)));
+                    world.setTile(new IntPoint2D(x, y), new TerrainTile(terrainMap.get(x, y)));
                 }
             }
 

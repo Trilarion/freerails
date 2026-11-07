@@ -85,17 +85,18 @@ public class TrainTest extends TestCase {
         assertEquals(31.0, delayedAfterLater.getStartTime(), 0.0);
 
         var activities = train.getActivities();
-        assertNotSame(first, activities.get());
-        assertEquals(10.0, activities.get().getStartTime(), 0.0);
-        activities.next();
-        assertNotSame(delayed, activities.get());
-        assertEquals(15.0, activities.get().getStartTime(), 0.0);
-        activities.next();
-        assertNotSame(later, activities.get());
-        assertEquals(30.0, activities.get().getStartTime(), 0.0);
-        activities.next();
-        assertNotSame(delayedAfterLater, activities.get());
-        assertEquals(32.0, activities.get().getStartTime(), 0.0);
+        TrainMotion firstActivity = activities.next();
+        assertNotSame(first, firstActivity);
+        assertEquals(10.0, firstActivity.getStartTime(), 0.0);
+        TrainMotion delayedActivity = activities.next();
+        assertNotSame(delayed, delayedActivity);
+        assertEquals(15.0, delayedActivity.getStartTime(), 0.0);
+        TrainMotion laterActivity = activities.next();
+        assertNotSame(later, laterActivity);
+        assertEquals(30.0, laterActivity.getStartTime(), 0.0);
+        TrainMotion delayedAfterLaterActivity = activities.next();
+        assertNotSame(delayedAfterLater, delayedAfterLaterActivity);
+        assertEquals(32.0, delayedAfterLaterActivity.getStartTime(), 0.0);
 
         assertEquals(10.0, train.findCurrentMotion(14).getStartTime(), 0.0);
         assertEquals(15.0, train.findCurrentMotion(15).getStartTime(), 0.0);

@@ -23,7 +23,7 @@
  */
 package freerails.client.renderer.map;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 
 import java.awt.*;
@@ -74,7 +74,7 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
      * @param tileLocation the map coordinate
      */
     @Override
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, IntPoint2D tileLocation) {
         mapLayerRenderer.paintTile(g, tileLocation);
     }
 
@@ -84,7 +84,7 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
      * @param tileLocation the map coordinate
      */
     @Override
-    public void refreshTile(Vector2D tileLocation) {
+    public void refreshTile(IntPoint2D tileLocation) {
         // The backgroundBuffer gets created on the first call to
         // backgroundBuffer.paintRect(..)
         // so we need a check here to avoid a null pointer exception.

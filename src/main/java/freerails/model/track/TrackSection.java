@@ -18,7 +18,7 @@
 
 package freerails.model.track;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.terrain.TileTransition;
 
 import java.io.Serial;
@@ -32,7 +32,7 @@ public class TrackSection implements Serializable {
     @Serial
     private static final long serialVersionUID = -3776624056097990938L;
     private final TileTransition tileTransition;
-    private final Vector2D tile;
+    private final IntPoint2D tile;
 
     /**
      * Creates a section from a tile and its outgoing transition. The stored
@@ -42,10 +42,10 @@ public class TrackSection implements Serializable {
      * @param tileTransition transition from {@code tile} to the adjacent tile
      * @param tile origin tile coordinate
      */
-    public TrackSection(final TileTransition tileTransition, final Vector2D tile) {
+    public TrackSection(final TileTransition tileTransition, final IntPoint2D tile) {
 
         // TODO this is to make it unique, but there are other ways, for example storing the other tile too, then it would even have a direction
-        Vector2D otherTile = TileTransition.move(tile, tileTransition);
+        IntPoint2D otherTile = TileTransition.move(tile, tileTransition);
         if (tile.compareTo(otherTile) > 0) {
             this.tileTransition = tileTransition.getOpposite();
             this.tile = otherTile;
@@ -104,7 +104,7 @@ public class TrackSection implements Serializable {
      *
      * @return first tile coordinate
      */
-    public Vector2D tileA() {
+    public IntPoint2D tileA() {
         return tile;
     }
 
@@ -113,7 +113,7 @@ public class TrackSection implements Serializable {
      *
      * @return second tile coordinate
      */
-    public Vector2D tileB() {
+    public IntPoint2D tileB() {
         return TileTransition.move(tile, tileTransition);
     }
 

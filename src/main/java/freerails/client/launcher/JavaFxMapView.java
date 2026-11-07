@@ -35,7 +35,7 @@ import freerails.model.player.Player;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.WorldMapListener;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -113,7 +113,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     private double visibleY;
     private double retainedViewportX;
     private double retainedViewportY;
-    private Vector2D dragStart;
+    private IntPoint2D dragStart;
     private double panStartScreenX;
     private double panStartScreenY;
     private double panStartHorizontalValue;
@@ -153,7 +153,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         this.updateLock = Objects.requireNonNull(updateLock, "updateLock");
         this.onRenderFailure = Objects.requireNonNull(onRenderFailure, "onRenderFailure");
 
-        freerails.util.Vector2D mapSize = mainRenderer.getMapSizeInPixels();
+        freerails.util.IntPoint2D mapSize = mainRenderer.getMapSizeInPixels();
         mapWidth = mapSize.x();
         mapHeight = mapSize.y();
         mapContent.setMinSize(mapWidth, mapHeight);
@@ -195,7 +195,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         overviewPane.setOnMouseClicked(event -> {
             double tileX = event.getX() / overviewRenderer.scale();
             double tileY = event.getY() / overviewRenderer.scale();
-            centerOnTile(new Vector2D((int) tileX, (int) tileY));
+            centerOnTile(new IntPoint2D((int) tileX, (int) tileY));
         });
 
         modelRoot.addPropertyChangeListener(this);
@@ -230,7 +230,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      *
      * @param tile map coordinate to center
      */
-    void centerOnTile(Vector2D tile) {
+    void centerOnTile(IntPoint2D tile) {
         Bounds viewport = scrollPane.getViewportBounds();
         double maxX = Math.max(0, mapWidth - viewport.getWidth());
         double maxY = Math.max(0, mapHeight - viewport.getHeight());
@@ -260,7 +260,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
                 java.awt.Rectangle clipped = changedTiles.intersection(bounds);
                 for (int x = clipped.x; x < clipped.x + clipped.width; x++) {
                     for (int y = clipped.y; y < clipped.y + clipped.height; y++) {
-                        Vector2D tile = new Vector2D(x, y);
+                        IntPoint2D tile = new IntPoint2D(x, y);
                         mainRenderer.refreshTile(tile);
                         overviewRenderer.refreshTile(tile);
                     }
@@ -342,12 +342,12 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         renderViewport = new RenderViewport(width, height, horizontalValue, verticalValue);
         int visibleWidth = (int) Math.ceil(width);
         int visibleHeight = (int) Math.ceil(height);
-        visibleX = Math.max(0, Math.min(
-                Math.round(horizontalValue * Math.max(0, mapWidth - width)),
-                Math.max(0, mapWidth - visibleWidth)));
-        visibleY = Math.max(0, Math.min(
-                Math.round(verticalValue * Math.max(0, mapHeight - height)),
-                Math.max(0, mapHeight - visibleHeight)));
+        visibleX = Math.clamp(
+                Math.round(horizontalValue * Math.max(0, mapWidth - width)), 0,
+                Math.max(0, mapWidth - visibleWidth));
+        visibleY = Math.clamp(
+                Math.round(verticalValue * Math.max(0, mapHeight - height)), 0,
+                Math.max(0, mapHeight - visibleHeight));
         retainDisplayedFrame(visibleX, visibleY);
         requestRender();
     }
@@ -380,7 +380,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         List<Node> stations = new ArrayList<>();
         synchronized (updateLock) {
             for (City city : modelRoot.getWorld().getCities()) {
-                Vector2D tileOrigin = MapCoordinateAdapter.tileOrigin(city.getLocation());
+                IntPoint2D tileOrigin = MapCoordinateAdapter.tileOrigin(city.getLocation());
                 Text label = new Text(city.getName());
                 label.setFont(Font.font("Arial", 20));
                 label.setFill(Color.WHITE);
@@ -391,7 +391,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
 
             for (Player player : modelRoot.getWorld().getPlayers()) {
                 for (Station station : modelRoot.getWorld().getStations(player)) {
-                    Vector2D tileOrigin = MapCoordinateAdapter.tileOrigin(station.getLocation());
+                    IntPoint2D tileOrigin = MapCoordinateAdapter.tileOrigin(station.getLocation());
                     int fontSize = 12;
                     Text measurement = new Text(station.getStationName());
                     measurement.setFont(Font.font("Arial", fontSize));
@@ -507,7 +507,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
                 graphics.dispose();
             }
 
-            freerails.util.Vector2D overviewSize = overviewRenderer.getMapSizeInPixels();
+            freerails.util.IntPoint2D overviewSize = overviewRenderer.getMapSizeInPixels();
             int overviewWidth = Math.max(1, overviewSize.x());
             int overviewHeight = Math.max(1, overviewSize.y());
             int[] overviewPixels = null;
@@ -637,7 +637,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      *
      * @param tile destination map coordinate
      */
-    private void moveCursor(Vector2D tile) {
+    private void moveCursor(IntPoint2D tile) {
         if (modelRoot.getWorld().boundsContain(tile)) {
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, tile);
             requestRender();
@@ -667,8 +667,8 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         };
         if (transition != null) {
             synchronized (updateLock) {
-                Vector2D current = cursorPosition();
-                Vector2D next = Vector2D.add(current, transition.getD());
+                IntPoint2D current = cursorPosition();
+                IntPoint2D next = IntPoint2D.add(current, transition.getD());
                 if (modelRoot.getWorld().boundsContain(next)) {
                     moveCursor(next);
                     TrackMoveProducer producer = actionRoot.getTrackMoveProducer();
@@ -705,7 +705,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     private void handleMousePressed(javafx.scene.input.MouseEvent event) {
         scrollPane.requestFocus();
         if (event.getButton() == MouseButton.PRIMARY) {
-            Vector2D tile = mapPoint(event.getX(), event.getY());
+            IntPoint2D tile = mapPoint(event.getX(), event.getY());
             synchronized (updateLock) {
                 dragStart = tile;
                 moveCursor(tile);
@@ -742,7 +742,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
             return;
         }
         if (event.isPrimaryButtonDown() && dragStart != null) {
-            Vector2D destination = mapPoint(event.getX(), event.getY());
+            IntPoint2D destination = mapPoint(event.getX(), event.getY());
             synchronized (updateLock) {
                 TrackMoveProducer producer = actionRoot.getTrackMoveProducer();
                 if (producer != null && canPreviewTrack(producer.getTrackBuilderMode())
@@ -769,11 +769,11 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
                 if (producer != null && producer.getTrackBuilderMode() == BuildMode.BUILD_STATION
                         && stationBuildModel != null
                         && stationBuildModel.isStationTypeSelected()) {
-                    Vector2D destination = mapPoint(event.getX(), event.getY());
+                    IntPoint2D destination = mapPoint(event.getX(), event.getY());
                     stationBuildModel.buildStationAt(destination);
                 } else if (buildTrackController.isBuilding()
                         && buildTrackController.isBuildTrackSuccessful()) {
-                    Vector2D result = buildTrackController.updateWorld(actionRoot.getTrackMoveProducer());
+                    IntPoint2D result = buildTrackController.updateWorld(actionRoot.getTrackMoveProducer());
                     modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, result);
                 } else {
                     buildTrackController.hide();
@@ -790,7 +790,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      * @param y vertical viewport position
      * @return map tile coordinate
      */
-    private Vector2D mapPoint(double x, double y) {
+    private IntPoint2D mapPoint(double x, double y) {
         return mapPointToTile(visibleX, visibleY, x, y, mainRenderer.scale());
     }
 
@@ -804,12 +804,12 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      * @param tileSize map tile size in pixels
      * @return tile under the pointer
      */
-    static Vector2D mapPointToTile(
+    static IntPoint2D mapPointToTile(
             double visibleX, double visibleY, double x, double y, double tileSize) {
         if (!Double.isFinite(tileSize) || tileSize <= 0) {
             throw new IllegalArgumentException("Tile size must be positive and finite.");
         }
-        return new Vector2D(
+        return new IntPoint2D(
                 (int) ((visibleX + x) / tileSize),
                 (int) ((visibleY + y) / tileSize));
     }
@@ -819,9 +819,9 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      *
      * @return current cursor tile
      */
-    private Vector2D cursorPosition() {
-        Vector2D position = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
-        return position == null ? Vector2D.ZERO : position;
+    private IntPoint2D cursorPosition() {
+        IntPoint2D position = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+        return position == null ? IntPoint2D.ZERO : position;
     }
 
     /**

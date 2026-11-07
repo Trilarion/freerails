@@ -24,7 +24,7 @@ package freerails.client.renderer.tile;
 
 import freerails.model.terrain.Terrain;
 import freerails.util.BinaryNumberFormatter;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -36,8 +36,8 @@ import java.util.List;
  */
 public class ForestStyleTileRenderer extends AbstractTileRenderer {
 
-    private static final Vector2D SHIFT_LEFT = new Vector2D(-1, 0);
-    private static final Vector2D SHIFT_RIGHT = new Vector2D(1, 0);
+    private static final IntPoint2D SHIFT_LEFT = new IntPoint2D(-1, 0);
+    private static final IntPoint2D SHIFT_RIGHT = new IntPoint2D(1, 0);
 
     /**
      * Creates a forest style tile renderer instance.
@@ -64,15 +64,15 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
      * @return the tile icon index produced by this method
      */
     @Override
-    public int selectTileIconIndex(Vector2D mapLocation, UnmodifiableWorld world) {
+    public int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
         int iconNumber = 0;
 
         // shift left
-        iconNumber = iconNumber | checkTile(Vector2D.add(mapLocation, SHIFT_LEFT), world);
+        iconNumber = iconNumber | checkTile(IntPoint2D.add(mapLocation, SHIFT_LEFT), world);
         iconNumber = iconNumber << 1;
 
         // shift right
-        iconNumber = iconNumber | checkTile(Vector2D.add(mapLocation, SHIFT_RIGHT), world);
+        iconNumber = iconNumber | checkTile(IntPoint2D.add(mapLocation, SHIFT_RIGHT), world);
 
         return iconNumber;
     }

@@ -32,7 +32,7 @@ import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.operations.train.Engine;
-import freerails.util.Array2D;
+import freerails.util.IntArray2D;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -69,7 +69,7 @@ public final class GsonManager {
     private static final Type trackTypeListType = new TypeToken<List<TrackType>>(){}.getType();
     private static final Type sentimentListType = new TypeToken<List<Sentiment>>(){}.getType();
 
-    private static final TypeToken<Array2D> typeTokenArray2D = new TypeToken<>() {
+    private static final TypeToken<IntArray2D> typeTokenArray2D = new TypeToken<>() {
     };
 
     /**
@@ -139,7 +139,7 @@ public final class GsonManager {
      * @return loaded array
      * @throws IOException if the file cannot be read
      */
-    public static Array2D loadArray2D(File file) throws  IOException {
+    public static IntArray2D loadArray2D(File file) throws  IOException {
         return load(file, typeTokenArray2D);
     }
 

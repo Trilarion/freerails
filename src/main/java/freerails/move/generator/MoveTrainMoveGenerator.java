@@ -27,7 +27,7 @@ import freerails.model.operations.station.StationUtils;
 import freerails.model.operations.train.motion.*;
 import freerails.move.*;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
@@ -121,7 +121,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 // Are we at a station?
                 TrainStopsHandler stopsHandler = new TrainStopsHandler(trainId, player, world);
                 PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
-                Vector2D location = positionOnTrack.getLocation();
+                IntPoint2D location = positionOnTrack.getLocation();
                 boolean atStation = StationUtils.getStationId(world, player, location) != null;
 
                 TrainMotion nextMotion;
@@ -209,8 +209,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrackSection desiredTrackSection = new TrackSection(nextVector, positionOnTrack.getLocation());
 
         // Check whether the desired track section is single or double track.
-        Vector2D tileA = desiredTrackSection.tileA();
-        Vector2D tileB = desiredTrackSection.tileB();
+        IntPoint2D tileA = desiredTrackSection.tileA();
+        IntPoint2D tileB = desiredTrackSection.tileB();
         TerrainTile fta = world.getTile(tileA);
         TerrainTile ftb = world.getTile(tileB);
         TrackPiece tpa = fta.trackPiece();
@@ -306,7 +306,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrainMotion currentMotion = MotionUtils.lastMotion(world, player, trainId);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
         // Find targets
-        Vector2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
+        IntPoint2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
         return TrackUtils.findNextStep(world, currentPosition, targetPoint);
     }
 

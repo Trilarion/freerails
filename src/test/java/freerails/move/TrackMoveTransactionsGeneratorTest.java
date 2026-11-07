@@ -36,7 +36,7 @@ import freerails.model.world.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.util.WorldGenerator;
@@ -79,12 +79,12 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = world.getTile(Vector2D.ZERO).trackPiece();
+        oldTrackPiece = world.getTile(IntPoint2D.ZERO).trackPiece();
 
         TrackType trackType = world.getTrackType(0);
         int owner = WorldGenerator.TEST_PLAYER.getId();
         newTrackPiece = new TrackPiece(newConfig, trackType, owner);
-        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vector2D.ZERO);
+        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
 
         Move move = transactionGenerator.addTransactions(trackMove);
         assertNotNull(move);
@@ -103,7 +103,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         terrainTypes.add(new Terrain(1, "Free", TerrainCategory.COUNTRY, Money.ZERO, null,
                 List.of(), List.of(), List.of()));
         World testWorld = new World.Builder()
-                .setMapSize(new Vector2D(2, 1))
+                .setMapSize(new IntPoint2D(2, 1))
                 .setTerrainTypes(terrainTypes)
                 .setTrackTypes(trackTypes)
                 .setRules(new Rules(false, false))
@@ -111,8 +111,8 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         testWorld.addPlayer(WorldGenerator.TEST_PLAYER);
         testWorld.addTransaction(WorldGenerator.TEST_PLAYER, new Transaction(
                 TransactionCategory.MISC_INCOME, new Money(100_000), testWorld.getClock().getCurrentTime()));
-        testWorld.setTile(Vector2D.ZERO, new TerrainTile(0));
-        Vector2D end = new Vector2D(1, 0);
+        testWorld.setTile(IntPoint2D.ZERO, new TerrainTile(0));
+        IntPoint2D end = new IntPoint2D(1, 0);
         testWorld.setTile(end, new TerrainTile(1));
 
         TrackMoveTransactionsGenerator generator =
@@ -120,7 +120,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         Money startingBalance = testWorld.getCurrentBalance(WorldGenerator.TEST_PLAYER);
         TrackType standardTrack = testWorld.getTrackType(0);
         Move buildMove = TrackMoveProducer.generateBuildTrackMove(
-                Vector2D.ZERO, TileTransition.EAST, standardTrack, standardTrack,
+                IntPoint2D.ZERO, TileTransition.EAST, standardTrack, standardTrack,
                 testWorld, WorldGenerator.TEST_PLAYER);
 
         generator.addTransactions(buildMove).apply(testWorld);
@@ -129,7 +129,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
                 testWorld.getCurrentBalance(WorldGenerator.TEST_PLAYER));
 
         Move removeMove = TrackMoveProducer.generateRemoveTrackMove(
-                Vector2D.ZERO, TileTransition.EAST, testWorld, WorldGenerator.TEST_PLAYER);
+                IntPoint2D.ZERO, TileTransition.EAST, testWorld, WorldGenerator.TEST_PLAYER);
         generator.addTransactions(removeMove).apply(testWorld);
 
         assertEquals(new Money(startingBalance.amount() - 5_500),

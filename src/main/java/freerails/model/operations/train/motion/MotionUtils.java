@@ -40,6 +40,6 @@ public final class MotionUtils {
     public static TrainMotion lastMotion(UnmodifiableWorld world, Player player, int trainId) {
         BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
         bidirectionalIterator.gotoLast();
-        return bidirectionalIterator.get();
+        return bidirectionalIterator.previous();
     }
 }

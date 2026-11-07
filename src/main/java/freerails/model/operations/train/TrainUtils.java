@@ -33,7 +33,7 @@ import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.BidirectionalIterator;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
@@ -80,16 +80,16 @@ public final class TrainUtils {
      * @param world world containing the train and stations
      * @param player owner of the train
      * @param trainId train identifier
-     * @return the target station location, or {@link Vector2D#ZERO} if no station is scheduled
+     * @return the target station location, or {@link IntPoint2D#ZERO} if no station is scheduled
      */
-    public static Vector2D getTargetLocation(UnmodifiableWorld world, Player player, int trainId) {
+    public static IntPoint2D getTargetLocation(UnmodifiableWorld world, Player player, int trainId) {
         Train train = world.getTrain(player, trainId);
         UnmodifiableSchedule schedule = train.getSchedule();
         int stationId = schedule.getNextStationId();
 
         if (-1 == stationId) {
             // There are no stations on the schedule.
-            return Vector2D.ZERO;
+            return IntPoint2D.ZERO;
         }
 
         Station station = world.getStation(player, stationId);
@@ -117,7 +117,7 @@ public final class TrainUtils {
      * @return path long enough to place the complete train
      * @throws IllegalArgumentException if no track is available at the selected position
      */
-    public static PathOnTiles initPositionTrainGetPath(UnmodifiableWorld world, Vector2D point, int engineId, List<Integer> wagons) {
+    public static PathOnTiles initPositionTrainGetPath(UnmodifiableWorld world, IntPoint2D point, int engineId, List<Integer> wagons) {
         PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(world, point);
         FlatTrackExplorer fte;
         try {
@@ -167,7 +167,7 @@ public final class TrainUtils {
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
         List<TileTransition> tileTransitions = new ArrayList<>();
-        Vector2D start = path.getStart();
+        IntPoint2D start = path.getStart();
         TileTransition firstTileTransition = path.getStep(0);
         PositionOnTrack nextPositionOnTrack = new PositionOnTrack(start, firstTileTransition);
 
@@ -244,7 +244,8 @@ public final class TrainUtils {
         BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
         bidirectionalIterator.gotoLast();
 
-        double finishTime = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration();
+        TrainMotion lastMotion = bidirectionalIterator.previous();
+        double finishTime = lastMotion.getStartTime() + lastMotion.getDuration();
 
         Train train = world.getTrain(player, trainId);
         TrainMotion trainMotion = train.findCurrentMotion(finishTime);

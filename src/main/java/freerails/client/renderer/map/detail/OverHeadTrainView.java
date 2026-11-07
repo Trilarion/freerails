@@ -24,7 +24,7 @@ import freerails.model.ModelConstants;
 import freerails.model.operations.train.Train;
 import freerails.model.operations.train.motion.TrainMotion;
 import freerails.util.BidirectionalIterator;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.ui.Painter;
 import freerails.util.ui.SoundManager;
 import freerails.client.renderer.RendererRoot;
@@ -103,22 +103,22 @@ public class OverHeadTrainView implements Painter {
         // TODO why starting at the end and going backwards?
         // goto last
         bidirectionalIterator.gotoLast();
+        TrainMotion trainMotion = bidirectionalIterator.previous();
         // search backwards
-        while (bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() >= time && bidirectionalIterator.hasPrevious()) {
-            bidirectionalIterator.previous();
+        while (trainMotion.getStartTime() + trainMotion.getDuration() >= time && bidirectionalIterator.hasPrevious()) {
+            trainMotion = bidirectionalIterator.previous();
         }
-        boolean afterFinish = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() < time;
+        boolean afterFinish = trainMotion.getStartTime() + trainMotion.getDuration() < time;
         while (afterFinish && bidirectionalIterator.hasNext()) {
-            bidirectionalIterator.next();
-            afterFinish = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() < time;
+            trainMotion = bidirectionalIterator.next();
+            afterFinish = trainMotion.getStartTime() + trainMotion.getDuration() < time;
         }
-        double dt = time - bidirectionalIterator.get().getStartTime();
-        dt = Math.min(dt, bidirectionalIterator.get().getDuration());
-        TrainMotion trainMotion = bidirectionalIterator.get();
+        double dt = time - trainMotion.getStartTime();
+        dt = Math.min(dt, trainMotion.getDuration());
 
-        Vector2D start = trainMotion.getPath().getStart();
+        IntPoint2D start = trainMotion.getPath().getStart();
         int trainLength = trainMotion.getTrainLength();
-        Vector2D startPixels = MapCoordinateAdapter.tileOrigin(start);
+        IntPoint2D startPixels = MapCoordinateAdapter.tileOrigin(start);
         int trainLengthPixels = MapCoordinateAdapter.modelDistanceToPixel(trainLength);
         Rectangle trainBox = new Rectangle(
                 startPixels.x() - trainLengthPixels * 2,

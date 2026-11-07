@@ -49,7 +49,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
 
     private static final TaggedLogger LOGGER = Logger.tag("JavaFxLauncherClient");
     private final String playerName;
-    private final Object updateLock = new Object();
+    private final JavaFxGameSession session = new JavaFxGameSession();
     private final AtomicBoolean running = new AtomicBoolean();
     private final AtomicBoolean closed = new AtomicBoolean();
     private final ModelRootImpl modelRoot = new ModelRootImpl();
@@ -102,7 +102,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
      */
     public void stop() {
         if (closed.compareAndSet(false, true)) {
-            synchronized (updateLock) {
+            synchronized (session.updateLock()) {
                 running.set(false);
                 disconnect();
             }
@@ -170,6 +170,15 @@ public final class JavaFxLauncherClient extends FreerailsClient {
     }
 
     /**
+     * Returns the session context shared with the gameplay window.
+     *
+     * @return this client's JavaFX game session
+     */
+    JavaFxGameSession getSession() {
+        return session;
+    }
+
+    /**
      * Handles a newly received game world and initializes its JavaFX views.
      *
      * @param world new game world
@@ -207,7 +216,6 @@ public final class JavaFxLauncherClient extends FreerailsClient {
                     cursor,
                     actionRoot,
                     controller,
-                    updateLock,
                     localPlayer.getName() + " - " + modelRoot.getProperty(ModelRootProperty.SERVER) + " - Freerails");
         } catch (Exception e) {
             LOGGER.error(e, "Could not initialize JavaFX gameplay for the new world.");
@@ -226,7 +234,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
         try {
             while (running.get()) {
                 long frameStart = System.nanoTime();
-                synchronized (updateLock) {
+                synchronized (session.updateLock()) {
                     if (running.get()) {
                         update();
                     }

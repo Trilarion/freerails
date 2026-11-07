@@ -30,7 +30,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 import freerails.util.BidirectionalIterator;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.Player;
@@ -48,7 +48,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
 
     private Player player;
     private UnmodifiableSchedule defaultSchedule;
-    private Vector2D stationA;
+    private IntPoint2D stationA;
 
     /**
      * Sets up world.
@@ -66,14 +66,14 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         // Build track.
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        stationA = new Vector2D(10, 10);
+        stationA = new IntPoint2D(10, 10);
         Status ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.isSuccess());
 
         // Build 2 stations.
         Status ms1 = stationBuilder.buildStation(stationA);
         assertTrue(ms1.isSuccess());
-        Vector2D stationB = new Vector2D(19, 10);
+        IntPoint2D stationB = new IntPoint2D(19, 10);
         Status ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.isSuccess());
 
@@ -123,7 +123,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         assertTrue(status.isSuccess());
         move.apply(world);
         BidirectionalIterator<TrainMotion> activities = world.getTrain(player, 0).getActivities();
-        TrainMotion tm = activities.get();
+        TrainMotion tm = activities.next();
         assertEquals(0.0d, tm.getDuration());
         assertEquals(0.0d, tm.getSpeedAtEnd());
         assertEquals(0.0d, tm.getDistance(0));
@@ -145,7 +145,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
-        Vector2D from = new Vector2D(5, 5);
+        IntPoint2D from = new IntPoint2D(5, 5);
         Status status = producer.buildTrack(from, trackPath);
         if (!status.isSuccess())
             throw new IllegalStateException(status.getMessage());

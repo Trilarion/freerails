@@ -23,7 +23,7 @@ import freerails.model.operations.train.PathOnTiles;
 import freerails.model.operations.train.TrainState;
 import freerails.model.ModelConstants;
 import freerails.model.operations.train.motion.TrainMotion;
-import freerails.util.Vector2D;
+import freerails.util.IntPoint2D;
 
 /** Factory for simple train motions in tests. */
 public final class TestTrainMotion {
@@ -50,7 +50,7 @@ public final class TestTrainMotion {
      * @return the result of of.
      */
     public static TrainMotion of(double startTime, double duration) {
-        PathOnTiles path = new PathOnTiles(new Vector2D((int) duration, 0), TileTransition.EAST);
+        PathOnTiles path = new PathOnTiles(new IntPoint2D((int) duration, 0), TileTransition.EAST);
         TrainMotion motion = new TrainMotion(path, ModelConstants.WAGON_LENGTH, duration, TrainState.READY);
         return motion.withStartTime(startTime);
     }
