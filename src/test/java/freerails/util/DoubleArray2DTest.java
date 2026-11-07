@@ -85,12 +85,7 @@ public class DoubleArray2DTest extends TestCase {
      * @param height the array height
      */
     private void assertInvalidDimensions(int width, int height) {
-        try {
-            new DoubleArray2D(width, height);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> new DoubleArray2D(width, height));
     }
 
     /**
@@ -101,12 +96,7 @@ public class DoubleArray2DTest extends TestCase {
      * @param y the row
      */
     private void assertInvalidCoordinate(DoubleArray2D array, int x, int y) {
-        try {
-            array.get(x, y);
-            fail("Expected IndexOutOfBoundsException");
-        } catch (IndexOutOfBoundsException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IndexOutOfBoundsException.class, () -> array.get(x, y));
     }
 
     /**
@@ -117,11 +107,6 @@ public class DoubleArray2DTest extends TestCase {
      * @param y the row
      */
     private void assertInvalidSetCoordinate(DoubleArray2D array, int x, int y) {
-        try {
-            array.set(x, y, 1.0);
-            fail("Expected IndexOutOfBoundsException");
-        } catch (IndexOutOfBoundsException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IndexOutOfBoundsException.class, () -> array.set(x, y, 1.0));
     }
 }

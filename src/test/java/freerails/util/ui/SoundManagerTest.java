@@ -1,5 +1,6 @@
 package freerails.util.ui;
 
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.io.IOException;
@@ -25,13 +26,8 @@ public class SoundManagerTest extends TestCase {
      * Tests missing sound resource is reported behavior.
      */
     public void testMissingSoundResourceIsReported() {
-        try {
-            SoundManager.getInstance().addClip("/missing-test-sound.wav");
-            fail("Expected IOException");
-        } catch (IOException expected) {
-        } catch (javax.sound.sampled.UnsupportedAudioFileException e) {
-            fail("Unexpected audio format exception");
-        }
+        TestUtils.assertThrows(IOException.class,
+                () -> SoundManager.getInstance().addClip("/missing-test-sound.wav"));
     }
 
     /**

@@ -71,28 +71,13 @@ public class BidirectionalIteratorTest extends TestCase {
     public void testNextAndPreviousThrowWhenTraversalIsUnavailable() {
         BidirectionalIterator<Integer> iterator = new BidirectionalIterator<>(Collections.singletonList(1));
 
-        try {
-            iterator.previous();
-            fail("Expected NoSuchElementException");
-        } catch (NoSuchElementException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(NoSuchElementException.class, iterator::previous);
 
         assertEquals(Integer.valueOf(1), iterator.next());
-        try {
-            iterator.next();
-            fail("Expected NoSuchElementException");
-        } catch (NoSuchElementException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(NoSuchElementException.class, iterator::next);
 
         assertEquals(Integer.valueOf(1), iterator.previous());
-        try {
-            iterator.previous();
-            fail("Expected NoSuchElementException");
-        } catch (NoSuchElementException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(NoSuchElementException.class, iterator::previous);
     }
 
     /**
@@ -114,11 +99,6 @@ public class BidirectionalIteratorTest extends TestCase {
     public void testGotoLastRejectsEmptyList() {
         BidirectionalIterator<Integer> iterator = new BidirectionalIterator<>(Collections.emptyList());
 
-        try {
-            iterator.gotoLast();
-            fail("Expected IndexOutOfBoundsException");
-        } catch (IndexOutOfBoundsException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IndexOutOfBoundsException.class, iterator::gotoLast);
     }
 }

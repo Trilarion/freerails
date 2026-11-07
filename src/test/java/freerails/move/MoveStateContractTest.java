@@ -57,15 +57,27 @@ public class MoveStateContractTest extends TestCase {
      */
     @Override
     protected void setUp() {
-        world = MapFixtureFactory2.getCopy();
+        initializeWorld(null);
+    }
+
+    /**
+     * Initializes the fixture with the supplied rules.
+     *
+     * @param rules game rules, or {@code null} to use the fixture defaults
+     */
+    private void initializeWorld(Rules rules) {
+        world = rules == null ? MapFixtureFactory2.getCopy() : MapFixtureFactory2.getCopy(rules);
         player = world.getPlayer(0);
         otherPlayer = world.getPlayer(1);
-        world.addTrain(player, new Train(4, 0));
-        world.addTrain(otherPlayer, new Train(8, 0));
+        int engineId = world.getEngines().iterator().next().getId();
+        world.addTrain(player, new Train(4, engineId));
+        world.addTrain(otherPlayer, new Train(8, engineId));
         world.addStation(player, station(10, 2));
         world.addStation(player, station(11, 3));
         world.addStation(otherPlayer, station(10, 4));
-        world.addTransaction(otherPlayer, transaction(50));
+        world.addTransaction(otherPlayer, new Transaction(
+                TransactionCategory.MISC_INCOME, new Money(50), world.getClock().getCurrentTime()));
+        world.getClock().advanceTimeTo(new Time(42));
     }
 
     /**
@@ -74,7 +86,7 @@ public class MoveStateContractTest extends TestCase {
     public void testApplicableIsPureForAcceptedAndRejectedMoves() {
         CargoBatchBundle cargo = cargo(3);
         ChangeTrackPieceMove outsideMap = new ChangeTrackPieceMove(null, null, new IntPoint2D(-1, 0));
-        world.setRules(new Rules(false, false));
+        initializeWorld(new Rules(false, false));
         TrackPiece before = new TrackPiece(
                 TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), player.getId());
         TrackPiece after = new TrackPiece(
@@ -226,16 +238,26 @@ public class MoveStateContractTest extends TestCase {
 
         new UpdateTrainMove(player, 4, null, java.util.List.of(5, 6), null).apply(world);
 
-        assertEquals(new TrainConfiguration(0, java.util.List.of(5, 6)), train.getConfiguration());
+        assertEquals(new TrainConfiguration(train.getEngine(), java.util.List.of(5, 6)), train.getConfiguration());
         assertEquals(trainCargo, train.getCargoBatchBundle());
         assertEquals(schedule, train.getSchedule());
+    }
+
+    /**
+     * Tests train updates reject wagon type identifiers absent from the world.
+     */
+    public void testUpdatingConsistRejectsUnknownWagonTypes() {
+        UpdateTrainMove move = new UpdateTrainMove(player, 4, null,
+                java.util.List.of(Integer.MAX_VALUE), null);
+
+        assertFalse(move.applicable(world).isSuccess());
     }
 
     /**
      * Tests rejected moves leave the world unchanged behavior.
      */
     public void testRejectedMovesLeaveTheWorldUnchanged() {
-        world.setRules(new Rules(false, false));
+        initializeWorld(new Rules(false, false));
         TrackPiece before = new TrackPiece(
                 TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), player.getId());
         TrackPiece otherOwner = new TrackPiece(

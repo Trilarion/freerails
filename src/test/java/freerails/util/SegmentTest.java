@@ -47,16 +47,8 @@ public class SegmentTest extends TestCase {
      * Tests endpoints must not be null behavior.
      */
     public void testEndpointsMustNotBeNull() {
-        try {
-            new Segment(null, IntPoint2D.ZERO);
-            fail("Expected NullPointerException");
-        } catch (NullPointerException expected) {
-        }
-        try {
-            new Segment(IntPoint2D.ZERO, null);
-            fail("Expected NullPointerException");
-        } catch (NullPointerException expected) {
-        }
+        TestUtils.assertThrows(NullPointerException.class, () -> new Segment(null, IntPoint2D.ZERO));
+        TestUtils.assertThrows(NullPointerException.class, () -> new Segment(IntPoint2D.ZERO, null));
     }
 
     /**

@@ -71,6 +71,17 @@ public final class TestUtils {
     }
 
     /**
+     * Asserts that an action throws the expected exception type.
+     * @param expectedException the expected exception class.
+     * @param action the action to use in the test.
+     * @param <T> the expected exception type.
+     * @return the thrown exception.
+     */
+    public static <T extends Throwable> T assertThrows(Class<T> expectedException, FailingRunnable action) {
+        return Assert.assertThrows(expectedException, action::run);
+    }
+
+    /**
      * Asserts line segment equals.
      * @param a the a to use in the test.
      * @param b the b to use in the test.

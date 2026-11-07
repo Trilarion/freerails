@@ -40,6 +40,7 @@ public final class TrainRuntimeState implements Serializable {
 
     private ImmutableCargoBatchBundle cargoBatchBundle = ImmutableCargoBatchBundle.EMPTY;
     private UnmodifiableSchedule schedule = ScheduleState.EMPTY;
+    /** Complete history is retained to support queries at earlier game times. */
     private List<TrainMotion> activities = new ArrayList<>();
 
     /** Returns an iterator over this train's activities. */

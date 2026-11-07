@@ -18,6 +18,7 @@
 
 package freerails.model.operations.train.schedule;
 
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -39,12 +40,7 @@ public class TrainOrderTest extends TestCase {
         source.add(9);
 
         assertEquals(List.of(2, 4), order.getConsist());
-        try {
-            order.getConsist().add(11);
-            fail("Expected the consist to be immutable");
-        } catch (UnsupportedOperationException expected) {
-            // The order exposes an immutable snapshot.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, () -> order.getConsist().add(11));
     }
 
     /**
@@ -72,12 +68,8 @@ public class TrainOrderTest extends TestCase {
         assertTrue(automatic.isAutoConsist());
         assertFalse(automatic.isWaitUntilFull());
 
-        try {
-            automatic.withPolicy(TrainOrder.LoadingPolicy.AUTO_CONSIST, List.of(), true);
-            fail("An automatic consist cannot wait until full");
-        } catch (IllegalArgumentException expected) {
-            // Invalid combinations cannot be represented.
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> automatic.withPolicy(TrainOrder.LoadingPolicy.AUTO_CONSIST, List.of(), true));
     }
 
     /**

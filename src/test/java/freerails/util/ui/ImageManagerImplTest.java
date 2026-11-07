@@ -1,5 +1,6 @@
 package freerails.util.ui;
 
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.awt.Image;
@@ -47,11 +48,7 @@ public class ImageManagerImplTest extends TestCase {
         assertFalse(ImageManagerImpl.isValid("\\image.png"));
         assertFalse(ImageManagerImpl.isValid("image\u0000.png"));
         assertTrue(ImageManagerImpl.isValid("folder/image.png"));
-        try {
-            manager.getScaledImage("image.png", 0);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> manager.getScaledImage("image.png", 0));
     }
 
     /**
@@ -82,33 +79,14 @@ public class ImageManagerImplTest extends TestCase {
     public void testRejectsMissingImagesAndInvalidImageArguments() throws Exception {
         ImageManagerImpl manager = new ImageManagerImpl("/freerails/client/graphics/");
 
-        try {
-            manager.getImage("missing.gif");
-            fail("Expected IOException");
-        } catch (java.io.IOException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(java.io.IOException.class, () -> manager.getImage("missing.gif"));
         assertInvalidImagePath(manager, "../icons/error.gif");
-        try {
-            manager.getImage(null);
-            fail("Expected NullPointerException");
-        } catch (NullPointerException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(NullPointerException.class, () -> manager.getImage(null));
         assertInvalidBlankImageDimensions(manager, 0, 1);
         assertInvalidBlankImageDimensions(manager, 1, 0);
-        try {
-            manager.setImage("icons/error.gif", null);
-            fail("Expected NullPointerException");
-        } catch (NullPointerException expected) {
-            // expected
-        }
-        try {
-            manager.setImage("icons/error.gif", new ZeroSizedImage());
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(NullPointerException.class, () -> manager.setImage("icons/error.gif", null));
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> manager.setImage("icons/error.gif", new ZeroSizedImage()));
     }
 
     /**
@@ -117,14 +95,7 @@ public class ImageManagerImplTest extends TestCase {
      * @param path the path to use in the test.
      */
     private void assertInvalidImagePath(ImageManagerImpl manager, String path) {
-        try {
-            manager.getImage(path);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-            // expected
-        } catch (java.io.IOException e) {
-            fail("Unexpected IOException");
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> manager.getImage(path));
     }
 
     /**
@@ -134,12 +105,7 @@ public class ImageManagerImplTest extends TestCase {
      * @param width the width to use in the test.
      */
     private void assertInvalidBlankImageDimensions(ImageManagerImpl manager, int height, int width) {
-        try {
-            manager.newBlankImage(height, width);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> manager.newBlankImage(height, width));
     }
 
     /**

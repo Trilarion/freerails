@@ -81,6 +81,7 @@ public class ItemTransactionAggregatorTest extends TestCase {
      * Tests finance intervals include start exclude end and keep zero periods behavior.
      */
     public void testFinanceIntervalsIncludeStartExcludeEndAndKeepZeroPeriods() {
+        world.getClock().advanceTimeTo(new Time(15));
         addTransaction(4, TransactionCategory.TRACK, 100, 10, 0);
         addTransaction(5, TransactionCategory.TRACK, 10, 1, 0);
         addTransaction(9, TransactionCategory.TRACK, 20, 2, 0);
@@ -113,7 +114,6 @@ public class ItemTransactionAggregatorTest extends TestCase {
         world.getClock().advanceTimeTo(new Time(2));
         addTransaction(0, TransactionCategory.TRACK, 0, 2, 0);
         addTransaction(2, TransactionCategory.TRACK, 0, 5, 0);
-        addTransaction(3, TransactionCategory.TRACK, 0, 11, 0);
 
         ItemsTransactionAggregator aggregator =
                 new ItemsTransactionAggregator(world, WorldGenerator.TEST_PLAYER);
@@ -131,6 +131,7 @@ public class ItemTransactionAggregatorTest extends TestCase {
         ItemTransaction earlier = itemTransaction(2, 20, 0);
         ItemTransaction sameTimeFirst = itemTransaction(5, 30, 0);
         ItemTransaction sameTimeSecond = itemTransaction(5, 40, 0);
+        world.getClock().advanceTimeTo(new Time(8));
         world.addTransaction(WorldGenerator.TEST_PLAYER, later);
         world.addTransaction(WorldGenerator.TEST_PLAYER, earlier);
         world.addTransaction(WorldGenerator.TEST_PLAYER, sameTimeFirst);
@@ -188,8 +189,9 @@ public class ItemTransactionAggregatorTest extends TestCase {
      * @param id the id used by this test.
      */
     private void addTransaction(int time, TransactionCategory category, long amount, int quantity, int id) {
+        Time transactionTime = new Time(time);
         world.addTransaction(WorldGenerator.TEST_PLAYER,
-                new ItemTransaction(category, new Money(amount), new Time(time), quantity, id));
+                new ItemTransaction(category, new Money(amount), transactionTime, quantity, id));
     }
 
     /**

@@ -27,6 +27,9 @@ import java.util.List;
 
 /**
  * Immutable engine and wagon configuration for a train.
+ *
+ * <p>{@code wagonTypes} is the ordered list of wagon type identifiers; in train
+ * terminology, that ordered list is the consist.
  */
 public record TrainConfiguration(int engineId, List<Integer> wagonTypes) implements Serializable {
 
@@ -34,10 +37,10 @@ public record TrainConfiguration(int engineId, List<Integer> wagonTypes) impleme
     private static final long serialVersionUID = 1L;
 
     /**
-     * Creates a configuration with the specified engine and ordered wagon types.
+     * Creates a configuration with the specified engine and consist.
      *
      * @param engineId   engine type identifier
-     * @param wagonTypes wagon type identifiers in consist order
+     * @param wagonTypes ordered wagon type identifiers forming the consist
      */
     public TrainConfiguration(int engineId, @NotNull List<Integer> wagonTypes) {
         this.engineId = engineId;

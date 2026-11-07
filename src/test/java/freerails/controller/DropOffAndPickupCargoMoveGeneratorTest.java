@@ -43,6 +43,7 @@ import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 import freerails.util.WorldGenerator;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -88,7 +89,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                         WorldGenerator.TEST_PLAYER.getId())));
 
         // Set up train: 3 wagons to carry cargo type 0.
-        Train train = new Train(0, 0);
+        int engineId = world.getEngines().iterator().next().getId();
+        Train train = new Train(0, engineId);
         train.setConsist(Arrays.asList(0, 0, 0));
         world.addTrain(WorldGenerator.TEST_PLAYER, train);
     }
@@ -135,13 +137,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 .findFirst()
                 .orElseThrow();
 
-        try {
-            new AddStationMoveGenerator(emptyLocation, stationTrackType.getId(),
-                    WorldGenerator.TEST_PLAYER).generate(world);
-            fail("Expected station generation on an empty tile to fail.");
-        } catch (IllegalStateException expected) {
-            assertEquals("A station must be placed on existing connected track.", expected.getMessage());
-        }
+        IllegalStateException exception = TestUtils.assertThrows(IllegalStateException.class,
+                () -> new AddStationMoveGenerator(emptyLocation, stationTrackType.getId(),
+                        WorldGenerator.TEST_PLAYER).generate(world));
+        assertEquals("A station must be placed on existing connected track.", exception.getMessage());
 
         TrackPiece stationWithoutExistingTrack = new TrackPiece(TrackConfiguration.from8bitTemplate(1),
                 stationTrackType, WorldGenerator.TEST_PLAYER.getId());

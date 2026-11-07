@@ -20,6 +20,7 @@ package freerails.model.track;
 
 import freerails.model.economy.Money;
 import freerails.model.terrain.TerrainCategory;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.HashSet;
@@ -66,12 +67,7 @@ public class TrackTypeTest extends TestCase {
                 Set.of(TrackProperty.SINGLE), Money.ZERO, Money.ZERO,
                 Set.of(TerrainCategory.COUNTRY), Set.of("00000000"));
 
-        try {
-            trackType.prepare();
-            fail("Expected empty track configuration to be rejected.");
-        } catch (IllegalArgumentException expected) {
-            // Track types must define at least one direction.
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, trackType::prepare);
     }
 
     /**
@@ -79,11 +75,6 @@ public class TrackTypeTest extends TestCase {
      * @param action the action to use in the test.
      */
     private static void assertThrowsUnsupportedOperation(Runnable action) {
-        try {
-            action.run();
-            fail("Expected an immutable configuration set");
-        } catch (UnsupportedOperationException expected) {
-            // Track type definitions expose immutable configuration sets.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, action::run);
     }
 }

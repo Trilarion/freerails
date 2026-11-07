@@ -18,6 +18,7 @@
 
 package freerails.client.launcher;
 
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 /**
@@ -46,11 +47,8 @@ public class JavaFxLauncherTest extends TestCase {
      * @param value the value to parse
      */
     private void assertInvalidPort(String value) {
-        try {
-            JavaFxLauncher.parsePort(value);
-            fail("Expected invalid port: " + value);
-        } catch (IllegalArgumentException e) {
-            assertEquals("A valid port value is between 0 and 65535.", e.getMessage());
-        }
+        IllegalArgumentException exception = TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> JavaFxLauncher.parsePort(value));
+        assertEquals("A valid port value is between 0 and 65535.", exception.getMessage());
     }
 }

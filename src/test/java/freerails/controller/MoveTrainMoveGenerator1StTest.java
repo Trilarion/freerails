@@ -158,7 +158,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         assertEquals(0.0d, trainMotion.getDuration());
 
-        PathOnTiles expected = new PathOnTiles(new IntPoint2D(5, 5), TileTransition.SOUTH_WEST);
+        PathOnTiles expected = new PathOnTiles(new IntPoint2D(5, 5), List.of(TileTransition.SOUTH_WEST));
         assertEquals(expected, trainMotion.getPath());
         PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
         int x = positionOnTrack.getLocation().x();
@@ -179,7 +179,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         TrainMotion tm2 = train.findCurrentMotion(3);
         assertFalse(trainMotion.equals(tm2));
 
-        expected = new PathOnTiles(new IntPoint2D(5, 5), TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST);
+        expected = new PathOnTiles(new IntPoint2D(5, 5), List.of(TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST));
         assertEquals(expected, tm2.getPath());
 
         assertTrue(tm2.getDuration() > 3.0d);
@@ -204,7 +204,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         TrainMotion tm3 = train.findCurrentMotion(100);
         assertFalse(tm3.equals(tm2));
-        expected = new PathOnTiles(new IntPoint2D(4, 6), TileTransition.NORTH_EAST, TileTransition.EAST);
+        expected = new PathOnTiles(new IntPoint2D(4, 6), List.of(TileTransition.NORTH_EAST, TileTransition.EAST));
         assertEquals(expected, tm3.getPath());
 
         assertTrackHere(tm3.getTiles(tm3.getDuration()));
@@ -249,7 +249,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         TrainMotion motion = train.findCurrentMotion(0);
         assertNotNull(motion);
 
-        PathOnTiles expected = new PathOnTiles(from, TileTransition.SOUTH_WEST);
+        PathOnTiles expected = new PathOnTiles(from, List.of(TileTransition.SOUTH_WEST));
         PathOnTiles actual = motion.getTiles(motion.getDuration());
         assertEquals(expected, actual);
     }

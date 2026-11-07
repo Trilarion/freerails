@@ -1,5 +1,6 @@
 package freerails.util.ui;
 
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 /**
@@ -25,11 +26,6 @@ public class UiUtilsTest extends TestCase {
      * Tests string to rgb value rejects invalid hex behavior.
      */
     public void testStringToRGBValueRejectsInvalidHex() {
-        try {
-            UiUtils.stringToRGBValue("not-a-color");
-            fail("Expected NumberFormatException");
-        } catch (NumberFormatException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(NumberFormatException.class, () -> UiUtils.stringToRGBValue("not-a-color"));
     }
 }

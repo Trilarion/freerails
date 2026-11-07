@@ -45,17 +45,17 @@ public class PathOnTilesTest extends TestCase {
     public void testPathOnTiles() {
         final IntPoint2D p1 = null;
         final TileTransition[] transitions1 = null;
-        TestUtils.assertThrows(() -> new PathOnTiles(p1, transitions1));
+        TestUtils.assertThrows(() -> new PathOnTiles(p1, transitions1 == null ? null : List.of(transitions1)));
 
         final IntPoint2D p2 = IntPoint2D.ZERO;
-        TestUtils.assertThrows(() -> new PathOnTiles(p2, transitions1));
+        TestUtils.assertThrows(() -> new PathOnTiles(p2, transitions1 == null ? null : List.of(transitions1)));
 
         final TileTransition[] transitions2 = new TileTransition[]{null, null};
-        TestUtils.assertThrows(() -> new PathOnTiles(p2, transitions2));
+        TestUtils.assertThrows(() -> new PathOnTiles(p2, List.of(transitions2)));
 
         final TileTransition[] transitions3 = new TileTransition[]{TileTransition.NORTH, TileTransition.SOUTH};
-        TestUtils.assertThrows(() -> new PathOnTiles(p2, transitions2));
-        new PathOnTiles(p2, transitions3);
+        TestUtils.assertThrows(() -> new PathOnTiles(p2, List.of(transitions2)));
+        new PathOnTiles(p2, List.of(transitions3));
     }
 
     /**
@@ -64,7 +64,7 @@ public class PathOnTilesTest extends TestCase {
     public void testGetStepIndex() {
         IntPoint2D p1 = IntPoint2D.ZERO;
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.SOUTH_EAST, TileTransition.EAST, TileTransition.EAST};
-        PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
+        PathOnTiles pathOnTiles = new PathOnTiles(p1, List.of(tileTransitions));
         assertEquals(0, pathOnTiles.getStepIndex(0));
         assertEquals(0, pathOnTiles.getStepIndex(1));
         assertEquals(0, pathOnTiles.getStepIndex(100));
@@ -78,7 +78,7 @@ public class PathOnTilesTest extends TestCase {
     public void testGetLength() {
         IntPoint2D p1 = IntPoint2D.ZERO;
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
+        PathOnTiles pathOnTiles = new PathOnTiles(p1, List.of(tileTransitions));
         assertEquals(3 * ModelConstants.MODEL_UNITS_PER_TILE, pathOnTiles.getTotalDistance(), 0.001);
     }
 
@@ -88,7 +88,7 @@ public class PathOnTilesTest extends TestCase {
     public void testGetPoint() {
         IntPoint2D p1 = IntPoint2D.ZERO;
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
+        PathOnTiles pathOnTiles = new PathOnTiles(p1, List.of(tileTransitions));
         IntPoint2D expected = new IntPoint2D(50, 50);
         IntPoint2D actual = pathOnTiles.getPoint(0);
         assertEquals(expected, actual);
@@ -103,7 +103,7 @@ public class PathOnTilesTest extends TestCase {
         actual = pathOnTiles.getPoint(150);
         assertEquals(expected, actual);
 
-        PathOnTiles diagonal = new PathOnTiles(IntPoint2D.ZERO, TileTransition.NORTH_EAST);
+        PathOnTiles diagonal = new PathOnTiles(IntPoint2D.ZERO, List.of(TileTransition.NORTH_EAST));
         assertEquals(new IntPoint2D(100, 0), diagonal.getPoint(ModelConstants.MODEL_DIAGONAL_TILE_LENGTH / 2));
     }
 
@@ -113,7 +113,7 @@ public class PathOnTilesTest extends TestCase {
     public void testGetPointPair() {
         IntPoint2D p1 = new IntPoint2D();
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
+        PathOnTiles pathOnTiles = new PathOnTiles(p1, List.of(tileTransitions));
         IntPoint2D expected1 = new IntPoint2D(50, 50);
         Pair<IntPoint2D, IntPoint2D> actual = pathOnTiles.getPoint(0, 0);
         assertEquals(expected1, actual.a());
@@ -136,7 +136,7 @@ public class PathOnTilesTest extends TestCase {
     public void testSubPath() {
         IntPoint2D p1 = new IntPoint2D();
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
+        PathOnTiles pathOnTiles = new PathOnTiles(p1, List.of(tileTransitions));
 
         // First check
         Pair<PathIterator, Integer> pathIt = pathOnTiles.subPath(0, pathOnTiles.getTotalDistance());
@@ -160,7 +160,7 @@ public class PathOnTilesTest extends TestCase {
         // 4th check, with a path just 1 tile long.
         p1 = new IntPoint2D(5, 5);
         tileTransitions = new TileTransition[]{TileTransition.SOUTH_WEST};
-        pathOnTiles = new PathOnTiles(p1, tileTransitions);
+        pathOnTiles = new PathOnTiles(p1, List.of(tileTransitions));
         pathIt = pathOnTiles.subPath(60, 80);
         Segment line = null;
         assertTrue(pathIt.a().hasNext());
@@ -172,7 +172,7 @@ public class PathOnTilesTest extends TestCase {
         tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
 
         p1 = new IntPoint2D(4, 7);
-        pathOnTiles = new PathOnTiles(p1, tileTransitions);
+        pathOnTiles = new PathOnTiles(p1, List.of(tileTransitions));
 
         pathIt = pathOnTiles.subPath(10, pathOnTiles.getTotalDistance() - 10);
         expected = new IntPoint2D[]{new IntPoint2D(60, 50), new IntPoint2D(150, 50),
@@ -207,7 +207,7 @@ public class PathOnTilesTest extends TestCase {
      */
     public void testTiles() {
         IntPoint2D p1 = new IntPoint2D(5,5);
-        PathOnTiles pathOnTiles = new PathOnTiles(p1, TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST);
+        PathOnTiles pathOnTiles = new PathOnTiles(p1, List.of(TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST));
         Iterator<IntPoint2D> it = pathOnTiles.tilesIterator();
 
         assertEquals(p1, it.next());
@@ -223,7 +223,7 @@ public class PathOnTilesTest extends TestCase {
         List<TileTransition> transitions =
                 new ArrayList<>(List.of(TileTransition.EAST, TileTransition.SOUTH));
         PathOnTiles path = new PathOnTiles(IntPoint2D.ZERO, transitions);
-        PathOnTiles originalValue = new PathOnTiles(IntPoint2D.ZERO, TileTransition.EAST, TileTransition.SOUTH);
+        PathOnTiles originalValue = new PathOnTiles(IntPoint2D.ZERO, List.of(TileTransition.EAST, TileTransition.SOUTH));
         int originalHashCode = path.hashCode();
         double originalDistance = path.getTotalDistance();
 

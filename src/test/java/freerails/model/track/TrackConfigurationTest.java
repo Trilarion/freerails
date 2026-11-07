@@ -25,6 +25,7 @@
 package freerails.model.track;
 
 import freerails.model.terrain.TileTransition;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.HashSet;
@@ -70,12 +71,8 @@ public class TrackConfigurationTest extends TestCase {
         assertEquals(TrackConfiguration.from8bitTemplate(0b10000001),
                 TrackConfiguration.getFlatInstance("10000001"));
 
-        try {
-            TrackConfiguration.getFlatInstance("000010000");
-            fail("Expected the old nine-bit template width to be rejected.");
-        } catch (NumberFormatException expected) {
-            // Legacy-width strings are not valid directional masks.
-        }
+        TestUtils.assertThrows(NumberFormatException.class,
+                () -> TrackConfiguration.getFlatInstance("000010000"));
     }
 
     /**

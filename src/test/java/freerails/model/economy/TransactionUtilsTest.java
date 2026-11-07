@@ -27,6 +27,7 @@ import freerails.model.track.TrackProperty;
 import freerails.model.track.TrackType;
 import freerails.model.world.World;
 import freerails.util.IntPoint2D;
+import freerails.util.TestUtils;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -62,12 +63,8 @@ public class TransactionUtilsTest extends TestCase {
         world.addTransaction(player, new ItemTransaction(
                 TransactionCategory.TRACK, Money.ZERO, Time.ZERO, 2, 0));
 
-        try {
-            TransactionUtils.calculateTrackTotal(world, player, Time.ZERO);
-            fail("Expected track valuation overflow.");
-        } catch (ArithmeticException expected) {
-            // Expected.
-        }
+        TestUtils.assertThrows(ArithmeticException.class,
+                () -> TransactionUtils.calculateTrackTotal(world, player, Time.ZERO));
     }
 
     /**
@@ -77,6 +74,7 @@ public class TransactionUtilsTest extends TestCase {
      * @return world containing the priced track type
      */
     private static World createWorld(Money purchasingPrice) {
+        World base = WorldGenerator.testWorld(true);
         TrackType trackType = new TrackType(0, "test-track", TrackCategory.TRACK,
                 Set.of(TrackProperty.SINGLE), Money.ZERO, purchasingPrice,
                 Set.of(), Set.of());
@@ -84,8 +82,9 @@ public class TransactionUtilsTest extends TestCase {
         trackTypes.add(trackType);
 
         return new World.Builder()
-                .setRules(WorldGenerator.testWorld(true).getRules())
+                .setRules(base.getRules())
                 .setTrackTypes(trackTypes)
+                .setTerrainTypes(new TreeSet<>(base.getTerrains()))
                 .setMapSize(new IntPoint2D(1, 1))
                 .build();
     }

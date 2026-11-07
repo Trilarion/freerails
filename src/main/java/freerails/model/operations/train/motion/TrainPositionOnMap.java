@@ -32,7 +32,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-// TODO does not use any Train motion
 /**
  * This <b>immutable</b> class represents the position of a train as a String
  * of points. There must be at least two points. The first point is the position

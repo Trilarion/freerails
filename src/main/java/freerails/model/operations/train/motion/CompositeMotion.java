@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /** A motion profile formed by executing component motions in sequence. */
-public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Motion {
+public class CompositeMotion extends Activity<MotionState> implements Motion {
 
     @Serial
     private static final long serialVersionUID = 3146586143114534610L;
@@ -113,7 +113,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
      * @throws IllegalArgumentException if time is outside the motion duration
      */
     @Override
-    public SpeedTimeAndStatus getStateAtTime(final double time) {
+    public MotionState getStateAtTime(final double time) {
         checkTime(time);
         double acceleration;
         double distance;
@@ -125,7 +125,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         acceleration = motion.calculateAccelerationAtTime(subTime.time);
         distance = motion.calculateDistanceAtTime(subTime.time);
 
-        return new SpeedTimeAndStatus(speed, acceleration, distance, time, TrainState.READY);
+        return new MotionState(speed, acceleration, distance, time, TrainState.READY);
     }
 
     /**
@@ -157,9 +157,10 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
      */
     @Override
     public double calculateTimeAtDistance(double distance) {
+        if (distance < 0 || distance > totalDistance) {
+            throw new IllegalArgumentException(String.valueOf(distance));
+        }
         if (distance == totalDistance) return totalTime;
-        // TODO check distance
-        if (distance > totalDistance) throw new IllegalArgumentException(String.valueOf(distance));
 
         double distanceSoFar = 0;
         double timeSoFar = 0;

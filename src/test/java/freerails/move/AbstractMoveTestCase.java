@@ -23,6 +23,7 @@ package freerails.move;
 
 import freerails.model.operations.train.Train;
 import freerails.util.IntPoint2D;
+import freerails.util.TestUtils;
 import freerails.util.Utils;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
@@ -64,9 +65,9 @@ public abstract class AbstractMoveTestCase extends TestCase {
     void assertMoveApplyFails(Move move) {
         assertSetupHasBeenCalled();
 
-        // TODO this doesn't really test if apply fails (rather surround with try and catch)
         Status status = move.applicable(world);
-        assertTrue("Move went through when it should have failed", !status.isSuccess());
+        assertTrue("Move was unexpectedly applicable", !status.isSuccess());
+        TestUtils.assertThrows(RuntimeException.class, () -> move.apply(world));
     }
 
     /**
@@ -228,7 +229,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
         // Set the time..
         world.addPlayer(WorldGenerator.TEST_PLAYER);
         // add a train
-        world.addTrain(WorldGenerator.TEST_PLAYER, new Train(0, 0));
+        world.addTrain(WorldGenerator.TEST_PLAYER, new Train(0, validEngineId));
     }
 
     /**

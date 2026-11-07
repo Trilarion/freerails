@@ -31,6 +31,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.operations.train.Engine;
 import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainConfiguration;
 import freerails.model.operations.train.TrainTemplate;
 import freerails.util.*;
 import freerails.model.economy.Money;
@@ -60,7 +61,7 @@ public class World implements UnmodifiableWorld {
     private final Clock clock;
     private boolean cityGrowthEnabled = true;
     private Speed speed = Speed.MODERATE;
-    private Rules rules;
+    private final Rules rules;
     private final IntPoint2D mapSize;
     private final TerrainTile[] map;
     private final List<Player> players = new ArrayList<>();
@@ -248,6 +249,7 @@ public class World implements UnmodifiableWorld {
          * @return the initialized world
          * @throws IllegalStateException if rules or map size have not been set
          * @throws IllegalArgumentException if the map size is outside supported limits
+         *         or terrain ID 0 is not defined
          */
         public World build() {
             if (rules == null) {
@@ -275,6 +277,9 @@ public class World implements UnmodifiableWorld {
         cities = new TreeSet<>(builder.cities);
         cargos = new TreeSet<>(builder.cargos);
         terrainTypes = new TreeSet<>(builder.terrainTypes);
+        if (terrainTypes.stream().noneMatch(terrain -> terrain.getId() == 0)) {
+            throw new IllegalArgumentException("Terrain definitions must include terrain ID 0.");
+        }
         trackTypes = new TreeSet<>(builder.trackTypes);
         trains = new HashMap<>(builder.trains);
         stations = new HashMap<>(builder.stations);
@@ -291,8 +296,6 @@ public class World implements UnmodifiableWorld {
         mapSize = new IntPoint2D(builder.mapSize);
         map = new TerrainTile[Math.toIntExact((long) mapSize.x() * mapSize.y())];
 
-        // TODO what is a good default initializer here or should we stay with null?
-        // TODO terrainTypeId 0 must also exist as terrain, how to make sure
         for (int i = 0; i < map.length; i++) {
             map[i] = new TerrainTile(0);
         }
@@ -592,7 +595,8 @@ public class World implements UnmodifiableWorld {
      * @param player owner of the train
      * @param train train to add
      * @throws IllegalArgumentException if the player already has a train with
-     *         the same identifier
+     *         the same identifier or the train references an unknown engine or
+     *         wagon type
      */
     public void addTrain(Player player, Train train) {
         int playerId = getPlayerId(player);
@@ -601,8 +605,42 @@ public class World implements UnmodifiableWorld {
         if (trainIndexes.containsKey(train.getId())) {
             throw new IllegalArgumentException("Train with id already existing. Cannot add.");
         }
+        validateTrainConfiguration(train.getConfiguration());
         playerTrains.add(train);
         trainIndexes.put(train.getId(), playerTrains.size() - 1);
+    }
+
+    /**
+     * Replaces a train's configuration after validating its type identifiers.
+     *
+     * @param player owner of the train
+     * @param trainId identifier of the train to update
+     * @param configuration replacement configuration
+     * @throws IllegalArgumentException if the train or any referenced type is unknown
+     */
+    public void updateTrainConfiguration(Player player, int trainId, TrainConfiguration configuration) {
+        Train train = getTrain(player, trainId);
+        validateTrainConfiguration(configuration);
+        train.setConfiguration(configuration);
+    }
+
+    /**
+     * Validates that a configuration's engine and wagon type identifiers exist in this world.
+     *
+     * @param configuration train configuration to validate
+     * @throws IllegalArgumentException if any referenced type is unknown
+     */
+    private void validateTrainConfiguration(TrainConfiguration configuration) {
+        Objects.requireNonNull(configuration);
+        int engineId = configuration.engineId();
+        if (!engineById.containsKey(engineId)) {
+            throw new IllegalArgumentException("Unknown engine ID " + engineId);
+        }
+        for (int wagonTypeId : configuration.wagonTypes()) {
+            if (!cargoById.containsKey(wagonTypeId)) {
+                throw new IllegalArgumentException("Unknown wagon type ID " + wagonTypeId);
+            }
+        }
     }
 
     /**
@@ -744,16 +782,6 @@ public class World implements UnmodifiableWorld {
         return rules;
     }
 
-    // TODO undo this later, just for not breaking the tests
-    /**
-     * Replaces the world's track and gameplay rules.
-     *
-     * @param rules rules to use
-     */
-    public void setRules(@NotNull Rules rules) {
-        this.rules = rules;
-    }
-
     /**
      * Records an activity on a train with a start time of at least the current
      * world tick.
@@ -803,20 +831,24 @@ public class World implements UnmodifiableWorld {
         return index;
     }
 
-    // TODO check that transaction time is not in the future
     /**
      * Adds a transaction to the player's history and updates the current
      * balance by its amount. History preserves append order and does not
-     * require transaction timestamps to be chronological.
+     * require transaction timestamps to be chronological, but transactions
+     * cannot be dated after the current world time.
      *
      * @param player account owner
      * @param transaction transaction to record
      * @throws NullPointerException if {@code transaction} is null
-     * @throws IllegalArgumentException if the player is not in this world
+     * @throws IllegalArgumentException if the player is not in this world or
+     *         the transaction is dated after the current world time
      */
     public void addTransaction(Player player, Transaction transaction) {
         Objects.requireNonNull(transaction, "transaction");
         int playerId = getPlayerId(player);
+        if (transaction.getTime().compareTo(clock.getCurrentTime()) > 0) {
+            throw new IllegalArgumentException("Transaction time cannot be in the future.");
+        }
         List<Transaction> playerTransactions = transactions.get(playerId);
 
         // adjust balance
@@ -833,7 +865,6 @@ public class World implements UnmodifiableWorld {
      */
     @Override
     public boolean boundsContain(IntPoint2D location) {
-        // TODO use compareTo instead
         IntPoint2D mapSize = getMapSize();
         return location.x() >= 0 && location.x() < mapSize.x() && location.y() >= 0 && location.y() < mapSize.y();
     }
@@ -1034,10 +1065,9 @@ public class World implements UnmodifiableWorld {
         return result;
     }
 
-    // TODO remove this, when undoing moves is eliminated
     /**
      * Removes and returns the last transaction in a player's history, restoring
-     * the previous balance. This supports undoing transaction moves.
+     * the previous balance.
      *
      * @param player account owner
      * @return removed transaction

@@ -50,19 +50,6 @@ public class PathOnTiles implements Serializable {
         this.start = Utils.verifyNotNull(start);
     }
 
-    // TODO remove this constructor only used from tests or needed for tests?
-    /**
-     * Creates a path from a variable number of transitions.
-     *
-     * @param start starting tile coordinates
-     * @param tileTransitions transitions from the start tile, in traversal order
-     * @throws NullPointerException if the start, transition array, or any transition is null
-     */
-    public PathOnTiles(IntPoint2D start, TileTransition... tileTransitions) {
-        vectors = List.copyOf(Arrays.asList(tileTransitions));
-        this.start = Utils.verifyNotNull(start);
-    }
-
     /** Compares the starting tile and ordered transitions. */
     @Override
     public boolean equals(Object obj) {
@@ -363,50 +350,7 @@ public class PathOnTiles implements Serializable {
      * @return iterator over visited tile coordinates
      */
     public Iterator<IntPoint2D> tilesIterator() {
-        // TODO no anonymous class here
-        return new Iterator<>() {
-            private int index = 0;
-
-            private IntPoint2D next = start;
-
-            /** Returns whether another visited tile remains. */
-            @Override
-            public boolean hasNext() {
-                return next != null;
-            }
-
-            /**
-             * Returns the next visited tile.
-             *
-             * @return next tile coordinate
-             * @throws NoSuchElementException if all tiles have been returned
-             */
-            @Override
-            public IntPoint2D next() {
-                if (next == null) throw new NoSuchElementException();
-
-                IntPoint2D returnValue = next;
-                int x = next.x();
-                int y = next.y();
-                if (index < vectors.size()) {
-                    TileTransition s = vectors.get(index);
-                    x += s.deltaX;
-                    y += s.deltaY;
-                    next = new IntPoint2D(x, y);
-                } else {
-                    next = null;
-                }
-                index++;
-
-                return returnValue;
-            }
-
-            /** Removal is unsupported because this iterator does not modify the path. */
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
+        return new TilesIterator(start, vectors);
     }
 
     /** Returns a textual representation of the start tile and transitions. */

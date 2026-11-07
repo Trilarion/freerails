@@ -198,6 +198,7 @@ public class FinancialDataAggregatorTest extends TestCase {
         int holderIndex = world.getPlayerIndex(holder.getId());
         assertEquals(0, aggregator.getStockInThisRRs()[holderIndex]);
 
+        world.getClock().advanceTimeTo(end);
         world.addTransaction(player, TransactionUtils.issueStock(
                 -1, 10, Money.ZERO, Time.ZERO));
         world.addTransaction(player, TransactionUtils.issueStock(

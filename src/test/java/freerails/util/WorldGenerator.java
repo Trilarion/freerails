@@ -78,6 +78,10 @@ public final class WorldGenerator {
             throw new RuntimeException(e);
         }
         builder.setMapSize(mapSize);
+        SortedSet<Terrain> terrainTypes = new TreeSet<>();
+        terrainTypes.add(new Terrain(0, "Clear", TerrainCategory.COUNTRY,
+                Money.ZERO, Money.ZERO, List.of(), List.of(), List.of()));
+        builder.setTerrainTypes(terrainTypes);
         return builder.build();
     }
 
@@ -86,10 +90,24 @@ public final class WorldGenerator {
      * @return the result of default world.
      */
     public static World defaultWorld() {
+        try {
+            return defaultWorld(getDefaultRules());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Creates a default world with the supplied rules.
+     *
+     * @param rules game rules
+     * @return the initialized world
+     */
+    public static World defaultWorld(Rules rules) {
         World.Builder builder = new World.Builder();
         builder.setMapSize(new IntPoint2D(200, 200));
+        builder.setRules(rules);
         try {
-            builder.setRules(getDefaultRules());
             builder.setEngines(getEngines());
             builder.setCargos(getCargos());
             builder.setTerrainTypes(getTerrainTypes());
@@ -111,22 +129,40 @@ public final class WorldGenerator {
     }
 
     /**
+     * Creates a test world with the supplied rules.
+     *
+     * @param rules game rules
+     * @return the initialized test world
+     */
+    public static World testWorld(Rules rules) {
+        return testWorld(rules, new TreeSet<>());
+    }
+
+    /**
      * Tests world behavior.
      * @param useDefaultRules the use default rules to use in the test.
      * @param cities the cities to use in the test.
      * @return the result of test world.
      */
     public static World testWorld(boolean useDefaultRules, SortedSet<City> cities) {
-        World.Builder builder = new World.Builder();
         try {
-            if (useDefaultRules) {
-                builder.setRules(getDefaultRules());
-            } else {
-                builder.setRules(getUnrestrictedRules());
-            }
+            Rules rules = useDefaultRules ? getDefaultRules() : getUnrestrictedRules();
+            return testWorld(rules, cities);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Creates a test world with the supplied rules and cities.
+     *
+     * @param rules the rules to use
+     * @param cities the cities to use
+     * @return the initialized test world
+     */
+    public static World testWorld(Rules rules, SortedSet<City> cities) {
+        World.Builder builder = new World.Builder();
+        builder.setRules(rules);
         builder.setTrackTypes(testTrackTypes());
         builder.setTerrainTypes(testTerrainTypes());
         builder.setCargos(testCargos());

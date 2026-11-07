@@ -34,7 +34,6 @@ import java.util.Arrays;
  */
 public class PathWalkerImplTest extends TestCase {
 
-    // TODO very volatile execution order here important, refactor
     private PathWalker pathWalker;
 
     /**
@@ -46,13 +45,11 @@ public class PathWalkerImplTest extends TestCase {
         pathWalker = new PathWalkerImpl(it);
     }
 
-    /*
-     * Test for boolean canStepForward()
-     */
     /**
      * Verifies that stepping advances the path walker through the path.
      */
     public void testCanStepForward() {
+        // Start with a fresh path for the first full-length step.
         setup();
 
         assertTrue(pathWalker.canStepForward());
@@ -62,6 +59,7 @@ public class PathWalkerImplTest extends TestCase {
         }
         assertTrue(!pathWalker.canStepForward());
 
+        // A shorter step should stop in the middle of the first segment and then resume.
         setup();
         assertTrue(pathWalker.canStepForward());
         pathWalker.stepForward(10);
@@ -88,6 +86,7 @@ public class PathWalkerImplTest extends TestCase {
     public void testHasNext() {
         Segment line = null;
 
+        // An untouched walker should not claim any segment until a step is queued.
         setup();
         assertTrue(!pathWalker.hasNext());
         pathWalker.stepForward(10);
@@ -96,6 +95,7 @@ public class PathWalkerImplTest extends TestCase {
         TestUtils.assertLineSegmentEquals(IntPoint2D.ZERO, new IntPoint2D(10, 0), line);
         assertTrue(!pathWalker.hasNext());
 
+        // Advancing across a segment boundary should expose the remaining portion of the next line.
         setup();
         assertTrue(!pathWalker.hasNext());
         pathWalker.stepForward(110);
@@ -110,6 +110,7 @@ public class PathWalkerImplTest extends TestCase {
         /*
          * Now test with underlying pathIterators with few elements.
          */
+        // Paths with too few points should never report work once the step is exhausted.
         ArrayList<IntPoint2D> points = new ArrayList<>();
         assertHasNextEqualsFalse(points);
         points = new ArrayList<>();

@@ -24,6 +24,7 @@ package freerails.model.operations.train;
 import freerails.model.operations.train.motion.CompositeMotion;
 import freerails.model.operations.train.motion.ConstantAccelerationMotion;
 import freerails.model.operations.train.motion.Motion;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.Random;
@@ -46,6 +47,14 @@ public class CompositeMotionTest extends TestCase {
         assertEquals(400.0d, s);
         double t3 = csat.calculateTimeAtDistance(0.0d);
         assertEquals(0.0d, t3);
+    }
+
+    /**
+     * Tests that negative distances are rejected, including by an empty motion.
+     */
+    public void testNegativeDistanceIsRejected() {
+        CompositeMotion emptyMotion = new CompositeMotion();
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> emptyMotion.calculateTimeAtDistance(-1));
     }
 
     /**

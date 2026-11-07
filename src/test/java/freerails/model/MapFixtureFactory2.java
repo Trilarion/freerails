@@ -19,6 +19,7 @@
 package freerails.model;
 
 import freerails.model.player.Player;
+import freerails.model.game.Rules;
 import freerails.model.terrain.Terrain;
 import freerails.move.AddPlayerMove;
 import freerails.move.Status;
@@ -47,39 +48,56 @@ public class MapFixtureFactory2 {
      */
     public static synchronized World getCopy() {
         if (null == world) {
-            world = WorldGenerator.defaultWorld();
-
-            // Add 4 players
-            for (int i = 0; i < 4; i++) {
-                String name = "player" + i;
-                Player player = new Player(i, name);
-                // add a new player
-                AddPlayerMove move = new AddPlayerMove(player);
-                Status status = move.applicable(world);
-                assert status.isSuccess();
-                move.apply(world);
-            }
-
-            int clearTypeID = 0;
-            // Fill the world with clear terrain.
-            for (Terrain terrain: world.getTerrains()) {
-                if (terrain.getName().equals("Clear")) {
-                    clearTypeID = terrain.getId();
-                }
-            }
-            TerrainTile tile = new TerrainTile(clearTypeID);
-            IntPoint2D mapSize = world.getMapSize();
-            for (int x = 0; x < mapSize.x(); x++) {
-                for (int y = 0; y < mapSize.y(); y++) {
-                    world.setTile(new IntPoint2D(x, y), tile);
-                }
-            }
+            world = createWorld(null);
         }
         /**
          * Returns a copy of this world object - making changes to this copy will
          * not change this object.
          */
         return (World) Utils.cloneBySerialisation(world);
+    }
+
+    /**
+     * Returns a fresh fixture world using the supplied rules.
+     *
+     * @param rules game rules
+     * @return a world copy with fixture players and terrain
+     */
+    public static synchronized World getCopy(Rules rules) {
+        return (World) Utils.cloneBySerialisation(createWorld(rules));
+    }
+
+    /**
+     * Creates the fixture world with four players and a clear terrain map.
+     *
+     * @param rules rules to use, or {@code null} for the default rules
+     * @return the initialized fixture world
+     */
+    private static World createWorld(Rules rules) {
+        World created = rules == null ? WorldGenerator.defaultWorld() : WorldGenerator.defaultWorld(rules);
+
+        for (int i = 0; i < 4; i++) {
+            Player player = new Player(i, "player" + i);
+            AddPlayerMove move = new AddPlayerMove(player);
+            Status status = move.applicable(created);
+            assert status.isSuccess();
+            move.apply(created);
+        }
+
+        int clearTypeID = 0;
+        for (Terrain terrain : created.getTerrains()) {
+            if (terrain.getName().equals("Clear")) {
+                clearTypeID = terrain.getId();
+            }
+        }
+        TerrainTile tile = new TerrainTile(clearTypeID);
+        IntPoint2D mapSize = created.getMapSize();
+        for (int x = 0; x < mapSize.x(); x++) {
+            for (int y = 0; y < mapSize.y(); y++) {
+                created.setTile(new IntPoint2D(x, y), tile);
+            }
+        }
+        return created;
     }
 
 }

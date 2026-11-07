@@ -37,7 +37,6 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @param world the world state used by the test.
      * @param player the player to use in the test.
      */
-    // TODO we really need player here, have it as argument instead of playerID
     public SimpleMoveExecutor(World world, Player player) {
         this.world = world;
         this.player = player;

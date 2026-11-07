@@ -86,12 +86,7 @@ public class BooleanArray2DTest extends TestCase {
      * @param height the array height
      */
     private void assertInvalidDimensions(int width, int height) {
-        try {
-            new BooleanArray2D(width, height);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> new BooleanArray2D(width, height));
     }
 
     /**
@@ -102,12 +97,7 @@ public class BooleanArray2DTest extends TestCase {
      * @param y the row
      */
     private void assertInvalidCoordinate(BooleanArray2D array, int x, int y) {
-        try {
-            array.get(x, y);
-            fail("Expected IndexOutOfBoundsException");
-        } catch (IndexOutOfBoundsException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IndexOutOfBoundsException.class, () -> array.get(x, y));
     }
 
     /**
@@ -118,11 +108,6 @@ public class BooleanArray2DTest extends TestCase {
      * @param y the row
      */
     private void assertInvalidSetCoordinate(BooleanArray2D array, int x, int y) {
-        try {
-            array.set(x, y, true);
-            fail("Expected IndexOutOfBoundsException");
-        } catch (IndexOutOfBoundsException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IndexOutOfBoundsException.class, () -> array.set(x, y, true));
     }
 }

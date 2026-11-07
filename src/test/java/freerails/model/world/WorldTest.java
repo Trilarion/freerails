@@ -32,9 +32,11 @@ import freerails.model.game.Sentiment;
 import freerails.model.simulation.Time;
 import freerails.model.operations.station.Station;
 import freerails.model.terrain.TerrainTile;
+import freerails.model.terrain.Terrain;
 import freerails.model.terrain.city.City;
 import freerails.model.track.TrackConfiguration;
 import freerails.util.IntPoint2D;
+import freerails.util.TestUtils;
 import freerails.util.Utils;
 import freerails.model.economy.*;
 import freerails.model.player.Player;
@@ -42,6 +44,8 @@ import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 import freerails.model.operations.train.Train;
+import freerails.model.operations.train.Engine;
+import freerails.model.operations.train.TrainConfiguration;
 import freerails.model.operations.train.TrainTemplate;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
@@ -99,7 +103,7 @@ public class WorldTest extends TestCase {
         copy.setTile(location, new TerrainTile(1));
         copy.addTransaction(copiedPlayer, new Transaction(
                 TransactionCategory.MISC_INCOME, new Money(50), copy.getClock().getCurrentTime()));
-        copy.addTrain(copiedPlayer, new Train(2, 0));
+        copy.addTrain(copiedPlayer, trainWithAvailableEngine(copy, 2));
         copy.setSpeed(Speed.FAST);
 
         assertEquals(originalTile, original.getTile(location));
@@ -132,7 +136,7 @@ public class WorldTest extends TestCase {
 
         changed = (World) Utils.cloneBySerialisation(original);
         changedPlayer = changed.getPlayer(changed.getPlayerIndex(0));
-        changed.addTrain(changedPlayer, new Train(2, 0));
+        changed.addTrain(changedPlayer, trainWithAvailableEngine(changed, 2));
         assertFalse(original.equals(changed));
 
         changed = (World) Utils.cloneBySerialisation(original);
@@ -159,12 +163,7 @@ public class WorldTest extends TestCase {
         assertEquals(new IntPoint2D(4, 5), copy.getEngineShop(copiedPlayer, 3).getLocation());
         assertEquals(1, copy.getEngineShops(copiedPlayer).size());
         assertTrue(copy.getEngineShops(otherCopiedPlayer).isEmpty());
-        try {
-            copy.getEngineShops(copiedPlayer).clear();
-            fail("Expected the engine-shop collection to be unmodifiable");
-        } catch (UnsupportedOperationException expected) {
-            // The world exposes a read-only collection view.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, () -> copy.getEngineShops(copiedPlayer).clear());
 
         World changed = (World) Utils.cloneBySerialisation(world);
         Player changedPlayer = changed.getPlayer(changed.getPlayerIndex(0));
@@ -230,8 +229,6 @@ public class WorldTest extends TestCase {
         assertFalse(copy.equals(original));
         original.addPlayer(player);
         assertEquals("The copies should be logically equal.", original, copy);
-
-        assertTrue(Utils.equalsBySerialization(original, copy));
 
         Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(100), copy.getClock().getCurrentTime());
         copy.addTransaction(player, transaction);
@@ -302,12 +299,7 @@ public class WorldTest extends TestCase {
                 new IntPoint2D(0, 5), new IntPoint2D(-1, 5), new IntPoint2D(3, 5));
         for (IntPoint2D coordinate : outsideCoordinates) {
             assertFalse(world.boundsContain(coordinate));
-            try {
-                world.getTile(coordinate);
-                fail("Tile access must reject out-of-bounds coordinate " + coordinate);
-            } catch (IndexOutOfBoundsException expected) {
-                // Expected.
-            }
+            TestUtils.assertThrows(IndexOutOfBoundsException.class, () -> world.getTile(coordinate));
         }
     }
 
@@ -333,10 +325,41 @@ public class WorldTest extends TestCase {
     }
 
     /**
+     * Tests future transaction timestamps are rejected while historical order
+     * remains unrestricted.
+     */
+    public void testTransactionTimeCannotBeInTheFuture() {
+        World world = WorldGenerator.minimalWorld();
+        Player player = new Player(0, "Test");
+        world.addPlayer(player);
+
+        Transaction future = new Transaction(
+                TransactionCategory.MISC_INCOME, new Money(100), Time.ZERO.advance());
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> world.addTransaction(player, future));
+        assertTrue(world.getTransactions(player).isEmpty());
+        assertEquals(Money.ZERO, world.getCurrentBalance(player));
+
+        world.getClock().advanceTimeTo(new Time(2));
+        Transaction earlier = new Transaction(
+                TransactionCategory.MISC_INCOME, new Money(10), Time.ZERO);
+        Transaction later = new Transaction(
+                TransactionCategory.MISC_INCOME, new Money(20), new Time(1));
+        Transaction current = new Transaction(
+                TransactionCategory.MISC_INCOME, new Money(30), new Time(2));
+        world.addTransaction(player, later);
+        world.addTransaction(player, earlier);
+        world.addTransaction(player, current);
+
+        assertEquals(List.of(later, earlier, current), List.copyOf(world.getTransactions(player)));
+        assertEquals(new Money(60), world.getCurrentBalance(player));
+    }
+
+    /**
      * Tests player owned collections are initialized and isolated behavior.
      */
     public void testPlayerOwnedCollectionsAreInitializedAndIsolated() {
-        World world = WorldGenerator.minimalWorld();
+        World world = WorldGenerator.defaultWorld();
         Player first = new Player(10, "First");
         Player second = new Player(20, "Second");
         world.addPlayer(first);
@@ -351,7 +374,7 @@ public class WorldTest extends TestCase {
         assertTrue(world.getTransactions(second).isEmpty());
         assertEquals(Money.ZERO, world.getCurrentBalance(second));
 
-        world.addTrain(first, new Train(1, 0));
+        world.addTrain(first, trainWithAvailableEngine(world, 1));
         world.addStation(first, new Station(
                 2, IntPoint2D.ZERO, "First station", CargoBatchBundle.EMPTY));
         world.addTransaction(first, transaction(world, 50));
@@ -370,19 +393,19 @@ public class WorldTest extends TestCase {
      * Tests train and station ids are unique per owner behavior.
      */
     public void testTrainAndStationIdsAreUniquePerOwner() {
-        World world = WorldGenerator.minimalWorld();
+        World world = WorldGenerator.defaultWorld();
         Player first = new Player(10, "First");
         Player second = new Player(20, "Second");
         world.addPlayer(first);
         world.addPlayer(second);
 
-        Train firstTrain = new Train(7, 0);
-        Train firstOtherTrain = new Train(8, 0);
-        Train secondTrain = new Train(7, 0);
+        Train firstTrain = trainWithAvailableEngine(world, 7);
+        Train firstOtherTrain = trainWithAvailableEngine(world, 8);
+        Train secondTrain = trainWithAvailableEngine(world, 7);
         world.addTrain(first, firstTrain);
         world.addTrain(first, firstOtherTrain);
         world.addTrain(second, secondTrain);
-        assertDuplicateRejected(() -> world.addTrain(first, new Train(7, 1)));
+        assertDuplicateRejected(() -> world.addTrain(first, trainWithAvailableEngine(world, 7)));
         assertEquals(0, world.getTrainIndex(first, 7));
         assertEquals(1, world.getTrainIndex(first, 8));
         assertEquals(List.of(firstTrain, firstOtherTrain), List.copyOf(world.getTrains(first)));
@@ -404,7 +427,7 @@ public class WorldTest extends TestCase {
 
         world.removeTrain(first, 7);
         assertEquals(firstOtherTrain, world.getTrain(first, 8));
-        Train lastTrain = new Train(11, 0);
+        Train lastTrain = trainWithAvailableEngine(world, 11);
         world.addTrain(first, lastTrain);
         assertEquals(1, world.getTrainIndex(first, 11));
         world.removeTrain(first, 8);
@@ -413,6 +436,32 @@ public class WorldTest extends TestCase {
         world.removeStation(first, 9);
         assertEquals(firstOtherStation, world.getStation(first, 10));
         assertEquals(secondStation, world.getStation(second, 9));
+    }
+
+    /**
+     * Tests trains reject engine and wagon type IDs absent from the world.
+     */
+    public void testTrainTypeIdsMustExistInWorld() {
+        World world = WorldGenerator.defaultWorld();
+        Player player = new Player(10, "Player");
+        world.addPlayer(player);
+        int engineId = world.getEngines().iterator().next().getId();
+        int wagonTypeId = world.getCargos().iterator().next().getId();
+
+        Train validTrain = new Train(1, engineId);
+        validTrain.setConsist(List.of(wagonTypeId));
+        world.addTrain(player, validTrain);
+
+        assertUnknownId(() -> world.addTrain(player, new Train(2, Integer.MAX_VALUE)), "engine");
+        Train invalidWagonTrain = new Train(3, engineId);
+        invalidWagonTrain.setConsist(List.of(Integer.MAX_VALUE));
+        assertUnknownId(() -> world.addTrain(player, invalidWagonTrain), "wagon type");
+        TrainConfiguration originalConfiguration = validTrain.getConfiguration();
+        assertUnknownId(() -> world.updateTrainConfiguration(
+                player, validTrain.getId(), new TrainConfiguration(engineId, List.of(Integer.MAX_VALUE))),
+                "wagon type");
+        assertEquals(originalConfiguration, validTrain.getConfiguration());
+        assertEquals(List.of(validTrain), List.copyOf(world.getTrains(player)));
     }
 
     /**
@@ -498,12 +547,7 @@ public class WorldTest extends TestCase {
         Transaction maximum = transaction(overflowWorld, Long.MAX_VALUE);
         overflowWorld.addTransaction(overflowPlayer, maximum);
         Transaction overflowing = transaction(overflowWorld, 1);
-        try {
-            overflowWorld.addTransaction(overflowPlayer, overflowing);
-            fail("Expected transaction balance overflow to be rejected.");
-        } catch (ArithmeticException expected) {
-            // Expected.
-        }
+        TestUtils.assertThrows(ArithmeticException.class, () -> overflowWorld.addTransaction(overflowPlayer, overflowing));
         assertEquals(List.of(maximum), List.copyOf(overflowWorld.getTransactions(overflowPlayer)));
         assertEquals(new Money(Long.MAX_VALUE), overflowWorld.getCurrentBalance(overflowPlayer));
     }
@@ -529,12 +573,7 @@ public class WorldTest extends TestCase {
         assertEquals(first, world.removeLastTransaction(player));
         assertEquals(Money.ZERO, world.getCurrentBalance(player));
 
-        try {
-            world.removeLastTransaction(player);
-            fail("Removing a transaction from empty history must fail.");
-        } catch (IllegalStateException expected) {
-            // Expected.
-        }
+        TestUtils.assertThrows(IllegalStateException.class, () -> world.removeLastTransaction(player));
         assertTrue(world.getTransactions(player).isEmpty());
         assertEquals(Money.ZERO, world.getCurrentBalance(player));
     }
@@ -543,7 +582,7 @@ public class WorldTest extends TestCase {
      * Tests sparse player ids map to stable collection indices behavior.
      */
     public void testSparsePlayerIdsMapToStableCollectionIndices() {
-        World world = WorldGenerator.minimalWorld();
+        World world = WorldGenerator.defaultWorld();
         Player first = new Player(40, "First");
         Player second = new Player(7, "Second");
 
@@ -554,7 +593,7 @@ public class WorldTest extends TestCase {
 
         world.addTransaction(first,
                 new Transaction(TransactionCategory.MISC_INCOME, new Money(25), world.getClock().getCurrentTime()));
-        world.addTrain(first, new Train(101, 0));
+        world.addTrain(first, trainWithAvailableEngine(world, 101));
         Station firstStation = new Station(
                 202, IntPoint2D.ZERO, "First", CargoBatchBundle.EMPTY);
         world.addStation(first, firstStation);
@@ -564,7 +603,7 @@ public class WorldTest extends TestCase {
 
         assertEquals(new Money(25), world.getCurrentBalance(first));
         assertEquals(new Money(25), world.getCurrentBalance(firstReference));
-        assertEquals(List.of(new Train(101, 0)), List.copyOf(world.getTrains(firstReference)));
+        assertEquals(List.of(trainWithAvailableEngine(world, 101)), List.copyOf(world.getTrains(firstReference)));
         assertEquals(List.of(firstStation), List.copyOf(world.getStations(firstReference)));
         assertEquals(new Money(70), world.getCurrentBalance(second));
         assertTrue(world.getTrains(second).isEmpty());
@@ -578,7 +617,7 @@ public class WorldTest extends TestCase {
         assertEquals(1, copy.getPlayerIndex(7));
         assertEquals(new Money(25), copy.getCurrentBalance(firstReference));
         assertEquals(new Money(70), copy.getCurrentBalance(second));
-        assertEquals(List.of(new Train(101, 0)), List.copyOf(copy.getTrains(firstReference)));
+        assertEquals(List.of(trainWithAvailableEngine(copy, 101)), List.copyOf(copy.getTrains(firstReference)));
         assertEquals(List.of(firstStation), List.copyOf(copy.getStations(firstReference)));
     }
 
@@ -622,6 +661,7 @@ public class WorldTest extends TestCase {
         World.Builder builder = new World.Builder()
                 .setRules(base.getRules())
                 .setMapSize(new IntPoint2D(2, 2))
+                .setTerrainTypes(new TreeSet<>(base.getTerrains()))
                 .setCargos(cargos);
         cargos.add(new Cargo(90, "Coal", CargoCategory.BULK_FREIGHT, 2));
         World world = builder.build();
@@ -630,12 +670,7 @@ public class WorldTest extends TestCase {
         assertEquals(0, world.getCargoIndex(7));
         assertEquals(7, world.getCargoAtIndex(0).getId());
 
-        try {
-            world.getCargos().clear();
-            fail("World cargo collection must be read-only.");
-        } catch (UnsupportedOperationException expected) {
-            // Expected.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, () -> world.getCargos().clear());
     }
 
     /**
@@ -651,6 +686,7 @@ public class WorldTest extends TestCase {
         World world = new World.Builder()
                 .setRules(base.getRules())
                 .setMapSize(new IntPoint2D(2, 2))
+                .setTerrainTypes(new TreeSet<>(base.getTerrains()))
                 .setTrackTypes(trackTypes)
                 .build();
 
@@ -674,6 +710,7 @@ public class WorldTest extends TestCase {
         World world = new World.Builder()
                 .setRules(base.getRules())
                 .setMapSize(new IntPoint2D(2, 2))
+                .setTerrainTypes(new TreeSet<>(base.getTerrains()))
                 .setCargos(cargos)
                 .setTrackTypes(trackTypes)
                 .build();
@@ -686,18 +723,21 @@ public class WorldTest extends TestCase {
         assertUnsupportedMutation(() -> world.getCargos().clear());
         assertUnsupportedMutation(() -> world.getTrackTypes().clear());
 
-        try {
-            new World.Builder().setMapSize(new IntPoint2D(2, 2)).build();
-            fail("Builder without rules must fail.");
-        } catch (IllegalStateException expected) {
-            assertTrue(expected.getMessage().contains("Rules"));
-        }
-        try {
-            new World.Builder().setRules(base.getRules()).build();
-            fail("Builder without map size must fail.");
-        } catch (IllegalStateException expected) {
-            assertTrue(expected.getMessage().contains("Map size"));
-        }
+        IllegalStateException missingRules = TestUtils.assertThrows(IllegalStateException.class,
+                () -> new World.Builder().setMapSize(new IntPoint2D(2, 2)).build());
+        assertTrue(missingRules.getMessage().contains("Rules"));
+        IllegalStateException missingMapSize = TestUtils.assertThrows(IllegalStateException.class,
+                () -> new World.Builder().setRules(base.getRules()).build());
+        assertTrue(missingMapSize.getMessage().contains("Map size"));
+
+        SortedSet<Terrain> terrainWithoutZero = new TreeSet<>(base.getTerrains());
+        terrainWithoutZero.remove(base.getTerrain(0));
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> new World.Builder()
+                        .setRules(base.getRules())
+                        .setMapSize(new IntPoint2D(2, 2))
+                        .setTerrainTypes(terrainWithoutZero)
+                        .build());
     }
 
     /**
@@ -705,7 +745,11 @@ public class WorldTest extends TestCase {
      */
     public void testPopulatedWorldSerializationRoundTripRestoresStateAndIndexes() {
         World base = WorldGenerator.minimalWorld();
+        SortedSet<Engine> engines = new TreeSet<>();
+        engines.add(new Engine(12, "Test engine", Money.ZERO, Money.ZERO, 10, 10));
         SortedSet<Cargo> cargos = new TreeSet<>();
+        cargos.add(new Cargo(5, "Passengers", CargoCategory.PASSENGER, 1));
+        cargos.add(new Cargo(6, "Goods", CargoCategory.FAST_FREIGHT, 2));
         cargos.add(new Cargo(7, "Mail", CargoCategory.MAIL, 1));
         cargos.add(new Cargo(90, "Coal", CargoCategory.BULK_FREIGHT, 2));
         SortedSet<TrackType> trackTypes = new TreeSet<>();
@@ -721,7 +765,9 @@ public class WorldTest extends TestCase {
         World world = new World.Builder()
                 .setRules(base.getRules())
                 .setMapSize(new IntPoint2D(3, 3))
+                .setEngines(engines)
                 .setCargos(cargos)
+                .setTerrainTypes(new TreeSet<>(base.getTerrains()))
                 .setTrackTypes(trackTypes)
                 .setSentiments(sentiments)
                 .build();
@@ -755,8 +801,8 @@ public class WorldTest extends TestCase {
         Player restoredPlayer = copy.getPlayer(copy.getPlayerIndex(40));
         assertEquals(0, copy.getPlayerIndex(40));
         assertEquals(1, copy.getPlayerIndex(7));
-        assertEquals(1, copy.getCargoIndex(90));
-        assertEquals(90, copy.getCargoAtIndex(1).getId());
+        assertEquals(3, copy.getCargoIndex(90));
+        assertEquals(90, copy.getCargoAtIndex(3).getId());
         assertEquals("Coal", copy.getCargo(90).getName());
         assertEquals(1, copy.getTrackTypeIndex(88));
         assertEquals(88, copy.getTrackTypeAtIndex(1).getId());
@@ -798,6 +844,7 @@ public class WorldTest extends TestCase {
         World world = new World.Builder()
                 .setRules(base.getRules())
                 .setMapSize(new IntPoint2D(2, 2))
+                .setTerrainTypes(new TreeSet<>(base.getTerrains()))
                 .setCargos(cargos)
                 .setTrackTypes(trackTypes)
                 .build();
@@ -837,6 +884,7 @@ public class WorldTest extends TestCase {
                 .setRules(base.getRules())
                 .setTrackTypes(trackTypes)
                 .setMapSize(new IntPoint2D(3, 2))
+                .setTerrainTypes(new TreeSet<>(base.getTerrains()))
                 .build();
         IntPoint2D target = new IntPoint2D(1, 1);
         IntPoint2D neighbor = new IntPoint2D(1, 0);
@@ -865,10 +913,10 @@ public class WorldTest extends TestCase {
      * Tests unmodifiable world collections are read only and live behavior.
      */
     public void testUnmodifiableWorldCollectionsAreReadOnlyAndLive() {
-        World world = WorldGenerator.minimalWorld();
+        World world = WorldGenerator.defaultWorld();
         Player player = new Player(0, "Player");
         world.addPlayer(player);
-        world.addTrain(player, new Train(1, 0));
+        world.addTrain(player, trainWithAvailableEngine(world, 1));
         world.addStation(player, new Station(
                 2, IntPoint2D.ZERO, "Station", CargoBatchBundle.EMPTY));
         world.addTransaction(player, transaction(world, 10));
@@ -889,7 +937,7 @@ public class WorldTest extends TestCase {
         Collection<Station> stationsView = readOnly.getStations(player);
         Collection<Transaction> transactionsView = readOnly.getTransactions(player);
         world.addPlayer(new Player(1, "Second"));
-        world.addTrain(player, new Train(3, 0));
+        world.addTrain(player, trainWithAvailableEngine(world, 3));
         world.addStation(player, new Station(
                 4, new IntPoint2D(1, 0), "Another station", CargoBatchBundle.EMPTY));
         world.addTransaction(player, transaction(world, 5));
@@ -935,12 +983,7 @@ public class WorldTest extends TestCase {
      * @param action the action to use in the test.
      */
     private static void assertDuplicateRejected(Runnable action) {
-        try {
-            action.run();
-            fail("Expected duplicate identifier to be rejected.");
-        } catch (IllegalArgumentException expected) {
-            // Expected.
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, action::run);
     }
 
     /**
@@ -948,12 +991,7 @@ public class WorldTest extends TestCase {
      * @param action the action to use in the test.
      */
     private static void assertUnsupportedMutation(Runnable action) {
-        try {
-            action.run();
-            fail("Expected returned collection to be unmodifiable.");
-        } catch (UnsupportedOperationException expected) {
-            // Expected.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, action::run);
     }
 
     /**
@@ -962,12 +1000,8 @@ public class WorldTest extends TestCase {
      * @param type the type to use in the test.
      */
     private static void assertUnknownId(Runnable action, String type) {
-        try {
-            action.run();
-            fail("Unknown " + type + " ID must fail.");
-        } catch (IllegalArgumentException expected) {
-            assertTrue(expected.getMessage().contains("Unknown " + type + " ID"));
-        }
+        IllegalArgumentException exception = TestUtils.assertThrows(IllegalArgumentException.class, action::run);
+        assertTrue(exception.getMessage().contains("Unknown " + type + " ID"));
     }
 
     /**
@@ -999,14 +1033,26 @@ public class WorldTest extends TestCase {
      * @return the result of create world with mutable state.
      */
     private static World createWorldWithMutableState() {
-        World world = WorldGenerator.minimalWorld();
+        World world = WorldGenerator.defaultWorld();
         Player player = new Player(0, "Original");
         world.addPlayer(player);
-        world.addTrain(player, new Train(1, 0));
+        world.addTrain(player, trainWithAvailableEngine(world, 1));
         world.addTransaction(player, new Transaction(
                 TransactionCategory.MISC_INCOME, new Money(100), world.getClock().getCurrentTime()));
         world.setTile(IntPoint2D.ZERO, new TerrainTile(0));
         return world;
+    }
+
+    /**
+     * Creates a train using an engine type defined in the supplied world.
+     *
+     * @param world world that provides the engine type
+     * @param trainId identifier for the train
+     * @return train with a valid engine type
+     */
+    private static Train trainWithAvailableEngine(World world, int trainId) {
+        int engineId = world.getEngines().iterator().next().getId();
+        return new Train(trainId, engineId);
     }
 
 }

@@ -44,25 +44,12 @@ public class BinaryNumberFormatterTest extends TestCase {
         assertEquals("1000000000000000000000000000000",
                 BinaryNumberFormatter.formatWithLowBitOnLeft(1, 31));
 
-        try {
-            BinaryNumberFormatter.format(-1, 2);
-            assertTrue(false);
-        } catch (IllegalArgumentException e) {
-        }
-
-        try {
-            BinaryNumberFormatter.format(4, 2);
-            assertTrue(false);
-        } catch (IllegalArgumentException e) {
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> BinaryNumberFormatter.format(-1, 2));
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> BinaryNumberFormatter.format(4, 2));
 
         assertInvalidWidth(-1);
         assertInvalidWidth(32);
-        try {
-            BinaryNumberFormatter.format(1, 0);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> BinaryNumberFormatter.format(1, 0));
     }
 
     /**
@@ -70,10 +57,6 @@ public class BinaryNumberFormatterTest extends TestCase {
      * @param bits the bits to use in the test.
      */
     private void assertInvalidWidth(int bits) {
-        try {
-            BinaryNumberFormatter.format(0, bits);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> BinaryNumberFormatter.format(0, bits));
     }
 }

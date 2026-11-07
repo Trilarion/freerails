@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.model.economy.Money;
 import freerails.model.economy.transaction.Transaction;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Utils;
@@ -93,14 +94,14 @@ public class AddTransactionMove implements Move {
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
-        // TODO should we check the time of the transaction here? actually it could have already been forwarded
+        if (transaction.getTime().compareTo(world.getClock().getCurrentTime()) > 0) {
+            return Status.fail("Transaction time cannot be in the future.");
+        }
         if (cashConstrained) {
-            // TODO Money arithmetic
-            long bankBalance = world.getCurrentBalance(player).amount();
-            long transactionAmount = transaction.getAmount().amount();
-            long balanceAfter = bankBalance + transactionAmount;
+            Money transactionAmount = transaction.getAmount();
+            Money balanceAfter = Money.add(world.getCurrentBalance(player), transactionAmount);
 
-            if (transactionAmount < 0 && balanceAfter < 0) {
+            if (transactionAmount.compareTo(Money.ZERO) < 0 && !balanceAfter.isNonNegative()) {
                 return Status.fail("You can't afford that!");
             }
         }

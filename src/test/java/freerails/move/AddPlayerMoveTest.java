@@ -38,8 +38,6 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
         // add a new player
         AddPlayerMove move = new AddPlayerMove(newPlayer);
         assertSurvivesSerialisation(move);
-        // TODO fails because removeLastPlayer in FullWord does not work currently
-        // assertDoThenUndoLeavesWorldUnchanged(move);
     }
 
     /**

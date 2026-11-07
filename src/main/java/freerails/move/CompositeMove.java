@@ -125,7 +125,7 @@ public class CompositeMove implements Move {
         Status status = applicable(world);
 
         if (!status.isSuccess()) {
-            return;
+            throw new RuntimeException(status.getMessage());
         }
 
         for (Move move : moves) {

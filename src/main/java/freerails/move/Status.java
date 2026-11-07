@@ -23,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-// TODO does it really have to be serializable?
 /**
  * Records the status or failure of, among other things, an attempt to execute a move.
  */

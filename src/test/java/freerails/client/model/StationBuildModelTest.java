@@ -25,6 +25,7 @@ import freerails.model.track.TrackType;
 import freerails.model.world.World;
 import freerails.move.Status;
 import freerails.util.IntPoint2D;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 /** Tests toolkit-independent station selection and placement state. */
@@ -56,12 +57,9 @@ public class StationBuildModelTest extends TestCase {
 
     /** Rejects a track type that is not a station. */
     public void testRejectsUnknownStationType() {
-        try {
-            stationBuildModel.chooseStationType(-1);
-            fail("Expected an unknown station type to be rejected.");
-        } catch (IllegalArgumentException expected) {
-            assertEquals("Unknown station track type: -1", expected.getMessage());
-        }
+        IllegalArgumentException exception = TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> stationBuildModel.chooseStationType(-1));
+        assertEquals("Unknown station track type: -1", exception.getMessage());
     }
 
     /** Reports a failed build when no station type has been selected. */

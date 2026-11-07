@@ -1,5 +1,6 @@
 package freerails.model.track;
 
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 /**
@@ -31,18 +32,8 @@ public class TrackOverlapResultTest extends TestCase {
      * Tests rejects inconsistent results behavior.
      */
     public void testRejectsInconsistentResults() {
-        try {
-            new TrackOverlapResult(true, "unexpected message");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-            // expected
-        }
-
-        try {
-            TrackOverlapResult.failure(null);
-            fail("Expected NullPointerException");
-        } catch (NullPointerException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> new TrackOverlapResult(true, "unexpected message"));
+        TestUtils.assertThrows(NullPointerException.class, () -> TrackOverlapResult.failure(null));
     }
 }

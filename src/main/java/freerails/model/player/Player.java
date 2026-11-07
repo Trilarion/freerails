@@ -23,15 +23,18 @@ import freerails.util.Utils;
 
 import java.io.Serial;
 
-// TODO on the client side, one should not create a player but a add new player move or so...
 /**
  * Identifies a player.
  * <p>
  * A player represents an entity which can view or alter the game world. A
  * player usually corresponds to a user's identity, but may also represent
- * an authoritative server, or a another game entity such as a corporation.
+ * an authoritative server, or another game entity such as a corporation.
  * All entities which may own game world objects must be represented by a
  * player.
+ * <p>
+ * Player instances are created by the authoritative game state and delivered to
+ * clients as part of the world snapshot; clients should select an existing
+ * player from the world rather than creating a new one locally.
  */
 public class Player extends Identifiable {
 

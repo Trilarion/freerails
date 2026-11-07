@@ -33,9 +33,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-// TODO add position on map to train
-// TODO delete Activities when they are finished
-// TODO naming of wagonTypes/consist clarify
 /**
  * Identified train combining an immutable configuration with mutable runtime state.
  */
@@ -44,7 +41,6 @@ public class Train extends Identifiable {
     private TrainConfiguration configuration;
     private final TrainRuntimeState runtimeState;
 
-    // TODO we have to trust that the ids are valid, only the world can check this consistency
     /**
      * Creates a train with the specified identifier and engine type.
      *
@@ -72,7 +68,6 @@ public class Train extends Identifiable {
         return runtimeState.getActivities();
     }
 
-    // TODO not sure if this is a good idea, would like to use addActivity probably
     /**
      * Replaces the activities with the remaining elements of the supplied iterator.
      *
@@ -173,15 +168,19 @@ public class Train extends Identifiable {
         runtimeState.setSchedule(schedule);
     }
 
-    /** Returns an immutable snapshot of the wagon type identifiers. */
+    /**
+     * Returns the train's consist: an immutable ordered snapshot of its wagon type identifiers.
+     *
+     * @return wagon type identifiers in consist order
+     */
     public List<Integer> getConsist() {
         return configuration.wagonTypes();
     }
 
     /**
-     * Replaces the wagon consist with a copy of the supplied wagon types.
+     * Replaces the train's consist with a copy of the supplied wagon type identifiers.
      *
-     * @param wagonTypes wagon type identifiers in consist order
+     * @param wagonTypes ordered wagon type identifiers for the new consist
      */
     public void setConsist(@NotNull List<Integer> wagonTypes) {
         configuration = configuration.withWagonTypes(wagonTypes);
@@ -254,7 +253,6 @@ public class Train extends Identifiable {
         if (!(obj instanceof Train o)) {
             return false;
         }
-        // TODO there is a problem with the equality test on the sorted sets, only the id is tested (see https://docs.oracle.com/javase/7/docs/api/java/util/Set.HTML#equals(java.lang.Object))
         return getId() == o.getId()
                 && Objects.equals(configuration, o.configuration)
                 && Objects.equals(runtimeState, o.runtimeState);

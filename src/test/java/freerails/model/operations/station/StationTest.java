@@ -21,6 +21,7 @@ package freerails.model.operations.station;
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.util.Utils;
 import freerails.util.IntPoint2D;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.HashMap;
@@ -57,12 +58,7 @@ public class StationTest extends TestCase {
      * @param values the values to use in the test.
      */
     private void assertImmutable(Set<Integer> values) {
-        try {
-            values.clear();
-            fail("Expected the cargo policy record component to be immutable");
-        } catch (UnsupportedOperationException expected) {
-            // Record components expose immutable snapshots.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, values::clear);
     }
 
     /**
@@ -70,12 +66,7 @@ public class StationTest extends TestCase {
      * @param values the values to use in the test.
      */
     private void assertImmutable(Map<Integer, Integer> values) {
-        try {
-            values.clear();
-            fail("Expected the cargo policy record component to be immutable");
-        } catch (UnsupportedOperationException expected) {
-            // Record components expose immutable snapshots.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, values::clear);
     }
 
     /**

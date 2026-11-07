@@ -28,6 +28,7 @@ import freerails.model.operations.train.motion.CompositeMotion;
 import freerails.model.operations.train.motion.ConstantAccelerationMotion;
 import freerails.model.operations.train.motion.Motion;
 import freerails.model.ModelConstants;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayInputStream;
@@ -35,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Tests train motion behavior.
@@ -49,7 +51,7 @@ public class TrainMotionTest extends TestCase {
         // The figures are copied from the debugger.
         IntPoint2D start = new IntPoint2D(14, 5);
         TileTransition[] vectors = {TileTransition.getInstance(new IntPoint2D(1, 1)), TileTransition.getInstance(new IntPoint2D(1, 0))};
-        PathOnTiles path = new PathOnTiles(start, vectors);
+        PathOnTiles path = new PathOnTiles(start, List.of(vectors));
 
         ConstantAccelerationMotion constantAccelerationMovement0 = ConstantAccelerationMotion.fromSpeedAccelerationTime(6.5135556243263055d * modelScale, 0.5d * modelScale,
                 6.972888751347389d);
@@ -91,7 +93,7 @@ public class TrainMotionTest extends TestCase {
      */
     public void testDurationStopsEngineAtPathEndWhenMotionProfileIsLonger() {
         PathOnTiles path = new PathOnTiles(IntPoint2D.ZERO,
-                TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
+                List.of(TileTransition.EAST, TileTransition.EAST, TileTransition.EAST));
         int engineStep = 1;
         double remainingPathDistance = path.getTotalDistance() - path.getDistance(engineStep);
         Motion speeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(
@@ -113,7 +115,7 @@ public class TrainMotionTest extends TestCase {
      * Tests state at time includes start and end but rejects outside interval behavior.
      */
     public void testStateAtTimeIncludesStartAndEndButRejectsOutsideInterval() {
-        PathOnTiles path = new PathOnTiles(IntPoint2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
+        PathOnTiles path = new PathOnTiles(IntPoint2D.ZERO, List.of(TileTransition.EAST, TileTransition.EAST, TileTransition.EAST));
         Motion speeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(
                 ModelConstants.MODEL_UNITS_PER_TILE / 3.0d, 0.0, 6.0);
         TrainMotion motion = new TrainMotion(path, 1, 80, speeds);
@@ -135,7 +137,7 @@ public class TrainMotionTest extends TestCase {
      * @throws Exception if the test legacy serialized motion is scaled to current model units operation fails.
      */
     public void testLegacySerializedMotionIsScaledToCurrentModelUnits() throws Exception {
-        PathOnTiles path = new PathOnTiles(IntPoint2D.ZERO, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST);
+        PathOnTiles path = new PathOnTiles(IntPoint2D.ZERO, List.of(TileTransition.EAST, TileTransition.EAST, TileTransition.EAST));
         TrainMotion legacyMotion = new TrainMotion(path, 80, 6, freerails.model.operations.train.TrainState.READY);
         setField(legacyMotion, "modelUnitsPerTile", 0);
         setField(legacyMotion, "trainLength", 24);
@@ -176,11 +178,6 @@ public class TrainMotionTest extends TestCase {
      * @param action the action to use in the test.
      */
     private static void assertThrowsIllegalArgument(Runnable action) {
-        try {
-            action.run();
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException expected) {
-            // The queried time lies outside the motion interval.
-        }
+        TestUtils.assertThrows(IllegalArgumentException.class, action::run);
     }
 }

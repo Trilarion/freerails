@@ -24,6 +24,7 @@ package freerails.model.operations.cargo;
 import freerails.model.simulation.Time;
 import freerails.util.IntPoint2D;
 import freerails.util.Utils;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
@@ -195,12 +196,7 @@ public class CargoBatchBundleTest extends TestCase {
         assertEquals(1, snapshot.size());
         assertEquals(snapshot, new CargoBatchBundle(snapshot));
         assertEquals(new CargoBatchBundle(snapshot), snapshot);
-        try {
-            snapshot.getCargoBatches().clear();
-            fail("Snapshot batches must be read-only.");
-        } catch (UnsupportedOperationException expected) {
-            // Expected: the collection is an immutable snapshot.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, () -> snapshot.getCargoBatches().clear());
     }
 
     /**

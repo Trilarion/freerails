@@ -21,7 +21,6 @@ package freerails.model.operations.train;
 import freerails.util.Identifiable;
 import freerails.model.economy.Money;
 
-// TODO doesn't upkeep/maintenance increase over age of the engine?
 /**
  * Represents an engine type, for example 'Grass Hopper'.
  * It encapsulates the properties that are common to all engines of the same type.

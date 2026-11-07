@@ -99,7 +99,7 @@ public class WorldDeterminismTest extends TestCase {
             assertEquals(expectedSections, sections);
             sections.clear();
             assertEquals(expectedSections, train.occupiedTrackSection(currentTime));
-            assertEquals(4, train.getCargoBatchBundle().getAmountOfType(3));
+            assertEquals(4, train.getCargoBatchBundle().getAmountOfType(train.getConsist().get(0)));
             assertEquals(expectedBalance, world.getCurrentBalance(player));
 
             var report = new BalanceSheetGenerator(world, player);
@@ -118,15 +118,17 @@ public class WorldDeterminismTest extends TestCase {
      * @return the result of create world.
      */
     private static World createWorld(Player player) {
-        World world = WorldGenerator.minimalWorld();
+        World world = WorldGenerator.defaultWorld();
         world.addPlayer(player);
-        Train train = new Train(2, 0);
-        train.setConsist(List.of(4));
+        int engineId = world.getEngines().iterator().next().getId();
+        int cargoId = world.getCargos().iterator().next().getId();
+        Train train = new Train(2, engineId);
+        train.setConsist(List.of(cargoId));
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(3, IntPoint2D.ZERO, new Time(0), 0), 4);
+        cargo.addCargo(new CargoBatch(cargoId, IntPoint2D.ZERO, new Time(0), 0), 4);
         train.setCargoBatchBundle(cargo);
         TrainMotion motion = new TrainMotion(
-                new PathOnTiles(IntPoint2D.ZERO, TileTransition.EAST, TileTransition.EAST),
+                new PathOnTiles(IntPoint2D.ZERO, List.of(TileTransition.EAST, TileTransition.EAST)),
                 24, 20, TrainState.READY);
         world.addTrain(player, train);
         world.addActivity(player, train.getId(), motion);

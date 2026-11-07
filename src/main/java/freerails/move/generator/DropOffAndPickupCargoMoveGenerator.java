@@ -19,24 +19,25 @@
 package freerails.move.generator;
 
 import freerails.model.ModelConstants;
-import freerails.model.operations.cargo.*;
-import freerails.model.economy.transaction.CargoDeliveryTransaction;
 import freerails.model.economy.Money;
-import freerails.model.operations.train.schedule.TrainOrder;
-import freerails.move.*;
-
-import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.Player;
+import freerails.model.economy.transaction.CargoDeliveryTransaction;
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.operations.cargo.CargoBatchBundle;
+import freerails.model.operations.cargo.CargoUtils;
+import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.operations.station.Station;
-import freerails.model.operations.station.StationDemand;
-import freerails.model.operations.station.StationUtils;
-import freerails.model.operations.train.*;
-import freerails.model.operations.train.schedule.UnmodifiableSchedule;
+import freerails.model.operations.train.Train;
+import freerails.model.player.Player;
+import freerails.model.world.UnmodifiableWorld;
+import freerails.move.AddTransactionMove;
+import freerails.move.ChangeCargoAtStationMove;
+import freerails.move.CompostMove;
+import freerails.move.Move;
+import freerails.move.UpdateTrainMove;
 import freerails.util.IntPoint2D;
 
-import java.util.*;
-
-// TODO part of this should go to the model
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Generates moves that transfer cargo between train and the stations
  * it stops at - it also handles cargo conversions that occur when cargo is
@@ -81,108 +82,22 @@ public class DropOffAndPickupCargoMoveGenerator {
         Station station = world.getStation(player, stationId);
         stationAfter = new CargoBatchBundle(station.getCargoBatchBundle());
 
-        // TODO should all this be done here? I thought this is only a Move generator
-        // process cargo ie. unload train / drop-off cargo
-        CargoBatchBundle cargoDroppedOff = new CargoBatchBundle();
-
-        // Unload the cargo that the station demands
-        for (CargoBatch cargoBatch : trainAfter.getCargoBatches()) {
-            int cargoTypeId = cargoBatch.getCargoTypeId();
-            // if cargo is demanded and it's not from this station originally...
-            StationDemand stationDemand = station.getDemandForCargo();
-
-            if (stationDemand.isCargoDemanded(cargoTypeId) && stationId != cargoBatch.getOriginalStationId()) {
-                int amount = trainAfter.getAmount(cargoBatch);
-                cargoDroppedOff.addCargo(cargoBatch, amount);
-
-                // Now perform any conversions...
-                OptionalInt productCargoId = StationUtils.cargoConversionAtStation(world, station, cargoTypeId);
-                if (productCargoId.isPresent()) {
-                    int newCargoType = productCargoId.getAsInt();
-                    CargoBatch newCargoBatch = new CargoBatch(
-                            newCargoType, station.getLocation(), world.getClock().getCurrentTime(), stationId);
-                    stationAfter.addCargo(newCargoBatch, amount);
-                }
-
-                trainAfter.setAmount(cargoBatch, 0);
-            }
-        }
+        CargoUtils.CargoTransferPlan cargoTransferPlan = CargoUtils.prepareCargoTransfer(world, player, train, station,
+                autoConsist);
+        stationAfter = cargoTransferPlan.stationAfter();
+        trainAfter = cargoTransferPlan.trainAfter();
+        consist = cargoTransferPlan.consist();
 
         // Generates Moves that pay the player for delivering the cargo.
         moves = new ArrayList<>();
 
-        for (CargoBatch cargoBatch : cargoDroppedOff.getCargoBatches()) {
+        for (CargoBatch cargoBatch : cargoTransferPlan.cargoDroppedOff().getCargoBatches()) {
             double distance = IntPoint2D.subtract(cargoBatch.getSourceP(), station.getLocation()).norm();
-            int amount = cargoDroppedOff.getAmount(cargoBatch);
+            int amount = cargoTransferPlan.cargoDroppedOff().getAmount(cargoBatch);
 
             Money money = new Money((long) (amount * Math.log(distance) * ModelConstants.CARGO_DELIVERY_EARNINGS_FACTOR));
             CargoDeliveryTransaction transaction = new CargoDeliveryTransaction(money, world.getClock().getCurrentTime(), amount, stationId, trainId, cargoBatch);
             moves.add(new AddTransactionMove(player, transaction));
-        }
-
-        // Unload the cargo that there isn't space for on the train regardless
-        // of whether the station demands it.
-        // determine the space available on the train measured in cargo units.
-        List<Integer> spaceAvailable1 = TrainUtils.spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
-
-        for (int cargoType1 = 0; cargoType1 < spaceAvailable1.size(); cargoType1++) {
-            int quantity1 = spaceAvailable1.get(cargoType1);
-            if (quantity1 < 0) {
-                int amountToTransfer1 = -quantity1;
-                int cargoId = world.getCargoAtIndex(cargoType1).getId();
-                CargoUtils.transferCargo(cargoId, amountToTransfer1, trainAfter, stationAfter);
-            }
-        }
-
-        if (autoConsist) {
-            UnmodifiableSchedule schedule = train.getSchedule();
-            int currentOrderIndex = schedule.getCurrentOrderIndex();
-            if (currentOrderIndex >= 0) {
-                List<WagonLoad> wagonsAvailable = new ArrayList<>();
-                TrainOrder order = schedule.getOrder(currentOrderIndex);
-                Station otherStation = world.getStation(player, order.getStationId());
-                StationDemand demand = otherStation.getDemandForCargo();
-
-                for (Cargo cargo : world.getCargos()) {
-                    int cargoId = cargo.getId();
-                    // If this cargo is demanded at the next scheduled station.
-                    if (demand.isCargoDemanded(cargoId)) {
-                        int amount = stationAfter.getAmountOfType(cargoId);
-
-                        while (amount > 0) {
-                            int amount2remove = Math.min(amount, ModelConstants.UNITS_OF_CARGO_PER_WAGON);
-                            amount -= amount2remove;
-
-                            // Don't bother with less than half a wagon load.
-                            if (amount2remove * 2 > ModelConstants.UNITS_OF_CARGO_PER_WAGON) {
-                                wagonsAvailable.add(new WagonLoad(amount2remove, cargoId));
-                            }
-                        }
-                    }
-                }
-
-                wagonsAvailable.sort(Comparator.comparingInt(WagonLoad::quantity).reversed());
-
-                int numWagonsToadd = Math.min(wagonsAvailable.size(), 3);
-
-                Integer[] temp = new Integer[numWagonsToadd];
-                for (int i = 0; i < numWagonsToadd; i++) {
-                    WagonLoad wagonload = wagonsAvailable.get(i);
-                    temp[i] = wagonload.cargoType();
-                }
-                consist = new ArrayList<>(Arrays.asList(temp));
-            }
-        }
-
-        // i.e. load train / pickup cargo
-        // Transfer cargo from the station to the train subject to the space
-        // available on the train.
-        List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, trainAfter, consist);
-        for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
-            int quantity = spaceAvailable.get(cargoType);
-            int cargoId = world.getCargoAtIndex(cargoType).getId();
-            int amountToTransfer = Math.min(quantity, stationAfter.getAmountOfType(cargoId));
-            CargoUtils.transferCargo(cargoId, amountToTransfer, stationAfter, trainAfter);
         }
     }
 

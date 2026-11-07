@@ -107,6 +107,13 @@ public class UpdateTrainMove implements Move {
         if (!Utils.containsId(trainId, world.getTrains(player))) {
             return Status.fail("Unknown train");
         }
+        if (consist != null) {
+            for (int wagonTypeId : consist) {
+                if (world.getCargos().stream().noneMatch(cargo -> cargo.getId() == wagonTypeId)) {
+                    return Status.fail("Unknown wagon type ID " + wagonTypeId);
+                }
+            }
+        }
         return Status.OK;
     }
 
@@ -123,7 +130,7 @@ public class UpdateTrainMove implements Move {
             runtimeState.setCargoBatchBundle(cargoBatchBundle);
         }
         if (consist != null) {
-            train.setConfiguration(new TrainConfiguration(train.getEngine(), consist));
+            world.updateTrainConfiguration(player, trainId, new TrainConfiguration(train.getEngine(), consist));
         }
         if (schedule != null) {
             runtimeState.setSchedule(schedule);

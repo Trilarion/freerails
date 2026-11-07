@@ -21,6 +21,7 @@ package freerails.model.operations.train;
 import freerails.model.operations.train.schedule.ScheduleState;
 import freerails.model.operations.train.motion.TrainMotion;
 import freerails.model.world.TestTrainMotion;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -40,12 +41,7 @@ public class TrainTest extends TestCase {
 
         wagonTypes.set(0, 9);
         assertEquals(List.of(2, 3), configuration.wagonTypes());
-        try {
-            configuration.wagonTypes().add(4);
-            fail("Expected immutable wagon types");
-        } catch (UnsupportedOperationException expected) {
-            // Expected.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, () -> configuration.wagonTypes().add(4));
     }
 
     /**

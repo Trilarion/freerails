@@ -49,6 +49,7 @@ public class TrainUtilsTest extends TestCase {
         World world = new World.Builder()
                 .setRules(base.getRules())
                 .setMapSize(new IntPoint2D(2, 2))
+                .setTerrainTypes(new TreeSet<>(base.getTerrains()))
                 .setCargos(cargos)
                 .build();
 

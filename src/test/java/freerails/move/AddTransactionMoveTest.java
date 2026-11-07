@@ -60,4 +60,15 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         // This move should fail since there is no money in the account and it is constrained is set to true.
         assertMoveNotApplicable(move);
     }
+
+    /**
+     * Tests future-dated transactions are not applicable.
+     */
+    public void testFutureTransactionIsNotApplicable() {
+        Transaction transaction = new Transaction(
+                TransactionCategory.MISC_INCOME, new Money(100), world.getClock().getCurrentTime().advance());
+        Move move = new AddTransactionMove(WorldGenerator.TEST_PLAYER, transaction);
+
+        assertMoveNotApplicable(move);
+    }
 }

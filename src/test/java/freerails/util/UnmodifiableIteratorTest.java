@@ -18,10 +18,6 @@ public class UnmodifiableIteratorTest extends TestCase {
 
         assertTrue(iterator.hasNext());
         assertEquals("a", iterator.next());
-        try {
-            iterator.remove();
-            fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException expected) {
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, iterator::remove);
     }
 }

@@ -135,6 +135,8 @@ clients and servers.
   architecture and package boundaries described above.
 - Add or update tests for behavior changes, especially game rules, moves,
   serialization, and scenario loading.
+- Prefer applicable assertion helpers from `freerails.util.TestUtils` over
+  duplicating their logic in tests.
 
 ### Diagnostics and errors
 

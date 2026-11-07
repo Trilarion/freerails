@@ -19,6 +19,7 @@
 package freerails.model.operations.train;
 
 import freerails.util.IntPoint2D;
+import freerails.util.TestUtils;
 import freerails.model.terrain.TileTransition;
 import junit.framework.TestCase;
 
@@ -35,15 +36,22 @@ public class PositionOnTrackTest extends TestCase {
         assertTrue(PositionOnTrack.MAX_COORDINATE > 10000);
         assertEquals(PositionOnTrack.MAX_DIRECTION, 7);
 
-        assertNoException(0, 0, TileTransition.EAST);
-        assertNoException(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE, TileTransition.NORTH_WEST);
+        new PositionOnTrack(new IntPoint2D(0, 0), TileTransition.EAST);
+        new PositionOnTrack(new IntPoint2D(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE),
+                TileTransition.NORTH_WEST);
 
-        assertException(-1, 0, TileTransition.EAST);
-        assertException(0, -1, TileTransition.EAST);
-
-        assertException(PositionOnTrack.MAX_COORDINATE + 1, PositionOnTrack.MAX_COORDINATE, TileTransition.NORTH_WEST);
-
-        assertException(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE + 1, TileTransition.NORTH_WEST);
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> new PositionOnTrack(new IntPoint2D(-1, 0), TileTransition.EAST));
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> new PositionOnTrack(new IntPoint2D(0, -1), TileTransition.EAST));
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> new PositionOnTrack(
+                        new IntPoint2D(PositionOnTrack.MAX_COORDINATE + 1, PositionOnTrack.MAX_COORDINATE),
+                        TileTransition.NORTH_WEST));
+        TestUtils.assertThrows(IllegalArgumentException.class,
+                () -> new PositionOnTrack(
+                        new IntPoint2D(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE + 1),
+                        TileTransition.NORTH_WEST));
     }
 
     /**
@@ -73,9 +81,6 @@ public class PositionOnTrackTest extends TestCase {
         p1 = new PositionOnTrack(new IntPoint2D(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE), v);
     }
 
-    /*
-     * Test for boolean equals(Object)
-     */
     /**
      * Tests equals object behavior.
      */
@@ -90,32 +95,4 @@ public class PositionOnTrackTest extends TestCase {
         assertTrue(!p1.equals(p2));
     }
 
-    // TODO replace with TestUtils
-    /**
-     * Asserts no exception.
-     * @param x the x to use in the test.
-     * @param y the y to use in the test.
-     * @param v the v to use in the test.
-     */
-    private void assertNoException(int x, int y, TileTransition v) {
-        try {
-            new PositionOnTrack(new IntPoint2D(x, y), v);
-        } catch (Exception e) {
-            assertTrue(false);
-        }
-    }
-
-    /**
-     * Asserts exception.
-     * @param x the x to use in the test.
-     * @param y the y to use in the test.
-     * @param v the v to use in the test.
-     */
-    private void assertException(int x, int y, TileTransition v) {
-        try {
-            new PositionOnTrack(new IntPoint2D(x, y), v);
-            assertTrue(false);
-        } catch (Exception e) {
-        }
-    }
 }

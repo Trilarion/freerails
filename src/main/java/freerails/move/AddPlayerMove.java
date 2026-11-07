@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serial;
 import java.util.Objects;
 
-// TODO what about a remove of a player?
 /**
  * Adds a player to the world.
  */

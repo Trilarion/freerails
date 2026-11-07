@@ -67,12 +67,7 @@ public class UtilsTest extends TestCase {
      * Tests remove last rejects empty collection behavior.
      */
     public void testRemoveLastRejectsEmptyCollection() {
-        try {
-            Utils.removeLast(new ArrayList<>());
-            fail("Expected IndexOutOfBoundsException");
-        } catch (IndexOutOfBoundsException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IndexOutOfBoundsException.class, () -> Utils.removeLast(new ArrayList<>()));
     }
 
     /**
@@ -97,12 +92,7 @@ public class UtilsTest extends TestCase {
         source.add("three");
 
         assertEquals(Arrays.asList("one", "two"), result);
-        try {
-            result.add("four");
-            fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, () -> result.add("four"));
     }
 
     /**
@@ -157,26 +147,13 @@ public class UtilsTest extends TestCase {
         List<Object> iterable = Collections.singletonList(value);
         assertSame(iterable, Utils.verifyNoneNull(iterable));
 
-        try {
-            Utils.verifyNotNull(null, "required");
-            fail("Expected NullPointerException");
-        } catch (NullPointerException expected) {
-            assertEquals("required", expected.getMessage());
-        }
+        NullPointerException exception = TestUtils.assertThrows(NullPointerException.class,
+                () -> Utils.verifyNotNull(null, "required"));
+        assertEquals("required", exception.getMessage());
 
-        try {
-            Utils.verifyNoneNull(null);
-            fail("Expected NullPointerException");
-        } catch (NullPointerException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(NullPointerException.class, () -> Utils.verifyNoneNull(null));
 
-        try {
-            Utils.verifyNoneNull(Arrays.asList(value, null));
-            fail("Expected NullPointerException");
-        } catch (NullPointerException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(NullPointerException.class, () -> Utils.verifyNoneNull(Arrays.asList(value, null)));
     }
 
     /**
@@ -212,12 +189,7 @@ public class UtilsTest extends TestCase {
      * @param list the list to use in the test.
      */
     private static void assertUnmodifiable(List<?> list) {
-        try {
-            list.clear();
-            fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, list::clear);
     }
 
 }

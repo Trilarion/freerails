@@ -21,6 +21,7 @@ package freerails.model.building;
 import freerails.model.operations.train.TrainTemplate;
 import freerails.util.Utils;
 import freerails.util.IntPoint2D;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -41,12 +42,7 @@ public class EngineShopTest extends TestCase {
         templates.clear();
 
         assertEquals(List.of(new TrainTemplate(4, List.of(7))), shop.getProduction());
-        try {
-            shop.getProduction().clear();
-            fail("Expected the production queue to be unmodifiable");
-        } catch (UnsupportedOperationException expected) {
-            // The queue is exposed as a read-only view.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, () -> shop.getProduction().clear());
     }
 
     /**

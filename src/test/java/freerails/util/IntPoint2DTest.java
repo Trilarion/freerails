@@ -96,11 +96,6 @@ public class IntPoint2DTest extends TestCase {
      * Tests divide by zero is rejected behavior.
      */
     public void testDivideByZeroIsRejected() {
-        try {
-            IntPoint2D.divide(new IntPoint2D(1, 2), 0);
-            fail("Expected ArithmeticException");
-        } catch (ArithmeticException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(ArithmeticException.class, () -> IntPoint2D.divide(new IntPoint2D(1, 2), 0));
     }
 }

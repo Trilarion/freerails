@@ -18,6 +18,7 @@
 
 package freerails.model.economy;
 
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
 import java.util.Locale;
@@ -89,11 +90,6 @@ public class MoneyTest extends TestCase {
      * @param operation the operation to use in the test.
      */
     private static void assertArithmeticException(Runnable operation) {
-        try {
-            operation.run();
-            fail("Expected arithmetic overflow.");
-        } catch (ArithmeticException expected) {
-            // Expected.
-        }
+        TestUtils.assertThrows(ArithmeticException.class, operation::run);
     }
 }

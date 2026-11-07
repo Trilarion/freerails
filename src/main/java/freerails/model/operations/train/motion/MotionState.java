@@ -30,8 +30,7 @@ import java.io.Serializable;
 /**
  * Stores a train's speed, acceleration, traveled distance, elapsed time, and state.
  */
-// TODO only used once, do we really need it
-public class SpeedTimeAndStatus implements Serializable {
+public class MotionState implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1769385261436134444L;
@@ -52,7 +51,7 @@ public class SpeedTimeAndStatus implements Serializable {
      * @throws IllegalArgumentException if time is negative
      * @throws NullPointerException if activity is null
      */
-    public SpeedTimeAndStatus(double speed, double acceleration, double distance, double time, TrainState activity) {
+    public MotionState(double speed, double acceleration, double distance, double time, TrainState activity) {
         if (time < 0) throw new IllegalArgumentException(String.valueOf(time));
         this.acceleration = acceleration;
         dt = time;
@@ -65,7 +64,7 @@ public class SpeedTimeAndStatus implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof SpeedTimeAndStatus other)) return false;
+        if (!(obj instanceof MotionState other)) return false;
 
         if (acceleration != other.acceleration) return false;
         if (dt != other.dt) return false;

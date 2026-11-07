@@ -35,6 +35,7 @@ import freerails.model.game.Rules;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
+import freerails.util.TestUtils;
 import freerails.util.WorldGenerator;
 
 /**
@@ -63,9 +64,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * Tests remove track behavior.
      */
     public void testRemoveTrack() {
-        // TODO need this rules change here really?
         Rules rules = new Rules(false, false);
-        world.setRules(rules);
+        setWorld(createWorld(rules));
+        transactionsGenerator = new TrackMoveTransactionsGenerator(getWorld(), WorldGenerator.TEST_PLAYER);
 
         TrackType trackType = getWorld().getTrackType(0);
 
@@ -180,7 +181,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @throws Exception if the test construction and removal keep adjacent connections symmetric operation fails.
      */
     public void testConstructionAndRemovalKeepAdjacentConnectionsSymmetric() throws Exception {
-        world.setRules(new Rules(false, false));
+        setWorld(createWorld(new Rules(false, false)));
+        transactionsGenerator = new TrackMoveTransactionsGenerator(getWorld(), WorldGenerator.TEST_PLAYER);
         TrackType trackType = world.getTrackType(0);
 
         assertBuildTrackSucceeds(new IntPoint2D(0, 5), TileTransition.EAST, trackType);
@@ -269,9 +271,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @return the result of create world.
      */
     private static World createWorld(Rules rules) {
-        World testWorld = WorldGenerator.testWorld(true);
+        World testWorld = WorldGenerator.testWorld(rules);
         testWorld.addPlayer(WorldGenerator.TEST_PLAYER);
-        testWorld.setRules(rules);
         return testWorld;
     }
 
@@ -339,7 +340,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
         Status status = move.applicable(getWorld());
         assertFalse(status.isSuccess());
-        move.apply(getWorld());
+        TestUtils.assertThrows(RuntimeException.class, () -> move.apply(getWorld()));
     }
 
     /**

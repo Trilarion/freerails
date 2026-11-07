@@ -8,6 +8,7 @@ import freerails.model.world.World;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.IntPoint2D;
+import freerails.util.TestUtils;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -213,11 +214,6 @@ public class ConnectionTest extends TestCase {
      * @param connection the connection to use in the test.
      */
     private static void assertReceiveFailsAfterRemoteClosure(Connection connection) {
-        try {
-            connection.receiveObject();
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException expected) {
-            // expected
-        }
+        TestUtils.assertThrows(IllegalStateException.class, connection::receiveObject);
     }
 }

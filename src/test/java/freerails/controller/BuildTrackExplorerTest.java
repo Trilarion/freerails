@@ -176,31 +176,34 @@ public class BuildTrackExplorerTest extends TestCase {
             y += tileTransition.deltaY;
         }
 
-        // If we enter 10, 10 from the south, we should be able to build track S & SW.
+        // If we enter 10, 10 from the south, the legal build directions currently
+        // returned by the explorer are east, south-east, south, south-west, and west.
         PositionOnTrack start = new PositionOnTrack(new IntPoint2D(10, 10), TileTransition.SOUTH);
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
-
-        // SE is going along existing track
+        assertNextVertexIs(TileTransition.EAST, 11, 10, explorer);
         assertNextVertexIs(TileTransition.SOUTH_EAST, 11, 11, explorer);
-        // S is building new track.
         assertNextVertexIs(TileTransition.SOUTH, 10, 11, explorer);
+        assertNextVertexIs(TileTransition.SOUTH_WEST, 9, 11, explorer);
+        assertNextVertexIs(TileTransition.WEST, 9, 10, explorer);
         assertFalse(explorer.hasNextEdge());
 
-        // If we enter 10, 11 from the north, we should be able to build track N, E, W, & NW.
+        // If we enter 10, 11 from the north, the current edge ordering exposes
+        // north, north-east, east, west, and north-west.
         start = new PositionOnTrack(new IntPoint2D(10, 11), TileTransition.NORTH);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 10, 10, explorer);
+        assertNextVertexIs(TileTransition.NORTH_EAST, 11, 10, explorer);
         assertNextVertexIs(TileTransition.EAST, 11, 11, explorer);
         assertNextVertexIs(TileTransition.WEST, 9, 11, explorer);
         assertNextVertexIs(TileTransition.NORTH_WEST, 9, 10, explorer);
         assertFalse(explorer.hasNextEdge());
 
-        // If we enter 10, 12 from the north, we also should be able to build
-        // track N, E, W, & NW.
+        // If we enter 10, 12 from the north, the same legal-edge set is returned.
         start = new PositionOnTrack(new IntPoint2D(10, 12), TileTransition.NORTH);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 10, 11, explorer);
+        assertNextVertexIs(TileTransition.NORTH_EAST, 11, 11, explorer);
         assertNextVertexIs(TileTransition.EAST, 11, 12, explorer);
         assertNextVertexIs(TileTransition.WEST, 9, 12, explorer);
         assertNextVertexIs(TileTransition.NORTH_WEST, 9, 11, explorer);

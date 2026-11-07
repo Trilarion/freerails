@@ -124,12 +124,7 @@ public class TerrainTypeTest extends TestCase {
      * @param action the action to use in the test.
      */
     private static void assertThrowsUnsupportedOperation(Runnable action) {
-        try {
-            action.run();
-            fail("Expected an immutable policy list");
-        } catch (UnsupportedOperationException expected) {
-            // Policy getters expose immutable snapshots.
-        }
+        TestUtils.assertThrows(UnsupportedOperationException.class, action::run);
     }
 
     /**

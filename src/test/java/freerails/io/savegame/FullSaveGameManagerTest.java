@@ -20,6 +20,7 @@ package freerails.io.savegame;
 
 import freerails.server.FullServerGameModel;
 import freerails.server.ServerGameModel;
+import freerails.util.TestUtils;
 import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 
@@ -68,9 +69,8 @@ public class FullSaveGameManagerTest extends TestCase {
         FullSaveGameManager manager = new FullSaveGameManager(saveGameDirectory.toFile());
 
         try {
-            manager.saveGame("../outside.sav", new FullServerGameModel());
-            fail("Expected an IOException for a path instead of a filename.");
-        } catch (IOException expected) {
+            TestUtils.assertThrows(IOException.class, () -> manager.saveGame(
+                    "../outside.sav", new FullServerGameModel()));
             assertFalse(Files.exists(parentDirectory.resolve("outside.sav")));
             assertFalse(Files.exists(saveGameDirectory));
         } finally {
