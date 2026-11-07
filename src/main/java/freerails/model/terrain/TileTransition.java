@@ -38,13 +38,13 @@ public class TileTransition implements TrackConfigurations {
      * track-template bit.
      */
     public enum TileDirection {
-        NORTH(0, -1, 8),
-        NORTH_EAST(1, -1, 32),
-        EAST(1, 0, 64),
-        SOUTH_EAST(1, 1, 128),
-        SOUTH(0, 1, 16),
-        SOUTH_WEST(-1, 1, 4),
-        WEST(-1, 0, 2),
+        NORTH(0, -1, 2),
+        NORTH_EAST(1, -1, 4),
+        EAST(1, 0, 32),
+        SOUTH_EAST(1, 1, 256),
+        SOUTH(0, 1, 128),
+        SOUTH_WEST(-1, 1, 64),
+        WEST(-1, 0, 8),
         NORTH_WEST(-1, -1, 1);
 
         private static final TileDirection[] COMPASS_ORDER = {

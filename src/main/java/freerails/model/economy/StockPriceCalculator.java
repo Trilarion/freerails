@@ -21,8 +21,8 @@
  */
 package freerails.model.economy;
 
+import freerails.model.ModelConstants;
 import freerails.model.economy.transaction.ItemTransaction;
-import freerails.model.economy.transaction.Transaction;
 import freerails.model.economy.transaction.aggregator.FinancialDataAggregator;
 import freerails.model.economy.transaction.aggregator.NetWorthAggregator;
 import freerails.model.economy.transaction.aggregator.TransactionAggregator;
@@ -30,9 +30,7 @@ import freerails.model.simulation.Clock;
 import freerails.model.simulation.Time;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import org.jetbrains.annotations.NotNull;
 
-// TODO StockPrice seems to contain its own calculation model
 /**
  * Calculates the stock price for each of the players.
  * <p>
@@ -59,14 +57,12 @@ public class StockPriceCalculator {
      * @return calculated prices indexed by player index
      */
     public StockPrice[] calculate() {
-        // TODO use maps instead of arrays
         StockPrice[] stockPrices = new StockPrice[world.getPlayers().size()];
         for (int playerIndex = 0; playerIndex < stockPrices.length; playerIndex++) {
             int playerId = world.getPlayer(playerIndex).getId();
             Money profitLastYear;
             if (isFirstYear(playerId)) {
-                // TODO is this a good choice (maybe scenario dependent)
-                profitLastYear = new Money(100000);
+                profitLastYear = ModelConstants.FIRST_YEAR_PROFIT;
             } else {
                 profitLastYear = profitsLastYear(playerId);
             }
@@ -111,7 +107,6 @@ public class StockPriceCalculator {
         return netWorthAggregator.getValues()[0];
     }
 
-    // TODO consider extracting this if it gains other callers.
     /**
      * Sums the player's non-item transaction amounts during the previous game
      * year.
@@ -125,20 +120,8 @@ public class StockPriceCalculator {
         Clock clock = world.getClock();
         Time[] interval = {clock.getTimeAtStartOfYear(clock.getCurrentYear() - 1), clock.getTimeAtStartOfCurrentYear()};
 
-        // TODO is this anonymous class necessary?
-        TransactionAggregator aggregator = new TransactionAggregator(world, player, interval) {
-            /**
-             * Excludes item transactions because their value is represented by
-             * asset changes rather than profit or loss.
-             *
-             * @param transaction transaction to test
-             * @return {@code true} for monetary transactions
-             */
-            @Override
-            protected boolean acceptable(@NotNull Transaction transaction) {
-                return !(transaction instanceof ItemTransaction);
-            }
-        };
+        TransactionAggregator aggregator = new TransactionAggregator(world, player, interval,
+                transaction -> !(transaction instanceof ItemTransaction));
         aggregator.aggregate();
         return aggregator.getValues()[0];
     }

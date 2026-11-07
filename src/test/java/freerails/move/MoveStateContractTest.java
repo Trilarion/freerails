@@ -167,7 +167,7 @@ public class MoveStateContractTest extends TestCase {
     public void testCargoMovePayloadsSnapshotCallerBundles() {
         CargoBatchBundle stationCargo = cargo(7);
         ChangeCargoAtStationMove stationMove = new ChangeCargoAtStationMove(player, 10, stationCargo);
-        stationCargo.addCargo(new CargoBatch(2, IntPoint2D.ZERO, 42, 9), 3);
+        stationCargo.addCargo(new CargoBatch(2, IntPoint2D.ZERO, new Time(42), 9), 3);
 
         assertEquals(new ChangeCargoAtStationMove(player, 10, cargo(7)), stationMove);
         stationMove.apply(world);
@@ -175,7 +175,7 @@ public class MoveStateContractTest extends TestCase {
 
         CargoBatchBundle trainCargo = cargo(8);
         UpdateTrainMove trainMove = new UpdateTrainMove(player, 4, trainCargo, null, null);
-        trainCargo.addCargo(new CargoBatch(2, IntPoint2D.ZERO, 42, 9), 3);
+        trainCargo.addCargo(new CargoBatch(2, IntPoint2D.ZERO, new Time(42), 9), 3);
 
         assertEquals(new UpdateTrainMove(player, 4, cargo(8), null, null), trainMove);
         trainMove.apply(world);
@@ -206,7 +206,7 @@ public class MoveStateContractTest extends TestCase {
 
         train.setCargoBatchBundle(replacement);
         station.setCargoBatchBundle(replacement);
-        replacement.addCargo(new CargoBatch(2, IntPoint2D.ZERO, 42, 9), 3);
+        replacement.addCargo(new CargoBatch(2, IntPoint2D.ZERO, new Time(42), 9), 3);
 
         assertTrue(train.getCargoBatchBundle() instanceof ImmutableCargoBatchBundle);
         assertTrue(station.getCargoBatchBundle() instanceof ImmutableCargoBatchBundle);
@@ -299,7 +299,7 @@ public class MoveStateContractTest extends TestCase {
      */
     private static CargoBatchBundle cargo(int amount) {
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(1, IntPoint2D.ZERO, 42, 9), amount);
+        cargo.addCargo(new CargoBatch(1, IntPoint2D.ZERO, new Time(42), 9), amount);
         return cargo;
     }
 

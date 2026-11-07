@@ -296,7 +296,7 @@ public class MoveEqualityContractTest extends TestCase {
      */
     private static CargoBatchBundle cargo(int amount) {
         CargoBatchBundle bundle = new CargoBatchBundle();
-        bundle.addCargo(new CargoBatch(1, IntPoint2D.ZERO, 42, 9), amount);
+        bundle.addCargo(new CargoBatch(1, IntPoint2D.ZERO, new Time(42), 9), amount);
         return bundle;
     }
 

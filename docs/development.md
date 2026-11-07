@@ -75,6 +75,8 @@ scenario configuration and is handled by game setup or save-game persistence.
 Economic value types, account and transaction state, and transaction aggregation belong
 under `freerails.model.economy`. Financial report generators belong in its
 `reporting` subpackage.
+The stock valuation formula and its share-count weighting are documented in the
+`StockPrice` class Javadoc; keep that as the reference when changing stock-pricing behavior.
 
 Simulation-wide time primitives (`Clock`, `Time`, and `Speed`) belong to
 `freerails.model.simulation`, rather than the gameplay-specific

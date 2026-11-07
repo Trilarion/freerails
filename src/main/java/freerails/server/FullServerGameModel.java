@@ -115,7 +115,8 @@ public class FullServerGameModel implements ServerGameModel {
                     int amountSupplied = supply.getSupply(cargoId);
 
                     if (amountSupplied > 0) {
-                        CargoBatch cargoBatch = new CargoBatch(cargoId, station.getLocation(), 0, stationId);
+                        CargoBatch cargoBatch = new CargoBatch(
+                                cargoId, station.getLocation(), world.getClock().getCurrentTime(), stationId);
                         int amountAlready = after.getAmount(cargoBatch);
 
                         // Obtain the month

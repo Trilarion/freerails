@@ -59,7 +59,7 @@ public class RepresentativeMoveSerializationTest extends TestCase {
                 WorldGenerator.testTrackTypes().first(),
                 player.getId());
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(1, new IntPoint2D(8, 9), 42, 9), 4);
+        cargo.addCargo(new CargoBatch(1, new IntPoint2D(8, 9), new Time(42), 9), 4);
         ChangeCargoAtStationMove cargoMove = new ChangeCargoAtStationMove(player, 9, cargo);
 
         Train configuredTrain = new Train(7, new TrainConfiguration(2, List.of(4, 5)));
@@ -88,7 +88,7 @@ public class RepresentativeMoveSerializationTest extends TestCase {
         assertFalse(cargoMove.equals(new ChangeCargoAtStationMove(player, 10, cargo)));
 
         CargoBatchBundle differentCargo = new CargoBatchBundle();
-        differentCargo.addCargo(new CargoBatch(1, new IntPoint2D(8, 9), 42, 9), 5);
+        differentCargo.addCargo(new CargoBatch(1, new IntPoint2D(8, 9), new Time(42), 9), 5);
         assertFalse(cargoMove.equals(new ChangeCargoAtStationMove(player, 9, differentCargo)));
     }
 

@@ -21,6 +21,7 @@
  */
 package freerails.controller;
 
+import freerails.model.simulation.Time;
 import freerails.model.operations.train.Train;
 import freerails.model.operations.cargo.CargoConversion;
 import freerails.model.economy.transaction.CargoDeliveryTransaction;
@@ -54,9 +55,9 @@ import java.util.Set;
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
-    private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, IntPoint2D.ZERO,0, 2);
-    private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, IntPoint2D.ZERO,0, 2);
-    private final CargoBatch cargoType0FromStation0 = new CargoBatch(0,new IntPoint2D(0,0),0, 0);
+    private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, IntPoint2D.ZERO, new Time(0), 2);
+    private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, IntPoint2D.ZERO, new Time(0), 2);
+    private final CargoBatch cargoType0FromStation0 = new CargoBatch(0,new IntPoint2D(0,0), new Time(0), 0);
     private World world;
 
     /**
@@ -322,13 +323,14 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         CargoConversion conversion = conversionTerrain.getConversions().getFirst();
         station.setDemandForCargo(new StationDemand(Set.of(conversion.sourceCargoId())));
         world.setTile(new IntPoint2D(11, 10), new TerrainTile(conversionTerrain.getId()));
-        CargoBatch sourceCargo = new CargoBatch(conversion.sourceCargoId(), IntPoint2D.ZERO, 0, 2);
+        world.getClock().advanceTimeTo(new Time(42));
+        CargoBatch sourceCargo = new CargoBatch(conversion.sourceCargoId(), IntPoint2D.ZERO, new Time(0), 2);
         setCargoOnTrain(sourceCargo, 50);
 
         stopAtStation();
 
         CargoBatchBundle expectedAtStation = new CargoBatchBundle();
-        expectedAtStation.setAmount(new CargoBatch(conversion.productCargoId(), station.getLocation(), 0,
+        expectedAtStation.setAmount(new CargoBatch(conversion.productCargoId(), station.getLocation(), new Time(42),
                 station.getId()), 50);
         assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
         assertEquals(expectedAtStation, getCargoAtStation());

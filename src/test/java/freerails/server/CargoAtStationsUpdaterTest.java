@@ -18,7 +18,18 @@
 
 package freerails.server;
 
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.operations.cargo.CargoBatchBundle;
+import freerails.model.operations.station.Station;
+import freerails.model.operations.station.StationSupply;
+import freerails.model.player.Player;
+import freerails.model.simulation.Time;
+import freerails.model.world.World;
+import freerails.util.IntPoint2D;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
+
+import java.util.Map;
 
 // TODO does not exist anymore, now in FullServerGameModel, move to test there
 /**
@@ -39,6 +50,27 @@ public class CargoAtStationsUpdaterTest extends TestCase {
         assertCorrectTotalAddedOverYear(14);
         assertCorrectTotalAddedOverYear(140);
         assertCorrectTotalAddedOverYear(3);
+    }
+
+    /**
+     * Tests station production records the current simulation time.
+     */
+    public void testCargoProductionUsesCurrentSimulationTime() {
+        World world = WorldGenerator.defaultWorld();
+        Player player = WorldGenerator.TEST_PLAYER;
+        world.addPlayer(player);
+        int cargoTypeId = world.getCargos().iterator().next().getId();
+        Station station = new Station(1, new IntPoint2D(4, 5), "Station", CargoBatchBundle.EMPTY);
+        station.setSupply(new StationSupply(Map.of(cargoTypeId, 12)));
+        world.addStation(player, station);
+
+        Time creationTime = new Time(42);
+        world.getClock().advanceTimeTo(creationTime);
+        FullServerGameModel.cargoAtStationsUpdate(world, move -> move.apply(world));
+
+        CargoBatch batch = new CargoBatch(cargoTypeId, station.getLocation(), creationTime, station.getId());
+        assertTrue(station.getCargoBatchBundle().contains(batch));
+        assertTrue(station.getCargoBatchBundle().getAmount(batch) > 0);
     }
 
     /**

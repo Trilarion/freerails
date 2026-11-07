@@ -80,7 +80,7 @@ public class StockPriceCalculatorTest extends TestCase {
         while (clock.getCurrentTime().compareTo(newTime) < 0) {
             clock.advanceTime();
         }
-        CargoBatch batch = new CargoBatch(0, IntPoint2D.ZERO, 0, 0);
+        CargoBatch batch = new CargoBatch(0, IntPoint2D.ZERO, new Time(0), 0);
         Money income = new Money(100000);
         Transaction transaction = new CargoDeliveryTransaction(income, world.getClock().getCurrentTime(), 10, 0,0, batch);
         Player player = world.getPlayer(0);
@@ -139,7 +139,7 @@ public class StockPriceCalculatorTest extends TestCase {
      * @param income the income to use in the test.
      */
     private void addIncome(Money income) {
-        CargoBatch batch = new CargoBatch(0, IntPoint2D.ZERO, 0, 0);
+        CargoBatch batch = new CargoBatch(0, IntPoint2D.ZERO, new Time(0), 0);
         Transaction transaction = new CargoDeliveryTransaction(income, world.getClock().getCurrentTime(), 10, 0, 0, batch);
         Player princ = world.getPlayer(0);
         world.addTransaction(princ, transaction);

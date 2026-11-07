@@ -19,13 +19,10 @@
 package freerails.model.economy.transaction.aggregator;
 
 import freerails.model.economy.transaction.ItemTransaction;
-import freerails.model.economy.transaction.Transaction;
 import freerails.model.economy.transaction.TransactionCategory;
-import freerails.model.economy.transaction.aggregator.TransactionAggregator;
 import freerails.model.simulation.Time;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A TransactionAggregator that calculates the net worth of a player by totalling
@@ -42,24 +39,13 @@ public class NetWorthAggregator extends TransactionAggregator {
      * @param times ordered interval boundaries
      */
     public NetWorthAggregator(UnmodifiableWorld world, Player player, Time[] times) {
-        super(world, player, times);
-    }
+        super(world, player, times, transaction -> {
+            if (transaction instanceof ItemTransaction) {
+                return transaction.getCategory() == TransactionCategory.ISSUE_STOCK;
+                // Since buying something is just converting one asset type to another.
+            }
 
-    /**
-     * Includes monetary transactions and stock-issue transactions, while
-     * excluding other item purchases because they exchange one asset for
-     * another.
-     *
-     * @param transaction transaction to test
-     * @return {@code true} if its amount contributes to net worth
-     */
-    @Override
-    protected boolean acceptable(@NotNull Transaction transaction) {
-        if (transaction instanceof ItemTransaction) {
-            return transaction.getCategory() == TransactionCategory.ISSUE_STOCK;
-            // Since buying something is just converting one asset type to another.
-        }
-
-        return true;
+            return true;
+        });
     }
 }

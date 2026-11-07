@@ -18,6 +18,7 @@
 
 package freerails.model;
 
+import freerails.model.simulation.Time;
 import freerails.model.operations.cargo.CargoBatch;
 import freerails.model.economy.Money;
 import freerails.model.terrain.TerrainTile;
@@ -51,17 +52,17 @@ public class ValueObjectEqualityContractTest extends TestCase {
      * Tests cargo batch equality contract and every identity field behavior.
      */
     public void testCargoBatchEqualityContractAndEveryIdentityField() {
-        CargoBatch batch = new CargoBatch(1, new IntPoint2D(2, 3), 4, 5);
-        assertEqualContract(batch, new CargoBatch(1, new IntPoint2D(2, 3), 4, 5),
-                new CargoBatch(1, new IntPoint2D(2, 3), 4, 5));
-        assertDifferent(batch, new CargoBatch(2, new IntPoint2D(2, 3), 4, 5));
-        assertDifferent(batch, new CargoBatch(1, new IntPoint2D(3, 3), 4, 5));
-        assertDifferent(batch, new CargoBatch(1, new IntPoint2D(2, 3), 6, 5));
-        assertDifferent(batch, new CargoBatch(1, new IntPoint2D(2, 3), 4, 6));
+        CargoBatch batch = new CargoBatch(1, new IntPoint2D(2, 3), new Time(4), 5);
+        assertEqualContract(batch, new CargoBatch(1, new IntPoint2D(2, 3), new Time(4), 5),
+                new CargoBatch(1, new IntPoint2D(2, 3), new Time(4), 5));
+        assertDifferent(batch, new CargoBatch(2, new IntPoint2D(2, 3), new Time(4), 5));
+        assertDifferent(batch, new CargoBatch(1, new IntPoint2D(3, 3), new Time(4), 5));
+        assertDifferent(batch, new CargoBatch(1, new IntPoint2D(2, 3), new Time(6), 5));
+        assertDifferent(batch, new CargoBatch(1, new IntPoint2D(2, 3), new Time(4), 6));
 
         TreeSet<CargoBatch> sortedBatches = new TreeSet<>();
         sortedBatches.add(batch);
-        sortedBatches.add(new CargoBatch(1, new IntPoint2D(2, 3), 4, 5));
+        sortedBatches.add(new CargoBatch(1, new IntPoint2D(2, 3), new Time(4), 5));
         assertEquals(1, sortedBatches.size());
     }
 

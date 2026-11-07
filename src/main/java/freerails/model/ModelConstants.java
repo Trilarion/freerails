@@ -29,6 +29,8 @@ import java.nio.charset.StandardCharsets;
 public final class ModelConstants {
 
     public static final int STOCK_BUNDLE_SIZE = 10000;
+    /** Default profit for a company during its first year when no prior-year history exists. */
+    public static final Money FIRST_YEAR_PROFIT = new Money(100000);
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
     public static final Money BOND_VALUE_ISSUE = new Money(500000);
     public static final Money BOND_VALUE_REPAY = new Money(-500000);

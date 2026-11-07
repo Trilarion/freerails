@@ -25,19 +25,22 @@ import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import org.jetbrains.annotations.NotNull;
 
-// TODO just make AggregationCondition an interface and this class not abstract but using a certain Condition
+import java.util.Objects;
+
 /**
- * Adds up the value of transactions. Implements GoF Template Method pattern.
- * Subclasses that aggregate a monetary sum should only override the method
- * {@code condition(int)}; subclasses that aggregate a non-monetary sum
- * should override all 4 protected methods.
+ * Adds up transaction amounts for a time-bounded interval.
+ *
+ * <p>The aggregation filter can be supplied by a condition object, while
+ * subclasses may still override {@link #acceptable(Transaction)} for more
+ * specialized stateful behavior.
  */
-public abstract class TransactionAggregator {
+public class TransactionAggregator {
 
     protected final UnmodifiableWorld world;
     protected final Player player;
     private final Money[] values;
     protected final Time[] times;
+    private final AggregationCondition condition;
 
     /**
      * Creates an aggregator whose intervals are defined by the supplied
@@ -50,8 +53,24 @@ public abstract class TransactionAggregator {
      *         or if the boundaries decrease
      */
     public TransactionAggregator(UnmodifiableWorld world, Player player, Time[] times) {
+        this(world, player, times, transaction -> true);
+    }
+
+    /**
+     * Creates an aggregator whose intervals are defined by the supplied
+     * nondecreasing boundary times and whose accepted transactions are filtered
+     * by the supplied condition.
+     *
+     * @param world world supplying transactions
+     * @param player player whose transactions are aggregated
+     * @param times ordered boundaries defining one or more intervals
+     * @param condition transaction filter used before aggregation
+     */
+    public TransactionAggregator(UnmodifiableWorld world, Player player, Time[] times,
+                                 @NotNull AggregationCondition condition) {
         this.world = world;
         this.player = player;
+        this.condition = Objects.requireNonNull(condition, "condition");
 
         if (times.length < 2) {
             throw new IllegalArgumentException("There must be at least two values.");
@@ -142,5 +161,7 @@ public abstract class TransactionAggregator {
      * @param transaction transaction to test
      * @return {@code true} if it should be included
      */
-    protected abstract boolean acceptable(@NotNull Transaction transaction);
+    protected boolean acceptable(@NotNull Transaction transaction) {
+        return condition.acceptable(transaction);
+    }
 }

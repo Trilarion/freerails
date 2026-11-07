@@ -107,6 +107,23 @@ public class ItemTransactionAggregatorTest extends TestCase {
     }
 
     /**
+     * Tests the default aggregator interval includes history through current time.
+     */
+    public void testDefaultConstructorAggregatesThroughCurrentTime() {
+        world.getClock().advanceTimeTo(new Time(2));
+        addTransaction(0, TransactionCategory.TRACK, 0, 2, 0);
+        addTransaction(2, TransactionCategory.TRACK, 0, 5, 0);
+        addTransaction(3, TransactionCategory.TRACK, 0, 11, 0);
+
+        ItemsTransactionAggregator aggregator =
+                new ItemsTransactionAggregator(world, WorldGenerator.TEST_PLAYER);
+        aggregator.setCategory(TransactionCategory.TRACK);
+        aggregator.setType(0);
+
+        assertEquals(7, aggregator.calculateQuantity());
+    }
+
+    /**
      * Tests out of order history is kept in insertion order and aggregated by timestamp behavior.
      */
     public void testOutOfOrderHistoryIsKeptInInsertionOrderAndAggregatedByTimestamp() {

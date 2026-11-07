@@ -96,9 +96,7 @@ public class TransactionUtils {
      * @return {@code true} if the player's net track quantity is positive
      */
     public static boolean hasAnyTrackBeenBuilt(UnmodifiableWorld world, Player player) {
-        // TODO make this the default constructor in ItemsTransactionAggregator
-        Time[] times = {Time.ZERO, world.getClock().getCurrentTime().advance()};
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player, times);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
         aggregator.setCategory(TransactionCategory.TRACK);
 
         return aggregator.calculateQuantity() > 0;
@@ -117,16 +115,16 @@ public class TransactionUtils {
         Time[] times = new Time[]{startTime, world.getClock().getCurrentTime().advance()};
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player, times);
         aggregator.setCategory(TransactionCategory.TRACK);
-        long amount = 0;
+        Money amount = Money.ZERO;
 
         for (TrackType trackType: world.getTrackTypes()) {
-            // TODO Money arithmetic
-            long trackValue = trackType.getPurchasingPrice().amount();
             aggregator.setType(trackType.getId());
             int quantity = aggregator.calculateQuantity();
-            amount += trackValue * quantity / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+            Money trackValue = Money.multiply(trackType.getPurchasingPrice(), quantity);
+            trackValue = Money.divide(trackValue, ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+            amount = Money.add(amount, trackValue);
         }
 
-        return new Money(amount);
+        return amount;
     }
 }

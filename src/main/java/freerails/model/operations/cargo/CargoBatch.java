@@ -18,6 +18,7 @@
 
 package freerails.model.operations.cargo;
 
+import freerails.model.simulation.Time;
 import freerails.util.IntPoint2D;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,17 +28,18 @@ import java.io.Serializable;
 /**
  * Represents a cargo batch. Cargo of the same batch is cargo of
  * the same type that was produced at the same location and at the same time.
+ * A batch stores its cargo type's stable ID rather than a {@link Cargo}
+ * instance because cargo definitions are owned by the world and resolved
+ * there by ID.
  */
 public class CargoBatch implements Serializable, Comparable<CargoBatch> {
 
-    // TODO Why is cargoType an int here and not Cargo directly?? Because we have a list in the world for that?
     @Serial
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoTypeId;
     private final IntPoint2D sourceP;
     private final int originalStationId;
-    // TODO creation time maybe as game time?
-    private final long creationTime;
+    private final Time creationTime;
 
     /**
      * Creates a batch identity for cargo produced at a particular place and
@@ -45,14 +47,23 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      *
      * @param cargoTypeId identifier of the cargo type
      * @param p source tile coordinates
-     * @param time batch creation time
+     * @param time simulation time when this batch was created
      * @param origin identifier of the originating station
      */
-    public CargoBatch(int cargoTypeId, IntPoint2D p, long time, int origin) {
+    public CargoBatch(int cargoTypeId, IntPoint2D p, Time time, int origin) {
         this.cargoTypeId = cargoTypeId;
         sourceP = p;
         creationTime = time;
         originalStationId = origin;
+    }
+
+    /**
+     * Returns the simulation time when this batch was created.
+     *
+     * @return batch creation time
+     */
+    public Time getCreationTime() {
+        return creationTime;
     }
 
     /**
@@ -91,8 +102,8 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof CargoBatch test) {
-
-            return test.cargoTypeId == cargoTypeId && sourceP.equals(test.sourceP) && test.creationTime == creationTime && test.originalStationId == originalStationId;
+            return test.cargoTypeId == cargoTypeId && sourceP.equals(test.sourceP)
+                    && test.creationTime.equals(creationTime) && test.originalStationId == originalStationId;
         }
         return false;
     }
@@ -108,7 +119,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         result = 37 * result + cargoTypeId;
         result = 37 * result + sourceP.hashCode();
         result = 37 * result + originalStationId;
-        result = 37 * result + Long.hashCode(creationTime);
+        result = 37 * result + creationTime.hashCode();
 
         return result;
     }
@@ -122,10 +133,21 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      */
     @Override
     public int compareTo(@NotNull CargoBatch o) {
-        if (creationTime != o.creationTime) return (int) (creationTime - o.creationTime);
-        if (cargoTypeId != o.cargoTypeId) return cargoTypeId - o.cargoTypeId;
-        if (originalStationId != o.originalStationId) return originalStationId - o.originalStationId;
-        if (!sourceP.equals(o.sourceP)) return sourceP.compareTo(o.sourceP);
+        int timeComparison = creationTime.compareTo(o.creationTime);
+        if (timeComparison != 0) {
+            return timeComparison;
+        }
+        int cargoTypeComparison = Integer.compare(cargoTypeId, o.cargoTypeId);
+        if (cargoTypeComparison != 0) {
+            return cargoTypeComparison;
+        }
+        int originComparison = Integer.compare(originalStationId, o.originalStationId);
+        if (originComparison != 0) {
+            return originComparison;
+        }
+        if (!sourceP.equals(o.sourceP)) {
+            return sourceP.compareTo(o.sourceP);
+        }
         return 0;
     }
 }

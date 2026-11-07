@@ -24,9 +24,15 @@ package freerails.model.operations.cargo;
 import java.io.Serializable;
 import java.util.Collection;
 
-// TODO should the amount already be included in the cargo batch?
 /**
- * Holds a number of cargo batches with an amount for each cargo batch.
+ * Holds cargo batches together with the quantity of each batch.
+ *
+ * The batch identity and the quantity are intentionally separate. A
+ * {@link CargoBatch} identifies a shipment by cargo type, source location,
+ * production time and originating station, while this bundle stores how many
+ * units of that specific batch are currently present. This lets the same batch
+ * be tracked across transfers, deliveries and station supply updates without
+ * mutating its identity.
  *
  * <table>
  * <caption>Example</caption>

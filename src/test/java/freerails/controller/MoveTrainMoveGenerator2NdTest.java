@@ -246,7 +246,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      */
     private void addCargoAtStation(int stationId, int amount) {
 
-        CargoBatch cargoBatch = new CargoBatch(0, new IntPoint2D(6, 6), 0, stationId);
+        CargoBatch cargoBatch = new CargoBatch(0, new IntPoint2D(6, 6), new Time(0), stationId);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
         cargoBatchBundle.addCargo(cargoBatch, amount);
         Station station = world.getStation(player, stationId);
@@ -422,7 +422,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         Station station0 = world.getStation(player, 1);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
         final int AMOUNT_OF_CARGO = 35;
-        cargoBatchBundle.addCargo(new CargoBatch(0, IntPoint2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
+        cargoBatchBundle.addCargo(new CargoBatch(0, IntPoint2D.ZERO, new Time(0), 0), AMOUNT_OF_CARGO);
         station0.setCargoBatchBundle(cargoBatchBundle);
 
         // Make station2 demand cargo #0;

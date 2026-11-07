@@ -123,7 +123,7 @@ public class WorldDeterminismTest extends TestCase {
         Train train = new Train(2, 0);
         train.setConsist(List.of(4));
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(3, IntPoint2D.ZERO, 0, 0), 4);
+        cargo.addCargo(new CargoBatch(3, IntPoint2D.ZERO, new Time(0), 0), 4);
         train.setCargoBatchBundle(cargo);
         TrainMotion motion = new TrainMotion(
                 new PathOnTiles(IntPoint2D.ZERO, TileTransition.EAST, TileTransition.EAST),

@@ -18,6 +18,7 @@
 
 package freerails.client.view;
 
+import freerails.model.simulation.Time;
 import freerails.model.operations.cargo.CargoCategory;
 import freerails.model.operations.cargo.Cargo;
 import freerails.model.economy.reporting.IncomeStatementGenerator;
@@ -70,7 +71,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
             Cargo ct = world.getCargo(i);
 
             if (ct.getCategory() == category) {
-                CargoBatch cb = new CargoBatch(i, IntPoint2D.ZERO, 0, 0);
+                CargoBatch cb = new CargoBatch(i, IntPoint2D.ZERO, new Time(0), 0);
                 world.addTransaction(WorldGenerator.TEST_PLAYER,
                         new CargoDeliveryTransaction(amount, world.getClock().getCurrentTime(), 10, 0, 1, cb));
                 return;

@@ -19,15 +19,12 @@
 package freerails.model.economy;
 
 import freerails.model.economy.transaction.TransactionCategory;
-import freerails.model.economy.transaction.Transaction;
 import freerails.model.economy.transaction.aggregator.ItemsTransactionAggregator;
 import freerails.model.economy.transaction.aggregator.TransactionAggregator;
 import freerails.model.simulation.Time;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import org.jetbrains.annotations.NotNull;
 
-// TODO The code could maybe become static
 /** Computes asset, loan, and equity statistics over a supplied time interval. */
 public class Statistics {
 
@@ -103,13 +100,8 @@ public class Statistics {
      */
     private static Money calculateCategoryTotal(
             UnmodifiableWorld world, Player player, Time[] interval, TransactionCategory category) {
-        TransactionAggregator aggregator = new TransactionAggregator(world, player, interval) {
-            /** {@inheritDoc} */
-            @Override
-            protected boolean acceptable(@NotNull Transaction transaction) {
-                return transaction.getCategory() == category;
-            }
-        };
+        TransactionAggregator aggregator = new TransactionAggregator(world, player, interval,
+                transaction -> transaction.getCategory() == category);
         aggregator.aggregate();
         return aggregator.getValues()[0];
     }
@@ -125,13 +117,8 @@ public class Statistics {
      */
     private static Money calculateOperatingFunds(
             UnmodifiableWorld world, Player player, Time startTime, Time endTime) {
-        TransactionAggregator aggregator = new TransactionAggregator(world, player, new Time[]{startTime, endTime}) {
-            /** {@inheritDoc} */
-            @Override
-            protected boolean acceptable(@NotNull Transaction transaction) {
-                return true;
-            }
-        };
+        TransactionAggregator aggregator = new TransactionAggregator(world, player,
+                new Time[]{startTime, endTime}, transaction -> true);
         aggregator.aggregate();
         return aggregator.getValues()[0];
     }

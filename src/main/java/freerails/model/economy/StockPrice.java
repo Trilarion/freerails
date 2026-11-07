@@ -20,7 +20,20 @@ package freerails.model.economy;
 
 import freerails.model.ModelConstants;
 
-/** Holds the calculated market and treasury prices for a company's shares. */
+/**
+ * Holds the calculated market and treasury prices for a company's shares.
+ * <p>
+ * The price per share is calculated as
+ * <pre>
+ * 2 * (net worth + 5 * profit last year)
+ * -------------------------------------
+ * 2 * public shares + shares held by other railroads
+ * </pre>
+ * This gives public shares full weight and shares held by other railroads half
+ * weight in the denominator. The calculation uses integer arithmetic, so any
+ * fractional result is truncated. If the denominator is zero, the price is
+ * {@link Long#MAX_VALUE}.
+ */
 public class StockPrice {
 
     public final Money currentPrice;
@@ -46,7 +59,6 @@ public class StockPrice {
         treasuryBuyPrice = calculateStockPrice(netWorth, profitLastYear, publicShares - ModelConstants.STOCK_BUNDLE_SIZE, otherRRShares);
     }
 
-    // TODO document this (in the design document)
     /**
      * Calculates a share price from company net worth, prior-year profit, and
      * the supplied share counts. A zero denominator yields the maximum

@@ -18,6 +18,7 @@
 
 package freerails.model.operations.train;
 
+import freerails.model.simulation.Time;
 import freerails.model.ModelConstants;
 import freerails.model.operations.cargo.Cargo;
 import freerails.model.operations.cargo.CargoBatch;
@@ -52,7 +53,7 @@ public class TrainUtilsTest extends TestCase {
                 .build();
 
         CargoBatchBundle cargo = new CargoBatchBundle();
-        cargo.addCargo(new CargoBatch(90, IntPoint2D.ZERO, 0, 0), 10);
+        cargo.addCargo(new CargoBatch(90, IntPoint2D.ZERO, new Time(0), 0), 10);
         List<Integer> space = TrainUtils.spaceAvailable2(world, cargo, List.of(90));
 
         assertEquals(0, space.get(world.getCargoIndex(7)).intValue());

@@ -35,6 +35,17 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     private int[] quantities;
 
     /**
+     * Creates an item aggregator over the world's complete transaction history
+     * up to the current time.
+     *
+     * @param world world supplying transactions and current time
+     * @param player player whose item transactions are aggregated
+     */
+    public ItemsTransactionAggregator(UnmodifiableWorld world, Player player) {
+        this(world, player, new Time[]{Time.ZERO, world.getClock().getCurrentTime().advance()});
+    }
+
+    /**
      * Creates an item aggregator over the specified time intervals.
      *
      * @param world world supplying transactions

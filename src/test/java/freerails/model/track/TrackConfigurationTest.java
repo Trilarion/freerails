@@ -63,6 +63,16 @@ public class TrackConfigurationTest extends TestCase {
     }
 
     /**
+     * Tests directional templates use their corresponding cells in the 3x3 tile grid.
+     */
+    public void testDirectionalTemplatesMatchNineBitGrid() {
+        for (TileTransition direction : TileTransition.getTransitions()) {
+            int gridIndex = (direction.deltaY + 1) * 3 + direction.deltaX + 1;
+            assertEquals(1 << gridIndex, direction.get9bitTemplate());
+        }
+    }
+
+    /**
      * Tests get length behavior.
      */
     public void testGetLength() {
