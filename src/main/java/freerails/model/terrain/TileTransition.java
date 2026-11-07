@@ -33,10 +33,84 @@ import java.io.Serial;
  */
 public class TileTransition implements TrackConfigurations {
 
-    // TODO TileDirection could become an enum and TileTransition vectors some composite
+    /**
+     * Represents the eight compass directions with their canonical displacement and
+     * track-template bit.
+     */
+    public enum TileDirection {
+        NORTH(0, -1, 8),
+        NORTH_EAST(1, -1, 32),
+        EAST(1, 0, 64),
+        SOUTH_EAST(1, 1, 128),
+        SOUTH(0, 1, 16),
+        SOUTH_WEST(-1, 1, 4),
+        WEST(-1, 0, 2),
+        NORTH_WEST(-1, -1, 1);
+
+        private static final TileDirection[] COMPASS_ORDER = {
+                NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST
+        };
+
+        public final int deltaX;
+        public final int deltaY;
+        private final int flatTrackTemplate;
+
+        TileDirection(int deltaX, int deltaY, int flatTrackTemplate) {
+            this.deltaX = deltaX;
+            this.deltaY = deltaY;
+            this.flatTrackTemplate = flatTrackTemplate;
+        }
+
+        public static TileDirection fromDelta(int dx, int dy) {
+            for (TileDirection direction : values()) {
+                if (direction.deltaX == dx && direction.deltaY == dy) {
+                    return direction;
+                }
+            }
+            throw new IllegalArgumentException("No tile direction for delta (" + dx + ", " + dy + ")");
+        }
+
+        public static TileDirection fromCompassIndex(int index) {
+            return COMPASS_ORDER[index];
+        }
+
+        public TileDirection getOpposite() {
+            return switch (this) {
+                case NORTH -> SOUTH;
+                case NORTH_EAST -> SOUTH_WEST;
+                case EAST -> WEST;
+                case SOUTH_EAST -> NORTH_WEST;
+                case SOUTH -> NORTH;
+                case SOUTH_WEST -> NORTH_EAST;
+                case WEST -> EAST;
+                case NORTH_WEST -> SOUTH_EAST;
+            };
+        }
+
+        public int getDeltaX() {
+            return deltaX;
+        }
+
+        public int getDeltaY() {
+            return deltaY;
+        }
+
+        public int getFlatTrackTemplate() {
+            return flatTrackTemplate;
+        }
+    }
 
     @Serial
     private static final long serialVersionUID = 3256444698640921912L;
+
+    public static final TileTransition NORTH = new TileTransition(TileDirection.NORTH);
+    public static final TileTransition NORTH_WEST = new TileTransition(TileDirection.NORTH_WEST);
+    public static final TileTransition WEST = new TileTransition(TileDirection.WEST);
+    public static final TileTransition SOUTH_WEST = new TileTransition(TileDirection.SOUTH_WEST);
+    public static final TileTransition SOUTH = new TileTransition(TileDirection.SOUTH);
+    public static final TileTransition SOUTH_EAST = new TileTransition(TileDirection.SOUTH_EAST);
+    public static final TileTransition EAST = new TileTransition(TileDirection.EAST);
+    public static final TileTransition NORTH_EAST = new TileTransition(TileDirection.NORTH_EAST);
 
     /**
      * A 3x3 array of OneTileMoveVectors, representing vectors to eight adjacent
@@ -47,25 +121,19 @@ public class TileTransition implements TrackConfigurations {
     static {
         vectors = new TileTransition[3][3];
 
-        int t = 1;
-        for (int y = -1; y <= 1; y++) {
-            for (int x = -1; x <= 1; x++) {
-                if (0 != x || 0 != y) {
-                    vectors[x + 1][y + 1] = new TileTransition(x, y, t);
-                }
-                t = t << 1;
-            }
+        for (TileDirection direction : TileDirection.values()) {
+            vectors[direction.deltaX + 1][direction.deltaY + 1] = switch (direction) {
+                case NORTH -> NORTH;
+                case NORTH_EAST -> NORTH_EAST;
+                case EAST -> EAST;
+                case SOUTH_EAST -> SOUTH_EAST;
+                case SOUTH -> SOUTH;
+                case SOUTH_WEST -> SOUTH_WEST;
+                case WEST -> WEST;
+                case NORTH_WEST -> NORTH_WEST;
+            };
         }
     }
-
-    public static final TileTransition NORTH = getInstance(new IntPoint2D(0, -1));
-    public static final TileTransition NORTH_WEST = getInstance(new IntPoint2D(-1, -1));
-    public static final TileTransition WEST = getInstance(new IntPoint2D(-1, 0));
-    public static final TileTransition SOUTH_WEST = getInstance(new IntPoint2D(-1, 1));
-    public static final TileTransition SOUTH = getInstance(new IntPoint2D(0, 1));
-    public static final TileTransition SOUTH_EAST = getInstance(new IntPoint2D(1, 1));
-    public static final TileTransition EAST = getInstance(new IntPoint2D(1, 0));
-    public static final TileTransition NORTH_EAST = getInstance(new IntPoint2D(1, -1));
 
     /**
      * Another array of TileTransitions representing the 8 compass directions going clockwise from North.
@@ -103,11 +171,14 @@ public class TileTransition implements TrackConfigurations {
      * @param y vertical displacement, either -1, 0, or 1
      * @param t bit template identifying the corresponding track direction
      */
-    private TileTransition(int x, int y, int t) {
-        deltaX = x;
-        deltaY = y;
-        flatTrackTemplate = t;
-        length = x * y == 0 ? ModelConstants.MODEL_UNITS_PER_TILE : ModelConstants.MODEL_DIAGONAL_TILE_LENGTH;
+    private final TileDirection direction;
+
+    private TileTransition(TileDirection direction) {
+        this.direction = direction;
+        deltaX = direction.deltaX;
+        deltaY = direction.deltaY;
+        flatTrackTemplate = direction.flatTrackTemplate;
+        length = deltaX * deltaY == 0 ? ModelConstants.MODEL_UNITS_PER_TILE : ModelConstants.MODEL_DIAGONAL_TILE_LENGTH;
     }
 
     /**
@@ -133,6 +204,10 @@ public class TileTransition implements TrackConfigurations {
         return list[number];
     }
 
+    public TileDirection getTileDirection() {
+        return direction;
+    }
+
     /**
      * Tests whether two coordinates are distinct neighbors.
      *
@@ -156,6 +231,19 @@ public class TileTransition implements TrackConfigurations {
             throw new IllegalArgumentException(d.x() + " and " + d.y() + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
         }
         return vectors[d.x() + 1][d.y() + 1];
+    }
+
+    public static TileTransition getInstance(TileDirection direction) {
+        return switch (direction) {
+            case NORTH -> NORTH;
+            case NORTH_EAST -> NORTH_EAST;
+            case EAST -> EAST;
+            case SOUTH_EAST -> SOUTH_EAST;
+            case SOUTH -> SOUTH;
+            case SOUTH_WEST -> SOUTH_WEST;
+            case WEST -> WEST;
+            case NORTH_WEST -> NORTH_WEST;
+        };
     }
 
     /**

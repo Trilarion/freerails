@@ -25,9 +25,12 @@ import freerails.model.simulation.Time;
 import java.io.Serial;
 import java.util.Objects;
 
-// TODO Is this an Item transaction or a money transaction or something more complex?
 /**
- * A credit for delivering cargo.
+ * A monetary credit earned by delivering cargo.
+ * <p>
+ * The amount changes the player's balance. The cargo batch, quantity, station,
+ * and train identify the delivery for reporting; they do not represent an
+ * inventory change in this transaction.
  */
 public class CargoDeliveryTransaction extends Transaction {
 

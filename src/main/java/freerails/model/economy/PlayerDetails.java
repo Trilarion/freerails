@@ -25,10 +25,22 @@ import org.jetbrains.annotations.NotNull;
  */
 public class PlayerDetails implements Comparable<PlayerDetails> {
 
-    // TODO set in constructor?
-    private String name = "player";
-    private Money networth = Money.ZERO;
-    private int stations = 0;
+    private String name;
+    private Money networth;
+    private int stations;
+
+    /**
+     * Creates player details with explicit leaderboard values.
+     *
+     * @param name player name
+     * @param networth player net worth
+     * @param stations number of stations
+     */
+    public PlayerDetails(String name, Money networth, int stations) {
+        this.name = name;
+        this.networth = networth;
+        this.stations = stations;
+    }
 
     /**
      * Returns this entry as a concise leaderboard description.

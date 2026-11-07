@@ -21,7 +21,6 @@ package freerails.model.terrain.city;
 import freerails.util.Identifiable;
 import freerails.util.IntPoint2D;
 
-// TODO Possible potential for expansion?? Initial size of city, growth rate etc.??? incorporate CityModel?
 /**
  * Stores a city's stable identifier, display name, and map location.
  */

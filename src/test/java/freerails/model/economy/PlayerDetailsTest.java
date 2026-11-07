@@ -26,33 +26,32 @@ import junit.framework.TestCase;
 public class PlayerDetailsTest extends TestCase {
 
     /**
-     * Tests default values and setters behavior.
+     * Tests constructor and setters behavior.
      */
-    public void testDefaultValuesAndSetters() {
-        PlayerDetails details = new PlayerDetails();
-
-        assertEquals("player", details.getName());
-        assertEquals(Money.ZERO, details.getNetworth());
-        assertEquals(0, details.getStations());
-
-        details.setName("Ada");
-        details.setNetworth(new Money(1234));
-        details.setStations(3);
+    public void testConstructorAndSetters() {
+        PlayerDetails details = new PlayerDetails("Ada", new Money(1234), 3);
 
         assertEquals("Ada", details.getName());
         assertEquals(new Money(1234), details.getNetworth());
         assertEquals(3, details.getStations());
         assertEquals("Ada, 1234 net worth, 3  stations.", details.toString());
+
+        details.setName("Grace");
+        details.setNetworth(new Money(4321));
+        details.setStations(7);
+
+        assertEquals("Grace", details.getName());
+        assertEquals(new Money(4321), details.getNetworth());
+        assertEquals(7, details.getStations());
+        assertEquals("Grace, 4321 net worth, 7  stations.", details.toString());
     }
 
     /**
      * Tests comparison uses net worth behavior.
      */
     public void testComparisonUsesNetWorth() {
-        PlayerDetails poorer = new PlayerDetails();
-        PlayerDetails wealthier = new PlayerDetails();
-        poorer.setNetworth(new Money(-5));
-        wealthier.setNetworth(new Money(5));
+        PlayerDetails poorer = new PlayerDetails("Poor", new Money(-5), 0);
+        PlayerDetails wealthier = new PlayerDetails("Rich", new Money(5), 1);
 
         assertTrue(poorer.compareTo(wealthier) < 0);
         assertTrue(wealthier.compareTo(poorer) > 0);

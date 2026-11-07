@@ -24,8 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 
-// TODO find better name for what it really is
-
 /**
  * A map tile containing a terrain type and, optionally, a track piece.
 

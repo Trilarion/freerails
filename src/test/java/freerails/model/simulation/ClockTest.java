@@ -51,6 +51,42 @@ public class ClockTest extends TestCase {
     }
 
     /**
+     * Tests date conversion when a year does not contain twelve equal tick
+     * intervals.
+     */
+    public void testDateConversionWithFewerThanTwelveTicksPerYear() {
+        Clock clock = new Clock(1900, 10, Time.ZERO);
+
+        assertEquals(0, clock.getMonth(new Time(0)));
+        assertEquals(10, clock.getMonth(new Time(9)));
+        assertEquals("Nov 1900", clock.getDateAsString(new Time(9)));
+        assertEquals("Jan 1901", clock.getDateAsString(new Time(10)));
+
+        clock = new Clock(1900, 10, new Time(9));
+        assertTrue(clock.isLastTickOfMonth());
+    }
+
+    /**
+     * Tests month boundaries when the number of ticks per year is not evenly
+     * divisible by twelve.
+     */
+    public void testIsLastTickOfMonthWithUnevenTickIntervals() {
+        Clock clock = new Clock(1900, 100, new Time(7));
+        assertFalse(clock.isLastTickOfMonth());
+
+        clock = new Clock(1900, 100, new Time(8));
+        assertTrue(clock.isLastTickOfMonth());
+
+        clock = new Clock(1900, 100, new Time(9));
+        assertEquals(1, clock.getCurrentMonth());
+        assertFalse(clock.isLastTickOfMonth());
+
+        clock = new Clock(1900, 100, new Time(99));
+        assertTrue(clock.isLastTickOfMonth());
+        assertTrue(clock.isLastTickOfYear());
+    }
+
+    /**
      * Tests advance time behavior.
      */
     public void testAdvanceTime() {

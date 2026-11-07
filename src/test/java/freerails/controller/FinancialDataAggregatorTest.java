@@ -30,6 +30,7 @@ import freerails.model.economy.*;
 import freerails.model.ModelConstants;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.model.simulation.Time;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -148,5 +149,88 @@ public class FinancialDataAggregatorTest extends TestCase {
         FinancialDataAggregator fdg = new FinancialDataAggregator(world, player);
         int expected = ModelConstants.IPO_SIZE;
         assertEquals(expected, fdg.totalShares());
+    }
+
+    /**
+     * Verifies repeated aggregation does not accumulate previous share,
+     * issuance, or bond totals.
+     */
+    public void testAggregateResetsShareAndBondState() {
+        Time currentTime = world.getClock().getCurrentTime();
+        world.addTransaction(player, TransactionUtils.issueStock(-1, 25, Money.ZERO, currentTime));
+        world.addTransaction(player, TransactionUtils.buyOrSellStock(
+                player.getId(), 300, Money.ZERO, currentTime));
+        world.addTransaction(player, TransactionUtils.issueBond(5, currentTime));
+
+        FinancialDataAggregator aggregator = new FinancialDataAggregator(world, player);
+        aggregator.aggregate();
+        assertEquals(ModelConstants.IPO_SIZE + 25, aggregator.totalShares());
+        assertEquals(2, aggregator.getBonds());
+        assertEquals(300, aggregator.getStockInRRs()[world.getPlayerIndex(player.getId())]);
+
+        aggregator.aggregate();
+        assertEquals(ModelConstants.IPO_SIZE + 25, aggregator.totalShares());
+        assertEquals(2, aggregator.getBonds());
+        assertEquals(300, aggregator.getStockInRRs()[world.getPlayerIndex(player.getId())]);
+
+        world.addTransaction(player, TransactionUtils.issueStock(-1, 5, Money.ZERO, currentTime));
+        world.addTransaction(player, TransactionUtils.buyOrSellStock(
+                player.getId(), 50, Money.ZERO, currentTime));
+        world.addTransaction(player, TransactionUtils.issueBond(5, currentTime));
+        aggregator.aggregate();
+        assertEquals(ModelConstants.IPO_SIZE + 30, aggregator.totalShares());
+        assertEquals(3, aggregator.getBonds());
+        assertEquals(350, aggregator.getStockInRRs()[world.getPlayerIndex(player.getId())]);
+    }
+
+    /**
+     * Verifies custom time boundaries apply to the share and bond quantities,
+     * including derived holdings, and that derived holdings are not cached.
+     */
+    public void testShareAndBondQuantitiesRespectTimeIntervals() {
+        Player holder = new Player(9, "Holder");
+        world.addPlayer(holder);
+
+        Time start = new Time(1);
+        Time end = new Time(2);
+        FinancialDataAggregator aggregator = new FinancialDataAggregator(
+                world, player, new Time[]{start, end});
+        int holderIndex = world.getPlayerIndex(holder.getId());
+        assertEquals(0, aggregator.getStockInThisRRs()[holderIndex]);
+
+        world.addTransaction(player, TransactionUtils.issueStock(
+                -1, 10, Money.ZERO, Time.ZERO));
+        world.addTransaction(player, TransactionUtils.issueStock(
+                -1, 20, Money.ZERO, start));
+        world.addTransaction(player, TransactionUtils.issueStock(
+                -1, 30, Money.ZERO, end));
+        world.addTransaction(player, TransactionUtils.buyOrSellStock(
+                player.getId(), 1, Money.ZERO, Time.ZERO));
+        world.addTransaction(player, TransactionUtils.buyOrSellStock(
+                player.getId(), 2, Money.ZERO, start));
+        world.addTransaction(player, TransactionUtils.buyOrSellStock(
+                player.getId(), 3, Money.ZERO, end));
+        world.addTransaction(player, TransactionUtils.issueBond(5, Time.ZERO));
+        world.addTransaction(player, TransactionUtils.issueBond(5, start));
+        world.addTransaction(player, TransactionUtils.issueBond(5, end));
+        world.addTransaction(holder, TransactionUtils.buyOrSellStock(
+                player.getId(), 10, Money.ZERO, Time.ZERO));
+        world.addTransaction(holder, TransactionUtils.buyOrSellStock(
+                player.getId(), 20, Money.ZERO, start));
+        world.addTransaction(holder, TransactionUtils.buyOrSellStock(
+                player.getId(), 30, Money.ZERO, end));
+
+        aggregator.aggregate();
+        assertEquals(ModelConstants.IPO_SIZE + 20, aggregator.totalShares());
+        assertEquals(1, aggregator.getBonds());
+        assertEquals(2, aggregator.getStockInRRs()[world.getPlayerIndex(player.getId())]);
+        int[] stockInThisRRs = aggregator.getStockInThisRRs();
+        assertEquals(2, stockInThisRRs[world.getPlayerIndex(player.getId())]);
+        assertEquals(20, stockInThisRRs[holderIndex]);
+        assertEquals(ModelConstants.IPO_SIZE - 2, aggregator.sharesHeldByPublic());
+
+        world.addTransaction(holder, TransactionUtils.buyOrSellStock(
+                player.getId(), 5, Money.ZERO, start));
+        assertEquals(25, aggregator.getStockInThisRRs()[holderIndex]);
     }
 }

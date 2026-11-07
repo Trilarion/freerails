@@ -43,7 +43,6 @@ public class BrokerScreenGenerator {
     private static final DecimalFormat DC = new DecimalFormat("#,###");
     private final Map<String, String> templateValues;
 
-    // TODO is the code here ever really used? move it to model.economy
     /**
      * Creates broker-screen values for the specified player.
      *
@@ -65,6 +64,7 @@ public class BrokerScreenGenerator {
         Money loansTotal = aggregator.getValues()[0];
 
         FinancialDataAggregator dataGatherer = new FinancialDataAggregator(world, player, times);
+        dataGatherer.aggregate();
         String publicShares = DC.format(dataGatherer.sharesHeldByPublic());
         Money netWorth = dataGatherer.netWorth();
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();

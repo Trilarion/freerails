@@ -941,6 +941,7 @@ final class JavaFxGameplayDialogs {
                 UnmodifiableWorld world = modelRoot.getWorld();
                 Player player = modelRoot.getPlayer();
                 FinancialDataAggregator ownData = new FinancialDataAggregator(world, player);
+                ownData.aggregate();
                 html = brokerHtml(world);
                 details = "Cash: " + world.getCurrentBalance(player)
                         + "\nOutstanding bonds: " + ownData.getBonds();
@@ -950,6 +951,7 @@ final class JavaFxGameplayDialogs {
                 if (selected != null) {
                     int playerIndex = world.getPlayerIndex(selected.getId());
                     FinancialDataAggregator selectedData = new FinancialDataAggregator(world, selected);
+                    selectedData.aggregate();
                     StockPrice price = new StockPriceCalculator(world).calculate()[playerIndex];
                     details += "\n" + selected.getName() + " share price: " + price.currentPrice
                             + "\nShares held: " + ownData.getStockInRRs()[playerIndex];
@@ -1017,6 +1019,7 @@ final class JavaFxGameplayDialogs {
             UnmodifiableWorld world = modelRoot.getWorld();
             Player player = modelRoot.getPlayer();
             FinancialDataAggregator data = new FinancialDataAggregator(world, player);
+            data.aggregate();
             ItemTransaction transaction;
             if (issue) {
                 if (!data.canIssueBond()) {

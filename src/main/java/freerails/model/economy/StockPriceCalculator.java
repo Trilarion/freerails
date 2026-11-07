@@ -153,6 +153,7 @@ public class StockPriceCalculator {
     private int sharesOwnedByPublic(int playerId) {
         Player pr = world.getPlayer(world.getPlayerIndex(playerId));
         FinancialDataAggregator gatherer = new FinancialDataAggregator(world, pr);
+        gatherer.aggregate();
         return gatherer.sharesHeldByPublic();
     }
 

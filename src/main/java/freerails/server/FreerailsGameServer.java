@@ -259,23 +259,23 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         boolean isReturningPlayer = isPlayer(credentials.username());
 
         if (!newPlayersAllowed && !isReturningPlayer) {
-            return new LogOnResponse(false, "New logins not allowed.");
+            return LogOnResponse.failure("New logins not allowed.");
         }
 
         if (currentlyLoggedOn.contains(credentials)) {
-            return new LogOnResponse(false, "Already logged on.");
+            return LogOnResponse.failure("Already logged on.");
         }
 
         if (isReturningPlayer) {
             if (!players.contains(credentials)) {
-                return new LogOnResponse(false, "Incorrect password.");
+                return LogOnResponse.failure("Incorrect password.");
             }
         } else {
             players.add(credentials);
         }
         currentlyLoggedOn.add(credentials);
         // return accepted LogOnResponse
-        return new LogOnResponse(true, players.indexOf(credentials));
+        return LogOnResponse.success(players.indexOf(credentials));
     }
 
     /**

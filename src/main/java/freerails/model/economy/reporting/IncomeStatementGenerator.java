@@ -94,7 +94,6 @@ public class IncomeStatementGenerator {
 
         for (Transaction transaction: world.getTransactions(player)) {
             int transactionYear = world.getClock().getYear(transaction.getTime());
-            // TODO shortcut out if transactionYear < startYear?
             if (transaction instanceof CargoDeliveryTransaction cargoDeliveryTransaction) {
                 int cargoTypeId = cargoDeliveryTransaction.getCargoBatch().getCargoTypeId();
                 Cargo cargo = world.getCargo(cargoTypeId);

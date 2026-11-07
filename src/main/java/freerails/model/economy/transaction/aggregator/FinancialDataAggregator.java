@@ -21,6 +21,7 @@
  */
 package freerails.model.economy.transaction.aggregator;
 
+import freerails.model.ModelConstants;
 import freerails.model.economy.Money;
 import freerails.model.economy.transaction.*;
 import freerails.model.game.Sentiment;
@@ -29,16 +30,17 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 /**
  * Gathers the financial data for a company.
  */
 public class FinancialDataAggregator extends TransactionAggregator {
 
-    // TODO use maps instead of arrays
+    // Indexed by world player position, not by player ID.
     private final int[] stockInRRs;
-    private int totalShares = 100000;
+    private int totalShares = ModelConstants.IPO_SIZE;
     private int bonds;
-    private int[] stockInThisRRs;
 
     /**
      * Creates an aggregator covering the player's transactions from the start
@@ -91,6 +93,8 @@ public class FinancialDataAggregator extends TransactionAggregator {
     @Override
     protected void clearState() {
         super.clearState();
+        Arrays.fill(stockInRRs, 0);
+        totalShares = ModelConstants.IPO_SIZE;
         bonds = 0;
     }
 
@@ -171,7 +175,6 @@ public class FinancialDataAggregator extends TransactionAggregator {
         return true;
     }
 
-    // TODO make this static, compute stockInThisRRs outside
     /**
      * Returns the number of shares in this railroad held by each player,
      * indexed in world player order.
@@ -179,16 +182,50 @@ public class FinancialDataAggregator extends TransactionAggregator {
      * @return a copy of the per-player share counts
      */
     public int[] getStockInThisRRs() {
-        if (null == stockInThisRRs) {
-            stockInThisRRs = new int[world.getPlayers().size()];
-            for (int i = 0; i < world.getPlayers().size(); i++) {
-                Player player = world.getPlayer(i);
-                FinancialDataAggregator temp = new FinancialDataAggregator(world, player);
-                temp.aggregate();
-                stockInThisRRs[i] = temp.stockInRRs[world.getPlayerIndex(player.getId())];
+        return calculateStockInThisRRs(world, player.getId(), times);
+    }
+
+    /**
+     * Calculates a railroad's share holdings by scanning each player's
+     * transactions once.
+     *
+     * @param world world supplying players and transactions
+     * @param railroadId identifier of the railroad whose shares are counted
+     * @param times interval boundaries used to select transactions
+     * @return shares held by each player, in world player order
+     */
+    private static int[] calculateStockInThisRRs(UnmodifiableWorld world, int railroadId, Time[] times) {
+        int[] stockInThisRRs = new int[world.getPlayers().size()];
+        for (int i = 0; i < stockInThisRRs.length; i++) {
+            Player holder = world.getPlayer(i);
+            for (Transaction transaction : world.getTransactions(holder)) {
+                if (transaction instanceof ItemTransaction itemTransaction
+                        && itemTransaction.getCategory() == TransactionCategory.TRANSFER_STOCK
+                        && itemTransaction.getId() == railroadId
+                        && isWithinIntervals(transaction.getTime(), times)) {
+                    stockInThisRRs[i] += itemTransaction.getQuantity();
+                }
             }
         }
-        return stockInThisRRs.clone();
+        return stockInThisRRs;
+    }
+
+    /**
+     * Tests whether a transaction falls within any lower-inclusive,
+     * upper-exclusive interval.
+     *
+     * @param transactionTime transaction time to test
+     * @param times ordered interval boundaries
+     * @return {@code true} when the transaction belongs to an interval
+     */
+    private static boolean isWithinIntervals(Time transactionTime, Time[] times) {
+        for (int i = 0; i < times.length - 1; i++) {
+            if (transactionTime.compareTo(times[i]) >= 0
+                    && transactionTime.compareTo(times[i + 1]) < 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

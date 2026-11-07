@@ -21,14 +21,19 @@ package freerails.model.simulation;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 
-// TODO store speed separately in World
 /**
  * Tracks elapsed simulation time and converts ticks to calendar years and
  * months.
  */
 public class Clock implements Serializable {
+
+    private static final DateTimeFormatter DATE_FORMATTER =
+            DateTimeFormatter.ofPattern("MMM uuuu", Locale.ENGLISH);
 
     private final int startYear;
     private final int ticksPerYear;
@@ -142,16 +147,15 @@ public class Clock implements Serializable {
         return currentTime.ticks() % ticksPerYear == ticksPerYear - 1;
     }
 
-    // TODO a better way of calculating this
     /**
-     * Checks whether this tick and the following tick have the same computed
-     * month index.
+     * Checks whether the current tick is the final tick of its computed month.
      *
-     * @return {@code true} when the month index for the next tick matches the
-     *         current month index
+     * @return {@code true} if this is the month's final tick
      */
     public boolean isLastTickOfMonth() {
-        return getCurrentMonth() == (currentTime.ticks()+1) % ticksPerYear / (ticksPerYear / 12);
+        long ticksInYear = currentTime.ticks() % ticksPerYear;
+        long nextMonthStart = Math.ceilDiv((long) (getCurrentMonth() + 1) * ticksPerYear, 12);
+        return ticksInYear + 1 >= nextMonthStart;
     }
 
     /**
@@ -165,24 +169,24 @@ public class Clock implements Serializable {
 
     /**
      * Calculates the zero-based month containing the specified elapsed time.
+     * The year is divided proportionally into twelve months, so a year with
+     * fewer than twelve ticks may skip month indices.
      *
      * @param time elapsed time to convert
      * @return month index from 0 (January) through 11 (December)
      */
     public int getMonth(@NotNull Time time) {
-        return time.ticks() % ticksPerYear / (ticksPerYear / 12);
+        long ticksInYear = time.ticks() % ticksPerYear;
+        return (int) (ticksInYear * 12 / ticksPerYear);
     }
 
-    private static String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-
-    // TODO is there a library for it similar to datetime in Python?
     /**
      * Converts the current date to the abbreviated format {@code "MMM YYYY"}.
      *
      * @return current month and year, for example {@code "Jan 1840"}
      */
     public String getCurrentDateAsString() {
-        return String.format("%s %s", MONTHS[getCurrentMonth()], getCurrentYear());
+        return getDateAsString(currentTime);
     }
 
     /**
@@ -191,8 +195,8 @@ public class Clock implements Serializable {
      * @param time elapsed time to format
      * @return date in {@code "MMM YYYY"} format
      */
-    public  String getDateAsString(@NotNull Time time) {
-        return String.format("%s %s", MONTHS[getMonth(time)], getYear(time));
+    public String getDateAsString(@NotNull Time time) {
+        return YearMonth.of(getYear(time), getMonth(time) + 1).format(DATE_FORMATTER);
     }
 
     /**
