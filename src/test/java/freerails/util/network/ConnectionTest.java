@@ -174,7 +174,7 @@ public class ConnectionTest extends TestCase {
             Connection serverConnection = serverConnectionFuture.get(2, TimeUnit.SECONDS);
             Player player = new Player(3, "Test player");
             TrackPiece trackPiece = new TrackPiece(
-                    TrackConfiguration.getFlatInstance("000010000"),
+                    TrackConfiguration.getFlatInstance("00000001"),
                     WorldGenerator.testTrackTypes().first(),
                     player.getId());
             ChangeTrackPieceCompositeMove move = new ChangeTrackPieceCompositeMove(

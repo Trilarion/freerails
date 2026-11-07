@@ -107,32 +107,14 @@ public final class TrackUtils {
      * the tiles directly above or below the supplied tile.
      *
      * @param point tile coordinate being checked
-     * @param trackTemplate 9-bit track template to test
+     * @param trackTemplate 8-bit directional mask to test
      * @param world world containing neighboring track
      * @return {@code true} if no diagonal conflict is detected
      */
     public static boolean noDiagonalTrackConflicts(IntPoint2D point, int trackTemplate, UnmodifiableWorld world) {
-        /*
-         * This method is needs replacing. It only deals with flat track pieces, and is rather hard to make sense of. LL
-         */
-
-        // int trackTemplate = (1 << (3 * (1 + tv.getY()) + (1 + tv.getX())));
-        int trackTemplateAbove;
-        int trackTemplateBelow;
-        String templateString = "101000101";
-        // Hack - so that result is as expected by earlier written code.
-        StringBuilder strb = new StringBuilder(templateString);
-        strb.reverse();
-        templateString = strb.toString();
-
-        // End of hack
-        int cornersTemplate = Integer.parseInt(templateString, 2);
-        trackTemplate = trackTemplate & cornersTemplate;
-
         IntPoint2D mapSize = world.getMapSize();
 
-        // Avoid array-out-of-bounds exceptions.
-        trackTemplateAbove = 0;
+        int trackTemplateAbove = 0;
         if (point.y() > 0) {
             TerrainTile ft = world.getTile(new IntPoint2D(point.x(), point.y() - 1));
             TrackPiece tp = ft.trackPiece();
@@ -141,7 +123,7 @@ public final class TrackUtils {
             }
         }
 
-        trackTemplateBelow = 0;
+        int trackTemplateBelow = 0;
         if (point.y() + 1 < mapSize.y()) {
             TerrainTile ft = world.getTile(new IntPoint2D(point.x(), point.y() + 1));
             TrackPiece tp = ft.trackPiece();
@@ -150,12 +132,27 @@ public final class TrackUtils {
             }
         }
 
-        trackTemplateAbove = trackTemplateAbove >> 6;
-        trackTemplateBelow = trackTemplateBelow << 6;
-        trackTemplate = trackTemplate & (trackTemplateAbove | trackTemplateBelow);
+        boolean conflictAbove = hasConnection(trackTemplate, TileTransition.NORTH_WEST)
+                && hasConnection(trackTemplateAbove, TileTransition.SOUTH_WEST)
+                || hasConnection(trackTemplate, TileTransition.NORTH_EAST)
+                && hasConnection(trackTemplateAbove, TileTransition.SOUTH_EAST);
+        boolean conflictBelow = hasConnection(trackTemplate, TileTransition.SOUTH_WEST)
+                && hasConnection(trackTemplateBelow, TileTransition.NORTH_WEST)
+                || hasConnection(trackTemplate, TileTransition.SOUTH_EAST)
+                && hasConnection(trackTemplateBelow, TileTransition.NORTH_EAST);
 
-        return trackTemplate == 0;
-        // Things are success.
+        return !conflictAbove && !conflictBelow;
+    }
+
+    /**
+     * Tests whether a directional mask includes the supplied transition.
+     *
+     * @param template directional mask
+     * @param transition transition to test
+     * @return {@code true} if the transition is included
+     */
+    private static boolean hasConnection(int template, TileTransition transition) {
+        return (template & transition.get8bitTemplate()) != 0;
     }
 
     /**
@@ -224,8 +221,7 @@ public final class TrackUtils {
     }
 
     /**
-     * Creates a new track piece containing the tile-center bit and the supplied
-     * outgoing direction.
+     * Creates a new track piece containing the supplied outgoing direction.
      *
      * @param direction track direction to add
      * @param trackType type of track to create
@@ -233,8 +229,7 @@ public final class TrackUtils {
      * @return a track piece with the combined configuration
      */
     public static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackType trackType, int playerId) {
-        TrackConfiguration simplestConfig = TrackConfiguration.getFlatInstance("000010000");
-        TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig, direction);
+        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(direction);
         return new TrackPiece(trackConfiguration, trackType, playerId);
     }
 

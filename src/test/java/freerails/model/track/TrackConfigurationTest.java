@@ -38,37 +38,52 @@ public class TrackConfigurationTest extends TestCase {
      * Tests add behavior.
      */
     public void testAdd() {
-        TrackConfiguration a = TrackConfiguration.getFlatInstance("000010000");
+        TrackConfiguration a = TrackConfiguration.from8bitTemplate(0);
         TrackConfiguration b = TrackConfiguration.add(a, TileTransition.NORTH_WEST);
-        assertEquals(TrackConfiguration.getFlatInstance("100010000"), b);
+        assertEquals(TrackConfiguration.getFlatInstance("10000000"), b);
         assertFalse(a.equals(b));
     }
 
     /**
-     * Tests get8 and9bit template behavior.
+     * Tests canonical configuration masks and directional transition masks.
      */
-    public void testGet8And9bitTemplate() {
-        for (int i = 0; i < 512; i++) {
-            TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(i);
-            assertEquals(i, trackConfiguration.get9bitTemplate());
+    public void testConfigurationAndTransitionMasks() {
+        for (int i = 0; i < 256; i++) {
+            TrackConfiguration trackConfiguration = TrackConfiguration.from8bitTemplate(i);
+            assertEquals(i, trackConfiguration.get8bitTemplate());
         }
         for (TileTransition tileTransition : TileTransition.getTransitions()) {
             TrackConfiguration trackConfiguration1 = TrackConfiguration.getFlatInstance(tileTransition);
-            assertEquals(tileTransition.get9bitTemplate(), trackConfiguration1.get9bitTemplate());
             assertEquals(tileTransition.get8bitTemplate(), trackConfiguration1.get8bitTemplate());
 
-            TrackConfiguration trackConfiguration2 = TrackConfiguration.from9bitTemplate(tileTransition.get9bitTemplate());
+            TrackConfiguration trackConfiguration2 = TrackConfiguration.from8bitTemplate(tileTransition.get8bitTemplate());
             assertEquals(trackConfiguration1, trackConfiguration2);
         }
     }
 
     /**
-     * Tests directional templates use their corresponding cells in the 3x3 tile grid.
+     * Tests binary strings use ordinary eight-bit order and reject legacy-width inputs.
      */
-    public void testDirectionalTemplatesMatchNineBitGrid() {
+    public void testBinaryStringUsesStandardBitOrder() {
+        assertEquals(1, TrackConfiguration.getFlatInstance("00000001").getConfiguration());
+        assertEquals(128, TrackConfiguration.getFlatInstance("10000000").getConfiguration());
+        assertEquals(TrackConfiguration.from8bitTemplate(0b10000001),
+                TrackConfiguration.getFlatInstance("10000001"));
+
+        try {
+            TrackConfiguration.getFlatInstance("000010000");
+            fail("Expected the old nine-bit template width to be rejected.");
+        } catch (NumberFormatException expected) {
+            // Legacy-width strings are not valid directional masks.
+        }
+    }
+
+    /**
+     * Tests directional masks follow compass order clockwise from north.
+     */
+    public void testDirectionalTemplatesMatchCompassOrder() {
         for (TileTransition direction : TileTransition.getTransitions()) {
-            int gridIndex = (direction.deltaY + 1) * 3 + direction.deltaX + 1;
-            assertEquals(1 << gridIndex, direction.get9bitTemplate());
+            assertEquals(1 << direction.getID(), direction.get8bitTemplate());
         }
     }
 
@@ -76,9 +91,9 @@ public class TrackConfigurationTest extends TestCase {
      * Tests get length behavior.
      */
     public void testGetLength() {
-        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("010010000");
+        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("00000001");
         assertEquals(100, trackConfiguration.getLength());
-        trackConfiguration = TrackConfiguration.getFlatInstance("010010010");
+        trackConfiguration = TrackConfiguration.getFlatInstance("00010001");
         assertEquals(200, trackConfiguration.getLength());
     }
 
@@ -86,9 +101,9 @@ public class TrackConfigurationTest extends TestCase {
      * Tests subtract behavior.
      */
     public void testSubtract() {
-        TrackConfiguration trackConfiguration1 = TrackConfiguration.getFlatInstance("100010000");
+        TrackConfiguration trackConfiguration1 = TrackConfiguration.getFlatInstance("10000000");
         TrackConfiguration trackConfiguration2 = TrackConfiguration.subtract(trackConfiguration1, TileTransition.NORTH_WEST);
-        assertEquals(TrackConfiguration.getFlatInstance("000010000"), trackConfiguration2);
+        assertEquals(TrackConfiguration.from8bitTemplate(0), trackConfiguration2);
     }
 
     /**
@@ -96,9 +111,9 @@ public class TrackConfigurationTest extends TestCase {
      */
     public void testRotationsPreserveDirectionalConnectionsAndReturnAfterFullCycle() {
         int[] pieces = {
-                0x10 | TileTransition.NORTH.get9bitTemplate(),
-                0x10 | TileTransition.NORTH.get9bitTemplate() | TileTransition.SOUTH.get9bitTemplate(),
-                0x10 | TileTransition.NORTH.get9bitTemplate() | TileTransition.EAST.get9bitTemplate()
+                TileTransition.NORTH.get8bitTemplate(),
+                TileTransition.NORTH.get8bitTemplate() | TileTransition.SOUTH.get8bitTemplate(),
+                TileTransition.NORTH.get8bitTemplate() | TileTransition.EAST.get8bitTemplate()
         };
 
         for (int piece : pieces) {
@@ -120,34 +135,23 @@ public class TrackConfigurationTest extends TestCase {
      * @return the result of rotate clockwise.
      */
     private static int rotateClockwise(int configuration) {
-        int rotated = configuration & 0x10;
-        for (TileTransition direction : TileTransition.getTransitions()) {
-            if ((configuration & direction.get9bitTemplate()) != 0) {
-                TileTransition clockwise = TileTransition.getInstance((direction.getID() + 1) % 8);
-                rotated |= clockwise.get9bitTemplate();
-            }
-        }
-        return rotated;
+        return (configuration << 1 | configuration >>> 7) & 0xFF;
     }
 
     /**
      * Tests to string behavior.
      */
     public void testToString() {
-        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("100010000");
-        assertEquals("tile center, north west", trackConfiguration.toString());
-        trackConfiguration = TrackConfiguration.getFlatInstance(TileTransition.NORTH_WEST);
-        assertEquals("no tile center, north west", trackConfiguration.toString());
-        trackConfiguration = TrackConfiguration.getFlatInstance("000010000");
-        assertEquals("tile center", trackConfiguration.toString());
-        trackConfiguration = TrackConfiguration.getFlatInstance("000000000");
-        assertEquals("no tile center", trackConfiguration.toString());
+        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("10000000");
+        assertEquals("north west", trackConfiguration.toString());
+        trackConfiguration = TrackConfiguration.from8bitTemplate(0);
+        assertEquals("no connections", trackConfiguration.toString());
 
         // Check that no two track configurations have the same String representation.
         HashSet<String> strings = new HashSet<>();
 
-        for (int i = 0; i < 512; i++) {
-            trackConfiguration = TrackConfiguration.from9bitTemplate(i);
+        for (int i = 0; i < 256; i++) {
+            trackConfiguration = TrackConfiguration.from8bitTemplate(i);
             String toString = trackConfiguration.toString();
 
             if (strings.contains(toString)) {

@@ -21,7 +21,6 @@ package freerails;
 import freerails.client.renderer.track.TrackPieceRendererImpl;
 import freerails.io.GsonManager;
 import freerails.model.track.TrackType;
-import freerails.scenario.MapCreator;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackConfiguration;
 
@@ -67,7 +66,7 @@ class TrackTilesGenerator extends JPanel {
         tr = new TrackRenderer();
 
         // load track types
-        URL url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
+        URL url = TrackTilesGenerator.class.getResource("/freerails/data/scenario/track_types.json");
         File file = null;
         try {
             file = new File(url.toURI());
@@ -129,11 +128,11 @@ class TrackTilesGenerator extends JPanel {
             tr.tunnel = category == TrackCategory.TUNNEL;
             tr.doubleTrack = rule.isDouble();
 
-            for (int i = 0; i < 512; i++) {
+            for (int i = 0; i < 256; i++) {
                 if (rule.testTrackPieceLegality(i)) {
 
                     String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getName());
-                    TrackConfiguration conf = TrackConfiguration.from9bitTemplate(i);
+                    TrackConfiguration conf = TrackConfiguration.from8bitTemplate(i);
 
                     Image smallImage = imageManager.newBlankImage(60, 60);
                     Graphics2D g2 = (Graphics2D) smallImage.getGraphics();
@@ -193,7 +192,7 @@ class TrackTilesGenerator extends JPanel {
             g.translate(0, 30);
             Graphics2D g2 = (Graphics2D) g.create();
 
-            for (int i = 0; i < 512; i++) {
+            for (int i = 0; i < 256; i++) {
                 if (rule.testTrackPieceLegality(i)) {
                     String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getName());
                     Image tile;

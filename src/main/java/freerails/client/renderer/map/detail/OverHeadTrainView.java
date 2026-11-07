@@ -126,7 +126,7 @@ public class OverHeadTrainView implements Painter {
                 trainLengthPixels * 4,
                 trainLengthPixels * 4);
         if (!view.intersects(trainBox)) {
-            return null; // TODO doesn't work
+            return null; // TODO what does that mean
         }
         return trainMotion.getStateAtTime(dt);
     }

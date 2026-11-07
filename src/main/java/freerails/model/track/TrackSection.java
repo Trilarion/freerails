@@ -26,6 +26,13 @@ import java.io.Serializable;
 
 /**
  * Represents the undirected track connection between two adjacent tiles.
+ *
+ * <p>The identity of a section is canonicalized so that a connection is the same
+ * regardless of which adjacent tile is used as the starting point. The constructor
+ * stores the lexicographically smaller endpoint as {@code tileA()} and flips the
+ * transition when needed, which makes the section unique for set and map usage
+ * without storing directional state. An alternative design would be to store both
+ * endpoints, which would also allow the section to retain an orientation.
  */
 public class TrackSection implements Serializable {
 
@@ -44,7 +51,6 @@ public class TrackSection implements Serializable {
      */
     public TrackSection(final TileTransition tileTransition, final IntPoint2D tile) {
 
-        // TODO this is to make it unique, but there are other ways, for example storing the other tile too, then it would even have a direction
         IntPoint2D otherTile = TileTransition.move(tile, tileTransition);
         if (tile.compareTo(otherTile) > 0) {
             this.tileTransition = tileTransition.getOpposite();

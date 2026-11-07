@@ -24,7 +24,6 @@ package freerails.move.generator;
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.operations.station.StationUtils;
 import freerails.model.terrain.city.CityUtils;
-import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
@@ -105,9 +104,12 @@ public class AddStationMoveGenerator implements MoveGenerator {
         if (oldTile.trackPiece() != null && oldTile.trackPiece().trackType().isStation()) {
             throw new RuntimeException("Station already at location");
         }
+        if (oldTrackPiece == null || oldTrackPiece.trackConfiguration().get8bitTemplate() == 0) {
+            throw new IllegalStateException("A station must be placed on existing connected track.");
+        }
         TrackType trackType = world.getTrackType(ruleNumber);
 
-        TrackPiece newTrackPiece = new TrackPiece(oldTrackPiece == null ? TrackConfiguration.from9bitTemplate(0) : oldTrackPiece.trackConfiguration(), trackType, player.getId());
+        TrackPiece newTrackPiece = new TrackPiece(oldTrackPiece.trackConfiguration(), trackType, player.getId());
         Move upgradeTrackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, location);
 
         // There isn't already a station here, we need to pick a name and add an entry to the station list.

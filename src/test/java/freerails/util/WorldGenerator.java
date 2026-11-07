@@ -243,20 +243,20 @@ public final class WorldGenerator {
         validTerrainCategories.remove(TerrainCategory.OCEAN);
 
         // 1st track type..
-        String[] trackTemplates0 = {"000010000", "010010000", "010010010", "100111000", "001111000", "010110000", "100110000", "100011000"};
+        String[] trackTemplates0 = {"00010000", "00010001", "01001100", "01100100", "00010100", "00001100", "01001000"};
         Set<TrackProperty> trackProperties = EnumSet.of(TrackProperty.SINGLE);
         TrackType trackType = new TrackType(0, "type0", TrackCategory.TRACK, trackProperties, Money.ZERO, Money.ZERO, validTerrainCategories, new HashSet<>(Arrays.asList(trackTemplates0)));
         trackType.prepare();
         trackTypes.add(trackType);
 
         // 2nd track type..
-        String[] trackTemplates1 = {"000010000", "010010000", "010010010"};
+        String[] trackTemplates1 = {"00010000", "00010001"};
         trackType = new TrackType(1, "type1", TrackCategory.TRACK, trackProperties, Money.ZERO, Money.ZERO, validTerrainCategories, new HashSet<>(Arrays.asList(trackTemplates1)));
         trackType.prepare();
         trackTypes.add(trackType);
 
         // 3rd track type..
-        String[] trackTemplates2 = {"000010000"};
+        String[] trackTemplates2 = {"00010000"};
         trackType = new TrackType(2, "type2", TrackCategory.TRACK, trackProperties, Money.ZERO, Money.ZERO, validTerrainCategories, new HashSet<>(Arrays.asList(trackTemplates2)));
         trackType.prepare();
         trackTypes.add(trackType);

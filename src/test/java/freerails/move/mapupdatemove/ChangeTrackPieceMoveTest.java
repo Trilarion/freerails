@@ -81,7 +81,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         Status status;
 
         // Try building the simplest piece of track.
-        newConfig = TrackConfiguration.getFlatInstance("000010000");
+        newConfig = TrackConfiguration.getFlatInstance("00010000");
         oldTrackPiece = getWorld().getTile(IntPoint2D.ZERO).trackPiece();
 
         final int trackRuleID = 0;
@@ -113,7 +113,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         assertFalse(status.isSuccess());
 
         // Try building an illegal track configuration.
-        newConfig = TrackConfiguration.getFlatInstance("000011111");
+        newConfig = TrackConfiguration.getFlatInstance("00111100");
 
         newTrackPiece = new TrackPiece(newConfig, trackType,0);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
@@ -130,7 +130,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackConfiguration newConfig;
 
         // Try building the simplest piece of track.
-        newConfig = TrackConfiguration.getFlatInstance("000010000");
+        newConfig = TrackConfiguration.getFlatInstance("00010000");
         oldTrackPiece = getWorld().getTile(IntPoint2D.ZERO).trackPiece();
 
         TrackType trackType = getWorld().getTrackType(0);
@@ -163,7 +163,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     public void testMove() {
         TrackPiece oldTrackPiece = getWorld().getTile(IntPoint2D.ZERO).trackPiece();
 
-        TrackConfiguration newConfig = TrackConfiguration.getFlatInstance("000010000");
+        TrackConfiguration newConfig = TrackConfiguration.getFlatInstance("00010000");
         TrackType trackType = getWorld().getTrackType(0);
         TrackPiece newTrackPiece = new TrackPiece(newConfig, trackType,0);
 

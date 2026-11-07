@@ -113,9 +113,9 @@ public class CityModelTest extends TestCase {
         IntPoint2D cityCenter = world.getCity(1).getLocation();
         TrackType stationType = new TrackType(100, "station", TrackCategory.STATION,
                 EnumSet.of(TrackProperty.SINGLE), Money.ZERO, Money.ZERO,
-                EnumSet.allOf(TerrainCategory.class), Set.of("000010000"));
+                EnumSet.allOf(TerrainCategory.class), Set.of("00000001"));
         world.setTile(cityCenter, new TerrainTile(0,
-                new TrackPiece(TrackConfiguration.getFlatInstance("000010000"), stationType, 0)));
+                new TrackPiece(TrackConfiguration.getFlatInstance("00000001"), stationType, 0)));
 
         CityModel cityModel = new CityModel();
         cityModel.loadFromMap(world, 1);

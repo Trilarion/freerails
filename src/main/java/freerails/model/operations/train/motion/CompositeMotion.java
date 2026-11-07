@@ -158,7 +158,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
     @Override
     public double calculateTimeAtDistance(double distance) {
         if (distance == totalDistance) return totalTime;
-        // TODO checkDistance
+        // TODO check distance
         if (distance > totalDistance) throw new IllegalArgumentException(String.valueOf(distance));
 
         double distanceSoFar = 0;

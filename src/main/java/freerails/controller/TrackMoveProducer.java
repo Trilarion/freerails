@@ -177,7 +177,7 @@ public class TrackMoveProducer {
         if (oldTrackPiece != null) {
             TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.trackConfiguration(), direction);
 
-            if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
+            if (trackConfiguration.get8bitTemplate() != 0) {
                 int playerId = player.getId();
                 newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.trackType(), playerId);
             } else {

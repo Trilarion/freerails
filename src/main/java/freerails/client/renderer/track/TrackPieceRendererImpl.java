@@ -24,7 +24,6 @@ import freerails.util.BinaryNumberFormatter;
 import freerails.util.IntPoint2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.track.TrackConfiguration;
 
 import java.awt.*;
 import java.io.File;
@@ -35,7 +34,7 @@ import java.io.IOException;
  */
 public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
-    private final Image[] trackPieceIcons = new Image[512];
+    private final Image[] trackPieceIcons = new Image[256];
 
     /**
      * Creates a track piece renderer impl instance.
@@ -49,7 +48,7 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
         TrackType trackType = world.getTrackType(typeNumber);
         String typeName = trackType.getName();
 
-        for (int i = 0; i < 512; i++) {
+        for (int i = 0; i < 256; i++) {
             if (trackType.testTrackPieceLegality(i)) {
                 String fileName = generateFilename(i, typeName);
                 trackPieceIcons[i] = imageManager.getScaledImage(
@@ -59,17 +58,16 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     /**
-     * Performs the generate filename operation.
+     * Creates the asset filename for an 8-bit direction mask. Asset filenames
+     * retain their low-bit-first convention.
      *
-     * @param i the index of the item
-     * @param trackTypeName the track type name parameter
-     * @return the filename produced by this method
+     * @param i directional mask
+     * @param trackTypeName track type name
+     * @return the matching asset filename
      */
     public static String generateFilename(int i, String trackTypeName) {
         String relativeFileNameBase = "track" + File.separator + trackTypeName;
-        int newTemplate = TrackConfiguration.from9bitTemplate(i).get8bitTemplate();
-
-        return relativeFileNameBase + '_' + BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8) + ".png";
+        return relativeFileNameBase + '_' + BinaryNumberFormatter.formatWithLowBitOnLeft(i, 8) + ".png";
     }
 
     /**
@@ -82,8 +80,8 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
      */
     @Override
     public void drawTrackPieceIcon(Graphics g, int trackTemplate, IntPoint2D tileLocation, IntPoint2D tileSize) {
-        if (trackTemplate > 511 || trackTemplate < 0) {
-            throw new java.lang.IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
+        if (trackTemplate > 255 || trackTemplate < 0) {
+            throw new IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-255");
         }
 
         if (trackPieceIcons[trackTemplate] != null) {
@@ -100,8 +98,8 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
      */
     @Override
     public Image getTrackPieceIcon(int trackTemplate) {
-        if (trackTemplate > 511 || trackTemplate < 0) {
-            throw new java.lang.IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
+        if (trackTemplate > 255 || trackTemplate < 0) {
+            throw new IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-255");
         }
 
         return trackPieceIcons[trackTemplate];

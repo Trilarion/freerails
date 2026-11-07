@@ -79,7 +79,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         // Count the number of possible positions.
         int n = 0;
         for (TileTransition vector1 : vectors) {
-            if (conf.contains(vector1.get9bitTemplate())) {
+            if (conf.contains(vector1.get8bitTemplate())) {
                 n++;
             }
         }
@@ -88,7 +88,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
         n = 0;
         for (TileTransition vector : vectors) {
-            if (conf.contains(vector.get9bitTemplate())) {
+            if (conf.contains(vector.get8bitTemplate())) {
                 possiblePositions[n] = new PositionOnTrack(location, vector.getOpposite());
                 n++;
             }
@@ -150,7 +150,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
         int loopCounter = 0;
 
-        while (!conf.contains(vectors[i].get9bitTemplate())) {
+        while (!conf.contains(vectors[i].get8bitTemplate())) {
             i++;
             i = i % 8;
             loopCounter++;

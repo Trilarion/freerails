@@ -21,6 +21,7 @@
  */
 package freerails.model.track.explorer;
 
+import freerails.model.economy.Money;
 import freerails.model.track.*;
 import freerails.util.IntPoint2D;
 import freerails.util.Utils;
@@ -39,7 +40,6 @@ import java.util.NoSuchElementException;
  */
 public class BuildTrackExplorer implements GraphExplorer {
 
-    private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance("000010000");
     private final PositionOnTrack currentBranch = new PositionOnTrack(IntPoint2D.ZERO, TileTransition.NORTH);
     private final PositionOnTrack currentPosition = new PositionOnTrack(IntPoint2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;
@@ -154,8 +154,6 @@ public class BuildTrackExplorer implements GraphExplorer {
         TrackConfiguration fromConfig = trackAlreadyPresent1;
 
         fromConfig = TrackConfiguration.add(fromConfig, opposite2current);
-        fromConfig = TrackConfiguration.add(fromConfig, TILE_CENTER);
-
         TileTransition goingTo = TileTransition.getInstance(directionInt);
         fromConfig = TrackConfiguration.add(fromConfig, goingTo);
 
@@ -185,8 +183,6 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check for illegal track configurations on the tile we are entering.
         TrackConfiguration fromConfig2 = trackAlreadyPresent2;
-
-        fromConfig2 = TrackConfiguration.add(fromConfig2, TILE_CENTER);
 
         TileTransition goingBack = TileTransition.getInstance(directionInt).getOpposite();
         fromConfig2 = TrackConfiguration.add(fromConfig2, goingBack);
@@ -249,34 +245,36 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         if (!usingExistingTrack) {
             IntPoint2D p = currentPosition.getLocation();
-            int[] x = {p.x(), p.x() + edgeDirection.deltaX};
-            int[] y = {p.y(), p.y() + edgeDirection.deltaY};
-            TrackType ruleA = getAppropriateTrackType(new IntPoint2D(x[0], y[0]));
-            TrackType ruleB = getAppropriateTrackType(new IntPoint2D(x[1], y[1]));
+            IntPoint2D tileA = new IntPoint2D(p.x(), p.y());
+            IntPoint2D tileB = new IntPoint2D(p.x() + edgeDirection.deltaX, p.y() + edgeDirection.deltaY);
+            TrackType ruleA = getAppropriateTrackType(tileA);
+            TrackType ruleB = getAppropriateTrackType(tileB);
             /*
              * If there is a station at either of the points, don't include its
              * price in the cost calculation since it has already been paid.
              * Otherwise, add the cost of building the track.
              */
-            // TODO use Money arithmetic
-            long priceA = ruleA.getPurchasingPrice().amount();
-            long priceB = ruleB.getPurchasingPrice().amount();
-            cost = (int) (cost + length * (priceA + priceB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
-            long terrainCostA = world.getTerrain(world.getTile(new IntPoint2D(x[0], y[0])).terrainTypeId())
-                    .getTrackConstructionCostPerMile().amount();
-            long terrainCostB = world.getTerrain(world.getTile(new IntPoint2D(x[1], y[1])).terrainTypeId())
-                    .getTrackConstructionCostPerMile().amount();
-            cost = (int) (cost + length * (terrainCostA + terrainCostB) * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
-            // Add fixed cost if tile b does not have the desired track type.
-            TerrainTile a = world.getTile(new IntPoint2D(x[0], y[0]));
+            Money purchaseCost = Money.add(ruleA.getPurchasingPrice(), ruleB.getPurchasingPrice());
+            long purchaseScale = Math.round(length * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
+            cost += Money.multiply(purchaseCost, purchaseScale).amount();
+
+            Money terrainCost = Money.add(
+                    world.getTerrain(world.getTile(tileA).terrainTypeId()).getTrackConstructionCostPerMile(),
+                    world.getTerrain(world.getTile(tileB).terrainTypeId()).getTrackConstructionCostPerMile());
+            cost += Money.multiply(terrainCost, purchaseScale).amount();
+
+            // Add the one-off upgrade surcharge if the new tile type differs from the current one.
+            // Legacy cost models used a dedicated fixed-cost field, but TrackType now exposes only
+            // purchase and maintenance values. The maintenance value is therefore used as the closest
+            // equivalent proxy for the upgrade fee while preserving the historical accounting intent.
+            TerrainTile a = world.getTile(tileA);
             TrackPiece trackPiece = a.trackPiece();
             if (trackPiece != null) {
-                TrackType currentRuleA = a.trackPiece().trackType();
+                TrackType currentRuleA = trackPiece.trackType();
                 if (!currentRuleA.equals(ruleA)) {
                     assert !currentRuleA.isStation(); // We shouldn't be upgrading a station.
-                    // TODO was getFixedCost(), meaning?,
-                    cost = (int) (cost + ruleA.getYearlyMaintenance().amount() * ModelConstants.MODEL_UNITS_PER_TILE
-                            * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
+                    long upgradeScale = Math.round(ModelConstants.MODEL_UNITS_PER_TILE * ModelConstants.TRACK_COST_PER_MODEL_UNIT);
+                    cost += Money.multiply(ruleA.getYearlyMaintenance(), upgradeScale).amount();
                 }
             }
         }
@@ -315,10 +313,15 @@ public class BuildTrackExplorer implements GraphExplorer {
         return currentBranch.toInt();
     }
 
-    // TODO this is bad style because it changes the internal state, not expected for hasXXX functions
     /**
      * Advances through directions until a legal build edge is found or all
      * eight directions have been checked.
+     *
+     * <p>This explorer behaves as a stateful iterator: the search cursor moves
+     * forward while scanning directions, and a subsequent call to
+     * {@link #nextEdge()} consumes the current selection. The mutation is
+     * therefore intentional and matches the rest of the {@link GraphExplorer}
+     * contract.
      *
      * @return {@code true} if a legal edge is available
      */

@@ -71,22 +71,21 @@ public final class TrackType extends Identifiable {
      * configured template. Call after deserializing the persistent definition.
      *
      * @throws IllegalStateException if the properties or prices are invalid
-     * @throws IllegalArgumentException if a configured template is outside 0 through 511
-     * @throws NumberFormatException if a configured template is not binary
+     * @throws NumberFormatException if a configured template is not eight binary digits
+     * @throws IllegalArgumentException if a configured template contains no direction
      */
     public void prepare() {
         validateProperties();
 
         Set<TrackConfiguration> configurations = new HashSet<>();
         for (String trackTemplateString: validTrackConfigurations) {
-            int trackTemplate = Integer.parseInt(trackTemplateString, 2);
-            // Check for invalid parameters.
-            if (trackTemplate > 511 || trackTemplate < 0) {
-                throw new IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
+            int trackTemplate = TrackConfiguration.getFlatInstance(trackTemplateString).get8bitTemplate();
+            if (trackTemplate == 0) {
+                throw new IllegalArgumentException("Track configurations must contain at least one direction.");
             }
             int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer.getRotations(trackTemplate);
             for (int i: rotationsOfTrackTemplate) {
-                TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(i);
+                TrackConfiguration trackConfiguration = TrackConfiguration.from8bitTemplate(i);
                 configurations.add(trackConfiguration);
             }
         }
@@ -218,14 +217,14 @@ public final class TrackType extends Identifiable {
     }
 
     /**
-     * Tests legality of a configuration supplied as a 9-bit template.
+     * Tests legality of a configuration supplied as an 8-bit directional mask.
      *
-     * @param a9bitTemplate encoded track configuration
+     * @param template encoded track configuration
      * @return {@code true} if the configuration is legal for this type
-     * @throws IndexOutOfBoundsException if the template is outside 0 through 511
+     * @throws IndexOutOfBoundsException if the template is outside 0 through 255
      */
-    public boolean testTrackPieceLegality(int a9bitTemplate) {
-        TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(a9bitTemplate);
+    public boolean testTrackPieceLegality(int template) {
+        TrackConfiguration trackConfiguration = TrackConfiguration.from8bitTemplate(template);
         return trackPieceIsLegal(trackConfiguration);
     }
 

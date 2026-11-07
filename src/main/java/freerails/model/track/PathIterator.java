@@ -20,12 +20,15 @@ package freerails.model.track;
 
 import freerails.util.Segment;
 
-// TODO what is it good for?
 /**
- * This interface lets the caller retrieve a path made up of a series of
- * straight lines. E.g. it lets the path a train takes across a section of track
- * be retrieved without revealing the underlying objects that represent the
- * track.
+ * Exposes a path as a sequence of straight line segments without revealing the
+ * underlying track objects that define it.
+ *
+ * <p>This is useful for algorithms that need to traverse a route step by step,
+ * such as advancing a train along the track, measuring distance along the path,
+ * or rendering the path as a series of connected segments. Each call to
+ * {@link #nextSegment()} returns the next segment between two consecutive points
+ * in the path, while {@link #hasNext()} reports whether more segments remain.
  */
 public interface PathIterator {
 

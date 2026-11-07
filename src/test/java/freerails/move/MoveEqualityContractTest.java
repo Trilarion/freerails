@@ -62,9 +62,9 @@ public class MoveEqualityContractTest extends TestCase {
     private static final TrackType TRACK_TYPE = WorldGenerator.testTrackTypes().first();
     private static final TrackType OTHER_TRACK_TYPE = WorldGenerator.testTrackTypes().last();
     private static final TrackPiece TRACK_A = new TrackPiece(
-            TrackConfiguration.getFlatInstance("000010000"), TRACK_TYPE, PLAYER.getId());
+            TrackConfiguration.getFlatInstance("00000001"), TRACK_TYPE, PLAYER.getId());
     private static final TrackPiece TRACK_OTHER_OWNER = new TrackPiece(
-            TrackConfiguration.getFlatInstance("000010000"), TRACK_TYPE, OTHER_PLAYER.getId());
+            TrackConfiguration.getFlatInstance("00000001"), TRACK_TYPE, OTHER_PLAYER.getId());
 
     /**
      * Tests player and transaction moves compare every field behavior.
@@ -226,7 +226,7 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null,
                 new TrackPiece(TRACK_A.trackConfiguration(), OTHER_TRACK_TYPE, PLAYER.getId()), new IntPoint2D(2, 3)));
         assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null,
-                new TrackPiece(TrackConfiguration.getFlatInstance("010010000"), TRACK_TYPE, PLAYER.getId()),
+                new TrackPiece(TrackConfiguration.getFlatInstance("00000100"), TRACK_TYPE, PLAYER.getId()),
                 new IntPoint2D(2, 3)));
         assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(3, 3)));
         assertDifferentMoves(new ChangeTrackPieceMove(TRACK_A, TRACK_A, new IntPoint2D(2, 3)), trackMove);

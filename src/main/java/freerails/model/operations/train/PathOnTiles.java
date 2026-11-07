@@ -50,7 +50,7 @@ public class PathOnTiles implements Serializable {
         this.start = Utils.verifyNotNull(start);
     }
 
-    // TODO remove this constructor only used from tests
+    // TODO remove this constructor only used from tests or needed for tests?
     /**
      * Creates a path from a variable number of transitions.
      *

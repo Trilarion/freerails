@@ -21,14 +21,14 @@ package freerails.model.track;
 import java.io.Serializable;
 
 /**
- * Provides the 9-bit integer representation shared by track configurations.
+ * Provides the 8-bit directional representation shared by track configurations.
  */
 public interface TrackConfigurations extends Serializable {
 
     /**
-     * Returns the bit template representing the directions and tile center.
+     * Returns the directional bit mask, clockwise from north.
      *
-     * @return the 9-bit track template
+     * @return the 8-bit directional mask
      */
-    int get9bitTemplate();
+    int get8bitTemplate();
 }

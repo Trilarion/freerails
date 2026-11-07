@@ -197,7 +197,6 @@ public final class StationUtils {
             found = StationUtils.existsStationName(world, tempName);
         }
 
-        // TODO could it be we still don't have a valid one?
         return tempName;
     }
 
@@ -249,7 +248,6 @@ public final class StationUtils {
                 // Now calculate demand.
                 List<CargoProductionOrConsumption> consumption = terrainType.getConsumptions();
 
-                // TODO take into account pre-requisite for station demand (minimum number of tiles of certain type...)
                 for (CargoProductionOrConsumption aConsumption : consumption) {
                     int cargoIndex = world.getCargoIndex(aConsumption.cargoId());
                     demand[cargoIndex] += 1;

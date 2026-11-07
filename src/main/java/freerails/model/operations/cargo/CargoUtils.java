@@ -22,7 +22,7 @@ import freerails.model.ModelConstants;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,39 +43,21 @@ public class CargoUtils {
      * @return lists of cargo identifiers, grouped by category
      */
     public static Map<CargoCategory, List<Integer>> calculateCarLoads(UnmodifiableWorld world, UnmodifiableCargoBatchBundle cargoBatchBundle) {
-        // TODO overly complicated, easier way possible?
-        Map<CargoCategory, Integer> numberOfCarLoads = new HashMap<>();
-        for (CargoCategory cargoCategory: CargoCategory.values()) {
-            numberOfCarLoads.put(cargoCategory, 0);
-        }
-        Map<CargoCategory, Map<Integer, Integer>> cars = new HashMap<>();
-        for (CargoCategory cargoCategory: CargoCategory.values()) {
-            Map<Integer, Integer> map = new HashMap<>();
-            for (Cargo cargo : world.getCargos()) {
-                map.put(cargo.getId(), 0);
-            }
-            cars.put(cargoCategory, map);
-        }
-        for (Cargo ct : world.getCargos()) {
-            int cargoId = ct.getId();
-            int carsOfThisCargo = cargoBatchBundle.getAmountOfType(cargoId) / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
-            numberOfCarLoads.put(ct.getCategory(), numberOfCarLoads.get(ct.getCategory()) + carsOfThisCargo);
-            cars.get(ct.getCategory()).put(cargoId, cars.get(ct.getCategory()).get(cargoId) + carsOfThisCargo);
+        Map<CargoCategory, List<Integer>> carLoadsByCategory = new EnumMap<>(CargoCategory.class);
+        for (CargoCategory category : CargoCategory.values()) {
+            carLoadsByCategory.put(category, new ArrayList<>());
         }
 
-        Map<CargoCategory, List<Integer>> returnMatrix = new HashMap<>();
-        for (CargoCategory cargoCategory: CargoCategory.values()) {
-            List<Integer> returnValue = new ArrayList<>();
-
-            for (Cargo cargo : world.getCargos()) {
-                int cargoId = cargo.getId();
-                for (int j = 0; j < cars.get(cargoCategory).get(cargoId); j++) {
-                    returnValue.add(cargoId);
-                }
+        for (Cargo cargo : world.getCargos()) {
+            int cargoId = cargo.getId();
+            int carLoads = cargoBatchBundle.getAmountOfType(cargoId)
+                    / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
+            List<Integer> categoryCarLoads = carLoadsByCategory.get(cargo.getCategory());
+            for (int i = 0; i < carLoads; i++) {
+                categoryCarLoads.add(cargoId);
             }
-            returnMatrix.put(cargoCategory, returnValue);
         }
-        return returnMatrix;
+        return carLoadsByCategory;
     }
 
     /**

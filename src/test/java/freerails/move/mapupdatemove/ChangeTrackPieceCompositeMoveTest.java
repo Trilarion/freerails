@@ -190,7 +190,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         TrackConfiguration straight = world.getTile(new IntPoint2D(1, 5)).trackPiece().trackConfiguration();
         assertTrue(straight.contains(TileTransition.WEST));
         assertTrue(straight.contains(TileTransition.EAST));
-        assertTrue(straight.contains(TrackConfiguration.getFlatInstance("000010000")));
         assertEquals(2, Integer.bitCount(straight.get8bitTemplate()));
 
         assertBuildTrackSucceeds(new IntPoint2D(5, 5), TileTransition.EAST, trackType);
@@ -206,7 +205,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertSymmetricConnections();
         TrackConfiguration endpoint = world.getTile(new IntPoint2D(8, 5)).trackPiece().trackConfiguration();
         assertTrue(endpoint.contains(TileTransition.EAST));
-        assertTrue(endpoint.contains(TrackConfiguration.getFlatInstance("000010000")));
         assertEquals(1, Integer.bitCount(endpoint.get8bitTemplate()));
 
         assertRemoveTrackSucceeds(new IntPoint2D(0, 5), TileTransition.EAST);

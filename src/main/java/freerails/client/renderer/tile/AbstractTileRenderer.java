@@ -51,7 +51,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     public AbstractTileRenderer(Terrain terrainType, List<Integer> typesTreatedAsSame, int numberTileIcons) {
         this.terrainType = Utils.verifyNotNull(terrainType);
         this.typesTreatedAsSame = Utils.verifyNotNull(typesTreatedAsSame);
-        tileIcons = new Image[numberTileIcons]; // TODO check > 0
+        tileIcons = new Image[numberTileIcons]; // TODO check numberTileIcons > 0?
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      */
     public abstract int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world);
 
-    // TODO remove world !
+    // TODO remove or reduce world as parameter
     /**
      * Checks whether the renderer handles the tile at the specified location.
      * @param location the location

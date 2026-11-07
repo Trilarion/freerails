@@ -59,7 +59,7 @@ public class OverviewMapRenderer implements MapRenderer {
     private final IntPoint2D mapLocation = IntPoint2D.ZERO;
     private final UnmodifiableWorld world;
     private final AffineTransform affineTransform;
-    // TODO used many time, could be static
+    // TODO used many time, could be static or does it change every time
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private BufferedImage oneToOneImage;
     private BufferedImage mapImage;

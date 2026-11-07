@@ -181,10 +181,6 @@ public class BuildTrackExplorerTest extends TestCase {
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
 
-        // TODO this fails now and I don't know why, debugging postponed until the BuildTrackExplorer is investigated
-        if (true)
-            return;
-
         // SE is going along existing track
         assertNextVertexIs(TileTransition.SOUTH_EAST, 11, 11, explorer);
         // S is building new track.

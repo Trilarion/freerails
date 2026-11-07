@@ -115,6 +115,12 @@ allow adding or removing elements. This is a shallow read-only boundary, not a d
 immutable snapshot. Returned entities and state objects (including trains and stations)
 may be mutable and may expose the underlying world state.
 
+Track configurations use an 8-bit directional mask: bit zero is north, and bits
+increase clockwise. Scenario templates use standard binary string order, with
+the least-significant bit at the right. A tile without a track piece has no
+track; a station replaces existing track and requires at least one directional
+connection.
+
 Preserve game-state invariants when changing rules. For example, a track connection is
 represented on both neighboring tiles, so track changes must use the appropriate paired
 track operations rather than changing one side alone. Consider scenario loading when

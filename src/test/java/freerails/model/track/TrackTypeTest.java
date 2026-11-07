@@ -36,7 +36,7 @@ public class TrackTypeTest extends TestCase {
     public void testDefinitionCollectionsAreCopiedAndPreparedConfigurationsAreImmutable() {
         Set<TrackProperty> properties = new HashSet<>(Set.of(TrackProperty.SINGLE));
         Set<TerrainCategory> validTerrainCategories = new HashSet<>(Set.of(TerrainCategory.COUNTRY));
-        Set<String> validTrackConfigurations = new HashSet<>(Set.of("000010000"));
+        Set<String> validTrackConfigurations = new HashSet<>(Set.of("00000001"));
         TrackType trackType = new TrackType(1, "single", TrackCategory.TRACK, properties,
                 Money.ZERO, Money.ZERO, validTerrainCategories, validTrackConfigurations);
 
@@ -44,7 +44,7 @@ public class TrackTypeTest extends TestCase {
         properties.add(TrackProperty.DOUBLE);
         validTerrainCategories.clear();
         validTrackConfigurations.clear();
-        validTrackConfigurations.add("111111111");
+        validTrackConfigurations.add("11111111");
 
         assertTrue(trackType.hasProperty(TrackProperty.SINGLE));
         assertFalse(trackType.hasProperty(TrackProperty.DOUBLE));
@@ -52,10 +52,26 @@ public class TrackTypeTest extends TestCase {
 
         trackType.prepare();
 
-        TrackConfiguration validConfiguration = TrackConfiguration.from9bitTemplate(0b000010000);
+        TrackConfiguration validConfiguration = TrackConfiguration.from8bitTemplate(0b00000001);
         assertTrue(trackType.trackPieceIsLegal(validConfiguration));
-        assertFalse(trackType.trackPieceIsLegal(TrackConfiguration.from9bitTemplate(0b111111111)));
+        assertFalse(trackType.trackPieceIsLegal(TrackConfiguration.from8bitTemplate(0b11111111)));
         assertThrowsUnsupportedOperation(() -> trackType.getValidTrackConfigurations().clear());
+    }
+
+    /**
+     * Tests track types reject configurations with no directional connections.
+     */
+    public void testEmptyConfigurationIsRejected() {
+        TrackType trackType = new TrackType(1, "single", TrackCategory.TRACK,
+                Set.of(TrackProperty.SINGLE), Money.ZERO, Money.ZERO,
+                Set.of(TerrainCategory.COUNTRY), Set.of("00000000"));
+
+        try {
+            trackType.prepare();
+            fail("Expected empty track configuration to be rejected.");
+        } catch (IllegalArgumentException expected) {
+            // Track types must define at least one direction.
+        }
     }
 
     /**

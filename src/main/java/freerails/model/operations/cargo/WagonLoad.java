@@ -18,8 +18,6 @@
 
 package freerails.model.operations.cargo;
 
-// TODO should this be used more often?
-
 import org.jetbrains.annotations.NotNull;
 
 /**

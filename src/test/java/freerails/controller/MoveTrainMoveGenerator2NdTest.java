@@ -400,10 +400,6 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      * Tests that a train with 'select wagons automatically' enabled behaves correctly.
      */
     public void testAutoConsist() {
-
-        // TODO this test fails, disable temporarily
-        if (1 == 1) return;
-
         // Remove all wagons from the train.
         Train train = world.getTrain(player, 0);
         train.setConsist(new ArrayList<>());

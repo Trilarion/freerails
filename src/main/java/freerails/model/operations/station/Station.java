@@ -33,10 +33,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-// TODO doesn't know what type it is (depot, station, terminal)? why not? should know.
 /**
  * Represents a cargo-service station with a location, name, supply and demand
- * policy, and waiting cargo.
+ * policy, and waiting cargo. Its type (depot, station, or terminal) is the
+ * track type at its location, available from the world tile.
  */
 public class Station extends Identifiable {
 

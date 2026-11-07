@@ -55,7 +55,7 @@ public class RepresentativeMoveSerializationTest extends TestCase {
         Transaction transaction = new Transaction(
                 TransactionCategory.MISC_INCOME, new Money(125), new Time(42));
         TrackPiece trackPiece = new TrackPiece(
-                TrackConfiguration.getFlatInstance("000010000"),
+                TrackConfiguration.getFlatInstance("00000001"),
                 WorldGenerator.testTrackTypes().first(),
                 player.getId());
         CargoBatchBundle cargo = new CargoBatchBundle();

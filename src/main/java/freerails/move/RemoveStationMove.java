@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-// TODO undo, try-do...
 /**
  * Removes the specified station from the world.
  */

@@ -733,7 +733,7 @@ public class WorldTest extends TestCase {
 
         IntPoint2D trackLocation = new IntPoint2D(1, 1);
         TrackPiece trackPiece = new TrackPiece(
-                TrackConfiguration.getFlatInstance("000010000"), world.getTrackType(88), firstPlayer.getId());
+                TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(88), firstPlayer.getId());
         world.setTile(trackLocation, new TerrainTile(9, trackPiece));
         world.setTile(new IntPoint2D(2, 2), new TerrainTile(4));
 
@@ -843,7 +843,7 @@ public class WorldTest extends TestCase {
         TerrainTile terrainOnly = new TerrainTile(4);
         TerrainTile neighborTile = new TerrainTile(5);
         TrackPiece trackPiece = new TrackPiece(
-                TrackConfiguration.getFlatInstance("000010000"), world.getTrackType(0), 0);
+                TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), 0);
         TerrainTile withTrack = new TerrainTile(6, trackPiece);
 
         world.setTile(target, terrainOnly);

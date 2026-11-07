@@ -27,6 +27,8 @@ import freerails.model.operations.cargo.CargoConversion;
 import freerails.model.economy.transaction.CargoDeliveryTransaction;
 import freerails.model.economy.transaction.Transaction;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
+import freerails.move.generator.AddStationMoveGenerator;
+import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.Move;
 import freerails.move.Status;
 
@@ -82,7 +84,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 .findFirst()
                 .orElseThrow();
         world.setTile(station.getLocation(), new TerrainTile(0,
-                new TrackPiece(TrackConfiguration.from9bitTemplate(0), stationTrackType,
+                new TrackPiece(TrackConfiguration.from8bitTemplate(1), stationTrackType,
                         WorldGenerator.TEST_PLAYER.getId())));
 
         // Set up train: 3 wagons to carry cargo type 0.
@@ -120,6 +122,32 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 CargoBatchBundle.EMPTY, getCargoAtStation());
         assertEquals("The train should now have the two car loads of cargo",
                 cargoBundleWith2CarloadsOfCargo0, getCargoOnTrain());
+    }
+
+    /**
+     * Tests station creation is rejected when the tile has no track connections.
+     */
+    public void testStationRequiresExistingTrack() {
+        IntPoint2D emptyLocation = IntPoint2D.ZERO;
+        assertFalse(world.getTile(emptyLocation).hasTrack());
+        TrackType stationTrackType = world.getTrackTypes().stream()
+                .filter(TrackType::isStation)
+                .findFirst()
+                .orElseThrow();
+
+        try {
+            new AddStationMoveGenerator(emptyLocation, stationTrackType.getId(),
+                    WorldGenerator.TEST_PLAYER).generate(world);
+            fail("Expected station generation on an empty tile to fail.");
+        } catch (IllegalStateException expected) {
+            assertEquals("A station must be placed on existing connected track.", expected.getMessage());
+        }
+
+        TrackPiece stationWithoutExistingTrack = new TrackPiece(TrackConfiguration.from8bitTemplate(1),
+                stationTrackType, WorldGenerator.TEST_PLAYER.getId());
+        ChangeTrackPieceMove invalidMove = new ChangeTrackPieceMove(
+                null, stationWithoutExistingTrack, emptyLocation);
+        assertFalse(invalidMove.applicable(world).isSuccess());
     }
 
     /**

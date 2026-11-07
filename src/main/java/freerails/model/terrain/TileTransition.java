@@ -38,14 +38,14 @@ public class TileTransition implements TrackConfigurations {
      * track-template bit.
      */
     public enum TileDirection {
-        NORTH(0, -1, 2),
-        NORTH_EAST(1, -1, 4),
-        EAST(1, 0, 32),
-        SOUTH_EAST(1, 1, 256),
-        SOUTH(0, 1, 128),
-        SOUTH_WEST(-1, 1, 64),
-        WEST(-1, 0, 8),
-        NORTH_WEST(-1, -1, 1);
+        NORTH(0, -1, 1),
+        NORTH_EAST(1, -1, 2),
+        EAST(1, 0, 4),
+        SOUTH_EAST(1, 1, 8),
+        SOUTH(0, 1, 16),
+        SOUTH_WEST(-1, 1, 32),
+        WEST(-1, 0, 64),
+        NORTH_WEST(-1, -1, 128);
 
         private static final TileDirection[] COMPASS_ORDER = {
                 NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST
@@ -53,12 +53,12 @@ public class TileTransition implements TrackConfigurations {
 
         public final int deltaX;
         public final int deltaY;
-        private final int flatTrackTemplate;
+        private final int configurationBit;
 
-        TileDirection(int deltaX, int deltaY, int flatTrackTemplate) {
+        TileDirection(int deltaX, int deltaY, int configurationBit) {
             this.deltaX = deltaX;
             this.deltaY = deltaY;
-            this.flatTrackTemplate = flatTrackTemplate;
+            this.configurationBit = configurationBit;
         }
 
         public static TileDirection fromDelta(int dx, int dy) {
@@ -95,8 +95,8 @@ public class TileTransition implements TrackConfigurations {
             return deltaY;
         }
 
-        public int getFlatTrackTemplate() {
-            return flatTrackTemplate;
+        public int getConfigurationBit() {
+            return configurationBit;
         }
     }
 
@@ -160,7 +160,7 @@ public class TileTransition implements TrackConfigurations {
      * The X and Y components of the vector.
      */
     public final int deltaY;
-    private final int flatTrackTemplate;
+    private final int configurationBit;
     private final double length;
 
     /**
@@ -177,7 +177,7 @@ public class TileTransition implements TrackConfigurations {
         this.direction = direction;
         deltaX = direction.deltaX;
         deltaY = direction.deltaY;
-        flatTrackTemplate = direction.flatTrackTemplate;
+        configurationBit = direction.configurationBit;
         length = deltaX * deltaY == 0 ? ModelConstants.MODEL_UNITS_PER_TILE : ModelConstants.MODEL_DIAGONAL_TILE_LENGTH;
     }
 
@@ -393,22 +393,6 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * Checks whether a track configuration consists of exactly this direction.
-     *
-     * @param ftt track configuration to inspect
-     * @return {@code true} if its nine-bit template matches this transition
-     */
-    public boolean contains(TrackConfigurations ftt) {
-        return ftt.get9bitTemplate() == flatTrackTemplate;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public int get9bitTemplate() {
-        return flatTrackTemplate;
-    }
-
-    /**
      * Returns this transition's length in fixed-point model distance units.
      *
      * @return model units for orthogonal transitions and diagonal transitions
@@ -463,7 +447,18 @@ public class TileTransition implements TrackConfigurations {
     /**
      * @return a one-hot eight-bit template for this compass direction
      */
+    @Override
     public int get8bitTemplate() {
-        return 1 << getID();
+        return configurationBit;
+    }
+
+    /**
+     * Checks whether a track configuration consists of exactly this direction.
+     *
+     * @param configuration track configuration to inspect
+     * @return {@code true} if its directional mask matches this transition
+     */
+    public boolean contains(TrackConfigurations configuration) {
+        return configuration.get8bitTemplate() == configurationBit;
     }
 }

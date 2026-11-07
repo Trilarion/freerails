@@ -76,9 +76,9 @@ public class MoveStateContractTest extends TestCase {
         ChangeTrackPieceMove outsideMap = new ChangeTrackPieceMove(null, null, new IntPoint2D(-1, 0));
         world.setRules(new Rules(false, false));
         TrackPiece before = new TrackPiece(
-                TrackConfiguration.getFlatInstance("000010000"), world.getTrackType(0), player.getId());
+                TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), player.getId());
         TrackPiece after = new TrackPiece(
-                TrackConfiguration.getFlatInstance("000010000"), world.getTrackType(0), otherPlayer.getId());
+                TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), otherPlayer.getId());
         TerrainTile tile = world.getTile(TILE_TO_CHANGE);
         world.setTile(TILE_TO_CHANGE, new TerrainTile(tile.terrainTypeId(), before));
         ChangeTrackPieceMove disallowedTrack = new ChangeTrackPieceMove(before, after, TILE_TO_CHANGE);
@@ -237,9 +237,9 @@ public class MoveStateContractTest extends TestCase {
     public void testRejectedMovesLeaveTheWorldUnchanged() {
         world.setRules(new Rules(false, false));
         TrackPiece before = new TrackPiece(
-                TrackConfiguration.getFlatInstance("000010000"), world.getTrackType(0), player.getId());
+                TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), player.getId());
         TrackPiece otherOwner = new TrackPiece(
-                TrackConfiguration.getFlatInstance("000010000"), world.getTrackType(0), otherPlayer.getId());
+                TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), otherPlayer.getId());
         TerrainTile tile = world.getTile(TILE_TO_CHANGE);
         world.setTile(TILE_TO_CHANGE, new TerrainTile(tile.terrainTypeId(), before));
 

@@ -114,6 +114,13 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
             return Status.fail("Already the same track here!");
         }
 
+        if (trackPieceAfter != null && trackPieceAfter.trackType().isStation()
+                && (trackPieceBefore == null
+                || trackPieceBefore.trackConfiguration().get8bitTemplate() == 0
+                || trackPieceAfter.trackConfiguration().get8bitTemplate() == 0)) {
+            return Status.fail("A station must be placed on existing connected track.");
+        }
+
         if (trackPieceBefore != null) {
             TrackType expectedTrackRule = trackPieceBefore.trackType();
             TrackType actualTrackRule = currentTrackPieceAtLocation.trackType();

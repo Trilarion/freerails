@@ -78,7 +78,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         TrackMove trackMove;
 
         // Try building the simplest piece of track.
-        newConfig = TrackConfiguration.getFlatInstance("000010000");
+        newConfig = TrackConfiguration.getFlatInstance("00010000");
         oldTrackPiece = world.getTile(IntPoint2D.ZERO).trackPiece();
 
         TrackType trackType = world.getTrackType(0);

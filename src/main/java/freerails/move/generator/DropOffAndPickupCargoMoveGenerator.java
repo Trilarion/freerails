@@ -161,7 +161,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                     }
                 }
 
-                Collections.sort(wagonsAvailable);
+                wagonsAvailable.sort(Comparator.comparingInt(WagonLoad::quantity).reversed());
 
                 int numWagonsToadd = Math.min(wagonsAvailable.size(), 3);
 

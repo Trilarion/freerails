@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package freerails.model.track;
@@ -25,19 +25,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a 9-bit set of track directions and center occupancy on one map
- * tile. Instances are canonical and obtained through the factory methods.
+ * Represents an 8-bit set of track directions on one map tile. Bit zero is
+ * north, with bits increasing clockwise. Instances are canonical.
  */
 public class TrackConfiguration implements TrackConfigurations {
 
     @Serial
-    private static final long serialVersionUID = 3618695301330974512L;
+    private static final long serialVersionUID = 1L;
     private static final List<TrackConfiguration> flatTrackConfigurations;
 
     static {
-        List<TrackConfiguration> configurations = new ArrayList<>(512);
+        List<TrackConfiguration> configurations = new ArrayList<>(256);
 
-        for (int i = 0; i < 512; i++) {
+        for (int i = 0; i < 256; i++) {
             configurations.add(i, new TrackConfiguration(i));
         }
 
@@ -50,17 +50,15 @@ public class TrackConfiguration implements TrackConfigurations {
     /**
      * Creates a configuration and calculates its total track length.
      *
-     * @param configuration 9-bit template represented by this instance
+     * @param configuration 8-bit directional mask represented by this instance
      */
     private TrackConfiguration(int configuration) {
         this.configuration = configuration;
 
-        // Calculate length.
         int tempLength = 0;
-        TileTransition[] vectors = TileTransition.getTransitions();
-        for (TileTransition vector : vectors) {
-            if (contains(vector.get9bitTemplate())) {
-                tempLength = (int) (tempLength + vector.getLength());
+        for (TileTransition transition : TileTransition.getTransitions()) {
+            if (contains(transition)) {
+                tempLength = (int) (tempLength + transition.getLength());
             }
         }
 
@@ -68,60 +66,55 @@ public class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * Combines two configurations by taking the union of their template bits.
+     * Combines two configurations by taking the union of their direction bits.
      *
      * @param c first configuration
      * @param v second configuration
      * @return canonical configuration containing bits from both inputs
      */
     public static TrackConfiguration add(TrackConfigurations c, TrackConfigurations v) {
-        int newTemplate = c.get9bitTemplate() | v.get9bitTemplate();
-
-        return from9bitTemplate(newTemplate);
+        int newTemplate = c.get8bitTemplate() | v.get8bitTemplate();
+        return from8bitTemplate(newTemplate);
     }
 
     /**
-     * Returns the canonical configuration represented by a 9-bit template.
+     * Returns the canonical configuration represented by an 8-bit mask.
      *
-     * @param i 9-bit track template in the range 0 through 511
-     * @return the canonical configuration for the template
-     * @throws IndexOutOfBoundsException if {@code i} is outside the supported range
+     * @param template directional mask in the range 0 through 255
+     * @return the canonical configuration for the mask
+     * @throws IndexOutOfBoundsException if {@code template} is outside 0 through 255
      */
-    public static TrackConfiguration from9bitTemplate(int i) {
-        return flatTrackConfigurations.get(i);
+    public static TrackConfiguration from8bitTemplate(int template) {
+        return flatTrackConfigurations.get(template);
     }
 
     /**
      * Converts a track-configuration value to its canonical instance.
      *
-     * @param v configuration whose template is used
-     * @return the canonical configuration for {@code v}'s template
+     * @param configuration configuration whose directional mask is used
+     * @return the canonical configuration for its mask
      */
-    public static TrackConfiguration getFlatInstance(TrackConfigurations v) {
-        return from9bitTemplate(v.get9bitTemplate());
+    public static TrackConfiguration getFlatInstance(TrackConfigurations configuration) {
+        return from8bitTemplate(configuration.get8bitTemplate());
     }
 
     /**
-     * Parses a binary string as a track template and returns its canonical
-     * configuration. The string is reversed to preserve the legacy bit order.
+     * Parses a binary string as a directional mask using standard binary order.
      *
-     * @param trackTemplate binary representation of a 9-bit track template
+     * @param trackTemplate binary representation of an 8-bit directional mask
      * @return the canonical configuration represented by the string
-     * @throws NumberFormatException if the string is not a valid binary integer
-     * @throws IndexOutOfBoundsException if the parsed value is outside 0 through 511
+     * @throws NumberFormatException if the string is not exactly eight binary digits
      */
     public static TrackConfiguration getFlatInstance(String trackTemplate) {
-        String templateString = trackTemplate;
-        // TODO do not do hack
-        // Hack - so that result is as expected by earlier written code.
-        StringBuffer strb = new StringBuffer(templateString);
-        strb.reverse();
-        templateString = strb.toString();
-
-        // End of hack
-        int i = Integer.parseInt(templateString, 2);
-
-        return flatTrackConfigurations.get(i);
+        if (trackTemplate.length() != 8) {
+            throw new NumberFormatException("Track template must contain exactly 8 binary digits.");
+        }
+        for (int i = 0; i < trackTemplate.length(); i++) {
+            if (trackTemplate.charAt(i) != '0' && trackTemplate.charAt(i) != '1') {
+                throw new NumberFormatException("Track template must contain exactly 8 binary digits.");
+            }
+        }
+        return from8bitTemplate(Integer.parseInt(trackTemplate, 2));
     }
 
     /**
@@ -132,61 +125,33 @@ public class TrackConfiguration implements TrackConfigurations {
      * @return canonical configuration representing {@code c} minus {@code v}
      */
     public static TrackConfiguration subtract(TrackConfigurations c, TrackConfigurations v) {
-        int newTemplate = c.get9bitTemplate() & ~v.get9bitTemplate();
-        return from9bitTemplate(newTemplate);
+        int newTemplate = c.get8bitTemplate() & ~v.get8bitTemplate();
+        return from8bitTemplate(newTemplate);
     }
 
     /**
-     * Tests whether this configuration includes every direction and bit set in
-     * another configuration.
+     * Tests whether this configuration includes every direction in another.
      *
-     * @param ftt configuration that may be a subset of this one
-     * @return {@code true} if this configuration contains all bits in {@code ftt}
+     * @param configuration configuration that may be a subset of this one
+     * @return {@code true} if this configuration contains all its direction bits
      */
-    public boolean contains(TrackConfigurations ftt) {
-        int trackTemplate = ftt.get9bitTemplate();
-        return contains(trackTemplate);
+    public boolean contains(TrackConfigurations configuration) {
+        return contains(configuration.get8bitTemplate());
     }
 
-
     /**
-     * Tests whether this configuration contains every bit in a template.
+     * Tests whether this configuration contains every bit in a directional mask.
      *
-     * @param trackTemplate template to test
-     * @return {@code true} if all bits in {@code trackTemplate} are set here
+     * @param template directional mask to test
+     * @return {@code true} if all bits in {@code template} are set here
      */
-    public boolean contains(int trackTemplate) {
-        return (trackTemplate | configuration) == configuration;
+    public boolean contains(int template) {
+        return (template | configuration) == configuration;
     }
 
-    // TODO just shave the 9th bit of
-    /**
-     * Returns the 8-bit encoding of the directional track transitions,
-     * excluding the center bit.
-     *
-     * @return the 8-bit directional template
-     */
-    public int get8bitTemplate() {
-        int newTemplate = 0;
-        TileTransition[] vectors = TileTransition.getTransitions();
-
-        for (TileTransition vector : vectors) {
-            if (contains(vector)) {
-                newTemplate = newTemplate | vector.get8bitTemplate();
-            }
-        }
-
-        return newTemplate;
-    }
-
-    // TODO why is a 9th bit needed anyway?
-    /**
-     * {@inheritDoc}
-     *
-     * @return this configuration's 9-bit template
-     */
+    /** {@inheritDoc} */
     @Override
-    public int get9bitTemplate() {
+    public int get8bitTemplate() {
         return configuration;
     }
 
@@ -200,16 +165,16 @@ public class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * Returns the 9-bit configuration value.
+     * Returns the encoded directional mask.
      *
-     * @return the encoded configuration
+     * @return the 8-bit configuration
      */
     public int getConfiguration() {
         return configuration;
     }
 
     /**
-     * Compares configurations by their encoded template.
+     * Compares configurations by their encoded directional mask.
      *
      * @param obj object to compare
      * @return {@code true} if {@code obj} is an equal configuration
@@ -218,14 +183,12 @@ public class TrackConfiguration implements TrackConfigurations {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-
-        final TrackConfiguration that = (TrackConfiguration) obj;
-
+        TrackConfiguration that = (TrackConfiguration) obj;
         return configuration == that.configuration;
     }
 
     /**
-     * Returns a hash code derived from the encoded template.
+     * Returns a hash code derived from the encoded directional mask.
      *
      * @return the configuration's hash code
      */
@@ -241,35 +204,28 @@ public class TrackConfiguration implements TrackConfigurations {
      */
     @Serial
     private Object readResolve() {
-        return TrackConfiguration.from9bitTemplate(configuration);
+        return TrackConfiguration.from8bitTemplate(configuration);
     }
 
     /**
-     * Returns a readable description of the center bit and included directions.
+     * Returns a readable description of included directions.
      *
-     * @return a textual description of this configuration
+     * @return included directions, or {@code "no connections"} when empty
      */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        int matches = 0;
-
-        if (contains(TrackConfiguration.getFlatInstance("000010000"))) {
-            sb.append("tile center");
-        } else {
-            sb.append("no tile center");
-        }
 
         for (int i = 0; i < 8; i++) {
-            TileTransition v = TileTransition.getInstance(i);
-
-            if (contains(v)) {
-                sb.append(',');
-                sb.append(v);
-                matches++;
+            TileTransition transition = TileTransition.getInstance(i);
+            if (contains(transition)) {
+                if (!sb.isEmpty()) {
+                    sb.append(',');
+                }
+                sb.append(transition);
             }
         }
 
-        return sb.toString().trim();
+        return sb.isEmpty() ? "no connections" : sb.toString().trim();
     }
 }
