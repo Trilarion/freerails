@@ -162,15 +162,6 @@ public class TileTransition implements TrackConfigurations {
     public final int deltaY;
     private final int configurationBit;
     private final double length;
-
-    /**
-     * Creates a transition. The private constructor ensures instances are
-     * canonical; use {@link #getInstance(IntPoint2D)} to retrieve one.
-     *
-     * @param x horizontal displacement, either -1, 0, or 1
-     * @param y vertical displacement, either -1, 0, or 1
-     * @param t bit template identifying the corresponding track direction
-     */
     private final TileDirection direction;
 
     private TileTransition(TileDirection direction) {

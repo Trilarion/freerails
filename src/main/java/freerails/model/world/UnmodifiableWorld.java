@@ -167,6 +167,26 @@ public interface UnmodifiableWorld extends Serializable {
     int getTrainIndex(Player player, int trainId);
 
     /**
+     * Allocates the next available train identifier for the specified player.
+     * The result is guaranteed to be unused by the player's trains and is
+     * independent of the current list size.
+     *
+     * @param player owner whose next train ID is requested
+     * @return a previously unused train identifier
+     */
+    int allocateTrainId(Player player);
+
+    /**
+     * Allocates the next available station identifier for the specified player.
+     * The result is guaranteed to be unused by the player's stations and is
+     * independent of the current list size.
+     *
+     * @param player owner whose next station ID is requested
+     * @return a previously unused station identifier
+     */
+    int allocateStationId(Player player);
+
+    /**
      * Returns a live, unmodifiable view of the stations belonging to a player
      * in station order. The stations themselves are not immutable snapshots.
      *

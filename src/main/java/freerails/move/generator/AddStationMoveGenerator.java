@@ -40,6 +40,11 @@ import java.util.NoSuchElementException;
 
 /**
  * Generates a move that adds or upgrades a station.
+ *
+ * <p>The generated composite move updates the track tile and adds the new station.
+ * The actual cost to the player is charged by the transaction moves created by
+ * {@link TrackMoveTransactionsGenerator}, which appends {@code AddTransactionMove}
+ * entries for the station/track construction cost before the move is applied.
  */
 public class AddStationMoveGenerator implements MoveGenerator {
 
@@ -92,7 +97,6 @@ public class AddStationMoveGenerator implements MoveGenerator {
         return result;
     }
 
-    // TODO how often is this called (seems to be called every single time the mouse is over a tile)
     /**
      * @param world the game world used by this operation
      * @return the move that adds the station to the world
@@ -112,33 +116,24 @@ public class AddStationMoveGenerator implements MoveGenerator {
         TrackPiece newTrackPiece = new TrackPiece(oldTrackPiece.trackConfiguration(), trackType, player.getId());
         Move upgradeTrackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, location);
 
-        // There isn't already a station here, we need to pick a name and add an entry to the station list.
+        // There isn't already a station here, so assign a stable station name.
         String stationName;
+        int stationId = world.allocateStationId(player);
         try {
             String cityName = CityUtils.findNearestCity(world, location);
             stationName = StationUtils.createStationName(world, cityName);
         } catch (NoSuchElementException e) {
-            // TODO can we do better here?
-            // there are no cities, this should never happen during a proper
-            // game. However, some of the unit tests create stations when there are no cities.
-            stationName = "Central Station #" + world.getStations(player).size();
+            // There are no cities in some tests or edge cases; fall back to a deterministic name.
+            stationName = "Central Station #" + stationId;
         }
 
-        // check the terrain to see if we can build a station on it...
-        // This {@link CompositeMove}adds a station to the station list and adds a
-        // cargo bundle (to store the cargo waiting at the station) to the cargo bundle
-        // list.
-        // TODO maybe there is a better way to get an id
-        int id = world.getStations(player).size();
-        Station station = new Station(id, location, stationName, CargoBatchBundle.EMPTY);
+        Station station = new Station(stationId, location, stationName, CargoBatchBundle.EMPTY);
         StationUtils.calculateCargoSupplyRateAtStation(world, ruleNumber, station);
 
         Move addStationMove = new AddStationMove(player, station);
 
         CompositeMove move = new CompositeMove(Arrays.asList(upgradeTrackMove, addStationMove));
 
-        // TODO transaction for building the station is missing (include in AddStationMove)
-        // add transactions
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
         move = transactionsGenerator.addTransactions(move);
 

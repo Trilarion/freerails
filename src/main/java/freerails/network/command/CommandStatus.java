@@ -20,9 +20,7 @@ package freerails.network.command;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Objects;
 
-// TODO reason is not read anywhere
 /**
  * An instance of this class is returned to the client (the server) when a
  * CommandToServer (CommandToClient) is executed by the server (the client).
@@ -30,47 +28,31 @@ import java.util.Objects;
  * @see CommandToClient
  * @see CommandToServer
  */
-public class CommandStatus implements Serializable {
+public record CommandStatus(boolean successful) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 3257285842216103987L;
-    private final String reason;
-    private final boolean successful;
 
     /**
-     * Creates a command result with an optional explanation.
-     *
-     * @param successful whether the command completed successfully
-     * @param reason explanation associated with the result, if any
-     */
-    public CommandStatus(boolean successful, String reason) {
-        this.reason = reason;
-        this.successful = successful;
-    }
-
-    /**
-     * Creates a command result without an explanation.
+     * Creates a command result.
      *
      * @param successful whether the command completed successfully
      */
-    public CommandStatus(boolean successful) {
-        reason = null;
-        this.successful = successful;
+    public CommandStatus {
     }
 
     /**
      * Compares this result with another result.
      *
      * @param obj object to compare
-     * @return {@code true} if the success flag and reason match
+     * @return {@code true} if the success flag matches
      */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof CommandStatus commandStatus)) return false;
 
-        if (successful != commandStatus.successful) return false;
-        return Objects.equals(reason, commandStatus.reason);
+        return successful == commandStatus.successful;
     }
 
     /**
@@ -80,16 +62,14 @@ public class CommandStatus implements Serializable {
      */
     @Override
     public int hashCode() {
-        int result;
-        result = reason != null ? reason.hashCode() : 0;
-        result = 29 * result + (successful ? 1 : 0);
-        return result;
+        return Boolean.hashCode(successful);
     }
 
     /**
      * True if the command was successfully executed.
      */
-    public boolean isSuccessful() {
+    @Override
+    public boolean successful() {
         return successful;
     }
 }

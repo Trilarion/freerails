@@ -109,6 +109,18 @@ they should be serializable, immutable, logically comparable, and refer to world
 through stable identifiers or positions. `applicable` checks a move against an
 `UnmodifiableWorld` without changing the state; `apply` performs the change on `World`.
 
+Moves combined in a `CompostMove` must be pairwise orthogonal: each is
+applicable to the same original world, and applying them in either order
+produces equivalent game state. This is a semantic contract, not a property
+that can be reliably inferred from move classes. Unless documented otherwise,
+assume a move can be combined with moves affecting independent state. Avoid
+overlapping effects, such as track changes on the same or neighboring tiles,
+terrain and track changes on the same tile, or updates to the same field of
+the same train. Use `CompositeMove` when dependent component moves need a
+defined order. The station-removal bundle coordinates track, station-list,
+and train-schedule changes as one action; its current use of `CompostMove`
+does not make those components generally independent or reusable.
+
 `UnmodifiableWorld` collection getters return live, unmodifiable views: changes made
 through the world are visible through previously obtained views, but the views do not
 allow adding or removing elements. This is a shallow read-only boundary, not a deep
@@ -133,6 +145,8 @@ clients and servers.
 
 - Follow the existing package structure and nearby code conventions, preserving the
   architecture and package boundaries described above.
+- Prefer `Math.clamp()` over nested `Math.max()`/`Math.min()` when constraining a value
+  to a range.
 - Add or update tests for behavior changes, especially game rules, moves,
   serialization, and scenario loading.
 - Prefer applicable assertion helpers from `freerails.util.TestUtils` over

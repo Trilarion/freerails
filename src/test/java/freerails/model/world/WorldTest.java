@@ -439,6 +439,42 @@ public class WorldTest extends TestCase {
     }
 
     /**
+     * Tests train IDs are allocated from the lowest unused value rather than the list size.
+     */
+    public void testAllocateTrainIdUsesLowestAvailableValue() {
+        World world = WorldGenerator.defaultWorld();
+        Player player = new Player(10, "Player");
+        world.addPlayer(player);
+
+        world.addTrain(player, trainWithAvailableEngine(world, 0));
+        world.addTrain(player, trainWithAvailableEngine(world, 2));
+        world.removeTrain(player, 0);
+
+        assertEquals(0, world.allocateTrainId(player));
+
+        world.addTrain(player, trainWithAvailableEngine(world, 0));
+        assertEquals(1, world.allocateTrainId(player));
+    }
+
+    /**
+     * Tests station IDs are allocated from the lowest unused value rather than the list size.
+     */
+    public void testAllocateStationIdUsesLowestAvailableValue() {
+        World world = WorldGenerator.defaultWorld();
+        Player player = new Player(11, "Player");
+        world.addPlayer(player);
+
+        world.addStation(player, new Station(0, new IntPoint2D(0, 0), "Station 0", CargoBatchBundle.EMPTY));
+        world.addStation(player, new Station(2, new IntPoint2D(1, 0), "Station 2", CargoBatchBundle.EMPTY));
+        world.removeStation(player, 0);
+
+        assertEquals(0, world.allocateStationId(player));
+
+        world.addStation(player, new Station(0, new IntPoint2D(0, 1), "Station 0 again", CargoBatchBundle.EMPTY));
+        assertEquals(1, world.allocateStationId(player));
+    }
+
+    /**
      * Tests trains reject engine and wagon type IDs absent from the world.
      */
     public void testTrainTypeIdsMustExistInWorld() {

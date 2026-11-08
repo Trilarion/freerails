@@ -24,6 +24,7 @@ import freerails.model.operations.station.Station;
 import freerails.model.operations.station.StationDemand;
 import freerails.model.operations.station.StationUtils;
 import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainConfiguration;
 import freerails.model.operations.train.TrainUtils;
 import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.model.operations.train.schedule.UnmodifiableSchedule;
@@ -94,16 +95,37 @@ public class CargoUtils {
      */
     public static CargoTransferPlan prepareCargoTransfer(UnmodifiableWorld world, Player player, Train train,
                                                         Station station, boolean autoConsist) {
-        CargoBatchBundle trainAfter = new CargoBatchBundle(train.getCargoBatchBundle());
+        return prepareCargoTransfer(world, player, train.getSchedule(), train.getCargoBatchBundle(),
+                train.getConfiguration(), station, autoConsist);
+    }
+
+    /**
+     * Prepares cargo transfer using a prospective train state without changing the world.
+     *
+     * @param world world providing cargo and terrain definitions
+     * @param player train owner
+     * @param schedule schedule to use when selecting automatic consist
+     * @param trainCargo cargo currently carried by the train
+     * @param configuration prospective engine and consist
+     * @param station station being serviced
+     * @param autoConsist whether the train's consist may be updated automatically
+     * @return the prepared cargo state after the stop
+     */
+    public static CargoTransferPlan prepareCargoTransfer(UnmodifiableWorld world, Player player,
+                                                        UnmodifiableSchedule schedule,
+                                                        UnmodifiableCargoBatchBundle trainCargo,
+                                                        TrainConfiguration configuration,
+                                                        Station station, boolean autoConsist) {
+        CargoBatchBundle trainAfter = new CargoBatchBundle(trainCargo);
         CargoBatchBundle stationAfter = new CargoBatchBundle(station.getCargoBatchBundle());
-        List<Integer> consist = new ArrayList<>(train.getConsist());
+        List<Integer> consist = new ArrayList<>(configuration.wagonTypes());
         CargoBatchBundle cargoDroppedOff = new CargoBatchBundle();
 
         for (CargoBatch cargoBatch : trainAfter.getCargoBatches()) {
-            int cargoTypeId = cargoBatch.getCargoTypeId();
+            int cargoTypeId = cargoBatch.cargoTypeId();
             StationDemand stationDemand = station.getDemandForCargo();
 
-            if (stationDemand.isCargoDemanded(cargoTypeId) && station.getId() != cargoBatch.getOriginalStationId()) {
+            if (stationDemand.isCargoDemanded(cargoTypeId) && station.getId() != cargoBatch.originalStationId()) {
                 int amount = trainAfter.getAmount(cargoBatch);
                 cargoDroppedOff.addCargo(cargoBatch, amount);
 
@@ -119,7 +141,7 @@ public class CargoUtils {
             }
         }
 
-        List<Integer> spaceAvailable1 = TrainUtils.spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
+        List<Integer> spaceAvailable1 = TrainUtils.spaceAvailable2(world, trainCargo, configuration.wagonTypes());
         for (int cargoType1 = 0; cargoType1 < spaceAvailable1.size(); cargoType1++) {
             int quantity1 = spaceAvailable1.get(cargoType1);
             if (quantity1 < 0) {
@@ -130,7 +152,6 @@ public class CargoUtils {
         }
 
         if (autoConsist) {
-            UnmodifiableSchedule schedule = train.getSchedule();
             int currentOrderIndex = schedule.getCurrentOrderIndex();
             if (currentOrderIndex >= 0) {
                 List<WagonLoad> wagonsAvailable = new ArrayList<>();
@@ -197,7 +218,7 @@ public class CargoUtils {
                 break;
             }
 
-            if (cb.getCargoTypeId() == cargoTypeToTransfer) {
+            if (cb.cargoTypeId() == cargoTypeToTransfer) {
                 int amount = from.getAmount(cb);
                 int amountOfThisBatchToTransfer;
 

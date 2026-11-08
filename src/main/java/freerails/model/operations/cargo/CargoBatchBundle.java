@@ -120,7 +120,7 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
     public int getAmountOfType(int cargoType) {
         int amount = 0;
         for (CargoBatch cargoBatch : cargoMap.keySet()) {
-            if (cargoBatch.getCargoTypeId() == cargoType) {
+            if (cargoBatch.cargoTypeId() == cargoType) {
                 amount += getAmount(cargoBatch);
             }
         }

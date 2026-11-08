@@ -27,7 +27,9 @@ import freerails.model.operations.station.StationUtils;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
 import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.operations.train.motion.CompositeMotion;
 import freerails.model.operations.train.motion.ConstantAccelerationMotion;
+import freerails.model.operations.train.motion.Motion;
 import freerails.model.operations.train.motion.TrainMotion;
 import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.model.operations.train.schedule.UnmodifiableSchedule;
@@ -105,6 +107,39 @@ public final class TrainUtils {
      */
     public static int calculateTrainLength(int engineId, List<Integer> wagons) {
         return new TrainConfiguration(engineId, wagons).getLength();
+    }
+
+    /**
+     * Calculates the motion profile for a train advancing one track segment.
+     *
+     * @param segmentLength distance of the next track segment in model units
+     * @param currentSpeed train speed at the start of the segment
+     * @param wagonCount number of wagons in the consist
+     * @param detailedAcceleration whether to model acceleration and cruise for the segment
+     * @return the motion profile for the next segment
+     */
+    public static Motion calculateMotionForNextSegment(double segmentLength, double currentSpeed, int wagonCount,
+            boolean detailedAcceleration) {
+        double topSpeed = ModelConstants.MODEL_UNITS_PER_TILE / 3.0d / (wagonCount + 1);
+
+        if (!detailedAcceleration) {
+            return ConstantAccelerationMotion.fromSpeedAccelerationDistance(topSpeed, 0, segmentLength);
+        }
+
+        double acceleration = ModelConstants.MODEL_UNITS_PER_TILE / 60.0d / (wagonCount + 1);
+        Motion newSpeeds;
+        if (currentSpeed < topSpeed) {
+            double t = (topSpeed - currentSpeed) / acceleration;
+            Motion accelerate = ConstantAccelerationMotion.fromSpeedAccelerationTime(currentSpeed, acceleration, t);
+            t = segmentLength / topSpeed + 1;
+            Motion cruise = ConstantAccelerationMotion.fromSpeedAccelerationTime(topSpeed, 0, t);
+            newSpeeds = new CompositeMotion(accelerate, cruise);
+        } else {
+            double t = segmentLength / topSpeed + 1;
+            newSpeeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(topSpeed, 0, t);
+        }
+
+        return newSpeeds;
     }
 
     /**
@@ -205,9 +240,22 @@ public final class TrainUtils {
      * @return {@code true} if no cargo type has remaining capacity
      */
     public static boolean isTrainFull(UnmodifiableWorld world, Player player, int trainId) {
-        // determine the space available on the train measured in cargo units.
         Train train = world.getTrain(player, trainId);
-        List<Integer> spaceAvailable = spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
+        return isTrainFull(world, train.getCargoBatchBundle(), train.getConsist());
+    }
+
+    /**
+     * Returns whether the supplied train state has no remaining cargo capacity.
+     *
+     * @param world world providing cargo definitions
+     * @param cargoBatchBundle cargo already carried
+     * @param consist wagon type identifiers in the prospective consist
+     * @return {@code true} if no cargo type has remaining capacity
+     */
+    public static boolean isTrainFull(UnmodifiableWorld world,
+                                      UnmodifiableCargoBatchBundle cargoBatchBundle,
+                                      List<Integer> consist) {
+        List<Integer> spaceAvailable = spaceAvailable2(world, cargoBatchBundle, consist);
         return spaceAvailable.stream().noneMatch(space -> space > 0);
     }
 
@@ -221,13 +269,28 @@ public final class TrainUtils {
      */
     public static boolean isWaitingForFullLoad(UnmodifiableWorld world, Player player, int trainId) {
         Train train = world.getTrain(player, trainId);
-        UnmodifiableSchedule schedule = train.getSchedule();
+        return isWaitingForFullLoad(world, train.getSchedule(), train.getCargoBatchBundle(), train.getConsist());
+    }
+
+    /**
+     * Returns whether the supplied prospective train state requests a full load
+     * and still has unused capacity.
+     *
+     * @param world world providing cargo definitions
+     * @param schedule train schedule
+     * @param cargoBatchBundle cargo already carried
+     * @param consist wagon type identifiers in the prospective consist
+     * @return {@code true} when the current order requests waiting for full loading
+     */
+    public static boolean isWaitingForFullLoad(UnmodifiableWorld world, UnmodifiableSchedule schedule,
+                                               UnmodifiableCargoBatchBundle cargoBatchBundle,
+                                               List<Integer> consist) {
         int orderToGoto = schedule.getCurrentOrderIndex();
         if (orderToGoto < 0) {
             return false;
         }
         TrainOrder order = schedule.getOrder(orderToGoto);
-        return !isTrainFull(world, player, trainId) && order.isWaitUntilFull();
+        return !isTrainFull(world, cargoBatchBundle, consist) && order.isWaitUntilFull();
     }
 
     /**

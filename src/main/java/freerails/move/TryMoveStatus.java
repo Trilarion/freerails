@@ -21,7 +21,6 @@ package freerails.move;
 import java.io.Serial;
 import java.io.Serializable;
 
-// TODO not much difference to MoveStatus, maybe merge the two
 /**
  * Records the success or failure of an attempt to execute a move.
  */

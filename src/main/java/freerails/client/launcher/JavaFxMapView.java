@@ -236,8 +236,8 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         double maxY = Math.max(0, mapHeight - viewport.getHeight());
         double x = tile.x() * mainRenderer.scale() - viewport.getWidth() / 2;
         double y = tile.y() * mainRenderer.scale() - viewport.getHeight() / 2;
-        scrollPane.setHvalue(maxX == 0 ? 0 : clamp(x / maxX));
-        scrollPane.setVvalue(maxY == 0 ? 0 : clamp(y / maxY));
+        scrollPane.setHvalue(maxX == 0 ? 0 : Math.clamp(x / maxX, 0, 1));
+        scrollPane.setVvalue(maxY == 0 ? 0 : Math.clamp(y / maxY, 0, 1));
         requestRender();
     }
 
@@ -457,8 +457,8 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         double maxY = Math.max(0, mapHeight - viewport.height());
         int x = (int) Math.round(viewport.horizontalValue() * maxX);
         int y = (int) Math.round(viewport.verticalValue() * maxY);
-        x = Math.max(0, Math.min(x, Math.max(0, mapWidth - width)));
-        y = Math.max(0, Math.min(y, Math.max(0, mapHeight - height)));
+        x = Math.clamp(x, 0, Math.max(0, mapWidth - width));
+        y = Math.clamp(y, 0, Math.max(0, mapHeight - height));
         Rectangle visible = new Rectangle(x, y, width, height);
 
         synchronized (updateLock) {
@@ -735,9 +735,9 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
             double deltaX = event.getScreenX() - panStartScreenX;
             double deltaY = event.getScreenY() - panStartScreenY;
             scrollPane.setHvalue(maxX == 0 ? 0
-                    : clamp(panStartHorizontalValue - deltaX / maxX));
+                    : Math.clamp(panStartHorizontalValue - deltaX / maxX, 0, 1));
             scrollPane.setVvalue(maxY == 0 ? 0
-                    : clamp(panStartVerticalValue - deltaY / maxY));
+                    : Math.clamp(panStartVerticalValue - deltaY / maxY, 0, 1));
             event.consume();
             return;
         }
@@ -822,16 +822,6 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     private IntPoint2D cursorPosition() {
         IntPoint2D position = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
         return position == null ? IntPoint2D.ZERO : position;
-    }
-
-    /**
-     * Constrains normalized scroll values to the JavaFX ScrollPane range.
-     *
-     * @param value value to constrain
-     * @return normalized value between zero and one
-     */
-    private static double clamp(double value) {
-        return Math.max(0, Math.min(1, value));
     }
 
     /**

@@ -21,18 +21,18 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.move.CompostMove;
+import freerails.move.CompositeMove;
 import freerails.move.Move;
 
 import java.awt.*;
 import java.io.Serial;
 import java.util.List;
 
-// TODO are these really orthogonal moves?, I think not, make it a single piece
 /**
- * This move removes a station from the station list and from the map.
+ * This move removes a station from the station list and from the map,
+ * together with any train schedule updates affected by that removal.
  */
-public class RemoveStationCompositeMove extends CompostMove implements TrackMove {
+public class RemoveStationCompositeMove extends CompositeMove implements TrackMove {
 
     @Serial
     private static final long serialVersionUID = 3760847865429702969L;

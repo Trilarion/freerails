@@ -21,21 +21,22 @@
  */
 package freerails.move;
 
-import freerails.model.simulation.Time;
-import freerails.model.operations.station.StationUtils;
-import freerails.model.operations.train.motion.TrainMotion;
-import freerails.model.operations.train.schedule.TrainOrder;
-import freerails.model.world.World;
-import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
-
-import freerails.util.IntPoint2D;
-import freerails.util.Utils;
-import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.Player;
+import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.operations.station.Station;
-import freerails.model.operations.train.*;
+import freerails.model.operations.station.StationUtils;
+import freerails.model.operations.train.PathOnTiles;
+import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainConfiguration;
+import freerails.model.operations.train.TrainState;
+import freerails.model.operations.train.TrainUtils;
+import freerails.model.operations.train.motion.TrainMotion;
 import freerails.model.operations.train.schedule.ScheduleState;
-import freerails.model.operations.train.schedule.UnmodifiableSchedule;
+import freerails.model.operations.train.schedule.TrainOrder;
+import freerails.model.player.Player;
+import freerails.model.simulation.Time;
+import freerails.model.world.UnmodifiableWorld;
+import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
+import freerails.util.IntPoint2D;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
@@ -44,9 +45,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO Remove use of World from here (remnant from WorldDiffs from here), use readonly world instead if possible
 /**
- * A lot of handling (generating moves) for trains.
+ * Plans train stop changes against a read-only world without applying moves.
  */
 public class TrainStopsHandler implements Serializable {
 
@@ -55,9 +55,12 @@ public class TrainStopsHandler implements Serializable {
     private static final long serialVersionUID = 3257567287094882872L;
     private final Player player;
     private final int trainId;
-    private World world;
+    private final UnmodifiableWorld world;
     private final List<Move> moves = new ArrayList<>();
-    private final UnmodifiableWorld unmodifiableWorld;
+    private TrainConfiguration resultingConfiguration;
+    private ScheduleState resultingSchedule;
+    private CargoBatchBundle resultingCargo;
+    private boolean waitingForFullLoad;
 
     /**
      * @param id the identifier of the train to inspect
@@ -67,8 +70,11 @@ public class TrainStopsHandler implements Serializable {
     public TrainStopsHandler(int id, Player player, UnmodifiableWorld unmodifiableWorld) {
         trainId = id;
         this.player = player;
-        world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
-        this.unmodifiableWorld = unmodifiableWorld;
+        world = unmodifiableWorld;
+        Train train = world.getTrain(player, trainId);
+        resultingConfiguration = train.getConfiguration();
+        resultingSchedule = new ScheduleState(train.getSchedule());
+        resultingCargo = new CargoBatchBundle(train.getCargoBatchBundle());
     }
 
     /**
@@ -78,16 +84,8 @@ public class TrainStopsHandler implements Serializable {
         IntPoint2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
 
         if (location.equals(targetPoint)) {
-            /*
-             * Issues a ChangeTrainScheduleMove to set the train to move to the next
-             * station.
-             */
-
-            // scheduled stop
-            Train train = world.getTrain(player, trainId);
-            UnmodifiableSchedule schedule = train.getSchedule();
-
-            TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
+            TrainOrder order = resultingSchedule.getOrder(resultingSchedule.getCurrentOrderIndex());
+            int stationId = resultingSchedule.getNextStationId();
 
             // Loading and unloading cargo takes time, so we make the train wait for a few ticks.
             // makeTrainWait not implemented
@@ -96,13 +94,11 @@ public class TrainStopsHandler implements Serializable {
             boolean autoConsist = order.isAutoConsist();
 
             if (order.hasSpecifiedConsist()) {
-                Move move = new UpdateTrainMove(player, trainId, null, order.getConsist(), null);
-                moves.add(move);
-                move.apply(world);
+                resultingConfiguration = resultingConfiguration.withWagonTypes(order.getConsist());
+                addMove(new UpdateTrainMove(player, trainId, null, order.getConsist(), null));
             }
             updateSchedule();
-            int stationToGoto = schedule.getNextStationId();
-            loadAndUnloadCargo(stationToGoto, true, autoConsist);
+            loadAndUnloadCargo(stationId, true, autoConsist);
         } else {
             // not a scheduled stop but still a city
             Integer stationId = StationUtils.getStationId(world, player, location);
@@ -120,17 +116,25 @@ public class TrainStopsHandler implements Serializable {
     public List<Move> getMoves() {
         List<Move> currentMoves = new ArrayList<>(moves);
         moves.clear();
-        // TODO this effectively undoes all the moves on the local world copy
-        world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
         return currentMoves;
     }
 
-    // TODO this has to remain here until the code is simplified, because it works on the updated train
     /**
-     * @return the train length in wagon units
+     * Returns the train configuration resulting from the planned stop.
+     *
+     * @return the resulting train configuration
      */
-    public int getTrainLength() {
-        return world.getTrain(player, trainId).getLength();
+    public TrainConfiguration getResultingTrainConfiguration() {
+        return resultingConfiguration;
+    }
+
+    /**
+     * Returns whether the planned train state remains waiting for a full load.
+     *
+     * @return {@code true} if the train remains waiting for a full load
+     */
+    public boolean isWaitingForFullLoad() {
+        return waitingForFullLoad;
     }
 
     /**
@@ -141,16 +145,15 @@ public class TrainStopsHandler implements Serializable {
      * @param autoConsist the auto consist
      */
     private void loadAndUnloadCargo(int stationId, boolean waiting, boolean autoConsist) {
-
-        // train is at a station so do the cargo processing
-        DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId, stationId, world, player, waiting, autoConsist);
+        DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(
+                trainId, stationId, world, player, waiting, autoConsist, resultingSchedule,
+                resultingCargo, resultingConfiguration);
         Move move = transfer.generate();
         if (null != move) {
-            moves.add(move);
-            Status status = move.applicable(world);
-            if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
-            move.apply(world);
+            addMove(move);
         }
+        resultingCargo = new CargoBatchBundle(transfer.getResultingTrainCargo());
+        resultingConfiguration = resultingConfiguration.withWagonTypes(transfer.getResultingConsist());
     }
 
     /**
@@ -159,12 +162,11 @@ public class TrainStopsHandler implements Serializable {
     public boolean refreshWaitingForFullLoad() {
 
         Train train = world.getTrain(player, trainId);
-        UnmodifiableSchedule schedule = train.getSchedule();
         Integer stationId = StationUtils.getStationId(world, player, train.getLocation(Time.INFINITY));
         if (stationId == null) throw new IllegalStateException();
 
         // The train's orders may have changed...
-        TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
+        TrainOrder order = resultingSchedule.getOrder(resultingSchedule.getCurrentOrderIndex());
 
         // Should we go to another station?
         if (stationId != order.getStationId()) {
@@ -172,67 +174,73 @@ public class TrainStopsHandler implements Serializable {
         }
 
         // Should we change the consist?
-        List<Integer> consist = train.getConsist();
+        int oldLength = resultingConfiguration.getLength();
+        List<Integer> consist = resultingConfiguration.wagonTypes();
         if (order.hasSpecifiedConsist()
                 && !consist.equals(order.getConsist())) {
-            // ..if so, we should change the consist.
-            int oldLength = train.getLength();
-            Move move = new UpdateTrainMove(player, trainId, null, order.getConsist(), null);
-            move.apply(world);
-            moves.add(move);
-            int newLength = train.getLength();
+            resultingConfiguration = resultingConfiguration.withWagonTypes(order.getConsist());
+            addMove(new UpdateTrainMove(player, trainId, null, order.getConsist(), null));
+            int newLength = resultingConfiguration.getLength();
             // has the trains length increased?
             if (newLength > oldLength) {
                 TrainMotion trainMotion = train.findCurrentMotion(Double.MAX_VALUE);
                 PathOnTiles path = trainMotion.getPath();
                 path = TrainUtils.lengthenPath(world, path, oldLength);
-                TrainState status = TrainUtils.isWaitingForFullLoad(world, player, trainId) ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
+                waitingForFullLoad = TrainUtils.isWaitingForFullLoad(
+                        world, resultingSchedule, resultingCargo, resultingConfiguration.wagonTypes());
+                TrainState status = waitingForFullLoad ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
                 TrainMotion nextMotion = new TrainMotion(path, newLength, 0, status);
 
-                // Create a new Move object.
-                Move trainMove = new AddActivityMove(player, trainId, nextMotion);
-                moves.add(trainMove);
-                Status moveStatus = trainMove.applicable(world);
-                if (!moveStatus.isSuccess()) throw new IllegalStateException(moveStatus.getMessage());
-                trainMove.apply(world);
+                addMove(new AddActivityMove(player, trainId, nextMotion));
             }
         }
 
         // Add any cargo that is waiting.
-        loadAndUnloadCargo(schedule.getNextStationId(), order.isWaitUntilFull(), order.isAutoConsist());
+        loadAndUnloadCargo(resultingSchedule.getNextStationId(), order.isWaitUntilFull(), order.isAutoConsist());
 
         // Should we stop waiting?
-        if (!order.isWaitUntilFull() || TrainUtils.isTrainFull(world, player, trainId)) {
+        if (!order.isWaitUntilFull()
+                || TrainUtils.isTrainFull(world, resultingCargo, resultingConfiguration.wagonTypes())) {
             updateSchedule();
+            waitingForFullLoad = false;
             return false;
         }
 
+        waitingForFullLoad = true;
         return true;
     }
 
     /**
-     * Updates the update schedule using the supplied values.
+     * Advances the planned schedule unless its current order is still waiting for cargo.
      */
     private void updateSchedule() {
-        Train train =  world.getTrain(player, trainId);
-        ScheduleState schedule = new ScheduleState(train.getSchedule());
-
-        TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
-        boolean waitingForFullLoad = order.isWaitUntilFull() && !TrainUtils.isTrainFull(world, player, trainId);
+        waitingForFullLoad = TrainUtils.isWaitingForFullLoad(
+                world, resultingSchedule, resultingCargo, resultingConfiguration.wagonTypes());
 
         if (!waitingForFullLoad) {
-            schedule = schedule.gotoNextStation();
-            Move move = new UpdateTrainMove(player, trainId, null, null, schedule);
-            move.apply(world);
-            moves.add(move);
+            resultingSchedule = resultingSchedule.gotoNextStation();
+            addMove(new UpdateTrainMove(player, trainId, null, null, resultingSchedule));
 
-            int stationNumber = schedule.getNextStationId();
+            int stationNumber = resultingSchedule.getNextStationId();
             Station station = world.getStation(player, stationNumber);
 
             if (null == station) {
                 logger.warn("null == station, train " + trainId + " doesn't know where to go next!");
             }
         }
+    }
+
+    /**
+     * Adds a planned move after checking it against the original read-only world.
+     *
+     * @param move move to add
+     */
+    private void addMove(Move move) {
+        Status status = move.applicable(world);
+        if (!status.isSuccess()) {
+            throw new IllegalStateException(status.getMessage());
+        }
+        moves.add(move);
     }
 
 }

@@ -160,7 +160,7 @@ public class CargoBatchBundleTest extends TestCase {
         Time creationTime = new Time(42);
         CargoBatch batch = new CargoBatch(1, IntPoint2D.ZERO, creationTime, 3);
 
-        assertEquals(creationTime, batch.getCreationTime());
+        assertEquals(creationTime, batch.creationTime());
         assertFalse(batch.equals(new CargoBatch(1, IntPoint2D.ZERO, new Time(43), 3)));
         assertTrue(batch.compareTo(new CargoBatch(1, IntPoint2D.ZERO, new Time(43), 3)) < 0);
     }

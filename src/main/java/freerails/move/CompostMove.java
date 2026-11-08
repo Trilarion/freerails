@@ -26,15 +26,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-// TODO some orthogonality checks in the constructor, maybe with instanceof in something like MoveUtils.isOrthogonal(Move a, Move b) for all kind of combinations
 /**
  * Combines a number of orthogonal moves. Orthogonal moves are moves that can be applied in any order (are not
- * dependent on each other). The validity of the composite move is determined by combining the validations of
- * each move.
+ * dependent on each other). Each component move must be applicable to the same original world, and applying
+ * the component moves in any order must produce equivalent game state. The constructor does not check this
+ * semantic requirement; callers are responsible for combining only orthogonal moves.
  * <p>
  * Must contain at least two moves.
  * <p>
- * Please note that this class should not be used for dependent moves like building a long list of tracks.
+ * Do not use this class for dependent moves, such as changes to connected track pieces. Use an ordered
+ * {@link CompositeMove} for dependent moves.
  */
 public class CompostMove implements Move {
 

@@ -178,6 +178,26 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     }
 
     /**
+     * Verifies stop planning leaves the read-only world unchanged and drains moves.
+     */
+    public void testStopHandlerPlansWithoutMutatingWorld() {
+        Train train = world.getTrain(player, 0);
+        ScheduleState originalSchedule = new ScheduleState(train.getSchedule());
+        TrainConfiguration originalConfiguration = train.getConfiguration();
+
+        TrainStopsHandler handler = new TrainStopsHandler(0, player, world);
+        handler.arrivesAtPoint(station2Location);
+
+        assertEquals(originalSchedule, train.getSchedule());
+        assertEquals(originalConfiguration, train.getConfiguration());
+        assertFalse(handler.getMoves().isEmpty());
+        assertEquals(originalSchedule, train.getSchedule());
+        assertEquals(originalConfiguration, train.getConfiguration());
+        assertTrue(handler.getMoves().isEmpty());
+        assertEquals(originalConfiguration.getLength(), handler.getResultingTrainConfiguration().getLength());
+    }
+
+    /**
      * Performs move train.
      * @return the result of move train.
      */

@@ -1,4 +1,5 @@
 {
   "canConnectToOtherPlayersTracks": false,
-  "mustStayConnectedToExistingTrack": true
+  "mustStayConnectedToExistingTrack": true,
+  "canRemoveOtherPlayersTracks": false
 }

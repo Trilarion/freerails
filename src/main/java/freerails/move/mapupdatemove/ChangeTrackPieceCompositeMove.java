@@ -103,22 +103,24 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         // must connect to existing track
         Rules rules = world.getRules();
 
-        if (rules.mustStayConnectedToExistingTrack()) {
-            if (TransactionUtils.hasAnyTrackBeenBuilt(world, player)) {
-                try {
-                    ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);
-                    ChangeTrackPieceMove b = (ChangeTrackPieceMove) super.getMove(1);
+        for (Move move : getMoves()) {
+            if (move instanceof ChangeTrackPieceMove trackMove
+                    && !rules.canRemoveTrackPiece(
+                    player.getId(), trackMove.trackPieceBefore(), trackMove.trackPieceAfter())) {
+                return Status.fail("Not allowed to remove another player's track.");
+            }
+        }
 
-                    if (a.trackPieceBefore() == null && b.trackPieceBefore() == null) {
-                        return Status.fail("Must connect to existing track");
-                    }
-                } catch (ClassCastException e) {
-                    // It was not the type of move we expected.
-                    // We end up here when we are removing a station.
-                    // TODO and what if it must indeed connect to other tracks???
-                    return Status.OK;
+        if (rules.mustStayConnectedToExistingTrack()) {
+            if (TransactionUtils.hasAnyTrackBeenBuilt(world, player)
+                    && getMove(0) instanceof ChangeTrackPieceMove a
+                    && getMove(1) instanceof ChangeTrackPieceMove b) {
+                if (a.trackPieceBefore() == null && b.trackPieceBefore() == null) {
+                    return Status.fail("Must connect to existing track");
                 }
             }
+            // Composites other than a pair of track-piece changes, such as
+            // station removal, do not add a disconnected track segment.
         }
         return Status.OK;
     }

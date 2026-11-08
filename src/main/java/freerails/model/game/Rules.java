@@ -18,26 +18,34 @@
 
 package freerails.model.game;
 
+import freerails.model.track.TrackPiece;
+import freerails.model.track.TrackUtils;
+
 import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Stores rules governing what players are allowed to do. Track connections
- * have two independent rules: whether a player may connect to another player's
- * track, and whether the player's new track must stay connected to their own
- * existing track.
+ * Stores rules governing what players are allowed to do, including track
+ * connection, network continuity, and track-removal permissions.
 
- * @param canConnectToOtherPlayersTracks whether players may connect track to another player?s track
- * @param mustStayConnectedToExistingTrack whether new track must remain connected to existing track
+ * @param canConnectToOtherPlayersTracks whether players may connect track to
+ *                                        another player's track
+ * @param mustStayConnectedToExistingTrack whether new track must remain
+ *                                         connected to existing track
+ * @param canRemoveOtherPlayersTracks whether players may remove another
+ *                                     player's track
  */
-public record Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConnectedToExistingTrack) implements Serializable {
+public record Rules(
+        boolean canConnectToOtherPlayersTracks,
+        boolean mustStayConnectedToExistingTrack,
+        boolean canRemoveOtherPlayersTracks) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 3258125847557978416L;
 
     /**
-     * Creates a rule set for track connections and network continuity. The
-     * two track rules are independent.
+     * Creates a rule set for track connections, network continuity, and
+     * track-removal permission.
      *
      * @param canConnectToOtherPlayersTracks   whether track may connect to
      *                                         another player's track
@@ -46,6 +54,38 @@ public record Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConn
      *                                         own existing track
      */
     public Rules {
+    }
+
+    /**
+     * Creates rules with track removal permission matching track connection
+     * permission.
+     *
+     * @param canConnectToOtherPlayersTracks whether track may connect to
+     *                                       another player's track
+     * @param mustStayConnectedToExistingTrack whether newly built track must
+     *                                         remain connected to the player's
+     *                                         own existing track
+     */
+    public Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConnectedToExistingTrack) {
+        this(canConnectToOtherPlayersTracks, mustStayConnectedToExistingTrack, canConnectToOtherPlayersTracks);
+    }
+
+    /**
+     * Determines whether a player may remove connections from a track piece.
+     *
+     * @param playerId player attempting the change
+     * @param before track piece before the change, or {@code null}
+     * @param after track piece after the change, or {@code null}
+     * @return {@code true} if the change removes no connections, the piece is
+     *         owned by the player, or the rules permit removing another
+     *         player's track
+     */
+    public boolean canRemoveTrackPiece(int playerId, TrackPiece before, TrackPiece after) {
+        if (before == null || before.playerId() == playerId) {
+            return true;
+        }
+
+        return !TrackUtils.removesTrackConnections(before, after) || canRemoveOtherPlayersTracks;
     }
 
 }

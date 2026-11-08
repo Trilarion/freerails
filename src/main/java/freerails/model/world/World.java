@@ -589,6 +589,30 @@ public class World implements UnmodifiableWorld {
         return index;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public int allocateTrainId(Player player) {
+        int playerId = getPlayerId(player);
+        Map<Integer, Integer> trainIndexes = trainIndexByIdByPlayer.get(playerId);
+        int candidate = 0;
+        while (trainIndexes.containsKey(candidate)) {
+            candidate++;
+        }
+        return candidate;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int allocateStationId(Player player) {
+        int playerId = getPlayerId(player);
+        Map<Integer, Station> stationsById = stationByIdByPlayer.get(playerId);
+        int candidate = 0;
+        while (stationsById.containsKey(candidate)) {
+            candidate++;
+        }
+        return candidate;
+    }
+
     /**
      * Adds a train to a player's list.
      *

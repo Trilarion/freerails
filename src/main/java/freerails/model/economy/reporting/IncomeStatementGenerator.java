@@ -95,7 +95,7 @@ public class IncomeStatementGenerator {
         for (Transaction transaction: world.getTransactions(player)) {
             int transactionYear = world.getClock().getYear(transaction.getTime());
             if (transaction instanceof CargoDeliveryTransaction cargoDeliveryTransaction) {
-                int cargoTypeId = cargoDeliveryTransaction.getCargoBatch().getCargoTypeId();
+                int cargoTypeId = cargoDeliveryTransaction.getCargoBatch().cargoTypeId();
                 Cargo cargo = world.getCargo(cargoTypeId);
                 switch (cargo.getCategory()) {
                     case BULK_FREIGHT:

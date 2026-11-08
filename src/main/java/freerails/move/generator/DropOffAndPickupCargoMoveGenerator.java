@@ -24,9 +24,11 @@ import freerails.model.economy.transaction.CargoDeliveryTransaction;
 import freerails.model.operations.cargo.CargoBatch;
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.operations.cargo.CargoUtils;
+import freerails.model.operations.cargo.ImmutableCargoBatchBundle;
 import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.operations.station.Station;
-import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainConfiguration;
+import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.move.AddTransactionMove;
@@ -67,23 +69,43 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param autoConsist whether the train consist may be updated automatically
      */
     public DropOffAndPickupCargoMoveGenerator(int trainId, int stationId, UnmodifiableWorld world, Player player, boolean waiting, boolean autoConsist) {
+        this(trainId, stationId, world, player, waiting, autoConsist,
+                world.getTrain(player, trainId).getSchedule(),
+                world.getTrain(player, trainId).getCargoBatchBundle(),
+                world.getTrain(player, trainId).getConfiguration());
+    }
+
+    /**
+     * Creates a cargo transfer generator using a prospective train state.
+     *
+     * @param trainId ID of the train
+     * @param stationId ID of the station
+     * @param world the read-only world used to inspect definitions and station state
+     * @param player the owner of the train and station
+     * @param waiting whether the train waits until its requested load is full
+     * @param autoConsist whether the train consist may be updated automatically
+     * @param schedule schedule to use when selecting automatic consist
+     * @param trainCargo cargo currently carried by the train
+     * @param configuration prospective engine and consist
+     */
+    public DropOffAndPickupCargoMoveGenerator(int trainId, int stationId, UnmodifiableWorld world, Player player,
+                                             boolean waiting, boolean autoConsist, UnmodifiableSchedule schedule,
+                                             UnmodifiableCargoBatchBundle trainCargo,
+                                             TrainConfiguration configuration) {
         this.player = player;
         this.trainId = trainId;
         this.stationId = stationId;
         this.autoConsist = autoConsist;
 
         waitingForFullLoad = waiting;
-        Train train = world.getTrain(player, trainId);
-        consist = train.getConsist();
-        UnmodifiableCargoBatchBundle cargoBatchBundle = train.getCargoBatchBundle();
-        trainBefore = new CargoBatchBundle(cargoBatchBundle);
-        trainAfter = new CargoBatchBundle(cargoBatchBundle);
+        trainBefore = new CargoBatchBundle(trainCargo);
+        trainAfter = new CargoBatchBundle(trainCargo);
 
         Station station = world.getStation(player, stationId);
         stationAfter = new CargoBatchBundle(station.getCargoBatchBundle());
 
-        CargoUtils.CargoTransferPlan cargoTransferPlan = CargoUtils.prepareCargoTransfer(world, player, train, station,
-                autoConsist);
+        CargoUtils.CargoTransferPlan cargoTransferPlan = CargoUtils.prepareCargoTransfer(world, player, schedule,
+                trainCargo, configuration, station, autoConsist);
         stationAfter = cargoTransferPlan.stationAfter();
         trainAfter = cargoTransferPlan.trainAfter();
         consist = cargoTransferPlan.consist();
@@ -92,7 +114,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         moves = new ArrayList<>();
 
         for (CargoBatch cargoBatch : cargoTransferPlan.cargoDroppedOff().getCargoBatches()) {
-            double distance = IntPoint2D.subtract(cargoBatch.getSourceP(), station.getLocation()).norm();
+            double distance = IntPoint2D.subtract(cargoBatch.sourceP(), station.getLocation()).norm();
             int amount = cargoTransferPlan.cargoDroppedOff().getAmount(cargoBatch);
 
             Money money = new Money((long) (amount * Math.log(distance) * ModelConstants.CARGO_DELIVERY_EARNINGS_FACTOR));
@@ -125,5 +147,22 @@ public class DropOffAndPickupCargoMoveGenerator {
         return new CompostMove(moves);
     }
 
+    /**
+     * Returns the consist resulting from the planned transfer.
+     *
+     * @return an immutable snapshot of the resulting wagon type identifiers
+     */
+    public List<Integer> getResultingConsist() {
+        return List.copyOf(consist);
+    }
+
+    /**
+     * Returns the cargo resulting from the planned transfer.
+     *
+     * @return an immutable copy of the resulting train cargo
+     */
+    public UnmodifiableCargoBatchBundle getResultingTrainCargo() {
+        return new ImmutableCargoBatchBundle(trainAfter);
+    }
 
 }

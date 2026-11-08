@@ -266,6 +266,89 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     /**
+     * Tests that other-player track removal follows its independent game rule.
+     * @throws Exception if a generated removal move cannot be constructed
+     */
+    public void testOtherPlayerTrackRemovalRule() throws Exception {
+        TrackType trackType;
+        IntPoint2D first = new IntPoint2D(0, 5);
+        IntPoint2D second = new IntPoint2D(1, 5);
+
+        World restrictedWorld = createWorld(new Rules(false, false, false));
+        trackType = restrictedWorld.getTrackType(0);
+        assertBuild(restrictedWorld, first, TileTransition.EAST, trackType, true);
+        setTrackOwner(restrictedWorld, first, 999);
+        setTrackOwner(restrictedWorld, second, 999);
+
+        ChangeTrackPieceCompositeMove removal = TrackMoveProducer.generateRemoveTrackMove(
+                first, TileTransition.EAST, restrictedWorld, WorldGenerator.TEST_PLAYER);
+        assertFalse(removal.applicable(restrictedWorld).isSuccess());
+
+        setTrackOwner(restrictedWorld, first, WorldGenerator.TEST_PLAYER.getId());
+        setTrackOwner(restrictedWorld, second, WorldGenerator.TEST_PLAYER.getId());
+        removal = TrackMoveProducer.generateRemoveTrackMove(
+                first, TileTransition.EAST, restrictedWorld, WorldGenerator.TEST_PLAYER);
+        assertTrue(removal.applicable(restrictedWorld).isSuccess());
+
+        World permittedWorld = createWorld(new Rules(false, false, true));
+        trackType = permittedWorld.getTrackType(0);
+        assertBuild(permittedWorld, first, TileTransition.EAST, trackType, true);
+        setTrackOwner(permittedWorld, first, 999);
+        setTrackOwner(permittedWorld, second, 999);
+
+        removal = TrackMoveProducer.generateRemoveTrackMove(
+                first, TileTransition.EAST, permittedWorld, WorldGenerator.TEST_PLAYER);
+        assertTrue(removal.applicable(permittedWorld).isSuccess());
+    }
+
+    /**
+     * Tests that partial removal of another player's track is restricted.
+     * @throws Exception if a generated removal move cannot be constructed
+     */
+    public void testOtherPlayerPartialTrackRemovalRule() throws Exception {
+        World testWorld = createWorld(new Rules(true, false, false));
+        TrackType trackType = testWorld.getTrackType(0);
+        IntPoint2D first = new IntPoint2D(0, 5);
+        IntPoint2D junction = new IntPoint2D(1, 5);
+        IntPoint2D third = new IntPoint2D(1, 6);
+
+        assertBuild(testWorld, first, TileTransition.EAST, trackType, true);
+        assertBuild(testWorld, junction, TileTransition.SOUTH, trackType, true);
+        setTrackOwner(testWorld, first, 999);
+        setTrackOwner(testWorld, junction, 999);
+        setTrackOwner(testWorld, third, 999);
+
+        ChangeTrackPieceCompositeMove removal = TrackMoveProducer.generateRemoveTrackMove(
+                junction, TileTransition.WEST, testWorld, WorldGenerator.TEST_PLAYER);
+        assertFalse(removal.applicable(testWorld).isSuccess());
+
+        World permittedWorld = createWorld(new Rules(false, false, true));
+        trackType = permittedWorld.getTrackType(0);
+        assertBuild(permittedWorld, first, TileTransition.EAST, trackType, true);
+        assertBuild(permittedWorld, junction, TileTransition.SOUTH, trackType, true);
+        setTrackOwner(permittedWorld, first, 999);
+        setTrackOwner(permittedWorld, junction, 999);
+        setTrackOwner(permittedWorld, third, 999);
+
+        removal = TrackMoveProducer.generateRemoveTrackMove(
+                junction, TileTransition.WEST, permittedWorld, WorldGenerator.TEST_PLAYER);
+        assertTrue(removal.applicable(permittedWorld).isSuccess());
+    }
+
+    /**
+     * Replaces the owner of the track piece at a tile.
+     * @param testWorld world containing the tile
+     * @param point tile location
+     * @param ownerId new track owner
+     */
+    private static void setTrackOwner(World testWorld, IntPoint2D point, int ownerId) {
+        TerrainTile tile = testWorld.getTile(point);
+        TrackPiece trackPiece = tile.trackPiece();
+        testWorld.setTile(point, new TerrainTile(tile.terrainTypeId(),
+                new TrackPiece(trackPiece.trackConfiguration(), trackPiece.trackType(), ownerId)));
+    }
+
+    /**
      * Creates world.
      * @param rules the rules used by this test.
      * @return the result of create world.

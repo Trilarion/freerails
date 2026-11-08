@@ -115,8 +115,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     @Override
     public Move generate(UnmodifiableWorld world) {
         // Add train to train list.
-        // TODO need a way to get a new id for trains, this is not the best way
-        int id = world.getTrains(player).size();
+        int id = world.allocateTrainId(player);
         Train train = new Train(id, new TrainConfiguration(engineId, wagons));
         train.getRuntimeState().setSchedule(schedule);
         // add train position.
@@ -125,7 +124,6 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         train.getRuntimeState().addActivity(motion);
         AddTrainMove addTrain = new AddTrainMove(player, train);
 
-        // TODO add the transaction to the TrainMove and check there, do not use a composite move
         // Pay for the train.
         // Determine the price of the train.
         Money price = world.getEngine(engineId).getPrice();

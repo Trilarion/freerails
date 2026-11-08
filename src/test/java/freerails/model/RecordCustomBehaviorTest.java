@@ -37,10 +37,12 @@ public class RecordCustomBehaviorTest extends TestCase {
      * Tests record generated equality uses all components behavior.
      */
     public void testRecordGeneratedEqualityUsesAllComponents() {
-        Rules rules = new Rules(true, false);
-        assertEquals(rules, new Rules(true, false));
-        assertEquals(rules.hashCode(), new Rules(true, false).hashCode());
-        assertFalse(rules.equals(new Rules(false, false)));
+        Rules rules = new Rules(true, false, true);
+        assertEquals(rules, new Rules(true, false, true));
+        assertEquals(rules.hashCode(), new Rules(true, false, true).hashCode());
+        assertFalse(rules.equals(new Rules(true, false, false)));
+        assertTrue(new Rules(true, false).canRemoveOtherPlayersTracks());
+        assertFalse(new Rules(false, false).canRemoveOtherPlayersTracks());
 
         CargoProductionOrConsumption production = new CargoProductionOrConsumption(2, 1.5);
         assertEquals(production, new CargoProductionOrConsumption(2, 1.5));

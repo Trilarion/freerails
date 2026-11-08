@@ -66,7 +66,7 @@ public class LoadGameCommandToServer implements CommandToServer {
      * Asks the server to load the requested saved game.
      *
      * @param server server that performs the load
-     * @return successful status, or a failed status containing the error message
+     * @return successful status, or a failed status
      */
     @Override
     public CommandStatus execute(ServerControlInterface server) {
@@ -75,7 +75,7 @@ public class LoadGameCommandToServer implements CommandToServer {
 
             return new CommandStatus(true);
         } catch (Exception e) {
-            return new CommandStatus(false, e.getMessage());
+            return new CommandStatus(false);
         }
     }
 }

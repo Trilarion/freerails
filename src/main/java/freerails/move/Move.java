@@ -40,9 +40,17 @@ import java.io.Serializable;
  * <p>
  * (6) The applicable method should test whether the move is
  * valid but leave the game world unchanged.
+ * <p>
+ * Moves may be combined with other moves that affect independent state unless
+ * their documentation says otherwise. Moves are orthogonal when they are
+ * applicable to the same original world and applying them in either order
+ * produces equivalent game state. A {@link CompostMove} requires all its
+ * component moves to be pairwise orthogonal; callers are responsible for
+ * honoring this semantic contract.
  *
  * @see Status
  * @see World
+ * @see CompostMove
  */
 public interface Move extends Serializable {
 

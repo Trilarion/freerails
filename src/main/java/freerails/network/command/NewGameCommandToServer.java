@@ -44,7 +44,7 @@ public class NewGameCommandToServer implements CommandToServer {
      * Asks the server to create a game using the requested map.
      *
      * @param server server that creates the game
-     * @return successful status, or a failed status containing the error message
+     * @return successful status, or a failed status
      */
     @Override
     public CommandStatus execute(ServerControlInterface server) {
@@ -53,7 +53,7 @@ public class NewGameCommandToServer implements CommandToServer {
 
             return new CommandStatus(true);
         } catch (Exception e) {
-            return new CommandStatus(false, e.getMessage());
+            return new CommandStatus(false);
         }
     }
 

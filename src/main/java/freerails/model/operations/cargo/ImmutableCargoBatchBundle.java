@@ -98,7 +98,7 @@ public final class ImmutableCargoBatchBundle implements UnmodifiableCargoBatchBu
     public int getAmountOfType(int cargoType) {
         int amount = 0;
         for (var entry : cargoMap.entrySet()) {
-            if (entry.getKey().getCargoTypeId() == cargoType) {
+            if (entry.getKey().cargoTypeId() == cargoType) {
                 amount += entry.getValue();
             }
         }

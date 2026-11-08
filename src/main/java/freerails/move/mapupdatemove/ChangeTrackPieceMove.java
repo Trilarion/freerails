@@ -83,7 +83,6 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
-        // TODO put part of it in model
         // Check that location is on the map.
         if (!world.boundsContain(location)) {
             return Status.fail("Tried to build track outside the map.");
@@ -92,12 +91,13 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
         // Check that we would not change another players track if this is not allowed.
         Rules rules = world.getRules();
         if (!rules.canConnectToOtherPlayersTracks()) {
-            // TODO what about removing track of someone else
             if (trackPieceBefore != null && trackPieceAfter != null) {
                 int oldOwner = trackPieceBefore.playerId();
                 int newOwner = trackPieceAfter.playerId();
 
-                if (oldOwner != newOwner) {
+                boolean removalOnly = TrackUtils.removesTrackConnections(trackPieceBefore, trackPieceAfter)
+                        && !TrackUtils.addsTrackConnections(trackPieceBefore, trackPieceAfter);
+                if (oldOwner != newOwner && !removalOnly) {
                     return Status.fail("Not allowed to connect to other RR");
                 }
             }
@@ -115,9 +115,7 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
         }
 
         if (trackPieceAfter != null && trackPieceAfter.trackType().isStation()
-                && (trackPieceBefore == null
-                || trackPieceBefore.trackConfiguration().get8bitTemplate() == 0
-                || trackPieceAfter.trackConfiguration().get8bitTemplate() == 0)) {
+                && !TrackUtils.canUpgradeToStation(trackPieceBefore, trackPieceAfter)) {
             return Status.fail("A station must be placed on existing connected track.");
         }
 
@@ -129,9 +127,10 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
                 return Status.fail("Expected '" + expectedTrackRule.getName() + "' but found '" + actualTrackRule.getName() + "' at " + location.x() + " ," + location.y());
             }
 
-            // Check that oldTrackPiece is not the same as newTrackPiece
-            // TODO equals instead of ==
-            if (trackPieceAfter != null && trackPieceBefore.trackConfiguration() == trackPieceAfter.trackConfiguration() && trackPieceBefore.trackType().equals(trackPieceAfter.trackType())) {
+            // Check that oldTrackPiece is not the same as newTrackPiece.
+            if (trackPieceAfter != null
+                    && Objects.equals(trackPieceBefore.trackConfiguration(), trackPieceAfter.trackConfiguration())
+                    && trackPieceBefore.trackType().equals(trackPieceAfter.trackType())) {
                 return Status.fail("Already track here!");
             }
 
@@ -140,10 +139,6 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
                 return Status.fail("Illegal track configuration.");
             }
 
-            // Check for diagonal conflicts.
-            if (trackPieceAfter != null && !(TrackUtils.noDiagonalTrackConflicts(location, trackPieceBefore.getTrackGraphicID(), world) && TrackUtils.noDiagonalTrackConflicts(location, trackPieceAfter.getTrackGraphicID(), world))) {
-                return Status.fail("Illegal track configuration - diagonal conflict");
-            }
         }
 
         if (trackPieceAfter != null) {
@@ -173,11 +168,17 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
 
         }
 
+        if (!TrackUtils.noDiagonalTrackConflictsForChange(location, trackPieceBefore, trackPieceAfter, world)) {
+            return Status.fail("Illegal track configuration - diagonal conflict");
+        }
+
         return Status.OK;
     }
 
     /**
-     * Applies this move to the supplied world.
+     * Applies this move to the supplied world. {@code trackPieceBefore} is
+     * checked against the current tile in {@link #applicable(UnmodifiableWorld)};
+     * the replacement preserves the tile's terrain.
      *
      * @param world the world whose state is used or updated
      */
@@ -187,7 +188,6 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
         if (!status.isSuccess()) {
             throw new RuntimeException(status.getMessage());
         }
-        // TODO why is oldTrackPiece not used???
         TerrainTile oldTile = world.getTile(location);
         int terrain = oldTile.terrainTypeId();
         TerrainTile newTile = new TerrainTile(terrain, trackPieceAfter);

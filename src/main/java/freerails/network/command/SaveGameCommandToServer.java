@@ -66,7 +66,7 @@ public class SaveGameCommandToServer implements CommandToServer {
      * Asks the server to save the current game.
      *
      * @param server server that performs the save
-     * @return successful status, or a failed status containing the error message
+     * @return successful status, or a failed status
      */
     @Override
     public CommandStatus execute(ServerControlInterface server) {
@@ -74,7 +74,7 @@ public class SaveGameCommandToServer implements CommandToServer {
             server.saveGame(filename);
             return new CommandStatus(true);
         } catch (Exception e) {
-            return new CommandStatus(false, e.getMessage());
+            return new CommandStatus(false);
         }
     }
 }

@@ -79,13 +79,11 @@ public class TrackMoveTransactionsGenerator {
         this.player = player;
     }
 
-    // TODO we do not want to use transactions here, rather add them to the changetrackmoves
     /**
      * @param move the move to apply or process
      * @return a composite move containing the track move and its associated transactions
      */
     public CompositeMove addTransactions(Move move) {
-        // TODO this only takes track into account, not stations
         trackAdded.clear();
         trackRemoved.clear();
         fixedCostsStations = 0;
@@ -213,7 +211,7 @@ public class TrackMoveTransactionsGenerator {
                 trackRemoved.merge(oldTrackPiece.trackType().getId(), oldLength, Integer::sum);
             }
         } else if (move instanceof CompositeMove cm) {
-            // TODO do ever have compositmoves inside composite moves (?) one more reason to eliminate them
+            // Composite moves may contain other composite moves, so walk the nested structure recursively.
             List<Move> moves = cm.getMoves();
 
             for (Move move1 : moves) {

@@ -26,7 +26,7 @@ import java.util.Collection;
 
 /**
  * Holds cargo batches together with the quantity of each batch.
- *
+ * <p>
  * The batch identity and the quantity are intentionally separate. A
  * {@link CargoBatch} identifies a shipment by cargo type, source location,
  * production time and originating station, while this bundle stores how many

@@ -20,7 +20,26 @@
  * Provides serializable actions that encapsulate changes to the game world.
  * Implementations follow the contract documented by {@link Move}; composite,
  * generated, and map-update moves are organized in this package's subpackages.
+ * <p>
+ * Unless a move documents otherwise, it may be combined with moves that affect
+ * independent state. In a {@link CompostMove}, every pair must be orthogonal:
+ * both moves are applicable to the same original world, and applying them in
+ * either order produces equivalent game state. This is a semantic contract for
+ * callers and move authors; it cannot be inferred from move classes alone.
+ * <p>
+ * In particular, avoid combining track changes on the same or neighboring
+ * tiles, a terrain change and a track change on the same tile, or updates to
+ * the same field of the same train. Such moves overlap or depend on state
+ * affected by the other move. Use an ordered {@link CompositeMove} for
+ * dependent moves, or implement a single move for one coherent game action.
+ * The combination of an {@link AddTrainMove} and an unconstrained
+ * {@link AddTransactionMove} is an example of moves that affect independent
+ * state. The track change, station removal, and schedule updates in
+ * {@link freerails.move.mapupdatemove.RemoveStationCompositeMove} form one
+ * coordinated station-removal action; that grouping should not be taken as
+ * evidence that those moves are generally interchangeable or independently
+ * reusable.
  *
- * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.rst">Package responsibilities and contracts</a>
+ * @see <a href="https://github.com/Trilarion/freerails/blob/master/docs/development.md">Package responsibilities and contracts</a>
  */
 package freerails.move;

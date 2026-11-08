@@ -145,6 +145,68 @@ public final class TrackUtils {
     }
 
     /**
+     * Tests whether replacing a track piece with another creates a diagonal
+     * conflict.
+     *
+     * @param point tile coordinate being changed
+     * @param before track piece before the change, or {@code null}
+     * @param after track piece after the change, or {@code null}
+     * @param world world containing neighboring track
+     * @return {@code true} if neither configuration conflicts diagonally
+     */
+    public static boolean noDiagonalTrackConflictsForChange(
+            IntPoint2D point, TrackPiece before, TrackPiece after, UnmodifiableWorld world) {
+        return (before == null || noDiagonalTrackConflicts(point, before.getTrackGraphicID(), world))
+                && (after == null || noDiagonalTrackConflicts(point, after.getTrackGraphicID(), world));
+    }
+
+    /**
+     * Tests whether a track-piece change removes any directional connections.
+     *
+     * @param before track piece before the change, or {@code null}
+     * @param after track piece after the change, or {@code null}
+     * @return {@code true} if at least one previous connection is absent after
+     *         the change
+     */
+    public static boolean removesTrackConnections(TrackPiece before, TrackPiece after) {
+        if (before == null) {
+            return false;
+        }
+
+        int beforeConfiguration = before.trackConfiguration().get8bitTemplate();
+        int afterConfiguration = after == null ? 0 : after.trackConfiguration().get8bitTemplate();
+        return (beforeConfiguration & ~afterConfiguration) != 0;
+    }
+
+    /**
+     * Tests whether a track-piece change adds any directional connections.
+     *
+     * @param before track piece before the change, or {@code null}
+     * @param after track piece after the change, or {@code null}
+     * @return {@code true} if a connection is present after but not before
+     */
+    public static boolean addsTrackConnections(TrackPiece before, TrackPiece after) {
+        int beforeConfiguration = before == null ? 0 : before.trackConfiguration().get8bitTemplate();
+        int afterConfiguration = after == null ? 0 : after.trackConfiguration().get8bitTemplate();
+        return (afterConfiguration & ~beforeConfiguration) != 0;
+    }
+
+    /**
+     * Tests whether a connected track piece can be replaced by a station.
+     *
+     * @param existingTrack track currently on the tile, or {@code null}
+     * @param proposedStation station track piece to place
+     * @return {@code true} if both pieces have at least one track connection
+     */
+    public static boolean canUpgradeToStation(TrackPiece existingTrack, TrackPiece proposedStation) {
+        return proposedStation != null
+                && proposedStation.trackType().isStation()
+                && proposedStation.trackConfiguration().get8bitTemplate() != 0
+                && existingTrack != null
+                && existingTrack.trackConfiguration().get8bitTemplate() != 0;
+    }
+
+    /**
      * Tests whether a directional mask includes the supplied transition.
      *
      * @param template directional mask

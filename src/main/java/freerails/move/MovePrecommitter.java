@@ -23,14 +23,13 @@ package freerails.move;
 
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.World;
+import freerails.util.Pair;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 
-// TODO Not sure what this is good for. can it be removed?
-// TODO is important because of the undo mechanism, can be abolished at some point
 /**
  * The class pre-commits moves we intend to send to the server and either fully
  * commits or undoes them depending on the server's response. Note, this class
@@ -83,25 +82,21 @@ public class MovePrecommitter {
     public void fromServer(Status status) {
         precommitMoves();
 
-        // TODO in precomitted there can be a move generator instead of a move
         if (!precomitted.isEmpty()) {
             precomitted.removeFirst();
-            // Move move = (Move) precomitted.removeFirst();
 
             if (!status.isSuccess()) {
                 logger.info("Move rejected by server: " + status.getMessage());
-                // TODO there was an undo here
-            } else {
-                // logger.debug("Move accepted by server: " + move.toString());
             }
-        } else {
-            if (!status.isSuccess()) {
-                logger.debug("Clear the blockage " + status.getMessage());
+            return;
+        }
 
+        if (!status.isSuccess()) {
+            logger.debug("Clear the blockage " + status.getMessage());
+
+            if (!uncomitted.isEmpty()) {
                 uncomitted.removeFirst();
                 precommitMoves();
-            } else {
-                // throw new IllegalStateException();
             }
         }
     }
@@ -125,15 +120,19 @@ public class MovePrecommitter {
      * @param tryMoveStatus the try move status
      */
     public void fromServer(TryMoveStatus tryMoveStatus) {
-
-        // TODO somehow uncommitted is empty
-        if (1==1) {
+        if (uncomitted.isEmpty()) {
+            logger.warn("Received a TryMoveStatus without any queued move generator.");
             return;
         }
-        MoveGenerator moveGenerator = (MoveGenerator) uncomitted.removeFirst();
+
+        Object queued = uncomitted.removeFirst();
+        if (!(queued instanceof MoveGenerator moveGenerator)) {
+            logger.warn("Received a TryMoveStatus for a non-generator queued move: " + queued.getClass().getName());
+            return;
+        }
 
         if (tryMoveStatus.status.isSuccess()) {
-            logger.debug("PreMove accepted by server: " + tryMoveStatus.toString());
+            logger.debug("PreMove accepted by server: " + tryMoveStatus);
 
             Move move = moveGenerator.generate(world);
             Status status = move.applicable(world);
@@ -176,8 +175,7 @@ public class MovePrecommitter {
                 if (status.isSuccess()) {
                     uncomitted.removeFirst();
 
-                    Serializable pmam = new MoveGeneratorAndMove(moveGenerator, move);
-                    precomitted.addLast(pmam);
+                    precomitted.addLast(new Pair<>(moveGenerator, move));
                 } else {
                     blocked = true;
                 }
@@ -208,9 +206,9 @@ public class MovePrecommitter {
         if (blocked) {
             return moveGenerator.generate(world);
         }
-        MoveGeneratorAndMove pmam = (MoveGeneratorAndMove) precomitted.getLast();
+        Pair<?, ?> moveGeneratorAndMove = (Pair<?, ?>) precomitted.getLast();
 
-        return pmam.move();
+        return (Move) moveGeneratorAndMove.b();
     }
 
 }

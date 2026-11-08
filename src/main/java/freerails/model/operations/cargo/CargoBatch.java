@@ -32,29 +32,22 @@ import java.io.Serializable;
  * instance because cargo definitions are owned by the world and resolved
  * there by ID.
  */
-public class CargoBatch implements Serializable, Comparable<CargoBatch> {
+public record CargoBatch(int cargoTypeId, IntPoint2D sourceP, int originalStationId, Time creationTime) implements Serializable, Comparable<CargoBatch> {
 
     @Serial
     private static final long serialVersionUID = 3257006557605540149L;
-    private final int cargoTypeId;
-    private final IntPoint2D sourceP;
-    private final int originalStationId;
-    private final Time creationTime;
 
     /**
      * Creates a batch identity for cargo produced at a particular place and
      * time.
      *
      * @param cargoTypeId identifier of the cargo type
-     * @param p source tile coordinates
-     * @param time simulation time when this batch was created
-     * @param origin identifier of the originating station
+     * @param p           source tile coordinates
+     * @param time        simulation time when this batch was created
+     * @param origin      identifier of the originating station
      */
     public CargoBatch(int cargoTypeId, IntPoint2D p, Time time, int origin) {
-        this.cargoTypeId = cargoTypeId;
-        sourceP = p;
-        creationTime = time;
-        originalStationId = origin;
+        this(cargoTypeId, p, origin, time);
     }
 
     /**
@@ -62,7 +55,8 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      *
      * @return batch creation time
      */
-    public Time getCreationTime() {
+    @Override
+    public Time creationTime() {
         return creationTime;
     }
 
@@ -71,7 +65,8 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      *
      * @return originating station identifier
      */
-    public int getOriginalStationId() {
+    @Override
+    public int originalStationId() {
         return originalStationId;
     }
 
@@ -80,7 +75,8 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      *
      * @return cargo type identifier
      */
-    public int getCargoTypeId() {
+    @Override
+    public int cargoTypeId() {
         return cargoTypeId;
     }
 
@@ -89,7 +85,8 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      *
      * @return source tile position
      */
-    public IntPoint2D getSourceP() {
+    @Override
+    public IntPoint2D sourceP() {
         return sourceP;
     }
 
@@ -106,22 +103,6 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
                     && test.creationTime.equals(creationTime) && test.originalStationId == originalStationId;
         }
         return false;
-    }
-
-    /**
-     * Returns a hash derived from the fields used for batch equality.
-     *
-     * @return hash code for this batch
-     */
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 37 * result + cargoTypeId;
-        result = 37 * result + sourceP.hashCode();
-        result = 37 * result + originalStationId;
-        result = 37 * result + creationTime.hashCode();
-
-        return result;
     }
 
     /**

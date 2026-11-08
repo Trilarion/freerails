@@ -21,7 +21,6 @@
  */
 package freerails.move.generator;
 
-import freerails.model.ModelConstants;
 import freerails.model.track.*;
 import freerails.model.operations.station.StationUtils;
 import freerails.model.operations.train.motion.*;
@@ -131,10 +130,12 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
                     stopsHandler.arrivesAtPoint(location);
 
-                    TrainState status = TrainUtils.isWaitingForFullLoad(world, player, trainId) ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
+                    TrainState status = stopsHandler.isWaitingForFullLoad()
+                            ? TrainState.WAITING_FOR_FULL_LOAD
+                            : TrainState.STOPPED_AT_STATION;
                     PathOnTiles path = trainMotion.getPath();
                     int lastTrainLength = trainMotion.getTrainLength();
-                    int currentTrainLength = stopsHandler.getTrainLength();
+                    int currentTrainLength = stopsHandler.getResultingTrainConfiguration().getLength();
 
                     // If we are adding wagons we may need to lengthen the path.
                     if (lastTrainLength < currentTrainLength) {
@@ -192,7 +193,6 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return result;
     }
 
-    // TODO parts of this should be in model.operations.train
     /**
      * Creates the move that advances the train along its next track section.
      *
@@ -258,31 +258,10 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     public Motion nextSpeeds(UnmodifiableWorld world, TileTransition tileTransition) {
         TrainMotion lastMotion = MotionUtils.lastMotion(world, player, trainId);
 
-        double s = tileTransition.getLength();
-
         int wagons = world.getTrain(player, trainId).getNumberOfWagons();
-        double topSpeed = ModelConstants.MODEL_UNITS_PER_TILE / 3.0d / (wagons + 1);
-
-        if (getMotionFidelity() == MotionFidelity.CONSTANT_SPEED) {
-            return ConstantAccelerationMotion.fromSpeedAccelerationDistance(topSpeed, 0, s);
-        }
-
-        double u = lastMotion.getSpeedAtEnd();
-        double a0 = ModelConstants.MODEL_UNITS_PER_TILE / 60.0d / (wagons + 1);
-        Motion newSpeeds;
-        if (u < topSpeed) {
-            double t = (topSpeed - u) / a0;
-            Motion a = ConstantAccelerationMotion.fromSpeedAccelerationTime(u, a0, t);
-            t = s / topSpeed + 1; // Slightly overestimate the time
-            Motion b = ConstantAccelerationMotion.fromSpeedAccelerationTime(topSpeed, 0, t);
-            newSpeeds = new CompositeMotion(a, b);
-        } else {
-            double t;
-            t = s / topSpeed + 1; // Slightly overestimate the time
-            newSpeeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(topSpeed, 0, t);
-        }
-
-        return newSpeeds;
+        boolean detailedAcceleration = getMotionFidelity() == MotionFidelity.DETAILED_ACCELERATION;
+        return TrainUtils.calculateMotionForNextSegment(tileTransition.getLength(), lastMotion.getSpeedAtEnd(), wagons,
+                detailedAcceleration);
     }
 
     /**
