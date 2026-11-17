@@ -55,7 +55,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * Used as a property name for property change events.
      */
     public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
-    // TODO give new connections an ID and use it as identification
+    // TODO give new connections an ID and use that as identification
     private final Map<LogOnCredentials, Connection> acceptedConnections = new ConcurrentHashMap<>();
     // Contains the user names of the players who are currently logged on.
     private final Collection<LogOnCredentials> currentlyLoggedOn = new HashSet<>();
@@ -63,7 +63,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     private final SaveGamesManager saveGamesManager;
     private final ScenarioSource scenarioSource;
     private final CountDownLatch status = new CountDownLatch(1);
-    // TODO new players allowed used meaningfully
+    // TODO is new players allowed used meaningfully?
     private boolean newPlayersAllowed = true;
     private ArrayList<LogOnCredentials> players = new ArrayList<>();
     private ServerGameModel serverGameModel;
@@ -420,7 +420,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         sendToAll(command);
     }
 
-    // TODO this is very convoluted with ServerGameModel and MoveReceiver cyclically referencing each other
+    // TODO this is very convoluted with ServerGameModel and MoveReceiver cyclically referencing each other, can it be simplified?
     /**
      * Installs the server-side model and connects its move receiver to this server.
      *

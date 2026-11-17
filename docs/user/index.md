@@ -1,6 +1,6 @@
 # FreeRails's documentation!
 
-FreeRails is a real-time, multi player railway strategy/management game where players
+FreeRails is a real-time, multi-player railway strategy/management game where players
 compete to build the most powerful railroad empire. It is based on the RailRoad Tycoon I
 and II games.
 

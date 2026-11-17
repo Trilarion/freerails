@@ -23,7 +23,7 @@ import freerails.move.Move;
 import freerails.move.MoveReceiver;
 import freerails.move.Status;
 
-// TODO what is this good for? why is it named Untried?
+// TODO what is this class for? why is it named Untried?
 /**
  * Lets the caller test moves.
  */

@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 
 import java.util.Map;
 
-// TODO does not exist anymore, now in FullServerGameModel, move to test there
+// TODO does not exist anymore, now in FullServerGameModel, move this test to test there
 /**
  * Test for CargoAtStationsUpdater.
  */

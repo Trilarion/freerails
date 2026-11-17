@@ -20,7 +20,7 @@ package freerails.network.command;
 
 import java.io.Serializable;
 
-// TODO command to client necessary, couldn't this also be a move, could moves be actions
+// TODO command to client necessary, couldn't this also be a move, and could moves be actions
 /**
  * Defines a command sent from the server to the client.
  */

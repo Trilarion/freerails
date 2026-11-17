@@ -1,11 +1,5 @@
 # Specification
 
-```{toctree}
-:maxdepth: 2
-
-specification_rt1 specification_rt2
-```
-
 FreeRails is a railway strategy and management game. The player develops a railroad across
 a changing landscape, connects places that need transport, and turns a small network into
 a thriving business. The game aims for engaging strategic choices rather than a complete

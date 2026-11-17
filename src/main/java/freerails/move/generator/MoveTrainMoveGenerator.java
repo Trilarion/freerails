@@ -145,7 +145,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                     nextMotion = new TrainMotion(path, currentTrainLength, durationOfStationStop, status);
 
                     // Create a new Move object.
-                    // TODO needed dedicated move for train moves
+                    // TODO use dedicated move for train moves instead? or is Activity enough? What does activity include?
                     // Move trainMove = new NextActivityMove(nextMotion, trainId, player);
                     List<Move> moves = new LinkedList<>();
                     moves.add(new AddActivityMove(player, trainId, nextMotion));
@@ -170,7 +170,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                         return new CompositeMove(cargoMoves);
                     }
                 }
-                // TODO makeTrainWait not implemented
+                // TODO makeTrainWait is not implemented
                 // stopsHandler.makeTrainWait(30);
                 return new CompositeMove(cargoMoves);
             }

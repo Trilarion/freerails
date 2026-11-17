@@ -27,7 +27,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-// TODO put that back into the client
 /**
  * A central point at which a client may register to receive moves which have
  * been committed.
@@ -121,7 +120,7 @@ public class MoveChainFork implements MoveReceiver {
 
             if (move instanceof MapUpdateMove) {
                 Rectangle rectangle = ((MapUpdateMove) move).getUpdatedTiles();
-                // TODO can r be 0,0,0,0
+                // TODO can rectangle become 0,0,0,0
                 if (rectangle.x != 0 && rectangle.y != 0 && rectangle.width != 0 && rectangle.height != 0) {
                     for (WorldMapListener listener : mapListeners) {
                         listener.tilesChanged(rectangle);

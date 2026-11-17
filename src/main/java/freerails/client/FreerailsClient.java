@@ -98,7 +98,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     public final LogOnResponse connect(String username, String password) {
         try {
             Serializable request = new LogOnCredentials(username, password);
-            connectionToServer = Connection.make(new InetSocketAddress(InetAddress.getLoopbackAddress(), 55000)); // TODO get selected port
+            connectionToServer = Connection.make(new InetSocketAddress(InetAddress.getLoopbackAddress(), 55000)); // TODO get selected port from the UI here instead of hardcoding
             readerFailureReported = false;
             connectionToServer.sendObject(request);
 

@@ -53,7 +53,7 @@ public class UserMessageGenerator implements MoveReceiver {
      */
     @Override
     public void process(Move move) {
-        // TODO then it could also be a splitMoveReceiver in MoveChainFork
+        // TODO then it could also be a splitMoveReceiver in MoveChainFork or not?
         if (move instanceof CompositeMove) {
             List<Move> moves = ((CompositeMove) move).getMoves();
 

@@ -131,7 +131,7 @@ public class RendererRootImpl implements RendererRoot {
             // TODO not a nice hack, unhack, provide information about neighboring tiles differently or better inside the Renderer
             List<Integer> typesTreatedAsTheSame = new ArrayList<>();
             try {
-                // TODO hack to make rivers flow into ocean and harbours & ocean
+                // TODO hack to make rivers flow into ocean and harbours & ocean, they should without the hack
                 // treat harbours as the same type.
                 TerrainCategory thisTerrainCategory = terrainType.getCategory();
 
@@ -161,7 +161,6 @@ public class RendererRootImpl implements RendererRoot {
             } catch (IOException ignored) {
             }
 
-            // TODO this was the chequered tile renderer which was removed because it was not needed
             try {
                 tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
                 tileRenderers.put(terrainType.getId(), tileRenderer);

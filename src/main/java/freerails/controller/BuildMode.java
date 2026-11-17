@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-// TODO when is build mode ignore track??
+// TODO when is build mode ignore track and why??
 /**
  * Defines the available build mode values.
  */

@@ -57,7 +57,7 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * TODO optimize cache
+     * TODO optimize cache possible?
      */
     @Override
     public int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {

@@ -41,7 +41,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     private final Terrain terrainType;
     private Image[] tileIcons;
 
-    // TODO if only mapSize is needed, do not send the full world here
+    // TODO if only mapSize is needed, do not send the full world here, just what is needed
     /**
      * Creates an abstract tile renderer instance.
      * @param terrainType the terrain type
@@ -64,6 +64,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      */
     @Override
     public void render(Graphics g, IntPoint2D renderLocation, IntPoint2D mapLocation, UnmodifiableWorld world) {
+        // TODO just send the icon here and resolve in the caller possible?
         Image icon = getIcon(mapLocation, world);
 
         if (null != icon) {
@@ -110,7 +111,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      */
     public abstract int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world);
 
-    // TODO remove or reduce world as parameter
+    // TODO remove or reduce world as parameter, only send what is needed if at all
     /**
      * Checks whether the renderer handles the tile at the specified location.
      * @param location the location

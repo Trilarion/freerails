@@ -33,7 +33,7 @@ public class SetWorldCommandToClient implements CommandToClient {
     private static final long serialVersionUID = 3257570619972269362L;
     private final World world;
 
-    // TODO why a defensive copy (actually some things do not work otherwise), maybe because in local connection, nothing is serialized
+    // TODO some things do not work here without a defensive copy but why, maybe because in local connection, nothing is serialized, can it be improved
     /**
      * Creates a command containing a defensive copy of the supplied world.
      *

@@ -59,7 +59,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-// TODO why does it have to be saved and not only the world during loading and saving? Is there some internal state that should be part of the world?
+// TODO why does this have to be saved and not only the world during loading and saving? Is there some internal state that should be part of the world?
 /**
  * A ServerGameModel that contains the automations used in the actual game. This is serialized during loading and
  * saving of games.
@@ -81,7 +81,7 @@ public class FullServerGameModel implements ServerGameModel {
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
-    // TODO this should be part of the model, at least the update part
+    // TODO this should be part of the model, at least the update part, move it there
     /**
      * Call this method once a month.
      * <p>
@@ -128,8 +128,6 @@ public class FullServerGameModel implements ServerGameModel {
                     }
                 }
 
-                // TODO change station move instead
-                // Move move = new ChangeItemInListMove(PlayerKey.CargoBundles, station.getCargoBatchBundle(), before, after, player);
                 Move move = new ChangeCargoAtStationMove(player, stationId, after);
                 moveReceiver.process(move);
             }
@@ -160,10 +158,10 @@ public class FullServerGameModel implements ServerGameModel {
      * @param world the game world used by this operation
      */
     private static List<Move> generateBondInterestMoves(UnmodifiableWorld world) {
-        // TODO generates multiple moves, good idea?
+        // TODO generates multiple moves, really a good idea?
         List<Move> moves = new ArrayList<>();
         for (Player player: world.getPlayers()) {
-            // TODO Money arithmetic on interestDue
+            // TODO use Money arithmetic on interestDue
             long interestDue = 0;
 
             for (Transaction transaction: world.getTransactions(player)) {
@@ -191,7 +189,7 @@ public class FullServerGameModel implements ServerGameModel {
     private static void applyTrainMaintenanceMoves(UnmodifiableWorld world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
             int numberOfTrains = world.getTrains(player).size();
-            // TODO hardcoded constant, move to constants
+            // TODO 5000L = hardcoded constant, move to constants
             long amount = numberOfTrains * 5000L;
             Transaction transaction = new Transaction(TransactionCategory.TRAIN_MAINTENANCE, new Money(-amount), world.getClock().getCurrentTime());
 
@@ -221,7 +219,7 @@ public class FullServerGameModel implements ServerGameModel {
         long amount = 0;
 
         for (TrackType trackType: world.getTrackTypes()) {
-            // TODO Money arithmetic
+            // TODO use Money arithmetic
             long maintenanceCost = trackType.getYearlyMaintenance().amount();
 
             // Is the track type the category we are interested in?
@@ -382,7 +380,7 @@ public class FullServerGameModel implements ServerGameModel {
         }
     }
 
-    // TODO make this part of the constructor
+    // TODO eliminate initialize and inline it whereever it is called
     /**
      * @param moveReceiver the receiver to which generated moves are submitted
      */
@@ -444,9 +442,9 @@ public class FullServerGameModel implements ServerGameModel {
         cargoAtStationsUpdate(world, moveReceiver);
     }
 
-    // TODO move static code to model? what about a generator
+    // TODO move static code to model
     /**
-     * Loops through all of the known stations and recalculates the
+     * Loops through all the known stations and recalculates the
      * cargoes that they supply, demand, and convert.
      *
      * @param world the mutable world containing stations and track

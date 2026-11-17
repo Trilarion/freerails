@@ -20,7 +20,7 @@ package freerails.client.renderer.tile;
 
 import freerails.model.world.UnmodifiableWorld;
 
-// TODO what is this good for?
+// TODO what is this interface good for?
 /**
  * A list of TileRenderer.
  */
@@ -34,7 +34,7 @@ public interface TileRendererList {
      */
     TileRenderer getTileRendererByIndex(int index);
 
-    // TODO Is this function needed?
+    // TODO Is this function needed? for what is it currently needed?
     /**
      * Checks whether this tile view list has tile views for all the terrain
      * types in the specified list.

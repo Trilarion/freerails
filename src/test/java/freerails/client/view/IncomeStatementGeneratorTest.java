@@ -50,8 +50,8 @@ public class IncomeStatementGeneratorTest extends TestCase {
         assertEquals(CargoCategory.MAIL, cargo.getCategory());
 
         Money amount = new Money(100);
-        addTrans(CargoCategory.MAIL, amount);
-        addTrans(CargoCategory.PASSENGER, amount);
+        addTransaction(CargoCategory.MAIL, amount);
+        addTransaction(CargoCategory.PASSENGER, amount);
         balanceSheetGenerator.calculateAll();
         money = balanceSheetGenerator.mailTotal;
         assertEquals(amount, money);
@@ -61,19 +61,19 @@ public class IncomeStatementGeneratorTest extends TestCase {
     }
 
     /**
-     * Adds trans.
+     * Adds transaction
      * @param category the category used by this test.
      * @param amount the amount used by this test.
      */
-    private void addTrans(CargoCategory category, Money amount) {
-        // TODO i is not an id
+    private void addTransaction(CargoCategory category, Money amount) {
+        // TODO i is not an id or is it? if not, real ids should be used
         for (int i = 0; i < world.getCargos().size(); i++) {
-            Cargo ct = world.getCargo(i);
+            Cargo cargo = world.getCargo(i);
 
-            if (ct.getCategory() == category) {
-                CargoBatch cb = new CargoBatch(i, IntPoint2D.ZERO, new Time(0), 0);
+            if (cargo.getCategory() == category) {
+                CargoBatch cargoBatch = new CargoBatch(i, IntPoint2D.ZERO, new Time(0), 0);
                 world.addTransaction(WorldGenerator.TEST_PLAYER,
-                        new CargoDeliveryTransaction(amount, world.getClock().getCurrentTime(), 10, 0, 1, cb));
+                        new CargoDeliveryTransaction(amount, world.getClock().getCurrentTime(), 10, 0, 1, cargoBatch));
                 return;
             }
         }

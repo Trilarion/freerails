@@ -25,7 +25,7 @@ import freerails.model.world.UnmodifiableWorld;
 import java.awt.*;
 import java.io.IOException;
 
-// TODO should this really extend TileRendererList?
+// TODO should this really extend TileRendererList? or could it work without?
 /**
  * Provides access to the objects that render terrain, track, and trains.
  */

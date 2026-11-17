@@ -36,7 +36,7 @@ import java.net.URL;
 import java.util.SortedSet;
 
 /**
- * Generates track graphic image files.
+ * Generates track graphic image files to use in the game.
  */
 class TrackTilesGenerator extends JPanel {
 

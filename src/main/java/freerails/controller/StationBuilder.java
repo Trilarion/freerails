@@ -31,7 +31,7 @@ import org.tinylog.TaggedLogger;
 
 import java.util.NoSuchElementException;
 
-// TODO should this and the moveexecutor be part of the controller instead?
+
 /**
  * Class to build a station at a given point, names station after nearest city.
  * If that name is taken then a "Junction" or "Siding" is added to the name.
@@ -66,7 +66,7 @@ public class StationBuilder {
      * @return the try building station produced by this method
      */
     public Status tryBuildingStation(IntPoint2D location) {
-        // TODO under which circumstances would build a station fail (not enough funds, station already existing)
+        // TODO under which circumstances would build a station fail (not enough funds, station already existing)? should we guard against it?
         UnmodifiableWorld world = executor.getWorld();
 
         Player player = executor.getPlayer();

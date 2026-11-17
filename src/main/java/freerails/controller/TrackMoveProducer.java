@@ -124,7 +124,7 @@ public class TrackMoveProducer {
         return new ChangeTrackPieceCompositeMove(a, b, player);
     }
 
-    // TODO put part of it in model
+    // TODO put utility calculation parts in model, keep this lean
     // utility method.
     /**
      * Returns the build track change track piece move.
@@ -155,7 +155,7 @@ public class TrackMoveProducer {
         return new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
     }
 
-    // TODO put part of it in model
+    // TODO put utility calculation parts in model, keep this lean
     // utility method.
     /**
      * Returns the remove track change track piece move.

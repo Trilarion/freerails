@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO Remove use of World from here (remnant from FullWorldDiffs from here), use readonly world instead if possible
+// TODO Remove use of World from here, use readonly world instead if possible
 /**
  * Provides methods to change the proposed track and save it to the real world.
  */
