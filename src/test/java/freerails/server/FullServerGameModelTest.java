@@ -18,10 +18,21 @@
 
 package freerails.server;
 
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.operations.cargo.CargoBatchBundle;
+import freerails.model.operations.station.Station;
+import freerails.model.operations.station.StationSupply;
+import freerails.model.player.Player;
+import freerails.model.simulation.Time;
+import freerails.model.world.World;
+import freerails.util.IntPoint2D;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
+import java.util.Map;
+
 /**
- * Tests the server model lifecycle.
+ * Tests the server model lifecycle and its monthly cargo-at-stations update.
  */
 public class FullServerGameModelTest extends TestCase {
 
@@ -31,5 +42,56 @@ public class FullServerGameModelTest extends TestCase {
         Thread.sleep(2);
 
         model.update();
+    }
+
+    /**
+     * Tests calculate amount to add behavior.
+     */
+    public void testCalculateAmountToAdd() {
+
+        int amount = FullServerGameModel.calculateAmountToAddPerMonth(12, 1);
+        assertEquals(1, amount);
+
+        assertCorrectTotalAddedOverYear(0);
+        assertCorrectTotalAddedOverYear(12);
+        assertCorrectTotalAddedOverYear(14);
+        assertCorrectTotalAddedOverYear(140);
+        assertCorrectTotalAddedOverYear(3);
+    }
+
+    /**
+     * Tests station production records the current simulation time.
+     */
+    public void testCargoProductionUsesCurrentSimulationTime() {
+        World world = WorldGenerator.defaultWorld();
+        Player player = WorldGenerator.TEST_PLAYER;
+        world.addPlayer(player);
+        int cargoTypeId = world.getCargos().iterator().next().getId();
+        Station station = new Station(1, new IntPoint2D(4, 5), "Station", CargoBatchBundle.EMPTY);
+        station.setSupply(new StationSupply(Map.of(cargoTypeId, 12)));
+        world.addStation(player, station);
+
+        Time creationTime = new Time(42);
+        world.getClock().advanceTimeTo(creationTime);
+        FullServerGameModel.cargoAtStationsUpdate(world, move -> move.apply(world));
+
+        CargoBatch batch = new CargoBatch(cargoTypeId, station.getLocation(), creationTime, station.getId());
+        assertTrue(station.getCargoBatchBundle().contains(batch));
+        assertTrue(station.getCargoBatchBundle().getAmount(batch) > 0);
+    }
+
+    /**
+     * If, say, 14 units get added each year, some month we should add 1 and
+     * others we should add 2 such that over the year exactly 14 units get
+     * added.
+     */
+    private static void assertCorrectTotalAddedOverYear(final int unitPerYear) {
+        int amountAddedThisSoFar = 0;
+
+        for (int i = 0; i < 12; i++) {
+            amountAddedThisSoFar += FullServerGameModel.calculateAmountToAddPerMonth(unitPerYear, i);
+        }
+
+        assertEquals(unitPerYear, amountAddedThisSoFar);
     }
 }

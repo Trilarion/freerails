@@ -6,18 +6,20 @@ the current behavior.
 
 This document is the authoritative source for FreeRails architecture, design
 principles, development and code style, repository layout, and build guidance.
-`../AGENTS.md` points here rather than duplicating that guidance.
+`AGENTS.md` points here rather than duplicating that guidance.
 
 ## Repository layout
 
-- `../src/main/java/freerails` — Java application code, organized into packages for the
+Paths in this guide are relative to the repository root.
+
+- `src/main/java/freerails` — Java application code, organized into packages for the
   client UI, game model, controllers, moves, networking, scenarios, server, and shared
   utilities.
-- `../src/main/resources` — game graphics, sounds, interface content, and scenario data.
-- `../src/test/java` and `src/test/resources/` — automated tests and their supporting data.
-- `..` — Sphinx documentation, including the player manual, development notes, and specifications.
-- `../build.gradle`, `settings.gradle`, and `gradle/` — Gradle build configuration and the Gradle wrapper.
-- `user/history.md` — project history.
+- `src/main/resources` — game graphics, sounds, interface content, and scenario data.
+- `src/test/java` and `src/test/resources` — automated tests and their supporting data.
+- `docs` — development notes and specifications; the Sphinx player manual is in `docs/user`.
+- `build.gradle`, `settings.gradle`, and `gradle` — Gradle build configuration and the Gradle wrapper.
+- `docs/user/history.md` — project history.
 
 ## Architecture and design principles
 
@@ -95,6 +97,26 @@ schedules, activities and motion, station cargo queues, and cargo handling. Its 
 change this state stay in `freerails.move`; cargo delivery transactions remain in
 `freerails.model.economy.transaction` as accounting records.
 
+### Client/server design
+
+The server keeps the authoritative full game model. Each client is a thick
+client built on the model-view-presenter pattern:
+
+- The passive view, made of JavaFX views and renderers, shows the game state
+  and forwards user input.
+- The presenter (the controllers and client coordination) turns the input into
+  proposed changes, expressed as moves, and updates the view when the model
+  changes.
+- The client keeps its own full copy of the game model. The model signals
+  changes to the presenter.
+
+Proposed moves go from the client's model to the server. The client can
+pre-commit them locally (see `MovePrecommitter`), so the player sees the effect
+at once. The server checks each move with `applicable`, applies the accepted
+ones, and broadcasts them to all clients. Each client then confirms its
+pre-committed moves or undoes them. If a client's copy becomes inconsistent,
+the server can send it the whole world (`SetWorldCommandToClient`).
+
 ## Persistence and game-state contracts
 
 The default on-disk save-game manager lists, loads, and writes `.sav` files in
@@ -131,17 +153,61 @@ allow adding or removing elements. This is a shallow read-only boundary, not a d
 immutable snapshot. Returned entities and state objects (including trains and stations)
 may be mutable and may expose the underlying world state.
 
-Track configurations use an 8-bit directional mask: bit zero is north, and bits
-increase clockwise. Scenario templates use standard binary string order, with
-the least-significant bit at the right. A tile without a track piece has no
-track; a station replaces existing track and requires at least one directional
-connection.
-
 Preserve game-state invariants when applying moves. For example, a track connection is
 represented on both neighboring tiles, so track changes must use the appropriate paired
 track operations rather than changing one side alone. Consider scenario loading and saving when
 changing persisted data, and serialization compatibility for data transmitted between
 clients and servers.
+
+### Track model
+
+The map is a rectangular grid of square tiles. Every tile that is not on the
+map border has exactly eight neighbors. A neighbor can be named either by its
+compass direction from the center tile or by its grid offset. With a tile at
+column `x` and row `y`, north is `(x, y - 1)`, east is `(x + 1, y)`, south is
+`(x, y + 1)`, and west is `(x - 1, y)`; the diagonal neighbors combine these
+offsets. `TileTransition` defines the eight directions, their offsets, and their
+configuration bits.
+
+The track network consists of track pieces. Each piece connects two
+neighboring tiles. A diagonal connection is about 1.41 (the square root of 2)
+times as long as a horizontal or vertical one. Track pieces have no direction:
+any train can use them both ways.
+
+Each tile stores its track as a track configuration, an 8-bit mask with one bit
+per neighbor that the tile connects to. Bit zero is north and the bits increase
+clockwise:
+
+| Direction | Bit | Value |
+|-----------|-----|-------|
+| North | 0 | 1 |
+| North-east | 1 | 2 |
+| East | 2 | 4 |
+| South-east | 3 | 8 |
+| South | 4 | 16 |
+| South-west | 5 | 32 |
+| West | 6 | 64 |
+| North-west | 7 | 128 |
+
+Scenario templates use standard binary string order, with the least-significant
+bit at the right. For example:
+
+- `00010001`: straight north-south track
+- `00011001`: north-south track with a branch to the south-east
+- `10000010`: a V shape opening upward, connecting north-west and north-east
+
+The renderer draws each tile from its configuration. A tile without a track
+piece has no track. A station replaces existing track and requires at least one
+directional connection.
+
+Track configurations on neighboring tiles depend on each other. When a tile
+connects toward a neighbor, that neighbor must also connect back to the tile.
+Code must therefore never change a configuration directly. It adds or removes
+whole track pieces, which update both tiles together.
+
+Train path finding works on a graph whose nodes are tiles and whose edges are
+track pieces. When the player builds a longer stretch of new track, the route
+is also planned by path finding over candidate track pieces.
 
 ## Development and code style
 
@@ -158,7 +224,7 @@ clients and servers.
 
 ### Diagnostics and errors
 
-- Production source under `../src/main/java` must not write directly to the
+- Production source under `src/main/java` must not write directly to the
   console. Use the project logger for diagnostics, which are written to
   `freerails.log` in the user's `FreeRails User Data` folder. Avoid swallowed
   errors. Logged exception traces omit frames from configured Java runtime and
@@ -171,7 +237,7 @@ clients and servers.
 - Add concise Javadoc to every class and every method, including private
   classes and methods, in newly written or generated Java code. Add a brief
   one-line comment before longer logical code sections when their purpose is
-  not obvious. Update relevant pages under `..` when behavior or
+  not obvious. Update relevant pages under `docs` when behavior or
   architecture changes.
 - Keep Markdown prose wrapped to roughly 80-100 characters so the source stays
   readable in editors, reviews, and git diffs.
