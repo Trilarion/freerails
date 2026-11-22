@@ -48,42 +48,24 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-// TODO why does this have to be saved and not only the world during loading and saving? Is there some internal state that should be part of the world?
 /**
- * A ServerGameModel that contains the automations used in the actual game. This is serialized during loading and
- * saving of games.
+ * A ServerGameModel that contains the automations used in the actual game. Saved games store only the world (see
+ * {@link SavedGame}), so this model holds no persistent state of its own.
  */
 public class FullServerGameModel implements ServerGameModel {
 
-    @Serial
-    private static final long serialVersionUID = 3978144352788820021L;
     private World world;
-    private String[] passwords;
-
-    private transient long nextModelUpdateDue;
+    private long nextModelUpdateDue;
 
     /**
      * Maintains and advances the authoritative game world on the server.
      */
     public FullServerGameModel() {
-        nextModelUpdateDue = System.currentTimeMillis();
-    }
-
-    /**
-     * Restores the transient update schedule after loading, so a loaded game does not try to catch up on ticks
-     * since the epoch.
-     */
-    @Serial
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
@@ -346,21 +328,11 @@ public class FullServerGameModel implements ServerGameModel {
 
     /**
      * @param world the game world used by this operation
-     * @param passwords the player passwords associated with the world
      */
     @Override
-    public synchronized void setWorld(World world, String[] passwords) {
+    public synchronized void setWorld(World world) {
         this.world = world;
-        this.passwords = passwords.clone();
         nextModelUpdateDue = System.currentTimeMillis();
-    }
-
-    /**
-     * @return the passwords associated with the players in the world
-     */
-    @Override
-    public String[] getPasswords() {
-        return passwords.clone();
     }
 
     /**

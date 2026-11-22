@@ -23,7 +23,7 @@ package freerails.io.savegame;
 
 import freerails.UserData;
 import freerails.server.SaveGamesManager;
-import freerails.server.ServerGameModel;
+import freerails.server.SavedGame;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
@@ -34,13 +34,13 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Loads and saves complete server game models in the configured save-game directory.
+ * Loads and saves games (world and player credentials) in the configured save-game directory.
  */
 public class FullSaveGameManager implements SaveGamesManager {
 
     // TODO meaningful version string that actually changes if the savegame structure changes
     /** Format version stored with each save-game file. */
-    public static final String VERSION = "CVS";
+    public static final String VERSION = "1";
     private static final TaggedLogger logger = Logger.tag("FullSaveGameManager");
     private final File saveGameDirectory;
 
@@ -79,14 +79,14 @@ public class FullSaveGameManager implements SaveGamesManager {
     }
 
     /**
-     * Serializes a game object to a compressed save-game file.
+     * Serializes a saved game to a compressed save-game file.
      *
      * @param path the save-game filename
-     * @param serializable the object to serialize to the save-game file
+     * @param savedGame the world and player credentials to save
      * @throws IOException if the operation cannot complete because of an input/output error
      */
     @Override
-    public void saveGame(String path, Serializable serializable) throws IOException {
+    public void saveGame(String path, SavedGame savedGame) throws IOException {
         long startTime = System.currentTimeMillis();
         logger.info("Saving game..  " + path);
 
@@ -97,7 +97,7 @@ public class FullSaveGameManager implements SaveGamesManager {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
                 new GZIPOutputStream(new FileOutputStream(saveGameFile)))) {
             objectOutputStream.writeObject(VERSION);
-            objectOutputStream.writeObject(serializable);
+            objectOutputStream.writeObject(savedGame);
         }
 
         long finishTime = System.currentTimeMillis();
@@ -105,14 +105,14 @@ public class FullSaveGameManager implements SaveGamesManager {
     }
 
     /**
-     * Loads and decompresses a server game model from a save-game file.
+     * Loads and decompresses a saved game from a save-game file.
      *
      * @param path the path of the save-game file
-     * @return the loaded server game model
+     * @return the loaded world and player credentials
      * @throws IOException if the operation cannot complete because of an input/output error
      */
     @Override
-    public ServerGameModel loadGame(String path) throws IOException {
+    public SavedGame loadGame(String path) throws IOException {
         long startTime = System.currentTimeMillis();
         logger.info("Loading game..  " + path);
 
@@ -124,12 +124,14 @@ public class FullSaveGameManager implements SaveGamesManager {
                 throw new IOException("Unknown save game version: " + version);
             }
 
-            ServerGameModel serverGameModel = (ServerGameModel) objectInputStream.readObject();
+            if (!(objectInputStream.readObject() instanceof SavedGame savedGame)) {
+                throw new IOException("Save game does not contain a saved game: " + path);
+            }
 
             long finishTime = System.currentTimeMillis();
             logger.info("done, " + (finishTime - startTime));
 
-            return serverGameModel;
+            return savedGame;
         } catch (ClassNotFoundException | InvalidClassException e) {
             throw new IOException(e);
         }

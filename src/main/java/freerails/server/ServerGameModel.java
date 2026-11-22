@@ -21,13 +21,10 @@ package freerails.server;
 import freerails.model.world.World;
 import freerails.move.MoveReceiver;
 
-import java.io.Serializable;
-
 /**
- * Defines the server-side game model that the server loads, initializes,
- * updates, and saves.
+ * Defines the server-side game model that holds the authoritative world and advances it.
  */
-public interface ServerGameModel extends Serializable {
+public interface ServerGameModel {
 
     /**
      * Advances the model by one server update cycle.
@@ -37,12 +34,11 @@ public interface ServerGameModel extends Serializable {
     void update(MoveReceiver moveReceiver);
 
     /**
-     * Replaces the model's world and associated player passwords.
+     * Replaces the model's world.
      *
      * @param world the game world used by this operation
-     * @param passwords the player passwords associated with the world
      */
-    void setWorld(World world, String[] passwords);
+    void setWorld(World world);
 
     /**
      * Returns the world maintained by this server model.
@@ -50,12 +46,5 @@ public interface ServerGameModel extends Serializable {
      * @return the current game world
      */
     World getWorld();
-
-    /**
-     * Returns the passwords associated with the players in the world.
-     *
-     * @return the player passwords
-     */
-    String[] getPasswords();
 
 }

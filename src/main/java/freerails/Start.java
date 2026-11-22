@@ -272,7 +272,7 @@ public final class Start {
          */
         @Override
         public String[] getPlayerNames() {
-            return server.getPlayerNames();
+            return server.getConnectedPlayerNames();
         }
 
         /**

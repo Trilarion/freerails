@@ -40,13 +40,18 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * When executed by a thread, this class does the following: reads and executes
  * moves and commands received from connected clients; sends moves and commands
  * to connected clients.
+ *
+ * <p>Players are identified by their player id, which is their index in the
+ * list of registered players and is returned to the client in
+ * {@link LogOnResponse#id()}. Passwords are only checked in
+ * {@link #logon(LogOnCredentials)}. All mutable state is guarded by this
+ * server's monitor.
  */
 public class FreerailsGameServer implements ServerControlInterface, GameServer, Runnable {
 
@@ -55,17 +60,16 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * Used as a property name for property change events.
      */
     public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
-    // TODO give new connections an ID and use that as identification
-    private final Map<LogOnCredentials, Connection> acceptedConnections = new ConcurrentHashMap<>();
-    // Contains the user names of the players who are currently logged on.
-    private final Collection<LogOnCredentials> currentlyLoggedOn = new HashSet<>();
+    // Ids of the players who are currently logged on.
+    private final SortedSet<Integer> loggedOn = new TreeSet<>();
+    // Client connections of logged-on players, keyed by player id.
+    private final SortedMap<Integer, Connection> connections = new TreeMap<>();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final SaveGamesManager saveGamesManager;
     private final ScenarioSource scenarioSource;
     private final CountDownLatch status = new CountDownLatch(1);
-    // TODO is new players allowed used meaningfully?
-    private boolean newPlayersAllowed = true;
-    private ArrayList<LogOnCredentials> players = new ArrayList<>();
+    // Registered players; the index is the player id.
+    private List<LogOnCredentials> players = new ArrayList<>();
     private ServerGameModel serverGameModel;
     private final MoveReceiver serverMoveReceiver = this::processServerMove;
 
@@ -87,7 +91,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      */
     @Override
     public synchronized void addConnection(Connection connection) {
-        String[] before = getPlayerNames();
+        String[] before = getConnectedPlayerNames();
         logger.debug("Adding connection..");
         logger.debug("Waiting for login details..");
 
@@ -96,14 +100,12 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             logger.debug("Trying to login player: " + request.username());
 
             LogOnResponse response = logon(request);
+            if (response.success()) {
+                connections.put(response.id(), connection);
+            }
             connection.sendObject(response);
-            LogOnCredentials p = new LogOnCredentials(request.username(), request.password());
             if (response.success()) {
                 logger.debug("Login successful");
-
-                synchronized (acceptedConnections) {
-                    acceptedConnections.put(p, connection);
-                }
 
                 // Just send to the new client.
                 Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(scenarioSource.getAvailableScenarioNames())));
@@ -112,14 +114,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 connection.sendObject(setMaps);
                 connection.sendObject(setSaveGames);
 
-                // no need to flush since it is done in
-                // sendListOfConnectedPlayers2Clients()
-
                 /*
                  * If there is a game in progress, we need to send the client a
                  * copy of the world object.
                  */
-                if (null != serverGameModel && null != serverGameModel.getWorld()) {
+                if (isGameStarted()) {
                     Serializable command = new SetWorldCommandToClient(serverGameModel.getWorld());
                     connection.sendObject(command);
                 }
@@ -127,17 +126,16 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 // Send to all clients.
                 sendListOfConnectedPlayers2Clients();
 
-                String[] after = getPlayerNames();
-                propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
+                propertyChangeSupport.firePropertyChange(CONNECTED_PLAYERS, before, getConnectedPlayerNames());
             } else {
                 connection.close();
             }
         } catch (IOException e) {
             logger.warn(e, "Could not complete client login.");
-            connection.close();
+            removeConnection(connection);
         } catch (IllegalStateException e) {
             logger.debug("Client disconnected before completing login.", e);
-            connection.close();
+            removeConnection(connection);
         }
     }
 
@@ -157,25 +155,22 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      */
     @Override
     public synchronized int getNumberOpenConnections() {
-        Iterator<LogOnCredentials> it = acceptedConnections.keySet().iterator();
         int numberOpenConnections = 0;
-
-        while (it.hasNext()) {
-            Connection connection = acceptedConnections.get(it.next());
+        for (Connection connection : connections.values()) {
             if (connection.isOpen()) {
                 numberOpenConnections++;
             }
         }
-
         return numberOpenConnections;
     }
 
     /**
-     * Returns the usernames of the players configured for the current game.
+     * Returns the usernames of all players registered for the current game,
+     * whether or not they are currently logged on.
      *
-     * @return the player usernames
+     * @return the player usernames, ordered by player id
      */
-    public String[] getPlayerNames() {
+    public synchronized String[] getPlayerNames() {
         String[] playerNames = new String[players.size()];
 
         for (int i = 0; i < players.size(); i++) {
@@ -186,97 +181,119 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * Sets whether new players may join the current game.
+     * Returns the usernames of the players who are currently logged on.
      *
-     * @param newPlayersAllowed whether new players may join the game
+     * @return the logged-on player usernames, ordered by player id
      */
-    public void setNewPlayersAllowed(boolean newPlayersAllowed) {
-        this.newPlayersAllowed = newPlayersAllowed;
+    public synchronized String[] getConnectedPlayerNames() {
+        return loggedOn.stream()
+                .map(id -> players.get(id).username())
+                .toArray(String[]::new);
     }
 
     /**
-     * Returns whether a player with the specified username is registered.
+     * Returns whether a game is in progress. New players may only join before
+     * a game starts: {@link #newGame(String)} and {@link #loadGame(String)} fix
+     * the player list into the world, so later joiners would have no player.
+     *
+     * @return true if a game world is installed
+     */
+    private boolean isGameStarted() {
+        return serverGameModel != null && serverGameModel.getWorld() != null;
+    }
+
+    /**
+     * Returns the id of the registered player with the specified username.
      *
      * @param username the username
-     * @return true if player, otherwise false
+     * @return the player id, or -1 if no such player is registered
      */
-    private boolean isPlayer(String username) {
-        for (LogOnCredentials p : players) {
-            if (p.username().equals(username)) return true;
+    private int findPlayerId(String username) {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).username().equals(username)) return i;
         }
-        return false;
+        return -1;
     }
 
     /**
-     * @param saveGameName the name of the saved game to load or save
+     * Loads a saved game. Logged-on players who take part in the saved game
+     * keep their connection under their player id in that game; all others
+     * are disconnected.
+     *
+     * @param saveGameName the name of the saved game to load
      * @throws IOException if the operation cannot complete because of an input/output error
      */
     @Override
     public synchronized void loadGame(String saveGameName) throws IOException {
         logger.info("load game " + saveGameName);
-        newPlayersAllowed = false;
+        String[] before = getConnectedPlayerNames();
 
-        ServerGameModel serverGameModel = saveGamesManager.loadGame(saveGameName);
-        String[] passwords = serverGameModel.getPasswords();
-        World world = serverGameModel.getWorld();
-        assert passwords.length == world.getPlayers().size();
-        ArrayList<LogOnCredentials> newPlayers = new ArrayList<>();
-        for (int i = 0; i < passwords.length; i++) {
-            Player player = world.getPlayer(i);
-            LogOnCredentials nap = new LogOnCredentials(player.getName(), passwords[i]);
-            newPlayers.add(nap);
-        }
-        /*
-         * Remove any currently logged on players who are not participants in
-         * the game we are loading.
-         */
-        for (LogOnCredentials nap : players) {
-            if (!newPlayers.contains(nap) && currentlyLoggedOn.contains(nap)) {
-                removeConnection(nap);
+        SavedGame savedGame = saveGamesManager.loadGame(saveGameName);
+        List<LogOnCredentials> newPlayers = new ArrayList<>(savedGame.credentials());
+
+        SortedSet<Integer> newLoggedOn = new TreeSet<>();
+        SortedMap<Integer, Connection> newConnections = new TreeMap<>();
+        for (int oldId : loggedOn) {
+            int newId = newPlayers.indexOf(players.get(oldId));
+            Connection connection = connections.get(oldId);
+            if (newId < 0) {
+                // Not a participant in the loaded game.
+                if (connection != null && connection.isOpen()) {
+                    connection.close();
+                }
+            } else {
+                newLoggedOn.add(newId);
+                if (connection != null) {
+                    newConnections.put(newId, connection);
+                }
             }
         }
+        loggedOn.clear();
+        loggedOn.addAll(newLoggedOn);
+        connections.clear();
+        connections.putAll(newConnections);
         players = newPlayers;
-        setServerGameModel(serverGameModel);
+
+        serverGameModel.setWorld(savedGame.world());
         sendWorldUpdatedCommand();
+        sendListOfConnectedPlayers2Clients();
+        propertyChangeSupport.firePropertyChange(CONNECTED_PLAYERS, before, getConnectedPlayerNames());
     }
 
     /**
-     * Removes the player at the specified index from the logged-in set.
+     * Logs off the player with the specified id and closes their connection.
      *
-     * @param player the player who owns or performs the operation
+     * @param player the id of the player to log off
      */
-    public void logoff(int player) {
-        LogOnCredentials np = players.get(player);
-        currentlyLoggedOn.remove(np);
+    public synchronized void logoff(int player) {
+        disconnectPlayer(player);
     }
 
     /**
-     * Authenticates credentials and returns the login result.
+     * Authenticates credentials and, on success, marks the player as logged on.
      *
      * @param credentials the credentials to authenticate
      * @return the login response
      */
-    public LogOnResponse logon(LogOnCredentials credentials) {
-        boolean isReturningPlayer = isPlayer(credentials.username());
+    public synchronized LogOnResponse logon(LogOnCredentials credentials) {
+        int id = findPlayerId(credentials.username());
 
-        if (!newPlayersAllowed && !isReturningPlayer) {
-            return LogOnResponse.failure("New logins not allowed.");
-        }
-
-        if (currentlyLoggedOn.contains(credentials)) {
-            return LogOnResponse.failure("Already logged on.");
-        }
-
-        if (isReturningPlayer) {
-            if (!players.contains(credentials)) {
+        if (id < 0) {
+            if (isGameStarted()) {
+                return LogOnResponse.failure("New logins not allowed.");
+            }
+            players.add(credentials);
+            id = players.size() - 1;
+        } else {
+            if (!players.get(id).password().equals(credentials.password())) {
                 return LogOnResponse.failure("Incorrect password.");
             }
-        } else {
-            players.add(credentials);
+            if (loggedOn.contains(id)) {
+                return LogOnResponse.failure("Already logged on.");
+            }
         }
-        currentlyLoggedOn.add(credentials);
-        // return accepted LogOnResponse
-        return LogOnResponse.success(players.indexOf(credentials));
+        loggedOn.add(id);
+        return LogOnResponse.success(id);
     }
 
     /**
@@ -286,8 +303,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      */
     @Override
     public synchronized void newGame(String mapName) {
-        newPlayersAllowed = false;
-
         World world;
         try {
             ScenarioData scenario = scenarioSource.loadScenario(mapName);
@@ -295,8 +310,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         } catch (IOException e) {
             throw new UncheckedIOException("Could not load scenario: " + mapName, e);
         }
-
-        String[] passwords = new String[players.size()];
 
         // Add players to world.
         for (int i = 0; i < players.size(); i++) {
@@ -306,25 +319,25 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             // add a new player
             Move addPlayerMove = new AddPlayerMove(player);
             addPlayerMove.apply(world);
-            passwords[i] = players.get(i).password();
         }
 
-        serverGameModel.setWorld(world, passwords);
-        setServerGameModel(serverGameModel);
+        serverGameModel.setWorld(world);
 
         sendWorldUpdatedCommand();
         logger.info("Started scenario: " + mapName);
     }
 
     /**
-     * Removes the remove connection from this freerails game server.
+     * Logs off the player with the specified id, closes their connection and
+     * informs the remaining clients and listeners.
      *
-     * @param p the p
+     * @param player the player id
      */
-    private void removeConnection(LogOnCredentials p) {
-        String[] before = getPlayerNames();
-        Connection connection = acceptedConnections.remove(p);
-        if (connection == null) {
+    private void disconnectPlayer(int player) {
+        String[] before = getConnectedPlayerNames();
+        Connection connection = connections.remove(player);
+        boolean wasLoggedOn = loggedOn.remove(player);
+        if (connection == null && !wasLoggedOn) {
             return;
         }
 
@@ -333,14 +346,12 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
          * an IllegalStateException if we try to disconnect a connection that is
          * not open.
          */
-        if (connection.isOpen()) {
+        if (connection != null && connection.isOpen()) {
             connection.close();
         }
 
-        currentlyLoggedOn.remove(p);
-
-        String[] after = getPlayerNames();
-        propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
+        sendListOfConnectedPlayers2Clients();
+        propertyChangeSupport.firePropertyChange(CONNECTED_PLAYERS, before, getConnectedPlayerNames());
     }
 
     /**
@@ -357,11 +368,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * @param saveGameName the name of the saved game to load or save
      */
     @Override
-    public void saveGame(String saveGameName) {
+    public synchronized void saveGame(String saveGameName) {
         logger.info("save game as " + saveGameName);
 
         try {
-            saveGamesManager.saveGame(saveGameName, serverGameModel);
+            saveGamesManager.saveGame(saveGameName, new SavedGame(serverGameModel.getWorld(), players));
         } catch (IOException e) {
             logger.error(e, "Could not save game as " + saveGameName);
         }
@@ -380,32 +391,34 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
     /**
      * Sends the specified message to all connections except the specified one.
+     * Connections that fail are removed after the message has been sent to the
+     * others.
      */
     private void sendToAllExcept(Connection donotSend2, Serializable message) {
+        List<Integer> failed = new ArrayList<>();
 
-        for (LogOnCredentials p : acceptedConnections.keySet()) {
-            Connection connection = acceptedConnections.get(p);
+        for (Map.Entry<Integer, Connection> entry : connections.entrySet()) {
+            Connection connection = entry.getValue();
 
             if (donotSend2 != connection) {
                 try {
                     connection.sendObject(message);
                 } catch (Exception e) {
-                    if (connection.isOpen()) {
-
-                        removeConnection(p);
-                    }
+                    failed.add(entry.getKey());
                 }
             }
+        }
+
+        for (int player : failed) {
+            disconnectPlayer(player);
         }
     }
 
     /**
-     * Performs the send list of connected players2 clients operation.
+     * Sends the list of logged-on players to all clients.
      */
     private void sendListOfConnectedPlayers2Clients() {
-        // Send the client the list of players.
-
-        Serializable request = new SetPropertyCommandToClient(ClientProperty.CONNECTED_CLIENTS, new ArrayList<>(Arrays.asList(getPlayerNames())));
+        Serializable request = new SetPropertyCommandToClient(ClientProperty.CONNECTED_CLIENTS, new ArrayList<>(Arrays.asList(getConnectedPlayerNames())));
 
         sendToAll(request);
     }
@@ -426,7 +439,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      *
      * @param serverGameModel the server-side model to install
      */
-    public void setServerGameModel(ServerGameModel serverGameModel) {
+    public synchronized void setServerGameModel(ServerGameModel serverGameModel) {
         this.serverGameModel = serverGameModel;
     }
 
@@ -456,69 +469,96 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             serverGameModel.update(serverMoveReceiver);
         }
 
-        try {
-            for (LogOnCredentials credentials : acceptedConnections.keySet()) {
-                Connection connection = acceptedConnections.get(credentials);
-
+        // Iterate over a snapshot: commands such as loading a game and failed
+        // sends may change the connections while messages are processed.
+        for (Connection connection : List.copyOf(connections.values())) {
+            try {
                 if (connection.isOpen()) {
-                    List<Serializable> messages = connection.getReceivedObjects();
-
-                    for (Serializable message : messages) {
-                        if (message instanceof CommandToServer command) {
-                            CommandStatus cStatus = command.execute(this);
-                            logger.debug(command.toString());
-                            connection.sendObject(cStatus);
-                        } else if (message instanceof Move || message instanceof MoveGenerator) {
-                            Move move;
-                            boolean isMove = message instanceof Move;
-
-                            if (isMove) {
-                                move = (Move) message;
-                            } else {
-                                MoveGenerator moveGenerator = (MoveGenerator) message;
-                                move = moveGenerator.generate(serverGameModel.getWorld());
-                            }
-
-                            Status mStatus = move.applicable(serverGameModel.getWorld());
-
-                            if (mStatus.isSuccess()) {
-                                move.apply(serverGameModel.getWorld());
-
-                                /*
-                                 * We don't send the move to the client that
-                                 * submitted it.
-                                 */
-                                sendToAllExcept(connection, move);
-                            }
-
-                            if (isMove) {
-                                connection.sendObject(mStatus);
-                            } else {
-                                connection.sendObject(TryMoveStatus.fromMoveStatus(mStatus));
-                            }
-                        } else {
-                            logger.debug(message.toString());
-                        }
-                    }
+                    processMessages(connection);
                 } else {
                     IOException readerFailure = connection.getReaderFailure();
                     if (readerFailure != null) {
                         logger.warn(readerFailure, "Client connection closed after a reader failure.");
                     }
-                    // Remove connection.
-                    removeConnection(credentials);
+                    removeConnection(connection);
                 }
+            } catch (IOException e) {
+                logger.warn(e, "Could not process client connection.");
             }
-        } catch (IOException e) {
-            logger.warn(e, "Could not process client connection.");
         }
     }
 
     /**
-     * Coordinates client connections, game sessions, and the server-side game model.
+     * Removes the specified connection and logs its player off. A connection
+     * that is not registered is just closed.
+     *
+     * @param connection the connection to remove
+     */
+    private void removeConnection(Connection connection) {
+        for (Map.Entry<Integer, Connection> entry : connections.entrySet()) {
+            if (entry.getValue() == connection) {
+                disconnectPlayer(entry.getKey());
+                return;
+            }
+        }
+        if (connection.isOpen()) {
+            connection.close();
+        }
+    }
+
+    /**
+     * Reads and executes the outstanding commands and moves from one client.
+     *
+     * @param connection the client connection
+     * @throws IOException if a reply cannot be sent
+     */
+    private void processMessages(Connection connection) throws IOException {
+        List<Serializable> messages = connection.getReceivedObjects();
+
+        for (Serializable message : messages) {
+            if (message instanceof CommandToServer command) {
+                CommandStatus cStatus = command.execute(this);
+                logger.debug(command.toString());
+                connection.sendObject(cStatus);
+            } else if (message instanceof Move || message instanceof MoveGenerator) {
+                Move move;
+                boolean isMove = message instanceof Move;
+
+                if (isMove) {
+                    move = (Move) message;
+                } else {
+                    MoveGenerator moveGenerator = (MoveGenerator) message;
+                    move = moveGenerator.generate(serverGameModel.getWorld());
+                }
+
+                Status mStatus = move.applicable(serverGameModel.getWorld());
+
+                if (mStatus.isSuccess()) {
+                    move.apply(serverGameModel.getWorld());
+
+                    /*
+                     * We don't send the move to the client that
+                     * submitted it.
+                     */
+                    sendToAllExcept(connection, move);
+                }
+
+                if (isMove) {
+                    connection.sendObject(mStatus);
+                } else {
+                    connection.sendObject(TryMoveStatus.fromMoveStatus(mStatus));
+                }
+            } else {
+                logger.debug(message.toString());
+            }
+        }
+    }
+
+    /**
+     * Sends the current scenario and saved-game lists to all clients.
      */
     @Override
-    public void refreshSavedGames() {
+    public synchronized void refreshSavedGames() {
         Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(scenarioSource.getAvailableScenarioNames())));
         Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ArrayList<>(Arrays.asList(saveGamesManager.getSaveGameNames())));
         sendToAll(setMaps);

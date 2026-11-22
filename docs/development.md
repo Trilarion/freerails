@@ -119,7 +119,8 @@ the server can send it the whole world (`SetWorldCommandToClient`).
 ## Persistence and game-state contracts
 
 The default on-disk save-game manager lists, loads, and writes `.sav` files in
-the user's `FreeRails User Data` folder.
+the user's `FreeRails User Data` folder. A save-game file contains a `SavedGame`: the
+world and the players' log-on credentials. The server game model itself is not saved.
 
 ### Savegame compatibility
 

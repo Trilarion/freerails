@@ -20,8 +20,6 @@ package freerails.server;
 
 import freerails.util.Utils;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +28,7 @@ import java.util.Map;
  */
 public class TestSaveGamesManager implements SaveGamesManager {
 
-    private final Map<String, Serializable> savedGames = new HashMap<>();
+    private final Map<String, SavedGame> savedGames = new HashMap<>();
 
     /**
      * Returns the save game names.
@@ -44,13 +42,12 @@ public class TestSaveGamesManager implements SaveGamesManager {
     /**
      * Performs save game.
      * @param path the path to use in the test.
-     * @param serializable the serializable to use in the test.
+     * @param savedGame the saved game to use in the test.
      */
     @Override
-    public void saveGame(String path, Serializable serializable) {
+    public void saveGame(String path, SavedGame savedGame) {
         // Make a copy so that the saved version's state cannot be changed.
-        Serializable copy = Utils.cloneBySerialisation(serializable);
-        savedGames.put(path, copy);
+        savedGames.put(path, (SavedGame) Utils.cloneBySerialisation(savedGame));
     }
 
     /**
@@ -59,8 +56,7 @@ public class TestSaveGamesManager implements SaveGamesManager {
      * @return the result of load game.
      */
     @Override
-    public ServerGameModel loadGame(String path) {
-        Serializable o = savedGames.get(path);
-        return (ServerGameModel) Utils.cloneBySerialisation(o);
+    public SavedGame loadGame(String path) {
+        return (SavedGame) Utils.cloneBySerialisation(savedGames.get(path));
     }
 }

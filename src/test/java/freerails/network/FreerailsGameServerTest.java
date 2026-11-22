@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,6 +48,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FreerailsGameServerTest extends TestCase {
 
     private FreerailsGameServer server;
+    private TestSaveGamesManager saveGamesManager;
 
     /**
      * Initializes the fixture before each test.
@@ -54,7 +57,8 @@ public class FreerailsGameServerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        server = new FreerailsGameServer(new ClasspathScenarioSource(), new TestSaveGamesManager());
+        saveGamesManager = new TestSaveGamesManager();
+        server = new FreerailsGameServer(new ClasspathScenarioSource(), saveGamesManager);
     }
 
     /**
@@ -80,8 +84,9 @@ public class FreerailsGameServerTest extends TestCase {
         response = server.logon(request3);
         assertFalse("Player is already logged on.", response.success());
 
-        // Test 4: When new log-ons are not allowed.
-        server.setNewPlayersAllowed(false);
+        // Test 4: When new log-ons are not allowed because a game has started.
+        server.setServerGameModel(new TrackingServerGameModel());
+        server.newGame(new ClasspathScenarioSource().getAvailableScenarioNames()[0]);
 
         LogOnCredentials request4 = new LogOnCredentials("Name4", "password4");
         response = server.logon(request4);
@@ -105,6 +110,65 @@ public class FreerailsGameServerTest extends TestCase {
         LogOnCredentials request6 = new LogOnCredentials("Name", "batman");
         response = server.logon(request6);
         assertFalse("Player 0 has logged off, but the password is wrong.", response.success());
+    }
+
+    /**
+     * Tests that loading a game restores the saved players and their passwords.
+     * @throws Exception if loading the game fails.
+     */
+    public void testLoadGameRestoresSavedCredentials() throws Exception {
+        LogOnCredentials first = new LogOnCredentials("Name", "password");
+        LogOnCredentials second = new LogOnCredentials("Name2", "password2");
+        server.setServerGameModel(new TrackingServerGameModel());
+        assertTrue(server.logon(first).success());
+        assertTrue(server.logon(second).success());
+        server.newGame(new ClasspathScenarioSource().getAvailableScenarioNames()[0]);
+        server.saveGame("game.sav");
+
+        FreerailsGameServer otherServer = new FreerailsGameServer(new ClasspathScenarioSource(), saveGamesManager);
+        TrackingServerGameModel otherModel = new TrackingServerGameModel();
+        otherServer.setServerGameModel(otherModel);
+        assertTrue(otherServer.logon(new LogOnCredentials("Other", "other")).success());
+        otherServer.loadGame("game.sav");
+
+        assertEquals(2, otherModel.getWorld().getPlayers().size());
+        assertEquals(List.of("Name", "Name2"), Arrays.asList(otherServer.getPlayerNames()));
+        LogOnResponse response = otherServer.logon(second);
+        assertTrue(response.success());
+        assertEquals(1, response.id());
+        assertFalse("Wrong password.", otherServer.logon(new LogOnCredentials("Name", "wrong")).success());
+        assertFalse("New players are not allowed.", otherServer.logon(new LogOnCredentials("New", "new")).success());
+    }
+
+    /**
+     * Tests that loading a game keeps logged-on participants under their saved
+     * player id and logs off everyone else.
+     * @throws Exception if loading the game fails.
+     */
+    public void testLoadGameRemapsLoggedOnPlayers() throws Exception {
+        LogOnCredentials first = new LogOnCredentials("Name", "password");
+        LogOnCredentials second = new LogOnCredentials("Name2", "password2");
+        server.setServerGameModel(new TrackingServerGameModel());
+        assertTrue(server.logon(first).success());
+        assertTrue(server.logon(second).success());
+        server.newGame(new ClasspathScenarioSource().getAvailableScenarioNames()[0]);
+        server.saveGame("game.sav");
+
+        FreerailsGameServer otherServer = new FreerailsGameServer(new ClasspathScenarioSource(), saveGamesManager);
+        otherServer.setServerGameModel(new TrackingServerGameModel());
+        assertEquals(0, otherServer.logon(second).id());
+        assertEquals(1, otherServer.logon(new LogOnCredentials("Other", "other")).id());
+        otherServer.loadGame("game.sav");
+
+        assertEquals(List.of("Name2"), Arrays.asList(otherServer.getConnectedPlayerNames()));
+        assertFalse("Name2 is still logged on.", otherServer.logon(second).success());
+        LogOnResponse response = otherServer.logon(first);
+        assertTrue(response.success());
+        assertEquals(0, response.id());
+
+        otherServer.logoff(1);
+        assertEquals(List.of("Name"), Arrays.asList(otherServer.getConnectedPlayerNames()));
+        assertEquals("Name2 was logged off under its new id.", 1, otherServer.logon(second).id());
     }
 
     /**
@@ -217,7 +281,6 @@ public class FreerailsGameServerTest extends TestCase {
     private static final class TrackingServerGameModel implements ServerGameModel {
 
         private World world;
-        private String[] passwords = new String[0];
         private final AtomicInteger updateCount = new AtomicInteger();
 
         /** Records server model updates. */
@@ -226,23 +289,16 @@ public class FreerailsGameServerTest extends TestCase {
             updateCount.incrementAndGet();
         }
 
-        /** Replaces the tracked game world and credentials. */
+        /** Replaces the tracked game world. */
         @Override
-        public void setWorld(World world, String[] passwords) {
+        public void setWorld(World world) {
             this.world = world;
-            this.passwords = passwords.clone();
         }
 
         /** Returns the installed world. */
         @Override
         public World getWorld() {
             return world;
-        }
-
-        /** Returns the tracked player credentials. */
-        @Override
-        public String[] getPasswords() {
-            return passwords.clone();
         }
     }
 }

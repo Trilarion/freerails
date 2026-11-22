@@ -69,6 +69,10 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             client.disconnect();
             Thread.sleep(50);
             assertEquals(1, server.getNumberOpenConnections());
+
+            // The remaining client is told who is still connected.
+            server.update();
+            assertConnectClientsEquals(client3, Arrays.asList("name3"));
         } catch (Exception e) {
             fail();
         }

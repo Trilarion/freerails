@@ -18,9 +18,11 @@
 
 package freerails.io.savegame;
 
-import freerails.server.FullServerGameModel;
-import freerails.server.ServerGameModel;
+import freerails.model.world.World;
+import freerails.network.LogOnCredentials;
+import freerails.server.SavedGame;
 import freerails.util.TestUtils;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 
@@ -28,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 /** Tests save-game file location and persistence behavior. */
 public class FullSaveGameManagerTest extends TestCase {
@@ -44,15 +47,16 @@ public class FullSaveGameManagerTest extends TestCase {
         String saveGameName = "round-trip.sav";
 
         try {
-            manager.saveGame(saveGameName, new FullServerGameModel());
+            SavedGame savedGame = createSavedGame();
+            manager.saveGame(saveGameName, savedGame);
 
             assertTrue(saveGameDirectory.isDirectory());
             assertTrue(new File(saveGameDirectory, saveGameName).isFile());
             assertEquals(saveGameName, manager.getSaveGameNames()[0]);
 
-            ServerGameModel loadedGame = manager.loadGame(saveGameName);
-            assertTrue(loadedGame instanceof FullServerGameModel);
-            assertNull(loadedGame.getWorld());
+            SavedGame loadedGame = manager.loadGame(saveGameName);
+            assertEquals(savedGame.credentials(), loadedGame.credentials());
+            assertEquals(WorldGenerator.TEST_PLAYER.getName(), loadedGame.world().getPlayer(0).getName());
         } finally {
             FileUtils.deleteDirectory(parentDirectory.toFile());
         }
@@ -70,11 +74,17 @@ public class FullSaveGameManagerTest extends TestCase {
 
         try {
             TestUtils.assertThrows(IOException.class, () -> manager.saveGame(
-                    "../outside.sav", new FullServerGameModel()));
+                    "../outside.sav", createSavedGame()));
             assertFalse(Files.exists(parentDirectory.resolve("outside.sav")));
             assertFalse(Files.exists(saveGameDirectory));
         } finally {
             FileUtils.deleteDirectory(parentDirectory.toFile());
         }
+    }
+
+    private static SavedGame createSavedGame() {
+        World world = WorldGenerator.defaultWorld();
+        world.addPlayer(WorldGenerator.TEST_PLAYER);
+        return new SavedGame(world, List.of(new LogOnCredentials(WorldGenerator.TEST_PLAYER.getName(), "secret")));
     }
 }

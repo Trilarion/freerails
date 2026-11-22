@@ -18,10 +18,7 @@
 
 package freerails.server;
 
-import freerails.server.ServerGameModel;
-
 import java.io.IOException;
-import java.io.Serializable;
 
 /**
  * Defines methods that let the server list, load, and save game states.
@@ -36,20 +33,20 @@ public interface SaveGamesManager {
     String[] getSaveGameNames();
 
     /**
-     * Serializes a game object to a named save-game file.
+     * Writes a saved game to a named save-game file.
      *
      * @param path the path of the save-game file
-     * @param serializable the object to serialize to the save-game file
+     * @param savedGame the world and player credentials to save
      * @throws IOException if the operation cannot complete because of an input/output error
      */
-    void saveGame(String path, Serializable serializable) throws IOException;
+    void saveGame(String path, SavedGame savedGame) throws IOException;
 
     /**
-     * Loads a server game model from a save-game file.
+     * Loads a saved game from a save-game file.
      *
      * @param path the path of the save-game file
-     * @return the loaded server game model
+     * @return the loaded world and player credentials
      * @throws IOException if the operation cannot complete because of an input/output error
      */
-    ServerGameModel loadGame(String path) throws IOException;
+    SavedGame loadGame(String path) throws IOException;
 }
