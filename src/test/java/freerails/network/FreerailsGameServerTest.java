@@ -222,7 +222,7 @@ public class FreerailsGameServerTest extends TestCase {
 
         /** Records server model updates. */
         @Override
-        public void update() {
+        public void update(MoveReceiver moveReceiver) {
             updateCount.incrementAndGet();
         }
 
@@ -244,9 +244,5 @@ public class FreerailsGameServerTest extends TestCase {
         public String[] getPasswords() {
             return passwords.clone();
         }
-
-        /** Accepts the receiver without scheduling game updates. */
-        @Override
-        public void initialize(MoveReceiver moveReceiver) {}
     }
 }

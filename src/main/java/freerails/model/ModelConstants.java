@@ -34,6 +34,8 @@ public final class ModelConstants {
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
     public static final Money BOND_VALUE_ISSUE = new Money(500000);
     public static final Money BOND_VALUE_REPAY = new Money(-500000);
+    /** Yearly maintenance cost charged per train. */
+    public static final Money TRAIN_MAINTENANCE_PER_YEAR = new Money(5000);
     /** Fixed-point model distance units per map tile. */
     public static final int MODEL_UNITS_PER_TILE = 100;
     public static final double MODEL_DIAGONAL_TILE_LENGTH =

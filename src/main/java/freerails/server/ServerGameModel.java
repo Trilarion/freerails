@@ -16,9 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *
- */
 package freerails.server;
 
 import freerails.model.world.World;
@@ -26,12 +23,18 @@ import freerails.move.MoveReceiver;
 
 import java.io.Serializable;
 
-// TODO do not extend GameModel, just add an update method
 /**
- * Defines methods on a GameModel that let the server load and initiate, and
- * save it.
+ * Defines the server-side game model that the server loads, initializes,
+ * updates, and saves.
  */
-public interface ServerGameModel extends GameModel, Serializable {
+public interface ServerGameModel extends Serializable {
+
+    /**
+     * Advances the model by one server update cycle.
+     *
+     * @param moveReceiver the receiver to which generated moves are submitted
+     */
+    void update(MoveReceiver moveReceiver);
 
     /**
      * Replaces the model's world and associated player passwords.
@@ -54,12 +57,5 @@ public interface ServerGameModel extends GameModel, Serializable {
      * @return the player passwords
      */
     String[] getPasswords();
-
-    /**
-     * Initializes server processing and sends generated moves to the receiver.
-     *
-     * @param moveReceiver the receiver to which generated moves are submitted
-     */
-    void initialize(MoveReceiver moveReceiver);
 
 }

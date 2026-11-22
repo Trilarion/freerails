@@ -22,10 +22,7 @@
 package freerails.server;
 
 import freerails.model.ModelConstants;
-import freerails.model.operations.cargo.Cargo;
-import freerails.model.operations.cargo.CargoBatch;
 import freerails.model.operations.cargo.CargoBatchBundle;
-import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.economy.Money;
 import freerails.model.economy.transaction.BondItemTransaction;
 import freerails.model.economy.transaction.Transaction;
@@ -35,9 +32,7 @@ import freerails.model.simulation.Clock;
 import freerails.model.simulation.Time;
 import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
-import freerails.model.operations.station.StationSupply;
 import freerails.model.operations.station.StationUtils;
-import freerails.model.terrain.TerrainTile;
 import freerails.model.track.NoTrackException;
 import freerails.model.track.OccupiedTracks;
 import freerails.model.track.TrackType;
@@ -53,6 +48,8 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,7 +69,6 @@ public class FullServerGameModel implements ServerGameModel {
     private String[] passwords;
 
     private transient long nextModelUpdateDue;
-    private transient MoveReceiver moveReceiver;
 
     /**
      * Maintains and advances the authoritative game world on the server.
@@ -81,73 +77,33 @@ public class FullServerGameModel implements ServerGameModel {
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
-    // TODO this should be part of the model, at least the update part, move it there
     /**
-     * Call this method once a month.
-     * <p>
-     * Loops over the list of stations and adds cargo depending on what
-     * the surrounding tiles supply.
-     *
-     * @param world the mutable world containing the stations and cargo
-     * @param moveReceiver the receiver used to apply each generated move
+     * Restores the transient update schedule after loading, so a loaded game does not try to catch up on ticks
+     * since the epoch.
      */
-    public static void cargoAtStationsUpdate(World world, MoveReceiver moveReceiver) {
-        // for all players
-        for (Player player: world.getPlayers()) {
-            // for all stations of a player
-            for (Station station: world.getStations(player)) {
-                StationSupply supply = station.getSupply();
-                UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
-                CargoBatchBundle after = new CargoBatchBundle(cargoBatchBundle);
-                int stationId = station.getId();
-
-                for (CargoBatch cargoBatch: after.getCargoBatches()) {
-                    int amount = after.getAmount(cargoBatch);
-
-                    if (amount > 0) {
-                        // (23/24)^12 = 0.60
-                        after.setAmount(cargoBatch, amount * 23 / 24);
-                    }
-                }
-
-                for (Cargo cargo : world.getCargos()) {
-                    int cargoId = cargo.getId();
-                    int amountSupplied = supply.getSupply(cargoId);
-
-                    if (amountSupplied > 0) {
-                        CargoBatch cargoBatch = new CargoBatch(
-                                cargoId, station.getLocation(), world.getClock().getCurrentTime(), stationId);
-                        int amountAlready = after.getAmount(cargoBatch);
-
-                        // Obtain the month
-                        Clock clock = world.getClock();
-                        int month = clock.getCurrentMonth();
-
-                        int amountAfter = calculateAmountToAddPerMonth(amountSupplied, month) + amountAlready;
-                        after.setAmount(cargoBatch, amountAfter);
-                    }
-                }
-
-                Move move = new ChangeCargoAtStationMove(player, stationId, after);
-                moveReceiver.process(move);
-            }
-        }
+    @Serial
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        nextModelUpdateDue = System.currentTimeMillis();
     }
 
     /**
-     * If, say, 14 units get added each year, some month we should add 1 and
-     * others we should add 2 such that over the year exactly 14 units get
-     * added.
+     * Call this method once a month.
      * <p>
-     * Note: January is 0
+     * Loops over the list of stations and sends a move that updates the cargo waiting at each station, as
+     * calculated by {@link StationUtils#calculateCargoAtStationAfterMonth}.
      *
-     * @param amountSuppliedPerYear the number of cargo units supplied over a year
-     * @param month the zero-based month for which to calculate the amount
-     * @return the cargo quantity to add during the specified month
+     * @param world the world containing the stations and cargo
+     * @param moveReceiver the receiver used to apply each generated move
      */
-    public static int calculateAmountToAddPerMonth(int amountSuppliedPerYear, int month) {
-        // This calculation actually delivers the requirement of rounding sometimes up and sometimes down.
-        return amountSuppliedPerYear * (month + 1) / 12 - amountSuppliedPerYear * month / 12;
+    public static void cargoAtStationsUpdate(UnmodifiableWorld world, MoveReceiver moveReceiver) {
+        for (Player player: world.getPlayers()) {
+            for (Station station: world.getStations(player)) {
+                CargoBatchBundle after = StationUtils.calculateCargoAtStationAfterMonth(world, station);
+                Move move = new ChangeCargoAtStationMove(player, station.getId(), after);
+                moveReceiver.process(move);
+            }
+        }
     }
 
     /**
@@ -156,27 +112,25 @@ public class FullServerGameModel implements ServerGameModel {
      * <p>
      * Done on the server side
      * @param world the game world used by this operation
+     * @param moveReceiver the receiver used to apply each generated move
      */
-    private static List<Move> generateBondInterestMoves(UnmodifiableWorld world) {
-        // TODO generates multiple moves, really a good idea?
-        List<Move> moves = new ArrayList<>();
+    private static void applyBondInterestMoves(UnmodifiableWorld world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
-            // TODO use Money arithmetic on interestDue
-            long interestDue = 0;
+            Money interestDue = Money.ZERO;
 
             for (Transaction transaction: world.getTransactions(player)) {
                 if (transaction instanceof BondItemTransaction bondItemTransaction) {
                     int interestRate = bondItemTransaction.getId();
-                    interestDue += (interestRate * ModelConstants.BOND_VALUE_ISSUE.amount() / 100) * bondItemTransaction.getQuantity();
+                    Money interestPerBond = Money.divide(Money.multiply(ModelConstants.BOND_VALUE_ISSUE, interestRate), 100);
+                    interestDue = Money.add(interestDue, Money.multiply(interestPerBond, bondItemTransaction.getQuantity()));
                 }
             }
 
-            if (interestDue > 0) {
-                Transaction transaction = new Transaction(TransactionCategory.INTEREST_CHARGE, new Money(-interestDue), world.getClock().getCurrentTime());
-                moves.add(new AddTransactionMove(player, transaction));
+            if (interestDue.amount() > 0) {
+                Transaction transaction = new Transaction(TransactionCategory.INTEREST_CHARGE, Money.opposite(interestDue), world.getClock().getCurrentTime());
+                moveReceiver.process(new AddTransactionMove(player, transaction));
             }
         }
-        return moves;
     }
 
     /**
@@ -189,9 +143,8 @@ public class FullServerGameModel implements ServerGameModel {
     private static void applyTrainMaintenanceMoves(UnmodifiableWorld world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
             int numberOfTrains = world.getTrains(player).size();
-            // TODO 5000L = hardcoded constant, move to constants
-            long amount = numberOfTrains * 5000L;
-            Transaction transaction = new Transaction(TransactionCategory.TRAIN_MAINTENANCE, new Money(-amount), world.getClock().getCurrentTime());
+            Money amount = Money.multiply(ModelConstants.TRAIN_MAINTENANCE_PER_YEAR, numberOfTrains);
+            Transaction transaction = new Transaction(TransactionCategory.TRAIN_MAINTENANCE, Money.opposite(amount), world.getClock().getCurrentTime());
 
             Move move = new AddTransactionMove(player, transaction);
             moveReceiver.process(move);
@@ -216,22 +169,22 @@ public class FullServerGameModel implements ServerGameModel {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player, times);
         aggregator.setCategory(TransactionCategory.TRACK);
 
-        long amount = 0;
+        Money amount = Money.ZERO;
 
         for (TrackType trackType: world.getTrackTypes()) {
-            // TODO use Money arithmetic
-            long maintenanceCost = trackType.getYearlyMaintenance().amount();
+            Money maintenanceCost = trackType.getYearlyMaintenance();
 
             // Is the track type the category we are interested in?
             boolean rightType = (TransactionCategory.TRACK_MAINTENANCE == category) != trackType.isStation();
 
             if (rightType) {
                 aggregator.setType(trackType.getId());
-                amount += maintenanceCost * aggregator.calculateQuantity() / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+                Money cost = Money.divide(Money.multiply(maintenanceCost, aggregator.calculateQuantity()), ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                amount = Money.add(amount, cost);
             }
         }
 
-        Transaction transaction = new Transaction(category, new Money(-amount), world.getClock().getCurrentTime());
+        Transaction transaction = new Transaction(category, Money.opposite(amount), world.getClock().getCurrentTime());
 
         return new AddTransactionMove(player, transaction);
     }
@@ -335,11 +288,14 @@ public class FullServerGameModel implements ServerGameModel {
     }
 
     /**
-     * Update of some kind.
+     * Runs all ticks that are due: builds queued trains and, unless paused, advances the clock, moves trains and
+     * handles month and year ends.
+     *
+     * @param moveReceiver the receiver to which generated moves are submitted
      */
     @Override
-    public synchronized void update() {
-        if (world == null || moveReceiver == null) {
+    public synchronized void update(MoveReceiver moveReceiver) {
+        if (world == null) {
             return;
         }
 
@@ -363,12 +319,12 @@ public class FullServerGameModel implements ServerGameModel {
                 Clock clock = world.getClock();
 
                 if (clock.isLastTickOfYear()) {
-                    yearEnd();
+                    yearEnd(moveReceiver);
                 }
 
                 // And a new month...
                 if (clock.isLastTickOfMonth()) {
-                    monthEnd();
+                    monthEnd(moveReceiver);
                 }
 
                 // calculate "ideal world" time for next tick
@@ -378,16 +334,6 @@ public class FullServerGameModel implements ServerGameModel {
                 nextModelUpdateDue = System.currentTimeMillis();
             }
         }
-    }
-
-    // TODO eliminate initialize and inline it whereever it is called
-    /**
-     * @param moveReceiver the receiver to which generated moves are submitted
-     */
-    @Override
-    public synchronized void initialize(MoveReceiver moveReceiver) {
-        this.moveReceiver = moveReceiver;
-        nextModelUpdateDue = System.currentTimeMillis();
     }
 
     /**
@@ -420,14 +366,12 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * This is called on the last tick of each year.
      */
-    private void yearEnd() {
+    private void yearEnd(MoveReceiver moveReceiver) {
 
         applyTrackMaintenanceMoves(world, moveReceiver);
         applyTrainMaintenanceMoves(world, moveReceiver);
 
-        for (Move move: generateBondInterestMoves(world)) {
-            moveReceiver.process(move);
-        }
+        applyBondInterestMoves(world, moveReceiver);
 
         // Grow cities
         Move move = new GrowCitiesMove();
@@ -437,27 +381,28 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * This is called at the start of each new month.
      */
-    private void monthEnd() {
+    private void monthEnd(MoveReceiver moveReceiver) {
         supplyAtStationsUpdate(world, moveReceiver);
         cargoAtStationsUpdate(world, moveReceiver);
     }
 
-    // TODO move static code to model
     /**
      * Loops through all the known stations and recalculates the
      * cargoes that they supply, demand, and convert.
      *
-     * @param world the mutable world containing stations and track
+     * @param world the world containing stations and track
      * @param moveReceiver the receiver used to apply each generated move
      */
-    public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
+    public static void supplyAtStationsUpdate(UnmodifiableWorld world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
             for (Station station: world.getStations(player)) {
-                TerrainTile tile = world.getTile(station.getLocation());
-                int trackRuleId = tile.trackPiece().trackType().getId();
-                Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, trackRuleId, station);
+                Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, station);
 
-                if (!stationAfter.equals(station)) {
+                // Station.equals compares only ids, so compare the cargo policy itself.
+                boolean policyChanged = !stationAfter.getSupply().equals(station.getSupply())
+                        || !stationAfter.getDemandForCargo().equals(station.getDemandForCargo());
+
+                if (policyChanged) {
                     Move move = new UpdateStationCargoPolicyMove(player, stationAfter);
                     moveReceiver.process(move);
                 }

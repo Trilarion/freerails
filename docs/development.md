@@ -27,8 +27,7 @@ FreeRails separates game state and rules from interaction, presentation, and
 infrastructure:
 
 - `freerails.model` contains the game domain and world state. It should remain
-independent of the client, controller, server, and move layers. The shared
-`freerails.model.GameModel` update contract is used by clients and servers.
+independent of the client, controller, server, and move layers.
 - `freerails.move` represents player actions as moves that can be checked and
 applied to the world.
 - `freerails.controller` translates user intent into game actions.

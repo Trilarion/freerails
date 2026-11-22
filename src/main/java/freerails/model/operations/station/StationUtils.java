@@ -19,6 +19,9 @@
 package freerails.model.operations.station;
 
 import freerails.model.ModelConstants;
+import freerails.model.operations.cargo.Cargo;
+import freerails.model.operations.cargo.CargoBatch;
+import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.operations.cargo.CargoConversion;
 import freerails.model.operations.cargo.CargoProductionOrConsumption;
 import freerails.model.player.Player;
@@ -281,6 +284,77 @@ public final class StationUtils {
         station.setDemandForCargo(new StationDemand(demandedCargoIds));
 
         return station;
+    }
+
+    /**
+     * Recalculates a station's supply and demand settings using the track type at the station's location.
+     * Unlike {@link #calculateCargoSupplyRateAtStation(UnmodifiableWorld, int, Station)}, the given station is not
+     * changed; the result is a copy with the recalculated settings.
+     *
+     * @param world world providing map, track, and cargo definitions
+     * @param station station whose cargo settings are recalculated
+     * @return a copy of the station with recalculated supply and demand
+     */
+    public static Station calculateCargoSupplyRateAtStation(UnmodifiableWorld world, Station station) {
+        TerrainTile tile = world.getTile(station.getLocation());
+        int trackRuleId = tile.trackPiece().trackType().getId();
+        return calculateCargoSupplyRateAtStation(world, trackRuleId, new Station(station));
+    }
+
+    /**
+     * Calculates the cargo waiting at a station after one month: existing cargo decays by 1/24 and the cargo the
+     * station supplies is added for the current month. The station itself is not changed.
+     *
+     * @param world world providing cargo definitions and the current time
+     * @param station station whose waiting cargo is calculated
+     * @return the cargo waiting at the station after the monthly update
+     */
+    public static CargoBatchBundle calculateCargoAtStationAfterMonth(UnmodifiableWorld world, Station station) {
+        StationSupply supply = station.getSupply();
+        CargoBatchBundle after = new CargoBatchBundle(station.getCargoBatchBundle());
+        int stationId = station.getId();
+
+        for (CargoBatch cargoBatch: after.getCargoBatches()) {
+            int amount = after.getAmount(cargoBatch);
+
+            if (amount > 0) {
+                // (23/24)^12 = 0.60
+                after.setAmount(cargoBatch, amount * 23 / 24);
+            }
+        }
+
+        int month = world.getClock().getCurrentMonth();
+
+        for (Cargo cargo : world.getCargos()) {
+            int cargoId = cargo.getId();
+            int amountSupplied = supply.getSupply(cargoId);
+
+            if (amountSupplied > 0) {
+                CargoBatch cargoBatch = new CargoBatch(
+                        cargoId, station.getLocation(), world.getClock().getCurrentTime(), stationId);
+                int amountAlready = after.getAmount(cargoBatch);
+                int amountAfter = calculateAmountToAddPerMonth(amountSupplied, month) + amountAlready;
+                after.setAmount(cargoBatch, amountAfter);
+            }
+        }
+
+        return after;
+    }
+
+    /**
+     * If, say, 14 units get added each year, some month we should add 1 and
+     * others we should add 2 such that over the year exactly 14 units get
+     * added.
+     * <p>
+     * Note: January is 0
+     *
+     * @param amountSuppliedPerYear the number of cargo units supplied over a year
+     * @param month the zero-based month for which to calculate the amount
+     * @return the cargo quantity to add during the specified month
+     */
+    public static int calculateAmountToAddPerMonth(int amountSuppliedPerYear, int month) {
+        // This calculation actually delivers the requirement of rounding sometimes up and sometimes down.
+        return amountSuppliedPerYear * (month + 1) / 12 - amountSuppliedPerYear * month / 12;
     }
 
     /**

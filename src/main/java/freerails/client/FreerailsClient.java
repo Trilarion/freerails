@@ -28,7 +28,6 @@ import freerails.network.command.*;
 import freerails.client.receiver.MoveChainFork;
 import freerails.client.receiver.UntriedMoveReceiver;
 import freerails.model.world.World;
-import freerails.model.GameModel;
 import freerails.util.network.Connection;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
@@ -44,7 +43,7 @@ import java.util.Map;
 /**
  * A client for FreerailsGameServer.
  */
-public class FreerailsClient implements ClientControlInterface, GameModel, UntriedMoveReceiver, ServerCommandReceiver {
+public class FreerailsClient implements ClientControlInterface, UntriedMoveReceiver, ServerCommandReceiver {
 
     private static final TaggedLogger logger = Logger.tag("FreerailsClient");
     private final Map<ClientProperty, Serializable> properties = new HashMap<>();
@@ -178,7 +177,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * Reads and deals with all outstanding messages from the server.
      */
-    @Override
     public final void update() {
         try {
             List<Serializable> messages = connectionToServer.getReceivedObjects();

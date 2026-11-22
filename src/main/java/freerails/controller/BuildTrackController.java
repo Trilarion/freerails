@@ -33,7 +33,6 @@ import freerails.move.Status;
 import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.GameModel;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -50,7 +49,7 @@ import java.util.Map;
 /**
  * Provides methods to change the proposed track and save it to the real world.
  */
-public class BuildTrackController implements GameModel {
+public class BuildTrackController {
 
     private static final TaggedLogger logger = Logger.tag("BuildTrackController");
     private final ModelRoot modelRoot;
@@ -373,7 +372,6 @@ public class BuildTrackController implements GameModel {
     /**
      * Performs the update operation.
      */
-    @Override
     public void update() {
         // update search for path if necessary.
         if (searchStatus() == PathFinderStatus.SEARCH_PAUSED) {

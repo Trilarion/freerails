@@ -24,11 +24,19 @@ import freerails.model.operations.station.Station;
 import freerails.model.operations.station.StationSupply;
 import freerails.model.player.Player;
 import freerails.model.simulation.Time;
+import freerails.model.terrain.TerrainTile;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackPiece;
+import freerails.model.track.TrackType;
 import freerails.model.world.World;
+import freerails.move.Move;
+import freerails.move.UpdateStationCargoPolicyMove;
 import freerails.util.IntPoint2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,22 +49,7 @@ public class FullServerGameModelTest extends TestCase {
         FullServerGameModel model = new FullServerGameModel();
         Thread.sleep(2);
 
-        model.update();
-    }
-
-    /**
-     * Tests calculate amount to add behavior.
-     */
-    public void testCalculateAmountToAdd() {
-
-        int amount = FullServerGameModel.calculateAmountToAddPerMonth(12, 1);
-        assertEquals(1, amount);
-
-        assertCorrectTotalAddedOverYear(0);
-        assertCorrectTotalAddedOverYear(12);
-        assertCorrectTotalAddedOverYear(14);
-        assertCorrectTotalAddedOverYear(140);
-        assertCorrectTotalAddedOverYear(3);
+        model.update(move -> fail("No moves expected without a world: " + move));
     }
 
     /**
@@ -81,17 +74,35 @@ public class FullServerGameModelTest extends TestCase {
     }
 
     /**
-     * If, say, 14 units get added each year, some month we should add 1 and
-     * others we should add 2 such that over the year exactly 14 units get
-     * added.
+     * Tests that a changed supply and demand policy is sent as a move instead of changing the world directly, and
+     * that no move is sent once the policy is up to date.
      */
-    private static void assertCorrectTotalAddedOverYear(final int unitPerYear) {
-        int amountAddedThisSoFar = 0;
+    public void testSupplyUpdateSendsMoveWithoutChangingWorldDirectly() {
+        World world = WorldGenerator.defaultWorld();
+        Player player = WorldGenerator.TEST_PLAYER;
+        world.addPlayer(player);
+        Station station = new Station(1, new IntPoint2D(4, 5), "Station", CargoBatchBundle.EMPTY);
+        world.addStation(player, station);
+        TrackType stationTrackType = world.getTrackTypes().stream()
+                .filter(TrackType::isStation)
+                .findFirst()
+                .orElseThrow();
+        world.setTile(station.getLocation(), new TerrainTile(0,
+                new TrackPiece(TrackConfiguration.from8bitTemplate(1), stationTrackType, player.getId())));
+        StationSupply supplyBefore = station.getSupply();
 
-        for (int i = 0; i < 12; i++) {
-            amountAddedThisSoFar += FullServerGameModel.calculateAmountToAddPerMonth(unitPerYear, i);
-        }
+        List<Move> moves = new ArrayList<>();
+        FullServerGameModel.supplyAtStationsUpdate(world, moves::add);
 
-        assertEquals(unitPerYear, amountAddedThisSoFar);
+        assertEquals(1, moves.size());
+        assertTrue(moves.get(0) instanceof UpdateStationCargoPolicyMove);
+        assertSame("The world must only change through the move.", supplyBefore, station.getSupply());
+
+        moves.get(0).apply(world);
+        assertNotSame(supplyBefore, station.getSupply());
+
+        moves.clear();
+        FullServerGameModel.supplyAtStationsUpdate(world, moves::add);
+        assertTrue("An unchanged policy must not produce a move.", moves.isEmpty());
     }
 }
