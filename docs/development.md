@@ -138,6 +138,34 @@ FreeRails is currently in active development. Changes to persisted game state do
 to support pre-existing savegames; development should always assume that no pre-existing
 savegames need to be loaded.
 
+Instead, incompatible savegames must be rejected cleanly. `FullSaveGameManager` writes a
+gzipped Java object stream containing a magic number, the `FORMAT_VERSION`, the build
+version that wrote the file (informational only), and the `SavedGame`. Loading rejects
+files with a different magic number or format version with an `IOException` that names
+both builds. Saves are written to a temporary file and then moved into place, so a failed
+save never damages an existing savegame.
+
+`SaveGameFormatTest` describes the serialized structure of every FreeRails class that can
+be stored in a savegame and compares it with
+`src/test/resources/freerails/io/savegame/savegame-format.txt`. When it fails, the
+savegame structure changed: bump `FullSaveGameManager.FORMAT_VERSION` and regenerate the
+golden file with
+`./gradlew test --tests freerails.io.savegame.SaveGameFormatTest -Dfreerails.updateSaveGameFormat=true`.
+Do not edit the golden file by hand or regenerate it without bumping the version. A class
+that is only reachable through a field of type `Object` or `Serializable` is not found
+automatically; add it to `SaveGameFormatTest.EXTRA_ROOTS`.
+
+Because this test decides compatibility, all `serialVersionUID`s are `1L`; do not use
+generated values. Savegames and network connections are deserialized through the shared
+`SerializationFilter` allowlist (FreeRails classes plus standard value and container
+classes). A new serializable type outside `freerails.*` must be added there.
+
+A future option is to replace Java serialization for savegames with an explicit,
+non-Java-serialization format such as JSON with a versioned schema. It would make savegames
+readable and diffable, decouple them from class internals, remove the deserialization attack
+surface, and allow migrations should savegame compatibility become a goal. It is not
+pursued while compatibility with older savegames is not required.
+
 ### Moves and world state
 
 Treat a `Move` as one coherent game action. Moves cross the client/server boundary, so
