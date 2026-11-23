@@ -23,6 +23,8 @@ package freerails.controller;
 
 import freerails.model.simulation.Time;
 import freerails.model.operations.train.Train;
+import freerails.model.operations.train.TrainTemplate;
+import freerails.model.building.EngineShop;
 import freerails.model.operations.cargo.CargoConversion;
 import freerails.model.economy.transaction.CargoDeliveryTransaction;
 import freerails.model.economy.transaction.Transaction;
@@ -219,8 +221,6 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         StationDemand demand = new StationDemand(Set.of(0));
         station.setDemandForCargo(demand);
-        world.removeStation(WorldGenerator.TEST_PLAYER, station.getId());
-        world.addStation(WorldGenerator.TEST_PLAYER, station);
 
         // Check that the station demands what we think it does.
         assertTrue("The station should demand cargo type 0.", station
@@ -376,10 +376,6 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         StationDemand demand = new StationDemand(Set.of(0));
         station.setDemandForCargo(demand);
 
-        // TODO if this is the same station the removal and addition is meaningless
-        world.removeStation(WorldGenerator.TEST_PLAYER, station.getId());
-        world.addStation(WorldGenerator.TEST_PLAYER, station);
-
         assertTrue(station.getDemandForCargo().isCargoDemanded(0));
         stopAtStation();
 
@@ -391,6 +387,39 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         assertEquals(expectedOnTrain, getCargoOnTrain());
         assertEquals(expectedAtStation, getCargoAtStation());
+    }
+
+    /**
+     * Tests that an engine shop at the station does not affect dropping off and
+     * picking up cargo, and that the engine shop is left unchanged.
+     */
+    public void testDropOffAndPickUpAtStationWithEngineShop() {
+        Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
+        int engineId = world.getEngines().iterator().next().getId();
+        List<TrainTemplate> production = List.of(new TrainTemplate(engineId, List.of(0, 0)));
+        EngineShop engineShop = new EngineShop(0, station.getLocation());
+        engineShop.setProduction(production);
+        world.addEngineShop(WorldGenerator.TEST_PLAYER, engineShop);
+
+        setCargoOnTrain(cargoType0FromStation2, 120);
+        setCargoAtStation(cargoType0FromStation0, 200);
+        station.setDemandForCargo(new StationDemand(Set.of(0)));
+
+        stopAtStation();
+
+        CargoBatchBundle expectedOnTrain = new CargoBatchBundle();
+        expectedOnTrain.setAmount(cargoType0FromStation0, 120);
+
+        CargoBatchBundle expectedAtStation = new CargoBatchBundle();
+        expectedAtStation.setAmount(cargoType0FromStation0, 80);
+
+        assertEquals(expectedOnTrain, getCargoOnTrain());
+        assertEquals(expectedAtStation, getCargoAtStation());
+
+        assertEquals(1, world.getEngineShops(WorldGenerator.TEST_PLAYER).size());
+        EngineShop engineShopAfterStop = world.getEngineShop(WorldGenerator.TEST_PLAYER, 0);
+        assertEquals(station.getLocation(), engineShopAfterStop.getLocation());
+        assertEquals(production, engineShopAfterStop.getProduction());
     }
 
     /**
