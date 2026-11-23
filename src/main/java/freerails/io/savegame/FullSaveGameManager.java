@@ -54,7 +54,7 @@ public class FullSaveGameManager implements SaveGamesManager {
      * Version of the save-game structure. Bump it whenever {@code SaveGameFormatTest} reports that
      * the structure of the serialized classes changed, then regenerate the test's golden file.
      */
-    public static final int FORMAT_VERSION = 1;
+    public static final int FORMAT_VERSION = 2;
     /** Deserialization limits and class allowlist for save-game files. */
     private static final SerializationFilter INPUT_FILTER =
             new SerializationFilter(1_000, 50_000_000, 1024L * 1024 * 1024, 50_000_000);

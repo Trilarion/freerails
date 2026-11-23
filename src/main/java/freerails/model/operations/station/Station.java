@@ -21,15 +21,11 @@ package freerails.model.operations.station;
 import freerails.util.Identifiable;
 import freerails.model.operations.cargo.ImmutableCargoBatchBundle;
 import freerails.model.operations.cargo.UnmodifiableCargoBatchBundle;
-import freerails.model.operations.train.TrainTemplate;
 
 import freerails.util.IntPoint2D;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serial;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,9 +43,6 @@ public class Station extends Identifiable {
     private StationSupply supply;
     private StationDemand demandForCargo;
     private ImmutableCargoBatchBundle cargoBatchBundle;
-    // Retains the old serialized field name so World can migrate legacy saves.
-    private List<TrainTemplate> production;
-    private transient List<TrainTemplate> legacyProduction;
 
     /**
      * Creates a station with empty cargo demand and supply settings.
@@ -154,37 +147,6 @@ public class Station extends Identifiable {
      */
     public void setSupply(StationSupply supply) {
         this.supply = supply;
-    }
-
-    /**
-     * Returns and clears the production queue read from a legacy station save.
-     * The world uses this once to migrate old station queues into engine shops.
-     *
-     * @return legacy queued train templates, or an empty list
-     */
-    public List<TrainTemplate> takeLegacyProductionForMigration() {
-        if (legacyProduction == null) {
-            return List.of();
-        }
-        List<TrainTemplate> result = legacyProduction;
-        legacyProduction = null;
-        return result;
-    }
-
-    /**
-     * Performs the read object operation.
-     *
-     * @param input the input
-     * @throws IOException if the operation cannot be completed
-     * @throws ClassNotFoundException if the operation cannot be completed
-     */
-    @Serial
-    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
-        input.defaultReadObject();
-        if (production != null && !production.isEmpty()) {
-            legacyProduction = List.copyOf(production);
-        }
-        production = null;
     }
 
 }

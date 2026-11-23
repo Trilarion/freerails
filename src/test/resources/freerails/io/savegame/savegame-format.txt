@@ -1,4 +1,4 @@
-formatVersion=1
+formatVersion=2
 
 class freerails.model.building.EngineShop extends freerails.util.Identifiable
   location: freerails.util.IntPoint2D
@@ -80,12 +80,11 @@ record freerails.model.operations.cargo.CargoProductionOrConsumption
 class freerails.model.operations.cargo.ImmutableCargoBatchBundle
   cargoMap: java.util.SortedMap<freerails.model.operations.cargo.CargoBatch, java.lang.Integer>
 
-class freerails.model.operations.station.Station extends freerails.util.Identifiable hooks readObject
+class freerails.model.operations.station.Station extends freerails.util.Identifiable
   cargoBatchBundle: freerails.model.operations.cargo.ImmutableCargoBatchBundle
   demandForCargo: freerails.model.operations.station.StationDemand
   location: freerails.util.IntPoint2D
   name: java.lang.String
-  production: java.util.List<freerails.model.operations.train.TrainTemplate>
   supply: freerails.model.operations.station.StationSupply
 
 record freerails.model.operations.station.StationDemand

@@ -51,7 +51,6 @@ import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
@@ -169,29 +168,6 @@ public class WorldTest extends TestCase {
         Player changedPlayer = changed.getPlayer(changed.getPlayerIndex(0));
         changed.getEngineShop(changedPlayer, 3).setProduction(List.of(new TrainTemplate(1, List.of(2))));
         assertFalse(world.equals(changed));
-    }
-
-    /**
-     * Tests legacy station production migrates to engine shop on load behavior.
-     * @throws Exception if the test legacy station production migrates to engine shop on load operation fails.
-     */
-    public void testLegacyStationProductionMigratesToEngineShopOnLoad() throws Exception {
-        World world = WorldGenerator.minimalWorld();
-        Player player = new Player(0, "One");
-        world.addPlayer(player);
-        Station station = new Station(4, new IntPoint2D(4, 5), "Central", CargoBatchBundle.EMPTY);
-        world.addStation(player, station);
-
-        Field legacyProduction = Station.class.getDeclaredField("production");
-        legacyProduction.setAccessible(true);
-        legacyProduction.set(station, List.of(new TrainTemplate(2, List.of(3))));
-
-        World copy = (World) Utils.cloneBySerialisation(world);
-        Player copiedPlayer = copy.getPlayer(copy.getPlayerIndex(0));
-        assertEquals(1, copy.getEngineShops(copiedPlayer).size());
-        EngineShop shop = copy.getEngineShops(copiedPlayer).iterator().next();
-        assertEquals(station.getLocation(), shop.getLocation());
-        assertEquals(List.of(new TrainTemplate(2, List.of(3))), shop.getProduction());
     }
 
     /**

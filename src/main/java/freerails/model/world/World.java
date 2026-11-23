@@ -32,7 +32,6 @@ import freerails.model.track.TrackType;
 import freerails.model.operations.train.Engine;
 import freerails.model.operations.train.Train;
 import freerails.model.operations.train.TrainConfiguration;
-import freerails.model.operations.train.TrainTemplate;
 import freerails.util.*;
 import freerails.model.economy.Money;
 import freerails.model.player.Player;
@@ -77,7 +76,7 @@ public class World implements UnmodifiableWorld {
     // player specific lists
     private final Map<Integer, List<Train>> trains; // a list of trains by player ID
     private final Map<Integer, SortedSet<Station>> stations; // list of stations by player ID
-    private Map<Integer, SortedSet<EngineShop>> engineShops;
+    private final Map<Integer, SortedSet<EngineShop>> engineShops;
 
     private transient Map<Integer, Integer> cargoIndexById;
     private transient List<Cargo> cargosByIndex;
@@ -343,7 +342,6 @@ public class World implements UnmodifiableWorld {
         stationByIdByPlayer = new HashMap<>();
         stations.forEach((playerId, playerStations) ->
                 stationByIdByPlayer.put(playerId, createIdLookup(playerStations)));
-        engineShops = engineShops == null ? new HashMap<>() : engineShops;
         engineShopByIdByPlayer = new HashMap<>();
         players.forEach(player -> {
             int playerId = player.getId();
@@ -425,8 +423,7 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Restores serialized world state, migrates legacy station production, and
-     * reconstructs transient lookup indexes.
+     * Restores serialized world state and reconstructs transient lookup indexes.
      *
      * @param input serialized data source
      * @throws IOException if reading the serialized object fails
@@ -435,39 +432,7 @@ public class World implements UnmodifiableWorld {
     @Serial
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
         input.defaultReadObject();
-        migrateLegacyEngineShopProduction();
         initializeIndexes();
-    }
-
-    /**
-     * Performs the migrate legacy engine shop production operation.
-     */
-    private void migrateLegacyEngineShopProduction() {
-        if (engineShops == null) {
-            engineShops = new HashMap<>();
-        }
-        for (Player player : players) {
-            SortedSet<EngineShop> shops = engineShops.computeIfAbsent(player.getId(), ignored -> new TreeSet<>());
-            int nextId = shops.stream().mapToInt(EngineShop::getId).max().orElse(-1) + 1;
-            for (Station station : stations.getOrDefault(player.getId(), new TreeSet<>())) {
-                List<TrainTemplate> legacyProduction = station.takeLegacyProductionForMigration();
-                if (legacyProduction.isEmpty()) {
-                    continue;
-                }
-
-                EngineShop shop = shops.stream()
-                        .filter(existing -> existing.getLocation().equals(station.getLocation()))
-                        .findFirst()
-                        .orElse(null);
-                if (shop == null) {
-                    shop = new EngineShop(nextId++, station.getLocation());
-                    shops.add(shop);
-                }
-                List<TrainTemplate> production = new ArrayList<>(shop.getProduction());
-                production.addAll(legacyProduction);
-                shop.setProduction(production);
-            }
-        }
     }
 
     /** {@inheritDoc} */
