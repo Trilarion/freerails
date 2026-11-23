@@ -75,7 +75,9 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
     }
 
     /**
-     * Checks whether this move can be applied to the supplied world.
+     * Checks whether this move can be applied to the supplied world. On its own,
+     * this move must not remove station track: the station has to be removed in
+     * the same action, which {@link RemoveStationCompositeMove} does.
      *
      * @param world the world whose state is used or updated
      * @return a status indicating whether the move can be applied
@@ -83,6 +85,31 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
+        if (removesStationTrack()) {
+            return Status.fail("Station track can only be removed together with its station.");
+        }
+        return checkTrackChange(world);
+    }
+
+    /**
+     * Returns whether this move replaces station track with non-station track or no track.
+     *
+     * @return true if this move removes station track
+     */
+    public boolean removesStationTrack() {
+        return trackPieceBefore != null && trackPieceBefore.trackType().isStation()
+                && (trackPieceAfter == null || !trackPieceAfter.trackType().isStation());
+    }
+
+    /**
+     * Checks the track change itself, without the rule that station track is
+     * only removed together with its station.
+     *
+     * @param world the world whose state is used
+     * @return a status indicating whether the track change can be applied
+     */
+    @NotNull
+    Status checkTrackChange(@NotNull UnmodifiableWorld world) {
         // Check that location is on the map.
         if (!world.boundsContain(location)) {
             return Status.fail("Tried to build track outside the map.");
@@ -188,6 +215,30 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
         if (!status.isSuccess()) {
             throw new RuntimeException(status.getMessage());
         }
+        setTrackPiece(world);
+    }
+
+    /**
+     * Applies the track change after checking it with
+     * {@link #checkTrackChange(UnmodifiableWorld)}, so that a station removal can
+     * apply its station track removal.
+     *
+     * @param world the world whose state is updated
+     */
+    void applyTrackChange(@NotNull World world) {
+        Status status = checkTrackChange(world);
+        if (!status.isSuccess()) {
+            throw new RuntimeException(status.getMessage());
+        }
+        setTrackPiece(world);
+    }
+
+    /**
+     * Replaces the track piece at the location, preserving the tile's terrain.
+     *
+     * @param world the world whose state is updated
+     */
+    private void setTrackPiece(@NotNull World world) {
         TerrainTile oldTile = world.getTile(location);
         int terrain = oldTile.terrainTypeId();
         TerrainTile newTile = new TerrainTile(terrain, trackPieceAfter);

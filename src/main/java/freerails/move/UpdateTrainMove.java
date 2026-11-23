@@ -97,6 +97,34 @@ public class UpdateTrainMove implements Move {
     }
 
     /**
+     * @return the owner of the updated train
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * @return the identifier of the updated train
+     */
+    public int getTrainId() {
+        return trainId;
+    }
+
+    /**
+     * @return the new schedule, or {@code null} if the schedule is unchanged
+     */
+    public UnmodifiableSchedule getSchedule() {
+        return schedule;
+    }
+
+    /**
+     * @return true if this move changes the schedule and nothing else
+     */
+    public boolean changesOnlySchedule() {
+        return schedule != null && cargoBatchBundle == null && consist == null;
+    }
+
+    /**
      * Checks whether this move can be applied to the supplied world.
      *
      * @param world the world whose state is used or updated

@@ -181,9 +181,10 @@ assume a move can be combined with moves affecting independent state. Avoid
 overlapping effects, such as track changes on the same or neighboring tiles,
 terrain and track changes on the same tile, or updates to the same field of
 the same train. Use `CompositeMove` when dependent component moves need a
-defined order. The station-removal bundle coordinates track, station-list,
-and train-schedule changes as one action; its current use of `CompostMove`
-does not make those components generally independent or reusable.
+defined order. For example, `RemoveStationMoveGenerator` builds the
+station-removal bundle as a `CompositeMove` that applies the track change, the
+station removal, and the owner's train-schedule updates in that order as one
+action.
 
 `UnmodifiableWorld` collection getters return live, unmodifiable views: changes made
 through the world are visible through previously obtained views, but the views do not
@@ -193,7 +194,10 @@ may be mutable and may expose the underlying world state.
 
 Preserve game-state invariants when applying moves. For example, a track connection is
 represented on both neighboring tiles, so track changes must use the appropriate paired
-track operations rather than changing one side alone. Consider scenario loading and saving when
+track operations rather than changing one side alone. Likewise, station track and
+its station are removed together: a `ChangeTrackPieceMove` on its own refuses to
+remove station track, and `RemoveStationCompositeMove` checks that the track change,
+station removal, and schedule updates belong together. Consider scenario loading and saving when
 changing persisted data, and serialization compatibility for data transmitted between
 clients and servers.
 

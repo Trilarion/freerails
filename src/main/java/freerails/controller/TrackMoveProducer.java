@@ -21,18 +21,14 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.simulation.Time;
-import freerails.model.operations.station.Station;
 import freerails.model.operations.station.StationUtils;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
-import freerails.model.operations.train.Train;
-import freerails.model.operations.train.schedule.ScheduleState;
-import freerails.model.operations.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
+import freerails.move.generator.RemoveStationMoveGenerator;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.move.mapupdatemove.RemoveStationCompositeMove;
 import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.IntPoint2D;
 import freerails.util.Utils;
@@ -41,7 +37,6 @@ import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 
@@ -115,7 +110,8 @@ public class TrackMoveProducer {
      * @param world the game world being queried
      * @param player the player whose game state is used
      * @return the remove track move produced by this method
-     * @throws Exception if the operation cannot be completed.
+     * @throws IllegalStateException if the removal would remove another player's station
+     * @throws Exception if there is no track to remove.
      */
     public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(IntPoint2D from, TileTransition direction, UnmodifiableWorld world, Player player) throws Exception {
         TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, player);
@@ -192,44 +188,14 @@ public class TrackMoveProducer {
 
         ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
 
-        // TODO maybe the removal of a station should be checked and induced somewhere else
-        // If we are removing a station, we also need to remove the station from the station list.
+        // Removing the station track also removes the station and the schedule stops at it.
         if (oldTrackPiece.trackType().isStation() && (newTrackPiece == null || !newTrackPiece.trackType().isStation())) {
-            int stationIndex = -1;
-
-            for (Station station: world.getStations(player)) {
-                if (station.getLocation().equals(changeTrackPieceMove.location())) {
-                    // We have found the station!
-                    stationIndex = station.getId();
-                    break;
-                }
+            if (oldTrackPiece.playerId() != player.getId()) {
+                throw new IllegalStateException("Not allowed to remove another player's station.");
             }
-
-            if (-1 == stationIndex) {
-                throw new IllegalArgumentException("Could find a station at " + changeTrackPieceMove.location());
-            }
-
-            ArrayList<Move> moves = new ArrayList<>();
-            moves.add(changeTrackPieceMove);
-            moves.add(new RemoveStationMove(player, stationIndex));
-
-            // Now update any train schedules that include this station by iterating over all trains
-            for (Player player1: world.getPlayers()) {
-                for (Train train: world.getTrains(player1)) {
-                    UnmodifiableSchedule schedule = train.getSchedule();
-                    if (schedule.stopsAtStation(stationIndex)) {
-                        ScheduleState schedule1 = new ScheduleState(schedule);
-                        schedule1 = schedule1.removeAllStopsAtStation(stationIndex);
-                        Move changeScheduleMove = new UpdateTrainMove(player, train.getId(), null, null, schedule1);
-                        moves.add(changeScheduleMove);
-                    }
-                }
-            }
-
-            return new RemoveStationCompositeMove(moves);
-        } else {
-            return changeTrackPieceMove;
+            return new RemoveStationMoveGenerator(changeTrackPieceMove, player).generate(world);
         }
+        return changeTrackPieceMove;
     }
 
     /**
@@ -277,6 +243,9 @@ public class TrackMoveProducer {
                     Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
                     return sendMove(moveAndTransaction);
+                } catch (IllegalStateException e) {
+                    // The track exists but must not be removed, e.g. another player's station.
+                    return Status.fail(e.getMessage());
                 } catch (Exception e) {
                     // thrown when there is no track to remove.
                     // Fix for bug [ 948670 ] Removing non-existent track

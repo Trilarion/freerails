@@ -35,6 +35,7 @@ import freerails.model.operations.train.schedule.ScheduleState;
 import freerails.model.world.TestTrainMotion;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
+import freerails.move.mapupdatemove.RemoveStationCompositeMove;
 import freerails.util.Utils;
 import freerails.util.IntPoint2D;
 import freerails.util.WorldGenerator;
@@ -76,6 +77,10 @@ public class RepresentativeMoveSerializationTest extends TestCase {
                 new AddStationMove(player,
                         new Station(9, new IntPoint2D(4, 5), "Station", CargoBatchBundle.EMPTY)),
                 cargoMove,
+                new RemoveStationCompositeMove(
+                        new ChangeTrackPieceMove(trackPiece, null, new IntPoint2D(2, 3)),
+                        new RemoveStationMove(player, 9),
+                        List.of(new UpdateTrainMove(player, 7, null, null, new ScheduleState()))),
                 new AddTransactionMove(player, transaction),
                 new AddTransactionMove(player, transaction, true)
         };

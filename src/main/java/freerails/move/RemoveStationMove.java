@@ -80,7 +80,24 @@ public class RemoveStationMove implements Move {
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
+        if (world.getStations(player).stream().noneMatch(station -> station.getId() == stationId)) {
+            return Status.fail("Unknown station");
+        }
         return Status.OK;
+    }
+
+    /**
+     * @return the owner of the removed station
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * @return the identifier of the removed station
+     */
+    public int getStationId() {
+        return stationId;
     }
 
     /**

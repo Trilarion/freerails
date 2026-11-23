@@ -258,13 +258,14 @@ public class MoveEqualityContractTest extends TestCase {
                 new ChangeTrackPieceCompositeMove(trackMove, secondTrackMove, new Player(2, "One")));
         assertDifferentMoves(new CompositeMove(List.of(trackMove, secondTrackMove)), trackComposite);
 
-        RemoveStationCompositeMove removeComposite = new RemoveStationCompositeMove(
-                List.of(new ChangeTileMove(tile, new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 10)));
-        RemoveStationCompositeMove differentRemoveComposite = new RemoveStationCompositeMove(
-                List.of(new ChangeTileMove(tile, new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 11)));
+        RemoveStationCompositeMove removeComposite =
+                new RemoveStationCompositeMove(trackMove, new RemoveStationMove(PLAYER, 10), List.of());
+        RemoveStationCompositeMove differentRemoveComposite =
+                new RemoveStationCompositeMove(trackMove, new RemoveStationMove(PLAYER, 11), List.of());
         assertDifferentMoves(removeComposite, differentRemoveComposite);
         assertEqualMoves(removeComposite, new RemoveStationCompositeMove(
-                List.of(new ChangeTileMove(new TerrainTile(4), new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 10))));
+                new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 10),
+                List.of()));
 
         assertEqualMoves(new GrowCitiesMove(), new GrowCitiesMove());
     }

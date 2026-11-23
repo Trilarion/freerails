@@ -104,7 +104,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         Rules rules = world.getRules();
 
         for (Move move : getMoves()) {
-            if (move instanceof ChangeTrackPieceMove trackMove
+            ChangeTrackPieceMove trackMove = trackChangeOf(move);
+            if (trackMove != null
                     && !rules.canRemoveTrackPiece(
                     player.getId(), trackMove.trackPieceBefore(), trackMove.trackPieceAfter())) {
                 return Status.fail("Not allowed to remove another player's track.");
@@ -123,6 +124,23 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
             // station removal, do not add a disconnected track segment.
         }
         return Status.OK;
+    }
+
+    /**
+     * Returns the single-tile track change of a component, including the
+     * station track removal inside a station removal.
+     *
+     * @param move a component of this move
+     * @return the track change, or {@code null} if the component has none
+     */
+    private static ChangeTrackPieceMove trackChangeOf(Move move) {
+        if (move instanceof ChangeTrackPieceMove trackMove) {
+            return trackMove;
+        }
+        if (move instanceof RemoveStationCompositeMove stationRemoval) {
+            return stationRemoval.trackChange();
+        }
+        return null;
     }
 
     /**
