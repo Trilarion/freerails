@@ -111,12 +111,12 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new AddTrainMove(PLAYER, train), new AddTrainMove(PLAYER, trainWithActivity));
 
         TrainMotion activity = TestTrainMotion.of(10);
-        assertEqualMoves(new AddActivityMove(PLAYER, 4, activity),
-                new AddActivityMove(new Player(1, "One"), 4, TestTrainMotion.of(10)));
-        assertDifferentMoves(new AddActivityMove(PLAYER, 4, activity),
-                new AddActivityMove(new Player(2, "One"), 4, activity));
-        assertDifferentMoves(new AddActivityMove(PLAYER, 4, activity), new AddActivityMove(PLAYER, 5, activity));
-        assertDifferentMoves(new AddActivityMove(PLAYER, 4, activity), new AddActivityMove(PLAYER, 4, TestTrainMotion.of(11)));
+        assertEqualMoves(new AddTrainMotionMove(PLAYER, 4, activity),
+                new AddTrainMotionMove(new Player(1, "One"), 4, TestTrainMotion.of(10)));
+        assertDifferentMoves(new AddTrainMotionMove(PLAYER, 4, activity),
+                new AddTrainMotionMove(new Player(2, "One"), 4, activity));
+        assertDifferentMoves(new AddTrainMotionMove(PLAYER, 4, activity), new AddTrainMotionMove(PLAYER, 5, activity));
+        assertDifferentMoves(new AddTrainMotionMove(PLAYER, 4, activity), new AddTrainMotionMove(PLAYER, 4, TestTrainMotion.of(11)));
 
         CargoBatchBundle cargo = cargo(4);
         List<Integer> consist = List.of(5, 6);

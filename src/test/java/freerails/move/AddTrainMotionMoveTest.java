@@ -29,9 +29,9 @@ import freerails.model.world.TestTrainMotion;
 import freerails.model.world.World;
 
 /**
- * Tests add activity move behavior.
+ * Tests add train motion move behavior.
  */
-public class AddActivityMoveTest extends AbstractMoveTestCase {
+public class AddTrainMotionMoveTest extends AbstractMoveTestCase {
 
     /**
      * Tests move behavior.
@@ -43,9 +43,17 @@ public class AddActivityMoveTest extends AbstractMoveTestCase {
         world.addActivity(player, 0, act);
 
         TrainMotion act2 = TestTrainMotion.of(60);
-        Move move = new AddActivityMove(player, 0, act2);
+        Move move = new AddTrainMotionMove(player, 0, act2);
         assertSurvivesSerialisation(move);
         assertOkAndRepeatable(move);
+    }
+
+    /**
+     * Tests that a motion for an unknown train is rejected.
+     */
+    public void testUnknownTrainIsNotApplicable() {
+        Move move = new AddTrainMotionMove(getPlayer(), 99, TestTrainMotion.of(60));
+        assertFalse(move.applicable(getWorld()).isSuccess());
     }
 
     /**
@@ -58,7 +66,7 @@ public class AddActivityMoveTest extends AbstractMoveTestCase {
         world.addActivity(player, 0, act);
 
         TrainMotion act2 = TestTrainMotion.of(60);
-        Move move = new AddActivityMove(player, 0, act2);
+        Move move = new AddTrainMotionMove(player, 0, act2);
         assertMoveApplyIsOk(move);
 
         Time currentTime = new Time(0);

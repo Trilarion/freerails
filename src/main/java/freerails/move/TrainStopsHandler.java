@@ -87,9 +87,7 @@ public class TrainStopsHandler implements Serializable {
             TrainOrder order = resultingSchedule.getOrder(resultingSchedule.getCurrentOrderIndex());
             int stationId = resultingSchedule.getNextStationId();
 
-            // Loading and unloading cargo takes time, so we make the train wait for a few ticks.
-            // makeTrainWait not implemented
-            // makeTrainWait(50);
+            // Loading time is modelled by the station-stop motion duration set in MoveTrainMoveGenerator.
 
             boolean autoConsist = order.isAutoConsist();
 
@@ -185,13 +183,14 @@ public class TrainStopsHandler implements Serializable {
             if (newLength > oldLength) {
                 TrainMotion trainMotion = train.findCurrentMotion(Double.MAX_VALUE);
                 PathOnTiles path = trainMotion.getPath();
-                path = TrainUtils.lengthenPath(world, path, oldLength);
+                // The path must hold the longer train.
+                path = TrainUtils.lengthenPath(world, path, newLength);
                 waitingForFullLoad = TrainUtils.isWaitingForFullLoad(
                         world, resultingSchedule, resultingCargo, resultingConfiguration.wagonTypes());
                 TrainState status = waitingForFullLoad ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
                 TrainMotion nextMotion = new TrainMotion(path, newLength, 0, status);
 
-                addMove(new AddActivityMove(player, trainId, nextMotion));
+                addMove(new AddTrainMotionMove(player, trainId, nextMotion));
             }
         }
 

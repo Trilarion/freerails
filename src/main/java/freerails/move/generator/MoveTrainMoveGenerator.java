@@ -144,11 +144,9 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
                     nextMotion = new TrainMotion(path, currentTrainLength, durationOfStationStop, status);
 
-                    // Create a new Move object.
-                    // TODO use dedicated move for train moves instead? or is Activity enough? What does activity include?
-                    // Move trainMove = new NextActivityMove(nextMotion, trainId, player);
+                    // Stop at the station and apply the stop's cargo and consist changes.
                     List<Move> moves = new LinkedList<>();
-                    moves.add(new AddActivityMove(player, trainId, nextMotion));
+                    moves.add(new AddTrainMotionMove(player, trainId, nextMotion));
                     moves.addAll(stopsHandler.getMoves());
                     return new CompositeMove(moves);
                 }
@@ -160,18 +158,12 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 boolean waitingForfullLoad = stopsHandler.refreshWaitingForFullLoad();
                 List<Move> cargoMoves = stopsHandler.getMoves();
                 if (!waitingForfullLoad) {
-                    Move trainMove = moveTrain(world, occupiedTracks);
-                    if (null != trainMove) {
-                        List<Move> moves = new ArrayList<>();
-                        moves.add(trainMove);
-                        moves.addAll(cargoMoves);
-                        return new CompositeMove(moves);
-                    } else {
-                        return new CompositeMove(cargoMoves);
-                    }
+                    List<Move> moves = new ArrayList<>();
+                    moves.add(moveTrain(world, occupiedTracks));
+                    moves.addAll(cargoMoves);
+                    return new CompositeMove(moves);
                 }
-                // TODO makeTrainWait is not implemented
-                // stopsHandler.makeTrainWait(30);
+                // No timed wait needed: TrainUtils.isUpdateDue wakes a waiting train only when cargo or orders change.
                 return new CompositeMove(cargoMoves);
             }
             default:
@@ -233,7 +225,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 PathOnTiles tiles = motion1.getTiles(duration);
                 int engineDist = tiles.steps();
                 TrainMotion nextMotion = new TrainMotion(tiles, engineDist, trainLength, stopped);
-                return new AddActivityMove(player, trainId, nextMotion);
+                return new AddTrainMotionMove(player, trainId, nextMotion);
             }
         }
         // Create a new train motion object.
@@ -245,7 +237,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         PathOnTiles currentTiles = motion1.getTiles(motion1.getDuration());
         PathOnTiles pathOnTiles = currentTiles.addStep(nextVector);
         TrainMotion nextMotion = new TrainMotion(pathOnTiles, currentTiles.steps(), motion1.getTrainLength(), speeds);
-        return new AddActivityMove(player, trainId, nextMotion);
+        return new AddTrainMotionMove(player, trainId, nextMotion);
     }
 
     /**

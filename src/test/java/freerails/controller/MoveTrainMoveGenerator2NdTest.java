@@ -417,6 +417,31 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     }
 
     /**
+     * Tests that when a train waiting for a full load is ordered to add wagons,
+     * the path of its new motion is lengthened to hold the longer train.
+     */
+    public void testLengtheningTrainWaitingForFullLoad() {
+        putTrainAtStationWaiting4FullLoad();
+
+        // Order more wagons while the train keeps waiting for a full load.
+        List<Integer> newConsist = Arrays.asList(0, 0, 0, 0, 0, 0);
+        TrainOrder order0 = TrainOrder.specifiedConsist(2, newConsist, true);
+        Train train = world.getTrain(player, 0);
+        ScheduleState schedule = new ScheduleState(train.getSchedule());
+        schedule = schedule.setOrder(0, order0);
+        train.setSchedule(schedule);
+
+        TrainMotion trainMotion = moveTrain();
+        train = world.getTrain(player, 0);
+        assertEquals(6, train.getNumberOfWagons());
+        assertEquals(TrainState.WAITING_FOR_FULL_LOAD, trainMotion.getTrainState());
+        assertEquals(train.getLength(), trainMotion.getTrainLength());
+        assertTrue(trainMotion.getInitialPosition() >= train.getLength());
+        // The whole train must fit on the path.
+        assertNotNull(trainMotion.getStateAtTime(0));
+    }
+
+    /**
      * Tests that a train with 'select wagons automatically' enabled behaves correctly.
      */
     public void testAutoConsist() {
