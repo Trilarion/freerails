@@ -12,12 +12,15 @@ import freerails.util.TestUtils;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
+import java.io.NotSerializableException;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -80,6 +83,71 @@ public class ConnectionTest extends TestCase {
                 serverConnection.close();
                 executor.shutdownNow();
             }
+        }
+    }
+
+    /**
+     * Tests that resending a mutated object delivers its current state as a new
+     * object, which requires the stream to be reset after each message.
+     * @throws Exception if the test fails.
+     */
+    public void testResentMutatedObjectArrivesWithCurrentState() throws Exception {
+        try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future<Connection> serverConnectionFuture = executor.submit(() ->
+                    Connection.make(listener.accept()));
+            Connection client = Connection.make(new InetSocketAddress(
+                    InetAddress.getLoopbackAddress(), listener.getLocalPort()));
+            Connection serverConnection = serverConnectionFuture.get(2, TimeUnit.SECONDS);
+
+            try {
+                ArrayList<String> message = new ArrayList<>(List.of("first"));
+                client.sendObject(message);
+                message.add("second");
+                client.sendObject(message);
+
+                Serializable firstReceived = serverConnection.receiveObject();
+                Serializable secondReceived = serverConnection.receiveObject();
+                assertEquals(List.of("first"), firstReceived);
+                assertEquals(List.of("first", "second"), secondReceived);
+                assertNotSame(firstReceived, secondReceived);
+            } finally {
+                client.close();
+                serverConnection.close();
+                executor.shutdownNow();
+            }
+        }
+    }
+
+    /**
+     * Tests that a failed send closes the connection, because the stream may
+     * hold a partially written message afterwards.
+     * @throws Exception if the test fails.
+     */
+    public void testFailedSendClosesConnection() throws Exception {
+        EchoServer server = new EchoServer();
+        server.startRunning(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0));
+        Connection client = Connection.make(new InetSocketAddress(
+                InetAddress.getLoopbackAddress(), server.getLocalPort()));
+
+        try {
+            ArrayList<Object> notSerializable = new ArrayList<>(List.of(new Object()));
+            try {
+                client.sendObject(notSerializable);
+                fail("Sending a non-serializable element should fail.");
+            } catch (NotSerializableException expected) {
+                // expected
+            }
+            assertFalse(client.isOpen());
+            try {
+                client.sendObject("ping");
+                fail("A connection closed after a failed send must not accept messages.");
+            } catch (IllegalStateException expected) {
+                // expected
+            }
+        } finally {
+            client.close();
+            server.stopRunning();
         }
     }
 

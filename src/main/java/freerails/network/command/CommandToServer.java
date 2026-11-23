@@ -22,6 +22,12 @@ import java.io.Serializable;
 
 /**
  * Defines a command sent from a client to the server.
+ *
+ * <p>Commands control the session, for example starting, loading, or saving a
+ * game. They are deliberately not moves: changes to the game world are sent as
+ * {@link freerails.move.Move}s, which the server checks and broadcasts.
+ *
+ * @see CommandToClient
  */
 public interface CommandToServer extends Serializable {
 

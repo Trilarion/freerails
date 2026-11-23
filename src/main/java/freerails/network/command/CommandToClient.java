@@ -20,9 +20,20 @@ package freerails.network.command;
 
 import java.io.Serializable;
 
-// TODO command to client necessary, couldn't this also be a move, and could moves be actions
 /**
  * Defines a command sent from the server to the client.
+ *
+ * <p>Commands control the session, for example updating the lists of connected
+ * clients, scenarios, and saved games, or replacing the client's whole world.
+ * They are deliberately not moves: a {@link freerails.move.Move} is a checked
+ * change to an existing world that clients can pre-commit and undo, whereas a
+ * command may act on state outside the world or replace the world itself.
+ *
+ * <p>The client replies to each command with the {@link CommandStatus} returned
+ * by {@link #execute(ClientControlInterface)}, so that the server can know
+ * whether the command failed on the client.
+ *
+ * @see CommandToServer
  */
 public interface CommandToClient extends Serializable {
     /**

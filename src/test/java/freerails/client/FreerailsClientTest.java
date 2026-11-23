@@ -18,11 +18,19 @@
 
 package freerails.client;
 
+import freerails.io.scenario.ClasspathScenarioSource;
+import freerails.model.player.Player;
+import freerails.model.world.World;
+import freerails.move.AddPlayerMove;
 import freerails.network.command.ClientProperty;
 import freerails.network.AbstractFreerailsServerTestCase;
 import freerails.network.LogOnResponse;
+import freerails.network.command.CommandStatus;
 import freerails.network.command.CommandToClient;
+import freerails.network.command.SetWorldCommandToClient;
+import freerails.server.FullServerGameModel;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -76,6 +84,39 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         } catch (Exception e) {
             fail();
         }
+    }
+
+    /**
+     * Tests that a world sent over the network arrives as an equal but
+     * independent copy, so the server does not need to copy it defensively.
+     * @throws Exception if the test fails.
+     */
+    public void testSetWorldCommandDeliversIndependentCopy() throws Exception {
+        FreerailsClient client = new FreerailsClient();
+        LogOnResponse response = client.connect(getIpAddress(), getPort(), "name", "password");
+        assertTrue(response.success());
+        assertMapsAndSaveGamesReceived(client);
+        assertConnectClientsEquals(client, Arrays.asList("name"));
+
+        FullServerGameModel serverGameModel = new FullServerGameModel();
+        server.setServerGameModel(serverGameModel);
+        server.newGame(new ClasspathScenarioSource().getAvailableScenarioNames()[0]);
+        World serverWorld = serverGameModel.getWorld();
+
+        Serializable message = client.read();
+        assertTrue(message instanceof SetWorldCommandToClient);
+        CommandStatus status = ((CommandToClient) message).execute(client);
+        assertTrue(status.successful());
+
+        World clientWorld = client.getWorld();
+        assertNotSame(serverWorld, clientWorld);
+        assertEquals(serverWorld, clientWorld);
+
+        // Changing the client's world must not change the server's world.
+        int serverPlayers = serverWorld.getPlayers().size();
+        new AddPlayerMove(new Player(serverPlayers, "other")).apply(clientWorld);
+        assertEquals(serverPlayers + 1, clientWorld.getPlayers().size());
+        assertEquals(serverPlayers, serverWorld.getPlayers().size());
     }
 
     /**

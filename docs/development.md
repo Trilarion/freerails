@@ -116,6 +116,16 @@ ones, and broadcasts them to all clients. Each client then confirms its
 pre-committed moves or undoes them. If a client's copy becomes inconsistent,
 the server can send it the whole world (`SetWorldCommandToClient`).
 
+Besides moves, client and server exchange commands (`CommandToServer`,
+`CommandToClient`). Moves are checked changes to an existing game world.
+Commands control the session: starting, loading, and saving games, updating
+the lists of connected clients, scenarios, and saved games, and replacing a
+client's whole world. Commands are not moves, because they may act on state
+outside the world or replace the world itself, which a move cannot do and
+which must bypass move pre-commitment. The receiver of a command replies with
+a `CommandStatus`. The server should know whether a command failed on a
+client; it does not act on these replies yet.
+
 ## Persistence and game-state contracts
 
 The default on-disk save-game manager lists, loads, and writes `.sav` files in

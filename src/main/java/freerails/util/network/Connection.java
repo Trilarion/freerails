@@ -299,6 +299,9 @@ public class Connection implements AutoCloseable {
     /**
      * Sends one serializable object over the connection.
      *
+     * <p>If writing fails, the object stream may hold a partially written
+     * message, so the connection is closed before the failure is rethrown.
+     *
      * @param object message to send
      * @throws IOException if writing to the socket fails
      * @throws NullPointerException if {@code object} is null
@@ -309,9 +312,32 @@ public class Connection implements AutoCloseable {
         if (!open) {
             throw new IllegalStateException("Connection is not open");
         }
-        out.writeObject(object);
-        out.reset();
-        out.flush();
+        try {
+            out.writeObject(object);
+            // Required: without a reset the stream sends a back-reference for any
+            // object it has written before, so the peer would receive its stale
+            // earlier copy instead of the current state, and both ends would
+            // retain every object ever sent.
+            out.reset();
+            out.flush();
+        } catch (IOException | RuntimeException e) {
+            closeAfterSendFailure(e);
+            throw e;
+        }
+    }
+
+    /**
+     * Closes the connection after a failed send, attaching any close failure
+     * to the original exception.
+     *
+     * @param failure exception that interrupted the send
+     */
+    private void closeAfterSendFailure(Exception failure) {
+        try {
+            close();
+        } catch (IllegalStateException closeFailure) {
+            failure.addSuppressed(closeFailure);
+        }
     }
 
     /**

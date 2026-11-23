@@ -19,7 +19,6 @@
 package freerails.network.command;
 
 import freerails.model.world.World;
-import freerails.util.Utils;
 
 import java.io.Serial;
 
@@ -33,25 +32,30 @@ public class SetWorldCommandToClient implements CommandToClient {
     private static final long serialVersionUID = 3257570619972269362L;
     private final World world;
 
-    // TODO some things do not work here without a defensive copy but why, maybe because in local connection, nothing is serialized, can it be improved
     /**
-     * Creates a command containing a defensive copy of the supplied world.
+     * Creates a command for delivering the supplied world to the client.
      *
-     * @param world world to copy for delivery to the client
+     * <p>No defensive copy is made: commands reach clients only through a
+     * socket {@link freerails.util.network.Connection}, which serializes the
+     * world while the server holds its lock and resets the object stream after
+     * each message. The client therefore always receives its own independent
+     * copy of the world.
+     *
+     * @param world world to deliver to the client
      */
     public SetWorldCommandToClient(World world) {
-        this.world = (World) Utils.cloneBySerialisation(world);
+        this.world = world;
     }
 
     /**
-     * Installs a defensive copy of the world on the client.
+     * Installs the received world on the client.
      *
      * @param client client receiving the world
      * @return successful status after the world is installed
      */
     @Override
     public CommandStatus execute(ClientControlInterface client) {
-        client.setGameModel((World) Utils.cloneBySerialisation(world));
+        client.setGameModel(world);
         return new CommandStatus(true);
     }
 
