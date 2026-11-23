@@ -18,19 +18,15 @@
 
 package freerails.util.network;
 
+import freerails.util.SerializationFilter;
 import freerails.util.Utils;
 
-import java.awt.Rectangle;
 import java.io.*;
-import java.lang.reflect.Proxy;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -43,10 +39,8 @@ import java.util.zip.InflaterInputStream;
  */
 public class Connection implements AutoCloseable {
 
-    private static final long MAX_DEPTH = 100;
-    private static final long MAX_REFERENCES = 1_000_000;
-    private static final long MAX_STREAM_BYTES = 64L * 1024 * 1024;
-    private static final long MAX_ARRAY_LENGTH = 1_000_000;
+    private static final SerializationFilter INPUT_FILTER =
+            new SerializationFilter(100, 1_000_000, 64L * 1024 * 1024, 1_000_000);
     private static final int MAX_QUEUED_MESSAGES = 32;
 
     private final Socket socket;
@@ -79,7 +73,7 @@ public class Connection implements AutoCloseable {
 
             InputStream inputStream = new InflaterInputStream(socket.getInputStream());
             in = new ObjectInputStream(inputStream);
-            in.setObjectInputFilter(Connection::filterInput);
+            in.setObjectInputFilter(INPUT_FILTER);
         } catch (IOException e) {
             try {
                 socket.close();
@@ -93,76 +87,6 @@ public class Connection implements AutoCloseable {
         readerThread.setDaemon(true);
         open = true;
         readerThread.start();
-    }
-
-    /**
-     * Applies size and complexity limits, then allows only protocol and
-     * standard value/container classes during deserialization.
-     *
-     * @param info metadata for the object currently being read
-     * @return the filter decision for the object
-     */
-    private static ObjectInputFilter.Status filterInput(ObjectInputFilter.FilterInfo info) {
-        if (info.depth() > MAX_DEPTH || info.references() > MAX_REFERENCES
-                || info.streamBytes() > MAX_STREAM_BYTES
-                || info.arrayLength() > MAX_ARRAY_LENGTH) {
-            return ObjectInputFilter.Status.REJECTED;
-        }
-
-        Class<?> type = info.serialClass();
-        if (type == null) {
-            return ObjectInputFilter.Status.UNDECIDED;
-        }
-        return isAllowedProtocolClass(type)
-                ? ObjectInputFilter.Status.ALLOWED
-                : ObjectInputFilter.Status.REJECTED;
-    }
-
-    /**
-     * Determines whether a serialized class belongs to the supported protocol
-     * type set.
-     *
-     * @param type class being checked
-     * @return {@code true} if the class is permitted by the input filter
-     */
-    private static boolean isAllowedProtocolClass(Class<?> type) {
-        if (type.isArray()) {
-            Class<?> component = type.getComponentType();
-            return component == Object.class || component == Map.Entry.class || component.isPrimitive()
-                    || isAllowedProtocolClass(component);
-        }
-        if (Proxy.isProxyClass(type)) {
-            return false;
-        }
-        String name = type.getName();
-        if (name.startsWith("freerails.")) {
-            return true;
-        }
-        if (type.isEnum()) {
-            return name.startsWith("freerails.");
-        }
-        if (type == String.class || type == Boolean.class || type == Byte.class
-                || type == Short.class || type == Integer.class || type == Long.class
-                || type == Float.class || type == Double.class || type == Character.class
-                || type == Enum.class || type == Number.class || type == Rectangle.class
-                || type == BigInteger.class
-                || type == BigDecimal.class) {
-            return true;
-        }
-        if (type == ArrayList.class || type == java.util.LinkedList.class
-                || type == java.util.HashMap.class || type == java.util.LinkedHashMap.class
-                || type == java.util.TreeMap.class || type == java.util.HashSet.class
-                || type == java.util.LinkedHashSet.class || type == java.util.TreeSet.class
-                || type == java.util.Vector.class || type == java.util.Hashtable.class
-                || name.equals("java.util.Arrays$ArrayList")) {
-            return true;
-        }
-        return name.startsWith("java.util.Collections$")
-                || name.startsWith("java.util.ImmutableCollections$")
-                || name.equals("java.util.CollSer")
-                || name.equals("java.util.HashMap$Node")
-                || name.equals("java.util.LinkedHashMap$Entry")
-                || name.equals("java.util.TreeMap$Entry");
     }
 
     /**
