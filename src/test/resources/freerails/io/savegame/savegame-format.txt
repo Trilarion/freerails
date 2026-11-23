@@ -1,0 +1,307 @@
+formatVersion=1
+
+class freerails.model.building.EngineShop extends freerails.util.Identifiable
+  location: freerails.util.IntPoint2D
+  production: java.util.List<freerails.model.operations.train.TrainTemplate>
+
+record freerails.model.economy.Money
+  amount: long
+
+class freerails.model.economy.transaction.BondItemTransaction extends freerails.model.economy.transaction.ItemTransaction
+  rate: double
+
+class freerails.model.economy.transaction.CargoDeliveryTransaction extends freerails.model.economy.transaction.Transaction
+  quantity: int
+  stationId: int
+  trainId: int
+  cargoBatch: freerails.model.operations.cargo.CargoBatch
+
+class freerails.model.economy.transaction.ItemTransaction extends freerails.model.economy.transaction.Transaction
+  id: int
+  quantity: int
+
+class freerails.model.economy.transaction.Transaction
+  amount: freerails.model.economy.Money
+  category: freerails.model.economy.transaction.TransactionCategory
+  time: freerails.model.simulation.Time
+
+enum freerails.model.economy.transaction.TransactionCategory
+  BOND
+  BRIDGES
+  CARGO_DELIVERY
+  INDUSTRIES
+  INTEREST_CHARGE
+  ISSUE_STOCK
+  MISC_INCOME
+  STATION_MAINTENANCE
+  STATIONS
+  TRACK
+  TRACK_MAINTENANCE
+  TRAIN
+  TRAIN_MAINTENANCE
+  TRANSFER_STOCK
+
+record freerails.model.game.Rules
+  canConnectToOtherPlayersTracks: boolean
+  mustStayConnectedToExistingTrack: boolean
+  canRemoveOtherPlayersTracks: boolean
+
+class freerails.model.game.Sentiment extends freerails.util.Identifiable
+  rate: double
+  name: java.lang.String
+
+class freerails.model.operations.cargo.Cargo extends freerails.util.Identifiable
+  unitWeight: int
+  category: freerails.model.operations.cargo.CargoCategory
+  name: java.lang.String
+
+record freerails.model.operations.cargo.CargoBatch
+  cargoTypeId: int
+  sourceP: freerails.util.IntPoint2D
+  originalStationId: int
+  creationTime: freerails.model.simulation.Time
+
+enum freerails.model.operations.cargo.CargoCategory
+  MAIL
+  PASSENGER
+  FAST_FREIGHT
+  SLOW_FREIGHT
+  BULK_FREIGHT
+
+record freerails.model.operations.cargo.CargoConversion
+  sourceCargoId: int
+  productCargoId: int
+  conversionRate: double
+
+record freerails.model.operations.cargo.CargoProductionOrConsumption
+  cargoId: int
+  rate: double
+
+class freerails.model.operations.cargo.ImmutableCargoBatchBundle
+  cargoMap: java.util.SortedMap<freerails.model.operations.cargo.CargoBatch, java.lang.Integer>
+
+class freerails.model.operations.station.Station extends freerails.util.Identifiable hooks readObject
+  cargoBatchBundle: freerails.model.operations.cargo.ImmutableCargoBatchBundle
+  demandForCargo: freerails.model.operations.station.StationDemand
+  location: freerails.util.IntPoint2D
+  name: java.lang.String
+  production: java.util.List<freerails.model.operations.train.TrainTemplate>
+  supply: freerails.model.operations.station.StationSupply
+
+record freerails.model.operations.station.StationDemand
+  demandedCargoIds: java.util.Set<java.lang.Integer>
+
+record freerails.model.operations.station.StationSupply
+  supplyByCargoId: java.util.Map<java.lang.Integer, java.lang.Integer>
+
+class freerails.model.operations.train.Engine extends freerails.util.Identifiable
+  maximumSpeed: int
+  maximumThrust: int
+  name: java.lang.String
+  price: freerails.model.economy.Money
+  upkeep: freerails.model.economy.Money
+
+class freerails.model.operations.train.PathOnTiles
+  start: freerails.util.IntPoint2D
+  vectors: java.util.List<freerails.model.terrain.TileTransition>
+
+class freerails.model.operations.train.Train extends freerails.util.Identifiable
+  configuration: freerails.model.operations.train.TrainConfiguration
+  runtimeState: freerails.model.operations.train.TrainRuntimeState
+
+record freerails.model.operations.train.TrainConfiguration
+  engineId: int
+  wagonTypes: java.util.List<java.lang.Integer>
+
+class freerails.model.operations.train.TrainRuntimeState
+  activities: java.util.List<freerails.model.operations.train.motion.TrainMotion>
+  cargoBatchBundle: freerails.model.operations.cargo.ImmutableCargoBatchBundle
+  schedule: freerails.model.operations.train.schedule.UnmodifiableSchedule
+
+enum freerails.model.operations.train.TrainState
+  STOPPED_AT_STATION
+  READY
+  WAITING_FOR_FULL_LOAD
+  STOPPED_AT_SIGNAL
+  CRASHED
+  NEEDS_UPDATING
+
+record freerails.model.operations.train.TrainTemplate
+  engineId: int
+  wagonTypes: java.util.List<java.lang.Integer>
+
+class freerails.model.operations.train.activity.Activity
+  startTime: double
+
+class freerails.model.operations.train.motion.CompositeMotion extends freerails.model.operations.train.activity.Activity
+  totalDistance: double
+  totalTime: double
+  motions: java.util.List<freerails.model.operations.train.motion.Motion>
+
+class freerails.model.operations.train.motion.ConstantAccelerationMotion
+  acceleration: double
+  initialSpeed: double
+  totalDistance: double
+  totalTime: double
+
+class freerails.model.operations.train.motion.TrainMotion extends freerails.model.operations.train.activity.Activity hooks readResolve
+  distanceEngineWillTravel: double
+  duration: double
+  initialPosition: double
+  modelUnitsPerTile: int
+  trainLength: int
+  path: freerails.model.operations.train.PathOnTiles
+  speeds: freerails.model.operations.train.motion.Motion
+  trainState: freerails.model.operations.train.TrainState
+
+record freerails.model.operations.train.motion.TrainMotion$DistanceScaledMotion
+  motion: freerails.model.operations.train.motion.Motion
+  scale: double
+
+class freerails.model.operations.train.schedule.ScheduleState hooks readResolve
+  state: freerails.model.operations.train.schedule.ScheduleState$State
+
+record freerails.model.operations.train.schedule.ScheduleState$State
+  orders: java.util.List<freerails.model.operations.train.schedule.TrainOrder>
+  currentOrderIndex: int
+
+class freerails.model.operations.train.schedule.TrainOrder
+  oneShot: boolean
+  stationId: int
+  waitUntilFull: boolean
+  consist: java.util.List<java.lang.Integer>
+  loadingPolicy: freerails.model.operations.train.schedule.TrainOrder$LoadingPolicy
+
+enum freerails.model.operations.train.schedule.TrainOrder$LoadingPolicy
+  KEEP_CONSIST
+  SPECIFIED_CONSIST
+  AUTO_CONSIST
+
+class freerails.model.player.Player extends freerails.util.Identifiable
+  name: java.lang.String
+
+class freerails.model.simulation.Clock
+  startYear: int
+  ticksPerYear: int
+  currentTime: freerails.model.simulation.Time
+
+enum freerails.model.simulation.Speed
+  PAUSE
+  SLOW
+  MODERATE
+  FAST
+
+record freerails.model.simulation.Time
+  ticks: int
+
+class freerails.model.terrain.Terrain extends freerails.util.Identifiable
+  buildCost: freerails.model.economy.Money
+  category: freerails.model.terrain.TerrainCategory
+  consumptions: java.util.List<freerails.model.operations.cargo.CargoProductionOrConsumption>
+  conversions: java.util.List<freerails.model.operations.cargo.CargoConversion>
+  name: java.lang.String
+  productions: java.util.List<freerails.model.operations.cargo.CargoProductionOrConsumption>
+  rightOfWayCost: freerails.model.economy.Money
+
+enum freerails.model.terrain.TerrainCategory
+  URBAN
+  RIVER
+  OCEAN
+  HILL
+  COUNTRY
+  SPECIAL
+  INDUSTRY
+  RESOURCE
+
+record freerails.model.terrain.TerrainTile
+  trackPiece: freerails.model.track.TrackPiece
+  terrainTypeId: int
+
+class freerails.model.terrain.TileTransition hooks readResolve
+  configurationBit: int
+  deltaX: int
+  deltaY: int
+  length: double
+  direction: freerails.model.terrain.TileTransition$TileDirection
+
+enum freerails.model.terrain.TileTransition$TileDirection
+  NORTH
+  NORTH_EAST
+  EAST
+  SOUTH_EAST
+  SOUTH
+  SOUTH_WEST
+  WEST
+  NORTH_WEST
+
+class freerails.model.terrain.city.City extends freerails.util.Identifiable
+  location: freerails.util.IntPoint2D
+  name: java.lang.String
+
+enum freerails.model.track.TrackCategory
+  TRACK
+  BRIDGE
+  TUNNEL
+  STATION
+
+class freerails.model.track.TrackConfiguration hooks readResolve
+  configuration: int
+  length: int
+
+record freerails.model.track.TrackPiece
+  trackConfiguration: freerails.model.track.TrackConfiguration
+  trackType: freerails.model.track.TrackType
+  playerId: int
+
+enum freerails.model.track.TrackProperty
+  SINGLE
+  DOUBLE
+  TUNNEL
+  BRIDGE
+  STATION
+
+class freerails.model.track.TrackType extends freerails.util.Identifiable
+  allValidTrackConfigurations: java.util.Set<freerails.model.track.TrackConfiguration>
+  category: freerails.model.track.TrackCategory
+  name: java.lang.String
+  properties: java.util.Set<freerails.model.track.TrackProperty>
+  purchasingPrice: freerails.model.economy.Money
+  validTerrainCategories: java.util.Set<freerails.model.terrain.TerrainCategory>
+  validTrackConfigurations: java.util.Set<java.lang.String>
+  yearlyMaintenance: freerails.model.economy.Money
+
+class freerails.model.world.World hooks readObject
+  cityGrowthEnabled: boolean
+  currentSentimentId: int
+  cargos: java.util.SortedSet<freerails.model.operations.cargo.Cargo>
+  cities: java.util.SortedSet<freerails.model.terrain.city.City>
+  clock: freerails.model.simulation.Clock
+  currentBalance: java.util.Map<java.lang.Integer, freerails.model.economy.Money>
+  engineShops: java.util.Map<java.lang.Integer, java.util.SortedSet<freerails.model.building.EngineShop>>
+  engines: java.util.SortedSet<freerails.model.operations.train.Engine>
+  map: freerails.model.terrain.TerrainTile[]
+  mapSize: freerails.util.IntPoint2D
+  players: java.util.List<freerails.model.player.Player>
+  rules: freerails.model.game.Rules
+  sentiments: java.util.SortedSet<freerails.model.game.Sentiment>
+  speed: freerails.model.simulation.Speed
+  stations: java.util.Map<java.lang.Integer, java.util.SortedSet<freerails.model.operations.station.Station>>
+  terrainTypes: java.util.SortedSet<freerails.model.terrain.Terrain>
+  trackTypes: java.util.SortedSet<freerails.model.track.TrackType>
+  trains: java.util.Map<java.lang.Integer, java.util.List<freerails.model.operations.train.Train>>
+  transactions: java.util.Map<java.lang.Integer, java.util.List<freerails.model.economy.transaction.Transaction>>
+
+record freerails.network.LogOnCredentials
+  username: java.lang.String
+  password: java.lang.String
+
+record freerails.server.SavedGame
+  world: freerails.model.world.World
+  credentials: java.util.List<freerails.network.LogOnCredentials>
+
+class freerails.util.Identifiable
+  id: int
+
+record freerails.util.IntPoint2D
+  x: int
+  y: int

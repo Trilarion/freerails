@@ -45,6 +45,11 @@ test {
         events "failed"
         exceptionFormat = "full"
     }
+    // Regenerates the save-game format golden file, see SaveGameFormatTest.
+    def updateSaveGameFormat = providers.systemProperty("freerails.updateSaveGameFormat")
+    if (updateSaveGameFormat.isPresent()) {
+        systemProperty "freerails.updateSaveGameFormat", updateSaveGameFormat.get()
+    }
 }
 
 jar {

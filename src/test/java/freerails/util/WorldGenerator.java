@@ -70,6 +70,15 @@ public final class WorldGenerator {
      * @return the result of minimal world.
      */
     public static World minimalWorld(IntPoint2D mapSize) {
+        return minimalWorldBuilder(mapSize).build();
+    }
+
+    /**
+     * Creates the builder used by {@link #minimalWorld(IntPoint2D)}.
+     * @param mapSize the map size to use in the test.
+     * @return a builder for a minimal world.
+     */
+    public static World.Builder minimalWorldBuilder(IntPoint2D mapSize) {
         World.Builder builder = new World.Builder();
         try {
             builder.setRules(getUnrestrictedRules());
@@ -82,7 +91,7 @@ public final class WorldGenerator {
         terrainTypes.add(new Terrain(0, "Clear", TerrainCategory.COUNTRY,
                 Money.ZERO, Money.ZERO, List.of(), List.of(), List.of()));
         builder.setTerrainTypes(terrainTypes);
-        return builder.build();
+        return builder;
     }
 
     /**
