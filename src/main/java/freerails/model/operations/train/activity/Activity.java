@@ -37,7 +37,7 @@ import java.io.Serializable;
 public abstract class Activity<E extends Serializable> implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3650239413835993072L;
+    private static final long serialVersionUID = 1L;
 
     private final double startTime;
 

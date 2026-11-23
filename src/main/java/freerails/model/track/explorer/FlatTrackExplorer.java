@@ -38,7 +38,7 @@ import java.util.NoSuchElementException;
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3834311713465185081L;
+    private static final long serialVersionUID = 1L;
     /** A representative branch direction used to seed exploration. */
     public final PositionOnTrack currentBranch = new PositionOnTrack(IntPoint2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;

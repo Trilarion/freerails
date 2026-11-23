@@ -35,7 +35,7 @@ import java.io.Serializable;
 public record CargoBatch(int cargoTypeId, IntPoint2D sourceP, int originalStationId, Time creationTime) implements Serializable, Comparable<CargoBatch> {
 
     @Serial
-    private static final long serialVersionUID = 3257006557605540149L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a batch identity for cargo produced at a particular place and

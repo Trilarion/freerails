@@ -53,7 +53,7 @@ import java.util.*;
 public class World implements UnmodifiableWorld {
 
     @Serial
-    private static final long serialVersionUID = 3544393612684505393L;
+    private static final long serialVersionUID = 1L;
     private Map<Integer, List<Transaction>> transactions = new HashMap<>();
     private Map<Integer, Money> currentBalance = new HashMap<>();
 

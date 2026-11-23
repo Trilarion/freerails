@@ -101,7 +101,7 @@ public class TileTransition implements TrackConfigurations {
     }
 
     @Serial
-    private static final long serialVersionUID = 3256444698640921912L;
+    private static final long serialVersionUID = 1L;
 
     public static final TileTransition NORTH = new TileTransition(TileDirection.NORTH);
     public static final TileTransition NORTH_WEST = new TileTransition(TileDirection.NORTH_WEST);

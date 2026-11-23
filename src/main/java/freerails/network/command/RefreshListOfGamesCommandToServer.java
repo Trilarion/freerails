@@ -30,7 +30,7 @@ import java.io.Serial;
 public class RefreshListOfGamesCommandToServer implements CommandToServer {
 
     @Serial
-    private static final long serialVersionUID = -8745171955732354168L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a request to refresh the server's available-game lists.

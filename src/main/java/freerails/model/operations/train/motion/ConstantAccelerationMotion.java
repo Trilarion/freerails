@@ -31,7 +31,7 @@ import java.io.Serializable;
 public class ConstantAccelerationMotion implements Serializable, Motion {
 
     @Serial
-    private static final long serialVersionUID = -2180666310811530761L;
+    private static final long serialVersionUID = 1L;
     /** Zero-distance motion for a stationary train. */
     public static final ConstantAccelerationMotion STOPPED = new ConstantAccelerationMotion(0, 0, 0, 0);
     private final double initialSpeed, acceleration, totalDistance, totalTime;

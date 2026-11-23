@@ -35,7 +35,7 @@ import java.util.List;
 public class RemoveStationCompositeMove extends CompositeMove implements TrackMove {
 
     @Serial
-    private static final long serialVersionUID = 3760847865429702969L;
+    private static final long serialVersionUID = 1L;
 
     private final Rectangle rectangle;
 

@@ -39,7 +39,7 @@ import java.util.List;
 public class CompositeMove implements Move {
 
     @Serial
-    private static final long serialVersionUID = 3257289149391517489L;
+    private static final long serialVersionUID = 1L;
     private final List<Move> moves;
 
     /**

@@ -40,7 +40,7 @@ import java.io.Serial;
 public class ChangeTileMove implements MapUpdateMove {
 
     @Serial
-    private static final long serialVersionUID = 3256726169272662320L;
+    private static final long serialVersionUID = 1L;
     private final IntPoint2D location;
     private final TerrainTile after;
 

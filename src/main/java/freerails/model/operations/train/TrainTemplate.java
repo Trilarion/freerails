@@ -36,7 +36,7 @@ import java.util.List;
 public record TrainTemplate(int engineId, List<Integer> wagonTypes) implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3545515106038592057L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * @param engineId   engine type identifier

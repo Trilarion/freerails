@@ -37,7 +37,7 @@ import java.util.Objects;
 public class Transaction implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3258416144497782835L;
+    private static final long serialVersionUID = 1L;
     private final TransactionCategory category;
     private final Money amount;
     private final Time time;

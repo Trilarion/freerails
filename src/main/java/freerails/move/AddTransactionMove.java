@@ -38,7 +38,7 @@ import java.io.Serial;
 public class AddTransactionMove implements Move {
 
     @Serial
-    private static final long serialVersionUID = 3976738055925019701L;
+    private static final long serialVersionUID = 1L;
     private final Transaction transaction;
     private final Player player;
 

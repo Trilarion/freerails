@@ -26,7 +26,7 @@ import java.io.Serial;
 public class LoadGameCommandToServer implements CommandToServer {
 
     @Serial
-    private static final long serialVersionUID = 3256726186552930869L;
+    private static final long serialVersionUID = 1L;
     private final String filename;
 
     /**

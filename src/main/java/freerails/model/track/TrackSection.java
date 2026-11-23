@@ -37,7 +37,7 @@ import java.io.Serializable;
 public class TrackSection implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -3776624056097990938L;
+    private static final long serialVersionUID = 1L;
     private final TileTransition tileTransition;
     private final IntPoint2D tile;
 

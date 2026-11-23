@@ -52,7 +52,7 @@ public class TrainStopsHandler implements Serializable {
 
     private static final TaggedLogger logger = Logger.tag("TrainStopsHandler");
     @Serial
-    private static final long serialVersionUID = 3257567287094882872L;
+    private static final long serialVersionUID = 1L;
     private final Player player;
     private final int trainId;
     private final UnmodifiableWorld world;

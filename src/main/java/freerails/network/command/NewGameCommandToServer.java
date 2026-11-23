@@ -26,7 +26,7 @@ import java.io.Serial;
 public class NewGameCommandToServer implements CommandToServer {
 
     @Serial
-    private static final long serialVersionUID = 3256723961743422513L;
+    private static final long serialVersionUID = 1L;
     private final String mapName;
 
     /**

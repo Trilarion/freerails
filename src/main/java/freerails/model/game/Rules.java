@@ -41,7 +41,7 @@ public record Rules(
         boolean canRemoveOtherPlayersTracks) implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3258125847557978416L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a rule set for track connections, network continuity, and

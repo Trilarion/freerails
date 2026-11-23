@@ -36,7 +36,7 @@ import java.util.List;
 public final class Terrain extends Identifiable {
 
     @Serial
-    private static final long serialVersionUID = 4402566762869522453L;
+    private static final long serialVersionUID = 1L;
 
     private final String name;
     private final TerrainCategory category;

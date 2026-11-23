@@ -49,7 +49,7 @@ import java.util.NoSuchElementException;
 public class AddStationMoveGenerator implements MoveGenerator {
 
     @Serial
-    private static final long serialVersionUID = 3258131349411148085L;
+    private static final long serialVersionUID = 1L;
     private final IntPoint2D location;
     private final int ruleNumber;
     private final Player player;

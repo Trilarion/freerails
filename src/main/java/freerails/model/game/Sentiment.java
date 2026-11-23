@@ -32,7 +32,7 @@ import java.io.Serial;
 public final class Sentiment extends Identifiable {
 
     @Serial
-    private static final long serialVersionUID = 3834025840475321136L;
+    private static final long serialVersionUID = 1L;
     private final String name;
     private final double rate;
 

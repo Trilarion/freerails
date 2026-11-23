@@ -29,7 +29,7 @@ import java.io.Serial;
 public class SetWorldCommandToClient implements CommandToClient {
 
     @Serial
-    private static final long serialVersionUID = 3257570619972269362L;
+    private static final long serialVersionUID = 1L;
     private final World world;
 
     /**

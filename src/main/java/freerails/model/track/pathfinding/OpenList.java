@@ -32,7 +32,7 @@ import java.util.PriorityQueue;
 public class OpenList implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3257282539419611442L;
+    private static final long serialVersionUID = 1L;
     private final Map<Integer, OpenListEntry> map = new HashMap<>();
     private final PriorityQueue<OpenListEntry> queue = new PriorityQueue<>();
 

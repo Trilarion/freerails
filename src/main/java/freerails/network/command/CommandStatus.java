@@ -31,7 +31,7 @@ import java.io.Serializable;
 public record CommandStatus(boolean successful) implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3257285842216103987L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a command result.

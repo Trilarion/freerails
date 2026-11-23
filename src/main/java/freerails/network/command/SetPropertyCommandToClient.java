@@ -30,7 +30,7 @@ import java.io.Serializable;
 public class SetPropertyCommandToClient implements CommandToClient {
 
     @Serial
-    private static final long serialVersionUID = 3544392521746034740L;
+    private static final long serialVersionUID = 1L;
     private final ClientProperty key;
     private final Serializable value;
 

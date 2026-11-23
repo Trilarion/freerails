@@ -42,7 +42,7 @@ import java.util.*;
 public class MoveTrainMoveGenerator implements MoveGenerator {
 
     @Serial
-    private static final long serialVersionUID = 3545516188269491250L;
+    private static final long serialVersionUID = 1L;
     private final Player player;
     private final int trainId;
     private final OccupiedTracks occupiedTracks;

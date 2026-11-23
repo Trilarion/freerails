@@ -45,7 +45,7 @@ import java.util.List;
 public class AddTrainMoveGenerator implements MoveGenerator {
 
     @Serial
-    private static final long serialVersionUID = 4050201951105069624L;
+    private static final long serialVersionUID = 1L;
     private final int engineId;
     private final List<Integer> wagons;
     private final IntPoint2D point;

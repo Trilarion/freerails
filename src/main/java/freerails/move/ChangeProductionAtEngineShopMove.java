@@ -41,7 +41,7 @@ import java.util.Objects;
 public class ChangeProductionAtEngineShopMove implements Move {
 
     @Serial
-    private static final long serialVersionUID = 3905519384997737520L;
+    private static final long serialVersionUID = 1L;
     private final List<TrainTemplate> production;
     private final int engineShopId;
     private final Player player;

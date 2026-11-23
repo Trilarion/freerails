@@ -28,7 +28,7 @@ public class TryMoveStatus implements Serializable {
 
     public static final TryMoveStatus TRY_MOVE_OK = new TryMoveStatus(Status.OK);
     @Serial
-    private static final long serialVersionUID = 3978145456646009140L;
+    private static final long serialVersionUID = 1L;
     public final Status status;
 
     /**

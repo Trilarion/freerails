@@ -26,7 +26,7 @@ import java.io.Serial;
 public class NoTrackException extends RuntimeException {
 
     @Serial
-    private static final long serialVersionUID = -4345207670990590768L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates an exception describing the missing track.

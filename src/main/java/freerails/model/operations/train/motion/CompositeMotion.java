@@ -35,7 +35,7 @@ import java.util.List;
 public class CompositeMotion extends Activity<MotionState> implements Motion {
 
     @Serial
-    private static final long serialVersionUID = 3146586143114534610L;
+    private static final long serialVersionUID = 1L;
     private final List<Motion> motions;
     private final double totalTime, totalDistance;
 

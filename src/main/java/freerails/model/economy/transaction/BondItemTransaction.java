@@ -28,7 +28,7 @@ import java.util.Objects;
 public class BondItemTransaction extends ItemTransaction {
 
     @Serial
-    private static final long serialVersionUID = 3257562923491473465L;
+    private static final long serialVersionUID = 1L;
     private final double rate;
 
     /**

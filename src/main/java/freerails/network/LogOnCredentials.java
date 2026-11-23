@@ -36,7 +36,7 @@ import java.io.Serializable;
 public record LogOnCredentials(String username, String password) implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3258409551740155956L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates credentials with non-null username and password values.

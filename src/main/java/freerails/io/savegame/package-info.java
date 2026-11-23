@@ -16,5 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** Persists complete server game models. */
+/**
+ * Persists complete server game models. The savegame file format, its versioning and the
+ * {@code SaveGameFormatTest} workflow are described in {@code docs/development.md} under
+ * "Savegame compatibility".
+ */
 package freerails.io.savegame;

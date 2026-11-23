@@ -29,7 +29,7 @@ import java.io.Serializable;
 public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
 
     @Serial
-    private static final long serialVersionUID = -4873508719707382681L;
+    private static final long serialVersionUID = 1L;
     final int f;
     final int node;
 

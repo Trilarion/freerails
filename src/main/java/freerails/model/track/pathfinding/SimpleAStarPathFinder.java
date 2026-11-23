@@ -33,7 +33,7 @@ import java.util.*;
 public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinder {
 
     @Serial
-    private static final long serialVersionUID = 3257565105200576310L;
+    private static final long serialVersionUID = 1L;
     private static final TaggedLogger logger = Logger.tag("SimpleAStarPathFinder");
     private final OpenList openList = new OpenList();
     private final Collection<Integer> startingPositions = new HashSet<>();

@@ -29,7 +29,7 @@ import java.io.Serial;
 public class PathNotFoundException extends Exception {
 
     @Serial
-    private static final long serialVersionUID = -3078115780884810261L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * @param message message

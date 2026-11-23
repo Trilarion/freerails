@@ -40,7 +40,7 @@ import java.util.Objects;
 public final class ChangeTrackPieceCompositeMove extends CompositeMove implements TrackMove {
 
     @Serial
-    private static final long serialVersionUID = 3616443518780978743L;
+    private static final long serialVersionUID = 1L;
     private final Rectangle rectangle;
     private final Player player;
 

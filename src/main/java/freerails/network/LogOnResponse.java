@@ -31,7 +31,7 @@ import java.util.Objects;
 public record LogOnResponse(int id, String message) implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3690479099844311344L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Validates the consistency of the login result.

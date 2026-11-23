@@ -44,7 +44,7 @@ import java.util.Objects;
 public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece trackPieceAfter, IntPoint2D location) implements TrackMove {
 
     @Serial
-    private static final long serialVersionUID = 4120849958418591801L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a move that replaces the track piece at a map location.

@@ -31,7 +31,7 @@ import java.io.Serializable;
 public record TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int playerId) implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 4049080423458027569L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * @param trackConfiguration geometric configuration of the track

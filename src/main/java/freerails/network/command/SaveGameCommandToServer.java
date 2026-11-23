@@ -26,7 +26,7 @@ import java.io.Serial;
 public class SaveGameCommandToServer implements CommandToServer {
 
     @Serial
-    private static final long serialVersionUID = 3257281452725777209L;
+    private static final long serialVersionUID = 1L;
     private final String filename;
 
     /**

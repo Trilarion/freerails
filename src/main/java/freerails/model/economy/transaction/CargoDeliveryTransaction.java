@@ -35,7 +35,7 @@ import java.util.Objects;
 public class CargoDeliveryTransaction extends Transaction {
 
     @Serial
-    private static final long serialVersionUID = 3257009851963160372L;
+    private static final long serialVersionUID = 1L;
     private final CargoBatch cargoBatch;
     private final int quantity;
     private final int stationId;

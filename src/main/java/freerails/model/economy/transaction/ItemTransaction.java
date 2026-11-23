@@ -37,7 +37,7 @@ import java.util.Objects;
 public class ItemTransaction extends Transaction {
 
     @Serial
-    private static final long serialVersionUID = 3690471411852326457L;
+    private static final long serialVersionUID = 1L;
     private final int quantity;
     private final int id;
 

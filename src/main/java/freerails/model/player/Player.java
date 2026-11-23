@@ -39,7 +39,7 @@ import java.io.Serial;
 public class Player extends Identifiable {
 
     @Serial
-    private static final long serialVersionUID = 4673561105333981501L;
+    private static final long serialVersionUID = 1L;
     public static final Player AUTHORITATIVE = new Player(-1, "Authoritative player");
     private final String name;
 

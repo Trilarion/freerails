@@ -33,7 +33,7 @@ import java.io.Serializable;
 public record TerrainTile(TrackPiece trackPiece, int terrainTypeId) implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3617574907538847544L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a tile with the specified terrain and no track.

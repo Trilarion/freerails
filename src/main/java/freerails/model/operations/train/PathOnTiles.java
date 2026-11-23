@@ -36,7 +36,7 @@ import java.util.*;
 public class PathOnTiles implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3544386994122536753L;
+    private static final long serialVersionUID = 1L;
     private final IntPoint2D start;
     private final List<TileTransition> vectors;
 

@@ -41,7 +41,7 @@ import java.util.Set;
 public class Station extends Identifiable {
 
     @Serial
-    private static final long serialVersionUID = 3256442503979874355L;
+    private static final long serialVersionUID = 1L;
     private final IntPoint2D location;
     private final String name;
     private StationSupply supply;

@@ -33,7 +33,7 @@ import java.io.Serial;
 public record ChangeGameSpeedMove(Speed speed) implements Move {
 
     @Serial
-    private static final long serialVersionUID = 3545794368956086071L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a change game speed move from the supplied values.

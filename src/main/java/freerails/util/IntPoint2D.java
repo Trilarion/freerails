@@ -36,7 +36,7 @@ import java.io.Serializable;
 public record IntPoint2D(int x, int y) implements Serializable, Comparable<IntPoint2D> {
 
     @Serial
-    private static final long serialVersionUID = -3053020239886388576L;
+    private static final long serialVersionUID = 1L;
     /**
      * Static zero vector.
      */

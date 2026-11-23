@@ -33,7 +33,7 @@ import java.io.Serializable;
 public class MotionState implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 1769385261436134444L;
+    private static final long serialVersionUID = 1L;
     private final double dt;
     private final double speed;
     private final double acceleration;

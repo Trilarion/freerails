@@ -61,7 +61,7 @@ import java.util.ArrayList;
 public class TrainMotion extends Activity<TrainPositionOnMap> {
 
     @Serial
-    private static final long serialVersionUID = 3618423722025891641L;
+    private static final long serialVersionUID = 1L;
     private final double duration, distanceEngineWillTravel;
     private final double initialPosition;
     private final PathOnTiles path;

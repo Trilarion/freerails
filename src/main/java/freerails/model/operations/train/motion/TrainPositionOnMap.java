@@ -94,7 +94,7 @@ import java.util.List;
 public class TrainPositionOnMap implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3979269144611010865L;
+    private static final long serialVersionUID = 1L;
     private final List<IntPoint2D> points;
     private final double speed, acceleration;
     private final TrainState activity;

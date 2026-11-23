@@ -34,7 +34,7 @@ import java.util.Objects;
 public record Segment(IntPoint2D a, IntPoint2D b) implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3257853198755705393L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a segment from endpoint {@code a} to endpoint {@code b}.
