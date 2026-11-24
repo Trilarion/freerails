@@ -18,7 +18,7 @@
 
 package freerails.move.mapupdatemove;
 
-import freerails.controller.TrackMoveProducer;
+import freerails.move.generator.TrackMoveGenerator;
 import freerails.model.economy.TransactionUtils;
 import freerails.model.game.Rules;
 import freerails.model.operations.cargo.CargoBatchBundle;
@@ -87,7 +87,7 @@ public class RemoveStationCompositeMoveTest extends TestCase {
                 .filter(type -> !type.isStation())
                 .findFirst()
                 .orElseThrow();
-        assertApplied(TrackMoveProducer.generateBuildTrackMove(
+        assertApplied(TrackMoveGenerator.generateBuildTrackMove(
                 TRACK_START, TileTransition.EAST, trackType, trackType, world, owner));
 
         TrackType stationType = world.getTrackTypes().stream()

@@ -23,7 +23,7 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.controller.TrackMoveProducer;
+import freerails.move.generator.TrackMoveGenerator;
 import freerails.model.economy.TransactionUtils;
 import freerails.model.world.World;
 import freerails.move.AbstractMoveTestCase;
@@ -280,13 +280,13 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         setTrackOwner(restrictedWorld, first, 999);
         setTrackOwner(restrictedWorld, second, 999);
 
-        ChangeTrackPieceCompositeMove removal = TrackMoveProducer.generateRemoveTrackMove(
+        ChangeTrackPieceCompositeMove removal = TrackMoveGenerator.generateRemoveTrackMove(
                 first, TileTransition.EAST, restrictedWorld, WorldGenerator.TEST_PLAYER);
         assertFalse(removal.applicable(restrictedWorld).isSuccess());
 
         setTrackOwner(restrictedWorld, first, WorldGenerator.TEST_PLAYER.getId());
         setTrackOwner(restrictedWorld, second, WorldGenerator.TEST_PLAYER.getId());
-        removal = TrackMoveProducer.generateRemoveTrackMove(
+        removal = TrackMoveGenerator.generateRemoveTrackMove(
                 first, TileTransition.EAST, restrictedWorld, WorldGenerator.TEST_PLAYER);
         assertTrue(removal.applicable(restrictedWorld).isSuccess());
 
@@ -296,7 +296,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         setTrackOwner(permittedWorld, first, 999);
         setTrackOwner(permittedWorld, second, 999);
 
-        removal = TrackMoveProducer.generateRemoveTrackMove(
+        removal = TrackMoveGenerator.generateRemoveTrackMove(
                 first, TileTransition.EAST, permittedWorld, WorldGenerator.TEST_PLAYER);
         assertTrue(removal.applicable(permittedWorld).isSuccess());
     }
@@ -318,7 +318,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         setTrackOwner(testWorld, junction, 999);
         setTrackOwner(testWorld, third, 999);
 
-        ChangeTrackPieceCompositeMove removal = TrackMoveProducer.generateRemoveTrackMove(
+        ChangeTrackPieceCompositeMove removal = TrackMoveGenerator.generateRemoveTrackMove(
                 junction, TileTransition.WEST, testWorld, WorldGenerator.TEST_PLAYER);
         assertFalse(removal.applicable(testWorld).isSuccess());
 
@@ -330,7 +330,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         setTrackOwner(permittedWorld, junction, 999);
         setTrackOwner(permittedWorld, third, 999);
 
-        removal = TrackMoveProducer.generateRemoveTrackMove(
+        removal = TrackMoveGenerator.generateRemoveTrackMove(
                 junction, TileTransition.WEST, permittedWorld, WorldGenerator.TEST_PLAYER);
         assertTrue(removal.applicable(permittedWorld).isSuccess());
     }
@@ -372,7 +372,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         IntPoint2D to = direction.createRelocatedPoint(from);
         TerrainTile fromBefore = testWorld.getTile(from);
         TerrainTile toBefore = testWorld.getTile(to);
-        ChangeTrackPieceCompositeMove build = TrackMoveProducer.generateBuildTrackMove(
+        ChangeTrackPieceCompositeMove build = TrackMoveGenerator.generateBuildTrackMove(
                 from, direction, type, type, testWorld, WorldGenerator.TEST_PLAYER);
         Move move = new TrackMoveTransactionsGenerator(testWorld, WorldGenerator.TEST_PLAYER)
                 .addTransactions(build);
@@ -420,7 +420,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @param type the type to use in the test.
      */
     private void assertBuildTrackFails(IntPoint2D p, TileTransition v, TrackType type) {
-        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
         Status status = move.applicable(getWorld());
         assertFalse(status.isSuccess());
         TestUtils.assertThrows(RuntimeException.class, () -> move.apply(getWorld()));
@@ -433,7 +433,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * @param type the type to use in the test.
      */
     private void assertBuildTrackSucceeds(IntPoint2D p, TileTransition v, TrackType type) {
-        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
 
         Move move1 = transactionsGenerator.addTransactions(move);
         Status status = move1.applicable(getWorld());
@@ -448,7 +448,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      */
     private void assertRemoveTrackSucceeds(IntPoint2D p, TileTransition v) {
         try {
-            ChangeTrackPieceCompositeMove move = TrackMoveProducer
+            ChangeTrackPieceCompositeMove move = TrackMoveGenerator
                     .generateRemoveTrackMove(p, v, getWorld(), WorldGenerator.TEST_PLAYER);
             Status status = move.applicable(getWorld());
             assertEquals(true, status.isSuccess());
@@ -466,7 +466,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         IntPoint2D pointA = IntPoint2D.ZERO;
         TrackType trackType = getWorld().getTrackType(0);
 
-        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackType, trackType, getWorld(), WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackType, trackType, getWorld(), WorldGenerator.TEST_PLAYER);
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);
     }

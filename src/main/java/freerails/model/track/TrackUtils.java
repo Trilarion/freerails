@@ -283,19 +283,6 @@ public final class TrackUtils {
     }
 
     /**
-     * Creates a new track piece containing the supplied outgoing direction.
-     *
-     * @param direction track direction to add
-     * @param trackType type of track to create
-     * @param playerId owning player's ID
-     * @return a track piece with the combined configuration
-     */
-    public static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackType trackType, int playerId) {
-        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(direction);
-        return new TrackPiece(trackConfiguration, trackType, playerId);
-    }
-
-    /**
      * Finds the first direction of a path from the current position to a
      * target. If no path exists, it selects an available adjacent track edge.
      *

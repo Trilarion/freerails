@@ -18,7 +18,7 @@
 
 package freerails.move.generator;
 
-import freerails.controller.TrackMoveProducer;
+import freerails.move.generator.TrackMoveGenerator;
 import freerails.model.economy.TransactionUtils;
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.operations.station.Station;
@@ -69,7 +69,7 @@ public class RemoveStationMoveGeneratorTest extends TestCase {
                 .filter(type -> !type.isStation())
                 .findFirst()
                 .orElseThrow();
-        assertApplied(TrackMoveProducer.generateBuildTrackMove(
+        assertApplied(TrackMoveGenerator.generateBuildTrackMove(
                 TRACK_START, TileTransition.EAST, trackType, trackType, world, owner));
 
         TrackType stationType = world.getTrackTypes().stream()
@@ -102,7 +102,7 @@ public class RemoveStationMoveGeneratorTest extends TestCase {
         otherTrain.setSchedule(otherSchedule);
         world.addTrain(other, otherTrain);
 
-        ChangeTrackPieceCompositeMove removal = TrackMoveProducer.generateRemoveTrackMove(
+        ChangeTrackPieceCompositeMove removal = TrackMoveGenerator.generateRemoveTrackMove(
                 TRACK_START, TileTransition.EAST, world, owner);
         assertTrue(removal.getMove(1) instanceof RemoveStationCompositeMove);
         assertApplied(removal);
@@ -119,7 +119,7 @@ public class RemoveStationMoveGeneratorTest extends TestCase {
      */
     public void testRemovingAnotherPlayersStationIsRefused() {
         IllegalStateException exception = TestUtils.assertThrows(IllegalStateException.class,
-                () -> TrackMoveProducer.generateRemoveTrackMove(TRACK_START, TileTransition.EAST, world, other));
+                () -> TrackMoveGenerator.generateRemoveTrackMove(TRACK_START, TileTransition.EAST, world, other));
         assertEquals("Not allowed to remove another player's station.", exception.getMessage());
         assertEquals(1, world.getStations(owner).size());
     }

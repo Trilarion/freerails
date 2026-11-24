@@ -23,6 +23,7 @@ import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.move.generator.TrackMoveGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Status;
 import freerails.util.IntPoint2D;
@@ -77,7 +78,7 @@ public class FlatTrackExplorerTest extends TestCase {
         IntPoint2D[] points = {p, p, p};
 
         for (int i = 0; i < points.length; i++) {
-            ChangeTrackPieceCompositeMove move = TrackMoveProducer
+            ChangeTrackPieceCompositeMove move = TrackMoveGenerator
                     .generateBuildTrackMove(points[i], vectors[i], trackType, trackType, world, WorldGenerator.TEST_PLAYER);
             Status status = move.applicable(world);
             assertTrue(status.isSuccess());

@@ -23,6 +23,8 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.track.TrackType;
 import freerails.model.world.World;
+import freerails.model.track.NoTrackException;
+import freerails.move.generator.TrackMoveGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.ui.SoundManager;
 import freerails.model.track.pathfinding.*;
@@ -234,7 +236,7 @@ public class BuildTrackController {
         int trackTypeBID = buildTrackStrategy.getRule(tileB.terrainTypeId());
         TrackType trackTypeB = unmodifiableWorld.getTrackType(trackTypeBID);
 
-        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, world, player);
+        ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, world, player);
 
         // add to proposed track
         ChangeTrackPieceMove m = (ChangeTrackPieceMove) move.getMove(0);
@@ -424,14 +426,14 @@ public class BuildTrackController {
                             case REMOVE_TRACK:
 
                                 try {
-                                    move = TrackMoveProducer.generateRemoveTrackMove(location, v, world, fp);
+                                    move = TrackMoveGenerator.generateRemoveTrackMove(location, v, world, fp);
 
                                     // add to proposed track
                                     ChangeTrackPieceMove m = (ChangeTrackPieceMove) ((ChangeTrackPieceCompositeMove) move).getMove(0);
                                     proposedTrack.put(m.location(), m.trackPieceAfter());
 
                                     break;
-                                } catch (Exception e1) {
+                                } catch (NoTrackException | IllegalStateException e1) {
                                     logger.error(e1, "Could not generate track removal move.");
                                     break attemptMove;
                                 }
@@ -450,23 +452,17 @@ public class BuildTrackController {
                                     break attemptMove;
                                 }
 
-                                int owner = fp.getId();
-                                TrackType trackType = unmodifiableWorld.getTrackType(trackRuleID);
-                                TrackPiece after = new TrackPiece(tile.trackPiece().trackConfiguration(), trackType, owner);
-
-                                /*
-                                 * We don't want to 'upgrade' a station to track.
-                                 * See bug 874416.
-                                 */
-                                if (tile.trackPiece().trackType().isStation()) {
+                                ChangeTrackPieceMove m;
+                                try {
+                                    m = TrackMoveGenerator.generateUpgradeTrackMove(
+                                            location, unmodifiableWorld.getTrackType(trackRuleID), world, fp);
+                                } catch (NoTrackException | IllegalStateException e1) {
+                                    // Stations are never upgraded. See bug 874416.
                                     break attemptMove;
                                 }
-
-                                move = new ChangeTrackPieceMove(tile.trackPiece(), after, location);
-                                // move = SpecialTrackCompositeMove.generateUpgradeTrackCompositeMove(tile.getTrackPiece(), after, location);
+                                move = m;
 
                                 // add to proposed track
-                                ChangeTrackPieceMove m = (ChangeTrackPieceMove) move;
                                 proposedTrack.put(m.location(), m.trackPieceAfter());
 
                                 break;

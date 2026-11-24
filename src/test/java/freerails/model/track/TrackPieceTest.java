@@ -63,4 +63,45 @@ public class TrackPieceTest extends TestCase {
         TestUtils.assertCloneBySerializationBehavesWell(trackPiece1);
         TestUtils.assertCloneBySerializationBehavesWell(trackPiece2);
     }
+
+    /**
+     * Tests that a new piece contains exactly the requested connection.
+     */
+    public void testCreate() {
+        TrackType type = world.getTrackType(0);
+
+        TrackPiece piece = TrackPiece.create(TileTransition.EAST, type, 3);
+
+        assertEquals(TrackConfiguration.getFlatInstance(TileTransition.EAST), piece.trackConfiguration());
+        assertEquals(type, piece.trackType());
+        assertEquals(3, piece.playerId());
+    }
+
+    /**
+     * Tests adding and removing connections while keeping the track type.
+     */
+    public void testAddAndRemoveConnections() {
+        TrackType type = world.getTrackType(0);
+        TrackPiece east = TrackPiece.create(TileTransition.EAST, type, 3);
+
+        TrackPiece straight = east.withConnection(TileTransition.WEST, 3);
+        assertEquals(TrackConfiguration.add(east.trackConfiguration(), TileTransition.WEST), straight.trackConfiguration());
+        assertEquals(type, straight.trackType());
+
+        assertEquals(east, straight.withoutConnection(TileTransition.WEST, 3).orElseThrow());
+        assertTrue(east.withoutConnection(TileTransition.EAST, 3).isEmpty());
+    }
+
+    /**
+     * Tests that changing the track type keeps the configuration.
+     */
+    public void testWithTrackType() {
+        TrackPiece piece = TrackPiece.create(TileTransition.EAST, world.getTrackType(0), 3);
+        TrackType other = world.getTrackType(4);
+
+        TrackPiece changed = piece.withTrackType(other, 3);
+
+        assertEquals(piece.trackConfiguration(), changed.trackConfiguration());
+        assertEquals(other, changed.trackType());
+    }
 }

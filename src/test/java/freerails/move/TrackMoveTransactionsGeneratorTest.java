@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.controller.TrackMoveProducer;
+import freerails.move.generator.TrackMoveGenerator;
 import freerails.io.GsonManager;
 import freerails.model.economy.Money;
 import freerails.model.game.Rules;
@@ -119,7 +119,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
                 new TrackMoveTransactionsGenerator(testWorld, WorldGenerator.TEST_PLAYER);
         Money startingBalance = testWorld.getCurrentBalance(WorldGenerator.TEST_PLAYER);
         TrackType standardTrack = testWorld.getTrackType(0);
-        Move buildMove = TrackMoveProducer.generateBuildTrackMove(
+        Move buildMove = TrackMoveGenerator.generateBuildTrackMove(
                 IntPoint2D.ZERO, TileTransition.EAST, standardTrack, standardTrack,
                 testWorld, WorldGenerator.TEST_PLAYER);
 
@@ -128,7 +128,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         assertEquals(new Money(startingBalance.amount() - 10_500),
                 testWorld.getCurrentBalance(WorldGenerator.TEST_PLAYER));
 
-        Move removeMove = TrackMoveProducer.generateRemoveTrackMove(
+        Move removeMove = TrackMoveGenerator.generateRemoveTrackMove(
                 IntPoint2D.ZERO, TileTransition.EAST, testWorld, WorldGenerator.TEST_PLAYER);
         generator.addTransactions(removeMove).apply(testWorld);
 

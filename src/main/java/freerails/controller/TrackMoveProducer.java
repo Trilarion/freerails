@@ -25,11 +25,9 @@ import freerails.model.operations.station.StationUtils;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
 import freerails.move.*;
-import freerails.move.generator.RemoveStationMoveGenerator;
+import freerails.move.generator.TrackMoveGenerator;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
-import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -87,118 +85,6 @@ public class TrackMoveProducer {
     }
 
     /**
-     * Performs the generate build track move operation.
-     *
-     * @param from the map coordinate
-     * @param direction the direction parameter
-     * @param world the game world being queried
-     * @param player the player whose game state is used
-     * @return the build track move produced by this method
-     */
-    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(IntPoint2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, Player player) {
-        ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, typeA, world, player);
-        ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), typeB, world, player);
-
-        return new ChangeTrackPieceCompositeMove(a, b, player);
-    }
-
-    /**
-     * Performs the generate remove track move operation.
-     *
-     * @param from the map coordinate
-     * @param direction the direction parameter
-     * @param world the game world being queried
-     * @param player the player whose game state is used
-     * @return the remove track move produced by this method
-     * @throws IllegalStateException if the removal would remove another player's station
-     * @throws Exception if there is no track to remove.
-     */
-    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(IntPoint2D from, TileTransition direction, UnmodifiableWorld world, Player player) throws Exception {
-        TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, player);
-        TrackMove b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, player);
-
-        return new ChangeTrackPieceCompositeMove(a, b, player);
-    }
-
-    // TODO put utility calculation parts in model, keep this lean
-    // utility method.
-    /**
-     * Returns the build track change track piece move.
-     * @param p the p
-     * @param direction the direction
-     * @param trackType the track type
-     * @param world the world
-     * @param player the player
-     * @return the build track change track piece move
-     */
-    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(IntPoint2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
-        TrackPiece oldTrackPiece = null;
-        TrackPiece newTrackPiece;
-
-        int playerId = player.getId();
-
-        if (world.boundsContain(p)) {
-            oldTrackPiece = world.getTile(p).trackPiece();
-        }
-
-        if (oldTrackPiece != null) {
-            TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.trackConfiguration(), direction);
-            newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.trackType(), playerId);
-        } else {
-            newTrackPiece = TrackUtils.getTrackPieceWhenOldTrackPieceIsNull(direction, trackType, playerId);
-        }
-
-        return new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
-    }
-
-    // TODO put utility calculation parts in model, keep this lean
-    // utility method.
-    /**
-     * Returns the remove track change track piece move.
-     * @param p the p
-     * @param direction the direction
-     * @param world the world
-     * @param player the player
-     * @return the remove track change track piece move
-     * @throws Exception if the operation cannot be completed
-     */
-    private static TrackMove getRemoveTrackChangeTrackPieceMove(IntPoint2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
-        TrackPiece oldTrackPiece = null;
-        TrackPiece newTrackPiece;
-
-        if (world.boundsContain(p)) {
-            oldTrackPiece = world.getTile(p).trackPiece();
-        }
-
-        if (oldTrackPiece != null) {
-            TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.trackConfiguration(), direction);
-
-            if (trackConfiguration.get8bitTemplate() != 0) {
-                int playerId = player.getId();
-                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.trackType(), playerId);
-            } else {
-                newTrackPiece = null;
-            }
-        } else {
-            // There is no track to remove.
-            // Fix for bug [ 948670 ] Removing non-existent track
-            throw new Exception();
-        }
-
-
-        ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
-
-        // Removing the station track also removes the station and the schedule stops at it.
-        if (oldTrackPiece.trackType().isStation() && (newTrackPiece == null || !newTrackPiece.trackType().isStation())) {
-            if (oldTrackPiece.playerId() != player.getId()) {
-                throw new IllegalStateException("Not allowed to remove another player's station.");
-            }
-            return new RemoveStationMoveGenerator(changeTrackPieceMove, player).generate(world);
-        }
-        return changeTrackPieceMove;
-    }
-
-    /**
      * Builds the track.
      *
      * @param from the map coordinate
@@ -237,20 +123,14 @@ public class TrackMoveProducer {
                 return Status.OK;
             }
             case REMOVE_TRACK: {
+                ChangeTrackPieceCompositeMove move;
                 try {
-                    ChangeTrackPieceCompositeMove move = generateRemoveTrackMove(from, trackVector, world, player);
-
-                    Move moveAndTransaction = transactionsGenerator.addTransactions(move);
-
-                    return sendMove(moveAndTransaction);
-                } catch (IllegalStateException e) {
-                    // The track exists but must not be removed, e.g. another player's station.
+                    move = TrackMoveGenerator.generateRemoveTrackMove(from, trackVector, world, player);
+                } catch (NoTrackException | IllegalStateException e) {
+                    // No track to remove, or track that must not be removed such as another player's station.
                     return Status.fail(e.getMessage());
-                } catch (Exception e) {
-                    // thrown when there is no track to remove.
-                    // Fix for bug [ 948670 ] Removing non-existent track
-                    return Status.fail("No track to remove.");
                 }
+                return sendMove(transactionsGenerator.addTransactions(move));
             }
             case BUILD_TRACK:
             case UPGRADE_TRACK:
@@ -302,7 +182,7 @@ public class TrackMoveProducer {
                 return Status.OK;
             }
             case BUILD_TRACK: {
-                ChangeTrackPieceCompositeMove move = generateBuildTrackMove(from, trackVector, types[0], types[1], world, player);
+                ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(from, trackVector, types[0], types[1], world, player);
 
                 Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
@@ -321,27 +201,13 @@ public class TrackMoveProducer {
      */
     private Status upgradeTrack(IntPoint2D point, int trackRuleID) {
         UnmodifiableWorld world = executor.getWorld();
-        TrackPiece before = world.getTile(point).trackPiece();
-        // Check whether there is track here.
-        if (before == null) {
-            return Status.fail("No track to upgrade.");
+        Move move;
+        try {
+            move = TrackMoveGenerator.generateUpgradeTrackMove(point, world.getTrackType(trackRuleID), world, executor.getPlayer());
+        } catch (NoTrackException | IllegalStateException e) {
+            return Status.fail(e.getMessage());
         }
-
-        Player player = executor.getPlayer();
-        int owner = player.getId();
-        TrackType trackType = world.getTrackType(trackRuleID);
-        TrackPiece after = new TrackPiece(before.trackConfiguration(), trackType, owner);
-
-        // We don't want to 'upgrade' a station to track. See bug 874416.
-        if (before.trackType().isStation()) {
-            return Status.fail("No need to upgrade track at station.");
-        }
-
-        Move move = new ChangeTrackPieceMove(before, after, point);
-        // Move move = SpecialTrackCompositeMove.generateUpgradeTrackCompositeMove(before, after, point);
-        Move move2 = transactionsGenerator.addTransactions(move);
-
-        return sendMove(move2);
+        return sendMove(transactionsGenerator.addTransactions(move));
     }
 
     /**

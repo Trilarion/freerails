@@ -25,6 +25,7 @@ import freerails.io.GsonManager;
 import freerails.model.terrain.*;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.BuildTrackExplorer;
+import freerails.move.generator.TrackMoveGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Status;
 import freerails.util.IntPoint2D;
@@ -233,7 +234,7 @@ public class BuildTrackExplorerTest extends TestCase {
      */
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackType trackType = world.getTrackType(0);
-        ChangeTrackPieceCompositeMove move = TrackMoveProducer.generateBuildTrackMove(new IntPoint2D(x, y), direction, trackType, trackType, world, WorldGenerator.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(new IntPoint2D(x, y), direction, trackType, trackType, world, WorldGenerator.TEST_PLAYER);
         Status status = move.applicable(world);
         assertTrue(status.isSuccess());
         move.apply(world);
