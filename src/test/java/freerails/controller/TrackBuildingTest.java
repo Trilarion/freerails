@@ -29,6 +29,7 @@ import freerails.move.Status;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
 import freerails.util.IntPoint2D;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import freerails.model.player.Player;
@@ -133,6 +134,30 @@ public class TrackBuildingTest extends TestCase {
         } catch (PathNotFoundException e) {
             fail();
         }
+    }
+
+    /**
+     * Tests that upgrading a stretch of track upgrades the player's own track and
+     * skips another player's track, which keeps its type and owner.
+     */
+    public void testUpgradeSkipsOtherPlayersTrack() {
+        IntPoint2D own = new IntPoint2D(5, 5);
+        IntPoint2D others = new IntPoint2D(6, 5);
+        producer.setTrackBuilderMode(BuildMode.BUILD_TRACK);
+        Status status = producer.buildTrack(own, TileTransition.EAST);
+        assertTrue(status.getMessage(), status.isSuccess());
+        TrackPiece othersPiece = world.getTile(others).trackPiece();
+        world.setTile(others, new TerrainTile(world.getTile(others).terrainTypeId(),
+                new TrackPiece(othersPiece.trackConfiguration(), othersPiece.trackType(), 999)));
+
+        producer.setBuildTrackStrategy(BuildTrackStrategy.getSingleRuleInstance(1, world));
+        producer.setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
+        status = producer.buildTrack(own, TileTransition.EAST);
+
+        assertTrue(status.getMessage(), status.isSuccess());
+        assertEquals(1, world.getTile(own).trackPiece().trackType().getId());
+        assertEquals(0, world.getTile(others).trackPiece().trackType().getId());
+        assertEquals(999, world.getTile(others).trackPiece().playerId());
     }
 
     /**

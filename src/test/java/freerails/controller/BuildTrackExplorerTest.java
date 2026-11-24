@@ -23,6 +23,7 @@ package freerails.controller;
 
 import freerails.io.GsonManager;
 import freerails.model.terrain.*;
+import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.move.generator.TrackMoveGenerator;
@@ -38,6 +39,8 @@ import junit.framework.TestCase;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 
 /**
@@ -56,22 +59,31 @@ public class BuildTrackExplorerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        // load rules
+        URL url = BuildTrackExplorerTest.class.getResource("/rules.without_restrictions.json");
+        File file = new File(url.toURI());
+        Rules rules = GsonManager.load(file, Rules.class);
+
+        createWorld(rules);
+        player = testPlayer;
+    }
+
+    /**
+     * Creates the empty test world with the supplied rules.
+     * @param rules the game rules
+     * @throws Exception if the terrain types cannot be loaded
+     */
+    private void createWorld(Rules rules) throws Exception {
         // load terrain types
         URL url = BuildTrackExplorerTest.class.getResource("/freerails/data/scenario/terrain_types.json");
         File file = new File(url.toURI());
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
-
-        // load rules
-        url = BuildTrackExplorerTest.class.getResource("/rules.without_restrictions.json");
-        file = new File(url.toURI());
-        Rules rules = GsonManager.load(file, Rules.class);
 
         // generate track types
         SortedSet<TrackType> trackTypes = WorldGenerator.testTrackTypes();
 
         world = new World.Builder().setMapSize(new IntPoint2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
         world.addPlayer(testPlayer);
-        player = testPlayer;
     }
 
     /**
@@ -209,6 +221,65 @@ public class BuildTrackExplorerTest extends TestCase {
         assertNextVertexIs(TileTransition.WEST, 9, 12, explorer);
         assertNextVertexIs(TileTransition.NORTH_WEST, 9, 11, explorer);
         assertFalse(explorer.hasNextEdge());
+    }
+
+    /**
+     * Tests that the explorer proposes adding connections to another player's
+     * track, on the next tile and on the start tile, only if the rules allow
+     * connecting to it.
+     */
+    public void testOtherPlayersTrackFollowsConnectRule() throws Exception {
+        IntPoint2D start = new IntPoint2D(10, 10);
+        IntPoint2D north = new IntPoint2D(10, 9);
+        for (boolean canConnect : new boolean[]{false, true}) {
+            // Another player's track on the next tile.
+            createWorld(new Rules(canConnect, false));
+            setOthersTrack(north, TileTransition.NORTH);
+            assertEquals(canConnect, nextVertices(start).contains(
+                    new PositionOnTrack(north, TileTransition.NORTH)));
+            world.setTile(north, new TerrainTile(world.getTile(north).terrainTypeId()));
+
+            // Another player's track on the start tile.
+            setOthersTrack(start, TileTransition.SOUTH);
+            assertEquals(canConnect, !nextVertices(start).isEmpty());
+            world.setTile(start, new TerrainTile(world.getTile(start).terrainTypeId()));
+        }
+    }
+
+    /**
+     * Tests that following another player's existing connection is proposed even
+     * when connecting to their track is not allowed, because it changes no track.
+     */
+    public void testFollowingOtherPlayersExistingTrackIsProposed() throws Exception {
+        createWorld(new Rules(false, false));
+        IntPoint2D start = new IntPoint2D(10, 10);
+        IntPoint2D north = new IntPoint2D(10, 9);
+        setOthersTrack(start, TileTransition.NORTH);
+        setOthersTrack(north, TileTransition.SOUTH);
+
+        assertTrue(nextVertices(start).contains(new PositionOnTrack(north, TileTransition.NORTH)));
+    }
+
+    /**
+     * Places a track piece with one connection, owned by another player.
+     */
+    private void setOthersTrack(IntPoint2D location, TileTransition connection) {
+        world.setTile(location, new TerrainTile(world.getTile(location).terrainTypeId(),
+                TrackPiece.create(connection, world.getTrackType(0), 999)));
+    }
+
+    /**
+     * Returns the positions the explorer proposes from a start tile, heading north.
+     */
+    private List<PositionOnTrack> nextVertices(IntPoint2D start) {
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
+        explorer.setPosition(new PositionOnTrack(start, TileTransition.NORTH).toInt());
+        List<PositionOnTrack> vertices = new ArrayList<>();
+        while (explorer.hasNextEdge()) {
+            explorer.nextEdge();
+            vertices.add(new PositionOnTrack(explorer.getVertexConnectedByEdge()));
+        }
+        return vertices;
     }
 
     /**

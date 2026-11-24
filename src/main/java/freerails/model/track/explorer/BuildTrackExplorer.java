@@ -120,11 +120,10 @@ public class BuildTrackExplorer implements GraphExplorer {
         // Determine the track rule for the next tile.
         final TerrainTile nextTile = world.getTile(newP);
 
-        // Check there is not another players track at nextTile.
-        if (nextTile.hasTrack()) {
-            if (nextTile.trackPiece().playerId() != player.getId()) {
-                return false;
-            }
+        // Check track ownership on both tiles with the rule the track moves use.
+        if (!mayAddConnection(world.getTile(currentP).trackPiece(), directionOfNextTile)
+                || !mayAddConnection(nextTile.trackPiece(), directionOfNextTile.getOpposite())) {
+            return false;
         }
 
         ruleForNextTile = getAppropriateTrackType(newP);
@@ -198,6 +197,24 @@ public class BuildTrackExplorer implements GraphExplorer {
         usingExistingTrack = trackAlreadyPresent1.contains(goingTo);
 
         return true;
+    }
+
+    /**
+     * Returns whether the player may build the supplied connection on a tile's
+     * track. Building on an empty tile, or along a connection that already exists,
+     * changes no existing track.
+     *
+     * @param trackPiece the tile's track, or {@code null}
+     * @param direction the connection to build
+     * @return true if the track rules allow the connection
+     */
+    private boolean mayAddConnection(TrackPiece trackPiece, TileTransition direction) {
+        if (trackPiece == null || trackPiece.trackConfiguration().contains(direction)) {
+            return true;
+        }
+        return world.getRules()
+                .checkTrackChange(player.getId(), trackPiece, trackPiece.withConnection(direction))
+                .isEmpty();
     }
 
     /**

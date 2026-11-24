@@ -163,9 +163,10 @@ public class TrackMoveProducer {
 
         switch (getBuildMode()) {
             case UPGRADE_TRACK: {
-                // upgrade the from tile if necessary.
+                // Upgrade the tiles if necessary; stations and other players' track are never upgraded.
                 TerrainTile tileA = world.getTile(from);
-                if (tileA.trackPiece().trackType().getId() != ruleIDs[0] && !StationUtils.isStationHere(executor.getWorld(), from)) {
+                if (tileA.trackPiece().trackType().getId() != ruleIDs[0] && !StationUtils.isStationHere(executor.getWorld(), from)
+                        && tileA.trackPiece().playerId() == player.getId()) {
                     Status status = upgradeTrack(from, ruleIDs[0]);
                     if (!status.isSuccess()) {
                         return status;
@@ -173,7 +174,8 @@ public class TrackMoveProducer {
                 }
                 IntPoint2D point = IntPoint2D.add(from, trackVector.getD());
                 TerrainTile tileB = world.getTile(point);
-                if (tileB.trackPiece().trackType().getId() != ruleIDs[1] && !StationUtils.isStationHere(executor.getWorld(), point)) {
+                if (tileB.trackPiece().trackType().getId() != ruleIDs[1] && !StationUtils.isStationHere(executor.getWorld(), point)
+                        && tileB.trackPiece().playerId() == player.getId()) {
                     Status status = upgradeTrack(point, ruleIDs[1]);
                     if (!status.isSuccess()) {
                         return status;

@@ -26,6 +26,7 @@ import freerails.model.world.World;
 import freerails.model.track.NoTrackException;
 import freerails.move.generator.TrackMoveGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
+import freerails.move.mapupdatemove.RemoveStationCompositeMove;
 import freerails.util.ui.SoundManager;
 import freerails.model.track.pathfinding.*;
 import freerails.model.track.BuildTrackStrategy;
@@ -419,6 +420,7 @@ public class BuildTrackController {
                 Player fp = modelRoot.getPlayer();
                 for (TileTransition v : path) {
                     Move move;
+                    ChangeTrackPieceMove shownChange;
                     attemptMove:
                     {
 
@@ -427,16 +429,12 @@ public class BuildTrackController {
 
                                 try {
                                     move = TrackMoveGenerator.generateRemoveTrackMove(location, v, world, fp);
-
-                                    // add to proposed track
-                                    ChangeTrackPieceMove m = (ChangeTrackPieceMove) ((ChangeTrackPieceCompositeMove) move).getMove(0);
-                                    proposedTrack.put(m.location(), m.trackPieceAfter());
-
-                                    break;
                                 } catch (NoTrackException | IllegalStateException e1) {
                                     logger.error(e1, "Could not generate track removal move.");
                                     break attemptMove;
                                 }
+                                shownChange = trackChangeOf(((ChangeTrackPieceCompositeMove) move).getMove(0));
+                                break;
 
                             case UPGRADE_TRACK:
 
@@ -446,9 +444,11 @@ public class BuildTrackController {
 
                                 /*
                                  * Skip tiles that already have the right track
-                                 * type.
+                                 * type, and other players' track, which is never
+                                 * upgraded.
                                  */
-                                if (trackRuleID == tile.trackPiece().trackType().getId()) {
+                                if (trackRuleID == tile.trackPiece().trackType().getId()
+                                        || tile.trackPiece().playerId() != fp.getId()) {
                                     break attemptMove;
                                 }
 
@@ -461,19 +461,22 @@ public class BuildTrackController {
                                     break attemptMove;
                                 }
                                 move = m;
-
-                                // add to proposed track
-                                proposedTrack.put(m.location(), m.trackPieceAfter());
-
+                                shownChange = m;
                                 break;
 
                             default:
                                 throw new IllegalStateException(mode.toString());
                         }
 
+                        // Only show and plan changes that the track rules allow.
                         Status status = move.applicable(world);
-                        okSoFar = status.isSuccess() && okSoFar;
-                        move.apply(world);
+                        if (status.isSuccess()) {
+                            proposedTrack.put(shownChange.location(), shownChange.trackPieceAfter());
+                            move.apply(world);
+                        } else {
+                            okSoFar = false;
+                            setCursorMessage(status.getMessage());
+                        }
                     }// end of attemptMove
                     location = IntPoint2D.add(location, v.getD());
                 }
@@ -485,6 +488,20 @@ public class BuildTrackController {
             }
             show();
         }
+    }
+
+    /**
+     * Returns the single-tile track change of a track move component, including
+     * the station track removal inside a station removal.
+     *
+     * @param move a component of a track move
+     * @return the track change
+     */
+    private static ChangeTrackPieceMove trackChangeOf(Move move) {
+        if (move instanceof RemoveStationCompositeMove stationRemoval) {
+            return stationRemoval.trackChange();
+        }
+        return (ChangeTrackPieceMove) move;
     }
 
     /**
