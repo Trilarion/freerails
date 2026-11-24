@@ -125,8 +125,8 @@ public class AddStationMoveGenerator implements ClientMoveGenerator {
         }
         TrackType trackType = world.getTrackType(ruleNumber);
 
-        TrackPiece newTrackPiece = new TrackPiece(oldTrackPiece.trackConfiguration(), trackType, player.getId());
-        Move upgradeTrackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, location);
+        TrackPiece newTrackPiece = oldTrackPiece.withTrackType(trackType);
+        Move upgradeTrackMove = new ChangeTrackPieceMove(player, oldTrackPiece, newTrackPiece, location);
 
         // There isn't already a station here, so assign a stable station name.
         String stationName;

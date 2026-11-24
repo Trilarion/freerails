@@ -34,15 +34,18 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.io.Serial;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
- * This Move adds, removes, or upgrades the track on a single tile.
+ * This Move adds, removes, or upgrades the track on a single tile. Track ownership
+ * is checked against the acting player with {@link Rules#checkTrackChange}.
 
+ * @param player the player making the change
  * @param trackPieceBefore the track piece present before the change, or {@code null}
  * @param trackPieceAfter the track piece to place, or {@code null} to remove track
  * @param location the map location of the terrain
  */
-public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece trackPieceAfter, IntPoint2D location) implements TrackMove {
+public record ChangeTrackPieceMove(Player player, TrackPiece trackPieceBefore, TrackPiece trackPieceAfter, IntPoint2D location) implements TrackMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -50,22 +53,24 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
     /**
      * Creates a move that replaces the track piece at a map location.
      *
+     * @param player the player making the change
      * @param trackPieceBefore the track piece present before the change, or {@code null}
      * @param trackPieceAfter the track piece to place, or {@code null} to remove track
      * @param location the map location of the tile or track section
      */
     public ChangeTrackPieceMove {
+        Objects.requireNonNull(player);
     }
 
     /**
-     * This move holds no player reference, so it is returned unchanged.
+     * Returns this move made by the supplied player.
      *
      * @param player the player the move acts for
-     * @return this move
+     * @return the rebound move
      */
     @Override
     public @NotNull ChangeTrackPieceMove withPlayer(@NotNull Player player) {
-        return this;
+        return new ChangeTrackPieceMove(player, trackPieceBefore, trackPieceAfter, location);
     }
 
     /**
@@ -127,19 +132,11 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
             return Status.fail("Tried to build track outside the map.");
         }
 
-        // Check that we would not change another players track if this is not allowed.
-        Rules rules = world.getRules();
-        if (!rules.canConnectToOtherPlayersTracks()) {
-            if (trackPieceBefore != null && trackPieceAfter != null) {
-                int oldOwner = trackPieceBefore.playerId();
-                int newOwner = trackPieceAfter.playerId();
-
-                boolean removalOnly = TrackUtils.removesTrackConnections(trackPieceBefore, trackPieceAfter)
-                        && !TrackUtils.addsTrackConnections(trackPieceBefore, trackPieceAfter);
-                if (oldOwner != newOwner && !removalOnly) {
-                    return Status.fail("Not allowed to connect to other RR");
-                }
-            }
+        // Check track ownership against the acting player.
+        Optional<String> ownershipRefusal = world.getRules()
+                .checkTrackChange(player.getId(), trackPieceBefore, trackPieceAfter);
+        if (ownershipRefusal.isPresent()) {
+            return Status.fail(ownershipRefusal.get());
         }
 
         // Check that the current track piece at this.location is the same as this.oldTrackPiece.

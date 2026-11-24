@@ -103,7 +103,7 @@ public class RemoveStationCompositeMoveTest extends TestCase {
         train.setSchedule(schedule(stationId, stationId + 1));
         world.addTrain(owner, train);
 
-        stationTrackRemoval = new ChangeTrackPieceMove(
+        stationTrackRemoval = new ChangeTrackPieceMove(owner,
                 world.getTile(STATION_LOCATION).trackPiece(), null, STATION_LOCATION);
     }
 
@@ -118,7 +118,7 @@ public class RemoveStationCompositeMoveTest extends TestCase {
      * A pair of plain track changes must not remove station track either.
      */
     public void testPlainTrackPairCannotRemoveStationTrack() {
-        ChangeTrackPieceMove trackStartRemoval = new ChangeTrackPieceMove(
+        ChangeTrackPieceMove trackStartRemoval = new ChangeTrackPieceMove(owner,
                 world.getTile(TRACK_START).trackPiece(), null, TRACK_START);
         assertRefused(new ChangeTrackPieceCompositeMove(trackStartRemoval, stationTrackRemoval, owner),
                 "Station track can only be removed together with its station.");
@@ -191,22 +191,33 @@ public class RemoveStationCompositeMoveTest extends TestCase {
      * Another player may not remove a station when other players' track may not be removed.
      */
     public void testOtherPlayerCannotRemoveStationWhenRulesForbidIt() {
-        assertRefused(stationRemovalBy(other), "Not allowed to remove another player's track.");
+        assertRefused(stationRemovalBy(other), "Only the owner may remove a station.");
     }
 
     /**
-     * Another player may remove a station when other players' track may be removed.
+     * Another player may not remove a station even when other players' track may be removed.
      */
-    public void testOtherPlayerCanRemoveStationWhenRulesAllowIt() {
+    public void testOtherPlayerCannotRemoveStationWhenRulesAllowRemovingTrack() {
         createWorld(new Rules(true, false, true));
-        Move removal = stationRemovalBy(other);
-        assertApplicable(removal);
-        removal.apply(world);
-        assertTrue(world.getStations(owner).isEmpty());
+        assertRefused(stationRemovalBy(other), "Only the owner may remove a station.");
     }
 
     /**
-     * Builds the owner's track and station removal, submitted by the supplied player.
+     * Another player may not build a station on the owner's track, even when
+     * connecting to other players' track is allowed.
+     */
+    public void testOtherPlayerCannotBuildStationOnTrack() {
+        TrackType stationType = world.getTrackTypes().stream().filter(TrackType::isStation).findFirst().orElseThrow();
+        Move addStation = new AddStationMoveGenerator(TRACK_START, stationType.getId(), other).generate(world);
+
+        Status status = addStation.applicable(world);
+        assertEquals("Not allowed to change the track type of another player's track.", status.getMessage());
+        assertEquals(owner.getId(), world.getTile(TRACK_START).trackPiece().playerId());
+    }
+
+    /**
+     * Builds the owner's track and station removal as sent by the supplied player:
+     * the server rebinds it to that player.
      * @param player the player submitting the removal
      * @return the track removal move
      */
@@ -216,11 +227,11 @@ public class RemoveStationCompositeMoveTest extends TestCase {
         TrackPiece startTrack = start.trackPiece();
         world.setTile(TRACK_START, new TerrainTile(start.terrainTypeId(),
                 new TrackPiece(startTrack.trackConfiguration(), startTrack.trackType(), player.getId())));
-        ChangeTrackPieceMove trackStartRemoval = new ChangeTrackPieceMove(
+        ChangeTrackPieceMove trackStartRemoval = new ChangeTrackPieceMove(owner,
                 world.getTile(TRACK_START).trackPiece(), null, TRACK_START);
         RemoveStationCompositeMove stationRemoval =
                 new RemoveStationMoveGenerator(stationTrackRemoval, owner).generate(world);
-        return new ChangeTrackPieceCompositeMove(trackStartRemoval, stationRemoval, player);
+        return new ChangeTrackPieceCompositeMove(trackStartRemoval, stationRemoval, owner).withPlayer(player);
     }
 
     /**

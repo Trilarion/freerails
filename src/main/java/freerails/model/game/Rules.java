@@ -23,6 +23,7 @@ import freerails.model.track.TrackUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * Stores rules governing what players are allowed to do, including track
@@ -71,21 +72,60 @@ public record Rules(
     }
 
     /**
-     * Determines whether a player may remove connections from a track piece.
+     * Checks whether a player may change the track piece on one tile, as far as
+     * track ownership is concerned.
      *
-     * @param playerId player attempting the change
-     * @param before track piece before the change, or {@code null}
-     * @param after track piece after the change, or {@code null}
-     * @return {@code true} if the change removes no connections, the piece is
-     *         owned by the player, or the rules permit removing another
-     *         player's track
+     * <ul>
+     *     <li>New track belongs to the player who builds it.</li>
+     *     <li>The owner of existing track never changes.</li>
+     *     <li>A player may change their own track.</li>
+     *     <li>On another player's track, a player may only add connections if
+     *     {@link #canConnectToOtherPlayersTracks()}, and only remove connections
+     *     or the whole piece if {@link #canRemoveOtherPlayersTracks()}. Changing
+     *     its track type, or adding and removing connections at once, is never
+     *     allowed.</li>
+     * </ul>
+     *
+     * @param playerId the player making the change
+     * @param before the track piece before the change, or {@code null}
+     * @param after the track piece after the change, or {@code null}
+     * @return the reason the change is not allowed, or empty if it is allowed
      */
-    public boolean canRemoveTrackPiece(int playerId, TrackPiece before, TrackPiece after) {
-        if (before == null || before.playerId() == playerId) {
-            return true;
+    public Optional<String> checkTrackChange(int playerId, TrackPiece before, TrackPiece after) {
+        if (before == null) {
+            if (after != null && after.playerId() != playerId) {
+                return Optional.of("New track must belong to the player who builds it.");
+            }
+            return Optional.empty();
+        }
+        if (after != null && after.playerId() != before.playerId()) {
+            return Optional.of("The owner of track cannot change.");
+        }
+        if (before.playerId() == playerId) {
+            return Optional.empty();
         }
 
-        return !TrackUtils.removesTrackConnections(before, after) || canRemoveOtherPlayersTracks;
+        // Another player's track.
+        if (after == null) {
+            return canRemoveOtherPlayersTracks
+                    ? Optional.empty()
+                    : Optional.of("Not allowed to remove another player's track.");
+        }
+        if (!before.trackType().equals(after.trackType())) {
+            return Optional.of("Not allowed to change the track type of another player's track.");
+        }
+        boolean adds = TrackUtils.addsTrackConnections(before, after);
+        boolean removes = TrackUtils.removesTrackConnections(before, after);
+        if (adds && removes) {
+            return Optional.of("Not allowed to rebuild another player's track.");
+        }
+        if (adds && !canConnectToOtherPlayersTracks) {
+            return Optional.of("Not allowed to connect to another player's track.");
+        }
+        if (removes && !canRemoveOtherPlayersTracks) {
+            return Optional.of("Not allowed to remove another player's track.");
+        }
+        return Optional.empty();
     }
 
 }

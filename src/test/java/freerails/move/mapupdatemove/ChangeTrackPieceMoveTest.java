@@ -88,26 +88,26 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackType trackType = getWorld().getTrackType(trackRuleID);
 
         newTrackPiece = new TrackPiece(newConfig, trackType, 0);
-        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
+        move = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
         status = move.applicable(getWorld());
         assertNotNull(status);
         assertEquals(true, status.isSuccess());
 
         // As above but with newTrackPiece and oldTrackPiece in the wrong order,
         // should fail.
-        move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece, IntPoint2D.ZERO);
+        move = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, newTrackPiece, oldTrackPiece, IntPoint2D.ZERO);
         status = move.applicable(getWorld());
         assertNotNull(status);
         assertFalse(status.isSuccess());
 
         // Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece, should fail.
-        move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece, IntPoint2D.ZERO);
+        move = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, oldTrackPiece, oldTrackPiece, IntPoint2D.ZERO);
         status = move.applicable(getWorld());
         assertNotNull(status);
         assertFalse(status.isSuccess());
 
         // Try to build track outside the map.
-        move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece, new IntPoint2D(100, 0));
+        move = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, newTrackPiece, oldTrackPiece, new IntPoint2D(100, 0));
         status = move.applicable(getWorld());
         assertNotNull(status);
         assertFalse(status.isSuccess());
@@ -116,7 +116,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         newConfig = TrackConfiguration.getFlatInstance("00111100");
 
         newTrackPiece = new TrackPiece(newConfig, trackType,0);
-        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
+        move = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
         status = move.applicable(getWorld());
         assertFalse(status.isSuccess());
     }
@@ -148,7 +148,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackMove move;
         Status status;
 
-        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
+        move = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
         status = move.applicable(getWorld());
         assertEquals(true, status.isSuccess());
         move.apply(getWorld());
@@ -167,7 +167,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackType trackType = getWorld().getTrackType(0);
         TrackPiece newTrackPiece = new TrackPiece(newConfig, trackType,0);
 
-        Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
+        Move move = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
 
         assertSurvivesSerialisation(move);
 

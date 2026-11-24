@@ -98,7 +98,7 @@ public final class TrackMoveGenerator {
         if (before.trackType().isStation()) {
             throw new IllegalStateException("No need to upgrade track at station.");
         }
-        return new ChangeTrackPieceMove(before, before.withTrackType(trackType, player.getId()), location);
+        return new ChangeTrackPieceMove(player, before, before.withTrackType(trackType), location);
     }
 
     /**
@@ -106,11 +106,12 @@ public final class TrackMoveGenerator {
      */
     private static ChangeTrackPieceMove buildTrackOnTile(IntPoint2D location, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
         TrackPiece before = world.boundsContain(location) ? world.getTile(location).trackPiece() : null;
+        // Existing track keeps its owner; only new track belongs to the builder.
         TrackPiece after = before != null
-                ? before.withConnection(direction, player.getId())
+                ? before.withConnection(direction)
                 : TrackPiece.create(direction, trackType, player.getId());
 
-        return new ChangeTrackPieceMove(before, after, location);
+        return new ChangeTrackPieceMove(player, before, after, location);
     }
 
     /**
@@ -123,9 +124,9 @@ public final class TrackMoveGenerator {
             // Fix for bug [ 948670 ] Removing non-existent track
             throw new NoTrackException("No track to remove.");
         }
-        TrackPiece after = before.withoutConnection(direction, player.getId()).orElse(null);
+        TrackPiece after = before.withoutConnection(direction).orElse(null);
 
-        ChangeTrackPieceMove trackChange = new ChangeTrackPieceMove(before, after, location);
+        ChangeTrackPieceMove trackChange = new ChangeTrackPieceMove(player, before, after, location);
 
         // Removing the station track also removes the station and the schedule stops at it.
         if (trackChange.removesStationTrack()) {

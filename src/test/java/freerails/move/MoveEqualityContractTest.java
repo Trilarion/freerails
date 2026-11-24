@@ -220,18 +220,19 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new ChangeTileMove(tile, new IntPoint2D(2, 3)),
                 new ChangeTileMove(new TerrainTile(4, TRACK_A), new IntPoint2D(2, 3)));
 
-        ChangeTrackPieceMove trackMove = new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(2, 3));
-        assertEqualMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(2, 3)));
-        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_OTHER_OWNER, new IntPoint2D(2, 3)));
-        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null,
+        ChangeTrackPieceMove trackMove = new ChangeTrackPieceMove(PLAYER, null, TRACK_A, new IntPoint2D(2, 3));
+        assertEqualMoves(trackMove, new ChangeTrackPieceMove(PLAYER, null, TRACK_A, new IntPoint2D(2, 3)));
+        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(PLAYER, null, TRACK_OTHER_OWNER, new IntPoint2D(2, 3)));
+        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(OTHER_PLAYER, null, TRACK_A, new IntPoint2D(2, 3)));
+        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(PLAYER, null,
                 new TrackPiece(TRACK_A.trackConfiguration(), OTHER_TRACK_TYPE, PLAYER.getId()), new IntPoint2D(2, 3)));
-        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null,
+        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(PLAYER, null,
                 new TrackPiece(TrackConfiguration.getFlatInstance("00000100"), TRACK_TYPE, PLAYER.getId()),
                 new IntPoint2D(2, 3)));
-        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(3, 3)));
-        assertDifferentMoves(new ChangeTrackPieceMove(TRACK_A, TRACK_A, new IntPoint2D(2, 3)), trackMove);
-        ChangeTrackPieceMove removal = new ChangeTrackPieceMove(TRACK_A, null, new IntPoint2D(2, 3));
-        assertEqualMoves(removal, new ChangeTrackPieceMove(TRACK_A, null, new IntPoint2D(2, 3)));
+        assertDifferentMoves(trackMove, new ChangeTrackPieceMove(PLAYER, null, TRACK_A, new IntPoint2D(3, 3)));
+        assertDifferentMoves(new ChangeTrackPieceMove(PLAYER, TRACK_A, TRACK_A, new IntPoint2D(2, 3)), trackMove);
+        ChangeTrackPieceMove removal = new ChangeTrackPieceMove(PLAYER, TRACK_A, null, new IntPoint2D(2, 3));
+        assertEqualMoves(removal, new ChangeTrackPieceMove(PLAYER, TRACK_A, null, new IntPoint2D(2, 3)));
 
         Move speedSlow = new ChangeGameSpeedMove(Speed.SLOW);
         Move speedFast = new ChangeGameSpeedMove(Speed.FAST);
@@ -245,13 +246,13 @@ public class MoveEqualityContractTest extends TestCase {
         assertDifferentMoves(new CompostMove(List.of(speedSlow, speedFast)),
                 new CompostMove(List.of(speedSlow, new GrowCitiesMove())));
 
-        ChangeTrackPieceMove secondTrackMove = new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(3, 3));
+        ChangeTrackPieceMove secondTrackMove = new ChangeTrackPieceMove(PLAYER, null, TRACK_A, new IntPoint2D(3, 3));
         ChangeTrackPieceCompositeMove trackComposite =
                 new ChangeTrackPieceCompositeMove(trackMove, secondTrackMove, PLAYER);
         ChangeTrackPieceCompositeMove sameTrackComposite =
                 new ChangeTrackPieceCompositeMove(
-                        new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(2, 3)),
-                        new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(3, 3)),
+                        new ChangeTrackPieceMove(PLAYER, null, TRACK_A, new IntPoint2D(2, 3)),
+                        new ChangeTrackPieceMove(PLAYER, null, TRACK_A, new IntPoint2D(3, 3)),
                         new Player(1, "One"));
         assertEqualMoves(trackComposite, sameTrackComposite);
         assertDifferentMoves(trackComposite,
@@ -264,7 +265,7 @@ public class MoveEqualityContractTest extends TestCase {
                 new RemoveStationCompositeMove(trackMove, new RemoveStationMove(PLAYER, 11), List.of());
         assertDifferentMoves(removeComposite, differentRemoveComposite);
         assertEqualMoves(removeComposite, new RemoveStationCompositeMove(
-                new ChangeTrackPieceMove(null, TRACK_A, new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 10),
+                new ChangeTrackPieceMove(PLAYER, null, TRACK_A, new IntPoint2D(2, 3)), new RemoveStationMove(PLAYER, 10),
                 List.of()));
 
         assertEqualMoves(new GrowCitiesMove(), new GrowCitiesMove());

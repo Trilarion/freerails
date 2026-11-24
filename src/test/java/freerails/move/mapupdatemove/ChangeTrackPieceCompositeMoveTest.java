@@ -43,6 +43,9 @@ import freerails.util.WorldGenerator;
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
+    private static final String CHANGE_TYPE_REFUSED =
+            "Not allowed to change the track type of another player's track.";
+
     private TrackMoveTransactionsGenerator transactionsGenerator;
 
     /**
@@ -253,6 +256,12 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 assertBuild(otherTrackWorld, sharedTile, TileTransition.EAST, trackType, canBuildOnOtherTrack);
                 assertEquals(canBuildOnOtherTrack,
                         otherTrackWorld.getTile(new IntPoint2D(2, 5)).trackPiece() != null);
+                // Connecting to another player's track never changes its owner.
+                assertEquals(999, otherTrackWorld.getTile(sharedTile).trackPiece().playerId());
+                if (canBuildOnOtherTrack) {
+                    assertEquals(WorldGenerator.TEST_PLAYER.getId(),
+                            otherTrackWorld.getTile(new IntPoint2D(2, 5)).trackPiece().playerId());
+                }
 
                 World disconnectedWorld = createWorld(rules);
                 assertBuild(disconnectedWorld, new IntPoint2D(0, 5), TileTransition.EAST, trackType, true);
@@ -333,6 +342,67 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         removal = TrackMoveGenerator.generateRemoveTrackMove(
                 junction, TileTransition.WEST, permittedWorld, WorldGenerator.TEST_PLAYER);
         assertTrue(removal.applicable(permittedWorld).isSuccess());
+
+        // The remaining track keeps its owner.
+        removal.apply(permittedWorld);
+        assertEquals(999, permittedWorld.getTile(junction).trackPiece().playerId());
+    }
+
+    /**
+     * Tests that another player's track is never upgraded, even when connecting
+     * to and removing it is allowed. (Stations: see RemoveStationCompositeMoveTest.)
+     */
+    public void testOtherPlayersTrackCannotBeUpgraded() {
+        World testWorld = createWorld(new Rules(true, false, true));
+        TrackType trackType = testWorld.getTrackType(0);
+        IntPoint2D first = new IntPoint2D(0, 5);
+        assertBuild(testWorld, first, TileTransition.EAST, trackType, true);
+        setTrackOwner(testWorld, first, 999);
+
+        TrackType otherType = testWorld.getTrackTypes().stream()
+                .filter(type -> !type.isStation() && !type.equals(trackType))
+                .findFirst().orElseThrow();
+        ChangeTrackPieceMove upgrade = TrackMoveGenerator.generateUpgradeTrackMove(
+                first, otherType, testWorld, WorldGenerator.TEST_PLAYER);
+        assertEquals(999, upgrade.trackPieceAfter().playerId());
+        assertEquals(CHANGE_TYPE_REFUSED, upgrade.applicable(testWorld).getMessage());
+    }
+
+    /**
+     * Tests that a track change is checked against the acting player, not only
+     * against the owners in the track pieces.
+     */
+    public void testTrackChangesAreCheckedAgainstTheActingPlayer() {
+        World testWorld = createWorld(new Rules(false, false, false));
+        TrackType trackType = testWorld.getTrackType(0);
+        IntPoint2D first = new IntPoint2D(0, 5);
+        assertBuild(testWorld, first, TileTransition.EAST, trackType, true);
+        setTrackOwner(testWorld, first, 999);
+        TrackPiece before = testWorld.getTile(first).trackPiece();
+
+        // Adding a connection to another player's piece while keeping its owner.
+        ChangeTrackPieceMove keepsOwner = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER,
+                before, before.withConnection(TileTransition.SOUTH), first);
+        assertEquals("Not allowed to connect to another player's track.",
+                keepsOwner.applicable(testWorld).getMessage());
+
+        // Taking over the piece is never allowed, whatever the rules.
+        for (Rules rules : new Rules[]{new Rules(false, false, false), new Rules(true, false, true)}) {
+            World takeOverWorld = createWorld(rules);
+            assertBuild(takeOverWorld, first, TileTransition.EAST, trackType, true);
+            setTrackOwner(takeOverWorld, first, 999);
+            TrackPiece theirs = takeOverWorld.getTile(first).trackPiece();
+            ChangeTrackPieceMove takeOver = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, theirs,
+                    new TrackPiece(theirs.trackConfiguration(), theirs.trackType(), WorldGenerator.TEST_PLAYER.getId()), first);
+            assertEquals("The owner of track cannot change.", takeOver.applicable(takeOverWorld).getMessage());
+        }
+
+        // New track must belong to the player who builds it.
+        IntPoint2D empty = new IntPoint2D(7, 7);
+        ChangeTrackPieceMove forOther = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, null,
+                TrackPiece.create(TileTransition.EAST, trackType, 999), empty);
+        assertEquals("New track must belong to the player who builds it.",
+                forOther.applicable(testWorld).getMessage());
     }
 
     /**

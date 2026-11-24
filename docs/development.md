@@ -220,6 +220,17 @@ station removal, and schedule updates belong together. Consider scenario loading
 changing persisted data, and serialization compatibility for data transmitted between
 clients and servers.
 
+Track ownership is checked against the player making a track change, by
+`Rules.checkTrackChange` from `ChangeTrackPieceMove`. Track moves never transfer
+ownership: new track belongs to its builder, and existing track keeps its owner
+through every change. A player may change their own track freely. On another
+player's track, a player may only add connections if
+`canConnectToOtherPlayersTracks` is set, and only remove connections or whole
+pieces if `canRemoveOtherPlayersTracks` is set; changing its track type
+(upgrading it or building a station on it) is never allowed, and only the owner
+may remove a station. The track-piece calculations behind track moves live in
+`TrackPiece`; `TrackMoveGenerator` builds the moves from them.
+
 ### Track model
 
 The map is a rectangular grid of square tiles. Every tile that is not on the

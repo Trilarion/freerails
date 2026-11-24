@@ -85,7 +85,7 @@ public class MoveStateContractTest extends TestCase {
      */
     public void testApplicableIsPureForAcceptedAndRejectedMoves() {
         CargoBatchBundle cargo = cargo(3);
-        ChangeTrackPieceMove outsideMap = new ChangeTrackPieceMove(null, null, new IntPoint2D(-1, 0));
+        ChangeTrackPieceMove outsideMap = new ChangeTrackPieceMove(player, null, null, new IntPoint2D(-1, 0));
         initializeWorld(new Rules(false, false));
         TrackPiece before = new TrackPiece(
                 TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), player.getId());
@@ -93,7 +93,7 @@ public class MoveStateContractTest extends TestCase {
                 TrackConfiguration.getFlatInstance("00000001"), world.getTrackType(0), otherPlayer.getId());
         TerrainTile tile = world.getTile(TILE_TO_CHANGE);
         world.setTile(TILE_TO_CHANGE, new TerrainTile(tile.terrainTypeId(), before));
-        ChangeTrackPieceMove disallowedTrack = new ChangeTrackPieceMove(before, after, TILE_TO_CHANGE);
+        ChangeTrackPieceMove disallowedTrack = new ChangeTrackPieceMove(player, before, after, TILE_TO_CHANGE);
 
         assertApplicableWithoutMutation(new AddTransactionMove(player, transaction(20)), true);
         assertApplicableWithoutMutation(new ChangeCargoAtStationMove(player, 10, cargo), true);
@@ -268,8 +268,8 @@ public class MoveStateContractTest extends TestCase {
         assertRejectedWithoutMutation(new ChangeCargoAtStationMove(player, 999, cargo(1)));
         assertRejectedWithoutMutation(new UpdateTrainMove(player, 999, null, java.util.List.of(), null));
         assertRejectedWithoutMutation(new AddTransactionMove(player, transaction(-1_000_000_000_000L), true));
-        assertRejectedWithoutMutation(new ChangeTrackPieceMove(null, null, new IntPoint2D(-1, 0)));
-        assertRejectedWithoutMutation(new ChangeTrackPieceMove(before, otherOwner, TILE_TO_CHANGE));
+        assertRejectedWithoutMutation(new ChangeTrackPieceMove(player, null, null, new IntPoint2D(-1, 0)));
+        assertRejectedWithoutMutation(new ChangeTrackPieceMove(player, before, otherOwner, TILE_TO_CHANGE));
     }
 
     /**

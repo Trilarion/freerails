@@ -247,8 +247,8 @@ public class ConnectionTest extends TestCase {
                     WorldGenerator.testTrackTypes().first(),
                     player.getId());
             ChangeTrackPieceCompositeMove move = new ChangeTrackPieceCompositeMove(
-                    new ChangeTrackPieceMove(null, trackPiece, new IntPoint2D(2, 3)),
-                    new ChangeTrackPieceMove(null, trackPiece, new IntPoint2D(3, 3)),
+                    new ChangeTrackPieceMove(player, null, trackPiece, new IntPoint2D(2, 3)),
+                    new ChangeTrackPieceMove(player, null, trackPiece, new IntPoint2D(3, 3)),
                     player);
 
             try {

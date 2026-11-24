@@ -78,30 +78,32 @@ public class TrackPieceTest extends TestCase {
     }
 
     /**
-     * Tests adding and removing connections while keeping the track type.
+     * Tests adding and removing connections while keeping the track type and owner.
      */
     public void testAddAndRemoveConnections() {
         TrackType type = world.getTrackType(0);
         TrackPiece east = TrackPiece.create(TileTransition.EAST, type, 3);
 
-        TrackPiece straight = east.withConnection(TileTransition.WEST, 3);
+        TrackPiece straight = east.withConnection(TileTransition.WEST);
         assertEquals(TrackConfiguration.add(east.trackConfiguration(), TileTransition.WEST), straight.trackConfiguration());
-        assertEquals(type, straight.trackType());
+        assertEquals(type, straight.trackType());
+        assertEquals(3, straight.playerId());
 
-        assertEquals(east, straight.withoutConnection(TileTransition.WEST, 3).orElseThrow());
-        assertTrue(east.withoutConnection(TileTransition.EAST, 3).isEmpty());
+        assertEquals(east, straight.withoutConnection(TileTransition.WEST).orElseThrow());
+        assertTrue(east.withoutConnection(TileTransition.EAST).isEmpty());
     }
 
     /**
-     * Tests that changing the track type keeps the configuration.
+     * Tests that changing the track type keeps the configuration and owner.
      */
     public void testWithTrackType() {
         TrackPiece piece = TrackPiece.create(TileTransition.EAST, world.getTrackType(0), 3);
         TrackType other = world.getTrackType(4);
 
-        TrackPiece changed = piece.withTrackType(other, 3);
+        TrackPiece changed = piece.withTrackType(other);
 
         assertEquals(piece.trackConfiguration(), changed.trackConfiguration());
-        assertEquals(other, changed.trackType());
+        assertEquals(other, changed.trackType());
+        assertEquals(3, changed.playerId());
     }
 }

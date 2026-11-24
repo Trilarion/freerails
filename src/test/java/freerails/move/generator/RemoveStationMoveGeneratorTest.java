@@ -128,7 +128,7 @@ public class RemoveStationMoveGeneratorTest extends TestCase {
      * The generator refuses a track change at a location without a station of the player.
      */
     public void testGenerateFailsWithoutStationAtLocation() {
-        ChangeTrackPieceMove trackChange = new ChangeTrackPieceMove(
+        ChangeTrackPieceMove trackChange = new ChangeTrackPieceMove(owner,
                 world.getTile(TRACK_START).trackPiece(), null, TRACK_START);
         IllegalArgumentException exception = TestUtils.assertThrows(IllegalArgumentException.class,
                 () -> new RemoveStationMoveGenerator(trackChange, owner).generate(world));
@@ -139,7 +139,7 @@ public class RemoveStationMoveGeneratorTest extends TestCase {
      * Generators with the same track change and player are equal.
      */
     public void testEquality() {
-        ChangeTrackPieceMove trackChange = new ChangeTrackPieceMove(
+        ChangeTrackPieceMove trackChange = new ChangeTrackPieceMove(owner,
                 world.getTile(STATION_LOCATION).trackPiece(), null, STATION_LOCATION);
         RemoveStationMoveGenerator generator = new RemoveStationMoveGenerator(trackChange, owner);
         assertEquals(generator, new RemoveStationMoveGenerator(trackChange, owner));

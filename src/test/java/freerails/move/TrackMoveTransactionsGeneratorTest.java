@@ -84,7 +84,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         TrackType trackType = world.getTrackType(0);
         int owner = WorldGenerator.TEST_PLAYER.getId();
         newTrackPiece = new TrackPiece(newConfig, trackType, owner);
-        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
+        trackMove = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER, oldTrackPiece, newTrackPiece, IntPoint2D.ZERO);
 
         Move move = transactionGenerator.addTransactions(trackMove);
         assertNotNull(move);

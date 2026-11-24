@@ -71,14 +71,14 @@ public class RepresentativeMoveSerializationTest extends TestCase {
         Move[] moves = {
                 new AddPlayerMove(player),
                 new ChangeTileMove(new TerrainTile(1), new IntPoint2D(2, 3)),
-                new ChangeTrackPieceMove(null, trackPiece, new IntPoint2D(2, 3)),
+                new ChangeTrackPieceMove(player, null, trackPiece, new IntPoint2D(2, 3)),
                 new AddTrainMove(player, configuredTrain),
                 new AddTrainMotionMove(player, 7, TestTrainMotion.of(60)),
                 new AddStationMove(player,
                         new Station(9, new IntPoint2D(4, 5), "Station", CargoBatchBundle.EMPTY)),
                 cargoMove,
                 new RemoveStationCompositeMove(
-                        new ChangeTrackPieceMove(trackPiece, null, new IntPoint2D(2, 3)),
+                        new ChangeTrackPieceMove(player, trackPiece, null, new IntPoint2D(2, 3)),
                         new RemoveStationMove(player, 9),
                         List.of(new UpdateTrainMove(player, 7, null, null, new ScheduleState()))),
                 new AddTransactionMove(player, transaction),

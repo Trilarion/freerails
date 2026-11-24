@@ -55,40 +55,40 @@ public record TrackPiece(TrackConfiguration trackConfiguration, TrackType trackT
     }
 
     /**
-     * Returns this piece with the supplied connection added; the track type is kept.
+     * Returns this piece with the supplied connection added; the track type and
+     * the owner are kept.
      *
      * @param direction the connection to add
-     * @param owner the identifier of the owning player of the result
      * @return the changed track piece
      */
-    public TrackPiece withConnection(TrackConfigurations direction, int owner) {
-        return new TrackPiece(TrackConfiguration.add(trackConfiguration, direction), trackType, owner);
+    public TrackPiece withConnection(TrackConfigurations direction) {
+        return new TrackPiece(TrackConfiguration.add(trackConfiguration, direction), trackType, playerId);
     }
 
     /**
-     * Returns this piece with the supplied connection removed; the track type is kept.
+     * Returns this piece with the supplied connection removed; the track type and
+     * the owner are kept.
      *
      * @param direction the connection to remove
-     * @param owner the identifier of the owning player of the result
      * @return the changed track piece, or empty if no connection remains
      */
-    public Optional<TrackPiece> withoutConnection(TrackConfigurations direction, int owner) {
+    public Optional<TrackPiece> withoutConnection(TrackConfigurations direction) {
         TrackConfiguration remaining = TrackConfiguration.subtract(trackConfiguration, direction);
         if (remaining.get8bitTemplate() == 0) {
             return Optional.empty();
         }
-        return Optional.of(new TrackPiece(remaining, trackType, owner));
+        return Optional.of(new TrackPiece(remaining, trackType, playerId));
     }
 
     /**
-     * Returns this piece with another track type; the configuration is kept.
+     * Returns this piece with another track type; the configuration and the
+     * owner are kept.
      *
      * @param newTrackType the track type of the result
-     * @param owner the identifier of the owning player of the result
      * @return the changed track piece
      */
-    public TrackPiece withTrackType(TrackType newTrackType, int owner) {
-        return new TrackPiece(trackConfiguration, newTrackType, owner);
+    public TrackPiece withTrackType(TrackType newTrackType) {
+        return new TrackPiece(trackConfiguration, newTrackType, playerId);
     }
 
     /**

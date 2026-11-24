@@ -146,7 +146,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         TrackPiece stationWithoutExistingTrack = new TrackPiece(TrackConfiguration.from8bitTemplate(1),
                 stationTrackType, WorldGenerator.TEST_PLAYER.getId());
-        ChangeTrackPieceMove invalidMove = new ChangeTrackPieceMove(
+        ChangeTrackPieceMove invalidMove = new ChangeTrackPieceMove(WorldGenerator.TEST_PLAYER,
                 null, stationWithoutExistingTrack, emptyLocation);
         assertFalse(invalidMove.applicable(world).isSuccess());
     }

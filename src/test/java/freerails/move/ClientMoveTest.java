@@ -88,6 +88,8 @@ public class ClientMoveTest extends TestCase {
                 player -> new RemoveStationMove(player, 2),
                 this::stationRemoval,
                 this::trackBuild,
+                player -> new ChangeTrackPieceMove(player, null,
+                        TrackPiece.create(TileTransition.EAST, trackType, PIECE_OWNER), new IntPoint2D(5, 5)),
                 player -> new CompositeMove(List.of(trackBuild(player),
                         new AddTransactionMove(player, new Transaction(TransactionCategory.TRACK, new Money(-5), Time.ZERO)))),
                 player -> new CompostMove(List.of(new RemoveStationMove(player, 2), new UpdateTrainMove(player, 3, null, List.of(1), null))));
@@ -155,15 +157,15 @@ public class ClientMoveTest extends TestCase {
         IntPoint2D from = new IntPoint2D(5, 5);
         TileTransition direction = TileTransition.EAST;
         // Track piece owners describe the world, not the acting player, so they are not rebound.
-        ChangeTrackPieceMove a = new ChangeTrackPieceMove(null,
+        ChangeTrackPieceMove a = new ChangeTrackPieceMove(player, null,
                 TrackPiece.create(direction, trackType, PIECE_OWNER), from);
-        ChangeTrackPieceMove b = new ChangeTrackPieceMove(null,
+        ChangeTrackPieceMove b = new ChangeTrackPieceMove(player, null,
                 TrackPiece.create(direction.getOpposite(), trackType, PIECE_OWNER), direction.createRelocatedPoint(from));
         return new ChangeTrackPieceCompositeMove(a, b, player);
     }
 
     private RemoveStationCompositeMove stationRemoval(Player player) {
-        ChangeTrackPieceMove trackChange = new ChangeTrackPieceMove(
+        ChangeTrackPieceMove trackChange = new ChangeTrackPieceMove(player,
                 TrackPiece.create(TileTransition.EAST, stationType, PIECE_OWNER), null, new IntPoint2D(5, 5));
         return new RemoveStationCompositeMove(trackChange, new RemoveStationMove(player, 2),
                 List.of(new UpdateTrainMove(player, 3, null, List.of(1), null)));

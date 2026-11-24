@@ -137,13 +137,18 @@ public class RemoveStationCompositeMove extends CompositeMove implements TrackMo
         if (!trackChange.removesStationTrack()) {
             return Status.fail("A station removal must remove station track.");
         }
+        // Only the owner may remove a station, whatever the rules for other players' track.
+        int stationOwnerId = trackChange.trackPieceBefore().playerId();
+        if (trackChange.player().getId() != stationOwnerId) {
+            return Status.fail("Only the owner may remove a station.");
+        }
         Status status = trackChange.checkTrackChange(world);
         if (!status.isSuccess()) {
             return status;
         }
 
         Player owner = stationRemoval.getPlayer();
-        if (owner.getId() != trackChange.trackPieceBefore().playerId()) {
+        if (owner.getId() != stationOwnerId) {
             return Status.fail("The removed station must belong to the owner of the station track.");
         }
         status = stationRemoval.applicable(world);
