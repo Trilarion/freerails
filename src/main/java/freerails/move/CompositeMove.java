@@ -21,12 +21,14 @@
  */
 package freerails.move;
 
+import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Utils;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +38,7 @@ import java.util.List;
  * order. This class defines methods which may not be subclassed; all changes
  * must be encapsulated as sub-moves of this move.
  */
-public class CompositeMove implements Move {
+public class CompositeMove implements ClientMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -49,6 +51,39 @@ public class CompositeMove implements Move {
      */
     public CompositeMove(List<Move> moves) {
         this.moves = Utils.immutableList(moves);
+    }
+
+    /**
+     * Returns this composite with every component rebound to the supplied player.
+     * Subclasses that may be sent by a client must override this method.
+     *
+     * @param player the player the move acts for
+     * @return the rebound composite move
+     * @throws IllegalArgumentException if a component may not be sent by a client,
+     *         or this is a subclass that does not override this method
+     */
+    @Override
+    public @NotNull CompositeMove withPlayer(@NotNull Player player) {
+        if (getClass() != CompositeMove.class) {
+            throw new IllegalArgumentException("A client may not send " + getClass().getSimpleName() + ".");
+        }
+        return new CompositeMove(withPlayer(moves, player));
+    }
+
+    /**
+     * Rebinds each of the supplied moves to the supplied player.
+     *
+     * @param moves the moves to rebind
+     * @param player the player the moves act for
+     * @return the rebound moves, in the same order
+     * @throws IllegalArgumentException if a move may not be sent by a client
+     */
+    protected static List<Move> withPlayer(List<? extends Move> moves, Player player) {
+        List<Move> rebound = new ArrayList<>(moves.size());
+        for (Move move : moves) {
+            rebound.add(ClientMove.withPlayer(move, player));
+        }
+        return rebound;
     }
 
     /**

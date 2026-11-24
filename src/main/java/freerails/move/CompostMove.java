@@ -18,6 +18,7 @@
 
 package freerails.move;
 
+import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Combines a number of orthogonal moves. Orthogonal moves are moves that can be applied in any order (are not
@@ -37,9 +39,25 @@ import java.util.Collections;
  * Do not use this class for dependent moves, such as changes to connected track pieces. Use an ordered
  * {@link CompositeMove} for dependent moves.
  */
-public class CompostMove implements Move {
+public class CompostMove implements ClientMove {
 
     private final Collection<Move> moves;
+
+    /**
+     * Returns this move with every component rebound to the supplied player.
+     *
+     * @param player the player the move acts for
+     * @return the rebound move
+     * @throws IllegalArgumentException if a component may not be sent by a client
+     */
+    @Override
+    public @NotNull CompostMove withPlayer(@NotNull Player player) {
+        List<Move> rebound = new ArrayList<>(moves.size());
+        for (Move move : moves) {
+            rebound.add(ClientMove.withPlayer(move, player));
+        }
+        return new CompostMove(rebound);
+    }
 
     /**
      * Creates a compost move from the supplied values.

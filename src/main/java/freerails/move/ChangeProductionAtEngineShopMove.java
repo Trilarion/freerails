@@ -38,7 +38,7 @@ import java.util.Objects;
  * This Move changes what is being built at an engine shop - when a client wants
  * to build a train, it should send an instance of this class to the server.
  */
-public class ChangeProductionAtEngineShopMove implements Move {
+public class ChangeProductionAtEngineShopMove implements ClientMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -57,6 +57,17 @@ public class ChangeProductionAtEngineShopMove implements Move {
         this.production = List.copyOf(production);
         this.engineShopId = engineShopId;
         this.player = player;
+    }
+
+    /**
+     * Returns this move changing the production at the supplied player's shop.
+     *
+     * @param player the player the move acts for
+     * @return the rebound move
+     */
+    @Override
+    public @NotNull ChangeProductionAtEngineShopMove withPlayer(@NotNull Player player) {
+        return new ChangeProductionAtEngineShopMove(production, engineShopId, player);
     }
 
     /**

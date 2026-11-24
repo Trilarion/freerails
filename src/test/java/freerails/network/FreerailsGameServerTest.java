@@ -19,9 +19,16 @@
 package freerails.network;
 
 import freerails.io.scenario.ClasspathScenarioSource;
+import freerails.model.economy.Money;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.economy.transaction.TransactionCategory;
+import freerails.model.player.Player;
 import freerails.model.scenario.ScenarioData;
 import freerails.model.world.World;
+import freerails.move.AddPlayerMove;
+import freerails.move.AddTransactionMove;
 import freerails.move.MoveReceiver;
+import freerails.move.Status;
 import freerails.server.FreerailsGameServer;
 import freerails.server.ScenarioSource;
 import freerails.server.ServerGameModel;
@@ -30,6 +37,7 @@ import freerails.util.network.Connection;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -210,6 +218,80 @@ public class FreerailsGameServerTest extends TestCase {
                 executor.shutdownNow();
             }
         }
+    }
+
+    /**
+     * Tests that the server applies a client's move as the player of the sending
+     * connection, whatever player the move claims, and rejects moves a client may
+     * not send.
+     * @throws Exception if the connection test fails.
+     */
+    public void testClientMovesActForTheSendingPlayer() throws Exception {
+        try (ServerSocket listener = new ServerSocket(0, 0, InetAddress.getLoopbackAddress())) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Connection[] clients = new Connection[2];
+            Connection[] serverSides = new Connection[2];
+            try {
+                for (int i = 0; i < 2; i++) {
+                    Future<Connection> serverSide = executor.submit(() -> Connection.make(listener.accept()));
+                    clients[i] = Connection.make(new InetSocketAddress(
+                            InetAddress.getLoopbackAddress(), listener.getLocalPort()));
+                    serverSides[i] = serverSide.get(2, TimeUnit.SECONDS);
+                    clients[i].sendObject(new LogOnCredentials("Name" + i, "password" + i));
+                    server.addConnection(serverSides[i]);
+                }
+                TrackingServerGameModel gameModel = new TrackingServerGameModel();
+                server.setServerGameModel(gameModel);
+                server.newGame(new ClasspathScenarioSource().getAvailableScenarioNames()[0]);
+                World world = gameModel.getWorld();
+                Player sender = world.getPlayer(world.getPlayerIndex(0));
+                Player other = world.getPlayer(world.getPlayerIndex(1));
+                Money senderBalance = world.getCurrentBalance(sender);
+                Money otherBalance = world.getCurrentBalance(other);
+
+                // Player 0 claims to be player 1.
+                Transaction transaction = new Transaction(
+                        TransactionCategory.MISC_INCOME, new Money(1000), world.getClock().getCurrentTime());
+                clients[0].sendObject(new AddTransactionMove(other, transaction));
+                assertTrue(awaitStatus(clients[0]).isSuccess());
+
+                assertEquals(Money.add(senderBalance, new Money(1000)), world.getCurrentBalance(sender));
+                assertEquals(otherBalance, world.getCurrentBalance(other));
+
+                // A move only the server may make is rejected.
+                int playerCount = world.getPlayers().size();
+                clients[0].sendObject(new AddPlayerMove(new Player(playerCount, "Intruder")));
+                assertFalse(awaitStatus(clients[0]).isSuccess());
+                assertEquals(playerCount, world.getPlayers().size());
+            } finally {
+                for (int i = 0; i < 2; i++) {
+                    if (clients[i] != null) clients[i].close();
+                    if (serverSides[i] != null) serverSides[i].close();
+                }
+                executor.shutdownNow();
+            }
+        }
+    }
+
+    /**
+     * Updates the server until the client receives a move status.
+     *
+     * @param client the client connection
+     * @return the received status
+     * @throws InterruptedException if interrupted while waiting
+     */
+    private Status awaitStatus(Connection client) throws InterruptedException {
+        long deadline = System.currentTimeMillis() + 5_000;
+        while (System.currentTimeMillis() < deadline) {
+            server.update();
+            for (Serializable message : client.getReceivedObjects()) {
+                if (message instanceof Status status) {
+                    return status;
+                }
+            }
+            Thread.sleep(10);
+        }
+        throw new AssertionError("No move status received.");
     }
 
     /**

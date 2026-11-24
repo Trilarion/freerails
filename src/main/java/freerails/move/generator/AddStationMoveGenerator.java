@@ -33,6 +33,7 @@ import freerails.model.player.Player;
 import freerails.model.operations.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ import java.util.NoSuchElementException;
  * {@link TrackMoveTransactionsGenerator}, which appends {@code AddTransactionMove}
  * entries for the station/track construction cost before the move is applied.
  */
-public class AddStationMoveGenerator implements MoveGenerator {
+public class AddStationMoveGenerator implements ClientMoveGenerator {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -65,6 +66,17 @@ public class AddStationMoveGenerator implements MoveGenerator {
         this.location = location;
         ruleNumber = trackRule;
         this.player = player;
+    }
+
+    /**
+     * Returns this generator building the station for the supplied player.
+     *
+     * @param player the player the generated move acts for
+     * @return the rebound generator
+     */
+    @Override
+    public @NotNull AddStationMoveGenerator withPlayer(@NotNull Player player) {
+        return new AddStationMoveGenerator(location, ruleNumber, player);
     }
 
     /**

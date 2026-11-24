@@ -19,10 +19,12 @@
 package freerails.server;
 
 import freerails.move.AddPlayerMove;
+import freerails.move.ClientMove;
 import freerails.move.Move;
 import freerails.move.MoveReceiver;
 import freerails.move.Status;
 import freerails.move.TryMoveStatus;
+import freerails.move.generator.ClientMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.player.Player;
 import freerails.model.scenario.ScenarioData;
@@ -507,6 +509,30 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
+     * Returns the player of the supplied connection in the current game world.
+     *
+     * @param connection a client connection
+     * @return the player logged on through the connection
+     * @throws IllegalArgumentException if no player of the current game is logged on through it
+     */
+    private Player senderOf(Connection connection) {
+        if (serverGameModel == null) {
+            throw new IllegalArgumentException("There is no game in progress.");
+        }
+        World world = serverGameModel.getWorld();
+        for (Map.Entry<Integer, Connection> entry : connections.entrySet()) {
+            if (entry.getValue() == connection) {
+                int playerId = entry.getKey();
+                return world.getPlayers().stream()
+                        .filter(player -> player.getId() == playerId)
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("The player does not take part in this game."));
+            }
+        }
+        throw new IllegalArgumentException("The connection has no logged-on player.");
+    }
+
+    /**
      * Reads and executes the outstanding commands and moves from one client.
      *
      * @param connection the client connection
@@ -521,17 +547,26 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 logger.debug(command.toString());
                 connection.sendObject(cStatus);
             } else if (message instanceof Move || message instanceof MoveGenerator) {
-                Move move;
                 boolean isMove = message instanceof Move;
-
-                if (isMove) {
-                    move = (Move) message;
-                } else {
-                    MoveGenerator moveGenerator = (MoveGenerator) message;
-                    move = moveGenerator.generate(serverGameModel.getWorld());
+                Move move = null;
+                Status mStatus;
+                try {
+                    // Never trust the player identity in a client's message: act for the
+                    // player of the connection it arrived on.
+                    Player sender = senderOf(connection);
+                    if (isMove) {
+                        move = ClientMove.withPlayer((Move) message, sender);
+                    } else if (message instanceof ClientMoveGenerator generator) {
+                        move = generator.withPlayer(sender).generate(serverGameModel.getWorld());
+                    } else {
+                        throw new IllegalArgumentException(
+                                "A client may not send " + message.getClass().getSimpleName() + ".");
+                    }
+                    mStatus = move.applicable(serverGameModel.getWorld());
+                } catch (IllegalArgumentException e) {
+                    logger.warn("Rejected a move from a client: " + e.getMessage());
+                    mStatus = Status.fail(e.getMessage());
                 }
-
-                Status mStatus = move.applicable(serverGameModel.getWorld());
 
                 if (mStatus.isSuccess()) {
                     move.apply(serverGameModel.getWorld());

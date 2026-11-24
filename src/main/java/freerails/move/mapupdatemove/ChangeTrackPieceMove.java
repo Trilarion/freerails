@@ -26,6 +26,7 @@ import freerails.model.world.*;
 import freerails.move.Status;
 import freerails.util.IntPoint2D;
 import freerails.model.game.Rules;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 import org.jetbrains.annotations.NotNull;
@@ -54,6 +55,17 @@ public record ChangeTrackPieceMove(TrackPiece trackPieceBefore, TrackPiece track
      * @param location the map location of the tile or track section
      */
     public ChangeTrackPieceMove {
+    }
+
+    /**
+     * This move holds no player reference, so it is returned unchanged.
+     *
+     * @param player the player the move acts for
+     * @return this move
+     */
+    @Override
+    public @NotNull ChangeTrackPieceMove withPlayer(@NotNull Player player) {
+        return this;
     }
 
     /**

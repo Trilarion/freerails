@@ -116,6 +116,25 @@ ones, and broadcasts them to all clients. Each client then confirms its
 pre-committed moves or undoes them. If a client's copy becomes inconsistent,
 the server can send it the whole world (`SetWorldCommandToClient`).
 
+The server never trusts player identity supplied by a client. It accepts from
+clients only moves that implement `ClientMove` and move generators that
+implement `ClientMoveGenerator`, and rejects everything else, such as moves
+only the server makes. Before it checks or applies one, it replaces every
+player reference in it, including in contained moves, with the player of the
+connection the message arrived on (`withPlayer`). The moves it forwards to
+other clients are the rebound ones, so a player stored in an accepted move can
+be trusted. A new type that clients may send must implement one of these
+interfaces and declare its own `withPlayer`; `ClientMoveTest` checks this.
+Owner IDs inside track pieces describe the world, not the sender, and are not
+rebound; the track rules check them against the acting player.
+
+This makes sure a client can only act as itself. It does not yet limit what a
+client may do with its own state: clients still create their own transactions
+(and so choose their own prices), can send a tile change without its cost or a
+train update that changes more than the schedule, and any player can change
+the game speed. Closing this gap means calculating costs on the server and
+narrowing what these moves may change.
+
 Besides moves, client and server exchange commands (`CommandToServer`,
 `CommandToClient`). Moves are checked changes to an existing game world.
 Commands control the session: starting, loading, and saving games, updating

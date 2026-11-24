@@ -34,7 +34,7 @@ import java.util.Objects;
 /**
  * Builds an engine shop at an existing station.
  */
-public class BuildEngineShopMove implements Move {
+public class BuildEngineShopMove implements ClientMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -53,6 +53,17 @@ public class BuildEngineShopMove implements Move {
     public BuildEngineShopMove(@NotNull Player player, @NotNull EngineShop engineShop) {
         this.player = player;
         this.engineShop = new EngineShop(engineShop);
+    }
+
+    /**
+     * Returns this move building the shop for the supplied player.
+     *
+     * @param player the player the move acts for
+     * @return the rebound move
+     */
+    @Override
+    public @NotNull BuildEngineShopMove withPlayer(@NotNull Player player) {
+        return new BuildEngineShopMove(player, engineShop);
     }
 
     /**

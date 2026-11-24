@@ -35,7 +35,7 @@ import java.io.Serial;
  * This {@link Move} adds a {@link Transaction} to a players bank account on the
  * {@link World} object.
  */
-public class AddTransactionMove implements Move {
+public class AddTransactionMove implements ClientMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -68,6 +68,17 @@ public class AddTransactionMove implements Move {
         this.player = player;
         this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = constrain;
+    }
+
+    /**
+     * Returns this move booking the transaction for the supplied player.
+     *
+     * @param player the player the move acts for
+     * @return the rebound move
+     */
+    @Override
+    public @NotNull AddTransactionMove withPlayer(@NotNull Player player) {
+        return new AddTransactionMove(player, transaction, cashConstrained);
     }
 
     /**

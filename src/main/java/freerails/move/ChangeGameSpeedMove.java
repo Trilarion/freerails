@@ -18,6 +18,7 @@
 
 package freerails.move;
 
+import freerails.model.player.Player;
 import freerails.model.simulation.Speed;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
@@ -30,7 +31,7 @@ import java.io.Serial;
 
  * @param speed the simulation speed to set
  */
-public record ChangeGameSpeedMove(Speed speed) implements Move {
+public record ChangeGameSpeedMove(Speed speed) implements ClientMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -42,6 +43,17 @@ public record ChangeGameSpeedMove(Speed speed) implements Move {
      */
     public ChangeGameSpeedMove(@NotNull Speed speed) {
         this.speed = speed;
+    }
+
+    /**
+     * This move holds no player reference, so it is returned unchanged.
+     *
+     * @param player the player the move acts for
+     * @return this move
+     */
+    @Override
+    public @NotNull ChangeGameSpeedMove withPlayer(@NotNull Player player) {
+        return this;
     }
 
     /**

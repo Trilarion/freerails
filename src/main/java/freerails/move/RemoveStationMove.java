@@ -28,7 +28,7 @@ import java.util.Objects;
 /**
  * Removes the specified station from the world.
  */
-public class RemoveStationMove implements Move {
+public class RemoveStationMove implements ClientMove {
 
     private final Player player;
     private final int stationId;
@@ -42,6 +42,17 @@ public class RemoveStationMove implements Move {
     public RemoveStationMove(@NotNull Player player, int stationId) {
         this.player = player;
         this.stationId = stationId;
+    }
+
+    /**
+     * Returns this move removing the station of the supplied player.
+     *
+     * @param player the player the move acts for
+     * @return the rebound move
+     */
+    @Override
+    public @NotNull RemoveStationMove withPlayer(@NotNull Player player) {
+        return new RemoveStationMove(player, stationId);
     }
 
     /**

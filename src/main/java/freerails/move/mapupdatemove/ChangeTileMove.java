@@ -21,7 +21,9 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
+import freerails.move.ClientMove;
 import freerails.move.Status;
 import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
@@ -32,17 +34,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.io.Serial;
+import java.util.Objects;
 
 // TODO what if there is now water on the tile, should this not destroy tracks, cities?
 /**
  * Move that changes a single tile.
  */
-public class ChangeTileMove implements MapUpdateMove {
+public class ChangeTileMove implements MapUpdateMove, ClientMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
     private final IntPoint2D location;
     private final TerrainTile after;
+
+    /**
+     * This move holds no player reference, so it is returned unchanged.
+     *
+     * @param player the player the move acts for
+     * @return this move
+     */
+    @Override
+    public @NotNull ChangeTileMove withPlayer(@NotNull Player player) {
+        return this;
+    }
 
     /**
      * Creates a move to replace a map tile at the specified location.
@@ -97,6 +111,10 @@ public class ChangeTileMove implements MapUpdateMove {
 
         if (type.getCategory() != TerrainCategory.COUNTRY) {
             return Status.fail("Can only build on clear terrain.");
+        }
+        // Track, including its owner, only changes through track moves and their rules.
+        if (!Objects.equals(actual.trackPiece(), after.trackPiece())) {
+            return Status.fail("Changing a tile must not change its track.");
         }
         return Status.OK;
     }
