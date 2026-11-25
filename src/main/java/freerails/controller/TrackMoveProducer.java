@@ -110,7 +110,7 @@ public class TrackMoveProducer {
         UnmodifiableWorld world = executor.getWorld();
         Player player = executor.getPlayer();
         switch (getBuildMode()) {
-            case IGNORE_TRACK: {
+            case INSPECT: {
                 return Status.OK;
             }
             case REMOVE_TRACK: {

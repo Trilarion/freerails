@@ -24,6 +24,9 @@ surrounds most of the city tiles.
 ### On the map view
 
 - Build Track: Mouse or number pad with Num Lock down
+- Upgrade or Remove Track: Drag the mouse in the upgrade or remove track mode (the keyboard
+  only moves the cursor in these modes)
+- Inspect: Select the eye button to move the cursor without building anything
 - Move Cursor: Hold [control] and use Arrow Keys
 - Call Broker: 'M'
 - Save Game: [control] + 'S'

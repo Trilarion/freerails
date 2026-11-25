@@ -26,6 +26,7 @@ package freerails.move.mapupdatemove;
 import freerails.move.generator.TrackMoveGenerator;
 import freerails.model.economy.TransactionUtils;
 import freerails.model.world.World;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.Status;
@@ -37,6 +38,9 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
 import freerails.util.TestUtils;
 import freerails.util.WorldGenerator;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
 
 /**
  * Tests change track piece composite move behavior.
@@ -403,6 +407,40 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 TrackPiece.create(TileTransition.EAST, trackType, 999), empty);
         assertEquals("New track must belong to the player who builds it.",
                 forOther.applicable(testWorld).getMessage());
+    }
+
+    /**
+     * Tests that the must-stay-connected rule also applies when a move is checked
+     * against a read-only view of the world, not only against a mutable World.
+     */
+    public void testMustStayConnectedAppliesToReadOnlyWorlds() {
+        World testWorld = createWorld(new Rules(false, true));
+        TrackType trackType = testWorld.getTrackType(0);
+        assertBuild(testWorld, new IntPoint2D(0, 5), TileTransition.EAST, trackType, true);
+        UnmodifiableWorld readOnly = readOnlyView(testWorld);
+        assertFalse(readOnly instanceof World);
+
+        ChangeTrackPieceCompositeMove disconnected = TrackMoveGenerator.generateBuildTrackMove(
+                new IntPoint2D(7, 7), TileTransition.EAST, trackType, trackType, readOnly, WorldGenerator.TEST_PLAYER);
+        assertEquals("Must connect to existing track", disconnected.applicable(readOnly).getMessage());
+
+        ChangeTrackPieceCompositeMove connected = TrackMoveGenerator.generateBuildTrackMove(
+                new IntPoint2D(1, 5), TileTransition.EAST, trackType, trackType, readOnly, WorldGenerator.TEST_PLAYER);
+        assertTrue(connected.applicable(readOnly).isSuccess());
+    }
+
+    /**
+     * Returns a read-only view of a world that is not itself a {@link World}.
+     */
+    private static UnmodifiableWorld readOnlyView(World world) {
+        return (UnmodifiableWorld) Proxy.newProxyInstance(UnmodifiableWorld.class.getClassLoader(),
+                new Class<?>[]{UnmodifiableWorld.class}, (proxy, method, args) -> {
+                    try {
+                        return method.invoke(world, args);
+                    } catch (InvocationTargetException e) {
+                        throw e.getCause();
+                    }
+                });
     }
 
     /**

@@ -88,7 +88,7 @@ public class FreerailsCursor {
             case BUILD_TRACK, BUILD_STATION -> buildTrack;
             case REMOVE_TRACK -> removeTrack;
             case UPGRADE_TRACK -> upgradeTrack;
-            case IGNORE_TRACK -> infoMode;
+            case INSPECT -> infoMode;
         };
 
         Boolean b = (Boolean) modelRoot.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);

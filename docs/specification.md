@@ -165,9 +165,14 @@ its previous position.
   Esc cancels and returns to the previous mode.
 - **Build track mode**: dragging with the left mouse button shows the proposed track,
   and releasing the button builds it. The right mouse button or Esc cancels the proposed
-  track. Track can also be built with the number pad keys.
-- **Remove track mode**: moving the cursor with the number pad keys removes track.
-- **Info mode** shows information about the tile under the cursor.
+  track. Track can also be built by moving the cursor with the number pad keys; control
+  and the arrow keys only move the cursor.
+- **Upgrade track mode** and **remove track mode**: dragging with the left mouse button
+  shows the proposed change, and releasing the button applies it. In these modes the
+  keyboard only moves the cursor: only building track is done with the keyboard, so a
+  cursor move never upgrades or removes track by accident.
+- **Inspect mode** shows information about the tile under the cursor. The cursor moves
+  without building, upgrading, or removing anything.
 
 ### Train roster tab
 
@@ -185,11 +190,11 @@ five build modes:
 
 | Build mode | Options shown | Action |
 |------------|---------------|--------|
-| Build track | Track type, bridges, tunnels | Moving the cursor builds track: the selected track type on clear terrain, the selected bridge type over rivers (if one is selected), and a tunnel through hills and mountains (if tunnels are selected). |
-| Upgrade track | Track type, bridges | Track and bridges are upgraded to the selected types when the cursor enters a tile. |
+| Build track | Track type, bridges, tunnels | Dragging the mouse, or moving the cursor with the number pad, builds track: the selected track type on clear terrain, the selected bridge type over rivers (if one is selected), and a tunnel through hills and mountains (if tunnels are selected). |
+| Upgrade track | Track type, bridges | Dragging the mouse upgrades track and bridges along the path to the selected types. The keyboard only moves the cursor. |
 | Build station | Stations | Selecting a station type enters place station mode. |
-| Bulldoze | None | When the cursor moves to a neighboring tile, any track connecting the two tiles is removed. |
-| Off | None | Nothing is built or removed when the cursor moves. |
+| Bulldoze | None | Dragging the mouse removes the track along the path. The keyboard only moves the cursor. |
+| Inspect | None | Nothing is built, upgraded, or removed when the cursor moves. |
 
 Clicking the build tab must not take keyboard focus away from the world view, because
 that would interrupt building track with the keyboard. When a game is started or loaded,

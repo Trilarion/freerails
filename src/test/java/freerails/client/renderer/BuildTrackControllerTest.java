@@ -32,8 +32,14 @@ import freerails.move.SimpleMoveExecutor;
 import freerails.util.IntPoint2D;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.model.game.Rules;
 import freerails.model.terrain.TerrainTile;
+import freerails.model.terrain.TileTransition;
+import freerails.model.track.TrackPiece;
+import freerails.move.Status;
 import junit.framework.TestCase;
+
+import java.util.Map;
 
 /**
  * Unit test for BuildTrackController.
@@ -86,7 +92,7 @@ public class BuildTrackControllerTest extends TestCase {
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
         IntPoint2D to = new IntPoint2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
-        buildTrackController.updateUntilComplete();
+        completeSearch();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         // See if any track has actually been built.
@@ -115,7 +121,7 @@ public class BuildTrackControllerTest extends TestCase {
         // Upgrade part of the track.
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(15, 10));
         buildTrackController.setProposedTrack(new IntPoint2D(20, 10), trackBuilder);
-        buildTrackController.updateUntilComplete();
+        completeSearch();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         buildTrackController.updateWorld(trackBuilder);
@@ -148,10 +154,106 @@ public class BuildTrackControllerTest extends TestCase {
         IntPoint2D to = new IntPoint2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
 
-        buildTrackController.updateUntilComplete();
+        completeSearch();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         buildTrackController.updateWorld(trackBuilder);
     }
 
+    /**
+     * Tests that a preview leaves the live world untouched and that each step
+     * builds on the pieces proposed by the steps before it.
+     */
+    public void testPreviewBuildsOnEarlierStepsWithoutChangingTheWorld() {
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(10, 10));
+        buildTrackController.setProposedTrack(new IntPoint2D(20, 10), trackBuilder);
+        completeSearch();
+        assertTrue(buildTrackController.isBuildTrackSuccessful());
+
+        Map<?, ?> proposed = (Map<?, ?>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+        for (int x = 10; x <= 20; x++) {
+            IntPoint2D location = new IntPoint2D(x, 10);
+            assertFalse(world.getTile(location).hasTrack());
+            assertTrue(proposed.containsKey(location));
+        }
+        // A middle tile carries the connections of both sections it belongs to.
+        TrackPiece middle = (TrackPiece) proposed.get(new IntPoint2D(15, 10));
+        assertTrue(middle.trackConfiguration().contains(TileTransition.EAST));
+        assertTrue(middle.trackConfiguration().contains(TileTransition.WEST));
+    }
+
+    /**
+     * Tests that a preview of track that does not connect to the player's track is
+     * refused when new track must stay connected.
+     */
+    public void testDisconnectedPreviewIsRefused() {
+        world = MapFixtureFactory2.getCopy(new Rules(false, true));
+        Player player = world.getPlayer(0);
+        modelRoot = new ModelRootImpl();
+        modelRoot.setup(world, player);
+        modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, false);
+        buildTrackController = new BuildTrackController(world, modelRoot);
+        trackBuilder = new TrackMoveProducer(new SimpleMoveExecutor(world, player), world, modelRoot);
+        assertTrue(trackBuilder.buildTrack(new IntPoint2D(10, 10), TileTransition.EAST).isSuccess());
+
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(30, 30));
+        buildTrackController.setProposedTrack(new IntPoint2D(33, 30), trackBuilder);
+        // The refused step abandons the search, which must then be over.
+        completeSearch();
+
+        assertFalse(buildTrackController.isBuildTrackSuccessful());
+        assertEquals("Must connect to existing track", modelRoot.getProperty(ModelRootProperty.CURSOR_MESSAGE));
+    }
+
+    /**
+     * Tests that the search is over when no path exists or no search was started.
+     */
+    public void testSearchEndsWithoutAPath() {
+        completeSearch();
+
+        // There is no track to follow, so a removal preview finds no path.
+        trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(10, 10));
+        buildTrackController.setProposedTrack(new IntPoint2D(20, 10), trackBuilder);
+        completeSearch();
+
+        assertFalse(buildTrackController.isBuildTrackSuccessful());
+    }
+
+    /**
+     * Tests that a removal preview across a station proposes the removal of both
+     * tiles of each section, and leaves the station in the live world.
+     */
+    public void testRemovalPreviewAcrossAStation() {
+        testBuildTrack();
+        StationBuilder stationBuilder = new StationBuilder(new SimpleMoveExecutor(world, world.getPlayer(0)));
+        stationBuilder.setStationType(stationBuilder.getTrackTypeID("station"));
+        IntPoint2D stationLocation = new IntPoint2D(15, 10);
+        Status status = stationBuilder.buildStation(stationLocation);
+        assertTrue(status.getMessage(), status.isSuccess());
+        int stations = world.getStations(world.getPlayer(0)).size();
+
+        trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(14, 10));
+        buildTrackController.setProposedTrack(new IntPoint2D(16, 10), trackBuilder);
+        completeSearch();
+        assertTrue(buildTrackController.isBuildTrackSuccessful());
+
+        Map<?, ?> proposed = (Map<?, ?>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+        assertTrue(proposed.containsKey(stationLocation));
+        assertNull(proposed.get(stationLocation));
+        assertTrue(proposed.containsKey(new IntPoint2D(16, 10)));
+        assertTrue(world.getTile(stationLocation).hasTrack());
+        assertEquals(stations, world.getStations(world.getPlayer(0)).size());
+    }
+
+    /**
+     * Continues the path search the way the client does, by calling update, until
+     * it is over.
+     */
+    private void completeSearch() {
+        while (buildTrackController.isSearching()) {
+            buildTrackController.update();
+        }
+    }
 }

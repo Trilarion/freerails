@@ -22,7 +22,7 @@ import freerails.client.ClientConstants;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.track.TrackType;
-import freerails.model.world.World;
+import freerails.model.world.ProposedTrackWorld;
 import freerails.model.track.NoTrackException;
 import freerails.move.generator.TrackMoveGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
@@ -44,13 +44,15 @@ import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-// TODO Remove use of World from here, use readonly world instead if possible
 /**
  * Provides methods to change the proposed track and save it to the real world.
+ *
+ * <p>The preview is checked against a {@link ProposedTrackWorld}: the live world
+ * with the track pieces proposed so far on top. Each preview step is generated and
+ * checked against that view, so later steps build on earlier ones, and only the
+ * changed track pieces are recorded; the world is never copied or changed.
  */
 public class BuildTrackController {
 
@@ -60,8 +62,8 @@ public class BuildTrackController {
     private final PathOnTrackFinder pathOnTrackFinder;
     private final Player player;
     private final UnmodifiableWorld unmodifiableWorld;
-    private World world;
-    private final Map<IntPoint2D, TrackPiece> proposedTrack = new HashMap<>();
+    /** The live world with the proposed track on top; its proposed pieces are drawn. */
+    private final ProposedTrackWorld preview;
     private boolean buildNewTrack = true;
     private List<IntPoint2D> builtTrack = new ArrayList<>();
     private boolean isBuildTrackSuccessful = false;
@@ -76,13 +78,13 @@ public class BuildTrackController {
      * @param unmodifiableWorld ReadOnlyWorld
      */
     public BuildTrackController(UnmodifiableWorld unmodifiableWorld, ModelRoot modelRoot) {
-        world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
+        preview = new ProposedTrackWorld(unmodifiableWorld);
         this.unmodifiableWorld = unmodifiableWorld;
         trackPathFinder = new TrackPathFinder(unmodifiableWorld, modelRoot.getPlayer());
         pathOnTrackFinder = new PathOnTrackFinder(unmodifiableWorld);
         this.modelRoot = modelRoot;
         player = modelRoot.getPlayer();
-        this.modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, proposedTrack);
+        this.modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, preview.getProposedTrack());
     }
 
     /**
@@ -136,16 +138,15 @@ public class BuildTrackController {
     }
 
     /**
-     * Moves cursor which causes track to be built on the worldDiff object.
+     * Moves the cursor and plans the track along the path in the preview.
      */
     private void moveCursorMoreTiles(List<IntPoint2D> track) {
         moveCursorMoreTiles(track, null);
     }
 
     /**
-     * uses {@code trackBuilder} if not null -- otherwise uses own
-     * {@code buildTrack} method - that is applied on
-     * {@code worldDifferences}
+     * Builds the track along the path with {@code trackBuilder} if it is not null;
+     * otherwise plans it in the preview (see {@link #planBuildingTrack}).
      *
      * @param track        List
      * @param trackBuilder TrackMoveProducer
@@ -224,40 +225,51 @@ public class BuildTrackController {
     }
 
     /**
-     * Attempts to building track from the specified point in the specified
-     * direction on the worldDiff object.
+     * Plans building one track section from the specified point in the specified
+     * direction: the section is checked against the preview and, if allowed,
+     * proposed there.
      */
     private Status planBuildingTrack(IntPoint2D point, TileTransition tileTransition) {
-        TerrainTile tileA = world.getTile(point);
+        TerrainTile tileA = preview.getTile(point);
         BuildTrackStrategy buildTrackStrategy = getBuildTrackStrategy();
         int trackTypeAID = buildTrackStrategy.getRule(tileA.terrainTypeId());
         TrackType trackTypeA = unmodifiableWorld.getTrackType(trackTypeAID);
 
-        TerrainTile tileB = world.getTile(IntPoint2D.add(point, tileTransition.getD()));
+        TerrainTile tileB = preview.getTile(IntPoint2D.add(point, tileTransition.getD()));
         int trackTypeBID = buildTrackStrategy.getRule(tileB.terrainTypeId());
         TrackType trackTypeB = unmodifiableWorld.getTrackType(trackTypeBID);
 
-        ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, world, player);
+        ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, preview, player);
 
-        // add to proposed track
-        ChangeTrackPieceMove m = (ChangeTrackPieceMove) move.getMove(0);
-        proposedTrack.put(m.location(), m.trackPieceAfter());
-        m = (ChangeTrackPieceMove) move.getMove(1);
-        proposedTrack.put(m.location(), m.trackPieceAfter());
-
-        Status status = move.applicable(world);
+        Status status = move.applicable(preview);
         if (status.isSuccess()) {
-            move.apply(world);
+            propose(move);
         }
         return status;
+    }
+
+    /**
+     * Proposes the track pieces a track move leaves on its tiles: both tiles of a
+     * track section, or the single tile of an upgrade.
+     *
+     * @param move a track move
+     */
+    private void propose(Move move) {
+        if (move instanceof ChangeTrackPieceCompositeMove section) {
+            for (Move component : section.getMoves()) {
+                propose(component);
+            }
+            return;
+        }
+        ChangeTrackPieceMove change = trackChangeOf(move);
+        preview.propose(change.location(), change.trackPieceAfter());
     }
 
     /**
      * Cancels any proposed track and resets the pathfinder.
      */
     private void reset() {
-        proposedTrack.clear();
-        world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
+        preview.clear();
         trackPathFinder.abandonSearch();
         builtTrack.clear();
         isBuildTrackSuccessful = false;
@@ -289,7 +301,7 @@ public class BuildTrackController {
 
         IntPoint2D from = getCursorPosition();
 
-        assert trackBuilder.getTrackBuilderMode() != BuildMode.IGNORE_TRACK;
+        assert trackBuilder.getTrackBuilderMode() != BuildMode.INSPECT;
         assert trackBuilder.getTrackBuilderMode() != BuildMode.BUILD_STATION;
         buildNewTrack = trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK;
 
@@ -301,8 +313,7 @@ public class BuildTrackController {
             return;
         }
 
-        proposedTrack.clear();
-        world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
+        preview.clear();
         builtTrack.clear();
         isBuildTrackSuccessful = false;
 
@@ -358,7 +369,7 @@ public class BuildTrackController {
             return;
         }
         if (show) {
-            modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, proposedTrack);
+            modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, preview.getProposedTrack());
         } else {
             modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, null);
         }
@@ -383,12 +394,15 @@ public class BuildTrackController {
     }
 
     /**
-     * Updates the until complete.
+     * Returns whether the path search is still in progress, so that further
+     * {@link #update()} calls continue it. It is over once a path was found, no
+     * path exists, or the search was abandoned because a preview step was refused
+     * (see {@link #isBuildTrackSuccessful()}).
+     *
+     * @return true while the search is paused and not yet finished
      */
-    public void updateUntilComplete() {
-        while (searchStatus() != PathFinderStatus.PATH_FOUND) {
-            updateSearch();
-        }
+    public boolean isSearching() {
+        return searchStatus() == PathFinderStatus.SEARCH_PAUSED;
     }
 
     /**
@@ -420,7 +434,6 @@ public class BuildTrackController {
                 Player fp = modelRoot.getPlayer();
                 for (TileTransition v : path) {
                     Move move;
-                    ChangeTrackPieceMove shownChange;
                     attemptMove:
                     {
 
@@ -428,17 +441,16 @@ public class BuildTrackController {
                             case REMOVE_TRACK:
 
                                 try {
-                                    move = TrackMoveGenerator.generateRemoveTrackMove(location, v, world, fp);
+                                    move = TrackMoveGenerator.generateRemoveTrackMove(location, v, preview, fp);
                                 } catch (NoTrackException | IllegalStateException e1) {
                                     logger.error(e1, "Could not generate track removal move.");
                                     break attemptMove;
                                 }
-                                shownChange = trackChangeOf(((ChangeTrackPieceCompositeMove) move).getMove(0));
                                 break;
 
                             case UPGRADE_TRACK:
 
-                                TerrainTile tile = world.getTile(location);
+                                TerrainTile tile = preview.getTile(location);
                                 int tt = tile.terrainTypeId();
                                 int trackRuleID = getBuildTrackStrategy().getRule(tt);
 
@@ -455,13 +467,12 @@ public class BuildTrackController {
                                 ChangeTrackPieceMove m;
                                 try {
                                     m = TrackMoveGenerator.generateUpgradeTrackMove(
-                                            location, unmodifiableWorld.getTrackType(trackRuleID), world, fp);
+                                            location, unmodifiableWorld.getTrackType(trackRuleID), preview, fp);
                                 } catch (NoTrackException | IllegalStateException e1) {
                                     // Stations are never upgraded. See bug 874416.
                                     break attemptMove;
                                 }
                                 move = m;
-                                shownChange = m;
                                 break;
 
                             default:
@@ -469,10 +480,9 @@ public class BuildTrackController {
                         }
 
                         // Only show and plan changes that the track rules allow.
-                        Status status = move.applicable(world);
+                        Status status = move.applicable(preview);
                         if (status.isSuccess()) {
-                            proposedTrack.put(shownChange.location(), shownChange.trackPieceAfter());
-                            move.apply(world);
+                            propose(move);
                         } else {
                             okSoFar = false;
                             setCursorMessage(status.getMessage());

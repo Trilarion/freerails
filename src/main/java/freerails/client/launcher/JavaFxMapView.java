@@ -28,12 +28,11 @@ import freerails.client.renderer.map.MapRenderer;
 import freerails.client.view.FreerailsCursor;
 import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackController;
+import freerails.controller.CursorController;
 import freerails.controller.TrackMoveProducer;
-import freerails.model.track.BuildTrackStrategy;
 import freerails.model.operations.station.Station;
 import freerails.model.player.Player;
 import freerails.model.terrain.city.City;
-import freerails.model.terrain.TileTransition;
 import freerails.model.world.WorldMapListener;
 import freerails.util.IntPoint2D;
 import javafx.animation.KeyFrame;
@@ -83,6 +82,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     private final FreerailsCursor cursor;
     private final ActionRoot actionRoot;
     private final BuildTrackController buildTrackController;
+    private final CursorController cursorController;
     private final Object updateLock;
     private final ExecutorService renderExecutor = Executors.newSingleThreadExecutor(task -> {
         Thread thread = new Thread(task, "JavaFX map rendering");
@@ -150,6 +150,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         this.cursor = Objects.requireNonNull(cursor, "cursor");
         this.actionRoot = Objects.requireNonNull(actionRoot, "actionRoot");
         this.buildTrackController = Objects.requireNonNull(buildTrackController, "buildTrackController");
+        this.cursorController = new CursorController(modelRoot);
         this.updateLock = Objects.requireNonNull(updateLock, "updateLock");
         this.onRenderFailure = Objects.requireNonNull(onRenderFailure, "onRenderFailure");
 
@@ -645,40 +646,19 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
     }
 
     /**
-     * Maps supported keyboard controls to existing cursor and build actions.
+     * Passes map keys on: cursor moves go to the {@link CursorController} (see
+     * {@link MapKeyBindings} for which keys move the cursor and which may build
+     * track); C centers the map on the cursor and Esc cancels the track preview.
      *
      * @param event JavaFX key event
      */
     private void handleKeyPressed(KeyEvent event) {
-        TileTransition transition = switch (event.getCode()) {
-            case NUMPAD1 -> TileTransition.SOUTH_WEST;
-            case NUMPAD2 -> TileTransition.SOUTH;
-            case NUMPAD3 -> TileTransition.SOUTH_EAST;
-            case NUMPAD4 -> TileTransition.WEST;
-            case NUMPAD6 -> TileTransition.EAST;
-            case NUMPAD7 -> TileTransition.NORTH_WEST;
-            case NUMPAD8 -> TileTransition.NORTH;
-            case NUMPAD9 -> TileTransition.NORTH_EAST;
-            case DOWN -> event.isControlDown() ? TileTransition.SOUTH : null;
-            case LEFT -> event.isControlDown() ? TileTransition.WEST : null;
-            case RIGHT -> event.isControlDown() ? TileTransition.EAST : null;
-            case UP -> event.isControlDown() ? TileTransition.NORTH : null;
-            default -> null;
-        };
-        if (transition != null) {
+        var move = MapKeyBindings.cursorMove(event.getCode(), event.isControlDown());
+        if (move.isPresent()) {
             synchronized (updateLock) {
-                IntPoint2D current = cursorPosition();
-                IntPoint2D next = IntPoint2D.add(current, transition.getD());
-                if (modelRoot.getWorld().boundsContain(next)) {
-                    moveCursor(next);
-                    TrackMoveProducer producer = actionRoot.getTrackMoveProducer();
-                    if (producer != null && producer.getTrackBuilderMode() == BuildMode.BUILD_TRACK) {
-                        producer.setBuildTrackStrategy((BuildTrackStrategy) modelRoot.getProperty(
-                                ModelRootProperty.BUILD_TRACK_STRATEGY));
-                        var status = producer.buildTrack(current, transition);
-                        modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE,
-                                status.isSuccess() ? null : status.getMessage());
-                    }
+                if (cursorController.moveCursor(move.get().direction(), move.get().mayBuildTrack(),
+                        actionRoot.getTrackMoveProducer())) {
+                    requestRender();
                 }
             }
             event.consume();

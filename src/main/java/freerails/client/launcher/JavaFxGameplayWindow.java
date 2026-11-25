@@ -319,7 +319,7 @@ public final class JavaFxGameplayWindow {
                 createBuildModeButton(BuildMode.UPGRADE_TRACK, "upgrade_track.png", "Upgrade track"),
                 createBuildModeButton(BuildMode.BUILD_STATION, "build_stations.png", "Build a station"),
                 createBuildModeButton(BuildMode.REMOVE_TRACK, "bulldozer.png", "Remove track"),
-                createBuildModeButton(BuildMode.IGNORE_TRACK, "eye.png", "Inspect the map without building"));
+                createBuildModeButton(BuildMode.INSPECT, "eye.png", "Inspect the map without building"));
         buildModeButtons.get(BuildMode.BUILD_TRACK).setSelected(true);
         stationSelector.setPromptText("Select station type");
         stationSelector.setOnAction(event -> {
@@ -421,11 +421,11 @@ public final class JavaFxGameplayWindow {
             modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);
             stationSelector.setDisable(mode != BuildMode.BUILD_STATION);
             trackSelector.setDisable(mode == BuildMode.BUILD_STATION
-                    || mode == BuildMode.IGNORE_TRACK);
+                    || mode == BuildMode.INSPECT);
             bridgeSelector.setDisable(mode == BuildMode.BUILD_STATION
-                    || mode == BuildMode.IGNORE_TRACK);
+                    || mode == BuildMode.INSPECT);
             tunnelSelector.setDisable(mode == BuildMode.BUILD_STATION
-                    || mode == BuildMode.IGNORE_TRACK);
+                    || mode == BuildMode.INSPECT);
             if (mode != BuildMode.BUILD_STATION) {
                 var stationBuildModel = client == null
                         ? null : client.getActionRoot().getStationBuildModel();

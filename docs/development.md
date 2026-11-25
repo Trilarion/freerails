@@ -312,6 +312,10 @@ is also planned by path finding over candidate track pieces.
   and serialization.
 - Prefer applicable assertion helpers from `freerails.util.TestUtils` over
   duplicating their logic in tests.
+- For now, do not test the JavaFX views themselves (for example with TestFX or a
+  headless JavaFX toolkit). Keep decisions out of the views instead, in plain classes
+  that tests can use without JavaFX, such as controllers, and test those. The views
+  then only pass input on and display results.
 
 ### Diagnostics and errors
 

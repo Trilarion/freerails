@@ -110,10 +110,7 @@ public class CompositeMove implements Move {
             }
         }
 
-        if (world instanceof World) {
-            return compositeTest((World) world);
-        }
-        return Status.OK;
+        return compositeTest(world);
     }
 
     /**
@@ -138,10 +135,13 @@ public class CompositeMove implements Move {
      * Subclasses may override this method to perform tests which pass or fail
      * depending on the combination of moves making up this composite move.
      *
-     * @param world the mutable world used for combination-specific checks
+     * They run on every world the move is checked against, including read-only
+     * views, so they must only read it.
+     *
+     * @param world the world used for combination-specific checks
      * @return a status describing whether the composite move passes those checks
      */
-    public Status compositeTest(World world) {
+    public Status compositeTest(UnmodifiableWorld world) {
         return Status.OK;
     }
 

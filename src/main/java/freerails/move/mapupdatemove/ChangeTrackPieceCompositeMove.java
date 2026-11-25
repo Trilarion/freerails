@@ -96,11 +96,11 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * Checks whether the composite track changes satisfy the connection rules.
      * Track ownership is checked by each {@link ChangeTrackPieceMove}.
      *
-     * @param world the world whose state is used or updated
+     * @param world the world whose state is used
      * @return the composite test
      */
     @Override
-    public Status compositeTest(World world) {
+    public Status compositeTest(UnmodifiableWorld world) {
         // must connect to existing track
         Rules rules = world.getRules();
 

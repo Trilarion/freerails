@@ -18,11 +18,26 @@
 
 package freerails.controller;
 
-// TODO when is build mode ignore track and why??
 /**
- * Defines the available build mode values.
+ * Defines what the map cursor does in the build tab's track modes.
+ *
+ * <p>Only {@link #BUILD_TRACK} acts on keyboard cursor moves, and only on the
+ * number pad: each number pad move builds track from the old to the new tile.
+ * Control and the arrow keys only move the cursor, in every mode. Upgrading and
+ * removing track are done by dragging the mouse only, so that track is never
+ * upgraded or removed by accident. {@link CursorController} carries out keyboard
+ * cursor moves; the client's key bindings decide which keys may build track.
  */
 public enum BuildMode {
 
-    BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION
+    /** Dragging the mouse or moving the cursor with the number pad builds track. */
+    BUILD_TRACK,
+    /** Dragging the mouse removes track; the keyboard only moves the cursor. */
+    REMOVE_TRACK,
+    /** Dragging the mouse upgrades track to the selected type; the keyboard only moves the cursor. */
+    UPGRADE_TRACK,
+    /** Inspect mode: the cursor moves without building, upgrading, or removing anything. */
+    INSPECT,
+    /** Clicking places a station of the selected type. */
+    BUILD_STATION
 }
