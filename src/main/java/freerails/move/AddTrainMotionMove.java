@@ -59,6 +59,33 @@ public class AddTrainMotionMove implements Move {
     }
 
     /**
+     * Returns the owner of the train.
+     *
+     * @return the player who owns the train
+     */
+    public @NotNull Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * Returns the identifier of the train.
+     *
+     * @return the train identifier
+     */
+    public int getTrainId() {
+        return trainId;
+    }
+
+    /**
+     * Returns the motion appended to the train.
+     *
+     * @return the motion
+     */
+    public @NotNull TrainMotion getActivity() {
+        return activity;
+    }
+
+    /**
      * Checks whether this move can be applied to the supplied world, which
      * requires the train to exist for the player.
      *

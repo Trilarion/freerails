@@ -211,6 +211,13 @@ station-removal bundle as a `CompositeMove` that applies the track change, the
 station removal, and the owner's train-schedule updates in that order as one
 action.
 
+Both kinds of container implement `ContainerMove`, which gives read-only access to the
+component moves. Code that inspects moves, such as the client's `MoveChainFork` and
+`UserMessageGenerator`, uses `ContainerMove.leaves` to look into nested containers of
+either kind instead of checking for one container class. The client reports cargo
+deliveries from the `CargoDeliveryTransaction`s inside the train moves the server
+broadcasts, and plays a whistle when the player's train moves away from a station stop.
+
 `UnmodifiableWorld` collection getters return live, unmodifiable views: changes made
 through the world are visible through previously obtained views, but the views do not
 allow adding or removing elements. This is a shallow read-only boundary, not a deep

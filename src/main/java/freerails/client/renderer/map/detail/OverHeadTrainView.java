@@ -29,7 +29,7 @@ import freerails.util.ui.Painter;
 import freerails.util.ui.SoundManager;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainRenderer;
-import freerails.client.ModelRoot;
+import freerails.client.ClientProperties;
 import freerails.client.ModelRootProperty;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
@@ -45,19 +45,19 @@ public class OverHeadTrainView implements Painter {
     private final TrainRenderer trainPainter;
     private final UnmodifiableWorld world;
     private final SoundManager soundManager = SoundManager.getInstance();
-    private final ModelRoot modelRoot;
+    private final ClientProperties properties;
 
     /**
      * Creates a over head train view instance.
      *
      * @param world the game world being queried
      * @param rendererRoot the renderer root parameter
-     * @param modelRoot the client model that provides current game state
+     * @param properties the client properties
      */
-    public OverHeadTrainView(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
+    public OverHeadTrainView(UnmodifiableWorld world, RendererRoot rendererRoot, ClientProperties properties) {
         this.world = world;
         trainPainter = new TrainRenderer(rendererRoot);
-        this.modelRoot = modelRoot;
+        this.properties = properties;
     }
 
     /**
@@ -71,7 +71,7 @@ public class OverHeadTrainView implements Painter {
         g.setColor(Color.BLUE);
         g.setStroke(new BasicStroke(10));
 
-        Double time = (Double) modelRoot.getProperty(ModelRootProperty.TIME);
+        Double time = (Double) properties.getProperty(ModelRootProperty.TIME);
 
         for (Player player : world.getPlayers()) {
             for (Train train: world.getTrains(player)) {

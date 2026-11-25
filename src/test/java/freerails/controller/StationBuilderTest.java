@@ -21,8 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.client.ModelRoot;
-import freerails.client.ModelRootImpl;
+import freerails.client.ClientProperties;
 import freerails.move.MoveExecutor;
 import freerails.move.Status;
 import freerails.model.MapFixtureFactory2;
@@ -49,8 +48,8 @@ public class StationBuilderTest extends TestCase {
         super.setUp();
         World world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
-        ModelRoot modelRoot = new ModelRootImpl();
-        trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        ClientProperties properties = new ClientProperties();
+        trackBuilder = new TrackMoveProducer(moveExecutor, properties);
         stationBuilder = new StationBuilder(moveExecutor);
     }
 

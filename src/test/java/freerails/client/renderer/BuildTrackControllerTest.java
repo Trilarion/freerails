@@ -22,6 +22,7 @@
 package freerails.client.renderer;
 
 import freerails.client.ModelRootImpl;
+import freerails.client.TestModelRoots;
 import freerails.controller.*;
 import freerails.client.ModelRootProperty;
 import freerails.model.MapFixtureFactory2;
@@ -62,12 +63,11 @@ public class BuildTrackControllerTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
-        modelRoot = new ModelRootImpl();
         Player player = world.getPlayer(0);
-        modelRoot.setup(world, player);
+        modelRoot = TestModelRoots.create(world, player);
         buildTrackController = new BuildTrackController(world, modelRoot);
         MoveExecutor executor = new SimpleMoveExecutor(world, player);
-        trackBuilder = new TrackMoveProducer(executor, world, modelRoot);
+        trackBuilder = new TrackMoveProducer(executor, modelRoot.getProperties());
 
         for (TrackType trackType: world.getTrackTypes()) {
             if (trackType.getName().equals("standard track")) {
@@ -81,7 +81,7 @@ public class BuildTrackControllerTest extends TestCase {
         assertFalse(doubleTrackRuleID == -1);
 
         // unit tests should be silent!
-        modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, false);
+        modelRoot.getProperties().setProperty(ModelRootProperty.PLAY_SOUNDS, false);
     }
 
     /**
@@ -89,7 +89,7 @@ public class BuildTrackControllerTest extends TestCase {
      */
     public void testBuildTrack() {
         IntPoint2D from = new IntPoint2D(10, 10);
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, from);
         IntPoint2D to = new IntPoint2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
         completeSearch();
@@ -119,7 +119,7 @@ public class BuildTrackControllerTest extends TestCase {
         trackBuilder.setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
 
         // Upgrade part of the track.
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(15, 10));
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(15, 10));
         buildTrackController.setProposedTrack(new IntPoint2D(20, 10), trackBuilder);
         completeSearch();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
@@ -149,7 +149,7 @@ public class BuildTrackControllerTest extends TestCase {
         // Then remove some of it.
         trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
         IntPoint2D from = new IntPoint2D(15, 10);
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, from);
 
         IntPoint2D to = new IntPoint2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
@@ -165,12 +165,12 @@ public class BuildTrackControllerTest extends TestCase {
      * builds on the pieces proposed by the steps before it.
      */
     public void testPreviewBuildsOnEarlierStepsWithoutChangingTheWorld() {
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(10, 10));
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(10, 10));
         buildTrackController.setProposedTrack(new IntPoint2D(20, 10), trackBuilder);
         completeSearch();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
-        Map<?, ?> proposed = (Map<?, ?>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+        Map<?, ?> proposed = (Map<?, ?>) modelRoot.getProperties().getProperty(ModelRootProperty.PROPOSED_TRACK);
         for (int x = 10; x <= 20; x++) {
             IntPoint2D location = new IntPoint2D(x, 10);
             assertFalse(world.getTile(location).hasTrack());
@@ -189,20 +189,19 @@ public class BuildTrackControllerTest extends TestCase {
     public void testDisconnectedPreviewIsRefused() {
         world = MapFixtureFactory2.getCopy(new Rules(false, true));
         Player player = world.getPlayer(0);
-        modelRoot = new ModelRootImpl();
-        modelRoot.setup(world, player);
-        modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, false);
+        modelRoot = TestModelRoots.create(world, player);
+        modelRoot.getProperties().setProperty(ModelRootProperty.PLAY_SOUNDS, false);
         buildTrackController = new BuildTrackController(world, modelRoot);
-        trackBuilder = new TrackMoveProducer(new SimpleMoveExecutor(world, player), world, modelRoot);
+        trackBuilder = new TrackMoveProducer(new SimpleMoveExecutor(world, player), modelRoot.getProperties());
         assertTrue(trackBuilder.buildTrack(new IntPoint2D(10, 10), TileTransition.EAST).isSuccess());
 
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(30, 30));
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(30, 30));
         buildTrackController.setProposedTrack(new IntPoint2D(33, 30), trackBuilder);
         // The refused step abandons the search, which must then be over.
         completeSearch();
 
         assertFalse(buildTrackController.isBuildTrackSuccessful());
-        assertEquals("Must connect to existing track", modelRoot.getProperty(ModelRootProperty.CURSOR_MESSAGE));
+        assertEquals("Must connect to existing track", modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_MESSAGE));
     }
 
     /**
@@ -213,7 +212,7 @@ public class BuildTrackControllerTest extends TestCase {
 
         // There is no track to follow, so a removal preview finds no path.
         trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(10, 10));
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(10, 10));
         buildTrackController.setProposedTrack(new IntPoint2D(20, 10), trackBuilder);
         completeSearch();
 
@@ -234,12 +233,12 @@ public class BuildTrackControllerTest extends TestCase {
         int stations = world.getStations(world.getPlayer(0)).size();
 
         trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(14, 10));
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, new IntPoint2D(14, 10));
         buildTrackController.setProposedTrack(new IntPoint2D(16, 10), trackBuilder);
         completeSearch();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
-        Map<?, ?> proposed = (Map<?, ?>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+        Map<?, ?> proposed = (Map<?, ?>) modelRoot.getProperties().getProperty(ModelRootProperty.PROPOSED_TRACK);
         assertTrue(proposed.containsKey(stationLocation));
         assertNull(proposed.get(stationLocation));
         assertTrue(proposed.containsKey(new IntPoint2D(16, 10)));

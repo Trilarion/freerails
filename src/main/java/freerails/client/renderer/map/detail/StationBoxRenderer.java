@@ -82,7 +82,7 @@ public class StationBoxRenderer implements Painter {
      */
     @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
-        Boolean showCargoWaiting = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_CARGO_AT_STATIONS);
+        Boolean showCargoWaiting = (Boolean) modelRoot.getProperties().getProperty(ModelRootProperty.SHOW_CARGO_AT_STATIONS);
 
         if (showCargoWaiting) {
             // We only show the station boxes for the current player.

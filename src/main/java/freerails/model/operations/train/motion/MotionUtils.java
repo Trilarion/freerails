@@ -18,6 +18,7 @@
 
 package freerails.model.operations.train.motion;
 
+import freerails.model.operations.train.TrainState;
 import freerails.util.BidirectionalIterator;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
@@ -41,5 +42,45 @@ public final class MotionUtils {
         BidirectionalIterator<TrainMotion> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
         bidirectionalIterator.gotoLast();
         return bidirectionalIterator.previous();
+    }
+
+    /**
+     * Returns whether the specified train's latest movement started from a station stop, that is,
+     * whether the train left a station with that movement. Stationary activities recorded after the
+     * movement, such as a path lengthened for added wagons, are ignored.
+     *
+     * @param world world containing the train
+     * @param player train owner
+     * @param trainId train identifier
+     * @return {@code true} if the latest movement directly follows a stop at a station
+     */
+    public static boolean latestMovementLeavesStation(UnmodifiableWorld world, Player player, int trainId) {
+        BidirectionalIterator<TrainMotion> activities = world.getTrain(player, trainId).getActivities();
+        if (!activities.hasNext()) {
+            return false;
+        }
+        activities.gotoLast();
+
+        // Find the latest movement.
+        boolean foundMovement = false;
+        while (activities.hasPrevious() && !foundMovement) {
+            foundMovement = isMovement(activities.previous());
+        }
+        if (!foundMovement || !activities.hasPrevious()) {
+            return false;
+        }
+
+        TrainState stateBefore = activities.previous().getTrainState();
+        return stateBefore == TrainState.STOPPED_AT_STATION || stateBefore == TrainState.WAITING_FOR_FULL_LOAD;
+    }
+
+    /**
+     * Returns whether the motion moves the train, as opposed to keeping it stationary.
+     *
+     * @param motion the motion to check
+     * @return {@code true} if the train travels during the motion
+     */
+    public static boolean isMovement(TrainMotion motion) {
+        return motion.getTrainState() == TrainState.READY && motion.getDuration() > 0;
     }
 }

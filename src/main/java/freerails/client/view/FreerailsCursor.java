@@ -22,7 +22,7 @@ import freerails.client.ClientConstants;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.BuildMode;
-import freerails.client.ModelRoot;
+import freerails.client.ClientProperties;
 import freerails.util.IntPoint2D;
 
 import java.awt.*;
@@ -32,12 +32,12 @@ import java.io.IOException;
 
 /**
  * Paints the cursor on the map, note the cursor's position is stored on the
- * ModelRoot under the key CURSOR_POSITION.
+ * client properties under the key CURSOR_POSITION.
  */
 public class FreerailsCursor {
 
     private final Image buildTrack, upgradeTrack, removeTrack, infoMode;
-    private final ModelRoot modelRoot;
+    private final ClientProperties properties;
 
     /**
      * The location of the cursor last time paintCursor(.) was called.
@@ -52,9 +52,9 @@ public class FreerailsCursor {
     /**
      * Creates a new FreerailsCursor.
      */
-    public FreerailsCursor(ModelRoot modelRoot, RendererRoot rendererRoot) throws IOException {
-        this.modelRoot = modelRoot;
-        this.modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, null);
+    public FreerailsCursor(ClientProperties properties, RendererRoot rendererRoot) throws IOException {
+        this.properties = properties;
+        this.properties.setProperty(ModelRootProperty.CURSOR_MESSAGE, null);
         buildTrack = rendererRoot.getImage("cursor/buildtrack.png");
         upgradeTrack = rendererRoot.getImage("cursor/upgradetrack.png");
         removeTrack = rendererRoot.getImage("cursor/removetrack.png");
@@ -71,9 +71,9 @@ public class FreerailsCursor {
     public void paintCursor(Graphics g, Dimension tileSize) {
         Graphics2D g2 = (Graphics2D) g;
 
-        BuildMode buildMode = (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
+        BuildMode buildMode = (BuildMode) properties.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
 
-        IntPoint2D cursorMapPosition = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+        IntPoint2D cursorMapPosition = (IntPoint2D) properties.getProperty(ModelRootProperty.CURSOR_POSITION);
 
         // Has the cursor moved since we last painted it?
         if (!cursorMapPosition.equals(lastCursorPosition)) {
@@ -91,7 +91,7 @@ public class FreerailsCursor {
             case INSPECT -> infoMode;
         };
 
-        Boolean b = (Boolean) modelRoot.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);
+        Boolean b = (Boolean) properties.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);
         long time = System.currentTimeMillis() - timeArrived;
         boolean show = (time / 500) % 2 == 0;
         if (show && !b) {
@@ -99,7 +99,7 @@ public class FreerailsCursor {
         }
 
         // Second, draw a message below the cursor if appropriate.
-        String message = (String) modelRoot.getProperty(ModelRootProperty.CURSOR_MESSAGE);
+        String message = (String) properties.getProperty(ModelRootProperty.CURSOR_MESSAGE);
 
         if (null != message && !message.isEmpty()) {
             int fontSize = 12;
@@ -116,7 +116,7 @@ public class FreerailsCursor {
         }
 
         // Draw a big white dot at the target point.
-        IntPoint2D targetPoint = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.THINKING_POINT);
+        IntPoint2D targetPoint = (IntPoint2D) properties.getProperty(ModelRootProperty.THINKING_POINT);
         if (null != targetPoint) {
             time = System.currentTimeMillis();
             int dotSize;

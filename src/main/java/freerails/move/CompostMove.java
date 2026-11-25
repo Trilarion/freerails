@@ -22,9 +22,11 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Combines a number of orthogonal moves. Orthogonal moves are moves that can be applied in any order (are not
@@ -37,8 +39,10 @@ import java.util.Collections;
  * Do not use this class for dependent moves, such as changes to connected track pieces. Use an ordered
  * {@link CompositeMove} for dependent moves.
  */
-public class CompostMove implements Move {
+public class CompostMove implements ContainerMove {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final Collection<Move> moves;
 
     /**
@@ -57,6 +61,17 @@ public class CompostMove implements Move {
         }
         // defensive copy
         this.moves = Collections.unmodifiableCollection(new ArrayList<>(moves));
+    }
+
+    /**
+     * Returns the component moves. Their order carries no meaning, because the moves are orthogonal.
+     *
+     * @return an unmodifiable list of the component moves
+     */
+    @NotNull
+    @Override
+    public List<Move> getMoves() {
+        return List.copyOf(moves);
     }
 
 

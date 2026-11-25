@@ -81,7 +81,7 @@ public class StationBuildModel {
             return Status.fail("Select a station type before building a station.");
         }
         Status status = stationBuilder.buildStation(location);
-        modelRoot.setProperty(
+        modelRoot.getProperties().setProperty(
                 ModelRootProperty.CURSOR_MESSAGE,
                 status.isSuccess() ? null : status.getMessage());
         if (status.isSuccess()) {

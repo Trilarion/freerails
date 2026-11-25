@@ -21,8 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.client.ModelRoot;
-import freerails.client.ModelRootImpl;
+import freerails.client.ClientProperties;
 import freerails.model.operations.train.motion.TrainMotion;
 import freerails.util.BidirectionalIterator;
 import freerails.model.simulation.Time;
@@ -100,8 +99,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         int validEngineId = world.getEngines().iterator().next().getId();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
         player = moveExecutor.getPlayer();
-        ModelRoot modelRoot = new ModelRootImpl();
-        TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        ClientProperties properties = new ClientProperties();
+        TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, properties);
         StationBuilder stationBuilder = new StationBuilder(moveExecutor);
 
         // Build track.

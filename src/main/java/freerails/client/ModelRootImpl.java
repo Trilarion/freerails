@@ -18,85 +18,100 @@
 
 package freerails.client;
 
-import freerails.controller.BuildMode;
+import freerails.client.receiver.MoveChainFork;
+import freerails.client.receiver.UntriedMoveReceiver;
+import freerails.model.player.Player;
 import freerails.model.track.BuildTrackStrategy;
-import freerails.move.generator.MoveGenerator;
+import freerails.model.world.UnmodifiableWorld;
+import freerails.model.world.WorldMapListener;
 import freerails.move.Move;
 import freerails.move.MoveReceiver;
 import freerails.move.Status;
+import freerails.move.generator.MoveGenerator;
 import freerails.network.command.CommandToServer;
 import freerails.network.command.ServerCommandReceiver;
-import freerails.client.receiver.MoveChainFork;
-import freerails.client.receiver.UntriedMoveReceiver;
-import freerails.util.IntPoint2D;
-import freerails.util.Utils;
-import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.WorldMapListener;
-import freerails.model.player.Player;
-import freerails.util.ui.SoundManager;
-import org.tinylog.Logger;
-import org.tinylog.TaggedLogger;
 
-import java.util.*;
+import java.util.Objects;
 
 /**
- * Provides access to the World object and other data that is shared by GUI
- * components (for instance the cursor's position).
+ * One loaded game as seen by the client: the world, the local player, the receivers that moves and
+ * server commands are sent to, and the long-lived client properties. All parts are fixed at
+ * construction; when a new world is loaded, a new instance is created.
  */
-public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
+public class ModelRootImpl implements ModelRoot {
 
-    private static final TaggedLogger logger = Logger.tag("ModelRootImpl");
-    private final Map<ModelRootProperty, Object> properties = new HashMap<>();
-    private final Collection<ModelRootListener> listeners = new ArrayList<>();
-    private MoveChainFork moveFork = new MoveChainFork();
-    private UntriedMoveReceiver moveReceiver;
-    private Player playerPlayer;
-    private ServerCommandReceiver serverCommandReceiver;
-    private UnmodifiableWorld world;
+    private final ClientProperties properties;
+    private final UnmodifiableWorld world;
+    private final Player player;
+    private final UntriedMoveReceiver moveReceiver;
+    private final ServerCommandReceiver serverCommandReceiver;
+    private final MoveChainFork moveFork;
 
     /**
-     * Creates a model root impl instance.
+     * Creates the model root for a loaded game and resets the world-dependent client properties
+     * (currently the build track strategy) to their defaults for this world.
+     *
+     * @param properties long-lived client properties
+     * @param world the loaded game world
+     * @param player the local player
+     * @param moveReceiver receives the moves this client tries and applies
+     * @param serverCommandReceiver receives the commands this client sends to the server
+     * @param moveFork distributes committed moves to registered listeners
      */
-    public ModelRootImpl() {
-        properties.put(ModelRootProperty.CURSOR_POSITION, new IntPoint2D());
-        properties.put(ModelRootProperty.SHOW_STATION_NAMES, Boolean.TRUE);
-        properties.put(ModelRootProperty.SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
-        properties.put(ModelRootProperty.SHOW_STATION_BORDERS, Boolean.TRUE);
-        properties.put(ModelRootProperty.CURSOR_MODE, ModelRootValue.BUILD_TRACK_CURSOR_MODE);
-        properties.put(ModelRootProperty.PREVIOUS_CURSOR_MODE, ModelRootValue.BUILD_TRACK_CURSOR_MODE);
-        properties.put(ModelRootProperty.SERVER, "server details not set!");
-        properties.put(ModelRootProperty.PLAY_SOUNDS, Boolean.TRUE);
-        properties.put(ModelRootProperty.IGNORE_KEY_EVENTS, Boolean.FALSE);
-        properties.put(ModelRootProperty.TIME, 0.0d);
-        properties.put(ModelRootProperty.TRACK_BUILDER_MODE, BuildMode.BUILD_TRACK);
-        properties.put(ModelRootProperty.SAVED_GAMES_LIST, Collections.emptyList());
-        addPropertyChangeListener((modelRootProperty, oldValue, newValue) -> {
-            if (modelRootProperty == ModelRootProperty.PLAY_SOUNDS) {
-                SoundManager.getInstance().setPlayingSounds((Boolean) newValue);
-            }
-        });
+    public ModelRootImpl(
+            ClientProperties properties,
+            UnmodifiableWorld world,
+            Player player,
+            UntriedMoveReceiver moveReceiver,
+            ServerCommandReceiver serverCommandReceiver,
+            MoveChainFork moveFork) {
+        this.properties = Objects.requireNonNull(properties, "properties");
+        this.world = Objects.requireNonNull(world, "world");
+        this.player = Objects.requireNonNull(player, "player");
+        this.moveReceiver = Objects.requireNonNull(moveReceiver, "moveReceiver");
+        this.serverCommandReceiver = Objects.requireNonNull(serverCommandReceiver, "serverCommandReceiver");
+        this.moveFork = Objects.requireNonNull(moveFork, "moveFork");
+        properties.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, BuildTrackStrategy.getDefault(world));
     }
 
     /**
-     * Adds the complete move receiver.
+     * Adds a receiver for every committed move.
      *
-     * @param moveReceiver the move receiver parameter
+     * @param receiver the receiver to add
      */
-    public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
-        moveFork.addCompleteMoveReceiver(moveReceiver);
+    public void addCompleteMoveReceiver(MoveReceiver receiver) {
+        moveFork.addCompleteMoveReceiver(receiver);
     }
 
     /**
-     * Adds the map listener.
+     * Removes a receiver for every committed move.
      *
-     * @param listener the listener parameter
+     * @param receiver the receiver to remove
+     */
+    public void removeCompleteMoveReceiver(MoveReceiver receiver) {
+        moveFork.removeCompleteMoveReceiver(receiver);
+    }
+
+    /**
+     * Adds a receiver for the individual leaves of committed moves.
+     *
+     * @param receiver the receiver to add
+     */
+    public void addSplitMoveReceiver(MoveReceiver receiver) {
+        moveFork.addSplitMoveReceiver(receiver);
+    }
+
+    /**
+     * Adds a listener for map updates.
+     *
+     * @param listener the listener to add
      */
     public void addMapListener(WorldMapListener listener) {
         moveFork.addMapListener(listener);
     }
 
     /**
-     * Removes a map listener.
+     * Removes a listener for map updates.
      *
      * @param listener listener to remove
      */
@@ -105,86 +120,57 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * Adds the property change listener.
+     * Checks a move and passes it on to the move receiver.
      *
-     * @param listener the listener parameter
-     */
-    public void addPropertyChangeListener(ModelRootListener listener) {
-        listeners.add(listener);
-    }
-
-    /**
-     * Removes a property-change listener.
-     *
-     * @param listener listener to remove
-     */
-    public void removePropertyChangeListener(ModelRootListener listener) {
-        listeners.remove(listener);
-    }
-
-    /**
-     * Adds the split move receiver.
-     *
-     * @param moveReceiver the move receiver parameter
-     */
-    public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
-        moveFork.addSplitMoveReceiver(moveReceiver);
-    }
-
-    /**
-     * Performs the apply move operation.
-     *
-     * @param move the move parameter
-     * @return the apply move produced by this method
+     * @param move the move to apply
+     * @return whether the move was applicable when it was checked
      */
     @Override
     public Status applyMove(Move move) {
         Status status = moveReceiver.applicable(move);
         moveReceiver.process(move);
-
         return status;
     }
 
     /**
-     * Performs the do pre move operation.
+     * Checks the move of a move generator and passes the generator on to the move receiver.
      *
-     * @param moveGenerator the move generator parameter
-     * @return the do pre move produced by this method
+     * @param moveGenerator the move generator
+     * @return whether the generated move was applicable when it was checked
      */
     @Override
     public Status doPreMove(MoveGenerator moveGenerator) {
         Move move = moveGenerator.generate(world);
         Status status = moveReceiver.applicable(move);
         moveReceiver.processMoveGenerator(moveGenerator);
-
         return status;
     }
 
     /**
-     * Returns the player.
+     * Checks whether a move is applicable without applying it.
      *
-     * @return the player produced by this method
+     * @param move the move to check
+     * @return whether the move is applicable
+     */
+    @Override
+    public Status tryMove(Move move) {
+        return moveReceiver.applicable(move);
+    }
+
+    /**
+     * Returns the local player.
+     *
+     * @return the local player
      */
     @Override
     public Player getPlayer() {
-        return Utils.verifyNotNull(playerPlayer);
+        return player;
     }
 
     /**
-     * Returns the property.
+     * Returns the loaded world.
      *
-     * @param property the client property to access
-     * @return the property produced by this method
-     */
-    @Override
-    public Object getProperty(ModelRootProperty property) {
-        return properties.get(property);
-    }
-
-    /**
-     * Returns the world.
-     *
-     * @return the world produced by this method
+     * @return the loaded world
      */
     @Override
     public UnmodifiableWorld getWorld() {
@@ -192,82 +178,22 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * Performs the send command operation.
+     * Returns the long-lived client properties.
      *
-     * @param message the message parameter
+     * @return the client properties
+     */
+    @Override
+    public ClientProperties getProperties() {
+        return properties;
+    }
+
+    /**
+     * Sends a command to the server.
+     *
+     * @param message the command to send
      */
     @Override
     public void sendCommand(CommandToServer message) {
-        if (null != serverCommandReceiver) {
-            serverCommandReceiver.sendCommand(message);
-        } else {
-            logger.warn("Cannot send server command because no receiver is configured: " + message);
-        }
-    }
-
-    /**
-     * Sets the move fork.
-     *
-     * @param moveFork the move fork parameter
-     */
-    public void setMoveFork(MoveChainFork moveFork) {
-        this.moveFork = moveFork;
-    }
-
-    /**
-     * Sets the move receiver.
-     *
-     * @param moveReceiver the move receiver parameter
-     */
-    public void setMoveReceiver(UntriedMoveReceiver moveReceiver) {
-        this.moveReceiver = moveReceiver;
-    }
-
-    /**
-     * Sets the property.
-     *
-     * @param property the client property to access
-     * @param value the value to use
-     */
-    @Override
-    public void setProperty(ModelRootProperty property, Object value) {
-        Object oldValue = properties.get(property);
-        properties.put(property, value);
-        for (ModelRootListener listener : listeners) {
-            listener.propertyChange(property, oldValue, value);
-        }
-    }
-
-    /**
-     * Sets the server command receiver.
-     *
-     * @param serverCommandReceiver the server command receiver parameter
-     */
-    public void setServerCommandReceiver(ServerCommandReceiver serverCommandReceiver) {
-        this.serverCommandReceiver = serverCommandReceiver;
-    }
-
-    // TODO how to avoid an illegal state at the beginning?
-    /**
-     * Updates the ModelRoot with those properties which are dependent upon the
-     * world model. Call this when the world model is changed (e.g. new map is loaded)
-     */
-    public void setup(UnmodifiableWorld world, Player player) {
-        this.world = Utils.verifyNotNull(world);
-        assert player != null;
-        playerPlayer = player;
-        BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getDefault(world);
-        setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, buildTrackStrategy);
-    }
-
-    /**
-     * Performs the try move operation.
-     *
-     * @param move the move parameter
-     * @return the try move produced by this method
-     */
-    @Override
-    public Status tryMove(Move move) {
-        return moveReceiver.applicable(move);
+        serverCommandReceiver.sendCommand(message);
     }
 }

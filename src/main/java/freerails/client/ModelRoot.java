@@ -25,7 +25,8 @@ import freerails.move.MoveExecutor;
 import freerails.network.command.CommandToServer;
 
 /**
- * Defines methods and constants that GUI classes can use to access shared data.
+ * Gives GUI classes access to a loaded game: the world, the local player, move execution and the
+ * client properties. An instance only exists once a world and a player are known.
  */
 public interface ModelRoot extends MoveExecutor {
 
@@ -37,19 +38,10 @@ public interface ModelRoot extends MoveExecutor {
     void sendCommand(CommandToServer message);
 
     /**
-     * Sets the property.
+     * Returns the client-side GUI properties, which outlive this game session.
      *
-     * @param property the client property to access
-     * @param value the value to use
+     * @return the client properties
      */
-    void setProperty(ModelRootProperty property, Object value);
-
-    /**
-     * Returns the property.
-     *
-     * @param property the client property to access
-     * @return the property produced by this method
-     */
-    Object getProperty(ModelRootProperty property);
+    ClientProperties getProperties();
 
 }

@@ -18,6 +18,7 @@
 
 package freerails.controller;
 
+import freerails.client.ClientProperties;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.simulation.Time;
@@ -44,7 +45,7 @@ import java.util.Stack;
  */
 public class TrackMoveProducer {
 
-    private final ModelRoot modelRoot;
+    private final ClientProperties properties;
     private final MoveExecutor executor;
     private final Collection<MoveGenerator> moveStack = new Stack<>();
     private Time lastMoveTime;
@@ -52,27 +53,22 @@ public class TrackMoveProducer {
     /**
      * Creates a track move producer instance.
      *
-     * @param executor the executor parameter
-     * @param world the game world being queried
-     * @param modelRoot the client model that provides current game state
+     * @param executor executes the generated moves and provides the world and player
+     * @param properties the client properties that hold the build strategy and build mode
      */
-    public TrackMoveProducer(MoveExecutor executor, UnmodifiableWorld world, ModelRoot modelRoot) {
-        this.executor = executor;
-        this.modelRoot = Utils.verifyNotNull(modelRoot);
-        setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
+    public TrackMoveProducer(MoveExecutor executor, ClientProperties properties) {
+        this.executor = Utils.verifyNotNull(executor);
+        this.properties = Utils.verifyNotNull(properties);
+        setBuildTrackStrategy(BuildTrackStrategy.getDefault(executor.getWorld()));
     }
 
     /**
      * Creates a track move producer instance.
      *
-     * @param modelRoot the client model that provides current game state
+     * @param modelRoot the loaded game, used as move executor and for its client properties
      */
     public TrackMoveProducer(ModelRoot modelRoot) {
-        Utils.verifyNotNull(modelRoot);
-        executor = modelRoot;
-        this.modelRoot = modelRoot;
-
-        setBuildTrackStrategy(BuildTrackStrategy.getDefault(executor.getWorld()));
+        this(modelRoot, modelRoot.getProperties());
     }
 
     /**
@@ -237,7 +233,7 @@ public class TrackMoveProducer {
      * @return the build track strategy
      */
     private BuildTrackStrategy getBuildTrackStrategy() {
-        return (BuildTrackStrategy) modelRoot.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
+        return (BuildTrackStrategy) properties.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
     }
 
     /**
@@ -247,7 +243,7 @@ public class TrackMoveProducer {
      */
     public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
 
-        modelRoot.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, buildTrackStrategy);
+        properties.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, buildTrackStrategy);
     }
 
     /**
@@ -256,7 +252,7 @@ public class TrackMoveProducer {
      * @return the build mode produced by this method
      */
     private BuildMode getBuildMode() {
-        return (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
+        return (BuildMode) properties.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
     }
 
     /**
@@ -265,7 +261,7 @@ public class TrackMoveProducer {
      * @param buildMode the build mode parameter
      */
     private void setBuildMode(BuildMode buildMode) {
-        modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, buildMode);
+        properties.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, buildMode);
     }
 
 }

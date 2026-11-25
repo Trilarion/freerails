@@ -199,7 +199,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
             centerOnTile(new IntPoint2D((int) tileX, (int) tileY));
         });
 
-        modelRoot.addPropertyChangeListener(this);
+        modelRoot.getProperties().addPropertyChangeListener(this);
         modelRoot.addMapListener(this);
         refreshMapLabels();
         animation = new Timeline(new KeyFrame(Duration.millis(40), event -> requestRender()));
@@ -308,7 +308,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         closed.set(true);
         animation.stop();
         synchronized (updateLock) {
-            modelRoot.removePropertyChangeListener(this);
+            modelRoot.getProperties().removePropertyChangeListener(this);
             modelRoot.removeMapListener(this);
         }
         renderExecutor.shutdownNow();
@@ -419,7 +419,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         cityLabels.getChildren().setAll(cities);
         stationLabels.getChildren().setAll(stations);
         stationLabels.setVisible(Boolean.TRUE.equals(
-                modelRoot.getProperty(ModelRootProperty.SHOW_STATION_NAMES)));
+                modelRoot.getProperties().getProperty(ModelRootProperty.SHOW_STATION_NAMES)));
     }
 
     /**
@@ -612,8 +612,8 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      * @param visible visible map bounds
      */
     private void paintMessages(Graphics2D graphics, java.awt.Rectangle visible) {
-        String quickMessage = (String) modelRoot.getProperty(ModelRootProperty.QUICK_MESSAGE);
-        String permanentMessage = (String) modelRoot.getProperty(ModelRootProperty.PERMANENT_MESSAGE);
+        String quickMessage = (String) modelRoot.getProperties().getProperty(ModelRootProperty.QUICK_MESSAGE);
+        String permanentMessage = (String) modelRoot.getProperties().getProperty(ModelRootProperty.PERMANENT_MESSAGE);
         graphics.setColor(java.awt.Color.WHITE);
         graphics.setFont(ClientConstants.USER_MESSAGE_FONT);
         if (quickMessage != null && System.currentTimeMillis() < quickMessageExpiresAt) {
@@ -640,7 +640,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      */
     private void moveCursor(IntPoint2D tile) {
         if (modelRoot.getWorld().boundsContain(tile)) {
-            modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, tile);
+            modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, tile);
             requestRender();
         }
     }
@@ -671,7 +671,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         } else if (event.getCode() == KeyCode.ESCAPE) {
             synchronized (updateLock) {
                 buildTrackController.hide();
-                modelRoot.setProperty(ModelRootProperty.IGNORE_KEY_EVENTS, Boolean.FALSE);
+                modelRoot.getProperties().setProperty(ModelRootProperty.IGNORE_KEY_EVENTS, Boolean.FALSE);
             }
             event.consume();
         }
@@ -693,7 +693,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
         } else if (event.getButton() == MouseButton.SECONDARY) {
             synchronized (updateLock) {
                 buildTrackController.hide();
-                modelRoot.setProperty(ModelRootProperty.IGNORE_KEY_EVENTS, Boolean.FALSE);
+                modelRoot.getProperties().setProperty(ModelRootProperty.IGNORE_KEY_EVENTS, Boolean.FALSE);
             }
             panning = true;
             panStartScreenX = event.getScreenX();
@@ -754,7 +754,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
                 } else if (buildTrackController.isBuilding()
                         && buildTrackController.isBuildTrackSuccessful()) {
                     IntPoint2D result = buildTrackController.updateWorld(actionRoot.getTrackMoveProducer());
-                    modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, result);
+                    modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, result);
                 } else {
                     buildTrackController.hide();
                 }
@@ -800,7 +800,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
      * @return current cursor tile
      */
     private IntPoint2D cursorPosition() {
-        IntPoint2D position = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+        IntPoint2D position = (IntPoint2D) modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION);
         return position == null ? IntPoint2D.ZERO : position;
     }
 

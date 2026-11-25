@@ -19,6 +19,7 @@
 package freerails.controller;
 
 import freerails.client.ModelRootImpl;
+import freerails.client.TestModelRoots;
 import freerails.client.ModelRootProperty;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.player.Player;
@@ -53,11 +54,10 @@ public class CursorControllerTest extends TestCase {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
         Player player = world.getPlayer(0);
-        modelRoot = new ModelRootImpl();
-        modelRoot.setup(world, player);
-        producer = new TrackMoveProducer(new SimpleMoveExecutor(world, player), world, modelRoot);
+        modelRoot = TestModelRoots.create(world, player);
+        producer = new TrackMoveProducer(new SimpleMoveExecutor(world, player), modelRoot.getProperties());
         cursorController = new CursorController(modelRoot);
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, START);
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, START);
     }
 
     /**
@@ -68,10 +68,10 @@ public class CursorControllerTest extends TestCase {
 
         assertTrue(cursorController.moveCursor(TileTransition.EAST, true, producer));
 
-        assertEquals(EAST, modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION));
+        assertEquals(EAST, modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION));
         assertTrue(world.getTile(START).trackPiece().trackConfiguration().contains(TileTransition.EAST));
         assertTrue(world.getTile(EAST).trackPiece().trackConfiguration().contains(TileTransition.WEST));
-        assertNull(modelRoot.getProperty(ModelRootProperty.CURSOR_MESSAGE));
+        assertNull(modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_MESSAGE));
     }
 
     /**
@@ -82,7 +82,7 @@ public class CursorControllerTest extends TestCase {
 
         assertTrue(cursorController.moveCursor(TileTransition.EAST, false, producer));
 
-        assertEquals(EAST, modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION));
+        assertEquals(EAST, modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION));
         assertFalse(world.getTile(START).hasTrack());
         assertFalse(world.getTile(EAST).hasTrack());
     }
@@ -98,11 +98,11 @@ public class CursorControllerTest extends TestCase {
 
         for (BuildMode mode : new BuildMode[]{BuildMode.UPGRADE_TRACK, BuildMode.REMOVE_TRACK, BuildMode.INSPECT}) {
             producer.setTrackBuilderMode(mode);
-            modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, START);
+            modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, START);
 
             assertTrue(cursorController.moveCursor(TileTransition.EAST, true, producer));
 
-            assertEquals(mode.toString(), EAST, modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION));
+            assertEquals(mode.toString(), EAST, modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION));
             assertEquals(mode.toString(), startTrack, world.getTile(START).trackPiece());
             assertEquals(mode.toString(), eastTrack, world.getTile(EAST).trackPiece());
         }
@@ -113,11 +113,11 @@ public class CursorControllerTest extends TestCase {
      */
     public void testMoveOffTheMapChangesNothing() {
         producer.setTrackBuilderMode(BuildMode.BUILD_TRACK);
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, IntPoint2D.ZERO);
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, IntPoint2D.ZERO);
 
         assertFalse(cursorController.moveCursor(TileTransition.NORTH, true, producer));
 
-        assertEquals(IntPoint2D.ZERO, modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION));
+        assertEquals(IntPoint2D.ZERO, modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION));
         assertFalse(world.getTile(IntPoint2D.ZERO).hasTrack());
     }
 
@@ -128,12 +128,12 @@ public class CursorControllerTest extends TestCase {
         producer.setTrackBuilderMode(BuildMode.BUILD_TRACK);
         // Track that is already there cannot be built again.
         assertTrue(cursorController.moveCursor(TileTransition.EAST, true, producer));
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, START);
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, START);
 
         assertTrue(cursorController.moveCursor(TileTransition.EAST, true, producer));
 
-        assertEquals(EAST, modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION));
-        assertNotNull(modelRoot.getProperty(ModelRootProperty.CURSOR_MESSAGE));
+        assertEquals(EAST, modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION));
+        assertNotNull(modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_MESSAGE));
     }
 
     /**
@@ -142,7 +142,7 @@ public class CursorControllerTest extends TestCase {
     public void testMoveWithoutTrackBuilder() {
         assertTrue(cursorController.moveCursor(TileTransition.EAST, true, null));
 
-        assertEquals(EAST, modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION));
+        assertEquals(EAST, modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION));
         assertFalse(world.getTile(START).hasTrack());
     }
 }

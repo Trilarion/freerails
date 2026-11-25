@@ -21,8 +21,7 @@
  */
 package freerails.model.track.pathfinding;
 
-import freerails.client.ModelRoot;
-import freerails.client.ModelRootImpl;
+import freerails.client.ClientProperties;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.MoveExecutor;
@@ -51,8 +50,8 @@ public class PathOnTrackFinderTest extends TestCase {
         super.setUp();
         World world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
-        ModelRoot modelRoot = new ModelRootImpl();
-        producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        ClientProperties properties = new ClientProperties();
+        producer = new TrackMoveProducer(moveExecutor, properties);
         pathFinder = new PathOnTrackFinder(world);
     }
 

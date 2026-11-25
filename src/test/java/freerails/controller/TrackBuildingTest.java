@@ -18,8 +18,7 @@
 
 package freerails.controller;
 
-import freerails.client.ModelRoot;
-import freerails.client.ModelRootImpl;
+import freerails.client.ClientProperties;
 import freerails.model.track.pathfinding.PathFinderStatus;
 import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.TrackPathFinder;
@@ -58,8 +57,8 @@ public class TrackBuildingTest extends TestCase {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
-        ModelRoot modelRoot = new ModelRootImpl();
-        producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        ClientProperties properties = new ClientProperties();
+        producer = new TrackMoveProducer(moveExecutor, properties);
         Player player = world.getPlayer(0);
         pathFinder = new TrackPathFinder(world, player);
         stationBuilder = new StationBuilder(moveExecutor);

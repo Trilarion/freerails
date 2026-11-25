@@ -61,7 +61,7 @@ public class BuildTrackRenderer implements Painter {
         if (modelRoot == null) {
             return;
         }
-        Object proposedTrackProperty = modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+        Object proposedTrackProperty = modelRoot.getProperties().getProperty(ModelRootProperty.PROPOSED_TRACK);
         if (proposedTrackProperty == null) {
             return;
         }

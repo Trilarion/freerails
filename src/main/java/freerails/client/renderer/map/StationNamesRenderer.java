@@ -20,7 +20,7 @@ package freerails.client.renderer.map;
 
 import freerails.client.ModelRootProperty;
 import freerails.util.ui.Painter;
-import freerails.client.ModelRoot;
+import freerails.client.ClientProperties;
 import freerails.util.IntPoint2D;
 import freerails.client.ClientConstants;
 import freerails.model.player.Player;
@@ -41,7 +41,7 @@ public class StationNamesRenderer implements Painter {
     private static final float[] dash1 = {5.0f};
     private static final Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
     private final UnmodifiableWorld world;
-    private final ModelRoot modelRoot;
+    private final ClientProperties properties;
     private final int fontSize = 10;
     private final Color bgColor = Color.BLACK;
     private final Color textColor = Color.WHITE;
@@ -51,11 +51,11 @@ public class StationNamesRenderer implements Painter {
      * Creates a station names renderer instance.
      *
      * @param world the game world being queried
-     * @param modelRoot the client model that provides current game state
+     * @param properties the client properties
      */
-    public StationNamesRenderer(UnmodifiableWorld world, ModelRoot modelRoot) {
+    public StationNamesRenderer(UnmodifiableWorld world, ClientProperties properties) {
         this.world = world;
-        this.modelRoot = modelRoot;
+        this.properties = properties;
     }
 
     /**
@@ -88,9 +88,9 @@ public class StationNamesRenderer implements Painter {
      */
     private void paintStationNamesAndBorders(
             Graphics2D g, Rectangle newVisibleRectangle, boolean drawNames) {
-        Boolean showStationBorders = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_BORDERS);
+        Boolean showStationBorders = (Boolean) properties.getProperty(ModelRootProperty.SHOW_STATION_BORDERS);
         Boolean showStationNames = drawNames
-                ? (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_NAMES)
+                ? (Boolean) properties.getProperty(ModelRootProperty.SHOW_STATION_NAMES)
                 : Boolean.FALSE;
         if (!Boolean.TRUE.equals(showStationBorders) && !Boolean.TRUE.equals(showStationNames)) {
             return;

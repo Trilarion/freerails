@@ -144,7 +144,7 @@ final class JavaFxGameplayDialogs {
             }
             String filename = trimmed.endsWith(".sav") ? trimmed : trimmed + ".sav";
             synchronized (updateLock) {
-                modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Saving game " + filename);
+                modelRoot.getProperties().setProperty(ModelRootProperty.QUICK_MESSAGE, "Saving game " + filename);
             }
             modelRoot.sendCommand(new SaveGameCommandToServer(filename));
         });
@@ -271,7 +271,7 @@ final class JavaFxGameplayDialogs {
             Status status;
             synchronized (updateLock) {
                 // The server checks the tile and charges the industry's cost.
-                IntPoint2D location = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+                IntPoint2D location = (IntPoint2D) modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION);
                 status = modelRoot.doPreMove(new BuildIndustryMoveGenerator(
                         location, options.get(index).getId(), modelRoot.getPlayer()));
             }
@@ -1170,7 +1170,7 @@ final class JavaFxGameplayDialogs {
     private void updateSavedGamesList() {
         List<String> names;
         synchronized (updateLock) {
-            Object value = modelRoot.getProperty(ModelRootProperty.SAVED_GAMES_LIST);
+            Object value = modelRoot.getProperties().getProperty(ModelRootProperty.SAVED_GAMES_LIST);
             if (!(value instanceof List<?> values)) {
                 showError.accept("The server returned an invalid saved-games list.");
                 return;

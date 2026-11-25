@@ -58,7 +58,7 @@ public class CursorController {
      * @return true if the cursor moved; false if the move would leave the map
      */
     public boolean moveCursor(TileTransition direction, boolean mayBuildTrack, TrackMoveProducer producer) {
-        IntPoint2D current = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+        IntPoint2D current = (IntPoint2D) modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION);
         if (current == null) {
             current = IntPoint2D.ZERO;
         }
@@ -66,13 +66,13 @@ public class CursorController {
         if (!modelRoot.getWorld().boundsContain(next)) {
             return false;
         }
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, next);
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_POSITION, next);
 
         if (mayBuildTrack && producer != null && producer.getTrackBuilderMode() == BuildMode.BUILD_TRACK) {
             producer.setBuildTrackStrategy(
-                    (BuildTrackStrategy) modelRoot.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY));
+                    (BuildTrackStrategy) modelRoot.getProperties().getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY));
             Status status = producer.buildTrack(current, direction);
-            modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, status.isSuccess() ? null : status.getMessage());
+            modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_MESSAGE, status.isSuccess() ? null : status.getMessage());
         }
         return true;
     }

@@ -57,6 +57,15 @@ public class MoveChainFork implements MoveReceiver {
     }
 
     /**
+     * Removes a complete move receiver.
+     *
+     * @param moveReceiver the receiver to remove
+     */
+    public void removeCompleteMoveReceiver(MoveReceiver moveReceiver) {
+        moveReceivers.remove(moveReceiver);
+    }
+
+    /**
      * Adds the split move receiver.
      *
      * @param moveReceiver the move receiver parameter
@@ -100,33 +109,28 @@ public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     * No CompositeMove, only single moves.
+     * Passes every non-container move inside the supplied move to the split move receivers and
+     * map listeners.
      *
-     * @param move the move parameter
+     * @param move the move to split
      */
     private void splitMove(Move move) {
-
-        // CompositeMoves are splitted here
-        if (move instanceof CompositeMove) {
-            for (Move subMove : ((CompositeMove) move).getMoves()) {
-                splitMove(subMove);
-            }
-        } else {
+        for (Move leaf : ContainerMove.leaves(move)) {
 
             // all split move receivers process the move
             for (MoveReceiver moveReceiver : splitMoveReceivers) {
-                moveReceiver.process(move);
+                moveReceiver.process(leaf);
             }
 
-            if (move instanceof MapUpdateMove) {
-                Rectangle rectangle = ((MapUpdateMove) move).getUpdatedTiles();
+            if (leaf instanceof MapUpdateMove mapUpdateMove) {
+                Rectangle rectangle = mapUpdateMove.getUpdatedTiles();
                 // TODO can rectangle become 0,0,0,0
                 if (rectangle.x != 0 && rectangle.y != 0 && rectangle.width != 0 && rectangle.height != 0) {
                     for (WorldMapListener listener : mapListeners) {
                         listener.tilesChanged(rectangle);
                     }
                 }
-            } else if (move instanceof AdvanceClockMove) {
+            } else if (leaf instanceof AdvanceClockMove) {
                 lastTickTime = System.currentTimeMillis();
             }
         }

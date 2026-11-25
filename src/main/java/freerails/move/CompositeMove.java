@@ -36,7 +36,7 @@ import java.util.List;
  * order. This class defines methods which may not be subclassed; all changes
  * must be encapsulated as sub-moves of this move.
  */
-public class CompositeMove implements Move {
+public class CompositeMove implements ContainerMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -90,6 +90,8 @@ public class CompositeMove implements Move {
      *
      * @return the immutable list of component moves
      */
+    @NotNull
+    @Override
     public final List<Move> getMoves() {
         return moves;
     }

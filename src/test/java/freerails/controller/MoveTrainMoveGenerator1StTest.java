@@ -21,8 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.client.ModelRoot;
-import freerails.client.ModelRootImpl;
+import freerails.client.ClientProperties;
 import freerails.model.track.OccupiedTracks;
 import freerails.model.track.TrackUtils;
 import freerails.model.operations.train.motion.TrainMotion;
@@ -62,8 +61,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         validEngineId = world.getEngines().iterator().next().getId();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
         player = moveExecutor.getPlayer();
-        ModelRoot modelRoot = new ModelRootImpl();
-        TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        ClientProperties properties = new ClientProperties();
+        TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, properties);
         StationBuilder stationBuilder = new StationBuilder(moveExecutor);
 
         // Build track.
@@ -229,8 +228,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
         player = moveExecutor.getPlayer();
-        ModelRoot modelRoot = new ModelRootImpl();
-        TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        ClientProperties properties = new ClientProperties();
+        TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, properties);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         IntPoint2D from = new IntPoint2D(5, 5);

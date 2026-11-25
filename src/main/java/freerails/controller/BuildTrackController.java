@@ -84,14 +84,14 @@ public class BuildTrackController {
         pathOnTrackFinder = new PathOnTrackFinder(unmodifiableWorld);
         this.modelRoot = modelRoot;
         player = modelRoot.getPlayer();
-        this.modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, preview.getProposedTrack());
+        this.modelRoot.getProperties().setProperty(ModelRootProperty.PROPOSED_TRACK, preview.getProposedTrack());
     }
 
     /**
      * Utility method that gets the BuildTrackStrategy from the model root.
      */
     private BuildTrackStrategy getBuildTrackStrategy() {
-        BuildTrackStrategy buildTrackStrategy = (BuildTrackStrategy) modelRoot.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
+        BuildTrackStrategy buildTrackStrategy = (BuildTrackStrategy) modelRoot.getProperties().getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
         return Utils.verifyNotNull(buildTrackStrategy);
     }
 
@@ -99,7 +99,7 @@ public class BuildTrackController {
      * Utility method that gets the cursor position from the model root.
      */
     private IntPoint2D getCursorPosition() {
-        IntPoint2D point = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+        IntPoint2D point = (IntPoint2D) modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION);
 
         // Check for null & make a defensive copy
         point = null == point ? new IntPoint2D() : point;
@@ -290,7 +290,7 @@ public class BuildTrackController {
      * Utility method that sets the CURSOR_MESSAGE property on the model root.
      */
     private void setCursorMessage(String s) {
-        modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, s);
+        modelRoot.getProperties().setProperty(ModelRootProperty.CURSOR_MESSAGE, s);
     }
 
     /**
@@ -357,7 +357,7 @@ public class BuildTrackController {
      */
     private void setTargetPoint(IntPoint2D newTargetPoint) {
         targetPoint = newTargetPoint;
-        modelRoot.setProperty(ModelRootProperty.THINKING_POINT, newTargetPoint);
+        modelRoot.getProperties().setProperty(ModelRootProperty.THINKING_POINT, newTargetPoint);
     }
 
     /**
@@ -369,9 +369,9 @@ public class BuildTrackController {
             return;
         }
         if (show) {
-            modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, preview.getProposedTrack());
+            modelRoot.getProperties().setProperty(ModelRootProperty.PROPOSED_TRACK, preview.getProposedTrack());
         } else {
-            modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, null);
+            modelRoot.getProperties().setProperty(ModelRootProperty.PROPOSED_TRACK, null);
         }
         visible = show;
     }
@@ -520,7 +520,7 @@ public class BuildTrackController {
      */
     private BuildMode getBuildMode() {
         BuildMode mode;
-        mode = (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
+        mode = (BuildMode) modelRoot.getProperties().getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
         return mode;
     }
 

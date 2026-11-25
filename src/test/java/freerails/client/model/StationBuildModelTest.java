@@ -19,6 +19,7 @@
 package freerails.client.model;
 
 import freerails.client.ModelRootImpl;
+import freerails.client.TestModelRoots;
 import freerails.controller.StationBuilder;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.track.TrackType;
@@ -38,8 +39,7 @@ public class StationBuildModelTest extends TestCase {
     @Override
     protected void setUp() {
         world = MapFixtureFactory2.getCopy();
-        ModelRootImpl modelRoot = new ModelRootImpl();
-        modelRoot.setup(world, world.getPlayer(0));
+        ModelRootImpl modelRoot = TestModelRoots.create(world, world.getPlayer(0));
         stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), modelRoot);
     }
 

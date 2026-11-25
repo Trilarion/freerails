@@ -50,7 +50,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @param modelRoot the client model that provides current game state
      */
     public DetailMapRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
-        trainsView = new OverHeadTrainView(world, rendererRoot, modelRoot);
+        trainsView = new OverHeadTrainView(world, rendererRoot, modelRoot.getProperties());
 
         MapBackgroundRenderer mapBackgroundRenderer = new MapBackgroundRenderer(world, rendererRoot);
         background = new SquareTileBackgroundRenderer(mapBackgroundRenderer);
@@ -58,8 +58,8 @@ public class DetailMapRenderer implements MapRenderer {
         IntPoint2D mapSize = world.getMapSize();
         mapSizeInPixels = IntPoint2D.multiply(mapSize, ClientConstants.TILE_SIZE);
 
-        stationRadius = new StationRadiusRenderer(modelRoot);
-        stationNames = new StationNamesRenderer(world, modelRoot);
+        stationRadius = new StationRadiusRenderer(modelRoot.getProperties());
+        stationNames = new StationNamesRenderer(world, modelRoot.getProperties());
         buildTrackRenderer = new BuildTrackRenderer(rendererRoot, modelRoot);
         stationBoxes = new StationBoxRenderer(world, rendererRoot, modelRoot);
     }

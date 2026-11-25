@@ -19,6 +19,7 @@
 package freerails.client.launcher;
 
 import freerails.client.ActionRoot;
+import freerails.client.ClientProperties;
 import freerails.client.FreerailsClient;
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootProperty;
@@ -33,6 +34,7 @@ import freerails.model.simulation.Speed;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.network.command.ClientProperty;
+import freerails.util.ui.SoundManager;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
 
@@ -52,8 +54,10 @@ public final class JavaFxLauncherClient extends FreerailsClient {
     private final JavaFxGameSession session = new JavaFxGameSession();
     private final AtomicBoolean running = new AtomicBoolean();
     private final AtomicBoolean closed = new AtomicBoolean();
-    private final ModelRootImpl modelRoot = new ModelRootImpl();
+    private final ClientProperties properties = new ClientProperties();
     private final ActionRoot actionRoot = new ActionRoot();
+    private volatile ModelRootImpl modelRoot;
+    private UserMessageGenerator userMessageGenerator;
     private volatile JavaFxGameplayWindow gameplayWindow;
     private volatile RendererRoot rendererRoot;
     private volatile BuildTrackController buildTrackController;
@@ -66,11 +70,12 @@ public final class JavaFxLauncherClient extends FreerailsClient {
      */
     public JavaFxLauncherClient(String playerName) {
         this.playerName = Objects.requireNonNull(playerName, "playerName");
-        modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, Boolean.FALSE);
-        modelRoot.setMoveFork(getMoveFork());
-        modelRoot.setMoveReceiver(this);
-        modelRoot.setServerCommandReceiver(this);
-        modelRoot.addCompleteMoveReceiver(new UserMessageGenerator(modelRoot));
+        properties.addPropertyChangeListener((property, oldValue, newValue) -> {
+            if (property == ModelRootProperty.PLAY_SOUNDS) {
+                SoundManager.getInstance().setPlayingSounds((Boolean) newValue);
+            }
+        });
+        properties.setProperty(ModelRootProperty.PLAY_SOUNDS, Boolean.FALSE);
     }
 
     /**
@@ -119,10 +124,12 @@ public final class JavaFxLauncherClient extends FreerailsClient {
             controller.update();
         }
 
-        UnmodifiableWorld world = modelRoot.getWorld();
-        if (world == null) {
+        ModelRootImpl currentModelRoot = modelRoot;
+        if (currentModelRoot == null) {
+            // no game has been loaded yet
             return;
         }
+        UnmodifiableWorld world = currentModelRoot.getWorld();
 
         long currentTime = System.currentTimeMillis();
         double ticks = world.getClock().getCurrentTime().ticks();
@@ -130,7 +137,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
         if (speed.getTicksPerSecond() > 0) {
             ticks += Math.min(currentTime - getLastTickTime(), 1.0d);
         }
-        modelRoot.setProperty(ModelRootProperty.TIME, ticks);
+        properties.setProperty(ModelRootProperty.TIME, ticks);
 
         if (currentTime - lastStatusUpdate >= 250) {
             lastStatusUpdate = currentTime;
@@ -139,7 +146,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
                 window.updateStatus(
                         world.getClock().getCurrentDateAsString(),
                         freerails.client.MoneyFormatter.format(
-                                world.getCurrentBalance(modelRoot.getPlayer())));
+                                world.getCurrentBalance(currentModelRoot.getPlayer())));
                 window.refreshTrainList();
             }
         }
@@ -197,26 +204,33 @@ public final class JavaFxLauncherClient extends FreerailsClient {
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException(
                             "The connected game does not contain player " + playerName + "."));
-            modelRoot.setup(world, localPlayer);
-            modelRoot.setProperty(ModelRootProperty.SERVER, "");
-            actionRoot.setup(modelRoot, currentRendererRoot);
+            ModelRootImpl newModelRoot = new ModelRootImpl(
+                    properties, world, localPlayer, this, this, getMoveFork());
+            if (userMessageGenerator != null) {
+                newModelRoot.removeCompleteMoveReceiver(userMessageGenerator);
+            }
+            userMessageGenerator = new UserMessageGenerator(newModelRoot);
+            newModelRoot.addCompleteMoveReceiver(userMessageGenerator);
+            modelRoot = newModelRoot;
+            properties.setProperty(ModelRootProperty.SERVER, "");
+            actionRoot.setup(newModelRoot, currentRendererRoot);
 
-            BuildTrackController controller = new BuildTrackController(world, modelRoot);
+            BuildTrackController controller = new BuildTrackController(world, newModelRoot);
             buildTrackController = controller;
-            DetailMapRenderer mainMap = new DetailMapRenderer(world, currentRendererRoot, modelRoot);
+            DetailMapRenderer mainMap = new DetailMapRenderer(world, currentRendererRoot, newModelRoot);
             var overviewMap = OverviewMapRenderer.getInstance(world, new Dimension(200, 200));
-            var cursor = new freerails.client.view.FreerailsCursor(modelRoot, currentRendererRoot);
+            var cursor = new freerails.client.view.FreerailsCursor(properties, currentRendererRoot);
 
             JavaFxGameplayWindow window = Objects.requireNonNull(
                     gameplayWindow, "JavaFX gameplay window must be attached before starting the client.");
             window.setup(
-                    modelRoot,
+                    newModelRoot,
                     mainMap,
                     overviewMap,
                     cursor,
                     actionRoot,
                     controller,
-                    localPlayer.getName() + " - " + modelRoot.getProperty(ModelRootProperty.SERVER) + " - Freerails");
+                    localPlayer.getName() + " - " + properties.getProperty(ModelRootProperty.SERVER) + " - Freerails");
         } catch (Exception e) {
             LOGGER.error(e, "Could not initialize JavaFX gameplay for the new world.");
             JavaFxGameplayWindow window = gameplayWindow;
@@ -270,7 +284,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
     public void setProperty(ClientProperty property, Serializable value) {
         super.setProperty(property, value);
         if (property == ClientProperty.SAVED_GAMES) {
-            modelRoot.setProperty(ModelRootProperty.SAVED_GAMES_LIST, value);
+            properties.setProperty(ModelRootProperty.SAVED_GAMES_LIST, value);
         }
     }
 }

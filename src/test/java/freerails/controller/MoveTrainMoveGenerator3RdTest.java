@@ -21,8 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.client.ModelRoot;
-import freerails.client.ModelRootImpl;
+import freerails.client.ClientProperties;
 import freerails.model.track.TrackUtils;
 import freerails.move.MoveExecutor;
 import freerails.move.Status;
@@ -54,8 +53,8 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
-        ModelRoot modelRoot = new ModelRootImpl();
-        TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        ClientProperties properties = new ClientProperties();
+        TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, properties);
         StationBuilder stationBuilder = new StationBuilder(moveExecutor);
 
         // Build track.

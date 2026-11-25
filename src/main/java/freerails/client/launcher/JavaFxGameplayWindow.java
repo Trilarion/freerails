@@ -182,10 +182,10 @@ public final class JavaFxGameplayWindow {
                     mapView.close();
                 }
                 if (modelRoot != null) {
-                    modelRoot.removePropertyChangeListener(modelRootListener);
+                    modelRoot.getProperties().removePropertyChangeListener(modelRootListener);
                 }
                 modelRoot = newModelRoot;
-                modelRoot.addPropertyChangeListener(modelRootListener);
+                modelRoot.getProperties().addPropertyChangeListener(modelRootListener);
                 dialogs = new JavaFxGameplayDialogs(stage, modelRoot, updateLock, this::showError);
                 mapView = new JavaFxMapView(
                         modelRoot, mainRenderer, overviewRenderer,
@@ -418,7 +418,7 @@ public final class JavaFxGameplayWindow {
             return;
         }
         synchronized (updateLock) {
-            modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);
+            modelRoot.getProperties().setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);
             stationSelector.setDisable(mode != BuildMode.BUILD_STATION);
             trackSelector.setDisable(mode == BuildMode.BUILD_STATION
                     || mode == BuildMode.INSPECT);
@@ -641,7 +641,7 @@ public final class JavaFxGameplayWindow {
         item.setOnAction(event -> {
             if (modelRoot != null) {
                 synchronized (updateLock) {
-                    modelRoot.setProperty(property, item.isSelected());
+                    modelRoot.getProperties().setProperty(property, item.isSelected());
                 }
             }
         });
@@ -750,7 +750,7 @@ public final class JavaFxGameplayWindow {
      * Builds terrain and station information from one consistent world snapshot.
      */
     private void refreshContextTabsLocked() {
-        IntPoint2D position = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+        IntPoint2D position = (IntPoint2D) modelRoot.getProperties().getProperty(ModelRootProperty.CURSOR_POSITION);
         if (position == null || !modelRoot.getWorld().boundsContain(position)) {
             terrainInfo.setText("Move the map cursor over a tile to see terrain details.");
             stationInfo.setText("Move the map cursor over a station to see its cargo details.");
@@ -885,7 +885,7 @@ public final class JavaFxGameplayWindow {
             ruleIds.add(trackSelector.getValue().getId());
             ruleIds.add(bridgeSelector.getValue() == null ? null : bridgeSelector.getValue().getId());
             ruleIds.add(tunnelSelector.getValue() == null ? null : tunnelSelector.getValue().getId());
-            modelRoot.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY,
+            modelRoot.getProperties().setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY,
                     BuildTrackStrategy.getMultipleRuleInstance(ruleIds, modelRoot.getWorld()));
         }
     }

@@ -71,6 +71,24 @@ public class AddTransactionMove implements Move {
     }
 
     /**
+     * Returns the player whose account receives the transaction.
+     *
+     * @return the player
+     */
+    public @NotNull Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * Returns the transaction added by this move.
+     *
+     * @return the transaction
+     */
+    public @NotNull Transaction getTransaction() {
+        return transaction;
+    }
+
+    /**
      * Returns a hash code for this object.
      *
      * @return the hash code for this object
