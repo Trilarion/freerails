@@ -27,11 +27,13 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serial;
 
 /**
- * Changes the game speed item on the world object.
+ * Changes the game speed item on the world object. Only the host may change it
+ * (see {@link Player#isHost()}).
 
+ * @param player the player changing the speed
  * @param speed the simulation speed to set
  */
-public record ChangeGameSpeedMove(Speed speed) implements ClientMove {
+public record ChangeGameSpeedMove(Player player, Speed speed) implements ClientMove {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -39,25 +41,25 @@ public record ChangeGameSpeedMove(Speed speed) implements ClientMove {
     /**
      * Creates a change game speed move from the supplied values.
      *
+     * @param player the player changing the speed
      * @param speed the speed
      */
-    public ChangeGameSpeedMove(@NotNull Speed speed) {
+    public ChangeGameSpeedMove(@NotNull Player player, @NotNull Speed speed) {
+        this.player = player;
         this.speed = speed;
     }
 
     /**
-     * This move holds no player reference, so it is returned unchanged.
-     *
      * @param player the player the move acts for
-     * @return this move
+     * @return this move made by the supplied player
      */
     @Override
     public @NotNull ChangeGameSpeedMove withPlayer(@NotNull Player player) {
-        return this;
+        return new ChangeGameSpeedMove(player, speed);
     }
 
     /**
-     * Checks whether this move can be applied to the supplied world.
+     * Checks that the host changes the speed.
      *
      * @param world the world whose state is used or updated
      * @return a status indicating whether the move can be applied
@@ -65,6 +67,9 @@ public record ChangeGameSpeedMove(Speed speed) implements ClientMove {
     @NotNull
     @Override
     public Status applicable(@NotNull UnmodifiableWorld world) {
+        if (!player.isHost()) {
+            return Status.fail("Only the host may change the game speed.");
+        }
         return Status.OK;
     }
 
@@ -75,6 +80,10 @@ public record ChangeGameSpeedMove(Speed speed) implements ClientMove {
      */
     @Override
     public void apply(@NotNull World world) {
+        Status status = applicable(world);
+        if (!status.isSuccess()) {
+            throw new IllegalStateException(status.getMessage());
+        }
         world.setSpeed(speed);
     }
 

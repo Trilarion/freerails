@@ -29,6 +29,13 @@ import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.MoveReceiver;
 import freerails.move.Status;
+import freerails.move.ChangeGameSpeedMove;
+import freerails.move.TryMoveStatus;
+import freerails.move.generator.AddStationMoveGenerator;
+import freerails.move.generator.IssueBondMoveGenerator;
+import freerails.model.ModelConstants;
+import freerails.model.simulation.Speed;
+import freerails.util.IntPoint2D;
 import freerails.server.FreerailsGameServer;
 import freerails.server.ScenarioSource;
 import freerails.server.ServerGameModel;
@@ -249,20 +256,37 @@ public class FreerailsGameServerTest extends TestCase {
                 Money senderBalance = world.getCurrentBalance(sender);
                 Money otherBalance = world.getCurrentBalance(other);
 
-                // Player 0 claims to be player 1.
-                Transaction transaction = new Transaction(
-                        TransactionCategory.MISC_INCOME, new Money(1000), world.getClock().getCurrentTime());
-                clients[0].sendObject(new AddTransactionMove(other, transaction));
+                // Player 0 claims to be player 1 when issuing a bond.
+                clients[0].sendObject(new IssueBondMoveGenerator(other));
                 assertTrue(awaitStatus(clients[0]).isSuccess());
 
-                assertEquals(Money.add(senderBalance, new Money(1000)), world.getCurrentBalance(sender));
+                assertEquals(Money.add(senderBalance, ModelConstants.BOND_VALUE_ISSUE), world.getCurrentBalance(sender));
                 assertEquals(otherBalance, world.getCurrentBalance(other));
 
-                // A move only the server may make is rejected.
+                // Moves only the server may make are rejected, including hand-made transactions.
                 int playerCount = world.getPlayers().size();
                 clients[0].sendObject(new AddPlayerMove(new Player(playerCount, "Intruder")));
                 assertFalse(awaitStatus(clients[0]).isSuccess());
                 assertEquals(playerCount, world.getPlayers().size());
+                Transaction gift = new Transaction(
+                        TransactionCategory.MISC_INCOME, new Money(1000), world.getClock().getCurrentTime());
+                clients[0].sendObject(new AddTransactionMove(sender, gift));
+                assertFalse(awaitStatus(clients[0]).isSuccess());
+                assertEquals(Money.add(senderBalance, ModelConstants.BOND_VALUE_ISSUE), world.getCurrentBalance(sender));
+
+                // A generator that fails on the server is refused instead of ending the server update.
+                clients[0].sendObject(new AddStationMoveGenerator(new IntPoint2D(0, 0), 0, sender));
+                assertFalse(awaitStatus(clients[0]).isSuccess());
+
+                // Only the host may change the game speed.
+                Speed speed = world.getSpeed();
+                Speed otherSpeed = speed == Speed.FAST ? Speed.SLOW : Speed.FAST;
+                clients[1].sendObject(new ChangeGameSpeedMove(sender, otherSpeed));
+                assertFalse(awaitStatus(clients[1]).isSuccess());
+                assertEquals(speed, world.getSpeed());
+                clients[0].sendObject(new ChangeGameSpeedMove(sender, otherSpeed));
+                assertTrue(awaitStatus(clients[0]).isSuccess());
+                assertEquals(otherSpeed, world.getSpeed());
             } finally {
                 for (int i = 0; i < 2; i++) {
                     if (clients[i] != null) clients[i].close();
@@ -287,6 +311,9 @@ public class FreerailsGameServerTest extends TestCase {
             for (Serializable message : client.getReceivedObjects()) {
                 if (message instanceof Status status) {
                     return status;
+                }
+                if (message instanceof TryMoveStatus tryMoveStatus) {
+                    return tryMoveStatus.status;
                 }
             }
             Thread.sleep(10);

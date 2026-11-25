@@ -50,11 +50,11 @@ public class TransactionUtils {
     /**
      * Creates a transaction that repays one bond.
      *
-     * @param interestRate annual interest rate stored with the bond
+     * @param interestRate annual interest rate of the repaid bond
      * @param time time at which the bond is repaid
      * @return bond repayment transaction
      */
-    public static BondItemTransaction repayBond(int interestRate, Time time) {
+    public static BondItemTransaction repayBond(double interestRate, Time time) {
         return new BondItemTransaction(ModelConstants.BOND_VALUE_REPAY, time,-1, interestRate);
     }
 

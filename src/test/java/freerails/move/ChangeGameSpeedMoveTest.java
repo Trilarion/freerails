@@ -18,6 +18,7 @@
 
 package freerails.move;
 
+import freerails.model.player.Player;
 import freerails.model.simulation.Speed;
 import junit.framework.TestCase;
 
@@ -31,6 +32,6 @@ public class ChangeGameSpeedMoveTest extends TestCase {
      */
     public void testStringRepresentationIncludesSelectedSpeed() {
         assertEquals("ChangeGameSpeedMove: => " + Speed.SLOW,
-                new ChangeGameSpeedMove(Speed.SLOW).toString());
+                new ChangeGameSpeedMove(new Player(Player.HOST_ID, "host"), Speed.SLOW).toString());
     }
 }

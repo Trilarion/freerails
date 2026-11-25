@@ -24,7 +24,7 @@ package freerails.server;
 import freerails.model.ModelConstants;
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.economy.Money;
-import freerails.model.economy.transaction.BondItemTransaction;
+import freerails.model.economy.Broker;
 import freerails.model.economy.transaction.Transaction;
 import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.economy.transaction.aggregator.ItemsTransactionAggregator;
@@ -89,24 +89,16 @@ public class FullServerGameModel implements ServerGameModel {
     }
 
     /**
-     * Iterates over the entries in the bank account and counts the number
-     * of outstanding bonds, then calculates the interest due.
+     * Charges each player the yearly interest on their outstanding bonds, at
+     * each bond's own interest rate (see {@link Broker#yearlyBondInterest}).
      * <p>
      * Done on the server side
      * @param world the game world used by this operation
      * @param moveReceiver the receiver used to apply each generated move
      */
-    private static void applyBondInterestMoves(UnmodifiableWorld world, MoveReceiver moveReceiver) {
+    static void applyBondInterestMoves(UnmodifiableWorld world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
-            Money interestDue = Money.ZERO;
-
-            for (Transaction transaction: world.getTransactions(player)) {
-                if (transaction instanceof BondItemTransaction bondItemTransaction) {
-                    int interestRate = bondItemTransaction.getId();
-                    Money interestPerBond = Money.divide(Money.multiply(ModelConstants.BOND_VALUE_ISSUE, interestRate), 100);
-                    interestDue = Money.add(interestDue, Money.multiply(interestPerBond, bondItemTransaction.getQuantity()));
-                }
-            }
+            Money interestDue = Broker.yearlyBondInterest(world, player);
 
             if (interestDue.amount() > 0) {
                 Transaction transaction = new Transaction(TransactionCategory.INTEREST_CHARGE, Money.opposite(interestDue), world.getClock().getCurrentTime());
@@ -174,7 +166,7 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * @param world the game world used by this operation
      */
-    private static void applyTrackMaintenanceMoves(World world, MoveReceiver moveReceiver) {
+    static void applyTrackMaintenanceMoves(World world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
             Move move = generateTrackMaintenanceMoves(world, player, TransactionCategory.TRACK_MAINTENANCE);
             moveReceiver.process(move);

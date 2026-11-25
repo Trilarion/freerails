@@ -25,9 +25,10 @@ import freerails.model.operations.station.StationUtils;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
 import freerails.move.*;
-import freerails.move.generator.TrackMoveGenerator;
-import freerails.move.generator.TrackMoveTransactionsGenerator;
-import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
+import freerails.move.generator.BuildTrackMoveGenerator;
+import freerails.move.generator.MoveGenerator;
+import freerails.move.generator.RemoveTrackMoveGenerator;
+import freerails.move.generator.UpgradeTrackMoveGenerator;
 import freerails.util.IntPoint2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -45,11 +46,7 @@ public class TrackMoveProducer {
 
     private final ModelRoot modelRoot;
     private final MoveExecutor executor;
-    private final Collection<Move> moveStack = new Stack<>();
-    /**
-     * This generates the transaction - the charge - for the track being built.
-     */
-    private final TrackMoveTransactionsGenerator transactionsGenerator;
+    private final Collection<MoveGenerator> moveStack = new Stack<>();
     private Time lastMoveTime;
 
     /**
@@ -62,8 +59,6 @@ public class TrackMoveProducer {
     public TrackMoveProducer(MoveExecutor executor, UnmodifiableWorld world, ModelRoot modelRoot) {
         this.executor = executor;
         this.modelRoot = Utils.verifyNotNull(modelRoot);
-        Player player = executor.getPlayer();
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
         setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
     }
 
@@ -77,11 +72,7 @@ public class TrackMoveProducer {
         executor = modelRoot;
         this.modelRoot = modelRoot;
 
-        UnmodifiableWorld world = executor.getWorld();
-
-        Player player = executor.getPlayer();
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
-        setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
+        setBuildTrackStrategy(BuildTrackStrategy.getDefault(executor.getWorld()));
     }
 
     /**
@@ -123,14 +114,7 @@ public class TrackMoveProducer {
                 return Status.OK;
             }
             case REMOVE_TRACK: {
-                ChangeTrackPieceCompositeMove move;
-                try {
-                    move = TrackMoveGenerator.generateRemoveTrackMove(from, trackVector, world, player);
-                } catch (NoTrackException | IllegalStateException e) {
-                    // No track to remove, or track that must not be removed such as another player's station.
-                    return Status.fail(e.getMessage());
-                }
-                return sendMove(transactionsGenerator.addTransactions(move));
+                return send(new RemoveTrackMoveGenerator(from, trackVector, player));
             }
             case BUILD_TRACK:
             case UPGRADE_TRACK:
@@ -143,7 +127,6 @@ public class TrackMoveProducer {
         assert getBuildMode() == BuildMode.BUILD_TRACK || getBuildMode() == BuildMode.UPGRADE_TRACK;
 
         int[] ruleIDs = new int[2];
-        TrackType[] types = new TrackType[2];
         int[] xs = {from.x(), from.x() + trackVector.deltaX};
         int[] ys = {from.y(), from.y() + trackVector.deltaY};
         for (int i = 0; i < ruleIDs.length; i++) {
@@ -158,7 +141,6 @@ public class TrackMoveProducer {
                 String message = "Non of the selected track types can be built on " + terrainType.getName();
                 return Status.fail(message);
             }
-            types[i] = world.getTrackType(ruleIDs[i]);
         }
 
         switch (getBuildMode()) {
@@ -184,11 +166,7 @@ public class TrackMoveProducer {
                 return Status.OK;
             }
             case BUILD_TRACK: {
-                ChangeTrackPieceCompositeMove move = TrackMoveGenerator.generateBuildTrackMove(from, trackVector, types[0], types[1], world, player);
-
-                Move moveAndTransaction = transactionsGenerator.addTransactions(move);
-
-                return sendMove(moveAndTransaction);
+                return send(new BuildTrackMoveGenerator(from, trackVector, ruleIDs[0], ruleIDs[1], player));
             }
             default:
                 throw new IllegalArgumentException(String.valueOf(getBuildMode()));
@@ -202,14 +180,7 @@ public class TrackMoveProducer {
      * @return the status of the submitted upgrade move
      */
     private Status upgradeTrack(IntPoint2D point, int trackRuleID) {
-        UnmodifiableWorld world = executor.getWorld();
-        Move move;
-        try {
-            move = TrackMoveGenerator.generateUpgradeTrackMove(point, world.getTrackType(trackRuleID), world, executor.getPlayer());
-        } catch (NoTrackException | IllegalStateException e) {
-            return Status.fail(e.getMessage());
-        }
-        return sendMove(transactionsGenerator.addTransactions(move));
+        return send(new UpgradeTrackMoveGenerator(point, trackRuleID, executor.getPlayer()));
     }
 
     /**
@@ -246,16 +217,16 @@ public class TrackMoveProducer {
     }
 
     /**
-     * Submits a move and returns its execution status.
-     * @param move the move
-     * @return the move execution status
+     * Submits a track change; the server generates it, including its cost.
+     * @param generator the generator of the track change
+     * @return the status of the change in the local world
      */
-    private Status sendMove(Move move) {
-        Status status = executor.applyMove(move);
+    private Status send(MoveGenerator generator) {
+        Status status = executor.doPreMove(generator);
 
         if (status.isSuccess()) {
             clearStackIfStale();
-            moveStack.add(move);
+            moveStack.add(generator);
         }
 
         return status;

@@ -42,10 +42,20 @@ import java.util.NoSuchElementException;
 /**
  * Generates a move that adds or upgrades a station.
  *
- * <p>The generated composite move updates the track tile and adds the new station.
- * The actual cost to the player is charged by the transaction moves created by
- * {@link TrackMoveTransactionsGenerator}, which appends {@code AddTransactionMove}
- * entries for the station/track construction cost before the move is applied.
+ * <p>The generated composite move changes the track type of the tile to the station
+ * type and adds the new station. A location off the map, without connected track, or
+ * with a station already is refused with a {@link RefusedMove}; everything else, such
+ * as cost, overlap with other stations, terrain, and track ownership, is checked by the
+ * generated move.
+ *
+ * <p>Cost: {@link TrackMoveTransactionsGenerator} appends the charges. Building the
+ * station changes the tile's track type, so the player pays the difference in
+ * purchasing price between the station type and the tile's track type for the track
+ * length (nothing if the station type costs less), plus a fixed charge of the station
+ * type's yearly maintenance. The charges are cash-constrained: building fails if the
+ * player cannot pay them. From then on the tile's track counts as station track for
+ * yearly maintenance and the balance sheet; removing the station refunds half the
+ * station type's purchasing price for the removed length.
  */
 public class AddStationMoveGenerator implements ClientMoveGenerator {
 
@@ -111,17 +121,21 @@ public class AddStationMoveGenerator implements ClientMoveGenerator {
 
     /**
      * @param world the game world used by this operation
-     * @return the move that adds the station to the world
+     * @return the move that adds the station to the world, or a refused move if no
+     *         station can be built at the location
      */
     @Override
     public Move generate(UnmodifiableWorld world) {
+        if (location == null || !world.boundsContain(location)) {
+            return new RefusedMove("A station must be built on the map.");
+        }
         TerrainTile oldTile = world.getTile(location);
         TrackPiece oldTrackPiece = oldTile.trackPiece();
-        if (oldTile.trackPiece() != null && oldTile.trackPiece().trackType().isStation()) {
-            throw new RuntimeException("Station already at location");
+        if (oldTrackPiece != null && oldTrackPiece.trackType().isStation()) {
+            return new RefusedMove("There is already a station here.");
         }
         if (oldTrackPiece == null || oldTrackPiece.trackConfiguration().get8bitTemplate() == 0) {
-            throw new IllegalStateException("A station must be placed on existing connected track.");
+            return new RefusedMove("A station must be placed on existing connected track.");
         }
         TrackType trackType = world.getTrackType(ruleNumber);
 

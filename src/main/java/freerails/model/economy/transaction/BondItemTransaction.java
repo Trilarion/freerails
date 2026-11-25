@@ -45,6 +45,15 @@ public class BondItemTransaction extends ItemTransaction {
         this.rate = rate;
     }
 
+    /**
+     * Returns the annual interest rate, in percent, of the issued or repaid bonds.
+     *
+     * @return the interest rate
+     */
+    public double getInterestRate() {
+        return rate;
+    }
+
     /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {

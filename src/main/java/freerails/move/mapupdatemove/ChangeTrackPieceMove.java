@@ -63,17 +63,6 @@ public record ChangeTrackPieceMove(Player player, TrackPiece trackPieceBefore, T
     }
 
     /**
-     * Returns this move made by the supplied player.
-     *
-     * @param player the player the move acts for
-     * @return the rebound move
-     */
-    @Override
-    public @NotNull ChangeTrackPieceMove withPlayer(@NotNull Player player) {
-        return new ChangeTrackPieceMove(player, trackPieceBefore, trackPieceAfter, location);
-    }
-
-    /**
      * Returns the track piece that was present before this move.
      *
      * @return the previous track piece, or {@code null} if the tile had no track

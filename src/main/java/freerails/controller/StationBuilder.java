@@ -66,7 +66,9 @@ public class StationBuilder {
      * @return the try building station produced by this method
      */
     public Status tryBuildingStation(IntPoint2D location) {
-        // TODO under which circumstances would build a station fail (not enough funds, station already existing)? should we guard against it?
+        // The generated move checks every reason a station cannot be built: off the map, no
+        // connected track, a station already there, overlap with another station, terrain,
+        // another player's track, and not enough money. The server checks it again.
         UnmodifiableWorld world = executor.getWorld();
 
         Player player = executor.getPlayer();

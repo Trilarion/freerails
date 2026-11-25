@@ -48,8 +48,8 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         super.setUp();
         getWorld().addEngineShop(WorldGenerator.TEST_PLAYER, new EngineShop(0, IntPoint2D.ZERO));
 
-        engineType = 0;
-        int wagonType = 0;
+        engineType = getWorld().getEngines().iterator().next().getId();
+        int wagonType = getWorld().getCargos().iterator().next().getId();
         after = Arrays.asList(new TrainTemplate(engineType, Arrays.asList(wagonType, wagonType)));
     }
 
@@ -63,6 +63,11 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         m = new ChangeProductionAtEngineShopMove(after, 6, WorldGenerator.TEST_PLAYER);
         assertMoveNotApplicable(m);
         assertMoveApplyFails(m);
+
+        // Should fail because the engine type does not exist.
+        m = new ChangeProductionAtEngineShopMove(
+                List.of(new TrainTemplate(Integer.MAX_VALUE, List.of())), 0, WorldGenerator.TEST_PLAYER);
+        assertMoveNotApplicable(m);
 
         // Should go through
         m = new ChangeProductionAtEngineShopMove(after, 0, WorldGenerator.TEST_PLAYER);

@@ -22,6 +22,7 @@
 package freerails.move;
 
 
+import freerails.model.ModelConstants;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
@@ -112,6 +113,19 @@ public class ChangeProductionAtEngineShopMove implements ClientMove {
     public Status applicable(@NotNull UnmodifiableWorld world) {
         if (!Utils.containsId(engineShopId, world.getEngineShops(player))) {
             return Status.fail("Engine shop not existing.");
+        }
+        for (TrainTemplate template : production) {
+            if (!Utils.containsId(template.engineId(), world.getEngines())) {
+                return Status.fail("Unknown engine type ID " + template.engineId());
+            }
+            if (template.wagonTypes().size() > ModelConstants.MAX_NUMBER_OF_WAGONS) {
+                return Status.fail("A train has at most " + ModelConstants.MAX_NUMBER_OF_WAGONS + " wagons.");
+            }
+            for (int wagonType : template.wagonTypes()) {
+                if (!Utils.containsId(wagonType, world.getCargos())) {
+                    return Status.fail("Unknown wagon type ID " + wagonType);
+                }
+            }
         }
         return Status.OK;
     }

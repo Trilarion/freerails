@@ -216,8 +216,7 @@ public class RemoveStationCompositeMoveTest extends TestCase {
     }
 
     /**
-     * Builds the owner's track and station removal as sent by the supplied player:
-     * the server rebinds it to that player.
+     * Builds the owner's track and station removal, made by the supplied player.
      * @param player the player submitting the removal
      * @return the track removal move
      */
@@ -227,11 +226,13 @@ public class RemoveStationCompositeMoveTest extends TestCase {
         TrackPiece startTrack = start.trackPiece();
         world.setTile(TRACK_START, new TerrainTile(start.terrainTypeId(),
                 new TrackPiece(startTrack.trackConfiguration(), startTrack.trackType(), player.getId())));
-        ChangeTrackPieceMove trackStartRemoval = new ChangeTrackPieceMove(owner,
+        ChangeTrackPieceMove trackStartRemoval = new ChangeTrackPieceMove(player,
                 world.getTile(TRACK_START).trackPiece(), null, TRACK_START);
+        ChangeTrackPieceMove stationChange = new ChangeTrackPieceMove(player,
+                stationTrackRemoval.trackPieceBefore(), null, STATION_LOCATION);
         RemoveStationCompositeMove stationRemoval =
-                new RemoveStationMoveGenerator(stationTrackRemoval, owner).generate(world);
-        return new ChangeTrackPieceCompositeMove(trackStartRemoval, stationRemoval, owner).withPlayer(player);
+                new RemoveStationMoveGenerator(stationChange, owner).generate(world);
+        return new ChangeTrackPieceCompositeMove(trackStartRemoval, stationRemoval, player);
     }
 
     /**

@@ -128,12 +128,18 @@ interfaces and declare its own `withPlayer`; `ClientMoveTest` checks this.
 Owner IDs inside track pieces describe the world, not the sender, and are not
 rebound; the track rules check them against the acting player.
 
-This makes sure a client can only act as itself. It does not yet limit what a
-client may do with its own state: clients still create their own transactions
-(and so choose their own prices), can send a tile change without its cost or a
-train update that changes more than the schedule, and any player can change
-the game speed. Closing this gap means calculating costs on the server and
-narrowing what these moves may change.
+Clients send what the player wants to do, never the result or its price. The
+server works out the effects and costs from its own world: every action that
+costs money is a move generator that runs on the server (track building,
+removal and upgrades, stations, industries, share trades, and bonds), and every
+cost a player starts fails if the player cannot pay for it. The share and bond
+rules live in `Broker`, which the broker dialog also uses. The few moves clients
+send directly check their own content: `BuildEngineShopMove` prices itself,
+`ChangeProductionAtEngineShopMove` checks the train templates,
+`ChangeTrainScheduleMove` only changes a schedule and only with the player's own
+stations, and `ChangeGameSpeedMove` is only allowed for the host (player 0).
+`ClientMoveTest` lists the complete set of types clients may send; anything a
+client sends that the server cannot generate or check is refused.
 
 Besides moves, client and server exchange commands (`CommandToServer`,
 `CommandToClient`). Moves are checked changes to an existing game world.
@@ -230,6 +236,19 @@ pieces if `canRemoveOtherPlayersTracks` is set; changing its track type
 (upgrading it or building a station on it) is never allowed, and only the owner
 may remove a station. The track-piece calculations behind track moves live in
 `TrackPiece`; `TrackMoveGenerator` builds the moves from them.
+
+Track bookkeeping and prices are added by `TrackMoveTransactionsGenerator`. For
+every player and track type, the `TRACK` transaction quantities add up to the
+length of that type on the tiles the player owns; yearly maintenance, the
+balance-sheet track value, and `TransactionUtils.hasAnyTrackBeenBuilt` rely on
+this. Quantities are booked on the owner of the track, also when another player
+changes it, and a change of track type moves the length from the old type to the
+new one. The acting player pays: the purchasing price and terrain construction cost
+for added length; half the purchasing price back for removed length; and, for a
+change of track type (upgrade, station, or bridge), the difference in purchasing
+price if the new type costs more, plus a fixed charge of the new type's yearly
+maintenance for stations and bridges. Player-initiated charges are cash-constrained.
+`TrackBookkeepingTest` checks the quantities against the map.
 
 ### Track model
 

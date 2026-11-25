@@ -72,4 +72,21 @@ public class StationBuilderTest extends TestCase {
         assertFalse(stationBuilder.tryBuildingStation(new IntPoint2D(13, 10)).isSuccess());
     }
 
+    /**
+     * Tests that a station on an existing station, on a tile without track, or off
+     * the map is refused with a reason instead of an exception.
+     */
+    public void testImpossibleStationsAreRefused() {
+        stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
+        assertTrue(trackBuilder.buildTrack(new IntPoint2D(10, 10), TileTransition.EAST).isSuccess());
+        assertTrue(stationBuilder.buildStation(new IntPoint2D(10, 10)).isSuccess());
+
+        assertEquals("There is already a station here.",
+                stationBuilder.buildStation(new IntPoint2D(10, 10)).getMessage());
+        assertEquals("A station must be placed on existing connected track.",
+                stationBuilder.buildStation(new IntPoint2D(3, 3)).getMessage());
+        assertEquals("A station must be built on the map.",
+                stationBuilder.buildStation(new IntPoint2D(-1, 0)).getMessage());
+    }
+
 }

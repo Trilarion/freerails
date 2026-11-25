@@ -86,8 +86,9 @@ public class MoveEqualityContractTest extends TestCase {
 
         assertEqualMoves(new AdvanceClockMove(PLAYER), new AdvanceClockMove(new Player(1, "One")));
         assertDifferentMoves(new AdvanceClockMove(PLAYER), new AdvanceClockMove(new Player(2, "One")));
-        assertEqualMoves(new ChangeGameSpeedMove(Speed.SLOW), new ChangeGameSpeedMove(Speed.SLOW));
-        assertDifferentMoves(new ChangeGameSpeedMove(Speed.SLOW), new ChangeGameSpeedMove(Speed.FAST));
+        assertEqualMoves(new ChangeGameSpeedMove(PLAYER, Speed.SLOW), new ChangeGameSpeedMove(PLAYER, Speed.SLOW));
+        assertDifferentMoves(new ChangeGameSpeedMove(PLAYER, Speed.SLOW), new ChangeGameSpeedMove(PLAYER, Speed.FAST));
+        assertDifferentMoves(new ChangeGameSpeedMove(PLAYER, Speed.SLOW), new ChangeGameSpeedMove(OTHER_PLAYER, Speed.SLOW));
     }
 
     /**
@@ -234,15 +235,15 @@ public class MoveEqualityContractTest extends TestCase {
         ChangeTrackPieceMove removal = new ChangeTrackPieceMove(PLAYER, TRACK_A, null, new IntPoint2D(2, 3));
         assertEqualMoves(removal, new ChangeTrackPieceMove(PLAYER, TRACK_A, null, new IntPoint2D(2, 3)));
 
-        Move speedSlow = new ChangeGameSpeedMove(Speed.SLOW);
-        Move speedFast = new ChangeGameSpeedMove(Speed.FAST);
+        Move speedSlow = new ChangeGameSpeedMove(PLAYER, Speed.SLOW);
+        Move speedFast = new ChangeGameSpeedMove(PLAYER, Speed.FAST);
         assertEqualMoves(new CompositeMove(List.of(speedSlow, new GrowCitiesMove())),
-                new CompositeMove(List.of(new ChangeGameSpeedMove(Speed.SLOW), new GrowCitiesMove())));
+                new CompositeMove(List.of(new ChangeGameSpeedMove(PLAYER, Speed.SLOW), new GrowCitiesMove())));
         assertDifferentMoves(new CompositeMove(List.of(speedSlow, new GrowCitiesMove())),
                 new CompositeMove(List.of(speedFast, new GrowCitiesMove())));
         assertEqualMoves(new CompostMove(List.of(speedSlow, speedFast)),
-                new CompostMove(List.of(new ChangeGameSpeedMove(Speed.SLOW),
-                        new ChangeGameSpeedMove(Speed.FAST))));
+                new CompostMove(List.of(new ChangeGameSpeedMove(PLAYER, Speed.SLOW),
+                        new ChangeGameSpeedMove(PLAYER, Speed.FAST))));
         assertDifferentMoves(new CompostMove(List.of(speedSlow, speedFast)),
                 new CompostMove(List.of(speedSlow, new GrowCitiesMove())));
 

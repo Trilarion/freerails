@@ -18,22 +18,8 @@
 
 package freerails.move.mapupdatemove;
 
-import freerails.model.player.Player;
-import freerails.move.ClientMove;
-import org.jetbrains.annotations.NotNull;
-
 /**
- * This interface tags Moves that change the track. Track moves are sent by
- * clients and are rebound to the sending player by the server.
+ * This interface tags Moves that change the track.
  */
-public interface TrackMove extends MapUpdateMove, ClientMove {
-
-    /**
-     * Returns this track move acting for the supplied player.
-     *
-     * @param player the player the move acts for
-     * @return the rebound track move
-     */
-    @Override
-    @NotNull TrackMove withPlayer(@NotNull Player player);
+public interface TrackMove extends MapUpdateMove {
 }

@@ -37,7 +37,7 @@ import java.util.Objects;
 /**
  * Replaces a player's train with its updated state.
  */
-public class UpdateTrainMove implements ClientMove {
+public class UpdateTrainMove implements Move {
 
     private final Player player;
     private final int trainId;
@@ -63,17 +63,6 @@ public class UpdateTrainMove implements ClientMove {
         this.cargoBatchBundle = cargoBatchBundle == null ? null : new ImmutableCargoBatchBundle(cargoBatchBundle);
         this.consist = consist == null ? null : List.copyOf(consist);
         this.schedule = schedule == null ? null : new ScheduleState(schedule);
-    }
-
-    /**
-     * Returns this move updating the train of the supplied player.
-     *
-     * @param player the player the move acts for
-     * @return the rebound move
-     */
-    @Override
-    public @NotNull UpdateTrainMove withPlayer(@NotNull Player player) {
-        return new UpdateTrainMove(player, trainId, cargoBatchBundle, consist, schedule);
     }
 
     /**

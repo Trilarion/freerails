@@ -18,6 +18,17 @@
 
 package freerails.server;
 
+import freerails.model.ModelConstants;
+import freerails.model.economy.Money;
+import freerails.model.economy.TransactionUtils;
+import freerails.model.economy.Broker;
+import freerails.model.economy.transaction.TransactionCategory;
+import freerails.model.MapFixtureFactory2;
+import freerails.model.economy.transaction.Transaction;
+import freerails.model.terrain.TileTransition;
+import freerails.move.generator.AddStationMoveGenerator;
+import freerails.move.generator.BuildTrackMoveGenerator;
+import freerails.move.generator.RemoveTrackMoveGenerator;
 import freerails.model.operations.cargo.CargoBatch;
 import freerails.model.operations.cargo.CargoBatchBundle;
 import freerails.model.operations.station.Station;
@@ -43,6 +54,80 @@ import java.util.Map;
  * Tests the server model lifecycle and its monthly cargo-at-stations update.
  */
 public class FullServerGameModelTest extends TestCase {
+
+    /**
+     * Tests that yearly maintenance follows station track: while a station exists
+     * it is charged as station track, and after it is removed nothing is charged
+     * for it and nothing is paid out.
+     */
+    public void testMaintenanceFollowsStationTrack() {
+        World world = MapFixtureFactory2.getCopy();
+        Player player = world.getPlayer(0);
+        world.addTransaction(player, new Transaction(TransactionCategory.MISC_INCOME, new Money(1_000_000_000L),
+                world.getClock().getCurrentTime()));
+        TrackType terminal = world.getTrackTypes().stream()
+                .filter(type -> type.getName().equals("terminal")).findFirst().orElseThrow();
+        IntPoint2D start = new IntPoint2D(10, 10);
+        for (int i = 0; i < 3; i++) {
+            applyAll(world, new BuildTrackMoveGenerator(new IntPoint2D(10 + i, 10), TileTransition.EAST, 0, 0, player)
+                    .generate(world));
+        }
+        Money trackOnly = yearlyMaintenance(world, player);
+
+        applyAll(world, new AddStationMoveGenerator(start, terminal.getId(), player).generate(world));
+        assertTrue(yearlyMaintenance(world, player).amount() < 0);
+
+        applyAll(world, new RemoveTrackMoveGenerator(start, TileTransition.EAST, player).generate(world));
+        Money afterRemoval = yearlyMaintenance(world, player);
+        assertTrue("Maintenance must never pay out.", afterRemoval.amount() <= 0);
+        assertTrue("The removed track no longer costs maintenance.", afterRemoval.amount() > trackOnly.amount());
+    }
+
+    private static Money yearlyMaintenance(World world, Player player) {
+        World copy = (World) freerails.util.Utils.cloneBySerialisation(world);
+        // Maintenance counts track built before the current time.
+        copy.getClock().advanceTime();
+        Money before = copy.getCurrentBalance(player);
+        List<Move> moves = new ArrayList<>();
+        FullServerGameModel.applyTrackMaintenanceMoves(copy, moves::add);
+        moves.forEach(move -> move.apply(copy));
+        return Money.subtract(copy.getCurrentBalance(player), before);
+    }
+
+    private static void applyAll(World world, Move move) {
+        assertTrue(move.applicable(world).getMessage(), move.applicable(world).isSuccess());
+        move.apply(world);
+    }
+
+    /**
+     * Tests that the year-end interest charge uses each outstanding bond's own
+     * interest rate and leaves out repaid bonds.
+     */
+    public void testBondInterestUsesEachBondsRate() {
+        World world = WorldGenerator.defaultWorld();
+        Player player = WorldGenerator.TEST_PLAYER;
+        world.addPlayer(player);
+        Time now = world.getClock().getCurrentTime();
+        for (double rate : Broker.outstandingBondRates(world, player)) {
+            world.addTransaction(player, TransactionUtils.repayBond(rate, now));
+        }
+        world.addTransaction(player, TransactionUtils.issueBond(4, now));
+        world.addTransaction(player, TransactionUtils.issueBond(6, now));
+        world.addTransaction(player, TransactionUtils.repayBond(6, now));
+        world.addTransaction(player, TransactionUtils.issueBond(7, now));
+
+        List<Move> moves = new ArrayList<>();
+        FullServerGameModel.applyBondInterestMoves(world, moves::add);
+
+        assertEquals(1, moves.size());
+        Money before = world.getCurrentBalance(player);
+        moves.getFirst().apply(world);
+        // 4% and 7% of the bond value; the repaid 6% bond pays nothing.
+        assertEquals(Money.subtract(before, Money.divide(Money.multiply(ModelConstants.BOND_VALUE_ISSUE, 11), 100)),
+                world.getCurrentBalance(player));
+        assertEquals(TransactionCategory.INTEREST_CHARGE,
+                world.getTransaction(player, world.getTransactions(player).size() - 1).getCategory());
+    }
 
     /** Checks that an update before world initialization is harmless. */
     public void testUpdateBeforeWorldIsInitialized() throws InterruptedException {

@@ -58,18 +58,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     /**
-     * Returns this move with both track changes and the acting player rebound.
-     *
-     * @param player the player the move acts for
-     * @return the rebound move
-     */
-    @Override
-    public @NotNull ChangeTrackPieceCompositeMove withPlayer(@NotNull Player player) {
-        return new ChangeTrackPieceCompositeMove(
-                ((TrackMove) getMove(0)).withPlayer(player), ((TrackMove) getMove(1)).withPlayer(player), player);
-    }
-
-    /**
      * @return the bounds of the map tiles updated by this composite move
      */
     @Override

@@ -617,9 +617,11 @@ public final class JavaFxGameplayWindow {
             RadioMenuItem item = new RadioMenuItem(speed.name());
             item.setToggleGroup(group);
             item.setSelected(speed == currentSpeed);
+            // Only the host may change the game speed.
+            item.setDisable(!modelRoot.getPlayer().isHost());
             item.setOnAction(event -> {
                 synchronized (updateLock) {
-                    modelRoot.applyMove(new ChangeGameSpeedMove(speed));
+                    modelRoot.applyMove(new ChangeGameSpeedMove(modelRoot.getPlayer(), speed));
                 }
             });
             speedMenu.getItems().add(item);

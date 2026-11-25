@@ -139,10 +139,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 .findFirst()
                 .orElseThrow();
 
-        IllegalStateException exception = TestUtils.assertThrows(IllegalStateException.class,
-                () -> new AddStationMoveGenerator(emptyLocation, stationTrackType.getId(),
-                        WorldGenerator.TEST_PLAYER).generate(world));
-        assertEquals("A station must be placed on existing connected track.", exception.getMessage());
+        Move refused = new AddStationMoveGenerator(emptyLocation, stationTrackType.getId(),
+                WorldGenerator.TEST_PLAYER).generate(world);
+        assertEquals("A station must be placed on existing connected track.", refused.applicable(world).getMessage());
 
         TrackPiece stationWithoutExistingTrack = new TrackPiece(TrackConfiguration.from8bitTemplate(1),
                 stationTrackType, WorldGenerator.TEST_PLAYER.getId());

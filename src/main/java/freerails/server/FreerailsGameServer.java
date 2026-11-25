@@ -563,9 +563,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                                 "A client may not send " + message.getClass().getSimpleName() + ".");
                     }
                     mStatus = move.applicable(serverGameModel.getWorld());
-                } catch (IllegalArgumentException e) {
+                } catch (RuntimeException e) {
+                    // Anything a client sends that the server cannot generate or check is refused,
+                    // rather than ending the server update.
                     logger.warn("Rejected a move from a client: " + e.getMessage());
-                    mStatus = Status.fail(e.getMessage());
+                    mStatus = Status.fail(e.getMessage() == null ? "The move was rejected." : e.getMessage());
                 }
 
                 if (mStatus.isSuccess()) {

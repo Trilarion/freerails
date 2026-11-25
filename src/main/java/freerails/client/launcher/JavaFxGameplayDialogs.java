@@ -26,11 +26,9 @@ import freerails.model.building.EngineShop;
 import freerails.model.economy.reporting.BalanceSheetGenerator;
 import freerails.model.economy.reporting.IncomeStatementGenerator;
 import freerails.model.economy.Money;
+import freerails.model.economy.Broker;
 import freerails.model.economy.StockPrice;
 import freerails.model.economy.StockPriceCalculator;
-import freerails.model.economy.TransactionUtils;
-import freerails.model.economy.transaction.ItemTransaction;
-import freerails.model.economy.transaction.TransactionCategory;
 import freerails.model.economy.transaction.aggregator.FinancialDataAggregator;
 import freerails.model.economy.transaction.aggregator.NetWorthAggregator;
 import freerails.model.operations.train.Engine;
@@ -41,15 +39,15 @@ import freerails.model.operations.train.schedule.TrainOrder;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.move.BuildEngineShopMove;
-import freerails.move.AddTransactionMove;
-import freerails.move.CompostMove;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.move.Status;
-import freerails.move.UpdateTrainMove;
-import freerails.move.mapupdatemove.ChangeTileMove;
+import freerails.move.ChangeTrainScheduleMove;
+import freerails.move.generator.BuildIndustryMoveGenerator;
+import freerails.move.generator.IssueBondMoveGenerator;
+import freerails.move.generator.RepayBondMoveGenerator;
+import freerails.move.generator.TradeSharesMoveGenerator;
 import freerails.model.terrain.Terrain;
-import freerails.model.terrain.TerrainTile;
 import freerails.network.command.LoadGameCommandToServer;
 import freerails.network.command.RefreshListOfGamesCommandToServer;
 import freerails.network.command.SaveGameCommandToServer;
@@ -270,27 +268,14 @@ final class JavaFxGameplayDialogs {
                 showError.accept("The selected industry is no longer available.");
                 return;
             }
-            String validationError = null;
-            Status status = null;
+            Status status;
             synchronized (updateLock) {
+                // The server checks the tile and charges the industry's cost.
                 IntPoint2D location = (IntPoint2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
-                UnmodifiableWorld world = modelRoot.getWorld();
-                if (location == null || !world.boundsContain(location)) {
-                    validationError = "Select a valid map tile before building an industry.";
-                } else {
-                    Terrain terrain = options.get(index);
-                    Move changeTile = new ChangeTileMove(
-                            new TerrainTile(terrain.getId(), world.getTile(location).trackPiece()), location);
-                    ItemTransaction transaction = new ItemTransaction(
-                            TransactionCategory.INDUSTRIES, Money.opposite(terrain.getIndustryBuildCost()),
-                            world.getClock().getCurrentTime(), 1, terrain.getId());
-                    status = modelRoot.applyMove(new CompostMove(List.of(
-                            changeTile, new AddTransactionMove(modelRoot.getPlayer(), transaction))));
-                }
+                status = modelRoot.doPreMove(new BuildIndustryMoveGenerator(
+                        location, options.get(index).getId(), modelRoot.getPlayer()));
             }
-            if (validationError != null) {
-                showError.accept(validationError);
-            } else if (status != null && !status.isSuccess()) {
+            if (!status.isSuccess()) {
                 showError.accept(status.getMessage());
             }
         });
@@ -866,7 +851,7 @@ final class JavaFxGameplayDialogs {
      */
     private Status applySchedule(int trainId, ScheduleState schedule) {
         return modelRoot.applyMove(
-                new UpdateTrainMove(modelRoot.getPlayer(), trainId, null, null, schedule));
+                new ChangeTrainScheduleMove(modelRoot.getPlayer(), trainId, schedule));
     }
 
     /**
@@ -945,25 +930,18 @@ final class JavaFxGameplayDialogs {
                 html = brokerHtml(world);
                 details = "Cash: " + world.getCurrentBalance(player)
                         + "\nOutstanding bonds: " + ownData.getBonds();
-                canIssueBond = ownData.canIssueBond();
-                canRepayBond = ownData.getBonds() > 0;
+                canIssueBond = Broker.checkIssueBond(world, player).isEmpty();
+                canRepayBond = Broker.checkRepayBond(world, player).isEmpty();
                 Player selected = target.getValue();
                 if (selected != null) {
                     int playerIndex = world.getPlayerIndex(selected.getId());
-                    FinancialDataAggregator selectedData = new FinancialDataAggregator(world, selected);
-                    selectedData.aggregate();
                     StockPrice price = new StockPriceCalculator(world).calculate()[playerIndex];
                     details += "\n" + selected.getName() + " share price: " + price.currentPrice
                             + "\nShares held: " + ownData.getStockInRRs()[playerIndex];
-                    Money buyPrice = selected.equals(player) ? price.treasuryBuyPrice : price.buyPrice;
-                    canBuy = selectedData.sharesHeldByPublic() >= ModelConstants.STOCK_BUNDLE_SIZE;
-                    if (selected.equals(player)) {
-                        canBuy &= ModelConstants.STOCK_BUNDLE_SIZE + selectedData.treasuryStock()
-                                < selectedData.totalShares();
-                    }
-                    canBuy &= buyPrice.amount()
-                            <= world.getCurrentBalance(player).amount() / ModelConstants.STOCK_BUNDLE_SIZE;
-                    canSell = ownData.getStockInRRs()[playerIndex] >= ModelConstants.STOCK_BUNDLE_SIZE;
+                    canBuy = Broker.checkShareTrade(world, player, selected.getId(),
+                            ModelConstants.STOCK_BUNDLE_SIZE).isEmpty();
+                    canSell = Broker.checkShareTrade(world, player, selected.getId(),
+                            -ModelConstants.STOCK_BUNDLE_SIZE).isEmpty();
                 }
             }
         } catch (IllegalStateException exception) {
@@ -991,16 +969,8 @@ final class JavaFxGameplayDialogs {
         }
         Status status;
         synchronized (updateLock) {
-            UnmodifiableWorld world = modelRoot.getWorld();
-            Player player = modelRoot.getPlayer();
-            int index = world.getPlayerIndex(target.getId());
-            StockPrice stockPrice = new StockPriceCalculator(world).calculate()[index];
-            Money sharePrice = target.equals(player)
-                    ? (quantity > 0 ? stockPrice.treasuryBuyPrice : stockPrice.treasurySellPrice)
-                    : (quantity > 0 ? stockPrice.buyPrice : stockPrice.sellPrice);
-            ItemTransaction transaction = TransactionUtils.buyOrSellStock(
-                    target.getId(), quantity, sharePrice, world.getClock().getCurrentTime());
-            status = modelRoot.applyMove(new AddTransactionMove(player, transaction));
+            // The server sets the price.
+            status = modelRoot.doPreMove(new TradeSharesMoveGenerator(target.getId(), quantity, modelRoot.getPlayer()));
         }
         if (!status.isSuccess()) {
             showError.accept(status.getMessage());
@@ -1013,38 +983,13 @@ final class JavaFxGameplayDialogs {
      * @param issue true to issue, false to repay
      */
     private void changeBond(boolean issue) {
-        String error = null;
-        Status status = null;
+        Status status;
         synchronized (updateLock) {
-            UnmodifiableWorld world = modelRoot.getWorld();
+            // The server checks the bond rules and sets the interest rate.
             Player player = modelRoot.getPlayer();
-            FinancialDataAggregator data = new FinancialDataAggregator(world, player);
-            data.aggregate();
-            ItemTransaction transaction;
-            if (issue) {
-                if (!data.canIssueBond()) {
-                    error = "The maximum number of bonds is already outstanding.";
-                    transaction = null;
-                } else {
-                    transaction = TransactionUtils.issueBond(
-                            data.nextBondInterestRate(), world.getClock().getCurrentTime());
-                }
-            } else {
-                if (data.getBonds() <= 0) {
-                    error = "There are no bonds to repay.";
-                    transaction = null;
-                } else {
-                    transaction = TransactionUtils.repayBond(
-                            5, world.getClock().getCurrentTime());
-                }
-            }
-            if (transaction != null) {
-                status = modelRoot.applyMove(new AddTransactionMove(player, transaction));
-            }
+            status = modelRoot.doPreMove(issue ? new IssueBondMoveGenerator(player) : new RepayBondMoveGenerator(player));
         }
-        if (error != null) {
-            showError.accept(error);
-        } else if (!status.isSuccess()) {
+        if (!status.isSuccess()) {
             showError.accept(status.getMessage());
         }
     }

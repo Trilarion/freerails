@@ -95,22 +95,6 @@ public class RemoveStationCompositeMove extends CompositeMove implements TrackMo
     }
 
     /**
-     * Returns this move with every component rebound to the supplied player.
-     *
-     * @param player the player the move acts for
-     * @return the rebound move
-     */
-    @Override
-    public @NotNull RemoveStationCompositeMove withPlayer(@NotNull Player player) {
-        List<UpdateTrainMove> reboundUpdates = new ArrayList<>(scheduleUpdates.size());
-        for (UpdateTrainMove update : scheduleUpdates) {
-            reboundUpdates.add(update.withPlayer(player));
-        }
-        return new RemoveStationCompositeMove(
-                trackChange.withPlayer(player), stationRemoval.withPlayer(player), reboundUpdates);
-    }
-
-    /**
      * @return the change that removes the station track
      */
     public ChangeTrackPieceMove trackChange() {

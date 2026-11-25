@@ -41,6 +41,12 @@ public class Player extends Identifiable {
     @Serial
     private static final long serialVersionUID = 1L;
     public static final Player AUTHORITATIVE = new Player(-1, "Authoritative player");
+    /**
+     * The ID of the host: the first player registered with the server, who
+     * started the game. Only the host may change session-wide settings such as
+     * the game speed.
+     */
+    public static final int HOST_ID = 0;
     private final String name;
 
     /**
@@ -50,6 +56,15 @@ public class Player extends Identifiable {
     public Player(int id, String name) {
         super(id);
         this.name = Utils.verifyNotNull(name);
+    }
+
+    /**
+     * Returns whether this player is the host of the game.
+     *
+     * @return true if this player has {@link #HOST_ID}
+     */
+    public boolean isHost() {
+        return getId() == HOST_ID;
     }
 
     /** Returns the player's display name. */
