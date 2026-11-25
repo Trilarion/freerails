@@ -29,10 +29,15 @@ import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 /**
- * Looks to see whether the tiles to the left and right of the same type when deciding which tile icon to use.
+ * Chooses the icon from whether the tiles to the left and right connect to
+ * this tile.
+ * <p>
+ * The left neighbour is the high bit of the icon index and the right
+ * neighbour the low bit. File names list the high bit first, so the digits of
+ * a file name such as {@code Hills_ab} stand for left and right.
  */
 public class ForestStyleTileRenderer extends AbstractTileRenderer {
 
@@ -47,7 +52,7 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
      * @param tileModel the tile model parameter
      * @throws IOException if the requested I/O operation cannot be completed.
      */
-    public ForestStyleTileRenderer(ImageManager imageManager, List<Integer> typesTreatedAsSame, Terrain tileModel) throws IOException {
+    public ForestStyleTileRenderer(ImageManager imageManager, Set<Integer> typesTreatedAsSame, Terrain tileModel) throws IOException {
         super(tileModel, typesTreatedAsSame, 4);
 
         for (int i = 0; i < getTileIcons().length; i++) {
@@ -57,31 +62,25 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * Selects the tile icon index.
+     * Selects one of the 4 icons from whether the left and right neighbours
+     * connect to this tile.
      *
      * @param mapLocation the map coordinate
      * @param world the game world being queried
-     * @return the tile icon index produced by this method
+     * @return the icon index from 0 to 3
      */
     @Override
-    public int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
-        int iconNumber = 0;
-
-        // shift left
-        iconNumber = iconNumber | checkTile(IntPoint2D.add(mapLocation, SHIFT_LEFT), world);
-        iconNumber = iconNumber << 1;
-
-        // shift right
-        iconNumber = iconNumber | checkTile(IntPoint2D.add(mapLocation, SHIFT_RIGHT), world);
-
-        return iconNumber;
+    protected int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
+        return (checkTile(IntPoint2D.add(mapLocation, SHIFT_LEFT), world) << 1)
+                | checkTile(IntPoint2D.add(mapLocation, SHIFT_RIGHT), world);
     }
 
     /**
-     * Performs the generate file name number operation.
+     * Returns the icon index as two binary digits, high bit first, for use in
+     * the image file name.
      *
-     * @param i the index of the item
-     * @return the file name number produced by this method
+     * @param i the icon index
+     * @return the file name suffix, for example {@code 10}
      */
     @Override
     protected String generateFileNameNumber(int i) {

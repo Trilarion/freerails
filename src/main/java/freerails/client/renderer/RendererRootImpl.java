@@ -36,10 +36,10 @@ import org.tinylog.TaggedLogger;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation of RendererRoot whose constructor loads graphics and provides
@@ -48,6 +48,7 @@ import java.util.Map;
 public class RendererRootImpl implements RendererRoot {
 
     private static final TaggedLogger logger = Logger.tag("RendererRootImpl");
+    private static final String HARBOUR_TERRAIN_NAME = "Harbour";
     private final TileRendererList tileRendererList;
     private final TrackPieceRendererList trackPieceViewList;
     private final ImageManager imageManager;
@@ -112,88 +113,104 @@ public class RendererRootImpl implements RendererRoot {
         return new TrackPieceRendererList(world, imageManager);
     }
 
-    // TODO this tile renderer list must have a certain length and structure otherwise the scenario start will hang, fix this behavior and simplify
     /**
-     * Loads and returns the new tile view list.
+     * Loads one tile renderer for every terrain type of the world. Harbours are
+     * drawn on top of the ocean renderer.
+     *
      * @param world the world
-     * @return the result of this operation
-     * @throws IOException if the operation cannot be completed
+     * @return the tile renderers keyed by terrain ID
+     * @throws IOException if the graphics for a terrain type cannot be loaded
      */
     private TileRendererList loadNewTileViewList(UnmodifiableWorld world) throws IOException {
         Map<Integer, TileRenderer> tileRenderers = new HashMap<>();
 
-        // Setup progress monitor..
-
-        // for all terrain types
         for (Terrain terrainType: world.getTerrains()) {
-            TileRenderer tileRenderer;
-
-            // TODO not a nice hack, unhack, provide information about neighboring tiles differently or better inside the Renderer
-            List<Integer> typesTreatedAsTheSame = new ArrayList<>();
-            try {
-                // TODO hack to make rivers flow into ocean and harbours & ocean, they should without the hack
-                // treat harbours as the same type.
-                TerrainCategory thisTerrainCategory = terrainType.getCategory();
-
-                if (thisTerrainCategory == TerrainCategory.RIVER || thisTerrainCategory == TerrainCategory.OCEAN) {
-
-                    for (Terrain terrain : world.getTerrains()) {
-                        TerrainCategory terrainCategory = terrain.getCategory();
-
-                        if (terrainCategory == TerrainCategory.OCEAN || terrainCategory == thisTerrainCategory) {
-                            typesTreatedAsTheSame.add(terrain.getId());
-                        }
-                    }
-                }
-
-                tileRenderer = new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
-                tileRenderers.put(terrainType.getId(), tileRenderer);
-
-                continue;
-            } catch (IOException ignored) {
-            }
-
-            try {
-                tileRenderer = new ForestStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
-                tileRenderers.put(terrainType.getId(), tileRenderer);
-
-                continue;
-            } catch (IOException ignored) {
-            }
-
-            try {
-                tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
-                tileRenderers.put(terrainType.getId(), tileRenderer);
-
-                continue;
-            } catch (IOException ignored) {
-            }
-
-            try {
-                tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
-                tileRenderers.put(terrainType.getId(), tileRenderer);
-            } catch (IOException ignored) {
+            if (!isHarbour(terrainType)) {
+                tileRenderers.put(terrainType.getId(), loadTileRenderer(world, terrainType));
             }
         }
 
-        // add special tile renderer for harbours
-        TileRenderer oceanTileRenderer = null;
+        TileRenderer oceanTileRenderer = world.getTerrains().stream()
+                .filter(terrainType -> terrainType.getCategory() == TerrainCategory.OCEAN && !isHarbour(terrainType))
+                .map(terrainType -> tileRenderers.get(terrainType.getId()))
+                .findFirst()
+                .orElse(null);
 
         for (Terrain terrainType: world.getTerrains()) {
-
-            if (terrainType.getCategory().equals(TerrainCategory.OCEAN)) {
-                oceanTileRenderer = tileRenderers.get(terrainType.getId());
-            }
-        }
-
-        for (Terrain terrainType: world.getTerrains()) {
-            if (terrainType.getName().equals("Harbour")) {
-                TileRenderer tr = new SpecialTileRenderer(imageManager, new ArrayList<>(), terrainType , oceanTileRenderer);
+            if (isHarbour(terrainType)) {
+                TileRenderer tr = new SpecialTileRenderer(imageManager, Set.of(terrainType.getId()), terrainType, oceanTileRenderer);
                 tileRenderers.put(terrainType.getId(), tr);
             }
         }
 
-        return new StandardTileRendererList(tileRenderers);
+        return new TileRendererList(tileRenderers);
+    }
+
+    /**
+     * Returns whether the terrain type is drawn as a harbour on top of the ocean.
+     *
+     * @param terrainType the terrain type
+     * @return whether the terrain type is the harbour
+     */
+    private static boolean isHarbour(Terrain terrainType) {
+        return HARBOUR_TERRAIN_NAME.equals(terrainType.getName());
+    }
+
+    /**
+     * Returns the IDs of the terrain types that a tile of the specified terrain
+     * type visually connects to when choosing its image from its neighbours.
+     * <p>
+     * Every terrain type connects to itself. Water connects as well: river
+     * and ocean tiles also connect to all ocean terrain types (including the
+     * harbour), and river tiles to all river terrain types, so that rivers flow
+     * into the sea and the coast does not appear next to a harbour.
+     *
+     * @param world the world
+     * @param terrainType the terrain type
+     * @return the IDs of the connecting terrain types
+     */
+    private static Set<Integer> connectingTerrainIds(UnmodifiableWorld world, Terrain terrainType) {
+        Set<Integer> ids = new HashSet<>();
+        ids.add(terrainType.getId());
+
+        TerrainCategory category = terrainType.getCategory();
+        if (category == TerrainCategory.RIVER || category == TerrainCategory.OCEAN) {
+            for (Terrain terrain : world.getTerrains()) {
+                TerrainCategory otherCategory = terrain.getCategory();
+                if (otherCategory == TerrainCategory.OCEAN || otherCategory == category) {
+                    ids.add(terrain.getId());
+                }
+            }
+        }
+        return ids;
+    }
+
+    /**
+     * Loads the tile renderer for one terrain type, choosing the first style
+     * whose graphics exist: river style, forest style, then a single image.
+     *
+     * @param world the world
+     * @param terrainType the terrain type
+     * @return the tile renderer
+     * @throws IOException if no style's graphics exist for the terrain type
+     */
+    private TileRenderer loadTileRenderer(UnmodifiableWorld world, Terrain terrainType) throws IOException {
+        Set<Integer> typesTreatedAsTheSame = connectingTerrainIds(world, terrainType);
+
+        try {
+            return new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
+        } catch (IOException ignored) {
+        }
+        try {
+            return new ForestStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
+        } catch (IOException ignored) {
+        }
+        try {
+            return new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
+        } catch (IOException e) {
+            throw new IOException("No tile graphics found for terrain type " + terrainType.getName()
+                    + " (ID " + terrainType.getId() + ")", e);
+        }
     }
 
     /**
@@ -219,14 +236,13 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     /**
-     * Returns the tile renderer by index.
+     * Returns the tile renderers for the terrain types.
      *
-     * @param index the index of the item
-     * @return the tile renderer by index produced by this method
+     * @return the tile renderer list
      */
     @Override
-    public TileRenderer getTileRendererByIndex(int index) {
-        return tileRendererList.getTileRendererByIndex(index);
+    public TileRendererList getTileRendererList() {
+        return tileRendererList;
     }
 
     /**

@@ -34,7 +34,6 @@ import org.tinylog.TaggedLogger;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.List;
@@ -82,23 +81,6 @@ public class FreerailsClient implements ClientControlInterface, UntriedMoveRecei
 
         try {
             Serializable request = new LogOnCredentials(username, password);
-            connectionToServer.sendObject(request);
-
-            return (LogOnResponse) connectionToServer.receiveObject();
-        } catch (Exception e) {
-            connectionToServer.close();
-            return LogOnResponse.failure(e.getMessage());
-        }
-    }
-
-    /**
-     * Connects this client to a local server.
-     */
-    public final LogOnResponse connect(String username, String password) {
-        try {
-            Serializable request = new LogOnCredentials(username, password);
-            connectionToServer = Connection.make(new InetSocketAddress(InetAddress.getLoopbackAddress(), 55000)); // TODO get selected port from the UI here instead of hardcoding
-            readerFailureReported = false;
             connectionToServer.sendObject(request);
 
             return (LogOnResponse) connectionToServer.receiveObject();

@@ -94,22 +94,6 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     * Performs the paint tile operation.
-     *
-     * @param g the graphics context used for drawing
-     */
-    @Override
-    public void paintTile(Graphics g, IntPoint2D tileLocation) {
-        background.paintTile(g, tileLocation);
-        trainsView.paint((Graphics2D) g, null);
-        stationRadius.paint((Graphics2D) g, null);
-        stationNames.paintStationBorders((Graphics2D) g, null);
-        stationBoxes.paint((Graphics2D) g, null);
-
-        buildTrackRenderer.paint((Graphics2D) g, null);
-    }
-
-    /**
      * Refreshes the background tile at the specified map location.
      *
      * @param tileLocation location of the tile to refresh
@@ -117,18 +101,6 @@ public class DetailMapRenderer implements MapRenderer {
     @Override
     public void refreshTile(IntPoint2D tileLocation) {
         background.refreshTile(tileLocation);
-    }
-
-    /**
-     * Performs the paint rect operation.
-     *
-     * @param g the graphics context used for drawing
-     * @param visibleRect the visible area to render
-     */
-    @Override
-    public void paintRect(Graphics g, Rectangle visibleRect) {
-        paintBackgroundRect(g, visibleRect);
-        paintDynamicRect(g, visibleRect);
     }
 
     /**

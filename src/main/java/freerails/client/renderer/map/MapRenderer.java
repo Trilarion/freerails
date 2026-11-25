@@ -23,11 +23,20 @@ import freerails.util.IntPoint2D;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-// TODO these functions do not seem to form a good entity? is a better composition possible? What is their purpose?
 /**
- * Lets the GUI component that is displaying the map known the scale at which the map is being rendered.
+ * A whole map as the map view sees it: something it can measure, paint and
+ * invalidate. Implemented by the main (detail) map and the overview map.
+ * <ul>
+ * <li>Geometry: {@link #scale()} and {@link #getMapSizeInPixels()} convert
+ * between pixels and tiles.</li>
+ * <li>Cache invalidation: {@link #refreshTile(IntPoint2D)} and
+ * {@link #refreshAll()} are called when the world changes.</li>
+ * <li>Painting: {@link #paintBackgroundRect(Graphics, Rectangle)} paints the
+ * cached imagery, {@link #paintDynamicRect(Graphics, Rectangle)} the
+ * animated overlays on top of it.</li>
+ * </ul>
  */
-public interface MapRenderer extends MapLayerRenderer {
+public interface MapRenderer {
 
     /**
      * Paints map imagery that remains stable while trains and cursor overlays
@@ -36,9 +45,7 @@ public interface MapRenderer extends MapLayerRenderer {
      * @param g graphics context
      * @param visibleRect visible map area
      */
-    default void paintBackgroundRect(Graphics g, Rectangle visibleRect) {
-        paintRect(g, visibleRect);
-    }
+    void paintBackgroundRect(Graphics g, Rectangle visibleRect);
 
     /**
      * Paints dynamic map overlays above the cached map background.
@@ -50,16 +57,28 @@ public interface MapRenderer extends MapLayerRenderer {
     }
 
     /**
-     * Performs the scale operation.
+     * Marks one tile as changed so that it is repainted from the world.
      *
-     * @return the scale produced by this method
+     * @param tileLocation the changed tile
+     */
+    void refreshTile(IntPoint2D tileLocation);
+
+    /**
+     * Marks the whole map as changed so that it is repainted from the world.
+     */
+    void refreshAll();
+
+    /**
+     * Returns the number of pixels per tile.
+     *
+     * @return the pixels per tile
      */
     float scale();
 
     /**
      * Returns the map size in pixels.
      *
-     * @return the map size in pixels produced by this method
+     * @return the map size in pixels
      */
     IntPoint2D getMapSizeInPixels();
 }

@@ -18,9 +18,14 @@
 
 package freerails.client.renderer.track;
 
+import freerails.client.ClientConstants;
+import freerails.io.GsonManager;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackType;
 import junit.framework.TestCase;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * Tests track asset filename generation.
@@ -35,5 +40,28 @@ public class TrackPieceRendererImplTest extends TestCase {
                 TrackPieceRendererImpl.generateFilename(1, "standard_track"));
         assertEquals("track" + File.separator + "standard_track_00000001.png",
                 TrackPieceRendererImpl.generateFilename(128, "standard_track"));
+    }
+
+    /**
+     * Tests that every valid configuration of every bundled track type has an
+     * image, so missing graphics are found before a game is started.
+     *
+     * @throws Exception if the track types cannot be loaded
+     */
+    public void testBundledTrackTypesHaveImageForEveryValidConfiguration() throws Exception {
+        URL trackTypesUrl = getClass().getResource("/freerails/data/scenario/track_types.json");
+        assertNotNull(trackTypesUrl);
+
+        for (TrackType trackType : GsonManager.loadTrackTypes(new File(trackTypesUrl.toURI()))) {
+            assertFalse(trackType.getValidTrackConfigurations().isEmpty());
+            for (TrackConfiguration configuration : trackType.getValidTrackConfigurations()) {
+                String fileName = TrackPieceRendererImpl.generateFilename(
+                        configuration.getConfiguration(), trackType.getName());
+                // Same normalization as ImageManagerImpl: spaces become underscores.
+                String resource = (ClientConstants.GRAPHICS_PATH + fileName)
+                        .replace(File.separatorChar, '/').replace(' ', '_');
+                assertNotNull("Missing track image " + resource, getClass().getResource(resource));
+            }
+        }
     }
 }

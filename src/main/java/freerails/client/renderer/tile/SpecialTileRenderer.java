@@ -32,7 +32,7 @@ import org.tinylog.TaggedLogger;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 /**
  * A special tile's icon gets drawn over the icon of a normal tile.
@@ -51,7 +51,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      * @param parentTileView the parent tile view parameter
      * @throws IOException if the requested I/O operation cannot be completed.
      */
-    public SpecialTileRenderer(ImageManager imageManager, List<Integer> treatTypeAsSame, Terrain tileModel, TileRenderer parentTileView) throws IOException {
+    public SpecialTileRenderer(ImageManager imageManager, Set<Integer> treatTypeAsSame, Terrain tileModel, TileRenderer parentTileView) throws IOException {
         super(tileModel, treatTypeAsSame, 1);
         getTileIcons()[0] = imageManager.getImage("terrain" + File.separator + getTerrainTypeName() + ".png");
         this.parentTileView = parentTileView;
@@ -73,13 +73,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
             logger.warn("parent tileView==null");
         }
 
-        Image icon = getIcon(mapLocation, world);
-
-        if (null != icon) {
-            g.drawImage(icon, renderLocation.x(), renderLocation.y(), null);
-        } else {
-            logger.warn("special tileView icon==null");
-        }
+        super.render(g, renderLocation, mapLocation, world);
     }
 
     /**
@@ -90,7 +84,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      * @return the tile icon index produced by this method
      */
     @Override
-    public int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
+    protected int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
         return 0;
     }
 

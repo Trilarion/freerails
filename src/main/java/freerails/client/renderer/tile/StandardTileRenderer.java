@@ -28,7 +28,7 @@ import freerails.model.world.UnmodifiableWorld;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Paints a tile for which there only one tile icon.
@@ -43,7 +43,7 @@ public class StandardTileRenderer extends AbstractTileRenderer {
      * @param terrainType the terrain type parameter
      * @throws IOException if the requested I/O operation cannot be completed.
      */
-    public StandardTileRenderer(ImageManager imageManager, List<Integer> typesTreatedAsSame, Terrain terrainType) throws IOException {
+    public StandardTileRenderer(ImageManager imageManager, Set<Integer> typesTreatedAsSame, Terrain terrainType) throws IOException {
         super(terrainType, typesTreatedAsSame, 1);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
     }
@@ -63,7 +63,7 @@ public class StandardTileRenderer extends AbstractTileRenderer {
      * @return the index of the selected tile icon
      */
     @Override
-    public int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
+    protected int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
         return 0;
     }
 

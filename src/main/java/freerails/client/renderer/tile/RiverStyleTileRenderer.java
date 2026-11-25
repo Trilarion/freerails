@@ -28,16 +28,22 @@ import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Selects a tile icon to use based on the type of the tiles to the North, East, South and West.
  */
 public class RiverStyleTileRenderer extends AbstractTileRenderer {
 
-    // TODO use IntPoint2D instead (see ForestStyleTileRenderer)
-    private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
-    private static final int[] X_LOOK_AT = {-1, 0, 1, 0};
+    /**
+     * Offsets of the neighbours that are checked, in the order left, below,
+     * right, above. The first neighbour becomes the highest bit of the icon
+     * index. Because file names list the low bit first, the digits of a file
+     * name such as {@code Ocean_abcd} stand for above, right, below and left.
+     * Do not reorder without renaming the images.
+     */
+    private static final IntPoint2D[] NEIGHBOURS = {
+            new IntPoint2D(-1, 0), new IntPoint2D(0, 1), new IntPoint2D(1, 0), new IntPoint2D(0, -1)};
 
     /**
      * Creates a river style tile renderer instance.
@@ -47,7 +53,7 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
      * @param tileModel the tile model parameter
      * @throws IOException if the requested I/O operation cannot be completed.
      */
-    public RiverStyleTileRenderer(ImageManager imageManager, List<Integer> typesTreatedAsSame, Terrain tileModel) throws IOException {
+    public RiverStyleTileRenderer(ImageManager imageManager, Set<Integer> typesTreatedAsSame, Terrain tileModel) throws IOException {
         super(tileModel, typesTreatedAsSame, 16);
 
         for (int i = 0; i < getTileIcons().length; i++) {
@@ -57,15 +63,19 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * TODO optimize cache possible?
+     * Selects one of the 16 icons from which of the four neighbours connect to
+     * this tile, one bit per neighbour (see {@link #NEIGHBOURS}).
+     *
+     * @param mapLocation the map coordinate
+     * @param world the game world being queried
+     * @return the icon index from 0 to 15
      */
     @Override
-    public int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
+    protected int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world) {
         int iconNumber = 0;
 
-        for (int i = 0; i < 4; i++) {
-            iconNumber = iconNumber << 1;
-            iconNumber = iconNumber | checkTile(IntPoint2D.add(mapLocation, new IntPoint2D(X_LOOK_AT[i], Y_LOOK_AT[i])), world);
+        for (IntPoint2D offset : NEIGHBOURS) {
+            iconNumber = (iconNumber << 1) | checkTile(IntPoint2D.add(mapLocation, offset), world);
         }
 
         return iconNumber;

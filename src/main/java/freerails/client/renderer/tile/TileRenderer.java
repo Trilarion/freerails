@@ -29,13 +29,6 @@ import java.awt.*;
 public interface TileRenderer {
 
     /**
-     * Returns the default icon.
-     *
-     * @return the default icon produced by this method
-     */
-    Image getDefaultIcon();
-
-    /**
      * Performs the render operation.
      *
      * @param g the graphics context used for drawing

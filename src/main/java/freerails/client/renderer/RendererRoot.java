@@ -25,11 +25,17 @@ import freerails.model.world.UnmodifiableWorld;
 import java.awt.*;
 import java.io.IOException;
 
-// TODO should this really extend TileRendererList? or could it work without?
 /**
  * Provides access to the objects that render terrain, track, and trains.
  */
-public interface RendererRoot extends TileRendererList {
+public interface RendererRoot {
+
+    /**
+     * Returns the tile renderers for the terrain types.
+     *
+     * @return the tile renderer list
+     */
+    TileRendererList getTileRendererList();
 
     /**
      * Returns the track piece view.
@@ -56,11 +62,12 @@ public interface RendererRoot extends TileRendererList {
     TrainImages getEngineImages(int type);
 
     /**
-     * Returns whether validate.
+     * Checks whether the loaded tile and track renderers cover all terrain and
+     * track types of the specified world.
+     *
      * @param world the world
-     * @return whether validate
+     * @return whether these renderers can be used for the world
      */
-    @Override
     boolean validate(UnmodifiableWorld world);
 
     /**

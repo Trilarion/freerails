@@ -30,28 +30,29 @@ import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
 import java.io.File;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Encapsulates the visible properties of a tile.
  */
 public abstract class AbstractTileRenderer implements TileRenderer {
 
-    private final List<Integer> typesTreatedAsSame;
+    private final Set<Integer> typesTreatedAsSame;
     private final Terrain terrainType;
-    private Image[] tileIcons;
+    private final Image[] tileIcons;
 
-    // TODO if only mapSize is needed, do not send the full world here, just what is needed
     /**
-     * Creates an abstract tile renderer instance.
+     * Creates an abstract tile renderer instance. Subclass constructors must
+     * fill every slot of {@link #getTileIcons()}.
+     *
      * @param terrainType the terrain type
-     * @param typesTreatedAsSame the types treated as same
+     * @param typesTreatedAsSame IDs of the terrain types that neighbouring tiles connect to
      * @param numberTileIcons the number tile icons
      */
-    public AbstractTileRenderer(Terrain terrainType, List<Integer> typesTreatedAsSame, int numberTileIcons) {
+    protected AbstractTileRenderer(Terrain terrainType, Set<Integer> typesTreatedAsSame, int numberTileIcons) {
         this.terrainType = Utils.verifyNotNull(terrainType);
-        this.typesTreatedAsSame = Utils.verifyNotNull(typesTreatedAsSame);
-        tileIcons = new Image[numberTileIcons]; // TODO check numberTileIcons > 0?
+        this.typesTreatedAsSame = Set.copyOf(Utils.verifyNotNull(typesTreatedAsSame));
+        tileIcons = new Image[numberTileIcons];
     }
 
     /**
@@ -64,22 +65,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      */
     @Override
     public void render(Graphics g, IntPoint2D renderLocation, IntPoint2D mapLocation, UnmodifiableWorld world) {
-        // TODO just send the icon here and resolve in the caller possible?
-        Image icon = getIcon(mapLocation, world);
-
-        if (null != icon) {
-            g.drawImage(icon, renderLocation.x(), renderLocation.y(), null);
-        }
-    }
-
-    /**
-     * Returns the default icon.
-     *
-     * @return the default icon produced by this method
-     */
-    @Override
-    public Image getDefaultIcon() {
-        return tileIcons[0];
+        g.drawImage(getIcon(mapLocation, world), renderLocation.x(), renderLocation.y(), null);
     }
 
     /**
@@ -94,11 +80,13 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * Returns an icon for the tile at x,y, which may also depend on the terrain types of the surrounding tiles.
      * <p>
      * In the standard implementation it doesn't though.
+     *
+     * @param mapLocation the map coordinate
+     * @param world the game world being queried
+     * @return the icon for the tile, never {@code null}
      */
-    public Image getIcon(IntPoint2D mapLocation, UnmodifiableWorld world) {
+    protected Image getIcon(IntPoint2D mapLocation, UnmodifiableWorld world) {
         int index = selectTileIconIndex(mapLocation, world);
-
-        // TODO here we can assume that all icons in the array are not null, however, make sure of that before
         return Utils.verifyNotNull(tileIcons[index], String.format("TileRenderer.getIcon: icon at index %d is null", index));
     }
 
@@ -109,36 +97,27 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param world the game world being queried
      * @return the tile icon index produced by this method
      */
-    public abstract int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world);
+    protected abstract int selectTileIconIndex(IntPoint2D mapLocation, UnmodifiableWorld world);
 
-    // TODO remove or reduce world as parameter, only send what is needed if at all
     /**
-     * Checks whether the renderer handles the tile at the specified location.
+     * Checks whether the tile at the specified location connects to this
+     * renderer's terrain, that is whether its terrain type is one of the types
+     * treated as the same.
+     * <p>
+     * A tile off the map counts as a match. This stops coast appearing where
+     * the ocean meets the map edge.
+     *
      * @param location the location
      * @param world the world
-     * @return {@code true} if the tile is handled by this renderer
+     * @return 1 if the tile connects, otherwise 0
      */
-    public int checkTile(IntPoint2D location, UnmodifiableWorld world) {
-        int match = 0;
-
+    protected int checkTile(IntPoint2D location, UnmodifiableWorld world) {
         IntPoint2D mapSize = world.getMapSize();
-        if (location.below(mapSize) && location.aboveOrEqual(IntPoint2D.ZERO)) {
-            for (int typeNumber : typesTreatedAsSame) {
-                TerrainTile terrainTile = world.getTile(location);
-
-                if (terrainTile.terrainTypeId() == typeNumber) {
-                    match = 1;
-                    // A match
-                }
-            }
-        } else {
-            match = 1; // A match
-            /*
-             * If the tile we are checking is off the map, let it be a match.
-             * This stops coast appearing where the ocean meets the map edge.
-             */
+        if (!location.below(mapSize) || !location.aboveOrEqual(IntPoint2D.ZERO)) {
+            return 1;
         }
-        return match;
+        TerrainTile terrainTile = world.getTile(location);
+        return typesTreatedAsSame.contains(terrainTile.terrainTypeId()) ? 1 : 0;
     }
 
     /**

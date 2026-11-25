@@ -61,7 +61,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      */
     public MapBackgroundRenderer(UnmodifiableWorld world, RendererRoot rendererRoot) {
         trackLayer = new TrackLayerRenderer(world, rendererRoot);
-        terrainLayer = new TerrainLayerRenderer(world, rendererRoot);
+        terrainLayer = new TerrainLayerRenderer(world, rendererRoot.getTileRendererList());
     }
 
     /**

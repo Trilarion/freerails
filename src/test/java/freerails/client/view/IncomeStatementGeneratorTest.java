@@ -35,15 +35,19 @@ import junit.framework.TestCase;
  */
 public class IncomeStatementGeneratorTest extends TestCase {
 
+    private static final int QUANTITY = 10;
+    private static final int STATION_ID = 0;
+    private static final int TRAIN_ID = 1;
+
     private World world;
-    private IncomeStatementGenerator balanceSheetGenerator;
+    private IncomeStatementGenerator incomeStatementGenerator;
 
     /**
      * Tests cal expense behavior.
      */
     public void testCalExpense() {
-        balanceSheetGenerator.calculateAll();
-        Money money = balanceSheetGenerator.mailTotal;
+        incomeStatementGenerator.calculateAll();
+        Money money = incomeStatementGenerator.mailTotal;
         assertEquals(0, money.amount());
 
         Cargo cargo = world.getCargo(0);
@@ -52,28 +56,25 @@ public class IncomeStatementGeneratorTest extends TestCase {
         Money amount = new Money(100);
         addTransaction(CargoCategory.MAIL, amount);
         addTransaction(CargoCategory.PASSENGER, amount);
-        balanceSheetGenerator.calculateAll();
-        money = balanceSheetGenerator.mailTotal;
+        incomeStatementGenerator.calculateAll();
+        money = incomeStatementGenerator.mailTotal;
         assertEquals(amount, money);
-        assertEquals("100", balanceSheetGenerator.getTemplateValues().get("mailTotal"));
-        assertEquals("100", balanceSheetGenerator.getTemplateValues().get("passengersTotal"));
-        assertEquals("200", balanceSheetGenerator.getTemplateValues().get("profitTotal"));
+        assertEquals("100", incomeStatementGenerator.getTemplateValues().get("mailTotal"));
+        assertEquals("100", incomeStatementGenerator.getTemplateValues().get("passengersTotal"));
+        assertEquals("200", incomeStatementGenerator.getTemplateValues().get("profitTotal"));
     }
 
     /**
-     * Adds transaction
-     * @param category the category used by this test.
-     * @param amount the amount used by this test.
+     * Adds a delivery of the first cargo of a category for the test player.
+     * @param category the category of the delivered cargo.
+     * @param amount the revenue of the delivery.
      */
     private void addTransaction(CargoCategory category, Money amount) {
-        // TODO i is not an id or is it? if not, real ids should be used
-        for (int i = 0; i < world.getCargos().size(); i++) {
-            Cargo cargo = world.getCargo(i);
-
+        for (Cargo cargo : world.getCargos()) {
             if (cargo.getCategory() == category) {
-                CargoBatch cargoBatch = new CargoBatch(i, IntPoint2D.ZERO, new Time(0), 0);
-                world.addTransaction(WorldGenerator.TEST_PLAYER,
-                        new CargoDeliveryTransaction(amount, world.getClock().getCurrentTime(), 10, 0, 1, cargoBatch));
+                CargoBatch cargoBatch = new CargoBatch(cargo.getId(), IntPoint2D.ZERO, new Time(0), 0);
+                world.addTransaction(WorldGenerator.TEST_PLAYER, new CargoDeliveryTransaction(
+                        amount, world.getClock().getCurrentTime(), QUANTITY, STATION_ID, TRAIN_ID, cargoBatch));
                 return;
             }
         }
@@ -91,6 +92,6 @@ public class IncomeStatementGeneratorTest extends TestCase {
 
         world = WorldGenerator.defaultWorld();
         world.addPlayer(WorldGenerator.TEST_PLAYER);
-        balanceSheetGenerator = new IncomeStatementGenerator(world, WorldGenerator.TEST_PLAYER);
+        incomeStatementGenerator = new IncomeStatementGenerator(world, WorldGenerator.TEST_PLAYER);
     }
 }

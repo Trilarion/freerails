@@ -16,88 +16,71 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * TrackPieceViewList.java
- *
- */
 package freerails.client.renderer.track;
 
 import freerails.model.track.TrackType;
-import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.track.TrackConfiguration;
-import org.tinylog.Logger;
-import org.tinylog.TaggedLogger;
+import freerails.util.ui.ImageManager;
 
-import java.awt.*;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * A list of TrackPieceRenderer.
+ * Track piece renderers keyed by their stable track type IDs.
  */
 public class TrackPieceRendererList {
 
-    private static final TaggedLogger logger = Logger.tag("TrackPieceRendererList");
-    private final UnmodifiableWorld world;
-    private final TrackPieceRenderer[] trackPieceViewArray;
+    private final Map<Integer, TrackPieceRenderer> trackPieceRenderers;
 
     /**
-     * Creates a track piece renderer list instance.
+     * Loads one track piece renderer for every track type of the world.
      *
      * @param world the game world being queried
      * @param imageManager the image manager parameter
-     * @throws IOException if the requested I/O operation cannot be completed.
+     * @throws IOException if the image of a valid track configuration cannot be loaded
      */
     public TrackPieceRendererList(UnmodifiableWorld world, ImageManager imageManager) throws IOException {
-        this.world = world;
-        int numberOfTrackTypes = world.getTrackTypes().size();
-        trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
-
-        for (int trackTypeIndex = 0; trackTypeIndex < numberOfTrackTypes; trackTypeIndex++) {
-            int trackTypeId = world.getTrackTypeAtIndex(trackTypeIndex).getId();
-            trackPieceViewArray[trackTypeIndex] = new TrackPieceRendererImpl(world, imageManager, trackTypeId);
+        Map<Integer, TrackPieceRenderer> renderers = new HashMap<>();
+        for (TrackType trackType : world.getTrackTypes()) {
+            renderers.put(trackType.getId(), new TrackPieceRendererImpl(world, imageManager, trackType.getId()));
         }
+        trackPieceRenderers = Map.copyOf(renderers);
     }
 
     /**
-     * Returns the track piece view.
+     * Returns the track piece renderer for a track type.
      *
      * @param trackTypeId stable ID of the track type
-     * @return the track piece view produced by this method
+     * @return the track piece renderer for the track type
+     * @throws IllegalArgumentException if no renderer exists for the track type ID
      */
     public TrackPieceRenderer getTrackPieceView(int trackTypeId) {
-        return trackPieceViewArray[world.getTrackTypeIndex(trackTypeId)];
+        TrackPieceRenderer renderer = trackPieceRenderers.get(trackTypeId);
+        if (renderer == null) {
+            throw new IllegalArgumentException("Unknown track type ID: " + trackTypeId);
+        }
+        return renderer;
     }
 
-    // TODO this should be a test, in the application we would just fail (no difference anyway)
     /**
-     * Performs the validate operation.
+     * Checks whether this list has exactly one renderer for each track type of
+     * the specified world. The client uses this to decide whether already
+     * loaded renderers can be reused for a newly received world.
+     * <p>
+     * Only track type IDs are compared. Every renderer already holds an image
+     * for each valid configuration of its track type, because loading fails
+     * otherwise.
      *
-     * @param world the game world being queried
-     * @return {@code true} if validate; otherwise, {@code false}
+     * @param world the world
+     * @return whether these renderers cover the world's track types
      */
     public boolean validate(UnmodifiableWorld world) {
-        boolean okSoFar = true;
-
-        for (TrackType trackType: world.getTrackTypes()) {
-            TrackPieceRenderer trackPieceView = getTrackPieceView(trackType.getId());
-
-            if (null == trackPieceView) {
-                logger.warn("No track piece view for the following track type: " + trackType.getName());
-
-                return false;
-            }
-            for (TrackConfiguration trackConfig: trackType.getValidTrackConfigurations()) {
-                int trackGraphicsNo = trackConfig.getConfiguration();
-                Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
-
-                if (null == img) {
-                    logger.warn("No track piece image for the following track type: " + trackType.getName() + ", with configuration: " + trackGraphicsNo);
-                    okSoFar = false;
-                }
-            }
-        }
-
-        return okSoFar;
+        Set<Integer> trackTypeIds = world.getTrackTypes().stream()
+                .map(TrackType::getId)
+                .collect(Collectors.toSet());
+        return trackTypeIds.equals(trackPieceRenderers.keySet());
     }
 }

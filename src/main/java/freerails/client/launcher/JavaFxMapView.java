@@ -517,7 +517,7 @@ final class JavaFxMapView implements ModelRootListener, WorldMapListener, AutoCl
                         overviewWidth, overviewHeight, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D overviewGraphics = overview.createGraphics();
                 try {
-                    overviewRenderer.paintRect(
+                    overviewRenderer.paintBackgroundRect(
                             overviewGraphics, new Rectangle(0, 0, overviewWidth, overviewHeight));
                 } finally {
                     overviewGraphics.dispose();

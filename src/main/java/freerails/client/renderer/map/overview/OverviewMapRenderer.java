@@ -128,13 +128,13 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     /**
-     * Performs the paint rect operation.
+     * Paints the whole overview image; the overview has no dynamic overlays.
      *
      * @param g the graphics context used for drawing
-     * @param visibleRect the visible area to render
+     * @param visibleRect the visible area to render, ignored
      */
     @Override
-    public void paintRect(Graphics g, Rectangle visibleRect) {
+    public void paintBackgroundRect(Graphics g, Rectangle visibleRect) {
         renderOffScreenImage();
 
         g.drawImage(mapImage, 0, 0, null);
@@ -220,17 +220,6 @@ public class OverviewMapRenderer implements MapRenderer {
     @Override
     public IntPoint2D getMapSizeInPixels() {
         return imageSize;
-    }
-
-    /**
-     * Performs the paint tile operation.
-     *
-     * @param g the graphics context used for drawing
-     * @param tileLocation the map coordinate
-     */
-    @Override
-    public void paintTile(Graphics g, IntPoint2D tileLocation) {
-        g.drawImage(mapImage, 0, 0, null);
     }
 
     /**
