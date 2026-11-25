@@ -123,7 +123,7 @@ public class UserMessageGenerator implements MoveReceiver {
             modelRoot.getProperties().setProperty(ModelRootProperty.QUICK_MESSAGE, String.join("\n", messages));
         }
         // The greater the revenue, the more loops of the sample are played.
-        int loops = (int) Math.min(Integer.MAX_VALUE, Math.max(0, revenue.amount() / REVENUE_PER_CASH_SOUND_LOOP));
+        int loops = (int) Math.clamp(revenue.amount() / REVENUE_PER_CASH_SOUND_LOOP, 0, Integer.MAX_VALUE);
         soundPlayer.accept(ClientConstants.SOUND_CASH, loops);
     }
 
@@ -168,9 +168,9 @@ public class UserMessageGenerator implements MoveReceiver {
         Player player = modelRoot.getPlayer();
         Set<Integer> movingTrains = new LinkedHashSet<>();
         for (Move leaf : leaves) {
-            if (leaf instanceof AddTrainMotionMove motionMove && motionMove.getPlayer().equals(player)
-                    && MotionUtils.isMovement(motionMove.getActivity())) {
-                movingTrains.add(motionMove.getTrainId());
+            if (leaf instanceof AddTrainMotionMove motionMove && motionMove.player().equals(player)
+                    && MotionUtils.isMovement(motionMove.activity())) {
+                movingTrains.add(motionMove.trainId());
             }
         }
 

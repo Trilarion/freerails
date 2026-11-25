@@ -124,8 +124,7 @@ public class MoveChainFork implements MoveReceiver {
 
             if (leaf instanceof MapUpdateMove mapUpdateMove) {
                 Rectangle rectangle = mapUpdateMove.getUpdatedTiles();
-                // TODO can rectangle become 0,0,0,0
-                if (rectangle.x != 0 && rectangle.y != 0 && rectangle.width != 0 && rectangle.height != 0) {
+                if (!rectangle.isEmpty()) {
                     for (WorldMapListener listener : mapListeners) {
                         listener.tilesChanged(rectangle);
                     }

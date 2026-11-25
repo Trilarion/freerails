@@ -136,7 +136,7 @@ public class CompositeMove implements ContainerMove {
     /**
      * Subclasses may override this method to perform tests which pass or fail
      * depending on the combination of moves making up this composite move.
-     *
+     * <p>
      * They run on every world the move is checked against, including read-only
      * views, so they must only read it.
      *

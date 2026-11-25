@@ -35,7 +35,6 @@ package freerails.client.renderer.map.overview;
 
 import freerails.client.renderer.map.MapRenderer;
 import freerails.io.ARGBColor;
-import freerails.io.GsonManager;
 import freerails.util.IntPoint2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
@@ -43,10 +42,6 @@ import freerails.model.terrain.TerrainTile;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -59,32 +54,22 @@ public class OverviewMapRenderer implements MapRenderer {
     private final IntPoint2D mapLocation = IntPoint2D.ZERO;
     private final UnmodifiableWorld world;
     private final AffineTransform affineTransform;
-    // TODO used many time, could be static or does it change every time
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private BufferedImage oneToOneImage;
     private BufferedImage mapImage;
     private boolean isDirty = true;
-    private Map<Integer, ARGBColor> terrainColors;
+    private final Map<Integer, ARGBColor> terrainColors;
 
     /**
      * Creates a overview map renderer instance.
      * @param world the world
      * @param imageSize the image size
+     * @param terrainColors the overview color of every terrain type, keyed by terrain ID
      */
-    private OverviewMapRenderer(UnmodifiableWorld world, IntPoint2D imageSize) {
+    private OverviewMapRenderer(UnmodifiableWorld world, IntPoint2D imageSize, Map<Integer, ARGBColor> terrainColors) {
         this.world = world;
         mapSize = world.getMapSize();
         this.imageSize = imageSize;
-
-        // TODO this should probably be loaded by the client at some point before (should they be model/scenario or client specific?)
-        URL url = OverviewMapRenderer.class.getResource("/freerails/client/terrain_colors.json");
-        File file = null;
-        try {
-            file = new File(url.toURI());
-            terrainColors = GsonManager.loadTerrainColors(file);
-        } catch (URISyntaxException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.terrainColors = terrainColors;
 
         double scalingFactor = (double) imageSize.y() / mapSize.y();
         affineTransform = AffineTransform.getScaleInstance(scalingFactor, scalingFactor);
@@ -96,9 +81,10 @@ public class OverviewMapRenderer implements MapRenderer {
      *
      * @param world the game world being queried
      * @param maxSize the max size parameter
+     * @param terrainColors the overview color of every terrain type, keyed by terrain ID
      * @return the instance produced by this method
      */
-    public static MapRenderer getInstance(UnmodifiableWorld world, Dimension maxSize) {
+    public static MapRenderer getInstance(UnmodifiableWorld world, Dimension maxSize, Map<Integer, ARGBColor> terrainColors) {
         // Work with doubles to avoid rounding errors.
         IntPoint2D mapSize = world.getMapSize();
         double worldWidth = mapSize.x();
@@ -114,7 +100,7 @@ public class OverviewMapRenderer implements MapRenderer {
         double height = scale * worldHeight;
         double width = scale * worldWidth;
 
-        return new OverviewMapRenderer(world, new IntPoint2D((int) width, (int) height));
+        return new OverviewMapRenderer(world, new IntPoint2D((int) width, (int) height), terrainColors);
     }
 
     /**
@@ -181,19 +167,11 @@ public class OverviewMapRenderer implements MapRenderer {
     private void refresh() {
         isDirty = true;
 
-        // free up memory used by the old image
-        if (mapImage != null) {
-            mapImage.flush();
-        }
-
-        if (oneToOneImage != null) {
-            oneToOneImage.flush();
-        }
-
-        // generate a 1:1 map of the terrain layer
-        oneToOneImage = defaultConfiguration.createCompatibleImage(mapSize.x(), mapSize.y(), Transparency.TRANSLUCENT);
-        mapImage = defaultConfiguration.createCompatibleImage(imageSize.x(), imageSize.y(), Transparency.OPAQUE);
-
+        // Plain in-memory images: the map view copies the overview into an
+        // ARGB image for JavaFX anyway, so screen-compatible images gain nothing.
+        // A 1:1 map of the terrain layer, one pixel per tile.
+        oneToOneImage = new BufferedImage(mapSize.x(), mapSize.y(), BufferedImage.TYPE_INT_ARGB);
+        mapImage = new BufferedImage(imageSize.x(), imageSize.y(), BufferedImage.TYPE_INT_RGB);
 
         for (int tileX = mapLocation.x(); tileX < mapSize.x() + mapLocation.x(); tileX++) {
             for (int tileY = mapLocation.y(); tileY < mapSize.y() + mapLocation.y(); tileY++) {

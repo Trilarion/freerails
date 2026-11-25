@@ -32,7 +32,10 @@ import freerails.model.operations.train.Engine;
 import freerails.util.IntArray2D;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.SortedSet;
 
 /** Reads and writes scenario configuration files outside the world model. */
@@ -50,24 +53,32 @@ public final class ScenarioDataLoader {
      * @param mapName normalized map name, without the {@code _map.json} suffix
      */
     public static ScenarioData load(File directory, String mapName) throws IOException {
-        File enginesFile = file(directory, "engines.json");
-        File citiesFile = file(directory, mapName + "_cities.json");
-        File cargosFile = file(directory, "cargo_types.json");
-        File terrainTypesFile = file(directory, "terrain_types.json");
-        File trackTypesFile = file(directory, "track_types.json");
-        File rulesFile = file(directory, "rules.json");
-        File sentimentsFile = file(directory, "sentiments.json");
-        File mapFile = file(directory, mapName + "_map.json");
+        return load(name -> {
+            File file = file(directory, name);
+            return file.isFile() ? new FileInputStream(file) : null;
+        }, mapName);
+    }
 
-        SortedSet<Engine> engines = GsonManager.loadEngines(enginesFile);
-        SortedSet<City> cities = GsonManager.loadCities(citiesFile);
-        SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(cargosFile);
-        SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(terrainTypesFile);
-        SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(trackTypesFile);
-        Rules rules = GsonManager.load(rulesFile, Rules.class);
-        SortedSet<Sentiment> sentiments = GsonManager.loadSentiments(sentimentsFile);
-        IntArray2D map = GsonManager.loadArray2D(mapFile);
-        ScenarioSettings settings = loadSettings(directory);
+    /**
+     * Loads a scenario from the established collection of JSON files, opened
+     * by name. This also works for resources inside a JAR, which cannot be
+     * read as files.
+     *
+     * @param opener opens a scenario file by name
+     * @param mapName normalized map name, without the {@code _map.json} suffix
+     * @return the loaded scenario
+     * @throws IOException if a required file is missing or cannot be read
+     */
+    public static ScenarioData load(ScenarioFileOpener opener, String mapName) throws IOException {
+        SortedSet<Engine> engines = loadRequired(opener, "engines.json", GsonManager::loadEngines);
+        SortedSet<City> cities = loadRequired(opener, mapName + "_cities.json", GsonManager::loadCities);
+        SortedSet<Cargo> cargos = loadRequired(opener, "cargo_types.json", GsonManager::loadCargoTypes);
+        SortedSet<Terrain> terrainTypes = loadRequired(opener, "terrain_types.json", GsonManager::loadTerrainTypes);
+        SortedSet<TrackType> trackTypes = loadRequired(opener, "track_types.json", GsonManager::loadTrackTypes);
+        Rules rules = loadRequired(opener, "rules.json", in -> GsonManager.load(in, Rules.class));
+        SortedSet<Sentiment> sentiments = loadRequired(opener, "sentiments.json", GsonManager::loadSentiments);
+        IntArray2D map = loadRequired(opener, mapName + "_map.json", GsonManager::loadArray2D);
+        ScenarioSettings settings = loadSettings(opener);
 
         return new ScenarioData(engines, cities, cargos, terrainTypes, trackTypes, sentiments,
                 rules, map, settings.clock(), settings.currentSentimentId(),
@@ -97,18 +108,65 @@ public final class ScenarioDataLoader {
     }
 
     /**
-     * Loads the settings file from the specified scenario directory.
+     * Loads the optional settings file, or returns the default settings if the
+     * scenario has none.
      *
-     * @param directory the directory containing the scenario settings
+     * @param opener opens a scenario file by name
      * @return the parsed scenario settings
      * @throws IOException if the settings file cannot be read or parsed
      */
-    private static ScenarioSettings loadSettings(File directory) throws IOException {
-        File settingsFile = file(directory, SETTINGS_FILE);
-        if (!settingsFile.exists()) {
-            return new ScenarioSettings(new Clock(1840, 1200, new Time(0)), 2, true);
+    private static ScenarioSettings loadSettings(ScenarioFileOpener opener) throws IOException {
+        try (InputStream in = opener.open(SETTINGS_FILE)) {
+            if (in == null) {
+                return new ScenarioSettings(new Clock(1840, 1200, new Time(0)), 2, true);
+            }
+            return GsonManager.load(in, ScenarioSettings.class);
         }
-        return GsonManager.load(settingsFile, ScenarioSettings.class);
+    }
+
+    /**
+     * Opens a required scenario file, loads it and closes it.
+     *
+     * @param opener opens a scenario file by name
+     * @param name the file name
+     * @param loader loads the value from the opened stream
+     * @param <E> result type
+     * @return the loaded value
+     * @throws IOException if the file is missing or cannot be read
+     */
+    private static <E> E loadRequired(ScenarioFileOpener opener, String name, FileLoader<E> loader) throws IOException {
+        try (InputStream in = opener.open(name)) {
+            if (in == null) {
+                throw new FileNotFoundException("Missing scenario file: " + name);
+            }
+            return loader.load(in);
+        }
+    }
+
+    /**
+     * Opens a scenario file by name.
+     */
+    @FunctionalInterface
+    public interface ScenarioFileOpener {
+
+        /**
+         * Opens the named scenario file.
+         *
+         * @param name the file name, for example {@code engines.json}
+         * @return a stream over the file, or {@code null} if there is no such file
+         * @throws IOException if the file exists but cannot be opened
+         */
+        InputStream open(String name) throws IOException;
+    }
+
+    /**
+     * Loads a value from an open stream.
+     *
+     * @param <E> result type
+     */
+    @FunctionalInterface
+    private interface FileLoader<E> {
+        E load(InputStream in) throws IOException;
     }
 
     /**

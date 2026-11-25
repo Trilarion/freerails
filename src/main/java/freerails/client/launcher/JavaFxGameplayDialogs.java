@@ -40,7 +40,6 @@ import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.move.BuildEngineShopMove;
 import freerails.move.ChangeProductionAtEngineShopMove;
-import freerails.move.Move;
 import freerails.move.Status;
 import freerails.move.ChangeTrainScheduleMove;
 import freerails.move.generator.BuildIndustryMoveGenerator;

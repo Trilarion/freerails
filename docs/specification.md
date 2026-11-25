@@ -130,14 +130,14 @@ focus between the world view and the tab pane's content.
 
 The menu bar contains:
 
-| Menu | Items |
-|------|-------|
-| Game | New Game, Game Speed (Paused, Slow, Moderate, Fast), Save Game, Load Game, Exit Game |
-| Build | New Train, Industry, Improve Station |
-| Display | Regional Display, Area, Detailed Area, Options |
-| Reports | Balance Sheet, Income Statement, Net Worth Graph, Stocks, Leaderboard, Accomplishments |
-| Broker | Call Broker |
-| Help | Controls, Quick Start, Manual, Report Bug, About |
+- **Game**: New Game, Game Speed (Paused, Slow, Moderate, Fast), Save Game, Load Game,
+  Exit Game
+- **Build**: New Train, Industry, Improve Station
+- **Display**: Regional Display, Area, Detailed Area, Options
+- **Reports**: Balance Sheet, Income Statement, Net Worth Graph, Stocks, Leaderboard,
+  Accomplishments
+- **Broker**: Call Broker
+- **Help**: Controls, Quick Start, Manual, Report Bug, About
 
 ### World view
 
@@ -188,13 +188,17 @@ bridges are wooden trestle, steel girder, and stone masonry; the stations are de
 station, and terminal. The bridge and tunnel rows each have a "none" button. There are
 five build modes:
 
-| Build mode | Options shown | Action |
-|------------|---------------|--------|
-| Build track | Track type, bridges, tunnels | Dragging the mouse, or moving the cursor with the number pad, builds track: the selected track type on clear terrain, the selected bridge type over rivers (if one is selected), and a tunnel through hills and mountains (if tunnels are selected). |
-| Upgrade track | Track type, bridges | Dragging the mouse upgrades track and bridges along the path to the selected types. The keyboard only moves the cursor. |
-| Build station | Stations | Selecting a station type enters place station mode. |
-| Bulldoze | None | Dragging the mouse removes the track along the path. The keyboard only moves the cursor. |
-| Inspect | None | Nothing is built, upgraded, or removed when the cursor moves. |
+- **Build track** (shows track type, bridges, and tunnels): dragging the mouse, or moving
+  the cursor with the number pad, builds track: the selected track type on clear terrain,
+  the selected bridge type over rivers (if one is selected), and a tunnel through hills and
+  mountains (if tunnels are selected).
+- **Upgrade track** (shows track type and bridges): dragging the mouse upgrades track and
+  bridges along the path to the selected types. The keyboard only moves the cursor.
+- **Build station** (shows stations): selecting a station type enters place station mode.
+- **Bulldoze** (shows no options): dragging the mouse removes the track along the path. The
+  keyboard only moves the cursor.
+- **Inspect** (shows no options): nothing is built, upgraded, or removed when the cursor
+  moves.
 
 Clicking the build tab must not take keyboard focus away from the world view, because
 that would interrupt building track with the keyboard. When a game is started or loaded,
@@ -321,50 +325,54 @@ last time the launcher was run.
 
 **Panel 1: game type.** The choice determines the next panel:
 
-| Selection | Next panel |
-|-----------|------------|
-| Single player | Select map, without a server port field |
-| Start a network game | Select map, with a server port field |
-| Join a network game | Client details, with remote server fields |
-| Server only | Select map, with a server port field |
+- **Single player**: select map, without a server port field.
+- **Start a network game**: select map, with a server port field.
+- **Join a network game**: client details, with remote server fields.
+- **Server only**: select map, with a server port field.
 
 **Panel 2: select map and server details.** The player starts a new map or loads a saved
-game. The server port defaults to 55000.
+game. The server port defaults to 55000. The game type determines the next panel:
 
-| Selection | Next panel |
-|-----------|------------|
-| Single player | Client details, without remote server fields |
-| Start a network game | Client details, without remote server fields |
-| Server only | Connected players |
+- **Single player**: client details, without remote server fields.
+- **Start a network game**: client details, without remote server fields.
+- **Server only**: connected players.
 
-| Condition | Result | Checked |
-|-----------|--------|---------|
-| No saved game is available. | "Load a saved game" is disabled. | When the panel is created. |
-| The port is not a number from 0 to 65535. | "A valid port value is between 0 and 65535."; "Next" is disabled. | As text is entered. |
-| "Start a new map" is selected but no map is. | "Select a map"; "Next" is disabled. | When the selection changes. |
-| The server cannot start on the port. | The error message is shown; "Next" stays enabled. | When "Next" is pressed. |
+The panel checks its input as follows:
+
+- No saved game is available: "Load a saved game" is disabled. Checked when the panel is
+  created.
+- The port is not a number from 0 to 65535: "A valid port value is between 0 and
+  65535."; "Next" is disabled. Checked as text is entered.
+- "Start a new map" is selected but no map is: "Select a map"; "Next" is disabled. Checked
+  when the selection changes.
+- The server cannot start on the port: the error message is shown; "Next" stays enabled.
+  Checked when "Next" is pressed.
 
 **Panel 3: client details and remote server details.** The player name defaults to the
 operating-system user name. When a saved game is loaded, the name field is replaced by a
 list of the players in that game. For a remote server, the address defaults to 127.0.0.1
-and the port to 55000.
+and the port to 55000. The game type determines the next panel:
 
-| Selection | Next panel |
-|-----------|------------|
-| Single player | Progress |
-| Start a network game | Connected players |
-| Join a network game | Progress |
+- **Single player**: progress.
+- **Start a network game**: connected players.
+- **Join a network game**: progress.
 
-| Condition | Result | Checked |
-|-----------|--------|---------|
-| The player name is empty. | "Enter a player name"; "Next" is disabled. | As text is entered. |
-| The port is not a number from 0 to 65535. | "A valid port value is between 0 and 65535."; "Next" is disabled. | As text is entered. |
-| Full screen is selected but no display mode is. | "Select a display mode"; "Next" is disabled. | When the selection changes. |
-| The server address is empty. | "Enter the address of the server"; "Next" is disabled. | As text is entered. |
-| The host cannot be resolved. | "Can't resolve host." | When "Next" is pressed. |
-| The server cannot be reached. | "Can't connect to server." | When "Next" is pressed. |
-| The remote server has loaded a saved game, and the player name is not in it. | "New players can't join a saved game." | When "Next" is pressed. |
-| The remote server's game has already started. | "New players can't join a game in progress." | When "Next" is pressed. |
+The panel checks its input as follows:
+
+- The player name is empty: "Enter a player name"; "Next" is disabled. Checked as text is
+  entered.
+- The port is not a number from 0 to 65535: "A valid port value is between 0 and
+  65535."; "Next" is disabled. Checked as text is entered.
+- Full screen is selected but no display mode is: "Select a display mode"; "Next" is
+  disabled. Checked when the selection changes.
+- The server address is empty: "Enter the address of the server"; "Next" is disabled.
+  Checked as text is entered.
+- The host cannot be resolved: "Can't resolve host." Checked when "Next" is pressed.
+- The server cannot be reached: "Can't connect to server." Checked when "Next" is pressed.
+- The remote server has loaded a saved game, and the player name is not in it: "New
+  players can't join a saved game." Checked when "Next" is pressed.
+- The remote server's game has already started: "New players can't join a game in
+  progress." Checked when "Next" is pressed.
 
 **Panel 4: connected players.** The host sees the players who have connected before
 starting the game.

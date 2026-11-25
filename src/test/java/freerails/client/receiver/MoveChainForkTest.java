@@ -90,6 +90,25 @@ public class MoveChainForkTest extends TestCase {
     }
 
     /**
+     * Tests that map updates in the first column or row reach the map listeners and that only
+     * empty rectangles are skipped.
+     */
+    public void testNotifiesMapListenersOfUpdatesAtMapEdgeAndSkipsEmptyRectangles() {
+        Rectangle firstColumn = new Rectangle(0, 4, 1, 1);
+        Rectangle firstRow = new Rectangle(3, 0, 1, 1);
+        Rectangle empty = new Rectangle(0, 0, 0, 0);
+
+        MoveChainFork fork = new MoveChainFork();
+        List<Rectangle> changed = new ArrayList<>();
+        fork.addMapListener(changed::add);
+        fork.process(new TestMapUpdateMove(firstColumn));
+        fork.process(new TestMapUpdateMove(firstRow));
+        fork.process(new TestMapUpdateMove(empty));
+
+        assertEquals(List.of(firstColumn, firstRow), changed);
+    }
+
+    /**
      * A map update that changes nothing and reports a fixed rectangle.
      *
      * @param tiles the rectangle reported as updated

@@ -38,18 +38,13 @@ import java.util.Objects;
  * such as cargo transfer and consist changes, are separate moves that are
  * combined with this one in a {@link CompositeMove}.
  */
-public class AddTrainMotionMove implements Move {
-
-    private final Player player;
-    private final int trainId;
-    private final TrainMotion activity;
-
+public record AddTrainMotionMove(Player player, int trainId, TrainMotion activity) implements Move {
 
     /**
      * Creates a move that appends the supplied motion to a train.
      *
-     * @param player owner of the train
-     * @param trainId identifier of the train
+     * @param player   owner of the train
+     * @param trainId  identifier of the train
      * @param activity motion to append
      */
     public AddTrainMotionMove(@NotNull Player player, int trainId, @NotNull TrainMotion activity) {
@@ -63,7 +58,8 @@ public class AddTrainMotionMove implements Move {
      *
      * @return the player who owns the train
      */
-    public @NotNull Player getPlayer() {
+    @Override
+    public @NotNull Player player() {
         return player;
     }
 
@@ -72,7 +68,8 @@ public class AddTrainMotionMove implements Move {
      *
      * @return the train identifier
      */
-    public int getTrainId() {
+    @Override
+    public int trainId() {
         return trainId;
     }
 
@@ -81,7 +78,8 @@ public class AddTrainMotionMove implements Move {
      *
      * @return the motion
      */
-    public @NotNull TrainMotion getActivity() {
+    @Override
+    public @NotNull TrainMotion activity() {
         return activity;
     }
 
@@ -128,13 +126,4 @@ public class AddTrainMotionMove implements Move {
         return Objects.equals(player, o.player) && trainId == o.trainId && Objects.equals(activity, o.activity);
     }
 
-    /**
-     * Returns a hash code for this object.
-     *
-     * @return the hash code for this object
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(player, trainId, activity);
-    }
 }

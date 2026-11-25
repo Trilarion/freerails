@@ -131,7 +131,7 @@ public class RemoveStationCompositeMove extends CompositeMove implements TrackMo
             return status;
         }
 
-        Player owner = stationRemoval.getPlayer();
+        Player owner = stationRemoval.player();
         if (owner.getId() != stationOwnerId) {
             return Status.fail("The removed station must belong to the owner of the station track.");
         }
@@ -139,7 +139,7 @@ public class RemoveStationCompositeMove extends CompositeMove implements TrackMo
         if (!status.isSuccess()) {
             return status;
         }
-        int stationId = stationRemoval.getStationId();
+        int stationId = stationRemoval.stationId();
         Optional<Station> station = world.getStations(owner).stream()
                 .filter(candidate -> candidate.getId() == stationId)
                 .findFirst();

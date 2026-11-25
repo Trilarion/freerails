@@ -47,22 +47,22 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
     }
 
     /**
-     * The map has changed.
+     * Paints a part of the buffer from the map layer.
      *
-     * @param x the horizontal coordinate
-     * @param y the vertical coordinate
-     * @param width the width parameter
-     * @param height the height parameter
+     * @param x the horizontal buffer coordinate
+     * @param y the vertical buffer coordinate
+     * @param width the width of the part to paint
+     * @param height the height of the part to paint
      */
     @Override
     protected void paintBufferRectangle(int x, int y, int width, int height) {
-        // Fix for bug [ 1303162 ]
-        // If the buffer hasn't been set yet, don't try and refresh it!
-        if (null != super.backgroundBuffer) {
-            Graphics graphics = bg.create();
+        Rectangle bufferRect = getBufferRect();
+        Graphics graphics = createBufferGraphics();
+        try {
             graphics.setClip(x, y, width, height);
             graphics.translate(-bufferRect.x, -bufferRect.y);
             mapLayerRenderer.paintRect(graphics, bufferRect);
+        } finally {
             graphics.dispose();
         }
     }
@@ -85,14 +85,16 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
      */
     @Override
     public void refreshTile(IntPoint2D tileLocation) {
-        // The backgroundBuffer gets created on the first call to
-        // backgroundBuffer.paintRect(..)
-        // so we need a check here to avoid a null pointer exception.
-        if (null != super.backgroundBuffer) {
-            Graphics gg = bg.create();
-            gg.translate(-bufferRect.x, -bufferRect.y);
-            mapLayerRenderer.paintTile(gg, tileLocation);
-            gg.dispose();
+        // Before the first paint there is no buffer to update.
+        if (hasBuffer()) {
+            Rectangle bufferRect = getBufferRect();
+            Graphics graphics = createBufferGraphics();
+            try {
+                graphics.translate(-bufferRect.x, -bufferRect.y);
+                mapLayerRenderer.paintTile(graphics, tileLocation);
+            } finally {
+                graphics.dispose();
+            }
         }
     }
 }

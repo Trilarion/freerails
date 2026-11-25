@@ -98,9 +98,9 @@ public record CargoBatch(int cargoTypeId, IntPoint2D sourceP, int originalStatio
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof CargoBatch test) {
-            return test.cargoTypeId == cargoTypeId && sourceP.equals(test.sourceP)
-                    && test.creationTime.equals(creationTime) && test.originalStationId == originalStationId;
+        if (obj instanceof CargoBatch(int typeId, IntPoint2D p, int stationId, Time time)) {
+            return typeId == cargoTypeId && sourceP.equals(p)
+                    && time.equals(creationTime) && stationId == originalStationId;
         }
         return false;
     }

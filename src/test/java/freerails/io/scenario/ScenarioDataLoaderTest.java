@@ -31,9 +31,14 @@ import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
 
 /**
  * Tests scenario data loader behavior.
@@ -117,6 +122,51 @@ public class ScenarioDataLoaderTest extends TestCase {
 
         assertEquals(scenario.terrainMap().getWidth(), world.getMapSize().x());
         assertEquals(scenario.terrainMap().getHeight(), world.getMapSize().y());
+    }
+
+    /**
+     * Tests that the classpath scenario source also loads scenarios packaged in a JAR, where the
+     * resources cannot be read as files.
+     * @throws Exception if the JAR cannot be built or the scenario cannot be loaded.
+     */
+    public void testClasspathScenarioSourceLoadsScenarioFromJar() throws Exception {
+        Path temporaryDirectory = Files.createTempDirectory("freerails-scenario-jar-test");
+        try {
+            Path jar = temporaryDirectory.resolve("scenarios.jar");
+            try (JarOutputStream out = new JarOutputStream(Files.newOutputStream(jar))) {
+                File[] files = scenarioDirectory().listFiles(File::isFile);
+                assertNotNull(files);
+                for (File file : files) {
+                    out.putNextEntry(new JarEntry("freerails/data/scenario/" + file.getName()));
+                    Files.copy(file.toPath(), out);
+                    out.closeEntry();
+                }
+            }
+
+            ScenarioData expected = ScenarioDataLoader.load(scenarioDirectory(), "small_south_america");
+            try (URLClassLoader jarOnly = new URLClassLoader(new URL[]{jar.toUri().toURL()}, null)) {
+                ScenarioData loaded = new ClasspathScenarioSource(jarOnly).loadScenario("Small South America");
+                assertEquals(expected, loaded);
+            }
+        } finally {
+            FileUtils.deleteDirectory(temporaryDirectory.toFile());
+        }
+    }
+
+    /**
+     * Tests that a missing required scenario file is reported with its name.
+     * @throws Exception if the temporary directory cannot be used.
+     */
+    public void testMissingScenarioFileIsReported() throws Exception {
+        Path temporaryDirectory = Files.createTempDirectory("freerails-scenario-missing-test");
+        try {
+            ScenarioDataLoader.load(temporaryDirectory.toFile(), "small_south_america");
+            fail("Expected FileNotFoundException");
+        } catch (FileNotFoundException expected) {
+            assertEquals("Missing scenario file: engines.json", expected.getMessage());
+        } finally {
+            FileUtils.deleteDirectory(temporaryDirectory.toFile());
+        }
     }
 
     /**

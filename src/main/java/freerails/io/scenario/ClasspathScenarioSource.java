@@ -21,16 +21,38 @@ package freerails.io.scenario;
 import freerails.model.scenario.ScenarioData;
 import freerails.server.ScenarioSource;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Locale;
+import java.util.Objects;
 
-/** Loads scenario definitions from the built-in classpath resources. */
+/**
+ * Loads scenario definitions from the built-in classpath resources. The
+ * resources are read as streams, so this works both from a directory and from
+ * inside a JAR.
+ */
 public final class ClasspathScenarioSource implements ScenarioSource {
 
     private static final String[] SCENARIO_NAMES = {"South America", "Small South America"};
+    private static final String SCENARIO_RESOURCE_PATH = "freerails/data/scenario/";
+
+    private final ClassLoader classLoader;
+
+    /**
+     * Creates a source that reads the scenarios bundled with the application.
+     */
+    public ClasspathScenarioSource() {
+        this(ClasspathScenarioSource.class.getClassLoader());
+    }
+
+    /**
+     * Creates a source that reads the scenario resources through the specified
+     * class loader.
+     *
+     * @param classLoader the class loader holding the scenario resources
+     */
+    ClasspathScenarioSource(ClassLoader classLoader) {
+        this.classLoader = Objects.requireNonNull(classLoader, "classLoader");
+    }
 
     /**
      * Returns the names of the scenarios available in the built-in resources.
@@ -52,15 +74,7 @@ public final class ClasspathScenarioSource implements ScenarioSource {
     @Override
     public ScenarioData loadScenario(String scenarioName) throws IOException {
         String mapName = scenarioName.toLowerCase(Locale.ROOT).replace(' ', '_');
-        URL url = ClasspathScenarioSource.class.getResource("/freerails/data/scenario/");
-        if (url == null) {
-            throw new IOException("Scenario resources are missing from the classpath.");
-        }
-        try {
-            File directory = new File(url.toURI());
-            return ScenarioDataLoader.load(directory, mapName);
-        } catch (URISyntaxException e) {
-            throw new IOException("Could not resolve scenario resource directory.", e);
-        }
+        return ScenarioDataLoader.load(
+                name -> classLoader.getResourceAsStream(SCENARIO_RESOURCE_PATH + name), mapName);
     }
 }

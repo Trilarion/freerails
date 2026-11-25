@@ -20,6 +20,7 @@ package freerails.io;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import freerails.io.adapter.ColorAdapter;
 import freerails.io.adapter.MoneyAdapter;
@@ -35,8 +36,13 @@ import freerails.model.operations.train.Engine;
 import freerails.util.IntArray2D;
 import org.apache.commons.io.FileUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -65,7 +71,7 @@ public final class GsonManager {
     private static final Type citiesListType = new TypeToken<List<City>>(){}.getType();
     private static final Type cargoTypesListType = new TypeToken<List<Cargo>>(){}.getType();
     private static final Type terrainTypesListType = new TypeToken<List<Terrain>>(){}.getType();
-    private static final Type terrainColorsMapType = new TypeToken<Map<Integer, ARGBColor>>(){}.getType();
+    private static final Type terrainColorsMapType = new TypeToken<Map<String, ARGBColor>>(){}.getType();
     private static final Type trackTypeListType = new TypeToken<List<TrackType>>(){}.getType();
     private static final Type sentimentListType = new TypeToken<List<Sentiment>>(){}.getType();
 
@@ -85,7 +91,18 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static SortedSet<Engine> loadEngines(File file) throws IOException {
-        return loadAsSortedSet(file, enginesListType);
+        return fromFile(file, GsonManager::loadEngines);
+    }
+
+    /**
+     * Loads engine definitions from a JSON stream. The stream is not closed.
+     *
+     * @param in source of the JSON
+     * @return engines ordered by identifier
+     * @throws IOException if the stream cannot be read
+     */
+    public static SortedSet<Engine> loadEngines(InputStream in) throws IOException {
+        return loadAsSortedSet(in, enginesListType);
     }
 
     /**
@@ -96,7 +113,18 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static SortedSet<City> loadCities(File file) throws IOException {
-        return loadAsSortedSet(file, citiesListType);
+        return fromFile(file, GsonManager::loadCities);
+    }
+
+    /**
+     * Loads city definitions from a JSON stream. The stream is not closed.
+     *
+     * @param in source of the JSON
+     * @return cities ordered by identifier
+     * @throws IOException if the stream cannot be read
+     */
+    public static SortedSet<City> loadCities(InputStream in) throws IOException {
+        return loadAsSortedSet(in, citiesListType);
     }
 
     /**
@@ -107,7 +135,18 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static SortedSet<Cargo> loadCargoTypes(File file) throws IOException {
-        return loadAsSortedSet(file, cargoTypesListType);
+        return fromFile(file, GsonManager::loadCargoTypes);
+    }
+
+    /**
+     * Loads cargo definitions from a JSON stream. The stream is not closed.
+     *
+     * @param in source of the JSON
+     * @return cargo types ordered by identifier
+     * @throws IOException if the stream cannot be read
+     */
+    public static SortedSet<Cargo> loadCargoTypes(InputStream in) throws IOException {
+        return loadAsSortedSet(in, cargoTypesListType);
     }
 
     /**
@@ -118,18 +157,39 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static SortedSet<Terrain> loadTerrainTypes(File file) throws IOException {
-        return loadAsSortedSet(file, terrainTypesListType);
+        return fromFile(file, GsonManager::loadTerrainTypes);
     }
 
     /**
-     * Loads terrain colors keyed by terrain identifier.
+     * Loads terrain definitions from a JSON stream. The stream is not closed.
      *
-     * @param file source file
-     * @return map of terrain identifiers to colors
-     * @throws IOException if the file cannot be read
+     * @param in source of the JSON
+     * @return terrain types ordered by identifier
+     * @throws IOException if the stream cannot be read
      */
-    public static Map<Integer, ARGBColor> loadTerrainColors(File file) throws  IOException {
-        return loadAsMap(file, terrainColorsMapType);
+    public static SortedSet<Terrain> loadTerrainTypes(InputStream in) throws IOException {
+        return loadAsSortedSet(in, terrainTypesListType);
+    }
+
+    /**
+     * Loads terrain colors keyed by terrain name from a stream, so that it
+     * also works for resources inside a JAR. The stream is not closed.
+     *
+     * @param in source of the JSON object
+     * @return map of terrain names to colors
+     * @throws IOException if the stream cannot be read or holds no JSON object
+     */
+    public static Map<String, ARGBColor> loadTerrainColors(InputStream in) throws IOException {
+        Map<String, ARGBColor> colors;
+        try {
+            colors = gson.fromJson(reader(in), terrainColorsMapType);
+        } catch (JsonParseException e) {
+            throw new IOException("Invalid terrain colors.", e);
+        }
+        if (colors == null) {
+            throw new IOException("Terrain colors are empty.");
+        }
+        return colors;
     }
 
     /**
@@ -140,7 +200,19 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static IntArray2D loadArray2D(File file) throws  IOException {
-        return load(file, typeTokenArray2D);
+        return fromFile(file, GsonManager::loadArray2D);
+    }
+
+    /**
+     * Loads a two-dimensional integer array from a JSON stream. The stream is
+     * not closed.
+     *
+     * @param in source of the JSON
+     * @return loaded array
+     * @throws IOException if the stream cannot be read
+     */
+    public static IntArray2D loadArray2D(InputStream in) throws IOException {
+        return load(in, typeTokenArray2D.getType());
     }
 
     /**
@@ -151,7 +223,19 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static SortedSet<TrackType> loadTrackTypes(File file) throws IOException {
-        SortedSet<TrackType> trackTypes = loadAsSortedSet(file, trackTypeListType);
+        return fromFile(file, GsonManager::loadTrackTypes);
+    }
+
+    /**
+     * Loads track definitions from a JSON stream and prepares each definition
+     * for use. The stream is not closed.
+     *
+     * @param in source of the JSON
+     * @return track types ordered by identifier
+     * @throws IOException if the stream cannot be read
+     */
+    public static SortedSet<TrackType> loadTrackTypes(InputStream in) throws IOException {
+        SortedSet<TrackType> trackTypes = loadAsSortedSet(in, trackTypeListType);
         // prepare
         for (TrackType trackType: trackTypes) {
             trackType.prepare();
@@ -167,24 +251,18 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static SortedSet<Sentiment> loadSentiments(File file) throws IOException {
-        return loadAsSortedSet(file, sentimentListType);
+        return fromFile(file, GsonManager::loadSentiments);
     }
 
     /**
-     * Deserializes a JSON file using a generic type token.
+     * Loads sentiment definitions from a JSON stream. The stream is not closed.
      *
-     * @param file source file
-     * @param typeToken token describing the result type
-     * @param <E> result type
-     * @return deserialized value
-     * @throws IOException if the file cannot be read
+     * @param in source of the JSON
+     * @return sentiments ordered by identifier
+     * @throws IOException if the stream cannot be read
      */
-    private static <E> E load(File file, TypeToken<E> typeToken) throws IOException {
-        // load JSON
-        String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
-
-        // deserialize
-        return gson.fromJson(json, typeToken.getType());
+    public static SortedSet<Sentiment> loadSentiments(InputStream in) throws IOException {
+        return loadAsSortedSet(in, sentimentListType);
     }
 
     /**
@@ -197,47 +275,70 @@ public final class GsonManager {
      * @throws IOException if the file cannot be read
      */
     public static <E> E load(File file, Type type) throws IOException {
-        // load JSON
-        String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
-
-        // deserialize JSON
-        return gson.fromJson(json, type);
+        return fromFile(file, in -> load(in, type));
     }
 
     /**
-     * Loads a JSON object as a map.
+     * Deserializes a JSON stream into the specified reflective type. The
+     * stream is not closed.
+     *
+     * @param in source of the JSON
+     * @param type type represented by the JSON
+     * @param <E> result type
+     * @return deserialized value
+     * @throws IOException if the stream cannot be read
+     */
+    public static <E> E load(InputStream in, Type type) throws IOException {
+        return gson.fromJson(reader(in), type);
+    }
+
+    /**
+     * Opens a file, loads it with the specified stream loader and closes it.
      *
      * @param file source file
-     * @param type reflective map type
-     * @param <K> key type
-     * @param <V> value type
-     * @return deserialized map
+     * @param loader loads the value from the opened stream
+     * @param <E> result type
+     * @return loaded value
      * @throws IOException if the file cannot be read
      */
-    private static <K, V> Map<K, V> loadAsMap(File file, Type type) throws IOException {
-        // load JSON
-        String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
+    private static <E> E fromFile(File file, StreamLoader<E> loader) throws IOException {
+        try (InputStream in = new FileInputStream(file)) {
+            return loader.load(in);
+        }
+    }
 
-        // deserialize JSON
-        return gson.fromJson(json, type);
+    /**
+     * Wraps a stream in a buffered reader using the JSON character set.
+     *
+     * @param in source stream
+     * @return reader over the stream
+     */
+    private static Reader reader(InputStream in) {
+        return new BufferedReader(new InputStreamReader(in, ModelConstants.defaultCharset));
+    }
+
+    /**
+     * Loads a value from an open stream.
+     *
+     * @param <E> result type
+     */
+    @FunctionalInterface
+    private interface StreamLoader<E> {
+        E load(InputStream in) throws IOException;
     }
 
     /**
      * Loads identifiable values into a sorted set and checks identifier uniqueness.
      *
-     * @param file source file
+     * @param in source of the JSON
      * @param type reflective collection type
      * @param <T> identifiable element type
      * @return values ordered by identifier
-     * @throws IOException if the file cannot be read
+     * @throws IOException if the stream cannot be read
      * @throws IllegalArgumentException if identifiers are duplicated
      */
-    private static <T extends Identifiable> SortedSet<T> loadAsSortedSet(File file, Type type) throws IOException {
-        // load JSON
-        String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
-
-        // deserialize JSON
-        List<T> list = gson.fromJson(json, type);
+    private static <T extends Identifiable> SortedSet<T> loadAsSortedSet(InputStream in, Type type) throws IOException {
+        List<T> list = gson.fromJson(reader(in), type);
 
         // check for uniqueness
         verifyUniqueIds(list);

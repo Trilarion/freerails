@@ -50,9 +50,9 @@ public record CommandStatus(boolean successful) implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CommandStatus commandStatus)) return false;
+        if (!(obj instanceof CommandStatus(boolean successful1))) return false;
 
-        return successful == commandStatus.successful;
+        return successful == successful1;
     }
 
     /**

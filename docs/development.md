@@ -276,16 +276,14 @@ Each tile stores its track as a track configuration, an 8-bit mask with one bit
 per neighbor that the tile connects to. Bit zero is north and the bits increase
 clockwise:
 
-| Direction | Bit | Value |
-|-----------|-----|-------|
-| North | 0 | 1 |
-| North-east | 1 | 2 |
-| East | 2 | 4 |
-| South-east | 3 | 8 |
-| South | 4 | 16 |
-| South-west | 5 | 32 |
-| West | 6 | 64 |
-| North-west | 7 | 128 |
+- North: bit 0, value 1
+- North-east: bit 1, value 2
+- East: bit 2, value 4
+- South-east: bit 3, value 8
+- South: bit 4, value 16
+- South-west: bit 5, value 32
+- West: bit 6, value 64
+- North-west: bit 7, value 128
 
 Scenario templates use standard binary string order, with the least-significant
 bit at the right. For example:
@@ -343,6 +341,9 @@ is also planned by path finding over candidate track pieces.
   architecture changes.
 - Keep Markdown prose wrapped to roughly 80-100 characters so the source stays
   readable in editors, reviews, and git diffs.
+- Do not use tables in Markdown documentation. Use lists instead, for example
+  one item per row with the first column as the lead-in. Long table rows cannot
+  be wrapped, which makes them hard to read and to diff.
 
 ### Scope
 

@@ -218,7 +218,7 @@ public final class JavaFxLauncherClient extends FreerailsClient {
             BuildTrackController controller = new BuildTrackController(world, newModelRoot);
             buildTrackController = controller;
             DetailMapRenderer mainMap = new DetailMapRenderer(world, currentRendererRoot, newModelRoot);
-            var overviewMap = OverviewMapRenderer.getInstance(world, new Dimension(200, 200));
+            var overviewMap = OverviewMapRenderer.getInstance(world, new Dimension(200, 200), currentRendererRoot.getTerrainColors());
             var cursor = new freerails.client.view.FreerailsCursor(properties, currentRendererRoot);
 
             JavaFxGameplayWindow window = Objects.requireNonNull(

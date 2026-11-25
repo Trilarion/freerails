@@ -24,95 +24,79 @@
 package freerails.client.renderer.map;
 
 import java.awt.*;
-import java.awt.image.VolatileImage;
+import java.awt.image.BufferedImage;
 
 /**
- * This abstract class stores a buffer of the background of the current visible
- * rectangle of the map. Code that is independent of how tiles are represented,
- * e.g. whether they are square or isometric, should go here.
+ * Keeps an off-screen buffer of the background of the map region painted
+ * last. When the next region overlaps it, the buffer is scrolled and only the
+ * newly exposed strips are painted. Code that is independent of how tiles are
+ * represented, e.g. whether they are square or isometric, should go here.
+ * <p>
+ * The buffer is a plain in-memory image. The map view copies the background
+ * into an ARGB image for JavaFX anyway, so a screen-compatible or volatile
+ * image would gain nothing.
  */
 public abstract class BufferedTiledBackgroundRenderer implements MapLayerRenderer {
 
     /**
-     * This is used to create images that are compatible with the default
-     * graphics configuration. Such images can be drawn to the screen quickly
-     * since no conversion is needed.
+     * The bounds and location of the map region that is stored in the buffer.
      */
-    private final GraphicsConfiguration defaultConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+    private final Rectangle bufferRect = new Rectangle();
     /**
-     * The bounds and location of the map region that is stored in the offscreen
-     * Image backgroundBuffer.
+     * An off-screen image storing the background of a region of the map, or
+     * {@code null} before the first call to {@link #paintRect(Graphics, Rectangle)}.
      */
-    public final Rectangle bufferRect = new Rectangle();
+    private BufferedImage backgroundBuffer;
     /**
-     * Used to draw on the back buffer.
+     * Used to draw on the buffer.
      */
-    public Graphics bg;
+    private Graphics2D bg;
+
     /**
-     * An offscreen image storing the background of a region of the map.
-     */
-    public VolatileImage backgroundBuffer;
-    /**
-     * Updates the back buffer as necessary, then draws it on to the Graphics
-     * object passed.
+     * Updates the buffer as necessary, then draws it on to the Graphics object
+     * passed.
      *
-     * @param g           Once it has been updated, the back buffer is drawn onto this
+     * @param g           Once it has been updated, the buffer is drawn onto this
      *                    Graphics object.
-     * @param visibleRect The region of the map that the back buffer must be updated to
+     * @param visibleRect The region of the map that the buffer must be updated to
      *                    display.
      */
     @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
-        boolean contentsLost;
-        do {
-            boolean repaintBuffer = false;
-            /*
-             * If this is the first call to the paint method or the component
-             * has just been resized, we need to create a new backgroundBuffer.
-             */
-            if (backgroundBuffer == null || visibleRect.height != bufferRect.height || visibleRect.width != bufferRect.width) {
-                setBackgroundBuffer(visibleRect);
-                repaintBuffer = true;
-            }
+        boolean repaintBuffer = false;
+        // On the first call, or when the size has changed, create a new buffer.
+        if (backgroundBuffer == null || visibleRect.height != bufferRect.height || visibleRect.width != bufferRect.width) {
+            setBackgroundBuffer(visibleRect);
+            repaintBuffer = true;
+        }
 
-            // Test if image is lost and restore it.
-            int valCode = backgroundBuffer.validate(defaultConfig);
-
-            if (valCode == VolatileImage.IMAGE_INCOMPATIBLE) {
-                setBackgroundBuffer(visibleRect);
-                repaintBuffer = true;
-            } else if (valCode == VolatileImage.IMAGE_RESTORED) {
+        if (!repaintBuffer && (bufferRect.x != visibleRect.x || bufferRect.y != visibleRect.y)) {
+            int dx = bufferRect.x - visibleRect.x;
+            int dy = bufferRect.y - visibleRect.y;
+            if (Math.abs((long) dx) >= bufferRect.width
+                    || Math.abs((long) dy) >= bufferRect.height) {
                 bufferRect.setLocation(visibleRect.x, visibleRect.y);
                 repaintBuffer = true;
+            } else {
+                scrollBackgroundBuffer(dx, dy);
             }
+        }
 
-            if (!repaintBuffer && (bufferRect.x != visibleRect.x || bufferRect.y != visibleRect.y)) {
-                int dx = bufferRect.x - visibleRect.x;
-                int dy = bufferRect.y - visibleRect.y;
-                if (Math.abs((long) dx) >= bufferRect.width
-                        || Math.abs((long) dy) >= bufferRect.height) {
-                    bufferRect.setLocation(visibleRect.x, visibleRect.y);
-                    repaintBuffer = true;
-                } else {
-                    scrollBackgroundBuffer(dx, dy);
-                }
-            }
+        if (repaintBuffer) {
+            refreshBackground();
+        }
 
-            if (repaintBuffer) {
-                refreshBackground();
-            }
-
-            g.drawImage(backgroundBuffer, visibleRect.x, visibleRect.y, null);
-            bufferRect.setBounds(visibleRect);
-            contentsLost = backgroundBuffer.contentsLost();
-        } while (contentsLost);
+        g.drawImage(backgroundBuffer, visibleRect.x, visibleRect.y, null);
+        bufferRect.setBounds(visibleRect);
     }
 
     /**
-     * The map has changed.
+     * Repaints the whole buffer, if there is one yet.
      */
     private void refreshBackground() {
-        paintBufferRectangle(0, 0, bufferRect.width, bufferRect.height);
+        if (hasBuffer()) {
+            paintBufferRectangle(0, 0, bufferRect.width, bufferRect.height);
+        }
     }
 
     /**
@@ -124,43 +108,71 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
     }
 
     /**
-     * Sets the background buffer.
+     * Returns whether the buffer exists. It is created on the first call to
+     * {@link #paintRect(Graphics, Rectangle)}; before that, refreshes have
+     * nothing to update.
+     *
+     * @return whether the buffer exists
+     */
+    protected boolean hasBuffer() {
+        return backgroundBuffer != null;
+    }
+
+    /**
+     * Returns a new graphics context for drawing on the buffer, in buffer
+     * coordinates. The caller must dispose it. Only valid if
+     * {@link #hasBuffer()} is {@code true}.
+     *
+     * @return a graphics context for the buffer
+     */
+    protected Graphics createBufferGraphics() {
+        return bg.create();
+    }
+
+    /**
+     * Returns the map region that the buffer currently holds.
+     *
+     * @return a copy of the buffered map region
+     */
+    protected Rectangle getBufferRect() {
+        return new Rectangle(bufferRect);
+    }
+
+    /**
+     * Creates a new, cleared buffer for the specified map region.
+     *
      * @param visibleRect the map bounds to buffer
      */
     private void setBackgroundBuffer(Rectangle visibleRect) {
-        // Releases VRAM used by backgroundBuffer.
-        if (backgroundBuffer != null) {
-            backgroundBuffer.flush();
-        }
-
-        // Create new backgroundBuffer.
-        backgroundBuffer = defaultConfig.createCompatibleVolatileImage(
-                visibleRect.width, visibleRect.height);
-        bufferRect.setBounds(visibleRect.x, visibleRect.y,
-                backgroundBuffer.getWidth(null), backgroundBuffer.getHeight(null));
-
         if (bg != null) {
             bg.dispose();
         }
 
-        bg = backgroundBuffer.getGraphics();
+        backgroundBuffer = new BufferedImage(
+                Math.max(1, visibleRect.width), Math.max(1, visibleRect.height), BufferedImage.TYPE_INT_RGB);
+        bufferRect.setBounds(visibleRect.x, visibleRect.y,
+                backgroundBuffer.getWidth(), backgroundBuffer.getHeight());
+
+        bg = backgroundBuffer.createGraphics();
         bg.clearRect(0, 0, bufferRect.width, bufferRect.height);
     }
 
     /**
-     * Performs the paint buffer rectangle operation.
+     * Paints a part of the buffer from the map. Only called while the buffer
+     * exists.
      *
-     * @param x the horizontal coordinate
-     * @param y the vertical coordinate
-     * @param width the width parameter
-     * @param height the height parameter
+     * @param x the horizontal buffer coordinate
+     * @param y the vertical buffer coordinate
+     * @param width the width of the part to paint
+     * @param height the height of the part to paint
      */
     protected abstract void paintBufferRectangle(int x, int y, int width, int height);
 
     /**
-     * Scroll background buffer.
-     * @param dx the dx
-     * @param dy the dy
+     * Scrolls the buffer by the specified offset and paints the exposed strips.
+     *
+     * @param dx the horizontal offset
+     * @param dy the vertical offset
      */
     private void scrollBackgroundBuffer(int dx, int dy) {
         int copyWidth = bufferRect.width;

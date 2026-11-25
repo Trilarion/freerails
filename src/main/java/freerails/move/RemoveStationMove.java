@@ -28,15 +28,12 @@ import java.util.Objects;
 /**
  * Removes the specified station from the world.
  */
-public class RemoveStationMove implements Move {
-
-    private final Player player;
-    private final int stationId;
+public record RemoveStationMove(Player player, int stationId) implements Move {
 
     /**
      * Creates a remove station move from the supplied values.
      *
-     * @param player the player
+     * @param player    the player
      * @param stationId the identifier to use
      */
     public RemoveStationMove(@NotNull Player player, int stationId) {
@@ -62,16 +59,6 @@ public class RemoveStationMove implements Move {
     }
 
     /**
-     * Returns a hash code for this object.
-     *
-     * @return the hash code for this object
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(player, stationId);
-    }
-
-    /**
      * Checks whether this move can be applied to the supplied world.
      *
      * @param world the world whose state is used or updated
@@ -89,14 +76,16 @@ public class RemoveStationMove implements Move {
     /**
      * @return the owner of the removed station
      */
-    public Player getPlayer() {
+    @Override
+    public Player player() {
         return player;
     }
 
     /**
      * @return the identifier of the removed station
      */
-    public int getStationId() {
+    @Override
+    public int stationId() {
         return stationId;
     }
 

@@ -19,11 +19,13 @@
 package freerails.client.renderer;
 
 import freerails.client.renderer.tile.TileRendererList;
+import freerails.io.ARGBColor;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Provides access to the objects that render terrain, track, and trains.
@@ -36,6 +38,13 @@ public interface RendererRoot {
      * @return the tile renderer list
      */
     TileRendererList getTileRendererList();
+
+    /**
+     * Returns the overview map color of every terrain type.
+     *
+     * @return the terrain colors keyed by terrain ID
+     */
+    Map<Integer, ARGBColor> getTerrainColors();
 
     /**
      * Returns the track piece view.

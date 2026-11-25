@@ -19,6 +19,8 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConstants;
+import freerails.io.ARGBColor;
+import freerails.io.GsonManager;
 import freerails.model.operations.cargo.Cargo;
 import freerails.model.terrain.Terrain;
 import freerails.model.operations.train.Engine;
@@ -36,6 +38,7 @@ import org.tinylog.TaggedLogger;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -49,7 +52,9 @@ public class RendererRootImpl implements RendererRoot {
 
     private static final TaggedLogger logger = Logger.tag("RendererRootImpl");
     private static final String HARBOUR_TERRAIN_NAME = "Harbour";
+    private static final String TERRAIN_COLORS_RESOURCE = "/freerails/client/terrain_colors.json";
     private final TileRendererList tileRendererList;
+    private final Map<Integer, ARGBColor> terrainColors;
     private final TrackPieceRendererList trackPieceViewList;
     private final ImageManager imageManager;
     private final Map<Integer, TrainImages> wagonImages = new HashMap<>();
@@ -64,6 +69,7 @@ public class RendererRootImpl implements RendererRoot {
     public RendererRootImpl(UnmodifiableWorld world) throws IOException {
         imageManager = new ImageManagerImpl(ClientConstants.GRAPHICS_PATH);
         tileRendererList = loadNewTileViewList(world);
+        terrainColors = loadTerrainColors(world);
 
         trackPieceViewList = loadTrackViews(world);
 
@@ -220,7 +226,63 @@ public class RendererRootImpl implements RendererRoot {
      */
     @Override
     public boolean validate(UnmodifiableWorld world) {
-        return tileRendererList.validate(world) && trackPieceViewList.validate(world);
+        return tileRendererList.validate(world)
+                && trackPieceViewList.validate(world)
+                && terrainColors.keySet().equals(terrainIds(world));
+    }
+
+    /**
+     * Returns the overview map colors keyed by terrain ID.
+     *
+     * @return the terrain colors
+     */
+    @Override
+    public Map<Integer, ARGBColor> getTerrainColors() {
+        return terrainColors;
+    }
+
+    /**
+     * Loads the overview map color of every terrain type of the world. The
+     * colors are client resources keyed by terrain name, like the terrain
+     * images, and are returned keyed by the world's terrain IDs.
+     *
+     * @param world the world
+     * @return the terrain colors keyed by terrain ID
+     * @throws IOException if the colors cannot be read or a terrain type has no color
+     */
+    private static Map<Integer, ARGBColor> loadTerrainColors(UnmodifiableWorld world) throws IOException {
+        Map<String, ARGBColor> colorsByName;
+        try (InputStream in = RendererRootImpl.class.getResourceAsStream(TERRAIN_COLORS_RESOURCE)) {
+            if (in == null) {
+                throw new IOException("Missing resource " + TERRAIN_COLORS_RESOURCE);
+            }
+            colorsByName = GsonManager.loadTerrainColors(in);
+        }
+
+        Map<Integer, ARGBColor> colorsById = new HashMap<>();
+        for (Terrain terrainType : world.getTerrains()) {
+            ARGBColor color = colorsByName.get(terrainType.getName());
+            if (color == null) {
+                throw new IOException("No overview map color for terrain type " + terrainType.getName()
+                        + " in " + TERRAIN_COLORS_RESOURCE);
+            }
+            colorsById.put(terrainType.getId(), color);
+        }
+        return Map.copyOf(colorsById);
+    }
+
+    /**
+     * Returns the IDs of the world's terrain types.
+     *
+     * @param world the world
+     * @return the terrain type IDs
+     */
+    private static Set<Integer> terrainIds(UnmodifiableWorld world) {
+        Set<Integer> ids = new HashSet<>();
+        for (Terrain terrainType : world.getTerrains()) {
+            ids.add(terrainType.getId());
+        }
+        return ids;
     }
 
     /**
